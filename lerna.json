@@ -1,0 +1,9 @@
+{
+  "packages": [
+    "packages/*",
+    "packages/@secretlint/*"
+  ],
+  "version": "1.0.0",
+  "npmClient": "yarn",
+  "useWorkspaces": true
+}

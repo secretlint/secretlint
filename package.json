@@ -1,0 +1,43 @@
+{
+  "private": true,
+  "name": "root",
+  "version": "1.0.0",
+  "description": "Secretlint pluggable linting tool to prevent commit secret/credential file.",
+  "keywords": [
+    "secret",
+    "credential",
+    "lint",
+    "linting",
+    "git"
+  ],
+  "homepage": "https://github.com/azu/secretlint",
+  "bugs": {
+    "url": "https://github.com/azu/secretlint/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/azu/secretlint.git"
+  },
+  "license": "MIT",
+  "author": "azu",
+  "workspaces": [
+    "packages/*",
+    "packages/@secretlint/*"
+  ],
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "versionup": "lerna version --conventional-commits",
+    "versionup:patch": "lerna version patch --conventional-commits",
+    "versionup:minor": "lerna version minor --conventional-commits",
+    "versionup:major": "lerna version major --conventional-commits",
+    "release": "lerna publish from-package",
+    "build": "lerna run build",
+    "test": "lerna run test",
+    "ci": "lerna run ci --ignore benchmark",
+    "clean": "lerna run clean",
+    "prettier": "prettier --write '**/*.{js,jsx,ts,tsx,css}'"
+  },
+  "devDependencies": {
+    "lerna": "^3.20.2"
+  }
+}
