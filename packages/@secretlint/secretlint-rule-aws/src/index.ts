@@ -1,7 +1,7 @@
 import { SecretLintContext, SecretLintRuleCreator, SecretLintSource } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
-const regx: (pattern: string) => RegExp = require('regx');
+const regx = require('regx').default("g");
 const matchAll: (text: string, regExp: RegExp) => ReturnType<typeof String.prototype.matchAll> = require('string.prototype.matchall');
 
 export interface Options {
@@ -47,11 +47,11 @@ const reportAWSAccessKey = (source: SecretLintSource, context: SecretLintContext
         });
     }
 };
-const reportAWSSecretKey = (source: SecretLintSource, context: SecretLintContext, options: Required<Options>) => {
+const reportAWSSecretAccessKey = (source: SecretLintSource, context: SecretLintContext, options: Required<Options>) => {
     const AWS = "(AWS|aws|Aws)?_?";
-    const QUOTE = `("|')`;
+    const QUOTE = `("|')?`;
     const CONNECT = "\\s*(:|=>|=)\\s*";
-    const AWSSecretPatten = regx(`${QUOTE}${AWS}(SECRET|secret|Secret)?_?(ACCESS|access|Access)?_?(KEY|key|Key)${QUOTE}${CONNECT}${QUOTE}[A-Za-z0-9/\+=]{40}${QUOTE}`);
+    const AWSSecretPatten = regx`${QUOTE}${AWS}(SECRET|secret|Secret)?_?(ACCESS|access|Access)?_?(KEY|key|Key)${QUOTE}${CONNECT}${QUOTE}[A-Za-z0-9/\+=]{40}${QUOTE}`;
     const results = matchAll(source.content, AWSSecretPatten);
     for (const result of results) {
         const index = result.index || 0;
@@ -73,9 +73,9 @@ const reportAWSSecretKey = (source: SecretLintSource, context: SecretLintContext
 
 const reportAWSAccountID = (source: SecretLintSource, context: SecretLintContext, options: Required<Options>) => {
     const AWS = "(AWS|aws|Aws)?_?";
-    const QUOTE = `("|')`;
+    const QUOTE = `("|')?`;
     const CONNECT = "\\s*(:|=>|=)\\s*";
-    const AWSSecretPatten = regx(`${QUOTE}${AWS}(ACCOUNT|account|Account)_?(ID|id|Id)?${QUOTE}${CONNECT}${QUOTE}[0-9]{4}\-?[0-9]{4}\-?[0-9]{4}${QUOTE}`);
+    const AWSSecretPatten = regx`${QUOTE}${AWS}(ACCOUNT|account|Account)_?(ID|id|Id)?${QUOTE}${CONNECT}${QUOTE}[0-9]{4}\-?[0-9]{4}\-?[0-9]{4}${QUOTE}`;
     const results = matchAll(source.content, AWSSecretPatten);
     for (const result of results) {
         const index = result.index || 0;
@@ -107,7 +107,7 @@ const creator: SecretLintRuleCreator<Options> = {
         return {
             file(source: SecretLintSource) {
                 reportAWSAccessKey(source, context, normalizedOptions);
-                reportAWSSecretKey(source, context, normalizedOptions);
+                reportAWSSecretAccessKey(source, context, normalizedOptions);
                 reportAWSAccountID(source, context, normalizedOptions);
             }
         }

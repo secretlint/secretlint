@@ -20,8 +20,8 @@
     "lib/",
     "src/"
   ],
-  "main": "lib/core.js",
-  "types": "lib/core.d.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "test"
