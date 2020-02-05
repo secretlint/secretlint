@@ -1,0 +1,15 @@
+{
+    "filePath": "[SNAPSHOT]/AWS Access Key ID/input",
+    "messages": [
+        {
+            "message": "found AWS Access Key ID: {{ID}}",
+            "data": {
+                "ID": "AKIAIOSFODNN7EXAMPLE"
+            },
+            "range": [
+                27,
+                47
+            ]
+        }
+    ]
+}

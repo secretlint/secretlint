@@ -1,0 +1,15 @@
+{
+    "filePath": "[SNAPSHOT]/AWS Secret Access Key/input",
+    "messages": [
+        {
+            "message": "found AWS Secret Access Key: {{key}}",
+            "data": {
+                "key": "AWS_SECRET_ACCESS_KEY = wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+            },
+            "range": [
+                0,
+                64
+            ]
+        }
+    ]
+}

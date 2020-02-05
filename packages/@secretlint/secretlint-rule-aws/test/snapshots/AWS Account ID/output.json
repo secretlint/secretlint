@@ -1,0 +1,15 @@
+{
+    "filePath": "[SNAPSHOT]/AWS Account ID/input",
+    "messages": [
+        {
+            "message": "found AWS Account ID: {{ID}}",
+            "data": {
+                "ID": "\"AWS_ACCOUNT_ID\"=>0000-0000-0000"
+            },
+            "range": [
+                0,
+                32
+            ]
+        }
+    ]
+}
