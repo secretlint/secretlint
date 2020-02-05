@@ -90,6 +90,7 @@ export const createRuleContext = ({
  * @param source
  * @param options
  * @param ruleCreator
+ * @param ruleCreatorOptions
  * @param contextEvents
  */
 export const processRule = ({
