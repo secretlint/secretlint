@@ -1,3 +1,17 @@
+// Lint
+export type SecretLintResult = {
+    filePath: string;
+    messages: SecretLintResultMessage[];
+}
+
+export interface SecretLintResultMessage {
+    message: string;
+    range: number[];
+    data?: {};
+}
+
+// Report
+
 export interface SecretLintReportDescriptor {
     message: string;
     range: number[];
@@ -5,6 +19,7 @@ export interface SecretLintReportDescriptor {
 }
 
 export interface SecretLintContext {
+    sharedOptions?: {}
     report(descriptor: SecretLintReportDescriptor): void;
 }
 
