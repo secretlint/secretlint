@@ -2,6 +2,9 @@
 
 Core library for @secretlint.
 
+The core is written by Pure JavaScript.
+It work on Browser and Node.js.
+
 ## Install
 
 Install with [npm](https://www.npmjs.com/):
