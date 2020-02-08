@@ -100,7 +100,11 @@ const reportAWSAccountID = (source: SecretLintSource, context: SecretLintContext
 const creator: SecretLintRuleCreator<Options> = {
     meta: {
         recommended: true,
-        type: "scanner"
+        type: "scanner",
+        docs: {
+            url:
+                "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md"
+        }
     },
     create(context, options) {
         const normalizedOptions: Required<Options> = {

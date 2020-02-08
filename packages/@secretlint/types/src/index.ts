@@ -10,8 +10,8 @@ export interface SecretLintResultMessage {
     data?: {};
 }
 
+// Rule Interfaces
 // Report
-
 export interface SecretLintReportDescriptor {
     message: string;
     range: number[];
@@ -20,6 +20,7 @@ export interface SecretLintReportDescriptor {
 
 export interface SecretLintContext {
     sharedOptions?: {};
+
     report(descriptor: SecretLintReportDescriptor): void;
 }
 
@@ -27,6 +28,9 @@ export interface SecretLintRuleCreator<Options = {}> {
     meta: {
         type: "scanner";
         recommended: boolean;
+        docs: {
+            url: string;
+        };
     };
 
     create(context: SecretLintContext, options: Options): SecretLintRuleReportHandler;
