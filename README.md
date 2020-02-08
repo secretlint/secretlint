@@ -34,7 +34,7 @@ We need to your contribution!
 Secretlint adopt opt-in approach.
 
 In our experience, linting tools that report various errors by default is difficult to use.
-Opt-in approach help to integrate increasing.
+Opt-in approach help to introduce secretlint increasing.
 
 ### Why Node.js?
 
