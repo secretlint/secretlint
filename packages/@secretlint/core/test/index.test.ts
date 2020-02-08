@@ -21,6 +21,7 @@ describe("lintSource", function() {
         assert.strictEqual(result.filePath, source.filePath);
         assert.deepStrictEqual(result.messages, [
             {
+                ruleId: "example",
                 message: "found secret: {{ID}}",
                 data: {
                     ID: "SECRET"

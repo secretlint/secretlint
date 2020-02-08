@@ -4,27 +4,34 @@ export type SecretLintResult = {
     messages: SecretLintResultMessage[];
 };
 
-export interface SecretLintResultMessage {
+export type SecretLintResultMessage = {
     message: string;
     range: number[];
     data?: {};
-}
+};
 
 // Rule Interfaces
 // Report
-export interface SecretLintReportDescriptor {
+export type SecretLintReportDescriptor = {
     message: string;
     range: number[];
     data?: {};
-}
+};
+export type SecretLintIgnoreDescriptor = {
+    message: string;
+    range: number[];
+    data?: {};
+};
 
-export interface SecretLintContext {
+export type SecretLintContext = {
     sharedOptions?: {};
 
     report(descriptor: SecretLintReportDescriptor): void;
-}
+    ignore(descriptor: SecretLintIgnoreDescriptor): void;
+};
 
-export interface SecretLintRuleCreator<Options = {}> {
+export type SecretLintRuleCreatorOptions = {};
+export type SecretLintRuleCreator<Options = SecretLintRuleCreatorOptions> = {
     meta: {
         type: "scanner";
         recommended: boolean;
@@ -34,26 +41,26 @@ export interface SecretLintRuleCreator<Options = {}> {
     };
 
     create(context: SecretLintContext, options: Options): SecretLintRuleReportHandler;
-}
+};
 
 export type SecretLintSource = {
     content: string;
     filePath: string;
 };
 
-export interface SecretLintSourceNodePosition {
+export type SecretLintSourceNodePosition = {
     line: number;
     column: number;
-}
+};
 
 /**
  * Line number starts with 1.
  * Column number starts with 0.
  */
-export interface SecretLintSourceNodeLocation {
+export type SecretLintSourceNodeLocation = {
     start: SecretLintSourceNodePosition;
     end: SecretLintSourceNodePosition;
-}
+};
 
 export type SecretLintSourceNodeRange = [number, number];
 export type SecretLintSourceValueNode = {
@@ -71,6 +78,8 @@ export type SecretLintSourceIdentifierNode = {
 };
 
 export type SecretLintRuleReportHandler = {
+    // TODO: pre-all
     file?(source: SecretLintSource): void | Promise<any>;
     identifier?(node: SecretLintSourceIdentifierNode, source: SecretLintSource): void | Promise<any>;
+    // TODO: post-all
 };

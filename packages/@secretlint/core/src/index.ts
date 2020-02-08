@@ -3,40 +3,63 @@ import {
     SecretLintRuleCreator,
     SecretLintContext,
     SecretLintReportDescriptor,
-    SecretLintResult
+    SecretLintResult,
+    SecretLintIgnoreDescriptor,
+    SecretLintRuleCreatorOptions
 } from "@secretlint/types";
 
 import { EventEmitter } from "events";
 
 import { default as PQueue } from "p-queue";
 
-export interface SecretLintCoreOptions {
+export type SecretLintCoreOptions = {
     rules: {
         id: string;
-        rule: SecretLintRuleCreator;
-        options: {};
+        rule: SecretLintRuleCreator<SecretLintRuleCreatorOptions>;
+        options: SecretLintRuleCreatorOptions;
     }[];
-}
+};
 
 type Handler<T> = (descriptor: T) => void;
+/**
+ * implicitly defined properties by Context
+ */
+type ContextDescriptor = {
+    ruleId: string;
+};
 type ContextEvents = {
-    report(descriptor: SecretLintReportDescriptor): void;
-    onReport(handler: Handler<SecretLintReportDescriptor>): () => void;
+    report(descriptor: SecretLintReportDescriptor & ContextDescriptor): void;
+    onReport(handler: Handler<SecretLintReportDescriptor & ContextDescriptor>): () => void;
+    ignore(descriptor: SecretLintIgnoreDescriptor & ContextDescriptor): void;
+    onIgnore(handler: Handler<SecretLintIgnoreDescriptor & ContextDescriptor>): () => void;
 };
 export const createContextEvents = (): ContextEvents => {
     const contextEvents = new EventEmitter();
-    const REPORT_KEY = "report";
+    const REPORT_SYMBOL = Symbol("report");
+    const IGNORE_SYMBOL = Symbol("ignore");
     return {
         report(descriptor: SecretLintReportDescriptor) {
-            contextEvents.emit(REPORT_KEY, descriptor);
+            contextEvents.emit(REPORT_SYMBOL, descriptor);
         },
-        onReport(handler: Handler<SecretLintReportDescriptor>) {
-            const listener = (descriptor: SecretLintReportDescriptor) => {
+        onReport(handler: Handler<SecretLintReportDescriptor & ContextDescriptor>) {
+            const listener = (descriptor: SecretLintReportDescriptor & ContextDescriptor) => {
                 handler(descriptor);
             };
-            contextEvents.on(REPORT_KEY, listener);
+            contextEvents.on(REPORT_SYMBOL, listener);
             return () => {
-                contextEvents.off(REPORT_KEY, listener);
+                contextEvents.off(REPORT_SYMBOL, listener);
+            };
+        },
+        ignore(descriptor: SecretLintReportDescriptor) {
+            contextEvents.emit(IGNORE_SYMBOL, descriptor);
+        },
+        onIgnore(handler: Handler<SecretLintReportDescriptor & ContextDescriptor>) {
+            const listener = (descriptor: SecretLintReportDescriptor & ContextDescriptor) => {
+                handler(descriptor);
+            };
+            contextEvents.on(IGNORE_SYMBOL, listener);
+            return () => {
+                contextEvents.off(IGNORE_SYMBOL, listener);
             };
         }
     };
@@ -55,6 +78,7 @@ export const lintSource = (source: SecretLintSource, options: SecretLintCoreOpti
             return processRule({
                 source,
                 options,
+                ruleId: rule.id,
                 ruleCreator: rule.rule,
                 ruleCreatorOptions: rule.options,
                 contextEvents
@@ -70,16 +94,27 @@ export const lintSource = (source: SecretLintSource, options: SecretLintCoreOpti
 };
 
 export const createRuleContext = ({
+    ruleId,
     contextEvents,
     sharedOptions
 }: {
+    ruleId: string;
     contextEvents: ContextEvents;
     sharedOptions: {};
 }): SecretLintContext => {
     return {
         sharedOptions,
+        ignore(descriptor: SecretLintIgnoreDescriptor): void {
+            contextEvents.report({
+                ruleId: ruleId,
+                ...descriptor
+            });
+        },
         report(descriptor: SecretLintReportDescriptor): void {
-            contextEvents.report(descriptor);
+            contextEvents.report({
+                ruleId: ruleId,
+                ...descriptor
+            });
         }
     };
 };
@@ -87,6 +122,7 @@ export const createRuleContext = ({
  * Rule Processing
  * @param source
  * @param options
+ * @param ruleId
  * @param ruleCreator
  * @param ruleCreatorOptions
  * @param contextEvents
@@ -94,21 +130,23 @@ export const createRuleContext = ({
 export const processRule = ({
     source,
     options,
+    ruleId,
     ruleCreator,
     ruleCreatorOptions,
     contextEvents
 }: {
     source: SecretLintSource;
     options: SecretLintCoreOptions;
-    ruleCreator: SecretLintRuleCreator;
-    ruleCreatorOptions: {};
+    ruleId: string;
+    ruleCreator: SecretLintRuleCreator<SecretLintRuleCreatorOptions>;
+    ruleCreatorOptions: SecretLintRuleCreatorOptions;
     contextEvents: ContextEvents;
 }): Promise<void> => {
     const context = createRuleContext({
+        ruleId: ruleId,
         contextEvents: contextEvents,
         sharedOptions: options
     });
-
     const rule = ruleCreator.create(context, ruleCreatorOptions);
     const promiseQueue = new PQueue();
     const ruleFile = rule.file;
