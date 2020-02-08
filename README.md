@@ -1,6 +1,6 @@
 # root
 
-Secretlint pluggable linting tool to prevent commit secret/credential file.
+Secretlint is pluggable linting tool to prevent commit secret/credential file.
 
 ## Install
 
