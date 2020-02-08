@@ -1,11 +1,14 @@
 import { SecretLintContext, SecretLintRuleCreator, SecretLintSource } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
-const regx = require('regx').default("g");
-const matchAll: (text: string, regExp: RegExp) => ReturnType<typeof String.prototype.matchAll> = require('string.prototype.matchall');
+const regx = require("regx").default("g");
+const matchAll: (
+    text: string,
+    regExp: RegExp
+) => ReturnType<typeof String.prototype.matchAll> = require("string.prototype.matchall");
 
 export interface Options {
-    allows?: string[]
+    allows?: string[];
 }
 
 /*
@@ -24,7 +27,6 @@ export interface Options {
 
   https://docs.cribl.io/docs/regexesyml
  */
-
 const reportAWSAccessKey = (source: SecretLintSource, context: SecretLintContext, options: Required<Options>) => {
     // AWS Access Key ID
     // Example) AKIAIOSFODNN7EXAMPLE
@@ -110,7 +112,7 @@ const creator: SecretLintRuleCreator<Options> = {
                 reportAWSSecretAccessKey(source, context, normalizedOptions);
                 reportAWSAccountID(source, context, normalizedOptions);
             }
-        }
+        };
     }
 };
 export default creator;

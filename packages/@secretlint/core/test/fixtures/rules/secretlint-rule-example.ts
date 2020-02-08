@@ -1,7 +1,7 @@
 import { SecretLintContext, SecretLintRuleCreator, SecretLintSource } from "@secretlint/types";
 
 export interface Options {
-    allows?: string[]
+    allows?: string[];
 }
 
 const reportSECRET = (source: SecretLintSource, context: SecretLintContext, _options: Required<Options>) => {
@@ -33,7 +33,7 @@ export const creator: SecretLintRuleCreator<Options> = {
             file(source: SecretLintSource) {
                 reportSECRET(source, context, normalizedOptions);
             }
-        }
+        };
     }
 };
 export default creator;

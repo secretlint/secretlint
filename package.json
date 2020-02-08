@@ -35,9 +35,28 @@
     "test": "lerna run test",
     "ci": "lerna run ci --ignore benchmark",
     "clean": "lerna run clean",
-    "prettier": "prettier --write '**/*.{js,jsx,ts,tsx,css}'"
+    "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\""
   },
   "devDependencies": {
-    "lerna": "^3.20.2"
+    "husky": "^4.2.1",
+    "lerna": "^3.20.2",
+    "lint-staged": "^10.0.7",
+    "prettier": "^1.19.1"
+  },
+  "prettier": {
+    "singleQuote": false,
+    "printWidth": 120,
+    "tabWidth": 4
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,css}": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }

@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as assert from "assert";
-import { lintSource, SecretLintCoreOptions } from "@secretlint/core"
+import { lintSource, SecretLintCoreOptions } from "@secretlint/core";
 
 export type SnapshotOptions = {
     snapshotDirectory: string;
@@ -11,7 +11,7 @@ export type SnapshotOptions = {
      * Exception, process.env.UPDATE_SNAPSHOT=1 force turn on this option.
      */
     updateSnapshot: boolean;
-}
+};
 const createSnapshotRepalcer = (options: SnapshotOptions) => {
     return (key: string, value: any) => {
         // Filtering out properties
@@ -19,7 +19,7 @@ const createSnapshotRepalcer = (options: SnapshotOptions) => {
             return value.replace(options.snapshotDirectory, "[SNAPSHOT]");
         }
         return value;
-    }
+    };
 };
 
 /**
@@ -41,38 +41,39 @@ export const snapshot = (options: SnapshotOptions) => {
     const snapshotReplacer = createSnapshotRepalcer(options);
     return {
         forEach(handler: (testCaseName: string, testFunction: () => Promise<"skip" | "done">) => void) {
-            fs.readdirSync(fixturesDir)
-                .map((caseName: string) => {
-                    const normalizedTestName = caseName.replace(/[-_]/g, " ");
-                    handler(normalizedTestName, async () => {
-                        const fixtureDir = path.join(fixturesDir, caseName);
-                        const actualFilePath = path.join(fixtureDir, "input");
-                        const actualContent = fs.readFileSync(actualFilePath, "utf-8");
-                        const actualResult = await lintSource({
+            fs.readdirSync(fixturesDir).map((caseName: string) => {
+                const normalizedTestName = caseName.replace(/[-_]/g, " ");
+                handler(normalizedTestName, async () => {
+                    const fixtureDir = path.join(fixturesDir, caseName);
+                    const actualFilePath = path.join(fixtureDir, "input");
+                    const actualContent = fs.readFileSync(actualFilePath, "utf-8");
+                    const actualResult = await lintSource(
+                        {
                             filePath: actualFilePath,
                             content: actualContent
-                        }, options.lintOptions);
-                        const expectedFilePath = path.join(fixtureDir, "output.json");
-                        // Usage: update snapshots
-                        // UPDATE_SNAPSHOT=1 npm test
-                        if (!fs.existsSync(expectedFilePath) || updateSnapshot) {
-                            fs.writeFileSync(expectedFilePath, JSON.stringify(actualResult, snapshotReplacer, 4));
-                            return "skip";
-                        }
-                        // compare input and output
-                        const expected = JSON.parse(fs.readFileSync(expectedFilePath, "utf-8"));
-                        assert.deepEqual(
-                            JSON.parse(JSON.stringify(actualResult, snapshotReplacer)),
-                            expected,
-                            `
+                        },
+                        options.lintOptions
+                    );
+                    const expectedFilePath = path.join(fixtureDir, "output.json");
+                    // Usage: update snapshots
+                    // UPDATE_SNAPSHOT=1 npm test
+                    if (!fs.existsSync(expectedFilePath) || updateSnapshot) {
+                        fs.writeFileSync(expectedFilePath, JSON.stringify(actualResult, snapshotReplacer, 4));
+                        return "skip";
+                    }
+                    // compare input and output
+                    const expected = JSON.parse(fs.readFileSync(expectedFilePath, "utf-8"));
+                    assert.deepEqual(
+                        JSON.parse(JSON.stringify(actualResult, snapshotReplacer)),
+                        expected,
+                        `
 ${fixtureDir}
 ${JSON.stringify(actualResult, snapshotReplacer)}
 `
-                        );
-                        return "done";
-                    });
-                })
+                    );
+                    return "done";
+                });
+            });
         }
     };
 };
-

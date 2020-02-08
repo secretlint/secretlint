@@ -2,7 +2,7 @@
 export type SecretLintResult = {
     filePath: string;
     messages: SecretLintResultMessage[];
-}
+};
 
 export interface SecretLintResultMessage {
     message: string;
@@ -19,23 +19,23 @@ export interface SecretLintReportDescriptor {
 }
 
 export interface SecretLintContext {
-    sharedOptions?: {}
+    sharedOptions?: {};
     report(descriptor: SecretLintReportDescriptor): void;
 }
 
 export interface SecretLintRuleCreator<Options = {}> {
     meta: {
-        type: "scanner",
+        type: "scanner";
         recommended: boolean;
-    }
+    };
 
-    create(context: SecretLintContext, options: Options): SecretLintRuleReportHandler
+    create(context: SecretLintContext, options: Options): SecretLintRuleReportHandler;
 }
 
 export type SecretLintSource = {
     content: string;
     filePath: string;
-}
+};
 
 export interface SecretLintSourceNodePosition {
     line: number;
@@ -57,17 +57,16 @@ export type SecretLintSourceValueNode = {
     value: string;
     range: SecretLintSourceNodeRange;
     loc: SecretLintSourceNodeLocation;
-}
+};
 export type SecretLintSourceIdentifierNode = {
     type: "Identifier";
     name: string;
     value?: SecretLintSourceValueNode;
     range: SecretLintSourceNodeRange;
     loc: SecretLintSourceNodeLocation;
-}
+};
 
 export type SecretLintRuleReportHandler = {
     file?(source: SecretLintSource): void | Promise<any>;
-    identifier?(node: SecretLintSourceIdentifierNode, source: SecretLintSource): void | Promise<any>
+    identifier?(node: SecretLintSourceIdentifierNode, source: SecretLintSource): void | Promise<any>;
 };
-

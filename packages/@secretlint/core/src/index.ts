@@ -6,23 +6,23 @@ import {
     SecretLintResult
 } from "@secretlint/types";
 
-import { EventEmitter } from "events"
+import { EventEmitter } from "events";
 
-import { default as PQueue } from 'p-queue';
+import { default as PQueue } from "p-queue";
 
 export interface SecretLintCoreOptions {
     rules: {
         id: string;
         rule: SecretLintRuleCreator;
-        options: {}
-    }[]
+        options: {};
+    }[];
 }
 
 type Handler<T> = (descriptor: T) => void;
 type ContextEvents = {
-    report(descriptor: SecretLintReportDescriptor): void,
+    report(descriptor: SecretLintReportDescriptor): void;
     onReport(handler: Handler<SecretLintReportDescriptor>): () => void;
-}
+};
 export const createContextEvents = (): ContextEvents => {
     const contextEvents = new EventEmitter();
     const REPORT_KEY = "report";
@@ -37,14 +37,12 @@ export const createContextEvents = (): ContextEvents => {
             contextEvents.on(REPORT_KEY, listener);
             return () => {
                 contextEvents.off(REPORT_KEY, listener);
-            }
+            };
         }
-    }
+    };
 };
 
-
-export const lintSource = (source: SecretLintSource, options: SecretLintCoreOptions):
-    Promise<SecretLintResult> => {
+export const lintSource = (source: SecretLintSource, options: SecretLintCoreOptions): Promise<SecretLintResult> => {
     const rules = options.rules;
     const contextEvents = createContextEvents();
     const descriptors: SecretLintReportDescriptor[] = [];
@@ -59,7 +57,7 @@ export const lintSource = (source: SecretLintSource, options: SecretLintCoreOpti
                 options,
                 ruleCreator: rule.rule,
                 ruleCreatorOptions: rule.options,
-                contextEvents,
+                contextEvents
             });
         });
     });
@@ -68,22 +66,22 @@ export const lintSource = (source: SecretLintSource, options: SecretLintCoreOpti
             filePath: source.filePath,
             messages: descriptors
         };
-    })
+    });
 };
 
 export const createRuleContext = ({
-                                      contextEvents,
-                                      sharedOptions
-                                  }: {
-    contextEvents: ContextEvents,
-    sharedOptions: {}
+    contextEvents,
+    sharedOptions
+}: {
+    contextEvents: ContextEvents;
+    sharedOptions: {};
 }): SecretLintContext => {
     return {
         sharedOptions,
         report(descriptor: SecretLintReportDescriptor): void {
             contextEvents.report(descriptor);
         }
-    }
+    };
 };
 /**
  * Rule Processing
@@ -94,17 +92,17 @@ export const createRuleContext = ({
  * @param contextEvents
  */
 export const processRule = ({
-                                source,
-                                options,
-                                ruleCreator,
-                                ruleCreatorOptions,
-                                contextEvents
-                            }: {
-    source: SecretLintSource,
-    options: SecretLintCoreOptions,
-    ruleCreator: SecretLintRuleCreator,
-    ruleCreatorOptions: {},
-    contextEvents: ContextEvents
+    source,
+    options,
+    ruleCreator,
+    ruleCreatorOptions,
+    contextEvents
+}: {
+    source: SecretLintSource;
+    options: SecretLintCoreOptions;
+    ruleCreator: SecretLintRuleCreator;
+    ruleCreatorOptions: {};
+    contextEvents: ContextEvents;
 }): Promise<void> => {
     const context = createRuleContext({
         contextEvents: contextEvents,
