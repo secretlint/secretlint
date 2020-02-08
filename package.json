@@ -33,7 +33,7 @@
     "release": "lerna publish from-package",
     "build": "lerna run build",
     "test": "lerna run test",
-    "ci": "lerna run ci --ignore benchmark",
+    "ci": "npm run build && npm run test",
     "clean": "lerna run clean",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\""
   },

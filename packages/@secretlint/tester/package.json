@@ -41,6 +41,7 @@
     "tabWidth": 4
   },
   "dependencies": {
+    "@secretlint/types": "^1.0.0",
     "@secretlint/core": "^1.0.0"
   },
   "devDependencies": {
