@@ -10,13 +10,13 @@
     "linting",
     "git"
   ],
-  "homepage": "https://github.com/azu/secretlint",
+  "homepage": "https://github.com/secretlint/secretlint",
   "bugs": {
-    "url": "https://github.com/azu/secretlint/issues"
+    "url": "https://github.com/secretlint/secretlint/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/azu/secretlint.git"
+    "url": "https://github.com/secretlint/secretlint.git"
   },
   "license": "MIT",
   "author": "azu",

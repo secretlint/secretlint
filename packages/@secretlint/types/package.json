@@ -5,13 +5,13 @@
   "keywords": [
     "secretlint"
   ],
-  "homepage": "https://github.com/azu/secretlint/tree/master/packages/@secretlint/types/",
+  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/types/",
   "bugs": {
-    "url": "https://github.com/azu/secretlint/issues"
+    "url": "https://github.com/secretlint/secretlint/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/azu/secretlint.git"
+    "url": "https://github.com/secretlint/secretlint.git"
   },
   "license": "MIT",
   "author": "azu",

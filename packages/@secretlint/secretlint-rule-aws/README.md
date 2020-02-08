@@ -14,7 +14,7 @@ Install with [npm](https://www.npmjs.com/):
 
 ## Changelog
 
-See [Releases page](https://github.com/azu/secretlint/releases).
+See [Releases page](https://github.com/secretlint/secretlint/releases).
 
 ## Running tests
 
@@ -26,7 +26,7 @@ Install devDependencies and Run `npm test`:
 
 Pull requests and stars are always welcome.
 
-For bugs and feature requests, [please create an issue](https://github.com/azu/secretlint/issues).
+For bugs and feature requests, [please create an issue](https://github.com/secretlint/secretlint/issues).
 
 1. Fork it!
 2. Create your feature branch: `git checkout -b my-new-feature`
