@@ -1,0 +1,15 @@
+{
+    "filePath": "[SNAPSHOT]/has-secret/input",
+    "messages": [
+        {
+            "message": "found secret: {{ID}}",
+            "data": {
+                "ID": "SECRET"
+            },
+            "range": [
+                8,
+                14
+            ]
+        }
+    ]
+}
