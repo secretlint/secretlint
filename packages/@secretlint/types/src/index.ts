@@ -28,7 +28,7 @@ export interface SecretLintRuleCreator<Options = {}> {
     meta: {
         type: "scanner";
         recommended: boolean;
-        docs: {
+        docs?: {
             url: string;
         };
     };
