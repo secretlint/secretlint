@@ -12,7 +12,7 @@ Secretlint is pluggable linting tool to prevent commit secret/credential file.
 
 - [git-secrets](https://github.com/awslabs/git-secrets) is useful, but it is hard to setup per project.
 	- It main use-case is globally installation
-	- gitlint want to install for a project and customize setting per project.
+	- secretlint want to install for a project and customize setting per project.
 - [repo-security-scanner](https://github.com/UKHomeOffice/repo-security-scanner), [Gitleaks](https://github.com/zricethezav/gitleaks) and [truffleHog](https://github.com/dxa4481/truffleHog) is good scan tools
 	- We need to flexible customize that include ignore by comment, ignore like gitinore
 - [detect-secrets](https://github.com/Yelp/detect-secrets) is similar tools, but it apply opt-out approach
@@ -26,6 +26,21 @@ Secretlint is pluggable linting tool to prevent commit secret/credential file.
 We need to your contribution!
 
 - <https://github.com/secretlint/secretlint/issues>
+
+## Architecture
+
+### Why Node.js?
+
+- Package Manager
+	- Require pacakge manager to realize flexible pluggable system
+	- Node.js has npm and yarn as package manager
+	- Package manger help to install custom plugin/rule by user
+- Exist Reference Implementation
+	- Node.js already has pluggable linting tools like ESLint, textlint, stylelint etc
+	- So Node.js user familiar with pluggable linting tools
+	- Previously, I created textlint as same approach, so I familiar with Node.js
+
+If you interesting in Docker support, please see [Docker support · Issue #7](https://github.com/secretlint/secretlint/issues/7)
 
 ## Changelog
 
