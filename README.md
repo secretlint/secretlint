@@ -29,6 +29,13 @@ We need to your contribution!
 
 ## Architecture
 
+### Opt-in instead of Opt-out
+
+Secretlint adopt opt-in approach.
+
+In our experience, linting tools that report various errors by default is difficult to use.
+Opt-in approach help to integrate increasing.
+
 ### Why Node.js?
 
 - Package Manager
