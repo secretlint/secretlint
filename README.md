@@ -36,6 +36,14 @@ Secretlint adopt opt-in approach.
 In our experience, linting tools that report various errors by default is difficult to use.
 Opt-in approach help to introduce secretlint increasing.
 
+### A documentation per a Rule
+
+We think a rule as a documentation.
+
+Each rule should have reasonable documentation.
+
+- [ ]  How?
+
 ### Why Node.js?
 
 - Package Manager
