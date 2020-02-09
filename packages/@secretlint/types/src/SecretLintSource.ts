@@ -2,6 +2,10 @@
 export type SecretLintSource = {
     content: string;
     filePath: string;
+    /**
+     * Prefer ext than filePath
+     */
+    ext?: string;
 };
 export type SecretLintSourceNodePosition = {
     line: number;
@@ -15,7 +19,7 @@ export type SecretLintSourceNodeLocation = {
     start: SecretLintSourceNodePosition;
     end: SecretLintSourceNodePosition;
 };
-export type SecretLintSourceNodeRange = [number, number];
+export type SecretLintSourceNodeRange = number[];
 export type SecretLintSourceValueNode = {
     type: "Value";
     value: string;

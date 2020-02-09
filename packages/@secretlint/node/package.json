@@ -1,11 +1,12 @@
 {
-  "name": "@secretlint/core",
+  "name": "@secretlint/node",
   "version": "1.0.0",
-  "description": "Core library for @secretlint.",
+  "description": "Secretlint client library for Node.js",
   "keywords": [
-    "secretlint"
+    "secretlint",
+    "node.js"
   ],
-  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/core/",
+  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/node/",
   "bugs": {
     "url": "https://github.com/secretlint/secretlint/issues"
   },
@@ -39,19 +40,13 @@
     "singleQuote": false,
     "tabWidth": 4
   },
-  "dependencies": {
-    "@secretlint/types": "^1.0.0",
-    "p-queue": "^6.2.1",
-    "structured-source": "^3.0.2"
-  },
   "devDependencies": {
-    "@types/structured-source": "^3.0.0",
     "@types/mocha": "^7.0.1",
     "@types/node": "^13.7.0",
     "cross-env": "^7.0.0",
     "mocha": "^7.0.1",
     "prettier": "^1.19.1",
-    "rimraf": "^3.0.1",
+    "rimraf": "^3.0.2",
     "ts-node": "^8.6.2",
     "ts-node-test-register": "^8.0.1",
     "typescript": "^3.7.5"

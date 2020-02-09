@@ -25,5 +25,6 @@ export {
     SecretLintSourceNodeRange,
     SecretLintSourceValueNode
 } from "./SecretLintSource";
+export { SecretLintSourceCode } from "./SecretLintSourceCode";
 // Config
 export { SecretLintConfigDescriptor, SecretLintConfigDescriptorRule } from "./SecretLintConfigDescriptor";
