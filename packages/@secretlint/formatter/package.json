@@ -17,8 +17,8 @@
     "lib/",
     "src/"
   ],
-  "main": "lib/formatter.js",
-  "types": "lib/formatter.d.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "test"
@@ -28,7 +28,7 @@
     "clean": "rimraf lib/",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
-    "test": "mocha \"test/**/*.ts\"",
+    "test": "# mocha \"test/**/*.ts\"",
     "watch": "tsc -p . --watch"
   },
   "prettier": {
@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "debug": "^4.1.1",
+    "escape-string-regexp": "^2.0.0",
     "@secretlint/types": "^1.0.0",
     "@textlint/linter-formatter": "^3.1.12",
     "@textlint/types": "^1.3.1"

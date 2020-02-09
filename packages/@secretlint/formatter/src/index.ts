@@ -7,13 +7,30 @@ import {
 } from "@textlint/linter-formatter";
 import { SecretLintCoreResult } from "@secretlint/types";
 
-const debug = require("@secretlint/formatter");
+import escapeStringRegexp from "escape-string-regexp";
+
+const debug = require("debug")("@secretlint/formatter");
 
 export interface SecretLintFormatterConfig {
     formatterName: string;
     color?: boolean;
 }
 
+/**
+ * {{Key}} => Value
+ * @param message
+ * @param data
+ */
+const formatMessagePlaceholder = (message: string, data?: {}): string => {
+    if (typeof data !== "object" || data === null) {
+        return message;
+    }
+    let output = message;
+    Object.entries(data).forEach(([key, value]) => {
+        output = output.replace(new RegExp(escapeStringRegexp(`{{${key}}}`), "g"), String(value));
+    });
+    return output;
+};
 const convertSecretLintResultToTextlintResult = (secretLintCoreResult: SecretLintCoreResult): TextlintResult => {
     return {
         filePath: secretLintCoreResult.filePath,
@@ -33,11 +50,11 @@ const convertSecretLintResultToTextlintResult = (secretLintCoreResult: SecretLin
                 line: message.loc.start.line,
                 column: message.loc.start.column,
                 severity: severityLevel,
-                message: message.message,
+                message: formatMessagePlaceholder(message.message, message.data),
+                data: message.data,
                 // NO NEED - DUMMY DATA
                 fix: undefined,
-                type: "lint",
-                data: message.data
+                type: "lint"
             };
         })
     };
@@ -47,8 +64,10 @@ export function createFormatter(formatterConfig: SecretLintFormatterConfig) {
     const formatterName = formatterConfig.formatterName;
     debug(`formatterName: ${formatterName}`);
     const format = textlintCreateFormatter(formatterConfig);
-    return (results: SecretLintCoreResult[]) => {
-        return format(results.map(result => convertSecretLintResultToTextlintResult(result)));
+    return {
+        format: (results: SecretLintCoreResult[]) => {
+            return format(results.map(result => convertSecretLintResultToTextlintResult(result)));
+        }
     };
 }
 
