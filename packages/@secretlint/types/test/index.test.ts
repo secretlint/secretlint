@@ -1,5 +1,6 @@
-import { SecretLintRuleContext, SecretLintRuleCreator, SecretLintSource } from "../src/index";
 import { expectType } from "tsd";
+import { SecretLintRuleContext, SecretLintRuleCreator } from "../src/SecretLintRule";
+import { SecretLintSource } from "../src/SecretLintSource";
 
 declare var creator: SecretLintRuleCreator;
 declare var context: SecretLintRuleContext;
