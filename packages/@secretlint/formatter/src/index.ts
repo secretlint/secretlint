@@ -31,6 +31,10 @@ const formatMessagePlaceholder = (message: string, data?: {}): string => {
     });
     return output;
 };
+/**
+ * Convert secretlint result to textlint result for formatter
+ * @param secretLintCoreResult
+ */
 const convertSecretLintResultToTextlintResult = (secretLintCoreResult: SecretLintCoreResult): TextlintResult => {
     return {
         filePath: secretLintCoreResult.filePath,

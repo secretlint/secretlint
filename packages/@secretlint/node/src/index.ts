@@ -24,22 +24,24 @@ export const lintFile = async (filePath: string, options: SecretLintCoreDescript
     });
 };
 
-export const createLinter = async (options: SecretLintEngineOptions) => {
+export const createEngine = async (options: SecretLintEngineOptions) => {
     const config = loadConfig({
         cwd: options.cwd
     });
     if (!config.ok) {
         throw new Error(config.errors.map(error => error.stack).join("\n\n"));
     }
-    return async (filePathList: string[]) => {
-        const resultPromises = filePathList.map(filePath => {
-            return lintFile(filePath, config.config);
-        });
-        const results = await Promise.all(resultPromises);
-        const formatter = createFormatter({
-            color: options.color,
-            formatterName: options.formatter
-        });
-        return formatter.format(results);
+    return {
+        executeOnFiles: async (filePathList: string[]) => {
+            const resultPromises = filePathList.map(filePath => {
+                return lintFile(filePath, config.config);
+            });
+            const results = await Promise.all(resultPromises);
+            const formatter = createFormatter({
+                color: options.color,
+                formatterName: options.formatter
+            });
+            return formatter.format(results);
+        }
     };
 };

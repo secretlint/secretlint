@@ -1,14 +1,14 @@
-import { createLinter } from "../src";
+import { createEngine } from "../src";
 import path = require("path");
 
-describe("createLinter", function() {
-    it("should create linter and lint it", async () => {
-        const lint = await createLinter({
+describe("createEngine", function() {
+    it("should create enat and execute on files", async () => {
+        const engine = await createEngine({
             color: true,
             cwd: path.join(__dirname, "fixtures/valid-config"),
             formatter: "stylish"
         });
-        const output = await lint([path.join(__dirname, "fixtures/SECRET.txt")]);
+        const output = await engine.executeOnFiles([path.join(__dirname, "fixtures/SECRET.txt")]);
         console.log(output);
     });
 });
