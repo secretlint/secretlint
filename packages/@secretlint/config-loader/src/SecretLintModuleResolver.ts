@@ -38,7 +38,7 @@ export class SecretLintModuleResolver {
      */
     resolveRulePackageName(packageName: string): string {
         const baseDir = this.baseDirectory;
-        const fullPackageName = createFullPackageName("secretlint-rule", packageName);
+        const fullPackageName = createFullPackageName("secretlint-rule-", packageName);
         // <rule-name> or secretlint-rule-<rule-name>
         const pkgPath = tryResolve(path.join(baseDir, fullPackageName)) || tryResolve(path.join(baseDir, packageName));
         if (!pkgPath) {
@@ -55,7 +55,7 @@ export class SecretLintModuleResolver {
      */
     resolveFilterRulePackageName(packageName: string): string {
         const baseDir = this.baseDirectory;
-        const fullPackageName = createFullPackageName("secretlint-filter-rule", packageName);
+        const fullPackageName = createFullPackageName("secretlint-filter-rule-", packageName);
         // <rule-name> or secretlint-filter-rule-<rule-name> or @scope/<rule-name>
         const pkgPath = tryResolve(path.join(baseDir, fullPackageName)) || tryResolve(path.join(baseDir, packageName));
         if (!pkgPath) {
@@ -73,7 +73,7 @@ export class SecretLintModuleResolver {
      */
     resolvePluginPackageName(packageName: string): string {
         const baseDir = this.baseDirectory;
-        const fullPackageName = createFullPackageName("secretlint-plugin", packageName);
+        const fullPackageName = createFullPackageName("secretlint-plugin-", packageName);
         // <plugin-name> or secretlint-plugin-<rule-name>
         const pkgPath = tryResolve(path.join(baseDir, fullPackageName)) || tryResolve(path.join(baseDir, packageName));
         if (!pkgPath) {
@@ -92,7 +92,7 @@ export class SecretLintModuleResolver {
      */
     resolvePresetPackageName(packageName: string): string {
         const baseDir = this.baseDirectory;
-        const PREFIX = "secretlint-rule-preset";
+        const PREFIX = "secretlint-rule-preset-";
         /* Implementation Note
 
         preset name is defined in config file:

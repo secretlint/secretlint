@@ -1,14 +1,13 @@
 {
-  "name": "@secretlint/config-loader",
+  "name": "@secretlint/secretlint-rule-example",
   "version": "1.0.0",
-  "description": "Config loader for secretlint.",
+  "description": "An example rule for secretlint. It it for testing.",
   "keywords": [
     "secretlint",
-    "node",
-    "config",
-    "loader"
+    "testing",
+    "rule"
   ],
-  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/config-loader/",
+  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-example/",
   "bugs": {
     "url": "https://github.com/secretlint/secretlint/issues"
   },
@@ -43,11 +42,7 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "debug": "^4.1.1",
-    "@textlint/module-interop": "^1.0.2",
-    "try-resolve": "^1.0.1",
-    "@secretlint/types": "^1.0.0",
-    "rc-config-loader": "^3.0.0"
+    "@secretlint/types": "^1.0.0"
   },
   "devDependencies": {
     "@types/mocha": "^7.0.1",
@@ -59,7 +54,7 @@
     "ts-node": "^8.6.2",
     "ts-node-test-register": "^8.0.1",
     "typescript": "^3.7.5",
-    "@secretlint/secretlint-rule-example": "^1.0.0"
+    "@secretlint/tester": "^1.0.0"
   },
   "publishConfig": {
     "access": "public"

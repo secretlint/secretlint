@@ -2,7 +2,7 @@ import { snapshot } from "@secretlint/tester";
 import path from "path";
 import rule from "./fixtures/secretlint-rule-example";
 
-describe("@secretlint/tester", () => {
+describe("@secretlint/secretlint-rule-example", () => {
     snapshot({
         lintOptions: {
             rules: [

@@ -2,6 +2,7 @@
     "filePath": "[SNAPSHOT]/AWS Access Key ID/input",
     "messages": [
         {
+            "ruleId": "secretlint-rule-aws",
             "message": "found AWS Access Key ID: {{ID}}",
             "data": {
                 "ID": "AKIAIOSFODNN7EXAMPLE"

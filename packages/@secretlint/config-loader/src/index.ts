@@ -13,9 +13,15 @@ export type SecretLintConfigLoaderResult =
           config: SecretLintCoreDescriptor; // Core Option object
       }
     | {
+          // load module error
           ok: false;
-          configFilePath: null;
-          config: null;
+          configFilePath: string;
+          rawConfig: SecretLintConfigDescriptor;
+          errors: Error[];
+      }
+    | {
+          // load config error
+          ok: false;
           errors: Error[];
       };
 export type SecretLintConfigLoaderRawResult =
@@ -33,12 +39,10 @@ export type SecretLintConfigLoaderRawResult =
  * @param options
  */
 export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintConfigLoaderResult => {
-    const rawResult = loadConfigRaw(options);
+    const rawResult = loadRawConfig(options);
     if (!rawResult.ok) {
         return {
             ok: false,
-            configFilePath: null,
-            config: null,
             errors: rawResult.errors
         };
     }
@@ -46,15 +50,37 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
     const moduleResolver = new SecretLintModuleResolver({
         baseDirectory: options.cwd
     });
-    const rules: SecretLintCoreDescriptorRule[] = rawResult.config.rules.map(configDescriptorRule => {
-        const moduleFilePath = moduleResolver.resolveRulePackageName(configDescriptorRule.id);
-        return {
-            id: configDescriptorRule.id,
-            rule: moduleInterop(require(moduleFilePath)),
-            options: configDescriptorRule.options,
-            disabled: configDescriptorRule.disabled
-        };
+    const errors: Error[] = [];
+    const rules: SecretLintCoreDescriptorRule[] = [];
+    rawResult.config.rules.forEach(configDescriptorRule => {
+        try {
+            const moduleFilePath = moduleResolver.resolveRulePackageName(configDescriptorRule.id);
+            rules.push({
+                id: configDescriptorRule.id,
+                rule: moduleInterop(require(moduleFilePath)),
+                ...(configDescriptorRule.options !== undefined
+                    ? {
+                          options: configDescriptorRule.options
+                      }
+                    : {}),
+                ...(configDescriptorRule.disabled !== undefined
+                    ? {
+                          disabled: configDescriptorRule.disabled
+                      }
+                    : {})
+            });
+        } catch (error) {
+            errors.push(error);
+        }
     });
+    if (errors.length > 0) {
+        return {
+            ok: false,
+            rawConfig: rawResult.config,
+            configFilePath: rawResult.configFilePath,
+            errors
+        };
+    }
     return {
         ok: true,
         configFilePath: rawResult.configFilePath,
@@ -68,7 +94,7 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
  *  It is just JSON present for config file. Raw data
  * @param options
  */
-export const loadConfigRaw = (options: SecretLintConfigLoaderOptions): SecretLintConfigLoaderRawResult => {
+export const loadRawConfig = (options: SecretLintConfigLoaderOptions): SecretLintConfigLoaderRawResult => {
     try {
         const results = rcFile<SecretLintConfigDescriptor>("secretlint", {
             cwd: options.cwd,

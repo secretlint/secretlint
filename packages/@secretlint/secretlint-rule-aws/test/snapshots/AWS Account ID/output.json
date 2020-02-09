@@ -2,6 +2,7 @@
     "filePath": "[SNAPSHOT]/AWS Account ID/input",
     "messages": [
         {
+            "ruleId": "secretlint-rule-aws",
             "message": "found AWS Account ID: {{ID}}",
             "data": {
                 "ID": "\"AWS_ACCOUNT_ID\"=>0000-0000-0000"

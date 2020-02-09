@@ -2,6 +2,7 @@
     "filePath": "[SNAPSHOT]/AWS Secret Access Key/input",
     "messages": [
         {
+            "ruleId": "secretlint-rule-aws",
             "message": "found AWS Secret Access Key: {{key}}",
             "data": {
                 "key": "AWS_SECRET_ACCESS_KEY = wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"

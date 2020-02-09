@@ -1,10 +1,10 @@
-import { SecretLintContext, SecretLintRuleCreator, SecretLintSource } from "@secretlint/types";
+import { SecretLintRuleContext, SecretLintRuleCreator, SecretLintSource } from "@secretlint/types";
 
 export interface Options {
     allows?: string[];
 }
 
-const reportSECRET = (source: SecretLintSource, context: SecretLintContext, _options: Required<Options>) => {
+const reportSECRET = (source: SecretLintSource, context: SecretLintRuleContext, _options: Required<Options>) => {
     const results = source.content.matchAll(/secret/i);
     for (const result of results) {
         const index = result.index || 0;

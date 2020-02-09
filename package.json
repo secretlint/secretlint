@@ -32,6 +32,7 @@
     "versionup:major": "lerna version major --conventional-commits",
     "release": "lerna publish from-package",
     "build": "lerna run build",
+    "updateSnapshot": "UPDATE_SNAPSHOT=1 lerna run test",
     "test": "lerna run test",
     "ci": "npm run build && npm run test",
     "clean": "lerna run clean",
