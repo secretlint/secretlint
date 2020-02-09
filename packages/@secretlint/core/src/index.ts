@@ -1,8 +1,8 @@
 import {
     SecretLintSource,
-    SecretLintResult,
-    SecretLintReportDescriptor,
-    SecretLintIgnoreDescriptor,
+    SecretLintCoreResult,
+    SecretLintCoreReportDescriptor,
+    SecretLintCoreIgnoreDescriptor,
     SecretLintRuleCreator,
     SecretLintRuleCreatorOptions,
     SecretLintRuleContext,
@@ -31,9 +31,9 @@ type ContextDescriptor = {
 };
 type ContextEvents = {
     report(descriptor: SecretLintRuleReportDescriptor): void;
-    onReport(handler: Handler<SecretLintReportDescriptor>): () => void;
+    onReport(handler: Handler<SecretLintCoreReportDescriptor>): () => void;
     ignore(descriptor: SecretLintRuleIgnoreDescriptor): void;
-    onIgnore(handler: Handler<SecretLintIgnoreDescriptor>): () => void;
+    onIgnore(handler: Handler<SecretLintCoreIgnoreDescriptor>): () => void;
 };
 export const createContextEvents = (): ContextEvents => {
     const contextEvents = new EventEmitter();
@@ -43,8 +43,8 @@ export const createContextEvents = (): ContextEvents => {
         report(descriptor: SecretLintRuleReportDescriptor) {
             contextEvents.emit(REPORT_SYMBOL, descriptor);
         },
-        onReport(handler: Handler<SecretLintIgnoreDescriptor>) {
-            const listener = (descriptor: SecretLintReportDescriptor & ContextDescriptor) => {
+        onReport(handler: Handler<SecretLintCoreIgnoreDescriptor>) {
+            const listener = (descriptor: SecretLintCoreReportDescriptor & ContextDescriptor) => {
                 handler(descriptor);
             };
             contextEvents.on(REPORT_SYMBOL, listener);
@@ -55,8 +55,8 @@ export const createContextEvents = (): ContextEvents => {
         ignore(descriptor: SecretLintRuleIgnoreDescriptor) {
             contextEvents.emit(IGNORE_SYMBOL, descriptor);
         },
-        onIgnore(handler: Handler<SecretLintIgnoreDescriptor>) {
-            const listener = (descriptor: SecretLintReportDescriptor & ContextDescriptor) => {
+        onIgnore(handler: Handler<SecretLintCoreIgnoreDescriptor>) {
+            const listener = (descriptor: SecretLintCoreReportDescriptor & ContextDescriptor) => {
                 handler(descriptor);
             };
             contextEvents.on(IGNORE_SYMBOL, listener);
@@ -67,10 +67,10 @@ export const createContextEvents = (): ContextEvents => {
     };
 };
 
-export const lintSource = (source: SecretLintSource, options: SecretLintCoreOptions): Promise<SecretLintResult> => {
+export const lintSource = (source: SecretLintSource, options: SecretLintCoreOptions): Promise<SecretLintCoreResult> => {
     const rules = options.rules;
     const contextEvents = createContextEvents();
-    const descriptors: SecretLintReportDescriptor[] = [];
+    const descriptors: SecretLintCoreReportDescriptor[] = [];
     contextEvents.onReport(descriptor => {
         descriptors.push(descriptor);
     });
@@ -106,13 +106,13 @@ export const createRuleContext = ({
 }): SecretLintRuleContext => {
     return {
         sharedOptions,
-        ignore(descriptor: SecretLintIgnoreDescriptor): void {
+        ignore(descriptor: SecretLintCoreIgnoreDescriptor): void {
             contextEvents.report({
                 ruleId: ruleId,
                 ...descriptor
             });
         },
-        report(descriptor: SecretLintReportDescriptor): void {
+        report(descriptor: SecretLintCoreReportDescriptor): void {
             contextEvents.report({
                 ruleId: ruleId,
                 ...descriptor

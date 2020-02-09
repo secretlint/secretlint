@@ -1,21 +1,21 @@
 // Core Interface
 // Core Input and Output
-export type SecretLintResult = {
+export type SecretLintCoreResult = {
     filePath: string;
-    messages: SecretLintResultMessage[];
+    messages: SecretLintCoreResultMessage[];
 };
 
-export type SecretLintResultMessage = {
+export type SecretLintCoreResultMessage = {
     message: string;
     range: number[];
     data?: {};
 };
 
-export type SecretLintReportDescriptor = {
+export type SecretLintCoreReportDescriptor = {
     ruleId: string;
 } & SecretLintRuleReportDescriptor;
 
-export type SecretLintIgnoreDescriptor = {
+export type SecretLintCoreIgnoreDescriptor = {
     ruleId: string;
 } & SecretLintRuleIgnoreDescriptor;
 
