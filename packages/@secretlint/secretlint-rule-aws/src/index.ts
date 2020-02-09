@@ -1,4 +1,4 @@
-import { SecretLintContext, SecretLintRuleCreator, SecretLintSource } from "@secretlint/types";
+import { SecretLintRuleContext, SecretLintRuleCreator, SecretLintSource } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 const regx = require("regx").default("g");
@@ -27,7 +27,7 @@ export interface Options {
 
   https://docs.cribl.io/docs/regexesyml
  */
-const reportAWSAccessKey = (source: SecretLintSource, context: SecretLintContext, options: Required<Options>) => {
+const reportAWSAccessKey = (source: SecretLintSource, context: SecretLintRuleContext, options: Required<Options>) => {
     // AWS Access Key ID
     // Example) AKIAIOSFODNN7EXAMPLE
     const AWSAccessKeyIDPattern = /(A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}/g;
@@ -49,7 +49,11 @@ const reportAWSAccessKey = (source: SecretLintSource, context: SecretLintContext
         });
     }
 };
-const reportAWSSecretAccessKey = (source: SecretLintSource, context: SecretLintContext, options: Required<Options>) => {
+const reportAWSSecretAccessKey = (
+    source: SecretLintSource,
+    context: SecretLintRuleContext,
+    options: Required<Options>
+) => {
     const AWS = "(AWS|aws|Aws)?_?";
     const QUOTE = `("|')?`;
     const CONNECT = "\\s*(:|=>|=)\\s*";
@@ -73,7 +77,7 @@ const reportAWSSecretAccessKey = (source: SecretLintSource, context: SecretLintC
     }
 };
 
-const reportAWSAccountID = (source: SecretLintSource, context: SecretLintContext, options: Required<Options>) => {
+const reportAWSAccountID = (source: SecretLintSource, context: SecretLintRuleContext, options: Required<Options>) => {
     const AWS = "(AWS|aws|Aws)?_?";
     const QUOTE = `("|')?`;
     const CONNECT = "\\s*(:|=>|=)\\s*";

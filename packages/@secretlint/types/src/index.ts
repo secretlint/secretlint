@@ -1,4 +1,5 @@
-// Lint
+// Core Interface
+// Core Input and Output
 export type SecretLintResult = {
     filePath: string;
     messages: SecretLintResultMessage[];
@@ -10,24 +11,31 @@ export type SecretLintResultMessage = {
     data?: {};
 };
 
-// Rule Interfaces
-// Report
 export type SecretLintReportDescriptor = {
+    ruleId: string;
+} & SecretLintRuleReportDescriptor;
+
+export type SecretLintIgnoreDescriptor = {
+    ruleId: string;
+} & SecretLintRuleIgnoreDescriptor;
+
+// Rule Interfaces
+export type SecretLintRuleReportDescriptor = {
     message: string;
     range: number[];
     data?: {};
 };
-export type SecretLintIgnoreDescriptor = {
+export type SecretLintRuleIgnoreDescriptor = {
     message: string;
     range: number[];
     data?: {};
 };
 
-export type SecretLintContext = {
+export type SecretLintRuleContext = {
     sharedOptions?: {};
 
-    report(descriptor: SecretLintReportDescriptor): void;
-    ignore(descriptor: SecretLintIgnoreDescriptor): void;
+    report(descriptor: SecretLintRuleReportDescriptor): void;
+    ignore(descriptor: SecretLintRuleIgnoreDescriptor): void;
 };
 
 export type SecretLintRuleCreatorOptions = {};
@@ -40,9 +48,17 @@ export type SecretLintRuleCreator<Options = SecretLintRuleCreatorOptions> = {
         };
     };
 
-    create(context: SecretLintContext, options: Options): SecretLintRuleReportHandler;
+    create(context: SecretLintRuleContext, options: Options): SecretLintRuleReportHandler;
 };
 
+export type SecretLintRuleReportHandler = {
+    // TODO: pre-all
+    file?(source: SecretLintSource): void | Promise<any>;
+    identifier?(node: SecretLintSourceIdentifierNode, source: SecretLintSource): void | Promise<any>;
+    // TODO: post-all
+};
+
+// Util
 export type SecretLintSource = {
     content: string;
     filePath: string;
@@ -75,11 +91,4 @@ export type SecretLintSourceIdentifierNode = {
     value?: SecretLintSourceValueNode;
     range: SecretLintSourceNodeRange;
     loc: SecretLintSourceNodeLocation;
-};
-
-export type SecretLintRuleReportHandler = {
-    // TODO: pre-all
-    file?(source: SecretLintSource): void | Promise<any>;
-    identifier?(node: SecretLintSourceIdentifierNode, source: SecretLintSource): void | Promise<any>;
-    // TODO: post-all
 };
