@@ -5,7 +5,9 @@
             "ruleId": "secretlint-rule-example",
             "message": "found secret: {{ID}}",
             "data": {
-                "ID": "SECRET"
+                "ID": [
+                    "SECRET"
+                ]
             },
             "range": [
                 8,

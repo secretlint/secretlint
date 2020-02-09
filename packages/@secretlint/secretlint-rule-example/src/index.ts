@@ -5,11 +5,12 @@ export interface Options {
 }
 
 const reportSECRET = (source: SecretLintSource, context: SecretLintRuleContext, _options: Required<Options>) => {
-    const results = source.content.matchAll(/secret/i);
-    for (const result of results) {
-        const index = result.index || 0;
-        const match = result[0] || "";
-        const range = [index, index + match.length];
+    const pattern = /secret/gi;
+    let match;
+    while ((match = pattern.exec(source.content)) !== null) {
+        const index = match.index || 0;
+        const matchString = match[0] || "";
+        const range = [index, index + matchString.length];
         context.report({
             message: "found secret: {{ID}}",
             data: {
