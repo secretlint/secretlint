@@ -21,12 +21,23 @@ describe("lintSource", function() {
         assert.strictEqual(result.filePath, source.filePath);
         assert.deepStrictEqual(result.messages, [
             {
-                ruleId: "example",
-                message: "found secret: {{ID}}",
                 data: {
                     ID: "SECRET"
                 },
-                range: [8, 14]
+                message: "found secret: {{ID}}",
+                range: [8, 14],
+                loc: {
+                    start: {
+                        line: 1,
+                        column: 8
+                    },
+                    end: {
+                        line: 1,
+                        column: 14
+                    }
+                },
+                ruleId: "example",
+                severity: "error"
             }
         ]);
     });

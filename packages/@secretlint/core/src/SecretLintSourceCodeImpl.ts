@@ -47,7 +47,18 @@ export class SecretLintSourceCodeImpl implements SecretLintSourceCode {
      * @return {SecretLintSourceNodeLocation} location.
      */
     rangeToLocation(range: SecretLintSourceNodeRange): SecretLintSourceNodeLocation {
-        return this.structuredSource.rangeToLocation(range as [number, number]);
+        const location = this.structuredSource.rangeToLocation(range as [number, number]);
+        // Note: unwrap class instance to get plain object
+        return {
+            start: {
+                line: location.start.line,
+                column: location.start.column
+            },
+            end: {
+                line: location.end.line,
+                column: location.end.column
+            }
+        };
     }
 
     /**
@@ -63,6 +74,11 @@ export class SecretLintSourceCodeImpl implements SecretLintSourceCode {
      * @return {Position} position.
      */
     indexToPosition(index: number): SecretLintSourceNodePosition {
-        return this.structuredSource.indexToPosition(index);
+        const position = this.structuredSource.indexToPosition(index);
+        // Note: unwrap class instance to get plain object
+        return {
+            line: position.line,
+            column: position.column
+        };
     }
 }

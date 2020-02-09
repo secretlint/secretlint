@@ -115,7 +115,7 @@ export const createRuleContext = ({
             contextEvents.report({
                 ruleId: ruleId,
                 loc: sourceCode.rangeToLocation(descriptor.range),
-                // TODO: error only, it will configuable
+                // TODO: error only, it will configurable
                 severity: "error",
                 ...descriptor
             });
