@@ -1,11 +1,12 @@
 import * as fs from "fs";
 import * as path from "path";
 import * as assert from "assert";
-import { lintSource, SecretLintCoreOptions } from "@secretlint/core";
+import { lintSource } from "@secretlint/core";
+import { SecretLintCoreDescriptor } from "@secretlint/types";
 
 export type SnapshotOptions = {
     snapshotDirectory: string;
-    lintOptions: SecretLintCoreOptions;
+    lintOptions: SecretLintCoreDescriptor;
     /**
      * Update snapshot if the options is true
      * Exception, process.env.UPDATE_SNAPSHOT=1 force turn on this option.

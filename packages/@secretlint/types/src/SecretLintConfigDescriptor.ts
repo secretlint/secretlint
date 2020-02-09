@@ -1,4 +1,4 @@
-import { SecretLintRuleCreator, SecretLintRuleCreatorOptions } from "@secretlint/types";
+import { SecretLintRuleCreator, SecretLintRuleCreatorOptions } from "./SecretLintRule";
 
 export type SecretLintConfigDescriptorRule<Options = SecretLintRuleCreatorOptions> = {
     /**

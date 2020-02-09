@@ -7,20 +7,11 @@ import {
     SecretLintRuleCreatorOptions,
     SecretLintRuleContext,
     SecretLintRuleReportDescriptor,
-    SecretLintRuleIgnoreDescriptor
+    SecretLintRuleIgnoreDescriptor,
+    SecretLintCoreDescriptor
 } from "@secretlint/types";
-
 import { EventEmitter } from "events";
-
 import { default as PQueue } from "p-queue";
-
-export type SecretLintCoreOptions = {
-    rules: {
-        id: string;
-        rule: SecretLintRuleCreator<SecretLintRuleCreatorOptions>;
-        options: SecretLintRuleCreatorOptions;
-    }[];
-};
 
 type Handler<T> = (descriptor: T) => void;
 /**
@@ -29,6 +20,7 @@ type Handler<T> = (descriptor: T) => void;
 type ContextDescriptor = {
     ruleId: string;
 };
+type SecretLintCoreOptions = SecretLintCoreDescriptor;
 type ContextEvents = {
     report(descriptor: SecretLintRuleReportDescriptor): void;
     onReport(handler: Handler<SecretLintCoreReportDescriptor>): () => void;
@@ -77,12 +69,14 @@ export const lintSource = (source: SecretLintSource, options: SecretLintCoreOpti
     const promiseQueue = new PQueue();
     rules.forEach(rule => {
         promiseQueue.add(() => {
+            // If option is not defiend Options is {} by default
+            const normalizedOptions = rule.options || {};
             return processRule({
                 source,
                 options,
                 ruleId: rule.id,
                 ruleCreator: rule.rule,
-                ruleCreatorOptions: rule.options,
+                ruleCreatorOptions: normalizedOptions,
                 contextEvents
             });
         });

@@ -3,7 +3,9 @@ export {
     SecretLintCoreIgnoreDescriptor,
     SecretLintCoreReportDescriptor,
     SecretLintCoreResult,
-    SecretLintCoreResultMessage
+    SecretLintCoreResultMessage,
+    SecretLintCoreDescriptor,
+    SecretLintCoreDescriptorRule
 } from "./SecretLintCore";
 // Rule interface
 export {
