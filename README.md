@@ -12,7 +12,7 @@ Secretlint is pluggable linting tool to prevent commit secret/credential file.
 
 - [git-secrets](https://github.com/awslabs/git-secrets) is useful, but it is hard to setup per project.
 	- It main use-case is globally installation
-	- secretlint want to install for a project and customize setting per project.
+	- Secretlint want to install for a project and customize setting per project.
 - [repo-security-scanner](https://github.com/UKHomeOffice/repo-security-scanner), [Gitleaks](https://github.com/zricethezav/gitleaks) and [truffleHog](https://github.com/dxa4481/truffleHog) is good scan tools
 	- We need to flexible customize that include ignore by comment, ignore like gitinore
 - [detect-secrets](https://github.com/Yelp/detect-secrets) is similar tools, but it apply opt-out approach
@@ -34,7 +34,7 @@ We need to your contribution!
 Secretlint adopt opt-in approach.
 
 In our experience, linting tools that report various errors by default is difficult to use.
-Opt-in approach help to introduce secretlint increasing.
+Opt-in approach help to introduce Secretlint increasing.
 
 ### A documentation per a Rule
 
