@@ -17,7 +17,7 @@ Secretlint is pluggable linting tool to prevent commit secret/credential file.
 	- We need to flexible customize that include ignore by comment, ignore like gitinore
 - [detect-secrets](https://github.com/Yelp/detect-secrets) is similar tools, but it apply opt-out approach
 	- If you want to disable plugin, use `--no-<plugin>`
-	    - Secretlint apply opt-in approach  
+	    - Secretlint adopt opt-in approach  
     - We need to custom plugin by user
 		- See [Bring-your own-plugins (BYOP), via --custom-plugins option by KevinHock · Pull Request #255 · Yelp/detect-secrets](https://github.com/Yelp/detect-secrets/pull/255)
 
