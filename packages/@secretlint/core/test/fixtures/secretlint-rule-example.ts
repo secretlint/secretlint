@@ -1,3 +1,7 @@
+/**
+ * Avoid Dependency cycles
+ * core <-> example -> tester
+ */
 import { SecretLintRuleContext, SecretLintRuleCreator, SecretLintSource } from "@secretlint/types";
 
 export interface Options {

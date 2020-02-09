@@ -1,7 +1,7 @@
 import assert from "assert";
 import { lintSource } from "../src";
 import { SecretLintSource } from "@secretlint/types";
-import example from "./fixtures/rules/secretlint-rule-example";
+import example from "./fixtures/secretlint-rule-example";
 
 describe("lintSource", function() {
     it("should lint source with rules", async () => {

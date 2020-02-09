@@ -1,6 +1,6 @@
 import { snapshot } from "@secretlint/tester";
 import path from "path";
-import rule from "./fixtures/secretlint-rule-example";
+import rule from "../src";
 
 describe("@secretlint/secretlint-rule-example", () => {
     snapshot({
