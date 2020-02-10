@@ -29,7 +29,7 @@ describe("createEngine", function() {
             normalizedOutput,
             `
 [TEST_DIR]/fixtures/SECRET.txt
-  1:8  warning  found secret: SECRET  example
+  1:8  warning  found secret: SECRET  @secretlint/secretlint-rule-example
 
 ✖ 1 problem (0 errors, 1 warning)
 `
@@ -52,7 +52,7 @@ describe("createEngine", function() {
             normalizedOutput,
             `
 [TEST_DIR]/fixtures/SECRET.txt
-  1:8  warning  found secret: SECRET  example
+  1:8  warning  found secret: SECRET  @secretlint/secretlint-rule-example
 
 ✖ 1 problem (0 errors, 1 warning)
 `
