@@ -5,6 +5,7 @@ import { moduleInterop } from "@textlint/module-interop";
 
 export type SecretLintConfigLoaderOptions = {
     cwd?: string;
+    configFilePath?: string;
 };
 export type SecretLintConfigLoaderResult =
     | {
@@ -98,6 +99,7 @@ export const loadRawConfig = (options: SecretLintConfigLoaderOptions): SecretLin
     try {
         const results = rcFile<SecretLintConfigDescriptor>("secretlint", {
             cwd: options.cwd,
+            configFileName: options.configFilePath,
             packageJSON: {
                 fieldName: "secretlint"
             }

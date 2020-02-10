@@ -15,7 +15,23 @@ Install with [npm](https://www.npmjs.com/):
 
 ## Usage
 
-- [ ] Write usage instructions
+```js
+import { createEngine } from "@secretlint/node";
+(async () => {
+    const engine = await createEngine({
+        color: false,
+        cwd: path.join(__dirname, "fixtures/valid-config"),
+        formatter: "stylish"
+    });
+    const output = await engine.executeOnFiles({ filePathList: [path.join(__dirname, "fixtures/SECRET.txt")] });
+    console.log(output); /*
+[TEST_DIR]/fixtures/SECRET.txt
+1:8  warning  found secret: SECRET  example
+
+✖ 1 problem (0 errors, 1 warning)
+*/
+})();
+```
 
 ## Changelog
 
