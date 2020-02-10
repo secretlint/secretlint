@@ -7,8 +7,6 @@ import {
 } from "@textlint/linter-formatter";
 import { SecretLintCoreResult } from "@secretlint/types";
 
-import escapeStringRegexp from "escape-string-regexp";
-
 const debug = require("debug")("@secretlint/formatter");
 
 export interface SecretLintFormatterConfig {
@@ -16,21 +14,6 @@ export interface SecretLintFormatterConfig {
     color?: boolean;
 }
 
-/**
- * {{Key}} => Value
- * @param message
- * @param data
- */
-const formatMessagePlaceholder = (message: string, data?: {}): string => {
-    if (typeof data !== "object" || data === null) {
-        return message;
-    }
-    let output = message;
-    Object.entries(data).forEach(([key, value]) => {
-        output = output.replace(new RegExp(escapeStringRegexp(`{{${key}}}`), "g"), String(value));
-    });
-    return output;
-};
 /**
  * Convert secretlint result to textlint result for formatter
  * @param secretLintCoreResult
@@ -41,11 +24,11 @@ const convertSecretLintResultToTextlintResult = (secretLintCoreResult: SecretLin
         messages: secretLintCoreResult.messages.map(message => {
             const severityLevel =
                 message.severity === "info"
-                    ? 1
+                    ? 0
                     : message.severity === "warning"
-                    ? 2
+                    ? 1
                     : message.severity === "error"
-                    ? 3
+                    ? 2
                     : 0;
 
             return {
@@ -54,7 +37,7 @@ const convertSecretLintResultToTextlintResult = (secretLintCoreResult: SecretLin
                 line: message.loc.start.line,
                 column: message.loc.start.column,
                 severity: severityLevel,
-                message: formatMessagePlaceholder(message.message, message.data),
+                message: message.message,
                 data: message.data,
                 // NO NEED - DUMMY DATA
                 fix: undefined,

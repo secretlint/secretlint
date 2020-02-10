@@ -2,8 +2,8 @@
 require("../lib/cli")
     .run()
     .then(
-        reuslt => {
-            console.log(reuslt);
+        result => {
+            console.log(result);
             process.exit(0);
         },
         error => {

@@ -1,38 +1,32 @@
-import { SecretLintRuleContext, SecretLintRuleCreator, SecretLintSource } from "@secretlint/types";
+import { SecretLintRuleCreator, SecretLintSource } from "@secretlint/types";
 
-export interface Options {
-    allows?: string[];
-}
-
-const reportSECRET = (source: SecretLintSource, context: SecretLintRuleContext, _options: Required<Options>) => {
-    const pattern = /secret/gi;
-    let match;
-    while ((match = pattern.exec(source.content)) !== null) {
-        const index = match.index || 0;
-        const matchString = match[0] || "";
-        const range = [index, index + matchString.length];
-        context.report({
-            message: "found secret: {{ID}}",
-            data: {
-                ID: matchString
-            },
-            range
-        });
-    }
-};
-
-export const creator: SecretLintRuleCreator<Options> = {
+export const creator: SecretLintRuleCreator = {
     meta: {
         recommended: true,
         type: "scanner"
     },
-    create(context, options) {
-        const normalizedOptions: Required<Options> = {
-            allows: options.allows || []
-        };
+    create(context) {
+        const t = context.createTranslator({
+            message: {
+                en: "found secret: {{ID}}",
+                ja: "secret: {{ID}} がみつかりました"
+            }
+        });
         return {
             file(source: SecretLintSource) {
-                reportSECRET(source, context, normalizedOptions);
+                const pattern = /secret/gi;
+                let match;
+                while ((match = pattern.exec(source.content)) !== null) {
+                    const index = match.index || 0;
+                    const matchString = match[0] || "";
+                    const range = [index, index + matchString.length];
+                    context.report({
+                        message: t("message", {
+                            ID: matchString
+                        }),
+                        range
+                    });
+                }
             }
         };
     }

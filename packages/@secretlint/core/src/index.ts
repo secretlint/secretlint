@@ -1,66 +1,16 @@
 import {
-    SecretLintSource,
+    SecretLintCoreDescriptor,
     SecretLintCoreResult,
-    SecretLintCoreReportDescriptor,
-    SecretLintCoreIgnoreDescriptor,
+    SecretLintCoreResultMessage,
     SecretLintRuleCreator,
     SecretLintRuleCreatorOptions,
-    SecretLintRuleContext,
-    SecretLintRuleReportDescriptor,
-    SecretLintRuleIgnoreDescriptor,
-    SecretLintCoreDescriptor,
-    SecretLintCoreResultMessage,
-    SecretLintSourceCode
+    SecretLintSource
 } from "@secretlint/types";
-import { EventEmitter } from "events";
 import { default as PQueue } from "p-queue";
 import { SecretLintSourceCodeImpl } from "./SecretLintSourceCodeImpl";
+import { ContextEvents, createContextEvents, createRuleContext } from "./RuleContext";
 
-type Handler<T> = (descriptor: T) => void;
-/**
- * implicitly defined properties by Context
- */
-type ContextDescriptor = {
-    ruleId: string;
-};
 type SecretLintCoreOptions = SecretLintCoreDescriptor;
-type ContextEvents = {
-    report(descriptor: SecretLintCoreResultMessage): void;
-    onReport(handler: Handler<SecretLintCoreResultMessage>): () => void;
-    ignore(descriptor: SecretLintRuleIgnoreDescriptor): void;
-    onIgnore(handler: Handler<SecretLintCoreIgnoreDescriptor>): () => void;
-};
-export const createContextEvents = (): ContextEvents => {
-    const contextEvents = new EventEmitter();
-    const REPORT_SYMBOL = Symbol("report");
-    const IGNORE_SYMBOL = Symbol("ignore");
-    return {
-        report(descriptor: SecretLintRuleReportDescriptor) {
-            contextEvents.emit(REPORT_SYMBOL, descriptor);
-        },
-        onReport(handler: Handler<SecretLintCoreResultMessage>) {
-            const listener = (descriptor: SecretLintCoreResultMessage) => {
-                handler(descriptor);
-            };
-            contextEvents.on(REPORT_SYMBOL, listener);
-            return () => {
-                contextEvents.off(REPORT_SYMBOL, listener);
-            };
-        },
-        ignore(descriptor: SecretLintRuleIgnoreDescriptor) {
-            contextEvents.emit(IGNORE_SYMBOL, descriptor);
-        },
-        onIgnore(handler: Handler<SecretLintCoreIgnoreDescriptor>) {
-            const listener = (descriptor: SecretLintCoreReportDescriptor & ContextDescriptor) => {
-                handler(descriptor);
-            };
-            contextEvents.on(IGNORE_SYMBOL, listener);
-            return () => {
-                contextEvents.off(IGNORE_SYMBOL, listener);
-            };
-        }
-    };
-};
 
 export const lintSource = (source: SecretLintSource, options: SecretLintCoreOptions): Promise<SecretLintCoreResult> => {
     const rules = options.rules;
@@ -92,36 +42,6 @@ export const lintSource = (source: SecretLintSource, options: SecretLintCoreOpti
     });
 };
 
-export const createRuleContext = ({
-    ruleId,
-    sourceCode,
-    contextEvents,
-    sharedOptions
-}: {
-    ruleId: string;
-    sourceCode: SecretLintSourceCode;
-    contextEvents: ContextEvents;
-    sharedOptions: {};
-}): SecretLintRuleContext => {
-    return {
-        sharedOptions,
-        ignore(descriptor: SecretLintCoreIgnoreDescriptor): void {
-            contextEvents.ignore({
-                ruleId: ruleId,
-                ...descriptor
-            });
-        },
-        report(descriptor: SecretLintCoreReportDescriptor): void {
-            contextEvents.report({
-                ruleId: ruleId,
-                loc: sourceCode.rangeToLocation(descriptor.range),
-                // TODO: error only, it will configurable
-                severity: "error",
-                ...descriptor
-            });
-        }
-    };
-};
 /**
  * Rule Processing
  * @param source

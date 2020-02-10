@@ -28,6 +28,7 @@ export const runSecretLint = async ({
             filePathList
         })
         .then(output => {
+            // TODO: if has error, this should be stderr
             const outputFilePath = cliOptions.outputFilePath;
             if (outputFilePath !== undefined) {
                 fs.writeFileSync(outputFilePath, output, "utf-8");

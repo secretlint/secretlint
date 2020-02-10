@@ -24,7 +24,7 @@ describe("lintSource", function() {
                 data: {
                     ID: "SECRET"
                 },
-                message: "found secret: {{ID}}",
+                message: "found secret: SECRET",
                 range: [8, 14],
                 loc: {
                     start: {

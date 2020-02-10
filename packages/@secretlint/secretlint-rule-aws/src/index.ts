@@ -1,5 +1,6 @@
 import { SecretLintRuleContext, SecretLintRuleCreator, SecretLintSource } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
+import { SecretLintRuleMessageTranslate } from "@secretlint/types";
 
 const regx = require("regx").default("g");
 const matchAll: (
@@ -11,6 +12,20 @@ export interface Options {
     allows?: string[];
 }
 
+export const messages = {
+    AWSAccountID: {
+        en: "found AWS Account ID: {{ID}}",
+        ja: "AWS Account ID: {{ID}} がみつかりました"
+    },
+    AWSSecretAccessKey: {
+        en: "found AWS Secret Access Key: {{KEY}}",
+        ja: "AWS Secret Access Key: {{KEY}} がみつかりました"
+    },
+    AWSAccessKeyID: {
+        en: "found AWS Access Key ID: {{ID}}",
+        ja: "AWS Access Key Id: {{ID}} がみつかりました"
+    }
+};
 /*
   local aws="(AWS|aws|Aws)?_?" quote="(\"|')" connect="\s*(:|=>|=)\s*"
   local opt_quote="${quote}?"
@@ -27,7 +42,17 @@ export interface Options {
 
   https://docs.cribl.io/docs/regexesyml
  */
-const reportAWSAccessKey = (source: SecretLintSource, context: SecretLintRuleContext, options: Required<Options>) => {
+const reportAWSAccessKey = ({
+    t,
+    source,
+    context,
+    options
+}: {
+    t: SecretLintRuleMessageTranslate<typeof messages>;
+    source: SecretLintSource;
+    context: SecretLintRuleContext;
+    options: Required<Options>;
+}) => {
     // AWS Access Key ID
     // Example) AKIAIOSFODNN7EXAMPLE
     const AWSAccessKeyIDPattern = /(A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}/g;
@@ -41,19 +66,24 @@ const reportAWSAccessKey = (source: SecretLintSource, context: SecretLintRuleCon
             continue;
         }
         context.report({
-            message: "found AWS Access Key ID: {{ID}}",
-            data: {
+            message: t("AWSAccessKeyID", {
                 ID: match
-            },
+            }),
             range
         });
     }
 };
-const reportAWSSecretAccessKey = (
-    source: SecretLintSource,
-    context: SecretLintRuleContext,
-    options: Required<Options>
-) => {
+const reportAWSSecretAccessKey = ({
+    t,
+    source,
+    context,
+    options
+}: {
+    t: SecretLintRuleMessageTranslate<typeof messages>;
+    source: SecretLintSource;
+    context: SecretLintRuleContext;
+    options: Required<Options>;
+}) => {
     const AWS = "(AWS|aws|Aws)?_?";
     const QUOTE = `("|')?`;
     const CONNECT = "\\s*(:|=>|=)\\s*";
@@ -68,16 +98,25 @@ const reportAWSSecretAccessKey = (
             continue;
         }
         context.report({
-            message: "found AWS Secret Access Key: {{key}}",
-            data: {
+            message: t("AWSSecretAccessKey", {
                 key: match
-            },
+            }),
             range
         });
     }
 };
 
-const reportAWSAccountID = (source: SecretLintSource, context: SecretLintRuleContext, options: Required<Options>) => {
+const reportAWSAccountID = ({
+    t,
+    source,
+    context,
+    options
+}: {
+    t: SecretLintRuleMessageTranslate<typeof messages>;
+    source: SecretLintSource;
+    context: SecretLintRuleContext;
+    options: Required<Options>;
+}) => {
     const AWS = "(AWS|aws|Aws)?_?";
     const QUOTE = `("|')?`;
     const CONNECT = "\\s*(:|=>|=)\\s*";
@@ -92,10 +131,9 @@ const reportAWSAccountID = (source: SecretLintSource, context: SecretLintRuleCon
             continue;
         }
         context.report({
-            message: "found AWS Account ID: {{ID}}",
-            data: {
+            message: t("AWSAccountID", {
                 ID: match
-            },
+            }),
             range
         });
     }
@@ -114,11 +152,12 @@ const creator: SecretLintRuleCreator<Options> = {
         const normalizedOptions: Required<Options> = {
             allows: options.allows || []
         };
+        const t = context.createTranslator(messages);
         return {
             file(source: SecretLintSource) {
-                reportAWSAccessKey(source, context, normalizedOptions);
-                reportAWSSecretAccessKey(source, context, normalizedOptions);
-                reportAWSAccountID(source, context, normalizedOptions);
+                reportAWSAccessKey({ t, source: source, context: context, options: normalizedOptions });
+                reportAWSSecretAccessKey({ t, source: source, context: context, options: normalizedOptions });
+                reportAWSAccountID({ t, source: source, context: context, options: normalizedOptions });
             }
         };
     }

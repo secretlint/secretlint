@@ -42,7 +42,8 @@
   "dependencies": {
     "@secretlint/types": "^1.0.0",
     "p-queue": "^6.2.1",
-    "structured-source": "^3.0.2"
+    "structured-source": "^3.0.2",
+    "escape-string-regexp": "^2.0.0"
   },
   "devDependencies": {
     "@types/structured-source": "^3.0.0",

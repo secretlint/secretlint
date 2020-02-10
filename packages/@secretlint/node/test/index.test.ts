@@ -29,9 +29,9 @@ describe("createEngine", function() {
             normalizedOutput,
             `
 [TEST_DIR]/fixtures/SECRET.txt
-  1:8  warning  found secret: SECRET  @secretlint/secretlint-rule-example
+  1:8  error  found secret: SECRET  @secretlint/secretlint-rule-example
 
-✖ 1 problem (0 errors, 1 warning)
+✖ 1 problem (1 error, 0 warnings)
 `
         );
     });
@@ -52,9 +52,9 @@ describe("createEngine", function() {
             normalizedOutput,
             `
 [TEST_DIR]/fixtures/SECRET.txt
-  1:8  warning  found secret: SECRET  @secretlint/secretlint-rule-example
+  1:8  error  found secret: SECRET  @secretlint/secretlint-rule-example
 
-✖ 1 problem (0 errors, 1 warning)
+✖ 1 problem (1 error, 0 warnings)
 `
         );
     });
