@@ -10,7 +10,24 @@ Install with [npm](https://www.npmjs.com/):
 
 ## Usage
 
-- [ ] Write usage instructions
+    Usage
+      $ secretlint [file|glob*]
+ 
+    Note
+      supported glob syntax is based on microglob
+      https://github.com/micromatch/micromatch#matching-features
+ 
+    Options
+      --format formatter name. Default: stylish
+      --output-file output file path that is written of reported result.
+      --no-color disable color of output.
+      --secretlintrc Path to .secretlintrc config file.
+      --secretlintignore Path to .secretlintignore file. Default: .secretlintignore
+ 
+    Examples
+      $ secretlint "**/*"
+      $ secretlint "source/**/*.ini"
+
 
 ## Changelog
 
