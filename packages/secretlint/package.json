@@ -35,6 +35,7 @@
     "clean": "rimraf lib/",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
+    "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
     "test": "mocha \"test/**/*.ts\"",
     "watch": "tsc -p . --watch"
   },
@@ -58,6 +59,7 @@
     "rimraf": "^3.0.2",
     "ts-node": "^8.6.2",
     "ts-node-test-register": "^8.0.1",
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "@secretlint/secretlint-rule-example": "^1.0.0"
   }
 }

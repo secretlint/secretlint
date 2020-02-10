@@ -1,8 +1,12 @@
+import fs from "fs";
 import { createEngine, SecretLintEngineOptions } from "@secretlint/node";
-import globby from "globby";
+import { searchFiles } from "./search";
 
 export type SecretLintOptions = {
+    cwd: string;
     filePathOrGlobList: string[];
+    outputFilePath?: string;
+    ignoreFilePath?: string;
 };
 export const runSecretLint = async ({
     cliOptions,
@@ -11,12 +15,24 @@ export const runSecretLint = async ({
     cliOptions: SecretLintOptions;
     engineOptions: SecretLintEngineOptions;
 }) => {
-    const filePathList = await globby(cliOptions.filePathOrGlobList);
+    const filePathList = await searchFiles(cliOptions.filePathOrGlobList, {
+        cwd: cliOptions.cwd,
+        ignoreFilePath: cliOptions.ignoreFilePath
+    });
     if (filePathList.length === 0) {
         throw new Error("Not found target files");
     }
     const engine = await createEngine(engineOptions);
-    return engine.executeOnFiles({
-        filePathList
-    });
+    return engine
+        .executeOnFiles({
+            filePathList
+        })
+        .then(output => {
+            const outputFilePath = cliOptions.outputFilePath;
+            if (outputFilePath !== undefined) {
+                fs.writeFileSync(outputFilePath, output, "utf-8");
+                return ""; // Return empty to console
+            }
+            return output;
+        });
 };

@@ -6,7 +6,8 @@ import { moduleInterop } from "@textlint/module-interop";
 describe("@secretlint/config-loader", function() {
     it("should load .secretlintrc.json", () => {
         const config = loadConfig({
-            cwd: path.join(__dirname, "fixtures/valid-config")
+            cwd: path.join(__dirname, "fixtures/valid-config"),
+            node_moduleDir: path.join(__dirname, "fixtures/valid-config")
         });
         assert.deepStrictEqual(config, {
             ok: true,

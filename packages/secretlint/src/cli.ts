@@ -1,58 +1,71 @@
-import fs from "fs";
 import meow from "meow";
 import { runSecretLint } from "./index";
-export const run = () => {
-    const cli = meow(
-        `
+
+export const cli = meow(
+    `
     Usage
       $ secretlint [file|glob*]
  
+    Note
+      supported glob syntax is based on microglob
+      https://github.com/micromatch/micromatch#matching-features
+ 
     Options
-      --format formatter name
-      --output-file  output file path that is written of reported result
-      --color enable color of output
-      --secretlintrc Path to .secretlintrc config file
+      --format formatter name. Default: stylish
+      --output-file output file path that is written of reported result.
+      --no-color disable color of output.
+      --secretlintrc Path to .secretlintrc config file.
+      --secretlintignore Path to .secretlintignore file. Default: .secretlintignore
  
     Examples
       $ secretlint "**/*"
       $ secretlint "source/**/*.ini"
 `,
-        {
-            flags: {
-                format: {
-                    type: "string",
-                    default: "stylish"
-                },
-                "output-file": {
-                    type: "string"
-                },
-                secretlintrc: {
-                    type: "string"
-                },
-                color: {
-                    type: "boolean",
-                    default: true
-                }
+    {
+        flags: {
+            format: {
+                type: "string",
+                default: "stylish"
             },
-            autoHelp: true,
-            autoVersion: true
-        }
-    );
+            "output-file": {
+                type: "string"
+            },
+            secretlintrc: {
+                type: "string"
+            },
+            secretlintignore: {
+                type: "string",
+                default: ".secretlintignore"
+            },
+            color: {
+                type: "boolean",
+                default: true
+            },
+            // DEBUG option
+            cwd: {
+                type: "string",
+                default: process.cwd()
+            }
+        },
+        autoHelp: true,
+        autoVersion: true
+    }
+);
+
+export const run = (input = cli.input, flags = cli.flags) => {
+    const cwd = flags.cwd;
     return runSecretLint({
         cliOptions: {
-            filePathOrGlobList: cli.input
+            cwd,
+            filePathOrGlobList: input,
+            outputFilePath: flags["output-file"],
+            ignoreFilePath: flags.secretlintignore
         },
         engineOptions: {
-            cwd: process.cwd(),
-            configFilePath: cli.flags.secretlintrc,
-            formatter: cli.flags.format,
-            color: cli.flags.color
+            cwd: cwd,
+            configFilePath: flags.secretlintrc,
+            formatter: flags.format,
+            color: flags.color
         }
-    }).then(output => {
-        const outputFilePath = cli.flags["output-file"];
-        if (outputFilePath !== undefined) {
-            fs.writeFileSync(outputFilePath, output, "utf-8");
-        }
-        return output;
     });
 };

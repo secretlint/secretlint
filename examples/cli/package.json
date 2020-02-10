@@ -24,7 +24,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "secretlint SECRET.txt"
+    "test": "secretlint \"**/*\""
   },
   "devDependencies": {
     "secretlint": "^1.0.0",

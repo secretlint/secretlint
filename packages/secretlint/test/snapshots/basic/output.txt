@@ -1,0 +1,5 @@
+
+[SNAPSHOT]/input.txt
+  1:8  warning  found secret: SECRET  @secretlint/secretlint-rule-example
+
+✖ 1 problem (0 errors, 1 warning)
