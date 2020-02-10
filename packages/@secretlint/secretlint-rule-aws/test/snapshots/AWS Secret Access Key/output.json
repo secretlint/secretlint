@@ -3,6 +3,17 @@
     "messages": [
         {
             "ruleId": "secretlint-rule-aws",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 64
+                }
+            },
+            "severity": "error",
             "message": "found AWS Secret Access Key: {{key}}",
             "data": {
                 "key": "AWS_SECRET_ACCESS_KEY = wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
