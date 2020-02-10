@@ -2,6 +2,7 @@ import globby from "globby";
 import fs from "fs";
 import path from "path";
 
+const debug = require("debug")("secretlint");
 export type SearchFilesOptions = {
     cwd: string;
     ignoreFilePath?: string;
@@ -16,7 +17,6 @@ export const searchFiles = (patterns: string[], options: SearchFilesOptions) => 
     const ignoredPatterns = [];
     if (options.ignoreFilePath) {
         const normalizeIgnoreFilePath = path.resolve(options.cwd, options.ignoreFilePath);
-        console.log("normalizeIgnoreFilePath", normalizeIgnoreFilePath);
         if (fs.existsSync(normalizeIgnoreFilePath)) {
             const ignored = fs
                 .readFileSync(normalizeIgnoreFilePath, "utf-8")
@@ -25,7 +25,8 @@ export const searchFiles = (patterns: string[], options: SearchFilesOptions) => 
             ignoredPatterns.push(...ignored);
         }
     }
-    console.log(patterns, ignoredPatterns);
+    debug("search patterns: %o", patterns);
+    debug("search ignore patterns: %o", ignoredPatterns);
     return globby(patterns, {
         ignore: ignoredPatterns,
         cwd: options.cwd

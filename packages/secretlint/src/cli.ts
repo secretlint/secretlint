@@ -1,6 +1,7 @@
 import meow from "meow";
 import { runSecretLint } from "./index";
 
+const debug = require("debug")("secretlint");
 export const cli = meow(
     `
     Usage
@@ -54,6 +55,8 @@ export const cli = meow(
 
 export const run = (input = cli.input, flags = cli.flags) => {
     const cwd = flags.cwd;
+    debug("input: %o", input);
+    debug("flags: %o", flags);
     return runSecretLint({
         cliOptions: {
             cwd,

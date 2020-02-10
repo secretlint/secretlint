@@ -47,6 +47,7 @@
   "dependencies": {
     "@secretlint/node": "^1.0.0",
     "@secretlint/formatter": "^1.0.0",
+    "debug": "^4.1.1",
     "meow": "^6.0.0",
     "globby": "^11.0.0"
   },
