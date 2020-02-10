@@ -1,0 +1,36 @@
+{
+  "private": true,
+  "name": "@secretlint/example-cli",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/secretlint/secretlint/tree/master/examples/cli/",
+  "bugs": {
+    "url": "https://github.com/secretlint/secretlint/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/secretlint/secretlint.git"
+  },
+  "license": "MIT",
+  "author": "azu",
+  "files": [
+    "bin/",
+    "lib/",
+    "src/"
+  ],
+  "main": "lib/cli.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "secretlint SECRET.txt"
+  },
+  "devDependencies": {
+    "secretlint": "^1.0.0",
+    "@secretlint/secretlint-rule-example": "^1.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

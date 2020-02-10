@@ -1,7 +1,8 @@
 {
   "packages": [
     "packages/*",
-    "packages/@secretlint/*"
+    "packages/@secretlint/*",
+    "examples/*"
   ],
   "version": "1.0.0",
   "npmClient": "yarn",

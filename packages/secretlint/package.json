@@ -1,0 +1,63 @@
+{
+  "name": "secretlint",
+  "version": "1.0.0",
+  "description": "Secretlint CLI that scan secret/credential data.",
+  "keywords": [
+    "secretlint",
+    "cli"
+  ],
+  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/secretlint/",
+  "bugs": {
+    "url": "https://github.com/secretlint/secretlint/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/secretlint/secretlint.git"
+  },
+  "license": "MIT",
+  "author": "azu",
+  "files": [
+    "bin/",
+    "lib/",
+    "src/"
+  ],
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "bin": {
+    "secretlint": "./bin/secretlint.js"
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "build": "cross-env NODE_ENV=production tsc -p .",
+    "clean": "rimraf lib/",
+    "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
+    "prepublish": "npm run --if-present build",
+    "test": "mocha \"test/**/*.ts\"",
+    "watch": "tsc -p . --watch"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "singleQuote": false,
+    "tabWidth": 4
+  },
+  "dependencies": {
+    "@secretlint/node": "^1.0.0",
+    "@secretlint/formatter": "^1.0.0",
+    "meow": "^6.0.0",
+    "globby": "^11.0.0"
+  },
+  "devDependencies": {
+    "@types/mocha": "^7.0.1",
+    "@types/node": "^13.7.0",
+    "cross-env": "^7.0.0",
+    "mocha": "^7.0.1",
+    "prettier": "^1.19.1",
+    "rimraf": "^3.0.2",
+    "ts-node": "^8.6.2",
+    "ts-node-test-register": "^8.0.1",
+    "typescript": "^3.7.5"
+  }
+}

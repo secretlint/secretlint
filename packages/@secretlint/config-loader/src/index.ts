@@ -5,6 +5,7 @@ import { moduleInterop } from "@textlint/module-interop";
 
 export type SecretLintConfigLoaderOptions = {
     cwd?: string;
+    node_moduleDir?: string;
     configFilePath?: string;
 };
 export type SecretLintConfigLoaderResult =
@@ -49,7 +50,7 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
     }
     // Search secretlint's module
     const moduleResolver = new SecretLintModuleResolver({
-        baseDirectory: options.cwd
+        baseDirectory: options.node_moduleDir
     });
     const errors: Error[] = [];
     const rules: SecretLintCoreDescriptorRule[] = [];

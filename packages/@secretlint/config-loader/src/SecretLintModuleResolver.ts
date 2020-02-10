@@ -43,7 +43,11 @@ export class SecretLintModuleResolver {
         const pkgPath = tryResolve(path.join(baseDir, fullPackageName)) || tryResolve(path.join(baseDir, packageName));
         if (!pkgPath) {
             debug(`rule fullPackageName: ${fullPackageName}`);
-            throw new ReferenceError(`Failed to load secretlint's rule module: "${packageName}" is not found.`);
+            throw new ReferenceError(`Failed to load secretlint's rule module: "${packageName}" is not found.
+
+cwd: ${process.cwd()}
+baseDir: ${baseDir}
+`);
         }
         return pkgPath;
     }
@@ -61,6 +65,9 @@ export class SecretLintModuleResolver {
         if (!pkgPath) {
             debug(`filter rule fullPackageName: ${fullPackageName}`);
             throw new ReferenceError(`Failed to load secretlint's filter rule module: "${packageName}" is not found.
+
+cwd: ${process.cwd()}
+baseDir: ${baseDir}
 `);
         }
         return pkgPath;
@@ -79,6 +86,10 @@ export class SecretLintModuleResolver {
         if (!pkgPath) {
             debug(`plugin fullPackageName: ${fullPackageName}`);
             throw new ReferenceError(`Failed to load secretlint's plugin module: "${packageName}" is not found.
+
+cwd: ${process.cwd()}
+baseDir: ${baseDir}
+
 `);
         }
         return pkgPath;
@@ -126,6 +137,9 @@ export class SecretLintModuleResolver {
             debug(`preset fullPackageName: ${fullPackageName}`);
             debug(`preset fullFullPackageName: ${fullFullPackageName}`);
             throw new ReferenceError(`Failed to load secretlint's preset module: "${packageName}" is not found.
+
+cwd: ${process.cwd()}
+baseDir: ${baseDir}
 `);
         }
         return pkgPath;
@@ -143,6 +157,9 @@ export class SecretLintModuleResolver {
         const pkgPath = tryResolve(path.join(baseDir, fullPackageName)) || tryResolve(path.join(baseDir, packageName));
         if (!pkgPath) {
             throw new ReferenceError(`Failed to load secretlint's config module: "${packageName}" is not found.
+
+cwd: ${process.cwd()}
+baseDir: ${baseDir}
 `);
         }
         return pkgPath;

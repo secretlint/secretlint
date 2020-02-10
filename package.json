@@ -22,7 +22,8 @@
   "author": "azu",
   "workspaces": [
     "packages/*",
-    "packages/@secretlint/*"
+    "packages/@secretlint/*",
+    "examples/*"
   ],
   "scripts": {
     "bootstrap": "lerna bootstrap",
