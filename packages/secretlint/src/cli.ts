@@ -1,6 +1,6 @@
+import fs from "fs";
 import meow from "meow";
 import { runSecretLint } from "./index";
-
 export const run = () => {
     const cli = meow(
         `
@@ -9,7 +9,7 @@ export const run = () => {
  
     Options
       --format formatter name
-      --output-file TODO: not implement yet
+      --output-file  output file path that is written of reported result
       --color enable color of output
       --secretlintrc Path to .secretlintrc config file
  
@@ -48,5 +48,11 @@ export const run = () => {
             formatter: cli.flags.format,
             color: cli.flags.color
         }
+    }).then(output => {
+        const outputFilePath = cli.flags["output-file"];
+        if (outputFilePath !== undefined) {
+            fs.writeFileSync(outputFilePath, output, "utf-8");
+        }
+        return output;
     });
 };
