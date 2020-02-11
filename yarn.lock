@@ -1965,7 +1965,7 @@ cross-spawn@^5.0.1:
     shebang-command "^1.2.0"
     which "^1.2.9"
 
-cross-spawn@^6.0.0:
+cross-spawn@^6.0.0, cross-spawn@^6.0.5:
   version "6.0.5"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-6.0.5.tgz#4a5ec7c64dfae22c3a14124dbacdee846d80cbc4"
   integrity sha512-eTVLrBSt7fjbDygz805pMnstIs2VTBNkRm0qxZd+M7A5XDdxVRWO5MxGBXZhjY4cqLYLdtrGqRf8mBPmzwSpWQ==
@@ -2408,6 +2408,14 @@ expand-brackets@^2.1.4:
     regex-not "^1.0.0"
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
+
+expected-exit-status@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/expected-exit-status/-/expected-exit-status-1.0.2.tgz#79c5ba9ae113bc8b7a290787686216001e28cf57"
+  integrity sha512-0SWHJ91/9qRqpos+NgxKHH2wijV95B/FHIO9PtPe7dzupHCYcyKJClKO42gM96M+xnf93uPZsGVa22LIQW77iw==
+  dependencies:
+    cross-spawn "^6.0.5"
+    meow "^5.0.0"
 
 extend-shallow@^2.0.1:
   version "2.0.1"

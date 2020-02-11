@@ -1,13 +1,15 @@
 # example-cli
 
+An example for secretlint cli.
+
 ## Install
 
-    yarn
+    yarn install
     
 ## Usage
 
 ```
-$ npx secretlint SECRET.txt
+$ yarn secretlint SECRET.txt
 ```
 
 ## Changelog

@@ -24,9 +24,10 @@
     "test": "test"
   },
   "scripts": {
-    "test": "secretlint \"**/*\""
+    "test": "expected-exit-status 1 --command secretlint \"**/*\""
   },
   "devDependencies": {
+    "expected-exit-status": "^1.0.2",
     "secretlint": "^1.0.0",
     "@secretlint/secretlint-rule-example": "^1.0.0"
   },
