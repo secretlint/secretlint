@@ -1,11 +1,11 @@
 import assert from "assert";
 import { lintSource } from "../src";
-import { SecretLintSource } from "@secretlint/types";
+import { SecretLintRawSource } from "@secretlint/types";
 import example from "./fixtures/secretlint-rule-example";
 
 describe("lintSource", function() {
     it("should lint source with rules", async () => {
-        const source: SecretLintSource = {
+        const source: SecretLintRawSource = {
             content: "THIS IS SECRET SOURCE",
             filePath: "/path/to/secret"
         };

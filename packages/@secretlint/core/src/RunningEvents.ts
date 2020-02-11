@@ -55,7 +55,7 @@ export const createRunningEvents = (): RunningEvents => {
             context: SecretLintRulePresetContext;
         }) {
             // Normalized Rule Preset Options
-            const ruleCreatorOptions = descriptorRulePreset.options || {};
+            const ruleCreatorOptions = descriptorRulePreset.options || [];
             descriptorRulePreset.rule.create(context, ruleCreatorOptions);
         },
         emitFile(source: SecretLintSourceCode) {

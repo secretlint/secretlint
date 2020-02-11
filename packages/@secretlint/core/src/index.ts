@@ -1,5 +1,6 @@
 import {
     SecretLintCoreDescriptor,
+    SecretLintCoreDescriptorRule,
     SecretLintCoreDescriptorRulePreset,
     SecretLintCoreDescriptorUnionRule,
     SecretLintCoreResult,
@@ -54,6 +55,10 @@ const isRulePreset = (
 ): ruleDescriptor is SecretLintCoreDescriptorRulePreset => {
     return ruleDescriptor.rule.meta.type === "preset";
 };
+const isRule = (ruleDescriptor: SecretLintCoreDescriptorUnionRule): ruleDescriptor is SecretLintCoreDescriptorRule => {
+    return ruleDescriptor.rule.meta.type === "scanner";
+};
+
 /**
  * Rule Processing
  */
@@ -75,6 +80,7 @@ export const registerRule = ({
     if (isRulePreset(descriptorRule)) {
         const context = createRulePresetContext({
             ruleId: ruleId,
+            presetOptions: descriptorRule.options,
             sourceCode,
             contextEvents: contextEvents,
             runningEvents: runningEvents,
@@ -85,7 +91,7 @@ export const registerRule = ({
             context
         });
         return;
-    } else {
+    } else if (isRule(descriptorRule)) {
         const context = createRuleContext({
             ruleId: ruleId,
             sourceCode,
@@ -98,4 +104,5 @@ export const registerRule = ({
         });
         return;
     }
+    throw new Error(`Unknown descriptor type: ${descriptorRule}`);
 };

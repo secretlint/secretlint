@@ -2,6 +2,7 @@ import { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
 
 export const creator: SecretLintRuleCreator = {
     meta: {
+        id: "@secretlint/secretlint-rule-example",
         recommended: true,
         type: "scanner"
     },

@@ -1,13 +1,18 @@
 // Rule Interfaces
 import { SecretLintCoreDescriptorRule } from "./SecretLintCore";
+import { SecretLintRuleCreator, SecretLintRuleCreatorOptions } from "./SecretLintRule";
 
 export type SecretLintRulePresetContext = {
     sharedOptions?: {};
-    registerRule(descriptorRule: SecretLintCoreDescriptorRule): void;
+    registerRule<Options = SecretLintRuleCreatorOptions>(
+        rule: SecretLintRuleCreator<Options>,
+        defaultValue?: Omit<Omit<SecretLintCoreDescriptorRule<Options>, "id">, "rule">
+    ): void;
 };
-export type SecretLintRulePresetCreatorOptions = {};
+export type SecretLintRulePresetCreatorOptions = SecretLintCoreDescriptorRule<any>[];
 export type SecretLintRulePresetCreator<Options = SecretLintRulePresetCreatorOptions> = {
     meta: {
+        id: string;
         type: "preset";
         recommended: boolean;
         docs?: {

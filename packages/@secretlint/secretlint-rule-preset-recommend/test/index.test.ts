@@ -9,7 +9,7 @@ describe("Snapshot Testing", () => {
                 {
                     id: "secretlint-rule-preset-recommend",
                     rule,
-                    options: {}
+                    options: []
                 }
             ]
         },

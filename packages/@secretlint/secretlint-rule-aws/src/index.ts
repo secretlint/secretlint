@@ -141,6 +141,7 @@ const reportAWSAccountID = ({
 
 export const creator: SecretLintRuleCreator<Options> = {
     meta: {
+        id: "@secretlint/secretlint-rule-aws",
         recommended: true,
         type: "scanner",
         docs: {

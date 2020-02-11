@@ -9,18 +9,13 @@ export type Options = (
 
 export const creator: SecretLintRulePresetCreator<Options> = {
     meta: {
+        id: "@secretlint/secretlint-rule-preset-recommend",
         recommended: true,
         type: "preset"
     },
-    create(context, options) {
-        context.registerRule({
-            ...options.aws,
-            rule: ruleAWS
-        });
-        context.registerRule({
-            ...options.privatekey,
-            rule: rulePrivateKey
-        });
+    create(context, _options) {
+        context.registerRule(ruleAWS);
+        context.registerRule(rulePrivateKey);
     }
 };
 export default creator;
