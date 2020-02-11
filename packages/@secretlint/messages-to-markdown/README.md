@@ -1,46 +1,16 @@
-# @secretlint/secretlint-rule-aws
+# @secretlint/messages-to-markdown
 
-A secretlint rule for AWS.
+Create Markdown text from rule&#39;s messages(ids)
 
 ## Install
 
 Install with [npm](https://www.npmjs.com/):
 
-    npm install @secretlint/secretlint-rule-aws
+    npm install @secretlint/messages-to-markdown
 
 ## Usage
 
-Via `.secretlintrc.json`
-
-```json
-{
-    "rules": [
-        {
-            "id": "@secretlint/aws"
-        }
-    ]
-}
-```
-
-## Rules
-
-### AWSAccountID
-> found AWS Account ID: {{ID}}
-
-[git-secrets](https://github.com/awslabs/git-secrets) detect it as secret.
-
-### AWSSecretAccessKey
-> found AWS Secret Access Key: {{KEY}}
-
-AWS's Access key is crendential data. It should be private.
-
-- https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html 
-
-### AWSAccessKeyID
-> found AWS Access Key ID: {{ID}}
-
-[git-secrets](https://github.com/awslabs/git-secrets) detect it as secret.
-
+- [ ] Write usage instructions
 
 ## Changelog
 
