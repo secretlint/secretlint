@@ -42,7 +42,7 @@ export type SecretLintCoreDescriptorRulePreset<Options = SecretLintRulePresetCre
     /**
      * Preset's rule definitions
      */
-    rules: SecretLintCoreDescriptorRule[];
+    rules?: SecretLintCoreDescriptorRule[];
     /**
      * Rule options
      * Default: {} (empty object)

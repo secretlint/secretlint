@@ -7,9 +7,10 @@ describe("Snapshot Testing", () => {
         lintOptions: {
             rules: [
                 {
-                    id: "secretlint-rule-preset-recommend",
+                    id: "@secretlint/secretlint-rule-preset-recommend",
                     rule,
-                    options: []
+                    rules: [],
+                    options: {}
                 }
             ]
         },
