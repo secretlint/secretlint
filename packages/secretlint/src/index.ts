@@ -14,7 +14,7 @@ export const runSecretLint = async ({
 }: {
     cliOptions: SecretLintOptions;
     engineOptions: SecretLintEngineOptions;
-}) => {
+}): Promise<{ exitStatus: number; stdout: string | null; stderr: Error | null }> => {
     const filePathList = await searchFiles(cliOptions.filePathOrGlobList, {
         cwd: cliOptions.cwd,
         ignoreFilePath: cliOptions.ignoreFilePath
@@ -32,8 +32,24 @@ export const runSecretLint = async ({
             const outputFilePath = cliOptions.outputFilePath;
             if (outputFilePath !== undefined) {
                 fs.writeFileSync(outputFilePath, output, "utf-8");
-                return ""; // Return empty to console
+                // Return empty to console
+                return {
+                    exitStatus: 0,
+                    stdout: null,
+                    stderr: null
+                };
             }
-            return output;
+            return {
+                exitStatus: 1,
+                stdout: output,
+                stderr: null
+            };
+        })
+        .catch(error => {
+            return {
+                exitStatus: 1,
+                stdout: null,
+                stderr: error
+            };
         });
 };

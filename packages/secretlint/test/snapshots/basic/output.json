@@ -1,0 +1,5 @@
+{
+    "exitStatus": 1,
+    "stdout": "\n[SNAPSHOT]/basic/input.txt\n  1:8  error  found secret: SECRET  @secretlint/secretlint-rule-example\n\n✖ 1 problem (1 error, 0 warnings)\n",
+    "stderr": null
+}

@@ -2,9 +2,14 @@
 require("../lib/cli")
     .run()
     .then(
-        result => {
-            console.log(result);
-            process.exit(0);
+        ({ exitStatus, stderr, stdout }) => {
+            if (stdout) {
+                console.log(stdout);
+            }
+            if (stderr) {
+                console.error(stderr);
+            }
+            process.exit(exitStatus);
         },
         error => {
             console.error(error);
