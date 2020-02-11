@@ -7,7 +7,7 @@
                 0,
                 887
             ],
-            "ruleId": "secretlint-rule-preset-recommend",
+            "ruleId": "@secretlint/secretlint-rule-preset-recommend",
             "loc": {
                 "start": {
                     "line": 1,
