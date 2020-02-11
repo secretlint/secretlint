@@ -16,7 +16,7 @@ Via `.secretlintrc.json`(Recommended)
 {
     "rules": [
         {
-            "id": "@secretlint/undefinedprivatekey"
+            "id": "@secretlint/privatekey"
         }
     ]
 }
