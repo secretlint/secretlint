@@ -46,7 +46,8 @@ Via `.secretlintrc.json`
 
 ## Rules
 
-- 
+- [@secretlint/secretlint-rule-aws](https://www.npmjs.com/package/@secretlint/secretlint-rule-aws)
+- [@secretlint/secretlint-rule-privatekey](https://www.npmjs.com/package/@secretlint/secretlint-rule-privatekey)
 
 ## Changelog
 

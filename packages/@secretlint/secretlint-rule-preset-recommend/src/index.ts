@@ -1,11 +1,9 @@
-import { SecretLintCoreDescriptorRule, SecretLintRulePresetCreator } from "@secretlint/types";
+import { SecretLintRulePresetCreator } from "@secretlint/types";
 import ruleAWS from "@secretlint/secretlint-rule-aws";
 import rulePrivateKey from "@secretlint/secretlint-rule-privatekey";
 
-export type Options = (
-    | SecretLintCoreDescriptorRule<import("@secretlint/secretlint-rule-aws").Options>
-    | SecretLintCoreDescriptorRule<import("@secretlint/secretlint-rule-privatekey").Options>
-)[];
+export const rules = [ruleAWS, rulePrivateKey];
+export type Options = {};
 
 export const creator: SecretLintRulePresetCreator<Options> = {
     meta: {
@@ -14,8 +12,9 @@ export const creator: SecretLintRulePresetCreator<Options> = {
         type: "preset"
     },
     create(context, _options) {
-        context.registerRule(ruleAWS);
-        context.registerRule(rulePrivateKey);
+        rules.forEach(rule => {
+            context.registerRule(rule);
+        });
     }
 };
 export default creator;
