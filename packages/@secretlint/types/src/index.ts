@@ -5,7 +5,10 @@ export {
     SecretLintCoreResult,
     SecretLintCoreResultMessage,
     SecretLintCoreDescriptor,
-    SecretLintCoreDescriptorRule
+    // union
+    SecretLintCoreDescriptorUnionRule,
+    SecretLintCoreDescriptorRule,
+    SecretLintCoreDescriptorRulePreset
 } from "./SecretLintCore";
 // Rule interface
 export {
@@ -16,9 +19,15 @@ export {
     SecretLintRuleReportDescriptor,
     SecretLintRuleReportHandler
 } from "./SecretLintRule";
+// Rule Preset
+export {
+    SecretLintRulePresetContext,
+    SecretLintRulePresetCreator,
+    SecretLintRulePresetCreatorOptions
+} from "./SecretLintRulePreset";
 // Source
 export {
-    SecretLintSource,
+    SecretLintRawSource,
     SecretLintSourceIdentifierNode,
     SecretLintSourceNodeLocation,
     SecretLintSourceNodePosition,
@@ -35,4 +44,8 @@ export {
 } from "./SecretLintRuleTranslator";
 export { SecretLintSourceCode } from "./SecretLintSourceCode";
 // Config
-export { SecretLintConfigDescriptor, SecretLintConfigDescriptorRule } from "./SecretLintConfigDescriptor";
+export {
+    SecretLintConfigDescriptor,
+    SecretLintConfigDescriptorRule,
+    SecretLintConfigDescriptorRulePreset
+} from "./SecretLintConfigDescriptor";

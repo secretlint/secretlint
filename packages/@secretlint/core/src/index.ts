@@ -1,89 +1,109 @@
 import {
     SecretLintCoreDescriptor,
+    SecretLintCoreDescriptorRule,
+    SecretLintCoreDescriptorRulePreset,
+    SecretLintCoreDescriptorUnionRule,
     SecretLintCoreResult,
     SecretLintCoreResultMessage,
-    SecretLintRuleCreator,
-    SecretLintRuleCreatorOptions,
-    SecretLintSource
+    SecretLintRawSource,
+    SecretLintSourceCode
 } from "@secretlint/types";
-import { default as PQueue } from "p-queue";
 import { SecretLintSourceCodeImpl } from "./SecretLintSourceCodeImpl";
-import { ContextEvents, createContextEvents, createRuleContext } from "./RuleContext";
+import { ContextEvents, createContextEvents, createRuleContext, createRulePresetContext } from "./RuleContext";
+import { createRunningEvents, RunningEvents } from "./RunningEvents";
 
 type SecretLintCoreOptions = SecretLintCoreDescriptor;
 
-export const lintSource = (source: SecretLintSource, options: SecretLintCoreOptions): Promise<SecretLintCoreResult> => {
+export const lintSource = (
+    rawSource: SecretLintRawSource,
+    options: SecretLintCoreOptions
+): Promise<SecretLintCoreResult> => {
     const rules = options.rules;
     const contextEvents = createContextEvents();
+    const runningEvents = createRunningEvents();
     const messages: SecretLintCoreResultMessage[] = [];
     contextEvents.onReport(message => {
         messages.push(message);
     });
-    const promiseQueue = new PQueue();
+    // setup
+    // Create a SourceCode for linting
+    const sourceCode = new SecretLintSourceCodeImpl({
+        content: rawSource.content,
+        filePath: rawSource.filePath,
+        ext: rawSource.ext || ""
+    });
     rules.forEach(rule => {
-        promiseQueue.add(() => {
-            // If option is not defiend Options is {} by default
-            const normalizedOptions = rule.options || {};
-            return processRule({
-                source,
-                options,
-                ruleId: rule.id,
-                ruleCreator: rule.rule,
-                ruleCreatorOptions: normalizedOptions,
-                contextEvents
-            });
+        return registerRule({
+            sourceCode,
+            options,
+            descriptorRule: rule,
+            contextEvents,
+            runningEvents
         });
     });
-    return promiseQueue.onIdle().then(() => {
+    // start to run
+    return runningEvents.emitFile(sourceCode).then(() => {
         return {
-            filePath: source.filePath,
+            filePath: rawSource.filePath,
             messages: messages
         };
     });
 };
 
+const isRulePreset = (
+    ruleDescriptor: SecretLintCoreDescriptorUnionRule
+): ruleDescriptor is SecretLintCoreDescriptorRulePreset => {
+    return ruleDescriptor.rule.meta.type === "preset";
+};
+const isRule = (ruleDescriptor: SecretLintCoreDescriptorUnionRule): ruleDescriptor is SecretLintCoreDescriptorRule => {
+    return ruleDescriptor.rule.meta.type === "scanner";
+};
+
 /**
  * Rule Processing
- * @param source
- * @param options
- * @param ruleId
- * @param ruleCreator
- * @param ruleCreatorOptions
- * @param contextEvents
  */
-export const processRule = ({
-    source,
+export const registerRule = ({
+    sourceCode,
     options,
-    ruleId,
-    ruleCreator,
-    ruleCreatorOptions,
-    contextEvents
+    descriptorRule,
+    contextEvents,
+    runningEvents
 }: {
-    source: SecretLintSource;
+    sourceCode: SecretLintSourceCode;
     options: SecretLintCoreOptions;
-    ruleId: string;
-    ruleCreator: SecretLintRuleCreator<SecretLintRuleCreatorOptions>;
-    ruleCreatorOptions: SecretLintRuleCreatorOptions;
+    descriptorRule: SecretLintCoreDescriptorUnionRule;
     contextEvents: ContextEvents;
-}): Promise<void> => {
-    const sourceCode = new SecretLintSourceCodeImpl({
-        content: source.content,
-        filePath: source.filePath,
-        ext: source.ext || ""
-    });
-    const context = createRuleContext({
-        ruleId: ruleId,
-        sourceCode,
-        contextEvents: contextEvents,
-        sharedOptions: options
-    });
-    const rule = ruleCreator.create(context, ruleCreatorOptions);
-    const promiseQueue = new PQueue();
-    const ruleFile = rule.file;
-    if (ruleFile) {
-        promiseQueue.add(() => {
-            return ruleFile(source);
+    runningEvents: RunningEvents;
+}): void => {
+    const ruleId = descriptorRule.id;
+    // If option is not defined Options is {} by default
+    if (isRulePreset(descriptorRule)) {
+        const context = createRulePresetContext({
+            ruleId: ruleId,
+            rules: descriptorRule.rules,
+            ruleOptions: descriptorRule.options,
+            sourceCode,
+            contextEvents: contextEvents,
+            runningEvents: runningEvents,
+            sharedOptions: options
         });
+        runningEvents.registerRulePreset({
+            descriptorRulePreset: descriptorRule,
+            context
+        });
+        return;
+    } else if (isRule(descriptorRule)) {
+        const context = createRuleContext({
+            ruleId: ruleId,
+            sourceCode,
+            contextEvents: contextEvents,
+            sharedOptions: options
+        });
+        runningEvents.registerRule({
+            descriptorRule: descriptorRule,
+            context
+        });
+        return;
     }
-    return promiseQueue.onIdle();
+    throw new Error(`Unknown descriptor type: ${descriptorRule}`);
 };

@@ -1,5 +1,5 @@
 // Util
-export type SecretLintSource = {
+export type SecretLintRawSource = {
     content: string;
     filePath: string;
     /**

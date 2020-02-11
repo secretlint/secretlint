@@ -1,0 +1,27 @@
+{
+    "filePath": "[SNAPSHOT]/aws/input",
+    "messages": [
+        {
+            "message": "found AWS Account ID: \"AWS_ACCOUNT_ID\"=>0000-0000-0000",
+            "range": [
+                0,
+                32
+            ],
+            "ruleId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 32
+                }
+            },
+            "severity": "error",
+            "data": {
+                "ID": "\"AWS_ACCOUNT_ID\"=>0000-0000-0000"
+            }
+        }
+    ]
+}

@@ -4,7 +4,7 @@ import assert from "assert";
 import { cli, run } from "../src/cli";
 
 const fixturesDir = path.join(__dirname, "snapshots");
-const createSnapshotRepalcer = () => {
+const createSnapshotReplacer = () => {
     return (_key: string, value: any) => {
         if (typeof value === "string") {
             return value.replace(fixturesDir, "[SNAPSHOT]");
@@ -29,22 +29,27 @@ describe("cli snapshot testing", function() {
                 // if throw an error, save it
                 return `Error: ${error.message}`;
             });
+            const normalizedActual = JSON.parse(JSON.stringify(actual, createSnapshotReplacer(), 4));
             const expectedFilePath = path.join(fixtureDir, "output.json");
             // Usage: update snapshots
             // UPDATE_SNAPSHOT=1 npm test
             if (!fs.existsSync(expectedFilePath) || process.env.UPDATE_SNAPSHOT) {
-                fs.writeFileSync(expectedFilePath, JSON.stringify(actual, createSnapshotRepalcer(), 4), "utf-8");
+                fs.writeFileSync(
+                    expectedFilePath,
+                    JSON.stringify(normalizedActual, createSnapshotReplacer(), 4),
+                    "utf-8"
+                );
                 this.skip(); // skip when updating snapshots
                 return;
             }
             // compare input and output
             const expected = JSON.parse(fs.readFileSync(expectedFilePath, "utf-8"));
-            assert.strictEqual(
-                actual,
+            assert.deepStrictEqual(
+                normalizedActual,
                 expected,
                 `
 ${fixtureDir}
-${actual}
+${JSON.stringify(normalizedActual, createSnapshotReplacer(), 4)}
 `
             );
         });

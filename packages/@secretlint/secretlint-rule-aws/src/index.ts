@@ -1,4 +1,4 @@
-import { SecretLintRuleContext, SecretLintRuleCreator, SecretLintSource } from "@secretlint/types";
+import { SecretLintRuleContext, SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 import { SecretLintRuleMessageTranslate } from "@secretlint/types";
 
@@ -49,7 +49,7 @@ const reportAWSAccessKey = ({
     options
 }: {
     t: SecretLintRuleMessageTranslate<typeof messages>;
-    source: SecretLintSource;
+    source: SecretLintSourceCode;
     context: SecretLintRuleContext;
     options: Required<Options>;
 }) => {
@@ -80,7 +80,7 @@ const reportAWSSecretAccessKey = ({
     options
 }: {
     t: SecretLintRuleMessageTranslate<typeof messages>;
-    source: SecretLintSource;
+    source: SecretLintSourceCode;
     context: SecretLintRuleContext;
     options: Required<Options>;
 }) => {
@@ -113,7 +113,7 @@ const reportAWSAccountID = ({
     options
 }: {
     t: SecretLintRuleMessageTranslate<typeof messages>;
-    source: SecretLintSource;
+    source: SecretLintSourceCode;
     context: SecretLintRuleContext;
     options: Required<Options>;
 }) => {
@@ -139,8 +139,9 @@ const reportAWSAccountID = ({
     }
 };
 
-const creator: SecretLintRuleCreator<Options> = {
+export const creator: SecretLintRuleCreator<Options> = {
     meta: {
+        id: "@secretlint/secretlint-rule-aws",
         recommended: true,
         type: "scanner",
         docs: {
@@ -154,7 +155,7 @@ const creator: SecretLintRuleCreator<Options> = {
         };
         const t = context.createTranslator(messages);
         return {
-            file(source: SecretLintSource) {
+            file(source: SecretLintSourceCode) {
                 reportAWSAccessKey({ t, source: source, context: context, options: normalizedOptions });
                 reportAWSSecretAccessKey({ t, source: source, context: context, options: normalizedOptions });
                 reportAWSAccountID({ t, source: source, context: context, options: normalizedOptions });

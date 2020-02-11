@@ -2,7 +2,7 @@ import {
     SecretLintRuleContext,
     SecretLintRuleCreator,
     SecretLintRuleMessageTranslate,
-    SecretLintSource
+    SecretLintSourceCode
 } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
@@ -29,7 +29,7 @@ function reportIfFoundRawPrivateKey({
     context,
     t
 }: {
-    source: SecretLintSource;
+    source: SecretLintSourceCode;
     options: Required<Options>;
     context: SecretLintRuleContext;
     t: SecretLintRuleMessageTranslate<typeof messages>;
@@ -56,6 +56,7 @@ function reportIfFoundRawPrivateKey({
 
 export const creator: SecretLintRuleCreator<Options> = {
     meta: {
+        id: "@secretlint/secretlint-rule-privatekey",
         recommended: true,
         type: "scanner"
     },
@@ -65,7 +66,7 @@ export const creator: SecretLintRuleCreator<Options> = {
             allows: options.allows || []
         };
         return {
-            file(source: SecretLintSource) {
+            file(source: SecretLintSourceCode) {
                 reportIfFoundRawPrivateKey({ source, options: normalizedOptions, context, t });
             }
         };

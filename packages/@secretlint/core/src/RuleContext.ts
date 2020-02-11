@@ -1,14 +1,21 @@
 import { EventEmitter } from "events";
 import {
+    SecretLintConfigDescriptorRule,
+    SecretLintCoreDescriptorRule,
     SecretLintCoreIgnoreDescriptor,
     SecretLintCoreReportDescriptor,
     SecretLintCoreResultMessage,
     SecretLintRuleContext,
+    SecretLintRuleCreatorOptions,
     SecretLintRuleIgnoreDescriptor,
+    SecretLintRulePresetContext,
+    SecretLintRulePresetCreatorOptions,
     SecretLintRuleReportDescriptor,
     SecretLintSourceCode
 } from "@secretlint/types";
 import { createTranslator } from "./Translator";
+import { RunningEvents } from "./RunningEvents";
+import { SecretLintRuleCreator } from "@secretlint/types";
 
 type Handler<T> = (descriptor: T) => void;
 export type ContextEvents = {
@@ -48,6 +55,62 @@ export const createContextEvents = (): ContextEvents => {
         }
     };
 };
+export const createRulePresetContext = ({
+    ruleId,
+    rules,
+    ruleOptions,
+    sourceCode,
+    runningEvents,
+    contextEvents,
+    sharedOptions
+}: {
+    ruleId: string;
+    rules?: SecretLintConfigDescriptorRule[];
+    ruleOptions?: SecretLintRulePresetCreatorOptions;
+    sourceCode: SecretLintSourceCode;
+    contextEvents: ContextEvents;
+    runningEvents: RunningEvents;
+    sharedOptions: {};
+}): SecretLintRulePresetContext => {
+    const presetRules = rules || [];
+    const presetOptions = ruleOptions || {};
+    if (!Array.isArray(presetRules)) {
+        console.error("presetRules is invalid format", presetRules);
+        throw new Error("preset's rules should be an array of rule definitions");
+    }
+    return {
+        sharedOptions,
+        registerRule<Options extends SecretLintRuleCreatorOptions>(
+            rule: SecretLintRuleCreator<Options>,
+            defaultValue?: Omit<SecretLintCoreDescriptorRule<Options>, "id" | "rule">
+        ): void {
+            const context = createRuleContext({
+                ruleId: ruleId,
+                sourceCode,
+                contextEvents: contextEvents,
+                sharedOptions: sharedOptions
+            });
+            const descriptorRule = presetRules.find(descriptorRule => {
+                return descriptorRule.id === rule.meta.id;
+            });
+            const otherValues = defaultValue ? defaultValue : {};
+            runningEvents.registerRule({
+                descriptorRule: {
+                    // options and disabled ...
+                    ...otherValues,
+                    // Prefer to use user setting
+                    // User can override preset setting
+                    ...descriptorRule,
+                    id: rule.meta.id,
+                    options: presetOptions,
+                    rule
+                },
+                context
+            });
+        }
+    };
+};
+
 export const createRuleContext = ({
     ruleId,
     sourceCode,
