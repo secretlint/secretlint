@@ -80,7 +80,8 @@ export const registerRule = ({
     if (isRulePreset(descriptorRule)) {
         const context = createRulePresetContext({
             ruleId: ruleId,
-            presetOptions: descriptorRule.options,
+            rules: descriptorRule.rules,
+            ruleOptions: descriptorRule.options,
             sourceCode,
             contextEvents: contextEvents,
             runningEvents: runningEvents,

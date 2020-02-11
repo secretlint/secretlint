@@ -6,10 +6,10 @@ export type SecretLintRulePresetContext = {
     sharedOptions?: {};
     registerRule<Options = SecretLintRuleCreatorOptions>(
         rule: SecretLintRuleCreator<Options>,
-        defaultValue?: Omit<Omit<SecretLintCoreDescriptorRule<Options>, "id">, "rule">
+        defaultValue?: Omit<SecretLintCoreDescriptorRule<Options>, "id" | "rule">
     ): void;
 };
-export type SecretLintRulePresetCreatorOptions = SecretLintCoreDescriptorRule<any>[];
+export type SecretLintRulePresetCreatorOptions = {};
 export type SecretLintRulePresetCreator<Options = SecretLintRulePresetCreatorOptions> = {
     meta: {
         id: string;

@@ -10,7 +10,43 @@ Install with [npm](https://www.npmjs.com/):
 
 ## Usage
 
-- [ ] Write usage instructions
+
+Via `.secretlintrc.json`
+
+```json
+{
+    "rules": [
+        {
+            "id": "@secretlint/secretlint-rule-preset-recommend"
+        }
+    ]
+}
+```
+
+## Options
+
+```json5
+{
+    "rules": [
+        {
+            "id": "@secretlint/secretlint-rule-preset-recommend",
+            // You can override preset default options for each rule
+            "rules": [
+                {
+                     "id": "@secretlint/secretlint-rule-aws",
+                     "options": {
+                          "allows": ["ok"]
+                     }
+                }
+            ]
+        }
+    ]
+}
+```
+
+## Rules
+
+- 
 
 ## Changelog
 

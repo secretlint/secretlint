@@ -44,4 +44,8 @@ export {
 } from "./SecretLintRuleTranslator";
 export { SecretLintSourceCode } from "./SecretLintSourceCode";
 // Config
-export { SecretLintConfigDescriptor, SecretLintConfigDescriptorRule } from "./SecretLintConfigDescriptor";
+export {
+    SecretLintConfigDescriptor,
+    SecretLintConfigDescriptorRule,
+    SecretLintConfigDescriptorRulePreset
+} from "./SecretLintConfigDescriptor";

@@ -1,5 +1,6 @@
 import { EventEmitter } from "events";
 import {
+    SecretLintConfigDescriptorRule,
     SecretLintCoreDescriptorRule,
     SecretLintCoreIgnoreDescriptor,
     SecretLintCoreReportDescriptor,
@@ -56,29 +57,32 @@ export const createContextEvents = (): ContextEvents => {
 };
 export const createRulePresetContext = ({
     ruleId,
-    presetOptions,
+    rules,
+    ruleOptions,
     sourceCode,
     runningEvents,
     contextEvents,
     sharedOptions
 }: {
     ruleId: string;
-    presetOptions?: SecretLintRulePresetCreatorOptions;
+    rules?: SecretLintConfigDescriptorRule[];
+    ruleOptions?: SecretLintRulePresetCreatorOptions;
     sourceCode: SecretLintSourceCode;
     contextEvents: ContextEvents;
     runningEvents: RunningEvents;
     sharedOptions: {};
 }): SecretLintRulePresetContext => {
-    const normalizedPresetOptions = presetOptions || [];
-    if (!Array.isArray(normalizedPresetOptions)) {
-        console.error("normalizedPresetOptions is invalid format", normalizedPresetOptions);
-        throw new Error("preset options should be an array of rules");
+    const presetRules = rules || [];
+    const presetOptions = ruleOptions || {};
+    if (!Array.isArray(presetRules)) {
+        console.error("presetRules is invalid format", presetRules);
+        throw new Error("preset's rules should be an array of rule definitions");
     }
     return {
         sharedOptions,
         registerRule<Options extends SecretLintRuleCreatorOptions>(
             rule: SecretLintRuleCreator<Options>,
-            defaultValue?: Omit<Omit<SecretLintCoreDescriptorRule<Options>, "id">, "rule">
+            defaultValue?: Omit<SecretLintCoreDescriptorRule<Options>, "id" | "rule">
         ): void {
             const context = createRuleContext({
                 ruleId: ruleId,
@@ -86,7 +90,7 @@ export const createRulePresetContext = ({
                 contextEvents: contextEvents,
                 sharedOptions: sharedOptions
             });
-            const descriptorRule = normalizedPresetOptions.find(descriptorRule => {
+            const descriptorRule = presetRules.find(descriptorRule => {
                 return descriptorRule.id === rule.meta.id;
             });
             const otherValues = defaultValue ? defaultValue : {};
@@ -98,6 +102,7 @@ export const createRulePresetContext = ({
                     // User can override preset setting
                     ...descriptorRule,
                     id: rule.meta.id,
+                    options: presetOptions,
                     rule
                 },
                 context
