@@ -1,14 +1,17 @@
 import { EventEmitter } from "events";
 import {
+    SecretLintCoreDescriptorRule,
     SecretLintCoreIgnoreDescriptor,
     SecretLintCoreReportDescriptor,
     SecretLintCoreResultMessage,
     SecretLintRuleContext,
     SecretLintRuleIgnoreDescriptor,
+    SecretLintRulePresetContext,
     SecretLintRuleReportDescriptor,
     SecretLintSourceCode
 } from "@secretlint/types";
 import { createTranslator } from "./Translator";
+import { RunningEvents } from "./RunningEvents";
 
 type Handler<T> = (descriptor: T) => void;
 export type ContextEvents = {
@@ -48,6 +51,36 @@ export const createContextEvents = (): ContextEvents => {
         }
     };
 };
+export const createRulePresetContext = ({
+    ruleId,
+    sourceCode,
+    runningEvents,
+    contextEvents,
+    sharedOptions
+}: {
+    ruleId: string;
+    sourceCode: SecretLintSourceCode;
+    contextEvents: ContextEvents;
+    runningEvents: RunningEvents;
+    sharedOptions: {};
+}): SecretLintRulePresetContext => {
+    return {
+        sharedOptions,
+        registerRule(descriptorRule: SecretLintCoreDescriptorRule): void {
+            const context = createRuleContext({
+                ruleId: ruleId,
+                sourceCode,
+                contextEvents: contextEvents,
+                sharedOptions: sharedOptions
+            });
+            runningEvents.registerRule({
+                descriptorRule: descriptorRule,
+                context
+            });
+        }
+    };
+};
+
 export const createRuleContext = ({
     ruleId,
     sourceCode,

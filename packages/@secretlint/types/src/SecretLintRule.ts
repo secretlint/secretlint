@@ -1,6 +1,7 @@
 // Rule Interfaces
-import { SecretLintSource, SecretLintSourceIdentifierNode } from "./SecretLintSource";
+import { SecretLintSourceIdentifierNode } from "./SecretLintSource";
 import { createRuleMessageTranslator, SecretLintRuleTranslatorResult } from "./SecretLintRuleTranslator";
+import { SecretLintSourceCode } from "./SecretLintSourceCode";
 
 export type SecretLintRuleReportDescriptor = {
     message: string | SecretLintRuleTranslatorResult<{}>;
@@ -21,6 +22,7 @@ export type SecretLintRuleContext = {
 export type SecretLintRuleCreatorOptions = {};
 export type SecretLintRuleCreator<Options = SecretLintRuleCreatorOptions> = {
     meta: {
+        id: string;
         type: "scanner";
         recommended: boolean;
         docs?: {
@@ -32,7 +34,7 @@ export type SecretLintRuleCreator<Options = SecretLintRuleCreatorOptions> = {
 };
 export type SecretLintRuleReportHandler = {
     // TODO: pre-all
-    file?(source: SecretLintSource): void | Promise<any>;
-    identifier?(node: SecretLintSourceIdentifierNode, source: SecretLintSource): void | Promise<any>;
+    file?(source: SecretLintSourceCode): void | Promise<any>;
+    identifier?(node: SecretLintSourceIdentifierNode, source: SecretLintSourceCode): void | Promise<any>;
     // TODO: post-all
 };

@@ -6,6 +6,7 @@ import {
     SecretLintRuleCreatorOptions
 } from "./SecretLintRule";
 import { SecretLintSourceNodeLocation } from "./SecretLintSource";
+import { SecretLintRulePresetCreator, SecretLintRulePresetCreatorOptions } from "./SecretLintRulePreset";
 
 export type SecretLintCoreDescriptorRule<Options = SecretLintRuleCreatorOptions> = {
     /**
@@ -28,8 +29,32 @@ export type SecretLintCoreDescriptorRule<Options = SecretLintRuleCreatorOptions>
      */
     disabled?: boolean;
 };
+export type SecretLintCoreDescriptorRulePreset<Options = SecretLintRulePresetCreatorOptions> = {
+    /**
+     * Rule id that is package name or shorten package name
+     * For example, "secretlint-rule-preset-example" or "example"(shorten)
+     */
+    id: string;
+    /**
+     * Rule instance
+     */
+    rule: SecretLintRulePresetCreator<Options>;
+    /**
+     * Rule options
+     * Default: {} (empty object)
+     */
+    options?: Options;
+    /**
+     * Disable the rule
+     * Default: false
+     */
+    disabled?: boolean;
+};
+export type SecretLintCoreDescriptorUnionRule<Options = SecretLintRuleCreatorOptions> =
+    | SecretLintCoreDescriptorRule<Options>
+    | SecretLintCoreDescriptorRulePreset<Options>;
 export type SecretLintCoreDescriptor = {
-    rules: SecretLintCoreDescriptorRule[];
+    rules: SecretLintCoreDescriptorUnionRule[];
 };
 
 export type SecretLintCoreResult = {

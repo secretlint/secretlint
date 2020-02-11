@@ -33,6 +33,7 @@
     "clean": "rimraf lib/",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
+    "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
     "test": "mocha \"test/**/*.ts\"",
     "watch": "tsc -p . --watch"
   },

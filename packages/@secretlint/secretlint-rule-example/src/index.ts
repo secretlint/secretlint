@@ -1,4 +1,4 @@
-import { SecretLintRuleCreator, SecretLintSource } from "@secretlint/types";
+import { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
 
 export const creator: SecretLintRuleCreator = {
     meta: {
@@ -13,7 +13,7 @@ export const creator: SecretLintRuleCreator = {
             }
         });
         return {
-            file(source: SecretLintSource) {
+            file(source: SecretLintSourceCode) {
                 const pattern = /secret/gi;
                 let match;
                 while ((match = pattern.exec(source.content)) !== null) {
