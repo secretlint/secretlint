@@ -27,7 +27,7 @@ export type RunningEvents = {
 };
 export const createRunningEvents = (): RunningEvents => {
     const contextEvents = new PromiseEventEmitter();
-    const registerredSet = new Set<string>();
+    const registerSet = new Set<string>();
     const FILE_HANDLE = Symbol("file");
     return {
         registerRule({
@@ -37,6 +37,14 @@ export const createRunningEvents = (): RunningEvents => {
             descriptorRule: SecretLintCoreDescriptorRule;
             context: SecretLintRuleContext;
         }) {
+            if (registerSet.has(descriptorRule.id)) {
+                // TODO: more trivial implementation
+                console.warn(`rule.id:${descriptorRule.id} is already registered.
+                
+Duplicated rule.id is something wrong in .secretlintrc.                
+`);
+            }
+            registerSet.add(descriptorRule.id);
             // Normalized Rule Options
             const ruleCreatorOptions = descriptorRule.options || {};
             const rule = descriptorRule.rule.create(context, ruleCreatorOptions);
@@ -62,7 +70,7 @@ export const createRunningEvents = (): RunningEvents => {
             return contextEvents.emit(FILE_HANDLE, source);
         },
         isRegistered(ruleId: string): boolean {
-            return registerredSet.has(ruleId);
+            return registerSet.has(ruleId);
         }
     };
 };
