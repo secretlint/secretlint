@@ -115,7 +115,7 @@ const reportAWSSecretAccessKey = ({
         }
         context.report({
             message: t("AWSSecretAccessKey", {
-                key: match
+                KEY: match
             }),
             range
         });

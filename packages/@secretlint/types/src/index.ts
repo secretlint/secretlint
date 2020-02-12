@@ -6,6 +6,7 @@ export {
     SecretLintCoreResultMessage,
     SecretLintCoreDescriptor,
     // union
+    SecretLintUnionRuleCreator,
     SecretLintCoreDescriptorUnionRule,
     SecretLintCoreDescriptorRule,
     SecretLintCoreDescriptorRulePreset

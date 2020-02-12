@@ -4,7 +4,7 @@ import rule from "../src/index";
 
 describe("Snapshot Testing", () => {
     snapshot({
-        lintOptions: {
+        defaultConfig: {
             rules: [
                 {
                     id: "secretlint-rule-privatekey",

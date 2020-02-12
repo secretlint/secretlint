@@ -7,7 +7,7 @@
                 27,
                 47
             ],
-            "ruleId": "secretlint-rule-aws",
+            "ruleId": "@secretlint/secretlint-rule-aws",
             "loc": {
                 "start": {
                     "line": 1,

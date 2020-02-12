@@ -1,5 +1,5 @@
 import { SecretLintRuleCreator, SecretLintRuleCreatorOptions } from "./SecretLintRule";
-import { SecretLintRulePresetCreatorOptions } from "./SecretLintRulePreset";
+import { SecretLintRulePresetCreator, SecretLintRulePresetCreatorOptions } from "./SecretLintRulePreset";
 
 export type SecretLintConfigDescriptorRule<Options = SecretLintRuleCreatorOptions> = {
     /**
@@ -51,7 +51,7 @@ export type SecretLintConfigDescriptorRulePreset<Options = SecretLintRulePresetC
      * FOR DEBUG
      * Rule instance
      */
-    rule?: SecretLintRuleCreator<Options>;
+    rule?: SecretLintRulePresetCreator<Options>;
 };
 
 /**

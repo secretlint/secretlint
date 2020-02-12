@@ -64,7 +64,7 @@ const executeOnContent = async ({
         formatterName: options.formatter
     });
     return {
-        ok: hasErrorMessage(result),
+        ok: !hasErrorMessage(result),
         output: formatter.format([result])
     };
 };

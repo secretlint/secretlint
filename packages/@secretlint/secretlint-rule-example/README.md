@@ -18,9 +18,7 @@ See [Releases page](https://github.com/secretlint/secretlint/releases).
 
 ## Running tests
 
-Install devDependencies and Run `npm test`:
-
-    npm test
+No Test to avoid Dependency cycles.
 
 ## Contributing
 

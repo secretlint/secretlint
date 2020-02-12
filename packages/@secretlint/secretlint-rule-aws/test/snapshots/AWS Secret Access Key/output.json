@@ -2,12 +2,12 @@
     "filePath": "[SNAPSHOT]/AWS Secret Access Key/input",
     "messages": [
         {
-            "message": "found AWS Secret Access Key: {{KEY}}",
+            "message": "found AWS Secret Access Key: AWS_SECRET_ACCESS_KEY = wJalrXUtnFEMI/K7MDENG/bPxRfiCYSECRETSKEY",
             "range": [
                 0,
                 64
             ],
-            "ruleId": "secretlint-rule-aws",
+            "ruleId": "@secretlint/secretlint-rule-aws",
             "loc": {
                 "start": {
                     "line": 1,
@@ -20,7 +20,7 @@
             },
             "severity": "error",
             "data": {
-                "key": "AWS_SECRET_ACCESS_KEY = wJalrXUtnFEMI/K7MDENG/bPxRfiCYSECRETSKEY"
+                "KEY": "AWS_SECRET_ACCESS_KEY = wJalrXUtnFEMI/K7MDENG/bPxRfiCYSECRETSKEY"
             }
         }
     ]

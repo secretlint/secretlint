@@ -4,7 +4,7 @@ import rule from "./fixtures/secretlint-rule-example";
 
 describe("@secretlint/tester", () => {
     snapshot({
-        lintOptions: {
+        defaultConfig: {
             rules: [
                 {
                     id: "secretlint-rule-example",

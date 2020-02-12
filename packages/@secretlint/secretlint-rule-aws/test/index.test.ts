@@ -4,10 +4,10 @@ import rule from "../src/index";
 
 describe("Snapshot Testing", () => {
     snapshot({
-        lintOptions: {
+        defaultConfig: {
             rules: [
                 {
-                    id: "secretlint-rule-aws",
+                    id: "@secretlint/secretlint-rule-aws",
                     rule,
                     options: {}
                 }

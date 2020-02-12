@@ -79,8 +79,8 @@ export const registerRule = ({
     // If option is not defined Options is {} by default
     if (isRulePreset(descriptorRule)) {
         const context = createRulePresetContext({
-            ruleId: ruleId,
             rules: descriptorRule.rules,
+            rulePresetId: descriptorRule.id,
             sourceCode,
             contextEvents: contextEvents,
             runningEvents: runningEvents,

@@ -2,15 +2,20 @@ import * as fs from "fs";
 import * as path from "path";
 import * as assert from "assert";
 import { lintSource } from "@secretlint/core";
-import { SecretLintCoreDescriptor } from "@secretlint/types";
+import { loadConfig } from "@secretlint/config-loader";
+import { SecretLintCoreDescriptor, SecretLintUnionRuleCreator } from "@secretlint/types";
 
 export type SnapshotOptions = {
     snapshotDirectory: string;
-    lintOptions: SecretLintCoreDescriptor;
+    defaultConfig: SecretLintCoreDescriptor;
+    testDefinitions?: {
+        id: string;
+        rule: SecretLintUnionRuleCreator;
+    }[]
     /**
      * Update snapshot if the options is true
      * Exception, process.env.UPDATE_SNAPSHOT=1 force turn on this option.
-     */
+     */;
     updateSnapshot: boolean;
 };
 const createSnapshotRepalcer = (options: SnapshotOptions) => {
@@ -47,13 +52,21 @@ export const snapshot = (options: SnapshotOptions) => {
                 handler(normalizedTestName, async () => {
                     const fixtureDir = path.join(fixturesDir, caseName);
                     const actualFilePath = path.join(fixtureDir, "input");
+                    const secretlintrcFilePath = path.join(fixtureDir, ".secretlintrc.json");
+                    const loadedConfig = await (secretlintrcFilePath
+                        ? loadConfig({
+                              configFilePath: secretlintrcFilePath,
+                              testReplaceDefinitions: options.testDefinitions
+                          })
+                        : undefined);
+                    const config = loadedConfig && loadedConfig.ok ? loadedConfig.config : options.defaultConfig;
                     const actualContent = fs.readFileSync(actualFilePath, "utf-8");
                     const actualResult = await lintSource(
                         {
                             filePath: actualFilePath,
                             content: actualContent
                         },
-                        options.lintOptions
+                        config
                     );
                     const expectedFilePath = path.join(fixtureDir, "output.json");
                     // Usage: update snapshots

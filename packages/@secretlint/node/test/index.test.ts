@@ -23,8 +23,9 @@ describe("createEngine", function() {
             cwd: path.join(__dirname, "fixtures/valid-config"),
             formatter: "stylish"
         });
-        const output = await engine.executeOnFiles({ filePathList: [path.join(__dirname, "fixtures/SECRET.txt")] });
-        const normalizedOutput = normalizeFilePath(output);
+        const result = await engine.executeOnFiles({ filePathList: [path.join(__dirname, "fixtures/SECRET.txt")] });
+        assert.strictEqual(result.ok, false);
+        const normalizedOutput = normalizeFilePath(result.output);
         assert.strictEqual(
             normalizedOutput,
             `
@@ -43,11 +44,12 @@ describe("createEngine", function() {
         });
         const filePath = path.join(__dirname, "fixtures/SECRET.txt");
         const content = fs.readFileSync(filePath, "utf-8");
-        const output = await engine.executeOnContent({
+        const result = await engine.executeOnContent({
             content,
             filePath
         });
-        const normalizedOutput = normalizeFilePath(output);
+        assert.strictEqual(result.ok, false);
+        const normalizedOutput = normalizeFilePath(result.output);
         assert.strictEqual(
             normalizedOutput,
             `

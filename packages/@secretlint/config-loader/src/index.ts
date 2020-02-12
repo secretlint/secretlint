@@ -1,12 +1,32 @@
 import { rcFile } from "rc-config-loader";
-import { SecretLintConfigDescriptor, SecretLintCoreDescriptor, SecretLintCoreDescriptorRule } from "@secretlint/types";
+import {
+    SecretLintConfigDescriptor,
+    SecretLintCoreDescriptor,
+    SecretLintCoreDescriptorRule,
+    SecretLintCoreDescriptorUnionRule,
+    SecretLintUnionRuleCreator
+} from "@secretlint/types";
 import { SecretLintModuleResolver } from "./SecretLintModuleResolver";
 import { moduleInterop } from "@textlint/module-interop";
 
 export type SecretLintConfigLoaderOptions = {
     cwd?: string;
-    node_moduleDir?: string;
     configFilePath?: string;
+    // For debugging
+    /**
+     * node_modules directory path
+     * Default: undefined
+     */
+    node_moduleDir?: string;
+    /**
+     * This definitions replace id to rule module
+     * It is useful for replacing specific ruleId with specific rule module.
+     * Main use-case is tester.
+     */
+    testReplaceDefinitions?: {
+        id: string;
+        rule: SecretLintUnionRuleCreator;
+    }[];
 };
 export type SecretLintConfigLoaderResult =
     | {
@@ -53,18 +73,26 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
         baseDirectory: options.node_moduleDir
     });
     const errors: Error[] = [];
-    const rules: SecretLintCoreDescriptorRule[] = [];
+    const rules: SecretLintCoreDescriptorUnionRule[] = [];
     rawResult.config.rules.forEach(configDescriptorRule => {
         try {
-            const moduleFilePath = moduleResolver.resolveRulePackageName(configDescriptorRule.id);
+            const replacedDefinition =
+                options.testReplaceDefinitions &&
+                options.testReplaceDefinitions.find(({ id }) => {
+                    return id === configDescriptorRule.id;
+                });
+            // TODO: any to be remove
+            const ruleModule: any = replacedDefinition
+                ? replacedDefinition.rule
+                : moduleInterop(require(moduleResolver.resolveRulePackageName(configDescriptorRule.id)));
+            const secretLintConfigDescriptorRules: SecretLintCoreDescriptorRule[] =
+                "rules" in configDescriptorRule && Array.isArray(configDescriptorRule.rules)
+                    ? (configDescriptorRule.rules.filter(rule => rule !== undefined) as SecretLintCoreDescriptorRule[])
+                    : [];
             rules.push({
                 id: configDescriptorRule.id,
-                rule: moduleInterop(require(moduleFilePath)),
-                ...("rules" in configDescriptorRule
-                    ? {
-                          rules: configDescriptorRule.rules
-                      }
-                    : {}),
+                rule: ruleModule,
+                rules: secretLintConfigDescriptorRules,
                 ...("options" in configDescriptorRule
                     ? {
                           options: configDescriptorRule.options

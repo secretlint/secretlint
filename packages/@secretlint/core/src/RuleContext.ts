@@ -55,15 +55,15 @@ export const createContextEvents = (): ContextEvents => {
     };
 };
 export const createRulePresetContext = ({
-    ruleId,
     rules,
+    rulePresetId,
     sourceCode,
     runningEvents,
     contextEvents,
     sharedOptions
 }: {
-    ruleId: string;
     rules?: SecretLintConfigDescriptorRule[];
+    rulePresetId: string;
     sourceCode: SecretLintSourceCode;
     contextEvents: ContextEvents;
     runningEvents: RunningEvents;
@@ -71,7 +71,7 @@ export const createRulePresetContext = ({
 }): SecretLintRulePresetContext => {
     const presetRules = rules || [];
     if (!Array.isArray(presetRules)) {
-        console.error("presetRules is invalid format", presetRules);
+        console.error(`${rulePresetId}:PresetRules is invalid format`, presetRules);
         throw new Error("preset's rules should be an array of rule definitions");
     }
     return {
@@ -81,7 +81,10 @@ export const createRulePresetContext = ({
             defaultValue?: Omit<SecretLintCoreDescriptorRule<Options>, "id" | "rule">
         ): void {
             const context = createRuleContext({
-                ruleId: ruleId,
+                // TODO: add preset context to rule context
+                // Specialize
+                // Show this ruleId as error report
+                ruleId: rule.meta.id,
                 sourceCode,
                 contextEvents: contextEvents,
                 sharedOptions: sharedOptions

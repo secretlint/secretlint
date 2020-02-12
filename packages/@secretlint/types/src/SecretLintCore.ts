@@ -54,9 +54,12 @@ export type SecretLintCoreDescriptorRulePreset<Options = SecretLintRulePresetCre
      */
     disabled?: boolean;
 };
-export type SecretLintCoreDescriptorUnionRule<Options = SecretLintRuleCreatorOptions> =
-    | SecretLintCoreDescriptorRule<Options>
-    | SecretLintCoreDescriptorRulePreset<Options>;
+export type SecretLintUnionRuleCreator<Options = SecretLintRuleCreatorOptions | SecretLintRulePresetCreatorOptions> =
+    | SecretLintRuleCreator<Options>
+    | SecretLintRulePresetCreator<Options>;
+export type SecretLintCoreDescriptorUnionRule<
+    Options = SecretLintRuleCreatorOptions | SecretLintRulePresetCreatorOptions
+> = SecretLintCoreDescriptorRule<Options> | SecretLintCoreDescriptorRulePreset<Options>;
 export type SecretLintCoreDescriptor = {
     rules: SecretLintCoreDescriptorUnionRule[];
 };
