@@ -27,20 +27,20 @@ export const runSecretLint = async ({
         .executeOnFiles({
             filePathList
         })
-        .then(output => {
+        .then(({ ok, output }) => {
             // TODO: if has error, this should be stderr
             const outputFilePath = cliOptions.outputFilePath;
             if (outputFilePath !== undefined) {
                 fs.writeFileSync(outputFilePath, output, "utf-8");
                 // Return empty to console
                 return {
-                    exitStatus: 0,
+                    exitStatus: ok ? 0 : 1,
                     stdout: null,
                     stderr: null
                 };
             }
             return {
-                exitStatus: 1,
+                exitStatus: ok ? 0 : 1,
                 stdout: output,
                 stderr: null
             };

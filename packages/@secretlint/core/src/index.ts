@@ -81,7 +81,6 @@ export const registerRule = ({
         const context = createRulePresetContext({
             ruleId: ruleId,
             rules: descriptorRule.rules,
-            ruleOptions: descriptorRule.options,
             sourceCode,
             contextEvents: contextEvents,
             runningEvents: runningEvents,

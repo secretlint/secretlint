@@ -35,6 +35,7 @@
     "build": "lerna run build",
     "updateSnapshot": "UPDATE_SNAPSHOT=1 lerna run test",
     "test": "lerna run test",
+    "secretlint": "secretlint \"**/*\"",
     "ci": "npm run build && npm run test",
     "clean": "lerna run clean",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\""
@@ -56,6 +57,9 @@
     }
   },
   "lint-staged": {
+    "*": [
+      "secretlint"
+    ],
     "*.{js,jsx,ts,tsx,css}": [
       "prettier --write",
       "git add"

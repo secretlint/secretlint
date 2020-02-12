@@ -6,16 +6,15 @@ import {
     SecretLintCoreReportDescriptor,
     SecretLintCoreResultMessage,
     SecretLintRuleContext,
+    SecretLintRuleCreator,
     SecretLintRuleCreatorOptions,
     SecretLintRuleIgnoreDescriptor,
     SecretLintRulePresetContext,
-    SecretLintRulePresetCreatorOptions,
     SecretLintRuleReportDescriptor,
     SecretLintSourceCode
 } from "@secretlint/types";
 import { createTranslator } from "./Translator";
 import { RunningEvents } from "./RunningEvents";
-import { SecretLintRuleCreator } from "@secretlint/types";
 
 type Handler<T> = (descriptor: T) => void;
 export type ContextEvents = {
@@ -58,7 +57,6 @@ export const createContextEvents = (): ContextEvents => {
 export const createRulePresetContext = ({
     ruleId,
     rules,
-    ruleOptions,
     sourceCode,
     runningEvents,
     contextEvents,
@@ -66,14 +64,12 @@ export const createRulePresetContext = ({
 }: {
     ruleId: string;
     rules?: SecretLintConfigDescriptorRule[];
-    ruleOptions?: SecretLintRulePresetCreatorOptions;
     sourceCode: SecretLintSourceCode;
     contextEvents: ContextEvents;
     runningEvents: RunningEvents;
     sharedOptions: {};
 }): SecretLintRulePresetContext => {
     const presetRules = rules || [];
-    const presetOptions = ruleOptions || {};
     if (!Array.isArray(presetRules)) {
         console.error("presetRules is invalid format", presetRules);
         throw new Error("preset's rules should be an array of rule definitions");
@@ -93,6 +89,10 @@ export const createRulePresetContext = ({
             const descriptorRule = presetRules.find(descriptorRule => {
                 return descriptorRule.id === rule.meta.id;
             });
+            // Use undefined instead of {}
+            // Default value will be handled by RunningEvents#registerRule
+            const descriptorRuleOptions = descriptorRule ? descriptorRule.options : undefined;
+
             const otherValues = defaultValue ? defaultValue : {};
             runningEvents.registerRule({
                 descriptorRule: {
@@ -102,7 +102,7 @@ export const createRulePresetContext = ({
                     // User can override preset setting
                     ...descriptorRule,
                     id: rule.meta.id,
-                    options: presetOptions,
+                    options: descriptorRuleOptions,
                     rule
                 },
                 context

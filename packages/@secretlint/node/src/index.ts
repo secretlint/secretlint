@@ -3,7 +3,7 @@ import utils from "util";
 import { lintSource } from "@secretlint/core";
 import { loadConfig } from "@secretlint/config-loader";
 import { createFormatter } from "@secretlint/formatter";
-import { SecretLintCoreDescriptor } from "@secretlint/types";
+import { SecretLintCoreDescriptor, SecretLintCoreResult } from "@secretlint/types";
 
 const readFile = utils.promisify(fs.readFile);
 export type SecretLintEngineOptions = {
@@ -38,6 +38,9 @@ const lintFile = async (filePath: string, options: SecretLintCoreDescriptor) => 
     });
 };
 
+const hasErrorMessage = (result: SecretLintCoreResult): boolean => {
+    return result.messages.length > 0;
+};
 const executeOnContent = async ({
     content,
     filePath,
@@ -60,7 +63,10 @@ const executeOnContent = async ({
         color: options.color,
         formatterName: options.formatter
     });
-    return formatter.format([result]);
+    return {
+        ok: hasErrorMessage(result),
+        output: formatter.format([result])
+    };
 };
 
 const executeOnFiles = async ({
@@ -80,7 +86,13 @@ const executeOnFiles = async ({
         color: options.color,
         formatterName: options.formatter
     });
-    return formatter.format(results);
+    const hasErrorAtLeastOne = results.some(result => {
+        return hasErrorMessage(result);
+    });
+    return {
+        ok: !hasErrorAtLeastOne,
+        output: formatter.format(results)
+    };
 };
 
 /**

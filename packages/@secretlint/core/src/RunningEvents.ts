@@ -63,8 +63,8 @@ Duplicated rule.id is something wrong in .secretlintrc.
             context: SecretLintRulePresetContext;
         }) {
             // Normalized Rule Preset Options
-            const ruleCreatorOptions = descriptorRulePreset.options || [];
-            descriptorRulePreset.rule.create(context, ruleCreatorOptions);
+            const rulePresetCreatorOptions = descriptorRulePreset.options || [];
+            descriptorRulePreset.rule.create(context, rulePresetCreatorOptions);
         },
         emitFile(source: SecretLintSourceCode) {
             return contextEvents.emit(FILE_HANDLE, source);

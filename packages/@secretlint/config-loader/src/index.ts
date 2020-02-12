@@ -60,12 +60,17 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
             rules.push({
                 id: configDescriptorRule.id,
                 rule: moduleInterop(require(moduleFilePath)),
-                ...(configDescriptorRule.options !== undefined
+                ...("rules" in configDescriptorRule
+                    ? {
+                          rules: configDescriptorRule.rules
+                      }
+                    : {}),
+                ...("options" in configDescriptorRule
                     ? {
                           options: configDescriptorRule.options
                       }
                     : {}),
-                ...(configDescriptorRule.disabled !== undefined
+                ...("disabled" in configDescriptorRule
                     ? {
                           disabled: configDescriptorRule.disabled
                       }
