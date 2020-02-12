@@ -2,7 +2,7 @@
     "filePath": "[SNAPSHOT]/AWS Access Key ID/input",
     "messages": [
         {
-            "message": "found AWS Access Key ID: AKIAIOSFODNN7EXAMPLE",
+            "message": "found AWS Access Key ID: AKIAIOSFODNN7SECRETS",
             "range": [
                 27,
                 47
@@ -20,7 +20,7 @@
             },
             "severity": "error",
             "data": {
-                "ID": "AKIAIOSFODNN7EXAMPLE"
+                "ID": "AKIAIOSFODNN7SECRETS"
             }
         }
     ]

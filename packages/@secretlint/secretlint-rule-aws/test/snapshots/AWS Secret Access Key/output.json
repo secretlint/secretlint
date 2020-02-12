@@ -20,7 +20,7 @@
             },
             "severity": "error",
             "data": {
-                "key": "AWS_SECRET_ACCESS_KEY = wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+                "key": "AWS_SECRET_ACCESS_KEY = wJalrXUtnFEMI/K7MDENG/bPxRfiCYSECRETSKEY"
             }
         }
     ]

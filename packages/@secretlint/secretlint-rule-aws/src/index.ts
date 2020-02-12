@@ -12,6 +12,14 @@ export interface Options {
     allows?: string[];
 }
 
+/**
+ * These should be ignored by default, because these are used in AWS example.
+ * https://docs.aws.amazon.com/ja_jp/general/latest/gr/aws-access-keys-best-practices.html
+ */
+export const BUILTIN_IGNORED = {
+    AWSAccountID: ["AKIAIOSFODNN7EXAMPLE"],
+    AWSSecretAccessKey: ["wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"]
+};
 export const messages = {
     AWSAccountID: {
         en: "found AWS Account ID: {{ID}}",
@@ -54,13 +62,17 @@ const reportAWSAccessKey = ({
     options: Required<Options>;
 }) => {
     // AWS Access Key ID
-    // Example) AKIAIOSFODNN7EXAMPLE
+    // Example) AKIAIOSFODNN7SECRETS
     const AWSAccessKeyIDPattern = /(A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}/g;
     const results = matchAll(source.content, AWSAccessKeyIDPattern);
     for (const result of results) {
         const index = result.index || 0;
         const match = result[0] || "";
         const range = [index, index + match.length];
+        // Built-in ignore
+        if (BUILTIN_IGNORED.AWSAccountID.includes(match)) {
+            continue;
+        }
         const allowedResults = matchPatterns(match, options.allows);
         if (allowedResults.length > 0) {
             continue;
@@ -93,6 +105,10 @@ const reportAWSSecretAccessKey = ({
         const index = result.index || 0;
         const match = result[0] || "";
         const range = [index, index + match.length];
+        // Built-in ignored
+        if (BUILTIN_IGNORED.AWSSecretAccessKey.includes(match)) {
+            continue;
+        }
         const allowedResults = matchPatterns(match, options.allows);
         if (allowedResults.length > 0) {
             continue;

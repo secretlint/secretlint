@@ -22,8 +22,8 @@
     "lib/",
     "src/"
   ],
-  "main": "lib/secretlint-rule-preset-recommend.js",
-  "types": "lib/secretlint-rule-preset-recommend.d.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "test"
