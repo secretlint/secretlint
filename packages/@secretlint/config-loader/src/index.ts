@@ -85,10 +85,10 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
             const ruleModule: any = replacedDefinition
                 ? replacedDefinition.rule
                 : moduleInterop(require(moduleResolver.resolveRulePackageName(configDescriptorRule.id)));
-            const secretLintConfigDescriptorRules: SecretLintCoreDescriptorRule[] =
+            const secretLintConfigDescriptorRules: SecretLintCoreDescriptorRule[] | undefined =
                 "rules" in configDescriptorRule && Array.isArray(configDescriptorRule.rules)
                     ? (configDescriptorRule.rules.filter(rule => rule !== undefined) as SecretLintCoreDescriptorRule[])
-                    : [];
+                    : undefined;
             rules.push({
                 id: configDescriptorRule.id,
                 rule: ruleModule,
