@@ -92,7 +92,11 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
             rules.push({
                 id: configDescriptorRule.id,
                 rule: ruleModule,
-                rules: secretLintConfigDescriptorRules,
+                ...(secretLintConfigDescriptorRules
+                    ? {
+                          rules: secretLintConfigDescriptorRules
+                      }
+                    : {}),
                 ...("options" in configDescriptorRule
                     ? {
                           options: configDescriptorRule.options
