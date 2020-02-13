@@ -10,7 +10,15 @@ Install with [npm](https://www.npmjs.com/):
 
 ## Usage
 
-- [ ] Write usage instructions
+```ts
+import { validate } from "@secretlint/config-validator";
+import fs from "fs";
+const secretlintrc = require("./.secretlintrc.json");
+const { ok, error } = validate(secretlintrc);
+if (!ok) {
+  console.error(error);
+}
+```
 
 ## Changelog
 
