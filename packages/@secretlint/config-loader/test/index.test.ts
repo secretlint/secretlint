@@ -36,4 +36,19 @@ describe("@secretlint/config-loader", function() {
             assert.strictEqual(config.errors.length, 1);
         }
     });
+    it("should return errors if .secretlintrc.json is invalid format", () => {
+        const config = loadConfig({
+            cwd: path.join(__dirname, "fixtures/invalid-config")
+        });
+        assert.strictEqual(config.ok, false);
+        if (!config.ok) {
+            assert.strictEqual(config.errors.length, 1);
+            assert.ok(
+                config.errors[0].message.includes(
+                    `secretlintrc.rules[0] should have required property 'id', secretlintrc.rules[0] should have required property 'id', secretlintrc.rules[0] should match some schema in anyOf`
+                ),
+                config.errors[0].message
+            );
+        }
+    });
 });

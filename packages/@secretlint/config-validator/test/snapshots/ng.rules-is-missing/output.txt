@@ -1,0 +1,3 @@
+secretlintrc should have required property 'rules'
+
+{}

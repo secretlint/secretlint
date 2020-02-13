@@ -5,7 +5,9 @@ export type SecretLintConfigDescriptorRule<Options = SecretLintRuleCreatorOption
     /**
      * **Required**
      * Rule id that is package name or shorten package name
-     * For example, "secretlint-rule-example" or "example"(shorten)
+     * Examples
+     * - "@scope/secretlint-rule-example" or "@scope/example"(shorten)
+     * - "secretlint-rule-example" or "example"(shorten)
      */
     id: string;
     /**
@@ -28,12 +30,15 @@ export type SecretLintConfigDescriptorRule<Options = SecretLintRuleCreatorOption
 export type SecretLintConfigDescriptorRulePreset<Options = SecretLintRulePresetCreatorOptions> = {
     /**
      * **Required**
-     * Rule id that is package name or shorten package name
-     * For example, "secretlint-rule-example" or "example"(shorten)
-     */
+     * Rule Preset id that is package name or shorten package name
+     * Examples
+     * - "@scope/secretlint-rule-preset-example" or "@scope/preset-example"(shorten)
+     * - "secretlint-rule-preset-example" or "preset-example"(shorten)
+     **/
     id: string;
     /**
      * Rule options
+     * See each rule documentation
      * Default: {} (empty object)
      */
     options?: Options;
@@ -44,6 +49,12 @@ export type SecretLintConfigDescriptorRulePreset<Options = SecretLintRulePresetC
     disabled?: boolean;
     /**
      * Preset's rule definitions
+     * rules is an array of rule definition
+     * Example
+     * {
+     *     "id": "preset"
+     *     "rules": [{ "id": "example", "options": {}]}
+     * }
      */
     rules?: SecretLintConfigDescriptorRule[];
     // DEBUG USAGE

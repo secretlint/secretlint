@@ -8,6 +8,7 @@ import {
 } from "@secretlint/types";
 import { SecretLintModuleResolver } from "./SecretLintModuleResolver";
 import { moduleInterop } from "@textlint/module-interop";
+import { validate } from "@secretlint/config-validator";
 
 export type SecretLintConfigLoaderOptions = {
     cwd?: string;
@@ -66,6 +67,13 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
         return {
             ok: false,
             errors: rawResult.errors
+        };
+    }
+    const result = validate(rawResult.config);
+    if (!result.ok) {
+        return {
+            ok: false,
+            errors: [result.error]
         };
     }
     // Search secretlint's module
