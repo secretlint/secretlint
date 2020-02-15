@@ -11,6 +11,7 @@ export {
     SecretLintCoreDescriptorRule,
     SecretLintCoreDescriptorRulePreset
 } from "./SecretLintCore";
+export { SecretLintRuleSeverityLevel } from "./SecretLintRuleSeverityLevel";
 // Rule interface
 export {
     SecretLintRuleIgnoreDescriptor,

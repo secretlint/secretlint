@@ -61,6 +61,7 @@
     "ts-node": "^8.6.2",
     "ts-node-test-register": "^8.0.1",
     "typescript": "^3.7.5",
-    "@secretlint/secretlint-rule-example": "^1.0.0"
+    "@secretlint/secretlint-rule-example": "^1.0.0",
+    "@secretlint/secretlint-rule-preset-recommend": "^1.0.0"
   }
 }

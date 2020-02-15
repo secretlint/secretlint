@@ -1,5 +1,6 @@
 import { SecretLintRuleCreator, SecretLintRuleCreatorOptions } from "./SecretLintRule";
 import { SecretLintRulePresetCreator, SecretLintRulePresetCreatorOptions } from "./SecretLintRulePreset";
+import { SecretLintRuleSeverityLevel } from "./SecretLintRuleSeverityLevel";
 
 export type SecretLintConfigDescriptorRule<Options = SecretLintRuleCreatorOptions> = {
     /**
@@ -11,15 +12,21 @@ export type SecretLintConfigDescriptorRule<Options = SecretLintRuleCreatorOption
      */
     id: string;
     /**
-     * Rule options
+     * Rule options.
+     * This value is defined by each rules.
      * Default: {} (empty object)
      */
     options?: Options;
     /**
-     * Disable the rule
+     * If true, Disable the rule.
      * Default: false
      */
     disabled?: boolean;
+    /**
+     * Severity level for the rule.
+     * Default: "error"
+     */
+    severity?: SecretLintRuleSeverityLevel;
     // DEBUG USAGE
     /**
      * FOR DEBUG

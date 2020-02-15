@@ -5,6 +5,7 @@ import { loadConfig } from "@secretlint/config-loader";
 import { createFormatter } from "@secretlint/formatter";
 import { SecretLintCoreDescriptor, SecretLintCoreResult } from "@secretlint/types";
 
+const debug = require("debug")("@secretlint/node");
 const readFile = utils.promisify(fs.readFile);
 export type SecretLintEngineOptions = {
     /**
@@ -108,6 +109,8 @@ export const createEngine = async (options: SecretLintEngineOptions) => {
     if (!loadedResult.ok) {
         throw new Error(loadedResult.errors.map(error => error.stack).join("\n\n"));
     }
+    debug("ConfigFilePath: %s", loadedResult.configFilePath);
+    debug("Config: %O", loadedResult.config);
     return {
         /**
          * Lint a content and return the formatted results
@@ -115,6 +118,8 @@ export const createEngine = async (options: SecretLintEngineOptions) => {
          * @param filePath
          */
         executeOnContent: ({ content, filePath }: { content: string; filePath: string }) => {
+            debug("content: %s", content);
+            debug("filePath: %s", filePath);
             return executeOnContent({
                 content,
                 filePath,
@@ -127,6 +132,7 @@ export const createEngine = async (options: SecretLintEngineOptions) => {
          * @param filePathList
          */
         executeOnFiles: ({ filePathList }: { filePathList: string[] }) => {
+            debug("filePathLList: %O", filePathList);
             return executeOnFiles({
                 filePathList,
                 config: loadedResult.config,

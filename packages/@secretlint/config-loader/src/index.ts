@@ -110,6 +110,11 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
                           options: configDescriptorRule.options
                       }
                     : {}),
+                ...("severity" in configDescriptorRule
+                    ? {
+                          severity: configDescriptorRule.severity
+                      }
+                    : {}),
                 ...("disabled" in configDescriptorRule
                     ? {
                           disabled: configDescriptorRule.disabled

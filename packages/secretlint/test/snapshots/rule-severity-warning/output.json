@@ -2,14 +2,14 @@
     "exitStatus": 1,
     "stdout": [
         {
-            "filePath": "[SNAPSHOT]/--format=json/input.txt",
+            "filePath": "[SNAPSHOT]/rule-severity-warning/input.txt",
             "messages": [
                 {
                     "ruleId": "@secretlint/secretlint-rule-example",
                     "index": 8,
                     "line": 1,
                     "column": 8,
-                    "severity": 2,
+                    "severity": 1,
                     "message": "found secret: SECRET",
                     "data": {
                         "ID": "SECRET"

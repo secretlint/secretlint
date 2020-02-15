@@ -7,6 +7,7 @@ import {
 } from "./SecretLintRule";
 import { SecretLintSourceNodeLocation } from "./SecretLintSource";
 import { SecretLintRulePresetCreator, SecretLintRulePresetCreatorOptions } from "./SecretLintRulePreset";
+import { SecretLintRuleSeverityLevel } from "./SecretLintRuleSeverityLevel";
 
 export type SecretLintCoreDescriptorRule<Options = SecretLintRuleCreatorOptions> = {
     /**
@@ -23,6 +24,11 @@ export type SecretLintCoreDescriptorRule<Options = SecretLintRuleCreatorOptions>
      * Default: {} (empty object)
      */
     options?: Options;
+    /**
+     * Severity level for the rule.
+     * Default: "error"
+     */
+    severity?: SecretLintRuleSeverityLevel;
     /**
      * Disable the rule
      * Default: false
@@ -73,7 +79,7 @@ export type SecretLintCoreResultMessage = {
     message: string;
     range: number[];
     loc: SecretLintSourceNodeLocation;
-    severity: "info" | "warning" | "error";
+    severity: SecretLintRuleSeverityLevel;
     data?: {};
 };
 export type SecretLintCoreReportDescriptor = {

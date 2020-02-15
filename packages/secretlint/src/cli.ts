@@ -53,10 +53,13 @@ export const cli = meow(
     }
 );
 
-export const run = (input = cli.input, flags = cli.flags) => {
+export const run = (
+    input = cli.input,
+    flags = cli.flags
+): Promise<{ exitStatus: number; stdout: string | null; stderr: Error | null }> => {
     const cwd = flags.cwd;
-    debug("input: %o", input);
-    debug("flags: %o", flags);
+    debug("input: %O", input);
+    debug("flags: %O", flags);
     return runSecretLint({
         cliOptions: {
             cwd,

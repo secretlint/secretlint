@@ -23,6 +23,7 @@ export const lintSource = (
     const runningEvents = createRunningEvents();
     const messages: SecretLintCoreResultMessage[] = [];
     contextEvents.onReport(message => {
+        console.log("message", message);
         messages.push(message);
     });
     // setup
@@ -79,8 +80,7 @@ export const registerRule = ({
     // If option is not defined Options is {} by default
     if (isRulePreset(descriptorRule)) {
         const context = createRulePresetContext({
-            rules: descriptorRule.rules,
-            rulePresetId: descriptorRule.id,
+            descriptorRulePreset: descriptorRule,
             sourceCode,
             contextEvents: contextEvents,
             runningEvents: runningEvents,
@@ -94,6 +94,7 @@ export const registerRule = ({
     } else if (isRule(descriptorRule)) {
         const context = createRuleContext({
             ruleId: ruleId,
+            severity: descriptorRule.severity,
             sourceCode,
             contextEvents: contextEvents,
             sharedOptions: options

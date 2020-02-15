@@ -1,5 +1,10 @@
 {
     "exitStatus": 0,
-    "stdout": "",
+    "stdout": [
+        {
+            "filePath": "[SNAPSHOT]/valid/input.txt",
+            "messages": []
+        }
+    ],
     "stderr": null
 }
