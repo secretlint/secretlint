@@ -23,7 +23,6 @@ export const lintSource = (
     const runningEvents = createRunningEvents();
     const messages: SecretLintCoreResultMessage[] = [];
     contextEvents.onReport(message => {
-        console.log("message", message);
         messages.push(message);
     });
     // setup
