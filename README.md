@@ -96,6 +96,7 @@ Example, `@secretlint/secretlint-rule-example` has `allows` options, but the rul
 
 Secretlint rules are implemented as separated modules.
 
+- [@secretlint/secretlint-rule-npm](./packages/@secretlint/secretlint-rule-npm)
 - [@secretlint/secretlint-rule-aws](./packages/@secretlint/secretlint-rule-aws)
 - [@secretlint/secretlint-rule-privatekey](./packages/@secretlint/secretlint-rule-privatekey)
 
