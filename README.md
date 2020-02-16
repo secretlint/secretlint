@@ -63,9 +63,9 @@ In it, you'll see some rules configured like this:
 }
 ```
 
-The `id` property is the name secretlint rule package. 
+The `id` property is the name of secretlint rule package. 
 
-Secretlint does not built-in rule.
+Secretlint does not have built-in rule.
 You want to add some rule and You should **install** the package and **add** the rule to `.secretlintrc` file.
 
 
