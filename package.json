@@ -36,7 +36,7 @@
     "updateSnapshot": "UPDATE_SNAPSHOT=1 lerna run test",
     "test": "lerna run test",
     "secretlint": "secretlint \"**/*\"",
-    "ci": "npm run build && npm run test",
+    "ci": "npm run build && npm run test && npm run secretlint",
     "clean": "lerna run clean",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\""
   },

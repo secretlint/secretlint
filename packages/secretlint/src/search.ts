@@ -4,6 +4,7 @@ import path from "path";
 
 const debug = require("debug")("secretlint");
 const DEFAULT_IGNORE_PATTERNS = Object.freeze([
+    "**/.git/**",
     "**/node_modules/**",
     "**/.secretlintrc*/**",
     "**/.secretlintignore*/**"
