@@ -20,17 +20,81 @@ Secretlint is pluggable linting tool to prevent commit secret/credential file.
     - We also need to custom plugin by user
 		- See [Bring-your own-plugins (BYOP), via --custom-plugins option by KevinHock · Pull Request #255 · Yelp/detect-secrets](https://github.com/Yelp/detect-secrets/pull/255)
 
-## Installation
+## Installation and Usage
 
-Install with [npm](https://www.npmjs.com/):
+**Prerequisites:** Secretlint is written by JavaScript. It require [Node.js 10+](https://nodejs.org/).
+
+You can install Secretlint using [npm](https://www.npmjs.com/):
 
 ```
 npm install secretlint @secretlint/secretlint-rule-preset-recommend --save-dev
 ```
 
-## Usage
+You should then set up a configuration file:
 
-## Rules
+```
+npx secretlint --init
+# create `.secretlintrc.json`
+```
+
+After that, you can run Secretlint on any file or directory like this:
+
+```
+secretlint "**/*"
+```
+
+:memo: Secretlint support [glob pattern](https://github.com/mrmlnc/fast-glob#basic-syntax) and glob pattern should be wrapped by double quote.
+
+It is also possible to install Secretlint globally using `npm install --global`. But, We do not recommended it, some rules may be broken in globally.
+
+## Configuration
+
+Secretlint has a configuration file `.secretlintrc.{json,yml,js}`.
+
+After running `secretlint --init`, you'll have a `.secretlintrc.json` file in your directory
+
+In it, you'll see some rules configured like this:
+
+```json
+{
+  "rules": [
+    {
+      "id": "@secretlint/secretlint-rule-preset-recommend"
+    }
+  ]
+}
+```
+
+The `id` property is the name secretlint rule package. 
+
+Secretlint does not built-in rule.
+You want to add some rule and You should **install** the package and **add** the rule to `.secretlintrc` file.
+
+
+Each rule has same configuration pattern
+
+- `options`: Option definition for the rule. For more details, see each rule documentation
+- `disabled`: If `disabled` is `true`, disable the rule
+
+Example, `@secretlint/secretlint-rule-example` has `allows` options, but the rule is disabled.
+
+```json
+{
+  "rules": [
+    {
+      "id": "@secretlint/secretlint-rule-example",
+      "options": {
+        "allows": [
+          "/dummy_secret/i"
+        ]
+      },
+      "disabled": true
+    }
+  ]
+}
+```
+
+## Rule Packages
 
 Secretlint rules are implemented as separated modules.
 
