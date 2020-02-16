@@ -1,0 +1,27 @@
+{
+    "filePath": "[SNAPSHOT]/package.json-has-x-oauth-basic/package.json",
+    "messages": [
+        {
+            "message": "found GitHub Token: 111da111qqqq309bqq562159952c2c2a11111a1",
+            "range": [
+                175,
+                214
+            ],
+            "ruleId": "@secretlint/secretlint-rule-npm",
+            "loc": {
+                "start": {
+                    "line": 8,
+                    "column": 26
+                },
+                "end": {
+                    "line": 8,
+                    "column": 65
+                }
+            },
+            "severity": "error",
+            "data": {
+                "TOKEN": "111da111qqqq309bqq562159952c2c2a11111a1"
+            }
+        }
+    ]
+}

@@ -10,7 +10,14 @@ Install with [npm](https://www.npmjs.com/):
 
 ## Usage
 
-- [ ] Write usage instructions
+
+    Usage
+      $ secretlint-rule-messages-to-markdown [index.js|index.ts]
+ 
+    Options
+ 
+    Examples
+      $ secretlint-rule-messages-to-markdown src/index.ts
 
 ## Changelog
 

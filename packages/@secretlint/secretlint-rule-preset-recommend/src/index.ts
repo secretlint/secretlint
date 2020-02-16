@@ -1,8 +1,9 @@
 import { SecretLintRulePresetCreator } from "@secretlint/types";
 import ruleAWS from "@secretlint/secretlint-rule-aws";
 import rulePrivateKey from "@secretlint/secretlint-rule-privatekey";
+import ruleNpm from "@secretlint/secretlint-rule-npm";
 
-export const rules = [ruleAWS, rulePrivateKey];
+export const rules = [ruleAWS, rulePrivateKey, ruleNpm];
 export type Options = {};
 
 export const creator: SecretLintRulePresetCreator<Options> = {

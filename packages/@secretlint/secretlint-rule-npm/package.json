@@ -1,13 +1,13 @@
 {
-  "name": "@secretlint/secretlint-rule-preset-recommend",
+  "name": "@secretlint/secretlint-rule-npm",
   "version": "1.0.0",
-  "description": "Recommended rule preset of secretlint.",
+  "description": "A secretlint rule for npm.",
   "keywords": [
+    "npm",
     "secretlint",
-    "rule",
-    "rule-preset"
+    "rule"
   ],
-  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-preset-recommend/",
+  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-npm/",
   "bugs": {
     "url": "https://github.com/secretlint/secretlint/issues"
   },
@@ -42,14 +42,9 @@
     "singleQuote": false,
     "tabWidth": 4
   },
-  "dependencies": {
-    "@secretlint/secretlint-rule-aws": "^1.0.0",
-    "@secretlint/secretlint-rule-privatekey": "^1.0.0",
-    "@secretlint/secretlint-rule-npm": "^1.0.0"
-  },
   "devDependencies": {
     "@types/mocha": "^7.0.1",
-    "@types/node": "^13.7.0",
+    "@types/node": "^13.7.1",
     "cross-env": "^7.0.0",
     "mocha": "^7.0.1",
     "prettier": "^1.19.1",

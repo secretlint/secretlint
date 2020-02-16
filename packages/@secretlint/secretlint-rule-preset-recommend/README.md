@@ -35,7 +35,7 @@ Via `.secretlintrc.json`
                 {
                      "id": "@secretlint/secretlint-rule-aws",
                      "options": {
-                          "allows": ["ok"]
+                          "allows": ["allowed token"]
                      }
                 }
             ]
@@ -46,6 +46,7 @@ Via `.secretlintrc.json`
 
 ## Rules
 
+- [@secretlint/secretlint-rule-npm](https://www.npmjs.com/package/@secretlint/secretlint-rule-npm)
 - [@secretlint/secretlint-rule-aws](https://www.npmjs.com/package/@secretlint/secretlint-rule-aws)
 - [@secretlint/secretlint-rule-privatekey](https://www.npmjs.com/package/@secretlint/secretlint-rule-privatekey)
 

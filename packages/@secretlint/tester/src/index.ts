@@ -5,18 +5,34 @@ import { lintSource } from "@secretlint/core";
 import { loadConfig } from "@secretlint/config-loader";
 import { SecretLintCoreDescriptor, SecretLintUnionRuleCreator } from "@secretlint/types";
 
+const canResolve = (filePath: string): boolean => {
+    try {
+        require.resolve(filePath);
+        return true;
+    } catch {
+        return false;
+    }
+};
 export type SnapshotOptions = {
     snapshotDirectory: string;
     defaultConfig: SecretLintCoreDescriptor;
     testDefinitions?: {
         id: string;
         rule: SecretLintUnionRuleCreator;
-    }[]
+    }[];
     /**
      * Update snapshot if the options is true
      * Exception, process.env.UPDATE_SNAPSHOT=1 force turn on this option.
-     */;
+     */
     updateSnapshot: boolean;
+};
+/**
+ * Each test case options
+ *
+ * If <test-case>/options.js, use it
+ */
+export type SecretLintTestCaseOptions = {
+    inputFilePath?: string;
 };
 const createSnapshotRepalcer = (options: SnapshotOptions) => {
     return (key: string, value: any) => {
@@ -51,8 +67,16 @@ export const snapshot = (options: SnapshotOptions) => {
                 const normalizedTestName = caseName.replace(/[-_]/g, " ");
                 handler(normalizedTestName, async () => {
                     const fixtureDir = path.join(fixturesDir, caseName);
-                    const actualFilePath = path.join(fixtureDir, "input");
                     const secretlintrcFilePath = path.join(fixtureDir, ".secretlintrc.json");
+                    const secretlintTestCaseOptionsFilePath = path.join(fixtureDir, "options");
+                    const secretlintTestCaseOptions: SecretLintTestCaseOptions = canResolve(
+                        secretlintTestCaseOptionsFilePath
+                    )
+                        ? require(secretlintTestCaseOptionsFilePath).options
+                        : {};
+                    const actualFilePath = secretlintTestCaseOptions.inputFilePath
+                        ? path.resolve(fixtureDir, secretlintTestCaseOptions.inputFilePath)
+                        : path.join(fixtureDir, "input");
                     const loadedConfig = await (secretlintrcFilePath
                         ? loadConfig({
                               configFilePath: secretlintrcFilePath,
