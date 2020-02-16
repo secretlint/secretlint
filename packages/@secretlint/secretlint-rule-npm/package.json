@@ -42,6 +42,10 @@
     "singleQuote": false,
     "tabWidth": 4
   },
+  "dependencies": {
+    "@secretlint/types": "^0.1.0",
+    "@textlint/regexp-string-matcher": "^1.1.0"
+  },
   "devDependencies": {
     "@types/mocha": "^7.0.1",
     "@types/node": "^13.7.1",
