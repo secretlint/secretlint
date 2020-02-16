@@ -114,7 +114,7 @@ This can prevent to commit secret data by linting with Secretlint.
 
 #### [Husky](https://github.com/typicode/husky) + [lint-staged](https://github.com/okonet/lint-staged)
 
-Install Husky](https://github.com/typicode/husky) and [lint-staged](https://github.com/okonet/lint-staged):
+Install [Husky](https://github.com/typicode/husky) and [lint-staged](https://github.com/okonet/lint-staged):
 
 ```
 npm install husky lint-staged --save-dev
