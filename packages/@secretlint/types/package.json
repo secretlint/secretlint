@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/types",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "A typing package for @secretlint",
   "keywords": [
     "secretlint"
@@ -48,8 +48,8 @@
     "rimraf": "^3.0.1",
     "ts-node": "^8.6.2",
     "ts-node-test-register": "^8.0.1",
-    "typescript": "^3.7.5",
-    "tsd": "^0.11.0"
+    "tsd": "^0.11.0",
+    "typescript": "^3.7.5"
   },
   "publishConfig": {
     "access": "public"

@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/config-validator",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": ".secretlintrc config validation library",
   "keywords": [
     "secretlint",
@@ -48,6 +48,7 @@
     "ajv": "^6.11.0"
   },
   "devDependencies": {
+    "@deps/traverse": "^1.0.2",
     "@types/mocha": "^7.0.1",
     "@types/node": "^13.7.1",
     "cross-env": "^7.0.0",
@@ -57,8 +58,7 @@
     "ts-node": "^8.6.2",
     "ts-node-test-register": "^8.0.1",
     "typescript": "^3.7.5",
-    "typescript-json-validator": "^2.4.1",
-    "@deps/traverse": "^1.0.2"
+    "typescript-json-validator": "^2.4.1"
   },
   "publishConfig": {
     "access": "public"

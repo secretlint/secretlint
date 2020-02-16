@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-preset-recommend",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Recommended rule preset of secretlint.",
   "keywords": [
     "secretlint",
@@ -43,9 +43,9 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/secretlint-rule-aws": "^1.0.0",
-    "@secretlint/secretlint-rule-privatekey": "^1.0.0",
-    "@secretlint/secretlint-rule-npm": "^1.0.0"
+    "@secretlint/secretlint-rule-aws": "^0.1.0",
+    "@secretlint/secretlint-rule-npm": "^0.1.0",
+    "@secretlint/secretlint-rule-privatekey": "^0.1.0"
   },
   "devDependencies": {
     "@types/mocha": "^7.0.1",
