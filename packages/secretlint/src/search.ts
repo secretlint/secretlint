@@ -36,7 +36,7 @@ const mapGitIgnorePatternTo = (base: string) => (ignore: string) => {
  * @param patterns
  * @param options
  */
-export const searchFiles = (patterns: string[], options: SearchFilesOptions) => {
+export const searchFiles = async (patterns: string[], options: SearchFilesOptions) => {
     const ignoredPatterns = [];
     ignoredPatterns.push(...DEFAULT_IGNORE_PATTERNS);
     if (options.ignoreFilePath) {
@@ -55,10 +55,30 @@ export const searchFiles = (patterns: string[], options: SearchFilesOptions) => 
     }
     debug("search patterns: %o", patterns);
     debug("search ignore patterns: %o", ignoredPatterns);
-    return globby(patterns, {
+    const searchResultItems = await globby(patterns, {
         cwd: options.cwd,
         ignore: ignoredPatterns,
-        dot: true,
-        absolute: true
+        dot: true
     });
+    if (searchResultItems.length > 0) {
+        return {
+            ok: true,
+            items: searchResultItems
+        };
+    }
+    /**
+     * If globby result with ignoring is empty and globby result is not empty, Secretlint suppress "not found target file" error.
+     * It is valid case.
+     */
+    const isEmptyResultIsHappenByIgnoring =
+        (
+            await globby(patterns, {
+                cwd: options.cwd,
+                dot: true
+            })
+        ).length > 0;
+    return {
+        ok: isEmptyResultIsHappenByIgnoring,
+        items: []
+    };
 };
