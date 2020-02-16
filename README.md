@@ -5,8 +5,7 @@ Secretlint is pluggable linting tool to prevent commit secret/credential file.
 ## Purpose
 
 - Scan files and if the file has secret and report it
-- Prevent to commit secret/credential files
-- Fix invalid  file?
+- Prevent to commit credential files
 
 ## Motivation
 
@@ -40,7 +39,7 @@ npx secretlint --init
 After that, you can run Secretlint on any file or directory like this:
 
 ```
-secretlint "**/*"
+npx secretlint "**/*"
 ```
 
 :memo: Secretlint support [glob pattern](https://github.com/mrmlnc/fast-glob#basic-syntax) and glob pattern should be wrapped by double quote.
