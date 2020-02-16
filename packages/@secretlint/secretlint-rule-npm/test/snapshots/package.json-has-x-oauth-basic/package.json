@@ -4,7 +4,7 @@
   "description": "user library",
   "main": "src/index.js",
   "dependencies": {
-    "lodash": "4.17.11",
+    "lodash": "4.17.15",
     "maelstrom-hub": "git+https://111da111qqqq309bqq562159952c2c2a11111a1:x-oauth-basic@github.com/example/example.git#v1.0.0"
   }
 }
