@@ -79,11 +79,8 @@ const executeOnFiles = async ({
     config: SecretLintCoreDescriptor;
     options: SecretLintEngineOptions;
 }) => {
-    const now = Date.now();
     const resultPromises = filePathList.map(filePath => {
-        return lintFile(filePath, config).finally(() => {
-            console.log(`${filePath} taken ${Date.now() - now}ms`);
-        });
+        return lintFile(filePath, config);
     });
     const results = await Promise.all(resultPromises);
     const formatter = createFormatter({
