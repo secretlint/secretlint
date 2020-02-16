@@ -6,7 +6,8 @@ const debug = require("debug")("secretlint");
 const DEFAULT_IGNORE_PATTERNS = Object.freeze([
     "**/.git/**",
     "**/node_modules/**",
-    "**/.secretlintrc*/**",
+    "**/.secretlintrc/**",
+    "**/.secretlintrc.{json,yaml,yml,js}/**",
     "**/.secretlintignore*/**"
 ]);
 export type SearchFilesOptions = {

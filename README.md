@@ -15,17 +15,32 @@ Secretlint is pluggable linting tool to prevent commit secret/credential file.
 	- Secretlint want to install for a project and customize setting per project.
 - [repo-security-scanner](https://github.com/UKHomeOffice/repo-security-scanner), [Gitleaks](https://github.com/zricethezav/gitleaks) and [truffleHog](https://github.com/dxa4481/truffleHog) is good scan tools
 	- We need to flexible customize that include ignore by comment, ignore like gitinore
-- [detect-secrets](https://github.com/Yelp/detect-secrets) is similar tools, but it apply opt-out approach
-	- If you want to disable plugin, use `--no-<plugin>`
-	    - Secretlint adopt opt-in approach  
-    - We need to custom plugin by user
+- [detect-secrets](https://github.com/Yelp/detect-secrets) is similar tools, but it adopt opt-out approach
+    - Secretlint adopt opt-in approach  
+    - We also need to custom plugin by user
 		- See [Bring-your own-plugins (BYOP), via --custom-plugins option by KevinHock · Pull Request #255 · Yelp/detect-secrets](https://github.com/Yelp/detect-secrets/pull/255)
+
+## Installation
+
+Install with [npm](https://www.npmjs.com/):
+
+```
+npm install secretlint @secretlint/secretlint-rule-preset-recommend --save-dev
+```
 
 ## Usage
 
-We need to your contribution!
+## Rules
 
-- <https://github.com/secretlint/secretlint/issues>
+Secretlint rules are implemented as separated modules.
+
+- [@secretlint/secretlint-rule-aws](./packages/@secretlint/secretlint-rule-aws)
+- [@secretlint/secretlint-rule-privatekey](./packages/@secretlint/secretlint-rule-privatekey)
+
+Also, Secretlint provide rule preset that package some rule set.
+
+- [@secretlint/secretlint-rule-preset-recommend](./packages/@secretlint/secretlint-rule-preset-recommend)
+    - Recommended rule set
 
 ## Architecture
 

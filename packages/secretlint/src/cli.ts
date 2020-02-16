@@ -1,5 +1,6 @@
 import meow from "meow";
 import { runSecretLint } from "./index";
+import { runConfigCreator } from "./create-secretlintrc";
 
 const debug = require("debug")("secretlint");
 export const cli = meow(
@@ -12,6 +13,7 @@ export const cli = meow(
       https://github.com/micromatch/micromatch#matching-features
  
     Options
+      --init setup config file. Create .secretlintrc.json file from your package.json
       --format formatter name. Default: stylish
       --output-file output file path that is written of reported result.
       --no-color disable color of output.
@@ -24,6 +26,9 @@ export const cli = meow(
 `,
     {
         flags: {
+            init: {
+                type: "boolean"
+            },
             format: {
                 type: "string",
                 default: "stylish"
@@ -60,6 +65,11 @@ export const run = (
     const cwd = flags.cwd;
     debug("input: %O", input);
     debug("flags: %O", flags);
+    if (flags.init) {
+        return runConfigCreator({
+            cwd
+        });
+    }
     return runSecretLint({
         cliOptions: {
             cwd,
