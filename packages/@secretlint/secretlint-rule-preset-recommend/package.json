@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-preset-recommend",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "Recommended rule preset of secretlint.",
   "keywords": [
     "secretlint",
@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "@secretlint/secretlint-rule-aws": "^0.1.0",
-    "@secretlint/secretlint-rule-npm": "^0.1.0",
+    "@secretlint/secretlint-rule-npm": "^0.1.2",
     "@secretlint/secretlint-rule-privatekey": "^0.1.0"
   },
   "devDependencies": {
