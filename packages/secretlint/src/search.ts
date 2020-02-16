@@ -69,7 +69,8 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
     /**
      * If globby result with ignoring is empty and globby result is not empty, Secretlint suppress "not found target file" error.
      * It is valid case.
-     * TODO: This has performance issue. we need to more reasonable mechanism.
+     * It aim to avoid error that is caused by ignore files and not found target file.
+     * TODO: This is also performance issue. we need to more reasonable mechanism.
      */
     const isEmptyResultIsHappenByIgnoring =
         (
