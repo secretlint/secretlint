@@ -33,7 +33,6 @@ You should then set up a configuration file:
 
 ```
 npx secretlint --init
-# create `.secretlintrc.json`
 ```
 
 After that, you can run Secretlint on any file or directory like this:
@@ -50,7 +49,7 @@ It is also possible to install Secretlint globally using `npm install --global`.
 
 Secretlint has a configuration file `.secretlintrc.{json,yml,js}`.
 
-After running `secretlint --init`, you'll have a `.secretlintrc.json` file in your directory
+After running `secretlint --init`, you'll have a `.secretlintrc.json` file in your directory.
 
 In it, you'll see some rules configured like this:
 
