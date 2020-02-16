@@ -106,6 +106,41 @@ Also, Secretlint provide rule preset that package some rule set.
 - [@secretlint/secretlint-rule-preset-recommend](./packages/@secretlint/secretlint-rule-preset-recommend)
     - Recommended rule set
 
+## Integration
+
+### Pre-commit Hook
+
+You can use Secretlint with a pre-commit tool.
+This can prevent to commit secret data by linting with Secretlint.
+
+#### [Husky](https://github.com/typicode/husky) + [lint-staged](https://github.com/okonet/lint-staged)
+
+Install Husky](https://github.com/typicode/husky) and [lint-staged](https://github.com/okonet/lint-staged):
+
+```
+npm install husky lint-staged --save-dev
+```
+
+Edit `package.json`:
+
+```json5
+{
+  // ...
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*": [
+      "secretlint"
+    ]
+  }
+}
+```
+
+This means that check each staged file by Secretlint before commit. 
+
 ## Architecture
 
 ### Opt-in instead of Opt-out
