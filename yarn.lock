@@ -37,6 +37,11 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
+"@deps/traverse@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@deps/traverse/-/traverse-1.0.2.tgz#1ac9e32621bfd7b3759968a3f60dcb5ac1fdd1ed"
+  integrity sha512-RuOq2J/yYJU24qtZwY41SHi84zhBT+U0AEQPMqjViH9Z9ohPcLR4/lYTkEMnR2y7RMVAdx2skOusBJGJrIXOJg==
+
 "@evocateur/libnpmaccess@^3.1.2":
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/@evocateur/libnpmaccess/-/libnpmaccess-3.1.2.tgz#ecf7f6ce6b004e9f942b098d92200be4a4b1c845"

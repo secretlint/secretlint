@@ -1,1 +1,3 @@
-OK
+preset-rule.rules[0] should have required property 'id'
+
+{ id: 'preset-rule', rules: [ { foo: true } ] }
