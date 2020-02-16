@@ -3,6 +3,11 @@ import fs from "fs";
 import path from "path";
 
 const debug = require("debug")("secretlint");
+const DEFAULT_IGNORE_PATTERNS = Object.freeze([
+    "**/node_modules/**",
+    "**/.secretlintrc*/**",
+    "**/.secretlintignore*/**"
+]);
 export type SearchFilesOptions = {
     cwd: string;
     ignoreFilePath?: string;
@@ -33,6 +38,7 @@ const mapGitIgnorePatternTo = (base: string) => (ignore: string) => {
  */
 export const searchFiles = (patterns: string[], options: SearchFilesOptions) => {
     const ignoredPatterns = [];
+    ignoredPatterns.push(...DEFAULT_IGNORE_PATTERNS);
     if (options.ignoreFilePath) {
         const baseDir = path.relative(options.cwd, path.dirname(options.ignoreFilePath));
         const normalizeIgnoreFilePath = path.resolve(options.cwd, options.ignoreFilePath);
@@ -52,6 +58,7 @@ export const searchFiles = (patterns: string[], options: SearchFilesOptions) => 
     return globby(patterns, {
         cwd: options.cwd,
         ignore: ignoredPatterns,
-        dot: true
+        dot: true,
+        absolute: true
     });
 };

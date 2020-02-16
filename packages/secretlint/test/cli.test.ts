@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import assert from "assert";
 import { cli, run } from "../src/cli";
+
 const fixturesDir = path.join(__dirname, "snapshots");
 const createSnapshotReplacer = () => {
     return (_key: string, value: any) => {
@@ -11,14 +12,30 @@ const createSnapshotReplacer = () => {
         return value;
     };
 };
-
+/**
+ *
+ * Update Snapshots
+ * - yarn run updateSnapshot
+ *
+ * File Overview
+ *
+ * - input.txt
+ * - options.ts
+ *   - exports inputs -> use inputs instead of input.txt
+ *   - exports options -> use options
+ * - .secretelintrc.json
+ *   - config file
+ * - output.json
+ *   - snapshot result
+ */
 describe("cli snapshot testing", function() {
     fs.readdirSync(fixturesDir).map(caseName => {
         it(`test ${caseName}`, async function() {
             const fixtureDir = path.join(fixturesDir, caseName);
             const actualFilePath = path.join(fixtureDir, "input.txt");
             const actualOptions = require(path.join(fixtureDir, "options.ts")).options;
-            const actual = await run([actualFilePath], {
+            const actualInputs = require(path.join(fixtureDir, "options.ts")).inputs;
+            const actual = await run(actualInputs ? actualInputs : [actualFilePath], {
                 ...cli.flags,
                 ...actualOptions,
                 cwd: fixtureDir,

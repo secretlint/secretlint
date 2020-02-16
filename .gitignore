@@ -155,3 +155,4 @@ fabric.properties
 
 /lib
 /packages/**/lib
+!/packages/secretlint/test/snapshots/node_modules-is-ignored-by-default/node_modules/
