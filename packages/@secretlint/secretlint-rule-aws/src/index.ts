@@ -172,7 +172,6 @@ export const creator: SecretLintRuleCreator<Options> = {
         const t = context.createTranslator(messages);
         return {
             file(source: SecretLintSourceCode) {
-                console.log(source, options);
                 reportAWSAccessKey({ t, source: source, context: context, options: normalizedOptions });
                 reportAWSSecretAccessKey({ t, source: source, context: context, options: normalizedOptions });
                 reportAWSAccountID({ t, source: source, context: context, options: normalizedOptions });
