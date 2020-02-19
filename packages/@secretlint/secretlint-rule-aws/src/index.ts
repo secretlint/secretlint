@@ -96,14 +96,14 @@ const reportAWSSecretAccessKey = ({
     context: SecretLintRuleContext;
     options: Required<Options>;
 }) => {
-    const AWS = "(AWS|aws|Aws)?_?";
-    const QUOTE = `("|')?`;
-    const CONNECT = "\\s*(:|=>|=)\\s*";
-    const AWSSecretPatten = regx`${QUOTE}${AWS}(SECRET|secret|Secret)?_?(ACCESS|access|Access)?_?(KEY|key|Key)${QUOTE}${CONNECT}${QUOTE}[A-Za-z0-9/\+=]{40}${QUOTE}`;
+    const AWS = "(?:AWS|aws|Aws)?_?";
+    const QUOTE = `(?:"|')?`;
+    const CONNECT = "\\s*(?::|=>|=)\\s*";
+    const AWSSecretPatten = regx`${QUOTE}${AWS}(?:SECRET|secret|Secret)?_?(?:ACCESS|access|Access)?_?(?:KEY|key|Key)${QUOTE}${CONNECT}${QUOTE}([A-Za-z0-9/\+=]{40})${QUOTE}`;
     const results = matchAll(source.content, AWSSecretPatten);
     for (const result of results) {
         const index = result.index || 0;
-        const match = result[0] || "";
+        const match = result[1] || "";
         const range = [index, index + match.length];
         // Built-in ignored
         if (BUILTIN_IGNORED.AWSSecretAccessKey.includes(match)) {
@@ -172,6 +172,7 @@ export const creator: SecretLintRuleCreator<Options> = {
         const t = context.createTranslator(messages);
         return {
             file(source: SecretLintSourceCode) {
+                console.log(source, options);
                 reportAWSAccessKey({ t, source: source, context: context, options: normalizedOptions });
                 reportAWSSecretAccessKey({ t, source: source, context: context, options: normalizedOptions });
                 reportAWSAccountID({ t, source: source, context: context, options: normalizedOptions });

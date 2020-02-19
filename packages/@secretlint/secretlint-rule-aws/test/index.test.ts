@@ -4,18 +4,24 @@ import rule from "../src/index";
 
 describe("Snapshot Testing", () => {
     snapshot({
+        testDefinitions: [
+            {
+                id: require("../package.json").name,
+                rule
+            }
+        ],
         defaultConfig: {
             rules: [
                 {
-                    id: "@secretlint/secretlint-rule-aws",
-                    rule,
-                    options: {}
+                    id: require("../package.json").name,
+                    rule
                 }
             ]
         },
         updateSnapshot: !!process.env.UPDATE_SNAPSHOT,
         snapshotDirectory: path.join(__dirname, "snapshots")
     }).forEach((name, test) => {
+        console.log("name", name);
         it(name, async function() {
             const status = await test();
             if (status === "skip") {
