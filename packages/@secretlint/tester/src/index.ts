@@ -14,8 +14,23 @@ const canResolve = (filePath: string): boolean => {
     }
 };
 export type SnapshotOptions = {
+    /**
+     * Snapshot directory
+     *
+     * Example: <snapshotDirectory>/{test-case-name}/
+     */
     snapshotDirectory: string;
+    /**
+     * Define default config for testing
+     */
     defaultConfig: SecretLintCoreDescriptor;
+    /**
+     * testDefinitions
+     * Replace `id` to `rule`  implicitly
+     * If this options is not defined, create testDefinitions from defaultConfig.
+     *
+     * This options is not required almost case.
+     */
     testDefinitions?: {
         id: string;
         rule: SecretLintUnionRuleCreator;
@@ -61,6 +76,14 @@ export const snapshot = (options: SnapshotOptions) => {
     const fixturesDir = options.snapshotDirectory;
     const updateSnapshot = !!process.env.UPDATE_SNAPSHOT || options.updateSnapshot;
     const snapshotReplacer = createSnapshotRepalcer(options);
+    const testDefinitions: {
+        id: string;
+        rule: SecretLintUnionRuleCreator;
+    }[] = options.testDefinitions
+        ? options.testDefinitions
+        : options.defaultConfig.rules.filter(rule => {
+              return rule.id && rule.rule;
+          });
     return {
         forEach(handler: (testCaseName: string, testFunction: () => Promise<"skip" | "done">) => void) {
             fs.readdirSync(fixturesDir).map((caseName: string) => {
@@ -80,7 +103,7 @@ export const snapshot = (options: SnapshotOptions) => {
                     const loadedConfig = await (secretlintrcFilePath
                         ? loadConfig({
                               configFilePath: secretlintrcFilePath,
-                              testReplaceDefinitions: options.testDefinitions
+                              testReplaceDefinitions: testDefinitions
                           })
                         : undefined);
                     const config = loadedConfig && loadedConfig.ok ? loadedConfig.config : options.defaultConfig;

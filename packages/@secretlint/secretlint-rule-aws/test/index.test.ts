@@ -4,12 +4,6 @@ import rule from "../src/index";
 
 describe("Snapshot Testing", () => {
     snapshot({
-        testDefinitions: [
-            {
-                id: require("../package.json").name,
-                rule
-            }
-        ],
         defaultConfig: {
             rules: [
                 {
