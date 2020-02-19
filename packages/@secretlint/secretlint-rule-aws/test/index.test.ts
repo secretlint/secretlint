@@ -15,7 +15,6 @@ describe("Snapshot Testing", () => {
         updateSnapshot: !!process.env.UPDATE_SNAPSHOT,
         snapshotDirectory: path.join(__dirname, "snapshots")
     }).forEach((name, test) => {
-        console.log("name", name);
         it(name, async function() {
             const status = await test();
             if (status === "skip") {
