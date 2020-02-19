@@ -7,9 +7,8 @@ describe("Snapshot Testing", () => {
         defaultConfig: {
             rules: [
                 {
-                    id: "@secretlint/secretlint-rule-aws",
-                    rule,
-                    options: {}
+                    id: require("../package.json").name,
+                    rule
                 }
             ]
         },
