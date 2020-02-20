@@ -24,7 +24,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "expected-exit-status 1 --command 'secretlint \"**/*\"'"
+    "test": "expected-exit-status 1 --command 'secretlint SECRET.txt"
   },
   "devDependencies": {
     "@secretlint/secretlint-rule-example": "^0.1.0",

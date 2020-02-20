@@ -31,7 +31,7 @@ jobs:
           name: Secretlint benchmark
           tool: 'benchmarkjs'
           output-file-path: examples/benchmark/output.txt
-          # Use bot-user token
+          # Use "bot-user" token
           github-token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
           auto-push: true
           # Show alert with commit comment on detecting possible performance regression
