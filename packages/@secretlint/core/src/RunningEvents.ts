@@ -55,6 +55,9 @@ Duplicated rule.id is something wrong in .secretlintrc.
             });
             contextEvents.on(FILE_HANDLE, (source: SecretLintSourceCode) => {
                 // if this rule support the content type
+                if (!rule.supportSourceCode(source)) {
+                    return; // skip
+                }
                 return rule.file(source);
             });
         },

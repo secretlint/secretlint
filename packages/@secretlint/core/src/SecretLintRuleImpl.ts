@@ -1,5 +1,4 @@
 import {
-    SecretLintRuleContentType,
     SecretLintRuleContext,
     SecretLintRuleCreator,
     SecretLintRuleCreatorOptions,
@@ -22,7 +21,11 @@ export class SecretLintRule {
         this.ruleReportHandle = ruleCreator.create(context, ruleCreatorOptions);
     }
 
-    isSupportContentType(contentType: SecretLintRuleContentType) {
+    supportSourceCode(sourceCode: SecretLintSourceCode) {
+        const contentType = sourceCode.contentType;
+        if (contentType === "unknown") {
+            return true;
+        }
         if (this.ruleCreator.meta.supportedContentTypes.includes("all")) {
             return true;
         }
