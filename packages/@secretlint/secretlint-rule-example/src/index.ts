@@ -4,7 +4,8 @@ export const creator: SecretLintRuleCreator = {
     meta: {
         id: "@secretlint/secretlint-rule-example",
         recommended: true,
-        type: "scanner"
+        type: "scanner",
+        supportedContentTypes: ["text"]
     },
     create(context) {
         const t = context.createTranslator({

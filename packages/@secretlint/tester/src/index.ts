@@ -3,6 +3,7 @@ import * as path from "path";
 import * as assert from "assert";
 import { lintSource } from "@secretlint/core";
 import { loadConfig } from "@secretlint/config-loader";
+import { createRawSource } from "@secretlint/source-creator";
 import { SecretLintCoreDescriptor, SecretLintUnionRuleCreator } from "@secretlint/types";
 
 const canResolve = (filePath: string): boolean => {
@@ -107,14 +108,8 @@ export const snapshot = (options: SnapshotOptions) => {
                           })
                         : undefined);
                     const config = loadedConfig && loadedConfig.ok ? loadedConfig.config : options.defaultConfig;
-                    const actualContent = fs.readFileSync(actualFilePath, "utf-8");
-                    const actualResult = await lintSource(
-                        {
-                            filePath: actualFilePath,
-                            content: actualContent
-                        },
-                        config
-                    );
+                    const rawSource = await createRawSource(actualFilePath);
+                    const actualResult = await lintSource(rawSource, config);
                     const expectedFilePath = path.join(fixtureDir, "output.json");
                     // Usage: update snapshots
                     // UPDATE_SNAPSHOT=1 npm test

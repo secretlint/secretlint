@@ -14,15 +14,27 @@ export class SecretLintSourceCodeImpl implements SecretLintSourceCode {
     readonly hasBOM: boolean;
     readonly content: string;
     readonly filePath: string | undefined;
+    readonly contentType: "binary" | "text" | "unknown";
     readonly ext: string;
     private structuredSource: StructuredSource;
 
-    constructor({ content = "", ext, filePath }: { content: string; ext: string; filePath: string }) {
+    constructor({
+        content = "",
+        ext,
+        filePath,
+        contentType
+    }: {
+        content: string;
+        ext: string;
+        filePath: string;
+        contentType: "binary" | "text" | "unknown";
+    }) {
         assert.ok(ext || filePath, "should be set either of fileExt or filePath.");
         this.hasBOM = content.charCodeAt(0) === 0xfeff;
         this.content = this.hasBOM ? content.slice(1) : content;
         this.structuredSource = new StructuredSource(this.content);
         this.filePath = filePath;
+        this.contentType = contentType;
         this.ext = ext;
     }
 

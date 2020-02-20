@@ -16,7 +16,7 @@ export class PromiseEventEmitter {
         return this.events.listenerCount(type);
     }
 
-    on(event: string | symbol, listener: (...args: any[]) => void) {
+    on(event: string | symbol, listener: (...args: any[]) => void | Promise<void>) {
         return this.events.on(event, listener);
     }
 

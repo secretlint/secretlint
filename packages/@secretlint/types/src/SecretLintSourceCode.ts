@@ -11,6 +11,7 @@ export interface SecretLintSourceCode {
     readonly hasBOM: boolean;
     readonly content: string;
     readonly filePath: string | undefined;
+    readonly contentType: "binary" | "text" | "unknown";
     readonly ext: string;
 
     /**

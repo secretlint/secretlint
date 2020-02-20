@@ -43,6 +43,7 @@
   "dependencies": {
     "@secretlint/config-loader": "^0.1.0",
     "@secretlint/core": "^0.1.0",
+    "@secretlint/source-creator": "^0.1.0",
     "@secretlint/formatter": "^0.1.0",
     "debug": "^4.1.1"
   },
