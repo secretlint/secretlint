@@ -35,8 +35,8 @@ If you want to contribute to secretlint, please check issues labeled [`good firs
 Please install following development prerequisites. You also need a [GitHub](https://github.com/) account for contribution.
 
 - [Git](https://git-scm.com/)
-- [Node.js](https://nodejs.org/en/) -- we tend to use latest stable Node.js although secretlint supports >= 6.0.0
-- [Yarn](https://classic.yarnpkg.com/en/) -- secretlint supports [npm](https://www.npmjs.com/get-npm) >= 2.0.0, but for development purpose, we chose Yarn as package manager
+- [Node.js](https://nodejs.org/en/)
+- [Yarn](https://classic.yarnpkg.com/en/)
 - Text editor
 - Terminal emulator
 
