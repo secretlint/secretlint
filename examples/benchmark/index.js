@@ -10,6 +10,11 @@ suite
             cwd: __dirname
         });
     })
+    .add("run secretlint for js-primer", () => {
+        execFileSync(secretlintBin, [`${TARGET_DIR}/js-primer/**/*`], {
+            cwd: __dirname
+        });
+    })
     .on("cycle", event => {
         console.log(String(event.target));
     })

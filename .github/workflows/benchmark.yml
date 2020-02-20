@@ -25,7 +25,7 @@ jobs:
       - name: Run Benchmark
         run: cd examples/benchmark && npm run benchmark | tee output.txt
       - name: Store benchmark result
-          uses: rhysd/github-action-benchmark@v1
+        uses: rhysd/github-action-benchmark@v1
           with:
             name: Benchmark.js Benchmark
             tool: 'benchmarkjs'
