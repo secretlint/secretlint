@@ -1,5 +1,11 @@
 name: test
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - '!gh-pages'
+  pull_request:
+    branches:
+      - master
 env:
   CI: true
 jobs:
