@@ -1,4 +1,4 @@
-# Contributong
+# Contributing
 
 You can contribute to secretlint in various ways:
 
@@ -236,6 +236,11 @@ Once a pull request has been created, it will initiate continuous integration bu
 
 After all participants on pull request are satisfied to the changes, we will merge your code into the secretlint master branch. Yay!
 
+## Benchmark
+
+Secretlint has continuous benchmark:
+
+- <https://secretlint.github.io/secretlint/dev/bench/>
 
 ## Release Flow
 
