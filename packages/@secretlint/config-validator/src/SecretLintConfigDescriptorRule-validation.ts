@@ -64,6 +64,17 @@ export const SecretLintConfigDescriptorRuleSchema = {
             "recommended": {
               "type": "boolean"
             },
+            "supportedContentTypes": {
+              "items": {
+                "enum": [
+                  "all",
+                  "binary",
+                  "text"
+                ],
+                "type": "string"
+              },
+              "type": "array"
+            },
             "type": {
               "enum": [
                 "scanner"
@@ -74,6 +85,7 @@ export const SecretLintConfigDescriptorRuleSchema = {
           "required": [
             "id",
             "recommended",
+            "supportedContentTypes",
             "type"
           ],
           "type": "object"
@@ -151,6 +163,17 @@ export const SecretLintConfigDescriptorRuleSchema = {
             "recommended": {
               "type": "boolean"
             },
+            "supportedContentTypes": {
+              "items": {
+                "enum": [
+                  "all",
+                  "binary",
+                  "text"
+                ],
+                "type": "string"
+              },
+              "type": "array"
+            },
             "type": {
               "enum": [
                 "scanner"
@@ -161,6 +184,7 @@ export const SecretLintConfigDescriptorRuleSchema = {
           "required": [
             "id",
             "recommended",
+            "supportedContentTypes",
             "type"
           ],
           "type": "object"

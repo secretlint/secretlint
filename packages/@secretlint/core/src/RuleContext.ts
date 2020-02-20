@@ -14,7 +14,7 @@ import {
     SecretLintRuleSeverityLevel,
     SecretLintSourceCode
 } from "@secretlint/types";
-import { createTranslator } from "./Translator";
+import { createTranslator } from "./helper/Translator";
 import { RunningEvents } from "./RunningEvents";
 
 type Handler<T> = (descriptor: T) => void;

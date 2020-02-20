@@ -58,6 +58,17 @@ export const SecretLintConfigDescriptorSchema = {
             "recommended": {
               "type": "boolean"
             },
+            "supportedContentTypes": {
+              "items": {
+                "enum": [
+                  "all",
+                  "binary",
+                  "text"
+                ],
+                "type": "string"
+              },
+              "type": "array"
+            },
             "type": {
               "enum": [
                 "scanner"
@@ -68,6 +79,7 @@ export const SecretLintConfigDescriptorSchema = {
           "required": [
             "id",
             "recommended",
+            "supportedContentTypes",
             "type"
           ],
           "type": "object"

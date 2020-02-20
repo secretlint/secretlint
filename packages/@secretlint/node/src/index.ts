@@ -1,12 +1,11 @@
-import fs from "fs";
-import utils from "util";
 import { lintSource } from "@secretlint/core";
 import { loadConfig } from "@secretlint/config-loader";
+import { createRawSource } from "@secretlint/source-creator";
 import { createFormatter } from "@secretlint/formatter";
 import { SecretLintCoreDescriptor, SecretLintCoreResult } from "@secretlint/types";
+import path from "path";
 
 const debug = require("debug")("@secretlint/node");
-const readFile = utils.promisify(fs.readFile);
 export type SecretLintEngineOptions = {
     /**
      * If configFilePath is not defined, search config file from cwd(current working dir)
@@ -28,15 +27,8 @@ export type SecretLintEngineOptions = {
 };
 
 const lintFile = async (filePath: string, options: SecretLintCoreDescriptor) => {
-    return readFile(filePath, "utf-8").then(content => {
-        return lintSource(
-            {
-                filePath: filePath,
-                content: content
-            },
-            options
-        );
-    });
+    const rawSource = await createRawSource(filePath);
+    return lintSource(rawSource, options);
 };
 
 const hasErrorMessage = (result: SecretLintCoreResult): boolean => {
@@ -56,7 +48,9 @@ const executeOnContent = async ({
     const result = await lintSource(
         {
             filePath: filePath,
-            content: content
+            content: content,
+            ext: path.extname(filePath),
+            contentType: "text"
         },
         config
     );

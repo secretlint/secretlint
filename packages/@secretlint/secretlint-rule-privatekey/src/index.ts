@@ -58,7 +58,8 @@ export const creator: SecretLintRuleCreator<Options> = {
     meta: {
         id: "@secretlint/secretlint-rule-privatekey",
         recommended: true,
-        type: "scanner"
+        type: "scanner",
+        supportedContentTypes: ["text"]
     },
     create(context, options) {
         const t = context.createTranslator(messages);

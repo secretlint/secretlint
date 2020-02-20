@@ -5,7 +5,8 @@ import {
     SecretLintCoreDescriptorRulePreset,
     SecretLintRulePresetContext
 } from "@secretlint/types";
-import { PromiseEventEmitter } from "./promise-event-emitter";
+import { PromiseEventEmitter } from "./helper/promise-event-emitter";
+import { SecretLintRule } from "./SecretLintRuleImpl";
 
 export type RunningEvents = {
     registerRule({
@@ -47,13 +48,15 @@ Duplicated rule.id is something wrong in .secretlintrc.
             registerSet.add(descriptorRule.id);
             // Normalized Rule Options
             const ruleCreatorOptions = descriptorRule.options || {};
-            const rule = descriptorRule.rule.create(context, ruleCreatorOptions);
-            const file = rule.file;
-            if (file) {
-                contextEvents.on(FILE_HANDLE, (source: SecretLintSourceCode) => {
-                    file(source);
-                });
-            }
+            const rule = new SecretLintRule({
+                ruleCreator: descriptorRule.rule,
+                ruleCreatorOptions: ruleCreatorOptions,
+                context
+            });
+            contextEvents.on(FILE_HANDLE, (source: SecretLintSourceCode) => {
+                // if this rule support the content type
+                return rule.file(source);
+            });
         },
         registerRulePreset({
             descriptorRulePreset,

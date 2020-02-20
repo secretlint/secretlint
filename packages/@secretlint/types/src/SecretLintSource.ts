@@ -1,4 +1,11 @@
 // Util
+/**
+ * Source has three types
+ *
+ * - Large Area: contentType
+ * - Middle Area: ext
+ * - Small Area(details): filePath
+ */
 export type SecretLintRawSource = {
     content: string;
     filePath: string;
@@ -6,6 +13,11 @@ export type SecretLintRawSource = {
      * Prefer ext than filePath
      */
     ext?: string;
+    /**
+     *
+     * Default: "unknown"
+     */
+    contentType: "binary" | "text" | "unknown";
 };
 export type SecretLintSourceNodePosition = {
     line: number;

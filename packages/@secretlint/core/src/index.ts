@@ -30,7 +30,8 @@ export const lintSource = (
     const sourceCode = new SecretLintSourceCodeImpl({
         content: rawSource.content,
         filePath: rawSource.filePath,
-        ext: rawSource.ext || ""
+        ext: rawSource.ext || "",
+        contentType: rawSource.contentType
     });
     rules.forEach(rule => {
         return registerRule({

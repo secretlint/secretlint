@@ -19,7 +19,8 @@ export {
     SecretLintRuleContext,
     SecretLintRuleCreatorOptions,
     SecretLintRuleReportDescriptor,
-    SecretLintRuleReportHandler
+    SecretLintRuleReportHandler,
+    SecretLintRuleContentType
 } from "./SecretLintRule";
 // Rule Preset
 export {
