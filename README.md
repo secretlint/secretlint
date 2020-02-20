@@ -179,7 +179,7 @@ See [Releases page](https://github.com/secretlint/secretlint/releases).
 
 Install devDependencies and Run `npm test`:
 
-    npm test
+    yarn test
 
 ## Contributing
 
@@ -187,11 +187,7 @@ Pull requests and stars are always welcome.
 
 For bugs and feature requests, [please create an issue](https://github.com/secretlint/secretlint/issues).
 
-1. Fork it!
-2. Create your feature branch: `git checkout -b my-new-feature`
-3. Commit your changes: `git commit -am 'Add some feature'`
-4. Push to the branch: `git push origin my-new-feature`
-5. Submit a pull request :D
+See also, [CONTRIBUTING.md](./CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
 
 ## Author
 
