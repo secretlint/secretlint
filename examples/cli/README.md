@@ -9,7 +9,7 @@ An example for secretlint cli.
 ## Usage
 
 ```
-$ yarn secretlint SECRET.txt
+$ yarn secretlint "**/*"
 ```
 
 ## Changelog
