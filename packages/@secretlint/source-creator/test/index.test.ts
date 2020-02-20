@@ -40,7 +40,7 @@ describe("@secretlint/source-creator", function() {
                 }
                 // compare input and output
                 const expected = JSON.parse(fs.readFileSync(expectedFilePath, "utf-8"));
-                assert.deepStrictEqual(actual, expected);
+                assert.deepStrictEqual(JSON.parse(JSON.stringify(actual, createSnapshotReplacer())), expected);
             });
         });
 });
