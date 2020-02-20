@@ -7,7 +7,8 @@ describe("lintSource", function() {
     it("should lint source with rules", async () => {
         const source: SecretLintRawSource = {
             content: "THIS IS SECRET SOURCE",
-            filePath: "/path/to/secret"
+            filePath: "/path/to/secret",
+            contentType: "text"
         };
         const result = await lintSource(source, {
             rules: [
