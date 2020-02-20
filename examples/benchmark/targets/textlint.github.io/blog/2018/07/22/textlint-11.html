@@ -1,0 +1,307 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>textlint 11 released · textlint</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="We just pushed textlint v11.0.0, which is a major release upgrade of textlint."/><meta name="docsearch:language" content="en"/><meta property="og:title" content="textlint 11 released · textlint"/><meta property="og:type" content="website"/><meta property="og:url" content="https://textlint.github.io/blog/2018/07/22/textlint-11.html"/><meta property="og:description" content="We just pushed textlint v11.0.0, which is a major release upgrade of textlint."/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/img/textlint-icon_256x256.png"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="alternate" type="application/atom+xml" href="https://textlint.github.io/blog/atom.xml" title="textlint Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://textlint.github.io/blog/feed.xml" title="textlint Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/textlint-icon_256x256.png" alt="textlint"/><h2 class="headerTitleWithLogo">textlint</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/docs/getting-started.html" target="_self">Docs</a></li><li class=""><a href="https://github.com/textlint/textlint/wiki/Collection-of-textlint-rule" target="_self">Rules</a></li><li class="siteNavGroupActive"><a href="/blog/" target="_self">Blog</a></li><li class=""><a href="/help.html" target="_self">Help</a></li><li class=""><a href="https://github.com/textlint/textlint" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Recent Posts</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Recent Posts</h3><ul class=""><li class="navListItem navListItemActive"><a class="navItem" href="/blog/2018/07/22/textlint-11.html">textlint 11 released</a></li><li class="navListItem"><a class="navItem" href="/blog/2018/05/22/new-website.html">New website</a></li><li class="navListItem"><a class="navItem" href="/blog/2018/01/13/renewing-1.0.0.html">Renewing</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer postContainer blogContainer"><div class="wrapper"><div class="lonePost"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle"><a href="/blog/2018/07/22/textlint-11.html">textlint 11 released</a></h1><p class="post-meta">July 22, 2018</p><div class="authorBlock"><p class="post-authorName"><a href="http://github.com/azu" target="_blank" rel="noreferrer noopener">azu</a></p></div></header><div><span><p>We just pushed textlint v11.0.0, which is a major release upgrade of textlint.</p>
+<p>This release adds some new features and fixes several bugs found in the previous release.
+This release also has some breaking changes.</p>
+<h1><a class="anchor" aria-hidden="true" id="highlights"></a><a href="#highlights" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Highlights</h1>
+<h2><a class="anchor" aria-hidden="true" id="features"></a><a href="#features" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>⭐️ Features</h2>
+<h3><a class="anchor" aria-hidden="true" id="textlint-textlint-plugin-text-https-githubcom-textlint-textlint-tree-master-packages-40textlint-textlint-plugin-text-and-textlint-textlint-plugin-markdown-https-githubcom-textlint-textlint-tree-102d5683ea7172ead702acf00e9fc111a53637d3-packages-40textlint-textlint-plugin-markdown-support-extensions-option"></a><a href="#textlint-textlint-plugin-text-https-githubcom-textlint-textlint-tree-master-packages-40textlint-textlint-plugin-text-and-textlint-textlint-plugin-markdown-https-githubcom-textlint-textlint-tree-102d5683ea7172ead702acf00e9fc111a53637d3-packages-40textlint-textlint-plugin-markdown-support-extensions-option" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><a href="https://github.com/textlint/textlint/tree/master/packages/%40textlint/textlint-plugin-text">@textlint/textlint-plugin-text</a> and <a href="https://github.com/textlint/textlint/tree/102d5683ea7172ead702acf00e9fc111a53637d3/packages/%40textlint/textlint-plugin-markdown">@textlint/textlint-plugin-markdown</a> support <code>extensions</code> option</h3>
+<p>Notes: <a href="https://github.com/textlint/textlint/tree/master/packages/%40textlint/textlint-plugin-text">@textlint/textlint-plugin-text</a> and <a href="https://github.com/textlint/textlint/tree/102d5683ea7172ead702acf00e9fc111a53637d3/packages/%40textlint/textlint-plugin-markdown">@textlint/textlint-plugin-markdown</a> are built-in plugin.</p>
+<p>For example, if you want to treat <code>.hown</code> as markdown, put <code>extensions</code> options to <code>.textlintrc</code></p>
+<pre><code class="hljs css language-json5">{
+    <span class="hljs-attr">"plugins"</span>: {
+        <span class="hljs-attr">"@textlint/markdown"</span>: {
+            <span class="hljs-attr">"extensions"</span>: [<span class="hljs-string">".hown"</span>]
+        }
+    }
+}
+</code></pre>
+<p>For more details, please see <a href="https://github.com/textlint/textlint/tree/master/examples/plugin-extensions-option">custom extension example</a>.</p>
+<p>For developer:</p>
+<p>if you want to support <code>extensions</code> options, see <a href="https://textlint.github.io/docs/plugin.html">Plugin · textlint</a>.</p>
+<h3><a class="anchor" aria-hidden="true" id="show-message-if-textlint-init-is-success-529-https-githubcom-textlint-textlint-issues-529"></a><a href="#show-message-if-textlint-init-is-success-529-https-githubcom-textlint-textlint-issues-529" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Show message if <code>textlint --init</code> is success <a href="https://github.com/textlint/textlint/issues/529">#529</a></h3>
+<p>Add message to <code>textlint --init</code></p>
+<p><img src="https://user-images.githubusercontent.com/19714/41762379-7d696dfc-7635-11e8-9b57-661aff4daba7.png" alt="screen shot"></p>
+<h2><a class="anchor" aria-hidden="true" id="breaking-change"></a><a href="#breaking-change" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>🔥BREAKING CHANGE</h2>
+<h3><a class="anchor" aria-hidden="true" id="drop-nodejs-4x-support-443-https-githubcom-textlint-textlint-issues-443"></a><a href="#drop-nodejs-4x-support-443-https-githubcom-textlint-textlint-issues-443" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Drop Node.js 4.x support <a href="https://github.com/textlint/textlint/issues/443">#443</a></h3>
+<p>textlint does no more test on Node.js 4.x.
+Node.js 4.x was end of support.</p>
+<ul>
+<li><a href="https://github.com/nodejs/Release">nodejs/Release: Node.js Foundation Release Working Group</a></li>
+</ul>
+<p>If you use Node.js 4.x, please update Node.js.</p>
+<ul>
+<li><a href="https://nodejs.org/">Node.js official site</a></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="developer-freeze-rule-s-context-508-https-githubcom-textlint-textlint-issues-508"></a><a href="#developer-freeze-rule-s-context-508-https-githubcom-textlint-textlint-issues-508" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>[Developer] Freeze Rule's Context <a href="https://github.com/textlint/textlint/issues/508">#508</a></h3>
+<p>textlint 11 freeze rule's <code>context</code> object.</p>
+<p>Next code should throw error in textlint 11.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">context</span>) </span>{
+    <span class="hljs-comment">// Error: `context` object can not be modified</span>
+    context.modifiedContext = <span class="hljs-literal">true</span>;
+    <span class="hljs-keyword">const</span> { Syntax } = context;
+    <span class="hljs-keyword">return</span> {
+        [Syntax.Str](node) {
+        }
+    };
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="developer-change-default-value-of-rule-s-options-and-plugin-s-options-535-https-githubcom-textlint-textlint-issues-535-540-https-githubcom-textlint-textlint-issues-540"></a><a href="#developer-change-default-value-of-rule-s-options-and-plugin-s-options-535-https-githubcom-textlint-textlint-issues-535-540-https-githubcom-textlint-textlint-issues-540" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>[Developer] Change default value of Rule's <code>options</code> and Plugin's <code>options</code> <a href="https://github.com/textlint/textlint/issues/535">#535</a> <a href="https://github.com/textlint/textlint/issues/540">#540</a></h3>
+<p>textlint@11 change the default value of <code>options</code> from <code>true</code> to <code>{}</code> (empty object).</p>
+<p>For example, <code>very-nice-rule</code>'s option is <code>true</code>(enable the rule) in <code>.textlintrc</code></p>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"rules"</span>: {
+    <span class="hljs-attr">"very-nice-rule"</span>: <span class="hljs-literal">true</span>
+  }
+}
+</code></pre>
+<p><strong>Before</strong></p>
+<p><code>very-nice-rule.js</code> rule get <code>true</code> as <code>options</code>.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">context, options</span>) </span>{
+    <span class="hljs-built_in">console</span>.log(options); <span class="hljs-comment">// true</span>
+}
+</code></pre>
+<p><strong>After</strong>:</p>
+<p><code>very-nice-rule.js</code> rule get <code>{}</code> (emptry object) as <code>options</code>.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">context, options</span>) </span>{
+    <span class="hljs-built_in">console</span>.log(options); <span class="hljs-comment">// {}</span>
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="deprecation"></a><a href="#deprecation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>⚠ Deprecation</h2>
+<h3><a class="anchor" aria-hidden="true" id="developer-deprecate-static-availableextensions-in-plugin-processor"></a><a href="#developer-deprecate-static-availableextensions-in-plugin-processor" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>[Developer] Deprecate <code>static availableExtensions()</code> in plugin Processor</h3>
+<p>Insteadof it, support availableExtensions() instance method in plugin <a href="https://github.com/textlint/textlint/issues/534">#534</a></p>
+<p>You should change the implementaion of plugin.
+textlint still support <code>static availableExtensions</code> for backward-compatibility.</p>
+<pre><code class="hljs css language-diff"><span class="hljs-deletion">-    static availableExtensions() {</span>
+<span class="hljs-addition">+    availableExtensions() {</span>
+        return [".txt", ".text"];
+    }
+</code></pre>
+<p>This change allow to extends <code>availableExtensions()</code> by options.</p>
+<ul>
+<li>Example: <a href="https://github.com/textlint/textlint/pull/537">feat: markdown/text plugin support &quot;extensions&quot; options by azu · Pull Request #537 · textlint/textlint</a></li>
+</ul>
+<p>For more information, see <a href="https://github.com/textlint/textlint/blob/master/docs/plugin.md#availableextensions-string">availableExtensions(): string[]</a>.</p>
+<hr>
+<h1><a class="anchor" aria-hidden="true" id="all-changelog"></a><a href="#all-changelog" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ALL CHANGELOG</h1>
+<h2><a class="anchor" aria-hidden="true" id="textlint-1100"></a><a href="#textlint-1100" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>textlint@11.0.0</h2>
+<h3><a class="anchor" aria-hidden="true" id="fixes"></a><a href="#fixes" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>fixes</h3>
+<ul>
+<li><strong>textlint:</strong> add engine.availableExtensions for backward-compatible (<a href="https://github.com/textlint/textlint/commit/e8652bc">e8652bc</a>)</li>
+<li><strong>textlint:</strong> fix config type (<a href="https://github.com/textlint/textlint/commit/0f2fd6f">0f2fd6f</a>)</li>
+<li><strong>deps:</strong> update mocha (<a href="https://github.com/textlint/textlint/commit/5df8af4">5df8af4</a>)</li>
+<li><strong>textlint:</strong> add type of public TextlintrcDescriptor (<a href="https://github.com/textlint/textlint/commit/7268b9e">7268b9e</a>)</li>
+<li><strong>textlint:</strong> make static availableExtensions() optional (<a href="https://github.com/textlint/textlint/commit/d471637">d471637</a>)</li>
+<li>remove <a href="https://github.com/textlint">@textlint</a>/textlintrc-descriptor (<a href="https://github.com/textlint/textlint/commit/3613e1f">3613e1f</a>)</li>
+<li><strong>textlint:</strong> use shallowMerge (<a href="https://github.com/textlint/textlint/commit/95d056d">95d056d</a>)</li>
+<li><strong>kernel:</strong> merge textlintrc-descriptor to kernel (<a href="https://github.com/textlint/textlint/commit/3c01067">3c01067</a>)</li>
+<li><strong>kernel:</strong> separate linter and fixer descriptor (<a href="https://github.com/textlint/textlint/commit/b5bc8bd">b5bc8bd</a>)</li>
+<li><strong>textlint:</strong> fix to import util (<a href="https://github.com/textlint/textlint/commit/6629bd5">6629bd5</a>)</li>
+<li><strong>textlint:</strong> remove `extensions` from Config (<a href="https://github.com/textlint/textlint/commit/7bc9ab8">7bc9ab8</a>)</li>
+<li><strong>textlintrc-descriptor:</strong> Introduce textlintrc-descriptor (<a href="https://github.com/textlint/textlint/commit/6177794">6177794</a>)</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="features-1"></a><a href="#features-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>features</h3>
+<ul>
+<li><strong>textlint:</strong> show message if `textlint --init` is success (<a href="https://github.com/textlint/textlint/issues/529">#529</a>) (<a href="https://github.com/textlint/textlint/commit/102d568">102d568</a>)</li>
+<li><strong>textlint:</strong> support availableExtensions() instance method in plugin (<a href="https://github.com/textlint/textlint/commit/a7cd053">a7cd053</a>)</li>
+<li><strong>kernel:</strong> add plugin's option tests (<a href="https://github.com/textlint/textlint/commit/f362257">f362257</a>)</li>
+<li><strong>textlint:</strong> add cli output test (<a href="https://github.com/textlint/textlint/issues/533">#533</a>) (<a href="https://github.com/textlint/textlint/commit/abd314a">abd314a</a>), closes <a href="https://github.com/textlint/textlint/issues/532">#532</a></li>
+<li><strong>textlint:</strong> add tests for object-to-kernel-format (<a href="https://github.com/textlint/textlint/commit/5fbb22d">5fbb22d</a>)</li>
+<li><strong>textlint:</strong> fix plugin tests (<a href="https://github.com/textlint/textlint/commit/bbfc8f6">bbfc8f6</a>)</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="breakingchanges"></a><a href="#breakingchanges" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>breakingChanges</h3>
+<p><a href="https://github.com/textlint/textlint/issues/535">#535</a> <a href="https://github.com/textlint/textlint/issues/540">#540</a></p>
+<p>Change default value of Rule's <code>options</code> and Plugin's <code>options</code>.</p>
+<p>textlint@11 change the default value of <code>options</code> from <code>true</code> to <code>{}</code> (empty object).</p>
+<p>For example, <code>very-nice-rule</code>'s option is <code>true</code>(enable the rule) in <code>.textlintrc</code></p>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"rules"</span>: {
+    <span class="hljs-attr">"very-nice-rule"</span>: <span class="hljs-literal">true</span>
+  }
+}
+</code></pre>
+<p><strong>Before</strong></p>
+<p><code>very-nice-rule.js</code> rule get <code>true</code> as <code>options</code>.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">context, options</span>) </span>{
+    <span class="hljs-built_in">console</span>.log(options); <span class="hljs-comment">// true</span>
+}
+</code></pre>
+<p><strong>After</strong>:</p>
+<p><code>very-nice-rule.js</code> rule get <code>{}</code> (emptry object) as <code>options</code>.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">context, options</span>) </span>{
+    <span class="hljs-built_in">console</span>.log(options); <span class="hljs-comment">// {}</span>
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="textlint-kernel-300"></a><a href="#textlint-kernel-300" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>@textlint/kernel@3.0.0</h2>
+<h3><a class="anchor" aria-hidden="true" id="fixes-1"></a><a href="#fixes-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>fixes</h3>
+<ul>
+<li><strong>kernel:</strong> kernel use TextlintrcDescriptor (<a href="https://github.com/textlint/textlint/commit/efd89c2">efd89c2</a>)</li>
+<li><strong>kernel:</strong> make rule and plugin's option value {} by default (<a href="https://github.com/textlint/textlint/commit/b7aa63d">b7aa63d</a>)</li>
+<li><strong>deps:</strong> update mocha (<a href="https://github.com/textlint/textlint/commit/5df8af4">5df8af4</a>)</li>
+<li>remove <a href="https://github.com/textlint">@textlint</a>/textlintrc-descriptor (<a href="https://github.com/textlint/textlint/commit/3613e1f">3613e1f</a>)</li>
+<li><strong>kernel:</strong> add comment (<a href="https://github.com/textlint/textlint/commit/582d0d6">582d0d6</a>)</li>
+<li><strong>kernel:</strong> add Processor validation (<a href="https://github.com/textlint/textlint/commit/86ed609">86ed609</a>)</li>
+<li><strong>kernel:</strong> fix test title (<a href="https://github.com/textlint/textlint/commit/4eeeff8">4eeeff8</a>)</li>
+<li><strong>kernel:</strong> support instance availableExtensions() method (<a href="https://github.com/textlint/textlint/commit/b821fc5">b821fc5</a>)</li>
+<li><strong>textlint:</strong> make static availableExtensions() optional (<a href="https://github.com/textlint/textlint/commit/d471637">d471637</a>)</li>
+<li><strong>textlint:</strong> use shallowMerge (<a href="https://github.com/textlint/textlint/commit/95d056d">95d056d</a>)</li>
+<li><strong>kernel:</strong> merge textlintrc-descriptor to kernel (<a href="https://github.com/textlint/textlint/commit/3c01067">3c01067</a>)</li>
+<li><strong>kernel:</strong> remove TextlintRuleDescriptorType (<a href="https://github.com/textlint/textlint/commit/a5b0f30">a5b0f30</a>)</li>
+<li><strong>kernel:</strong> Replace Object.freeze directly with factory function (<a href="https://github.com/textlint/textlint/commit/c43580b">c43580b</a>)</li>
+<li><strong>kernel:</strong> separate linter and fixer descriptor (<a href="https://github.com/textlint/textlint/commit/b5bc8bd">b5bc8bd</a>)</li>
+<li><strong>kernel:</strong> use textlintrc-descriptor instead of rule-creator-helper (<a href="https://github.com/textlint/textlint/commit/f0eb4bf">f0eb4bf</a>)</li>
+<li><strong>textlintrc-descriptor:</strong> Introduce textlintrc-descriptor (<a href="https://github.com/textlint/textlint/commit/6177794">6177794</a>)</li>
+<li><strong>typescript:</strong> update to TypeScript 2.8 (<a href="https://github.com/textlint/textlint/commit/f7b2b08">f7b2b08</a>)</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="features-2"></a><a href="#features-2" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>features</h3>
+<ul>
+<li><strong>kernel:</strong> Freeze Context (<a href="https://github.com/textlint/textlint/commit/7fc9ec8">7fc9ec8</a>), closes <a href="https://github.com/textlint/textlint/issues/508">#508</a> <a href="https://github.com/textlint/textlint/issues/508">#508</a></li>
+<li><strong>textlint:</strong> support availableExtensions() instance method in plugin (<a href="https://github.com/textlint/textlint/commit/a7cd053">a7cd053</a>)</li>
+<li><strong>kernel:</strong> Add missing Readonly&lt;T&gt; (<a href="https://github.com/textlint/textlint/commit/c5313c8">c5313c8</a>)</li>
+<li><strong>kernel:</strong> add plugin's option tests (<a href="https://github.com/textlint/textlint/commit/f362257">f362257</a>)</li>
+<li><strong>textlint:</strong> add tests for object-to-kernel-format (<a href="https://github.com/textlint/textlint/commit/5fbb22d">5fbb22d</a>)</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="breakingchanges-1"></a><a href="#breakingchanges-1" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>breakingChanges</h3>
+<ul>
+<li><strong>kernel:</strong> Previously, textlint pass <code>true</code> to rule and plugin as default value of option. <a href="https://github.com/textlint/textlint/issues/535">#535</a> <a href="https://github.com/textlint/textlint/issues/540">#540</a></li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="textlint-textlint-plugin-markdown-500"></a><a href="#textlint-textlint-plugin-markdown-500" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>@textlint/textlint-plugin-markdown@5.0.0</h2>
+<h3><a class="anchor" aria-hidden="true" id="fixes-2"></a><a href="#fixes-2" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>fixes</h3>
+<ul>
+<li><strong>kernel:</strong> make rule and plugin's option value {} by default (<a href="https://github.com/textlint/textlint/commit/b7aa63d">b7aa63d</a>)</li>
+<li><strong>deps:</strong> update mocha (<a href="https://github.com/textlint/textlint/commit/5df8af4">5df8af4</a>)</li>
+<li><strong>plugin:</strong> add plugin configuration (<a href="https://github.com/textlint/textlint/commit/6e179ec">6e179ec</a>)</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="features-3"></a><a href="#features-3" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>features</h3>
+<ul>
+<li><strong>textlint-plugin-markdown:</strong> Support &quot;extensions&quot; option (<a href="https://github.com/textlint/textlint/commit/c3d55fe">c3d55fe</a>)</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="breakingchanges-2"></a><a href="#breakingchanges-2" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>breakingChanges</h3>
+<ul>
+<li><strong>kernel:</strong> Previously, textlint pass <code>true</code> to rule and plugin as default value of option. <a href="https://github.com/textlint/textlint/issues/535">#535</a> <a href="https://github.com/textlint/textlint/issues/540">#540</a></li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="textlint-textlint-plugin-text-400"></a><a href="#textlint-textlint-plugin-text-400" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>@textlint/textlint-plugin-text@4.0.0</h2>
+<h3><a class="anchor" aria-hidden="true" id="fixes-3"></a><a href="#fixes-3" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>fixes</h3>
+<ul>
+<li><strong>kernel:</strong> make rule and plugin's option value {} by default (<a href="https://github.com/textlint/textlint/commit/b7aa63d">b7aa63d</a>)</li>
+<li><strong>deps:</strong> update mocha (<a href="https://github.com/textlint/textlint/commit/5df8af4">5df8af4</a>)</li>
+<li><strong>plugin:</strong> add &quot;extensions&quot; option to docs (<a href="https://github.com/textlint/textlint/commit/8026997">8026997</a>)</li>
+<li><strong>plugin:</strong> add plugin configuration (<a href="https://github.com/textlint/textlint/commit/6e179ec">6e179ec</a>)</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="features-4"></a><a href="#features-4" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>features</h3>
+<ul>
+<li><strong>textlint-text-markdown:</strong> support &quot;extensions&quot; option (<a href="https://github.com/textlint/textlint/commit/cce29ed">cce29ed</a>)</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="breakingchanges-3"></a><a href="#breakingchanges-3" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>breakingChanges</h3>
+<ul>
+<li><strong>kernel:</strong> Previously, textlint pass `true` to rule and plugin as default value of option. <a href="https://github.com/textlint/textlint/issues/535">#535</a> <a href="https://github.com/textlint/textlint/issues/540">#540</a></li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="gulp-textlint-5011"></a><a href="#gulp-textlint-5011" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>gulp-textlint@5.0.11</h2>
+<h3><a class="anchor" aria-hidden="true" id="fixes-4"></a><a href="#fixes-4" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>fixes</h3>
+<ul>
+<li><strong>deps:</strong> update to natives@1.1.3 (<a href="https://github.com/textlint/textlint/commit/0c20f42">0c20f42</a>)</li>
+<li><strong>deps:</strong> update mocha (<a href="https://github.com/textlint/textlint/commit/5df8af4">5df8af4</a>)</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="textlint-tester-500"></a><a href="#textlint-tester-500" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>textlint-tester@5.0.0</h2>
+<h3><a class="anchor" aria-hidden="true" id="fixes-5"></a><a href="#fixes-5" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>fixes</h3>
+<ul>
+<li><strong>kernel:</strong> make rule and plugin's option value {} by default (<a href="https://github.com/textlint/textlint/commit/b7aa63d">b7aa63d</a>)</li>
+<li><strong>deps:</strong> update mocha (<a href="https://github.com/textlint/textlint/commit/5df8af4">5df8af4</a>)</li>
+<li><strong>kernel:</strong> separate linter and fixer descriptor (<a href="https://github.com/textlint/textlint/commit/b5bc8bd">b5bc8bd</a>)</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="breakingchanges-4"></a><a href="#breakingchanges-4" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>breakingChanges</h3>
+<ul>
+<li><strong>kernel:</strong> Previously, textlint pass `true` to rule and plugin as default value of option.</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="textlint-website-1040"></a><a href="#textlint-website-1040" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>textlint-website@10.4.0</h2>
+<h3><a class="anchor" aria-hidden="true" id="fixes-6"></a><a href="#fixes-6" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>fixes</h3>
+<ul>
+<li><strong>website:</strong> update index.css (<a href="https://github.com/textlint/textlint/commit/6f7977e">6f7977e</a>)</li>
+<li><strong>website:</strong> use https image (<a href="https://github.com/textlint/textlint/commit/4495ed3">4495ed3</a>)</li>
+<li><strong>website:</strong> use short menu name (<a href="https://github.com/textlint/textlint/commit/81911ad">81911ad</a>)</li>
+<li><strong>website:</strong> add { search: true }, (<a href="https://github.com/textlint/textlint/commit/0c3c4a9">0c3c4a9</a>)</li>
+<li><strong>website:</strong> add Edit url (<a href="https://github.com/textlint/textlint/commit/e85c6bf">e85c6bf</a>)</li>
+<li><strong>website:</strong> add new blog (<a href="https://github.com/textlint/textlint/commit/cabc987">cabc987</a>)</li>
+<li><strong>website:</strong> add project link (<a href="https://github.com/textlint/textlint/commit/2000dc4">2000dc4</a>)</li>
+<li><strong>website:</strong> add textlint icon (<a href="https://github.com/textlint/textlint/commit/54873c0">54873c0</a>)</li>
+<li><strong>website:</strong> change vuejs usecase (<a href="https://github.com/textlint/textlint/commit/9d832e5">9d832e5</a>)</li>
+<li><strong>website:</strong> Add a project depends on textlint (<a href="https://github.com/textlint/textlint/issues/523">#523</a>) (<a href="https://github.com/textlint/textlint/commit/80b4b73">80b4b73</a>)</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="features-5"></a><a href="#features-5" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>features</h3>
+<ul>
+<li><strong>website:</strong> enable search (<a href="https://github.com/textlint/textlint/commit/9e18b9e">9e18b9e</a>)</li>
+</ul>
+</span></div></div><div class="blogSocialSection"></div></div><div class="blog-recent"><a class="button" href="/blog">Recent Posts</a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#features">⭐️ Features</a><ul class="toc-headings"><li><a href="#textlint-textlint-plugin-text-https-githubcom-textlint-textlint-tree-master-packages-40textlint-textlint-plugin-text-and-textlint-textlint-plugin-markdown-https-githubcom-textlint-textlint-tree-102d5683ea7172ead702acf00e9fc111a53637d3-packages-40textlint-textlint-plugin-markdown-support-extensions-option"><a href="https://github.com/textlint/textlint/tree/master/packages/%40textlint/textlint-plugin-text">@textlint/textlint-plugin-text</a> and <a href="https://github.com/textlint/textlint/tree/102d5683ea7172ead702acf00e9fc111a53637d3/packages/%40textlint/textlint-plugin-markdown">@textlint/textlint-plugin-markdown</a> support <code>extensions</code> option</a></li><li><a href="#show-message-if-textlint-init-is-success-529-https-githubcom-textlint-textlint-issues-529">Show message if <code>textlint --init</code> is success <a href="https://github.com/textlint/textlint/issues/529">#529</a></a></li></ul></li><li><a href="#breaking-change">🔥BREAKING CHANGE</a><ul class="toc-headings"><li><a href="#drop-nodejs-4x-support-443-https-githubcom-textlint-textlint-issues-443">Drop Node.js 4.x support <a href="https://github.com/textlint/textlint/issues/443">#443</a></a></li><li><a href="#developer-freeze-rule-s-context-508-https-githubcom-textlint-textlint-issues-508">[Developer] Freeze Rule's Context <a href="https://github.com/textlint/textlint/issues/508">#508</a></a></li><li><a href="#developer-change-default-value-of-rule-s-options-and-plugin-s-options-535-https-githubcom-textlint-textlint-issues-535-540-https-githubcom-textlint-textlint-issues-540">[Developer] Change default value of Rule's <code>options</code> and Plugin's <code>options</code> <a href="https://github.com/textlint/textlint/issues/535">#535</a> <a href="https://github.com/textlint/textlint/issues/540">#540</a></a></li></ul></li><li><a href="#deprecation">⚠ Deprecation</a><ul class="toc-headings"><li><a href="#developer-deprecate-static-availableextensions-in-plugin-processor">[Developer] Deprecate <code>static availableExtensions()</code> in plugin Processor</a></li></ul></li><li><a href="#textlint-1100">textlint@11.0.0</a><ul class="toc-headings"><li><a href="#fixes">fixes</a></li><li><a href="#features-1">features</a></li><li><a href="#breakingchanges">breakingChanges</a></li></ul></li><li><a href="#textlint-kernel-300">@textlint/kernel@3.0.0</a><ul class="toc-headings"><li><a href="#fixes-1">fixes</a></li><li><a href="#features-2">features</a></li><li><a href="#breakingchanges-1">breakingChanges</a></li></ul></li><li><a href="#textlint-textlint-plugin-markdown-500">@textlint/textlint-plugin-markdown@5.0.0</a><ul class="toc-headings"><li><a href="#fixes-2">fixes</a></li><li><a href="#features-3">features</a></li><li><a href="#breakingchanges-2">breakingChanges</a></li></ul></li><li><a href="#textlint-textlint-plugin-text-400">@textlint/textlint-plugin-text@4.0.0</a><ul class="toc-headings"><li><a href="#fixes-3">fixes</a></li><li><a href="#features-4">features</a></li><li><a href="#breakingchanges-3">breakingChanges</a></li></ul></li><li><a href="#gulp-textlint-5011">gulp-textlint@5.0.11</a><ul class="toc-headings"><li><a href="#fixes-4">fixes</a></li></ul></li><li><a href="#textlint-tester-500">textlint-tester@5.0.0</a><ul class="toc-headings"><li><a href="#fixes-5">fixes</a></li><li><a href="#breakingchanges-4">breakingChanges</a></li></ul></li><li><a href="#textlint-website-1040">textlint-website@10.4.0</a><ul class="toc-headings"><li><a href="#fixes-6">fixes</a></li><li><a href="#features-5">features</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/textlint-icon_256x256.png" alt="textlint" width="66" height="58"/></a><div><h5>Docs</h5><a href="/docs/en/configuring.html">User Manual</a><a href="/docs/en/rule.html">Developer Guide</a></div><div><h5>Community</h5><a href="https://gitter.im/textlint-ja/textlint-ja">Project Chat</a></div><div><h5>More</h5><a href="/blog">Blog</a><a href="https://github.com/">GitHub</a><a class="github-button" href="https://github.com/textlint/textlint" data-icon="octicon-star" data-count-href="/textlint/textlint/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><section class="copyright">Copyright © 2020 textlint organization</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: '27ef1d5fc0d12142485f3784f7d3cb46',
+                indexName: 'textlint',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {}
+              });
+            </script></body></html>

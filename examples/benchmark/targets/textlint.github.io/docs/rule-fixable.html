@@ -1,0 +1,182 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Creating Fixable Rule · textlint</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;textlint has &lt;code&gt;linter&lt;/code&gt; and also has &lt;code&gt;fixer&lt;/code&gt;.&lt;/p&gt;
+"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Creating Fixable Rule · textlint"/><meta property="og:type" content="website"/><meta property="og:url" content="https://textlint.github.io/index.html"/><meta property="og:description" content="&lt;p&gt;textlint has &lt;code&gt;linter&lt;/code&gt; and also has &lt;code&gt;fixer&lt;/code&gt;.&lt;/p&gt;
+"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/img/textlint-icon_256x256.png"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="alternate" type="application/atom+xml" href="https://textlint.github.io/blog/atom.xml" title="textlint Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://textlint.github.io/blog/feed.xml" title="textlint Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/textlint-icon_256x256.png" alt="textlint"/><h2 class="headerTitleWithLogo">textlint</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/getting-started.html" target="_self">Docs</a></li><li class=""><a href="https://github.com/textlint/textlint/wiki/Collection-of-textlint-rule" target="_self">Rules</a></li><li class=""><a href="/blog/" target="_self">Blog</a></li><li class=""><a href="/help.html" target="_self">Help</a></li><li class=""><a href="https://github.com/textlint/textlint" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Developer Guide</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">User Manual</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/getting-started.html">Getting Started with textlint</a></li><li class="navListItem"><a class="navItem" href="/docs/configuring.html">Configuring textlint</a></li><li class="navListItem"><a class="navItem" href="/docs/integrations.html">Integrating with Editors, Tools, etc..</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Developer Guide</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/rule.html">Creating Rules</a></li><li class="navListItem"><a class="navItem" href="/docs/filter-rule.html">Creating Filter Rule</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/rule-fixable.html">Creating Fixable Rule</a></li><li class="navListItem"><a class="navItem" href="/docs/rule-preset.html">Creating Preset</a></li><li class="navListItem"><a class="navItem" href="/docs/rule-advanced.html">Advanced: Paragraph Rule</a></li><li class="navListItem"><a class="navItem" href="/docs/rule-tips-after-all.html">How to implement &quot;after-all&quot; in the rule?</a></li><li class="navListItem"><a class="navItem" href="/docs/plugin.html">Plugin</a></li><li class="navListItem"><a class="navItem" href="/docs/formatter.html">Formatter</a></li><li class="navListItem"><a class="navItem" href="/docs/use-as-modules.html">Use as Node Modules</a></li><li class="navListItem"><a class="navItem" href="/docs/txtnode.html">TxtAST Interface</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Contributing</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/contributing.html">Contributing Guideline</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/textlint/textlint/edit/master/docs/rule-fixable.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 class="postHeaderTitle">Creating Fixable Rule</h1></header><article><div><span><p>textlint has <code>linter</code> and also has <code>fixer</code>.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reporter</span>(<span class="hljs-params">context</span>) </span>{}
+</code></pre>
+<p>is shorthand function syntax of</p>
+<pre><code class="hljs css language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reporter</span>(<span class="hljs-params">context</span>) </span>{}
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+    <span class="hljs-attr">linter</span>: reporter
+};
+</code></pre>
+<p>:information_source: You should know <a href="/docs/rule.html">Creating Rules</a> in advance.</p>
+<p>Now, you can implement <code>fixer</code> like that:</p>
+<pre><code class="hljs css language-js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">reporter</span>(<span class="hljs-params">context</span>) </span>{
+    <span class="hljs-comment">// report error and fix command</span>
+}
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+    <span class="hljs-attr">linter</span>: reporter,
+    <span class="hljs-attr">fixer</span>: reporter
+};
+</code></pre>
+<p><strong>fixer</strong> does lint and found error</p>
+<p>If you'd like textlint to attempt to fix the problem you're reporting, you can do so by specifying the fix object when using <code>context.report()</code>.
+The fixer object, that you can use to apply a fix. For example:</p>
+<p>The fixer object has the following methods:</p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> more reasonable example</span>
+<span class="hljs-keyword">const</span> reporter = <span class="hljs-function"><span class="hljs-params">context</span> =&gt;</span> {
+    <span class="hljs-comment">// `context.fixer`</span>
+    <span class="hljs-keyword">const</span> { Syntax, RuleError, fixer, report, getSource } = context;
+    <span class="hljs-keyword">return</span> {
+        [Syntax.Str](node) {
+            <span class="hljs-keyword">const</span> text = getSource(node);
+            <span class="hljs-comment">// "You fix this"</span>
+            <span class="hljs-comment">//      ^^^</span>
+            <span class="hljs-keyword">const</span> matchRegexp = <span class="hljs-regexp">/\bfix\b/</span>;
+            <span class="hljs-keyword">if</span> (!matchRegexp.test(text)) {
+                <span class="hljs-keyword">return</span>;
+            }
+            <span class="hljs-comment">// found "fixable" error</span>
+            <span class="hljs-keyword">const</span> index = text.search(matchRegexp);
+            <span class="hljs-keyword">const</span> length = <span class="hljs-string">"fix"</span>.length;
+            <span class="hljs-keyword">const</span> replace = fixer.replaceTextRange([index, index + length], <span class="hljs-string">"fixed"</span>);
+            report(
+                node,
+                <span class="hljs-keyword">new</span> RuleError(<span class="hljs-string">"Replaced"</span>, {
+                    <span class="hljs-comment">// "You fix this"</span>
+                    <span class="hljs-comment">//      ^ index</span>
+                    index,
+                    <span class="hljs-comment">// "You fix this"</span>
+                    <span class="hljs-comment">//      ^^^</span>
+                    <span class="hljs-comment">//     fixed</span>
+                    fix: replace
+                })
+            );
+        }
+    };
+};
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+    <span class="hljs-attr">linter</span>: reporter,
+    <span class="hljs-comment">// This rule has fixer.</span>
+    fixer: reporter
+};
+</code></pre>
+<p>The <code>context.fixer.</code> object has the following methods:</p>
+<ul>
+<li><code>fixer.insertTextAfter(node, text)</code> - inserts text after the given node</li>
+<li><code>fixer.insertTextAfterRange(range, text)</code> - inserts text after the given range</li>
+<li><code>fixer.insertTextBefore(node, text)</code> - inserts text before the given node</li>
+<li><code>fixer.insertTextBeforeRange(range, text)</code> - inserts text before the given range</li>
+<li><code>fixer.remove(node)</code> - removes the given node</li>
+<li><code>fixer.removeRange(range)</code> - removes text in the given range</li>
+<li><code>fixer.replaceText(node, text)</code> - replaces the text in the given node</li>
+<li><code>fixer.replaceTextRange(range, text)</code> - replaces the text in the given range</li>
+</ul>
+<p>Best practices for fixes:</p>
+<ol>
+<li>Make fixes that are as small as possible. Anything more than a single character is risky and could prevent other, simpler fixes from being made.</li>
+<li>Make one fix per message.</li>
+</ol>
+<h2><a class="anchor" aria-hidden="true" id="publishing"></a><a href="#publishing" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Publishing</h2>
+<p>You can publish fixable rule to npm that is the same way of a <a href="/docs/rule.html">rule</a></p>
+<p>Be careful to following points.</p>
+<h3><a class="anchor" aria-hidden="true" id="fixable-feature-is-newer"></a><a href="#fixable-feature-is-newer" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>fixable</code> feature is newer</h3>
+<p>Old <code>textlint</code> not support fixable feature, so old <code>textlint</code> don't understand <code>fixable</code>.
+As a result, old <code>textlint</code> throw error.</p>
+<blockquote>
+<p>Error: Definition for rule 'rule-name' was not found.</p>
+</blockquote>
+<p>We recommended that add <code>peerDependencies</code> to <code>package.json</code></p>
+<pre><code class="hljs">  <span class="hljs-string">"peerDependencies"</span>: {
+    <span class="hljs-string">"textlint"</span>: <span class="hljs-string">"&gt;= 5.5.0"</span>
+  }
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="display-fixable-or-not"></a><a href="#display-fixable-or-not" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Display fixable or not</h3>
+<p>If your textlint's rule is <em>fixable</em>, display &quot;this rule is fixable!&quot;.</p>
+<p>We have <em>fixable</em> rule badge and use it!</p>
+<p><a href="https://textlint.github.io/"><img src="https://img.shields.io/badge/textlint-fixable-green.svg?style=social" alt="textlint rule"></a></p>
+<pre><code class="hljs css language-markdown">[<span class="hljs-string">![textlint rule</span>](<span class="hljs-link">https://img.shields.io/badge/textlint-fixable-green.svg?style=social</span>)](<span class="hljs-link">https://textlint.github.io/</span>) 
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="terms"></a><a href="#terms" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Terms</h2>
+<ul>
+<li>fixble rule: A rule report error that could be fixed
+<ul>
+<li><strong>fixable</strong> is <strong>fix</strong>-able.</li>
+</ul></li>
+</ul>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/filter-rule.html"><span class="arrow-prev">← </span><span>Creating Filter Rule</span></a><a class="docs-next button" href="/docs/rule-preset.html"><span>Creating Preset</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#publishing">Publishing</a><ul class="toc-headings"><li><a href="#fixable-feature-is-newer"><code>fixable</code> feature is newer</a></li><li><a href="#display-fixable-or-not">Display fixable or not</a></li></ul></li><li><a href="#terms">Terms</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/textlint-icon_256x256.png" alt="textlint" width="66" height="58"/></a><div><h5>Docs</h5><a href="/docs/en/configuring.html">User Manual</a><a href="/docs/en/rule.html">Developer Guide</a></div><div><h5>Community</h5><a href="https://gitter.im/textlint-ja/textlint-ja">Project Chat</a></div><div><h5>More</h5><a href="/blog">Blog</a><a href="https://github.com/">GitHub</a><a class="github-button" href="https://github.com/textlint/textlint" data-icon="octicon-star" data-count-href="/textlint/textlint/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><section class="copyright">Copyright © 2020 textlint organization</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: '27ef1d5fc0d12142485f3784f7d3cb46',
+                indexName: 'textlint',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {}
+              });
+            </script></body></html>

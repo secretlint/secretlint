@@ -12,7 +12,7 @@ jobs:
         node_version: [10, 12]
     steps:
       - name: checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: setup Node ${{ matrix.node_version }}
         uses: actions/setup-node@v1
         with:

@@ -1,0 +1,142 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Getting Started with textlint · textlint</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;&lt;strong&gt;textlint&lt;/strong&gt; does the following steps:&lt;/p&gt;
+"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Getting Started with textlint · textlint"/><meta property="og:type" content="website"/><meta property="og:url" content="https://textlint.github.io/index.html"/><meta property="og:description" content="&lt;p&gt;&lt;strong&gt;textlint&lt;/strong&gt; does the following steps:&lt;/p&gt;
+"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/img/textlint-icon_256x256.png"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="alternate" type="application/atom+xml" href="https://textlint.github.io/blog/atom.xml" title="textlint Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://textlint.github.io/blog/feed.xml" title="textlint Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/textlint-icon_256x256.png" alt="textlint"/><h2 class="headerTitleWithLogo">textlint</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive siteNavItemActive"><a href="/docs/getting-started.html" target="_self">Docs</a></li><li class=""><a href="https://github.com/textlint/textlint/wiki/Collection-of-textlint-rule" target="_self">Rules</a></li><li class=""><a href="/blog/" target="_self">Blog</a></li><li class=""><a href="/help.html" target="_self">Help</a></li><li class=""><a href="https://github.com/textlint/textlint" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>User Manual</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">User Manual</h3><ul class=""><li class="navListItem navListItemActive"><a class="navItem" href="/docs/getting-started.html">Getting Started with textlint</a></li><li class="navListItem"><a class="navItem" href="/docs/configuring.html">Configuring textlint</a></li><li class="navListItem"><a class="navItem" href="/docs/integrations.html">Integrating with Editors, Tools, etc..</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Developer Guide</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/rule.html">Creating Rules</a></li><li class="navListItem"><a class="navItem" href="/docs/filter-rule.html">Creating Filter Rule</a></li><li class="navListItem"><a class="navItem" href="/docs/rule-fixable.html">Creating Fixable Rule</a></li><li class="navListItem"><a class="navItem" href="/docs/rule-preset.html">Creating Preset</a></li><li class="navListItem"><a class="navItem" href="/docs/rule-advanced.html">Advanced: Paragraph Rule</a></li><li class="navListItem"><a class="navItem" href="/docs/rule-tips-after-all.html">How to implement &quot;after-all&quot; in the rule?</a></li><li class="navListItem"><a class="navItem" href="/docs/plugin.html">Plugin</a></li><li class="navListItem"><a class="navItem" href="/docs/formatter.html">Formatter</a></li><li class="navListItem"><a class="navItem" href="/docs/use-as-modules.html">Use as Node Modules</a></li><li class="navListItem"><a class="navItem" href="/docs/txtnode.html">TxtAST Interface</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Contributing</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/contributing.html">Contributing Guideline</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/textlint/textlint/edit/master/docs/getting-started.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 class="postHeaderTitle">Getting Started with textlint</h1></header><article><div><span><p><strong>textlint</strong> does the following steps:</p>
+<ol>
+<li>textlint loads rules, every single rule is a plugin and you can add more at runtime.</li>
+<li>textlint parses <em>texts</em> using Markdown/Text/HTML parser plugin.</li>
+<li>textlint uses an AST(<a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree" title="Abstract syntax tree">Abstract Syntax Tree</a>) to evaluate patterns in <em>texts</em>.</li>
+<li>textlint reports errors/warning if exist.</li>
+</ol>
+<h2><a class="anchor" aria-hidden="true" id="installation-and-usage"></a><a href="#installation-and-usage" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation and Usage</h2>
+<p>NOTICE: If you run the following procedures on Windows, please use PowerShell.</p>
+<h3><a class="anchor" aria-hidden="true" id="create-new-workspace"></a><a href="#create-new-workspace" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Create new workspace</h3>
+<p>Create <code>&lt;your-workspace&gt;</code> directory and <code>package.json</code> file. A <a href="https://docs.npmjs.com/files/package.json" title="package.json">package.json</a> manages dependencies of packages that include <code>textlint</code>:</p>
+<pre><code class="hljs"># Create your <span class="hljs-keyword">workspace</span> directory and <span class="hljs-keyword">move</span> to it.
+mkdir your-<span class="hljs-keyword">workspace</span>
+cd your-<span class="hljs-keyword">workspace</span>
+
+# <span class="hljs-string">`npm init`</span> command creates <span class="hljs-string">`package.json`</span> <span class="hljs-keyword">file</span>.
+npm init --yes
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="installation-of-textlint"></a><a href="#installation-of-textlint" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation of textlint</h3>
+<p>You can install <code>textlint</code> using npm. We recommend that you install <code>textlint</code> locally by running npm command with <code>--save-dev</code> option. This means that npm installs <code>textlint</code> in the <code>&lt;your-workspace&gt;/node_modules</code> folder.</p>
+<pre><code class="hljs"><span class="hljs-comment"># Installed textlint locally</span>
+npm <span class="hljs-keyword">install</span> <span class="hljs-comment">--save-dev textlint</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="installation-of-rules"></a><a href="#installation-of-rules" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation of rules</h3>
+<p>You can find a rule in <a href="https://github.com/textlint/textlint/wiki/Collection-of-textlint-rule" title="A Collection of textlint rule">A Collection of textlint rule</a>.</p>
+<p>As an example, let's install <a href="https://github.com/textlint-rule/textlint-rule-no-todo" title="textlint-rule-no-todo">textlint-rule-no-todo</a>. If you have installed <code>textlint</code> locally, you must install each rule locally as well.</p>
+<pre><code class="hljs"><span class="hljs-built_in">npm</span> install --save-dev textlint-rule-<span class="hljs-literal">no</span>-todo
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="usage"></a><a href="#usage" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h3>
+<p>You can run <code>textlint</code> on any Markdown files:</p>
+<pre><code class="hljs css language-markdown"><span class="hljs-section"># file.md</span>
+<span class="hljs-bullet">
+- </span>[ ] Write usage instructions
+
+<span class="hljs-code">`- [ ]`</span> is a code and not error.
+
+</code></pre>
+<pre><code class="hljs">.<span class="hljs-regexp">/node_modules/</span>.bin/textlint --rule <span class="hljs-literal">no</span>-todo file.md
+</code></pre>
+<p><img src="/docs/assets/screenshot-lint-error.png" alt="screenshot lint error"></p>
+<h2><a class="anchor" aria-hidden="true" id="configuration"></a><a href="#configuration" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration</h2>
+<p>We recommend using <code>textlint</code> with <code>.textlintrc</code> configuration file.</p>
+<p>Create a <code>.textlintrc</code> file in your workspace:</p>
+<pre><code class="hljs"><span class="hljs-string">./node_modules/.bin/textlint</span> <span class="hljs-params">--init</span>
+</code></pre>
+<p>In this file, you'll see some rules configured like this:</p>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"filters"</span>: {},
+  <span class="hljs-attr">"rules"</span>: {
+    <span class="hljs-attr">"no-todo"</span>: <span class="hljs-literal">true</span>
+  }
+}
+</code></pre>
+<p>If there is a <code>.textlintrc</code> file in your workspace, <code>textlint</code> loads <code>.textlintrc</code> automatically. So you can run textlint without any command line options:</p>
+<pre><code class="hljs">./node_modules/.bin/textlint file<span class="hljs-selector-class">.md</span>
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="next-steps"></a><a href="#next-steps" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Next Steps</h2>
+<ul>
+<li>Learn about advanced <a href="/docs/configuring.html">configuring</a> of textlint.</li>
+<li>Explore <a href="https://github.com/textlint/textlint/wiki/Collection-of-textlint-rule">textlint's rules</a></li>
+<li>Can't find just the right rule? Make your own <a href="/docs/rule.html">custom rule</a>.</li>
+<li>Can't handling <code>.ext</code> file? Make your own <a href="/docs/plugin.html">custom plugin</a>.</li>
+<li>Make textlint even better by <a href="/docs/contributing.html">contributing</a>.</li>
+</ul>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-next button" href="/docs/configuring.html"><span>Configuring textlint</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#installation-and-usage">Installation and Usage</a><ul class="toc-headings"><li><a href="#create-new-workspace">Create new workspace</a></li><li><a href="#installation-of-textlint">Installation of textlint</a></li><li><a href="#installation-of-rules">Installation of rules</a></li><li><a href="#usage">Usage</a></li></ul></li><li><a href="#configuration">Configuration</a></li><li><a href="#next-steps">Next Steps</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/textlint-icon_256x256.png" alt="textlint" width="66" height="58"/></a><div><h5>Docs</h5><a href="/docs/en/configuring.html">User Manual</a><a href="/docs/en/rule.html">Developer Guide</a></div><div><h5>Community</h5><a href="https://gitter.im/textlint-ja/textlint-ja">Project Chat</a></div><div><h5>More</h5><a href="/blog">Blog</a><a href="https://github.com/">GitHub</a><a class="github-button" href="https://github.com/textlint/textlint" data-icon="octicon-star" data-count-href="/textlint/textlint/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><section class="copyright">Copyright © 2020 textlint organization</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: '27ef1d5fc0d12142485f3784f7d3cb46',
+                indexName: 'textlint',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {}
+              });
+            </script></body></html>

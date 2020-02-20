@@ -1,0 +1,691 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Creating Rules · textlint</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;textlint&#x27;s AST(Abstract Syntax Tree) is defined at the page.&lt;/p&gt;
+"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Creating Rules · textlint"/><meta property="og:type" content="website"/><meta property="og:url" content="https://textlint.github.io/index.html"/><meta property="og:description" content="&lt;p&gt;textlint&#x27;s AST(Abstract Syntax Tree) is defined at the page.&lt;/p&gt;
+"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/img/textlint-icon_256x256.png"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="alternate" type="application/atom+xml" href="https://textlint.github.io/blog/atom.xml" title="textlint Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://textlint.github.io/blog/feed.xml" title="textlint Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/textlint-icon_256x256.png" alt="textlint"/><h2 class="headerTitleWithLogo">textlint</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/getting-started.html" target="_self">Docs</a></li><li class=""><a href="https://github.com/textlint/textlint/wiki/Collection-of-textlint-rule" target="_self">Rules</a></li><li class=""><a href="/blog/" target="_self">Blog</a></li><li class=""><a href="/help.html" target="_self">Help</a></li><li class=""><a href="https://github.com/textlint/textlint" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Developer Guide</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">User Manual</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/getting-started.html">Getting Started with textlint</a></li><li class="navListItem"><a class="navItem" href="/docs/configuring.html">Configuring textlint</a></li><li class="navListItem"><a class="navItem" href="/docs/integrations.html">Integrating with Editors, Tools, etc..</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Developer Guide</h3><ul class=""><li class="navListItem navListItemActive"><a class="navItem" href="/docs/rule.html">Creating Rules</a></li><li class="navListItem"><a class="navItem" href="/docs/filter-rule.html">Creating Filter Rule</a></li><li class="navListItem"><a class="navItem" href="/docs/rule-fixable.html">Creating Fixable Rule</a></li><li class="navListItem"><a class="navItem" href="/docs/rule-preset.html">Creating Preset</a></li><li class="navListItem"><a class="navItem" href="/docs/rule-advanced.html">Advanced: Paragraph Rule</a></li><li class="navListItem"><a class="navItem" href="/docs/rule-tips-after-all.html">How to implement &quot;after-all&quot; in the rule?</a></li><li class="navListItem"><a class="navItem" href="/docs/plugin.html">Plugin</a></li><li class="navListItem"><a class="navItem" href="/docs/formatter.html">Formatter</a></li><li class="navListItem"><a class="navItem" href="/docs/use-as-modules.html">Use as Node Modules</a></li><li class="navListItem"><a class="navItem" href="/docs/txtnode.html">TxtAST Interface</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Contributing</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/contributing.html">Contributing Guideline</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/textlint/textlint/edit/master/docs/rule.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 class="postHeaderTitle">Creating Rules</h1></header><article><div><span><p>textlint's AST(Abstract Syntax Tree) is defined at the page.</p>
+<ul>
+<li><a href="/docs/txtnode.html">txtnode.md</a>
+<ul>
+<li>If you want to know AST of a text, use <a href="/docs/txtnode.html#online-parsing-demo">Online Parsing Demo</a></li>
+</ul></li>
+</ul>
+<p>Each rules are represented by an object with some properties.
+The properties are equivalent to AST node types from TxtNode.</p>
+<p>The basic source code format for a rule is:</p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">/**
+ * @param {RuleContext} context
+ */</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">context</span>) </span>{
+    <span class="hljs-comment">// rule object</span>
+    <span class="hljs-keyword">return</span> {
+        [context.Syntax.Document](node) {},
+
+        [context.Syntax.Paragraph](node) {},
+
+        [context.Syntax.Str](node) {
+            <span class="hljs-keyword">const</span> text = context.getSource(node);
+            <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/found wrong use-case/</span>.test(text)) {
+                <span class="hljs-comment">// report error</span>
+                context.report(node, <span class="hljs-keyword">new</span> context.RuleError(<span class="hljs-string">"Found wrong"</span>));
+            }
+        },
+
+        [context.Syntax.Break](node) {}
+    };
+}
+</code></pre>
+<p>If your rule wants to know when an <code>Str</code> node is found in the AST, then add a method called <code>context.Syntax.Str</code>, such as:</p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// ES6</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">context</span>) </span>{
+    <span class="hljs-keyword">return</span> {
+        [context.Syntax.Str](node) {
+            <span class="hljs-comment">// this method is called</span>
+        }
+    };
+}
+<span class="hljs-comment">// or ES5</span>
+<span class="hljs-built_in">module</span>.exports = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">context</span>) </span>{
+    <span class="hljs-keyword">const</span> exports = {};
+    exports[context.Syntax.Str] = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">node</span>) </span>{
+        <span class="hljs-comment">// this method is called</span>
+    };
+    <span class="hljs-keyword">return</span> exports;
+};
+</code></pre>
+<p>By default, the method matching a node name is called during the traversal when the node is first encountered(This is called <strong>Enter</strong>), on the way down the AST.</p>
+<p>You can also specify to visit the node on the other side of the traversal, as it comes back up the tree(This is called <strong>Leave</strong>), but adding <code>Exit</code> to the end of the node type, such as:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">context</span>) </span>{
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-comment">// Str:exit</span>
+        [context.Syntax.StrExit](node) {
+            <span class="hljs-comment">// this method is called</span>
+        }
+    };
+}
+</code></pre>
+<p>Note: textlint@11.1.1+ support <code>*Exit</code> constant value like <code>Syntax.DocumentExit</code>.
+In textlint@11.1.0&lt;=, you had to write <code>[Syntax.Document + &quot;:exit&quot;]</code>.</p>
+<p><a href="https://github.com/azu/visualize-txt-traverse" title="azu/visualize-txt-traverse">visualize-txt-traverse</a> help you better understand this traversing.</p>
+<p><a href="https://github.com/azu/visualize-txt-traverse" title="azu/visualize-txt-traverse"><img src="https://gyazo.com/155c68f0f9ff35e0a549d655a787c01e.gif" alt="gif visualize-txt-traverse"></a></p>
+<p><a href="https://textlint.github.io/astexplorer/" title="AST explorer for textlint">AST explorer for textlint</a> help you better understand <a href="/docs/txtnode.html">TxtAST</a>.</p>
+<p><a href="https://textlint.github.io/astexplorer/"><img src="/docs/assets/ast-explorer.png" alt="ast-explorer fork"></a></p>
+<p><strong>Related information:</strong></p>
+<ul>
+<li><a href="https://github.com/azu/visualize-txt-traverse" title="azu/visualize-txt-traverse">azu/visualize-txt-traverse</a></li>
+<li><a href="https://github.com/textlint/textlint/tree/master/packages/@textlint/ast-traverse" title="packages/@textlint/ast-traverse">packages/@textlint/ast-traverse</a></li>
+<li><a href="https://github.com/estools/estraverse" title="estools/estraverse">estools/estraverse</a></li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="rulecontext-api"></a><a href="#rulecontext-api" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>RuleContext API</h2>
+<p>RuleContext object has following property:</p>
+<ul>
+<li><code>Syntax.*</code>
+<ul>
+<li>This is const values of <a href="/docs/txtnode.html">TxtNode type</a>.</li>
+<li>e.g.) <code>context.Syntax.Str</code></li>
+<li><a href="https://github.com/textlint/textlint/blob/master/packages/%40textlint/ast-node-types/src/index.ts">packages/@textlint/ast-node-types/src/index.ts</a></li>
+</ul></li>
+<li><code>report(&lt;node&gt;, &lt;ruleError&gt;): void</code>
+<ul>
+<li>This method is a method that reports a message from one of the rules.</li>
+<li>e.g.) <code>context.report(node, new context.RuleError(&quot;found rule error&quot;));</code></li>
+</ul></li>
+<li><code>getSource(&lt;node&gt;): string</code>
+<ul>
+<li>This method is a method gets the source code for the given node.</li>
+<li>e.g.) <code>context.getSource(node); // =&gt; &quot;text&quot;</code></li>
+</ul></li>
+<li><code>getFilePath(): string | undefined</code>
+<ul>
+<li>This method return file path that is linting target.</li>
+<li>e.g.) <code>context.getFilePath(): // =&gt; /path/to/file.md or undefined</code></li>
+</ul></li>
+<li><code>getConfigBaseDir(): string | undefined</code> (New in <a href="https://github.com/textlint/textlint/releases/tag/textlint%409.0.0" title="9.0.0">9.0.0</a>)
+<ul>
+<li>Available <a href="https://github.com/textlint/get-config-base-dir" title="@textlint/get-config-base-dir">@textlint/get-config-base-dir</a> polyfill for backward compatibility</li>
+<li>This method return config base directory path that is the place of <code>.textlintrc</code></li>
+<li>e.g.) <code>/path/to/dir/.textlintrc</code></li>
+<li><code>getConfigBaseDir()</code> return <code>&quot;/path/to/dir/&quot;</code>.</li>
+</ul></li>
+<li><code>fixer</code>
+<ul>
+<li>This is creator object of fix command.</li>
+<li>See <a href="/docs/rule-fixable.html">How to create Fixable Rule?</a> for details</li>
+</ul></li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="ruleerror"></a><a href="#ruleerror" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>RuleError</h2>
+<p>RuleError is an object like Error.
+Use it with <code>report</code> function.</p>
+<ul>
+<li><code>RuleError(&lt;message&gt;, [{ line , column }])</code>
+<ul>
+<li>e.g.) <code>new context.RuleError(&quot;Found rule error&quot;);</code></li>
+<li>e.g.) <code>new context.RuleError(&quot;Found rule error&quot;, { line: paddingLine, column: paddingColumn});</code></li>
+</ul></li>
+<li><code>RuleError(&lt;message&gt;, [{ index }])</code>
+<ul>
+<li>e.g.) <code>new context.RuleError(&quot;Found rule error&quot;, { index: paddingIndex });</code></li>
+</ul></li>
+</ul>
+<pre><code class="hljs css language-js"><span class="hljs-comment">// No padding information</span>
+<span class="hljs-keyword">const</span> error = <span class="hljs-keyword">new</span> RuleError(<span class="hljs-string">"message"</span>);
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">// OR</span>
+<span class="hljs-comment">// add location-based padding</span>
+<span class="hljs-keyword">const</span> paddingLine = <span class="hljs-number">1</span>;
+<span class="hljs-keyword">const</span> paddingColumn = <span class="hljs-number">1</span>;
+<span class="hljs-keyword">const</span> errorWithPadding = <span class="hljs-keyword">new</span> RuleError(<span class="hljs-string">"message"</span>, {
+    <span class="hljs-attr">line</span>: paddingLine, <span class="hljs-comment">// padding line number from node.loc.start.line. default: 0</span>
+    column: paddingColumn <span class="hljs-comment">// padding column number from node.loc.start.column. default: 0</span>
+});
+<span class="hljs-comment">// context.report(node, errorWithPadding);</span>
+<span class="hljs-comment">//</span>
+<span class="hljs-comment">// OR</span>
+<span class="hljs-comment">// add index-based padding</span>
+<span class="hljs-keyword">const</span> paddingIndex = <span class="hljs-number">1</span>;
+<span class="hljs-keyword">const</span> errorWithPaddingIndex = <span class="hljs-keyword">new</span> RuleError(<span class="hljs-string">"message"</span>, {
+    <span class="hljs-attr">index</span>: paddingIndex <span class="hljs-comment">// padding index value from `node.range[0]`. default: 0</span>
+});
+<span class="hljs-comment">// context.report(node, errorWithPaddingIndex);</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="warning-caution-warning"></a><a href="#warning-caution-warning" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>:warning: Caution :warning:</h3>
+<ul>
+<li><code>index</code> could <strong>not</strong> used with <code>line</code> and <code>column</code>.
+<ul>
+<li>It means that to use <code>{ line, column }</code> or <code>{ index }</code></li>
+</ul></li>
+<li><code>index</code>, <code>line</code>, <code>column</code> is a <strong>relative</strong> value from the <code>node</code> which is reported.</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="report-error"></a><a href="#report-error" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Report error</h2>
+<p>You will use mainly method is <code>context.report()</code>, which publishes an error (defined in each rules).</p>
+<p>For example:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">context</span>) </span>{
+    <span class="hljs-keyword">return</span> {
+        [context.Syntax.Str](node) {
+            <span class="hljs-comment">// get source code of this `node`</span>
+            <span class="hljs-keyword">const</span> text = context.getSource(node);
+            <span class="hljs-keyword">if</span> (<span class="hljs-regexp">/found wrong use-case/</span>.test(text)) {
+                <span class="hljs-comment">// report error</span>
+                context.report(node, <span class="hljs-keyword">new</span> context.RuleError(<span class="hljs-string">"Found wrong"</span>));
+            }
+        }
+    };
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="how-to-write-async-task-in-the-rule"></a><a href="#how-to-write-async-task-in-the-rule" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>How to write async task in the rule</h3>
+<p>Return Promise object in the node function and the rule work asynchronously.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">context</span>) </span>{
+    <span class="hljs-keyword">const</span> { Syntax } = context;
+    <span class="hljs-keyword">return</span> {
+        [Syntax.Str](node) {
+            <span class="hljs-comment">// textlint wait for resolved the promise.</span>
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> {
+                <span class="hljs-comment">// async task</span>
+            });
+        }
+    };
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="example-creating-no-todo-rules"></a><a href="#example-creating-no-todo-rules" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example: creating <code>no-todo</code> rules.</h2>
+<p>This example aim to create <code>no-todo</code> rule that throw error if the text includes <code>- [ ]</code> or <code>todo:</code>.</p>
+<h3><a class="anchor" aria-hidden="true" id="setup-for-creating-rule"></a><a href="#setup-for-creating-rule" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Setup for creating rule</h3>
+<p>textlint prepare useful generator tool that is <a href="https://github.com/textlint/create-textlint-rule">create-textlint-rule</a> command.</p>
+<ul>
+<li><a href="https://github.com/textlint/create-textlint-rule">textlint/create-textlint-rule: Create textlint rule project with no configuration.</a></li>
+<li><a href="https://github.com/textlint/textlint-scripts">textlint/textlint-scripts: textlint npm-run-scripts CLI help to create textlint rule.</a></li>
+</ul>
+<p>You can setup textlint rule using <a href="https://github.com/npm/npx">npx</a> that is included in <code>npm</code>:</p>
+<pre><code class="hljs css language-sh"><span class="hljs-comment"># Create `textlint-rule-no-todo` project and setup!</span>
+npx create-textlint-rule no-todo
+</code></pre>
+<p>Or use <code>npm install</code> command:</p>
+<pre><code class="hljs css language-sh"><span class="hljs-comment"># Install `create-textlint-rule` to global</span>
+npm install --global create-textlint-rule 
+<span class="hljs-comment"># Create `textlint-rule-no-todo` project and setup!</span>
+create-textlint-rule no-todo
+</code></pre>
+<p>This generated project contains <a href="https://github.com/textlint/textlint-scripts">textlint-scripts</a> that provide build script and test script.</p>
+<p>:memo: If you want to write TypeScript, Pass <code>--typescript</code> flag to <a href="https://github.com/textlint/create-textlint-rule">create-textlint-rule</a>.
+For more details, see <a href="https://github.com/textlint/create-textlint-rule">create-textlint-rule</a>'s README.</p>
+<h4><a class="anchor" aria-hidden="true" id="build"></a><a href="#build" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Build</h4>
+<p>Builds source codes for publish to the <code>lib/</code> folder.
+You can write ES2015+ source codes in <code>src/</code> folder.
+The source codes in <code>src/</code> built by following command.</p>
+<pre><code class="hljs">npm run build
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="tests"></a><a href="#tests" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Tests</h4>
+<p>Run test code in <code>test/</code> folder.
+Test textlint rule by <a href="https://www.npmjs.com/package/textlint-tester" title="textlint-tester">textlint-tester</a>.</p>
+<pre><code class="hljs">npm test
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="let-s-create-no-todo-rule"></a><a href="#let-s-create-no-todo-rule" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Let's create <code>no-todo</code> rule</h3>
+<p>File Name: <code>no-todo.js</code></p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">/**
+ * @param {RuleContext} context
+ */</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">context</span>) </span>{
+    <span class="hljs-keyword">const</span> helper = <span class="hljs-keyword">new</span> RuleHelper(context);
+    <span class="hljs-keyword">const</span> { Syntax, getSource, RuleError, report } = context;
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-comment">/*
+            # Header
+            Todo: quick fix this.
+            ^^^^^
+            Hit!
+        */</span>
+        [Syntax.Str](node) {
+            <span class="hljs-comment">// get text from node</span>
+            <span class="hljs-keyword">const</span> text = getSource(node);
+            <span class="hljs-comment">// does text contain "todo:"?</span>
+            <span class="hljs-keyword">const</span> match = text.match(<span class="hljs-regexp">/todo:/i</span>);
+            <span class="hljs-keyword">if</span> (match) {
+                report(
+                    node,
+                    <span class="hljs-keyword">new</span> RuleError(<span class="hljs-string">`Found TODO: '<span class="hljs-subst">${text}</span>'`</span>, {
+                        <span class="hljs-attr">index</span>: match.index
+                    })
+                );
+            }
+        },
+        <span class="hljs-comment">/*
+            # Header
+            - [ ] Todo
+              ^^^
+              Hit!
+        */</span>
+        [Syntax.ListItem](node) {
+            <span class="hljs-keyword">const</span> text = context.getSource(node);
+            <span class="hljs-keyword">const</span> match = text.match(<span class="hljs-regexp">/\[\s+\]\s/i</span>);
+            <span class="hljs-keyword">if</span> (match) {
+                report(
+                    node,
+                    <span class="hljs-keyword">new</span> context.RuleError(<span class="hljs-string">`Found TODO: '<span class="hljs-subst">${text}</span>'`</span>, {
+                        <span class="hljs-attr">index</span>: match.index
+                    })
+                );
+            }
+        }
+    };
+}
+</code></pre>
+<p>Example text:</p>
+<pre><code class="hljs css language-markdown"><span class="hljs-section"># Header</span>
+
+this is Str.
+
+Todo: quick fix this.
+<span class="hljs-bullet">
+- </span>list 1
+<span class="hljs-bullet">- </span>[ ] todo
+</code></pre>
+<p>Run Lint!</p>
+<pre><code class="hljs css language-sh">$ npm run build
+$ textlint --rulesdir lib/ README.md -f pretty-error
+</code></pre>
+<p><img src="https://monosnap.com/image/9FeIQr95kXjGPWFjZFRq6ZFG16YscF.png" alt="result error"></p>
+<h3><a class="anchor" aria-hidden="true" id="advanced-rules"></a><a href="#advanced-rules" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Advanced rules</h3>
+<p>When linting following text with above <code>no-todo</code> rule, a result was error.</p>
+<pre><code class="hljs css language-markdown">[<span class="hljs-string">todo:image</span>](<span class="hljs-link">http://example.com</span>)
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="case-ignore-child-node-of-link-image-or-blockquote"></a><a href="#case-ignore-child-node-of-link-image-or-blockquote" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Case: ignore child node of <code>Link</code>, <code>Image</code> or <code>BlockQuote</code>.</h4>
+<p>You want to ignore this case, and write the following:</p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">/**
+ * Get parents of node.
+ * The parent nodes are returned in order from the closest parent to the outer ones.
+ * @param node
+ * @returns {Array}
+ */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getParents</span>(<span class="hljs-params">node</span>) </span>{
+    <span class="hljs-keyword">const</span> result = [];
+    <span class="hljs-comment">// child node has `parent` property.</span>
+    <span class="hljs-keyword">let</span> parent = node.parent;
+    <span class="hljs-keyword">while</span> (parent != <span class="hljs-literal">null</span>) {
+        result.push(parent);
+        parent = parent.parent;
+    }
+    <span class="hljs-keyword">return</span> result;
+}
+<span class="hljs-comment">/**
+ * Return true if `node` is wrapped any one of `types`.
+ * @param {TxtNode} node is target node
+ * @param {string[]} types are wrapped target node
+ * @returns {boolean|*}
+ */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isNodeWrapped</span>(<span class="hljs-params">node, types</span>) </span>{
+    <span class="hljs-keyword">const</span> parents = getParents(node);
+    <span class="hljs-keyword">const</span> parentsTypes = parents.map(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">parent</span>) </span>{
+        <span class="hljs-keyword">return</span> parent.type;
+    });
+    <span class="hljs-keyword">return</span> types.some(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">type</span>) </span>{
+        <span class="hljs-keyword">return</span> parentsTypes.some(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">parentType</span>) </span>{
+            <span class="hljs-keyword">return</span> parentType === type;
+        });
+    });
+}
+<span class="hljs-comment">/**
+ * @param {RuleContext} context
+ */</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">context</span>) </span>{
+    <span class="hljs-keyword">const</span> { Syntax, getSource, RuleError, report } = context;
+    <span class="hljs-keyword">return</span> {
+        <span class="hljs-comment">/*
+            # Header
+            Todo: quick fix this.
+        */</span>
+        [Syntax.Str](node) {
+            <span class="hljs-comment">// not apply this rule to the node that is child of `Link`, `Image` or `BlockQuote` Node.</span>
+            <span class="hljs-keyword">if</span> (isNodeWrapped(node, [Syntax.Link, Syntax.Image, Syntax.BlockQuote])) {
+                <span class="hljs-keyword">return</span>;
+            }
+            <span class="hljs-comment">// get text from node</span>
+            <span class="hljs-keyword">const</span> text = getSource(node);
+            <span class="hljs-comment">// does text contain "todo:"?</span>
+            <span class="hljs-keyword">const</span> match = text.match(<span class="hljs-regexp">/todo:/i</span>);
+            <span class="hljs-keyword">if</span> (match) {
+                <span class="hljs-keyword">const</span> todoText = text.substring(match.index);
+                report(
+                    node,
+                    <span class="hljs-keyword">new</span> RuleError(<span class="hljs-string">`Found TODO: '<span class="hljs-subst">${todoText}</span>'`</span>, {
+                        <span class="hljs-comment">// correct position</span>
+                        index: match.index
+                    })
+                );
+            }
+        },
+        <span class="hljs-comment">/*
+            # Header
+            - [ ] Todo
+        */</span>
+        [Syntax.ListItem](node) {
+            <span class="hljs-keyword">const</span> text = context.getSource(node);
+            <span class="hljs-keyword">const</span> match = text.match(<span class="hljs-regexp">/\[\s+\]\s/i</span>);
+            <span class="hljs-keyword">if</span> (match) {
+                report(
+                    node,
+                    <span class="hljs-keyword">new</span> context.RuleError(<span class="hljs-string">`Found TODO: '<span class="hljs-subst">${text}</span>'`</span>, {
+                        <span class="hljs-attr">index</span>: match.index
+                    })
+                );
+            }
+        }
+    };
+}
+</code></pre>
+<p>As a result, linting following text with modified rule, a result was no error.</p>
+<pre><code class="hljs css language-markdown">[<span class="hljs-string">todo:image</span>](<span class="hljs-link">http://example.com</span>)
+</code></pre>
+<ul>
+<li>The created rule is <a href="https://github.com/textlint-rule/textlint-rule-no-todo" title="azu/textlint-rule-no-todo">textlint-rule-no-todo</a>.</li>
+<li>These helper functions like <code>getParents</code> are implemented in <a href="https://github.com/textlint/textlint-rule-helper" title="textlint/textlint-rule-helper">textlint/textlint-rule-helper</a>.</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="how-to-test-the-rule"></a><a href="#how-to-test-the-rule" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>How to test the rule?</h3>
+<p>You can already run test by <code>npm test</code> command.
+(This test scripts is setup by <code>create-textlint-rule</code>)</p>
+<p>This test script use <a href="https://www.npmjs.com/package/textlint-tester" title="textlint-tester">textlint-tester</a>.</p>
+<hr>
+<h3><a class="anchor" aria-hidden="true" id="manually-installation"></a><a href="#manually-installation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Manually Installation</h3>
+<p><a href="https://www.npmjs.com/package/textlint-tester" title="textlint-tester">textlint-tester</a> depend on <a href="https://mochajs.org/" title="Mocha">Mocha</a>.</p>
+<pre><code class="hljs">npm install -D textlint-tester mocha
+</code></pre>
+<hr>
+<h4><a class="anchor" aria-hidden="true" id="usage-of-textlint-tester"></a><a href="#usage-of-textlint-tester" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage of textlint-tester</h4>
+<ol>
+<li>Write tests by using textlint-tester</li>
+<li>Run tests by Mocha</li>
+</ol>
+<p><code>test/textlint-rule-no-todo-test.js</code>:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">const</span> TextLintTester = <span class="hljs-built_in">require</span>(<span class="hljs-string">"textlint-tester"</span>);
+<span class="hljs-keyword">const</span> tester = <span class="hljs-keyword">new</span> TextLintTester();
+<span class="hljs-comment">// rule</span>
+<span class="hljs-keyword">import</span> rule <span class="hljs-keyword">from</span> <span class="hljs-string">"../src/no-todo"</span>;
+<span class="hljs-comment">// ruleName, rule, { valid, invalid }</span>
+tester.run(<span class="hljs-string">"no-todo"</span>, rule, {
+    <span class="hljs-attr">valid</span>: [
+        <span class="hljs-comment">// no match</span>
+        <span class="hljs-string">"text"</span>,
+        <span class="hljs-comment">// partial match</span>
+        <span class="hljs-string">"TODOS:"</span>,
+        <span class="hljs-comment">// ignore node's type</span>
+        <span class="hljs-string">"[TODO: this is todo](http://example.com)"</span>,
+        <span class="hljs-string">"![TODO: this is todo](http://example.com/img)"</span>,
+        <span class="hljs-string">"&gt; TODO: this is todo"</span>
+    ],
+    <span class="hljs-attr">invalid</span>: [
+        <span class="hljs-comment">// single match</span>
+        {
+            <span class="hljs-attr">text</span>: <span class="hljs-string">"TODO: this is TODO"</span>,
+            <span class="hljs-attr">errors</span>: [
+                {
+                    <span class="hljs-attr">message</span>: <span class="hljs-string">"Found TODO: 'TODO: this is TODO'"</span>,
+                    <span class="hljs-attr">line</span>: <span class="hljs-number">1</span>,
+                    <span class="hljs-attr">column</span>: <span class="hljs-number">1</span>
+                }
+            ]
+        },
+        <span class="hljs-comment">// multiple match in multiple lines</span>
+        {
+            <span class="hljs-attr">text</span>: <span class="hljs-string">`TODO: this is TODO
+            
+- [ ] TODO`</span>,
+            <span class="hljs-attr">errors</span>: [
+                {
+                    <span class="hljs-attr">message</span>: <span class="hljs-string">"Found TODO: 'TODO: this is TODO'"</span>,
+                    <span class="hljs-attr">line</span>: <span class="hljs-number">1</span>,
+                    <span class="hljs-attr">column</span>: <span class="hljs-number">1</span>
+                },
+                {
+                    <span class="hljs-attr">message</span>: <span class="hljs-string">"Found TODO: '- [ ] TODO'"</span>,
+                    <span class="hljs-attr">line</span>: <span class="hljs-number">3</span>,
+                    <span class="hljs-attr">column</span>: <span class="hljs-number">3</span>
+                }
+            ]
+        },
+        <span class="hljs-comment">// multiple hit items in a line</span>
+        {
+            <span class="hljs-attr">text</span>: <span class="hljs-string">"TODO: A TODO: B"</span>,
+            <span class="hljs-attr">errors</span>: [
+                {
+                    <span class="hljs-attr">message</span>: <span class="hljs-string">"Found TODO: 'TODO: A TODO: B'"</span>,
+                    <span class="hljs-attr">line</span>: <span class="hljs-number">1</span>,
+                    <span class="hljs-attr">column</span>: <span class="hljs-number">1</span>
+                }
+            ]
+        },
+        <span class="hljs-comment">// exact match or empty</span>
+        {
+            <span class="hljs-attr">text</span>: <span class="hljs-string">"THIS IS TODO:"</span>,
+            <span class="hljs-attr">errors</span>: [
+                {
+                    <span class="hljs-attr">message</span>: <span class="hljs-string">"Found TODO: 'TODO:'"</span>,
+                    <span class="hljs-attr">line</span>: <span class="hljs-number">1</span>,
+                    <span class="hljs-attr">column</span>: <span class="hljs-number">9</span>
+                }
+            ]
+        }
+    ]
+});
+</code></pre>
+<p>Run the tests:</p>
+<pre><code class="hljs">$ npm test
+# or
+$(npm bin)/mocha test/
+</code></pre>
+<p>:information_source: Please see <a href="https://github.com/textlint-rule/textlint-rule-no-todo" title="azu/textlint-rule-no-todo">azu/textlint-rule-no-todo</a> for details.</p>
+<h3><a class="anchor" aria-hidden="true" id="rule-options"></a><a href="#rule-options" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Rule options</h3>
+<p><code>.textlintrc</code> is the config file for textlint.</p>
+<p>For example, <code>very-nice-rule</code>'s option is <code>{ &quot;key&quot;: &quot;value&quot; }</code> in <code>.textlintrc</code></p>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"rules"</span>: {
+    <span class="hljs-attr">"very-nice-rule"</span>: {
+        <span class="hljs-attr">"key"</span>: <span class="hljs-string">"value"</span>
+    }
+  }
+}
+</code></pre>
+<p><code>very-nice-rule.js</code> rule get the options defined by the config file.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">context, options</span>) </span>{
+    <span class="hljs-built_in">console</span>.log(options);
+    <span class="hljs-comment">/*
+        {
+          "key": "value"
+        }
+    */</span>
+}
+</code></pre>
+<p>The <code>options</code> value is <code>{}</code> (empty object) by default.</p>
+<p>For example, <code>very-nice-rule</code>'s option is <code>true</code> (enable the rule) in <code>.textlintrc</code></p>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"rules"</span>: {
+    <span class="hljs-attr">"very-nice-rule"</span>: <span class="hljs-literal">true</span>
+  }
+}
+</code></pre>
+<p><code>very-nice-rule.js</code> rule get <code>{}</code> (empty object) as <code>options</code>.</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">context, options</span>) </span>{
+    <span class="hljs-built_in">console</span>.log(options); <span class="hljs-comment">// {}</span>
+}
+</code></pre>
+<p><strong>History</strong>: This behavior is changed in textlint@11.</p>
+<ul>
+<li><a href="https://github.com/textlint/textlint/issues/535">https://github.com/textlint/textlint/issues/535</a></li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="advanced-example"></a><a href="#advanced-example" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Advanced example</h2>
+<p>If you want to know more details, please see other example.</p>
+<ul>
+<li><a href="/docs/rule-advanced.html">Paragraph rule</a></li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="publishing"></a><a href="#publishing" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Publishing</h2>
+<p>If you want to publish your textlint rule, see following documents.</p>
+<h3><a class="anchor" aria-hidden="true" id="package-naming-conventions"></a><a href="#package-naming-conventions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Package Naming Conventions</h3>
+<p>textlint rule package naming should have <code>textlint-rule-</code> prefix.</p>
+<ul>
+<li><code>textlint-rule-&lt;name&gt;</code></li>
+<li><code>@scope/textlint-rule-&lt;name&gt;</code>
+<ul>
+<li>textlint supports <a href="https://docs.npmjs.com/misc/scope" title="Scoped packages">Scoped packages</a></li>
+</ul></li>
+</ul>
+<p>Example: <code>textlint-rule-no-todo</code></p>
+<p>textlint user use it following:</p>
+<pre><code class="hljs css language-json">{
+    <span class="hljs-attr">"rules"</span>: {
+        <span class="hljs-attr">"no-todo"</span>: <span class="hljs-literal">true</span>
+    }
+}
+</code></pre>
+<p>Example: <code>@scope/textlint-rule-awesome</code></p>
+<p>textlint user use it following:</p>
+<pre><code class="hljs css language-json">{
+    <span class="hljs-attr">"rules"</span>: {
+        <span class="hljs-attr">"@scope/awesome"</span>: <span class="hljs-literal">true</span>
+    }
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="rule-naming-conventions"></a><a href="#rule-naming-conventions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Rule Naming Conventions</h3>
+<p>The rule naming conventions for textlint are simple:</p>
+<ul>
+<li>If your rule is disallowing something, prefix it with <code>no-</code>.
+<ul>
+<li>For example, <code>no-todo</code> disallowing <code>TODO:</code> and <code>no-exclamation-question-mark</code> for disallowing <code>!</code> and <code>?</code>.</li>
+</ul></li>
+<li>If your rule is enforcing the inclusion of something, use a short name without a special prefix.
+<ul>
+<li>If the rule for english, please uf <code>textlint-rule-en-</code> prefix.</li>
+</ul></li>
+<li>Keep your rule names as short as possible, use abbreviations where appropriate.</li>
+<li>Use dashes(<code>-</code>) between words.</li>
+</ul>
+<p>npm information:</p>
+<ul>
+<li><a href="https://docs.npmjs.com/files/package.json" title="package.json | npm Documentation">package.json | npm Documentation</a></li>
+<li><a href="https://www.npmjs.com/search?q=textlint" title="results for textlint">results for textlint</a></li>
+</ul>
+<p>Example rules:</p>
+<ul>
+<li><a href="https://github.com/textlint/textlint/wiki/Collection-of-textlint-rule" title="Collection of textlint rule · textlint/textlint Wiki">Collection of textlint rule · textlint/textlint Wiki</a></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="keywords"></a><a href="#keywords" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Keywords</h3>
+<p>You should add <code>textlintrule</code> to npm's <code>keywords</code></p>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"name"</span>: <span class="hljs-string">"textlint-rule-no-todo"</span>,
+  <span class="hljs-attr">"description"</span>: <span class="hljs-string">"Your custom rules description"</span>,
+  <span class="hljs-attr">"version"</span>: <span class="hljs-string">"1.0.1"</span>,
+  <span class="hljs-attr">"homepage"</span>: <span class="hljs-string">"https://github.com/textlint/textlint-custom-rules/"</span>,
+  <span class="hljs-attr">"keywords"</span>: [
+    <span class="hljs-string">"textlintrule"</span>
+  ]
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="faq-publishing"></a><a href="#faq-publishing" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FAQ: Publishing</h3>
+<h4><a class="anchor" aria-hidden="true" id="q-textlint-55x-has-new-feature-my-rule-package-want-to-use-it"></a><a href="#q-textlint-55x-has-new-feature-my-rule-package-want-to-use-it" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Q. <code>textlint @ 5.5.x</code> has new feature. My rule package want to use it.</h4>
+<p>A. You should</p>
+<ul>
+<li>Add <code>textlint &gt;= 5.5</code> to <code>peerDependencies</code>
+<ul>
+<li>See example: <a href="https://github.com/textlint-rule/textlint-rule-no-todo/blob/50880b4e1c13782874a43714ee69900fc54a5348/package.json">textlint-rule-no-todo/package.json</a></li>
+</ul></li>
+<li>Release the rule package as <em>major</em> because it has breaking change.</li>
+</ul>
+<h4><a class="anchor" aria-hidden="true" id="q-textlint-does-major-update-do-my-rule-package-major-update"></a><a href="#q-textlint-does-major-update-do-my-rule-package-major-update" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Q. <code>textlint</code> does major update. Do my rule package major update?</h4>
+<p>A. If the update contains a breaking change on your rule, should update as <em>major</em>.
+If the update <strong>does not</strong> contain a breaking change on your rule, update as <em>minor</em>.</p>
+<h2><a class="anchor" aria-hidden="true" id="performance"></a><a href="#performance" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Performance</h2>
+<h3><a class="anchor" aria-hidden="true" id="rule-performance"></a><a href="#rule-performance" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Rule Performance</h3>
+<p>textlint has a built-in method to track performance of individual rules.
+Setting the <code>TIMING=1</code> environment variable will trigger the display.
+It show their individual running time and relative performance impact as a percentage of total rule processing time.</p>
+<pre><code class="hljs">$ TIMING=<span class="hljs-number">1</span> textlint README.md
+Rule                            <span class="hljs-params">| Time (ms) |</span> Relative
+<span class="hljs-symbol">:-------------------------------|----------</span><span class="hljs-symbol">:|--------</span>:
+spellcheck-tech-word            <span class="hljs-params">|   124.277 |</span>    <span class="hljs-number">70.7</span>%
+prh                             <span class="hljs-params">|    18.419 |</span>    <span class="hljs-number">10.5</span>%
+no-mix-dearu-desumasu           <span class="hljs-params">|    13.965 |</span>     <span class="hljs-number">7.9</span>%
+max-ten                         <span class="hljs-params">|    13.246 |</span>     <span class="hljs-number">7.5</span>%
+no-start-duplicated-conjunction <span class="hljs-params">|     5.911 |</span>     <span class="hljs-number">3.4</span>%
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="implementation-node-memo"></a><a href="#implementation-node-memo" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Implementation Node :memo:</h2>
+<p>textlint ignore duplicated message/rules by default.</p>
+<ul>
+<li>If already the rule with config is loaded, Don't load this(same rule with same config).
+<ul>
+<li><a href="https://github.com/textlint/textlint/issues/219" title="Proposal: don't load duplicated rule(ruleConfig) · Issue #219 · textlint/textlint">Proposal: don't load duplicated rule(ruleConfig) · Issue #219 · textlint/textlint</a></li>
+</ul></li>
+<li>Duplicated error message is ignored by default
+<ul>
+<li><em>Duplicated error messages</em> is that have same range and same message.</li>
+<li><a href="https://github.com/textlint/textlint/issues/209" title="Proposal: duplicated messages is ignored by default · Issue #209 · textlint/textlint">Proposal: duplicated messages is ignored by default · Issue #209 · textlint/textlint</a></li>
+</ul></li>
+</ul>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/integrations.html"><span class="arrow-prev">← </span><span>Integrating with Editors, Tools, etc..</span></a><a class="docs-next button" href="/docs/filter-rule.html"><span>Creating Filter Rule</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#rulecontext-api">RuleContext API</a></li><li><a href="#ruleerror">RuleError</a><ul class="toc-headings"><li><a href="#warning-caution-warning">:warning: Caution :warning:</a></li></ul></li><li><a href="#report-error">Report error</a><ul class="toc-headings"><li><a href="#how-to-write-async-task-in-the-rule">How to write async task in the rule</a></li></ul></li><li><a href="#example-creating-no-todo-rules">Example: creating <code>no-todo</code> rules.</a><ul class="toc-headings"><li><a href="#setup-for-creating-rule">Setup for creating rule</a></li><li><a href="#let-s-create-no-todo-rule">Let's create <code>no-todo</code> rule</a></li><li><a href="#advanced-rules">Advanced rules</a></li><li><a href="#how-to-test-the-rule">How to test the rule?</a></li><li><a href="#manually-installation">Manually Installation</a></li><li><a href="#rule-options">Rule options</a></li></ul></li><li><a href="#advanced-example">Advanced example</a></li><li><a href="#publishing">Publishing</a><ul class="toc-headings"><li><a href="#package-naming-conventions">Package Naming Conventions</a></li><li><a href="#rule-naming-conventions">Rule Naming Conventions</a></li><li><a href="#keywords">Keywords</a></li><li><a href="#faq-publishing">FAQ: Publishing</a></li></ul></li><li><a href="#performance">Performance</a><ul class="toc-headings"><li><a href="#rule-performance">Rule Performance</a></li></ul></li><li><a href="#implementation-node-memo">Implementation Node :memo:</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/textlint-icon_256x256.png" alt="textlint" width="66" height="58"/></a><div><h5>Docs</h5><a href="/docs/en/configuring.html">User Manual</a><a href="/docs/en/rule.html">Developer Guide</a></div><div><h5>Community</h5><a href="https://gitter.im/textlint-ja/textlint-ja">Project Chat</a></div><div><h5>More</h5><a href="/blog">Blog</a><a href="https://github.com/">GitHub</a><a class="github-button" href="https://github.com/textlint/textlint" data-icon="octicon-star" data-count-href="/textlint/textlint/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><section class="copyright">Copyright © 2020 textlint organization</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: '27ef1d5fc0d12142485f3784f7d3cb46',
+                indexName: 'textlint',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {}
+              });
+            </script></body></html>
