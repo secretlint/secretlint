@@ -2,9 +2,9 @@
 /**
  * Source has three types
  *
- * - Up: type
- * - Middle: ext
- * - details: filePath
+ * - Large Area: contentType
+ * - Middle Area: ext
+ * - Small Area(details): filePath
  */
 export type SecretLintRawSource = {
     content: string;
