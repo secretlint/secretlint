@@ -6,7 +6,7 @@ on:
 env:
   CI: true
 jobs:
-  test:
+  benchmark:
     name: "Test on Node.js ${{ matrix.node_version }}"
     runs-on: ubuntu-18.04
     strategy:
