@@ -1,9 +1,8 @@
-name: test
+name: benchmark
 on:
   push:
     branches:
       - master
-
 env:
   CI: true
 jobs:
@@ -23,7 +22,7 @@ jobs:
       - name: Install
         run: yarn install
       - name: Run Benchmark
-        run: cd examples/benchmark && npm run benchmark | tee output.txt
+        run: cd examples/benchmark && node index.js | tee output.txt
       - name: Store benchmark result
         uses: rhysd/github-action-benchmark@v1
         with:
