@@ -6,6 +6,7 @@ Secretlint is pluggable linting tool to prevent commit secret/credential file.
 
 - Scan files and if the file has secret and report it
 - Prevent to commit credential files
+- Pluggable architecture
 
 ## Motivation
 
