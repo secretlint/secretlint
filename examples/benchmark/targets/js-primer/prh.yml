@@ -1,0 +1,758 @@
+version: 1
+rules:
+
+# 大文字小文字全角半角の統一
+  - expected: Cookie
+# 以下と等価 正規表現には強制でgフラグが付く
+# - expected: Cookie
+#   pattern: "/[CcＣｃ][OoＯｏ][OoＯｏ][KkＫｋ][IiＩｉ][EeＥｅ]/g"
+#   options:
+#     wordBoundary: false
+#   specs: []
+  - expected: Markdown
+# 正規表現で置換もできる
+  - expected: JavaScript
+    patterns:
+      - javascript
+    options:
+      wordBoundary: true
+    specs:
+      - from: javascript
+        to:   JavaScript
+
+  - expected: ECMAScript $1
+    pattern: /ECMAScript([0-9]+)/
+# 変換結果についてテストも書ける
+  - expected: jQuery
+    specs:
+      - from: jquery
+        to:   jQuery
+      - from: ＪＱＵＥＲＹ
+        to:   jQuery
+
+# 変換結果が期待通りではなかった場合、ルールのロードに失敗する
+# - expected: JavaScript
+#   specs:
+#     - from: JAVASCRIPT
+#       to:   JavaScprit # この場合はテスト側が間違ってる！
+# Error: JavaScript spec failed. "JAVASCRIPT", expected "JavaScprit", but got "JavaScript", /[JjＪｊ][AaＡａ][VvＶｖ][AaＡａ][SsＳｓ][CcＣｃ][RrＲｒ][IiＩｉ][PpＰｐ][TtＴｔ]/g
+
+# 表現の統一を図る
+  - expected: デフォルト
+    pattern:  ディフォルト
+
+# patternは複数記述可能
+  - expected: ハードウェア
+    pattern:
+      - ハードウエアー
+      - ハードウエア   # 正規表現に変換する都合上短いものを後に書いたほうがよい
+      - ハードウェアー
+
+# patternには正規表現が利用可能 否定戻り先読みが欲しい…(JSにはない
+  - expected: $1ソフトウェア
+    pattern:  /([^経])ソフトウエア/
+    specs:
+      # 普通に変換
+      - from: 広義のソフトウエア
+        to:   広義のソフトウェア
+      # 日経ソフトウエア(書名)は変換しない
+      - from: 日経ソフトウエア
+        to:   日経ソフトウエア
+
+# Project
+  - expected: Doctest
+  - expected: 基本文法
+    patterns:
+      - 基礎文法
+  # http://www.ecma-international.org/ecma-262/6.0/#sec-comments
+  # MultiLineComment
+  # SingleLineComment
+  - expected: 一行コメント
+    patterns:
+      - 1行コメント
+      - ワンラインコメント
+    prh: 仕様的に http://www.ecma-international.org/ecma-262/6.0/#sec-comments
+  - expected: $1一行コメント
+    patterns: /([^1一数])行コメント/
+    prh: 仕様的に http://www.ecma-international.org/ecma-262/6.0/#sec-comments
+  - expected: 複数行コメント
+    patterns:
+      - ブロックコメント
+      - マルチラインコメント
+    prh: 仕様的に http://www.ecma-international.org/ecma-262/6.0/#sec-comments
+  - expected: うるう年
+    patterns: 閏年
+  - expected: 実行する文
+    patterns:
+      - 処理したい文
+      - 処理する文
+  - expected: case節
+    patterns:
+      - case文
+    prh: "caseは節かブロックです http://www.ecma-international.org/ecma-262/7.0/#prod-CaseClauses"
+  - expected: break文
+    patterns:
+      - break式
+  - expected: 処理中の$1
+    patterns: /実行中の([^、。\s]*?文)/
+    prh: "文は処理中という扱いです"
+    specs:
+      - from: 偶数ではない場合、実行中の文をスキップしています。
+        to  : 偶数ではない場合、処理中の文をスキップしています。
+  - expected: 処理中の$1
+    patterns: /現在実行中の([^、。\s]*?文)/
+    prh: "文は処理中という扱いです"
+    specs:
+      - from: 現在実行中のループ文を終了することができます。
+        to  : 処理中のループ文を終了することができます。
+  - expected: 反復処理
+    patterns:
+      - 繰り返し処理
+      - ループ処理
+    prh: 繰り返しがループ的なものか、同じことを何度も繰り返すかが曖昧なので反復処理にする
+  - expected: 浮動小数点数$1
+    patterns:
+      - /浮動小数点([ぁ-ん])/
+    prh: "浮動小数点ではなく浮動小数点数を使ってください"
+  - expected: シングルスレッド
+    patterns:
+      - 単一スレッド
+  - expected: for...in
+    patterns:
+      - /for\.{1,2}in/
+      - /for\\-in/
+      - for/in
+  - expected: for...of
+    patterns:
+      - /for\.{1,2}of/
+      - /for\\-of/
+      - for/of
+  - expected: try...catch
+    patterns:
+      - /try\.{1,2}catch/
+      - /try-catch/
+      - try/catch
+  - expected: バッククオート
+    patterns: バックティック
+  - expected: 匿名関数
+    patterns: 無名関数
+  - expected: Array-like
+    patterns: 配列ライク
+  - expected: Promiseチェーン
+    patterns:
+      - /thenチェーン/i
+      - /promise chain/i
+    prh: https://github.com/asciidwango/js-primer/pull/116
+    specs:
+      - from: thenチェーンと言います
+        to  : Promiseチェーンと言います
+  - expected: Statement
+    patterns: ステートメント
+    options:
+      wordBoundary: true
+  - expected: Expression
+    patterns: エクスプレッション
+    options:
+      wordBoundary: true
+  - expected: 暗黙的な型変換
+    patterns: 暗黙的な変換
+  - expected: プリミティブ型
+    patterns:
+      - プリミティブなデータ型
+      - プリミティブデータ型
+    prh: StringやNumberといったtypeのこと。プリミティブ値の型を示す
+  - expected: プリミティブ型の値
+    patterns:
+      - プリミティブ値
+    prh: 仕様におけるprimitive valueのこと。 strや1といったプリミティブ型の値を示す
+  - expected: インデックス
+    patterns:
+      - 添字
+    prh: 配列では添字ではなく、インデックスを使います。
+  - expected: インデックス
+    patterns:
+      - 添字
+    prh: 配列では添字ではなく、インデックスを使います。
+  - expected: 疎な配列
+    patterns: 疎の配列
+    prh: sparse arrayのこと
+  - expected: 密な配列
+    patterns: 密の配列
+  - expected: 検索文字列
+    patterns:
+      - 部分文字列
+      - 指定文字列
+    prh: https://github.com/asciidwango/js-primer/issues/208
+  - expected: テンプレートリテラル
+    patterns: /Template\s*Literal/i
+  - expected: テンプレート文字列
+    patterns: /Template\s*Strings/i
+  - expected: タグ付きテンプレートリテラル
+    patterns: /Tagged\s*template\s*literals?/i
+  - expected: Unicode
+    patterns: ユニコード
+  - expected: UTF-16
+    patterns: /UTF16/i
+  - expected: 弱い参照
+    patterns: 弱参照
+  # Code Unit/ Code Point
+  - expected: Code Unit
+  - expected: Code Poiint
+  - expected: 各Code Unitごとに
+    patterns: Code Unit単位
+  - expected: 各Code Pointごとに
+    patterns: Code Point単位
+  - expected: strict mode
+    prh: strict modeでひとつなので常に小文字
+  - expected: $1分割代入$2
+    patterns:
+      - /[^(分割代入（)]Destructuring assignment/i
+      - /[^(分割代入（)]Destructuring(\S)/i
+  - expected: ガベージコレクション
+    patterns:
+      - /ガーベッジコレクション|ガーベッジコレクション|ガーベジコレクション/
+  - expected: クロージャー
+    patterns:
+      - /クロージャ(?!ー)/
+    specs:
+      - from: クロージャで
+        to:   クロージャーで
+  - expected: 静的に
+    patterns:
+      - レキシカルに
+  - expected: つけるだけ
+    prh: つけるに統一する
+    patterns:
+      - 漬けるだけ
+      - 付けるだけ
+  - expected: Todoアプリ
+    patterns:
+      - /todoアプリ/i
+  - expected: Todoアイテム
+    patterns:
+      - /todoアイテム/i
+
+  # ファイルの読み書き / ファイルI/O
+  - expected: ファイルの読み書き
+    patterns:
+      - ファイルI/0
+      - ファイルI0
+  - expected: オブジェクト
+    patterns:
+      - オブジェクと
+  - expected: macOS
+    patterns:
+      - MacOS
+      - Mac OS X
+      - OS X
+      - OSX
+  - expected: HTML要素
+    patterns:
+      - DOM要素
+  - expected: イベントをリッスン
+    patterns:
+      - イベントを監視
+    prh: https://github.com/asciidwango/js-primer/issues/455
+  - expected: イベントをディスパッチ
+    patterns:
+      - イベントを発火
+    prh: https://github.com/asciidwango/js-primer/issues/455
+  - expected: イベントが発生
+    patterns:
+      - イベントが発火
+  - expected: イベントリスナー
+    patterns:
+      - /イベントハンドラ(?!関数)/
+      - /イベントハンドラー(?!関数)/
+  - expected: イベントリスナー関数
+    patterns:
+    - イベントハンドラ関数
+    - イベントハンドラー関数
+  - expected: リスナー関数
+    patterns:
+    - ハンドラー関数
+    - ハンドラ関数
+    - ハンドラ
+  - expected: エラーファーストコールバック
+    patterns:
+      - エラーファーストコールバック関数
+  - expected: 一度
+    patterns:
+      - 1度
+  - expected: サーバーサイド
+    patterns:
+      - サーバサイド
+  - expected: プロトタイプオブジェクト
+    patterns:
+      - prototypeオブジェクト
+  - expected: ビルトインオブジェクト
+    patterns:
+      - 組み込みのオブジェクト
+  - expected: プリフィックス
+    patterns:
+      - /prefix/i
+      - /プレフィックス/i
+  - expected: ローカルサーバー
+    patterns:
+      - /ローカルサーバ(?!ー)/
+  - expected: ウェブブラウザ
+    patterns:
+      - Webブラウザ
+  - expected: webpack
+  - expected: インターフェース
+    patterns:
+      - インタフェース
+      - インターフェイス
+  - expected: 空文字列
+    pattern:
+      - /空文字(?!列)/
+
+  # 一致とマッチ
+  ## 一致は ===
+  - expected: $1一致
+    patterns:
+      - /(正規表現に)一致/
+      - /(パターンに)一致/
+  - expected: $1マッチ
+    patterns:
+      - /(パターンに)一致/
+      - /(正規表現に)一致/
+  - expected: ビルトイン$1
+    patterns:
+      - /ネイティブ(関数)/
+      - /ネイティブ(メソッド)/
+
+# typo
+  - expected: $1進数
+    patterns:
+      - /(\d+)真数/
+  - expected: 同じ変数名を
+    patterns:
+      - /同じ変数を/
+  - expected: 機会が$1
+    patterns: /機械が(多い|ある|あり)/
+    specs:
+      - from: 機械がある
+        to:   機会がある
+    prh: 機械という単語が出てきたら直します
+  - expected: 状態で
+    patterns: 常体で
+  - expected: する場合は
+    patterns: する倍は
+  - expected: 式文
+    patterns: 文式
+  - expected: 宣言的
+    patterns: 宣言亭
+  - expected: コンストラクタ
+    patterns:
+      - 今ストラク
+      - コンストラスト
+  - expected: 関数中に
+    patterns:
+      - 関数内に
+  - expected: 子クラス
+    patterns:
+      - 小クラス
+  - expected: されています
+    patterns:
+      - されいます
+  - expected: 同期処理
+    patterns:
+      - 動機処理
+  - expected: 反復処理
+    patterns:
+      - 反覆処理
+  - expected: 第一部
+    patterns:
+      - /第1部/
+  - expected: 第二部
+    patterns:
+      - /第2部/
+  - expected: 挿入順
+    patterns:
+      - 追加順
+# 文体
+  - expected: どのように
+    patterns:
+      - どうやって
+  - expected: $1ずつ
+    patterns: /(\d+[個つ]?)づつ/
+    specs:
+      - from: 2個づつ
+        to  : 2個ずつ
+      - from: 2つづつ
+        to  : 2つずつ
+  - expected: 箇所
+    patterns: /[ヶか]所/
+    specs:
+      - from: 一ヶ所
+        to  : 一箇所
+      - from: 2か所
+        to  : 2箇所
+  - expected: 処理を行います
+    patterns:
+      - 処理をします
+  - expected: 紐付けて定義
+    patterns:
+      - 紐付けられて定義
+    prh: 能動的に書いてください
+  - expected: $1でのみ
+    patterns: /(内|中)からのみ/
+    prh: 表記統一
+    specs:
+      - from: 仮引数はその関数の中からのみ参照が可能で、関数の外からは参照できません。
+        to: 仮引数はその関数の中でのみ参照が可能で、関数の外からは参照できません。
+  - expected: 実装できました
+    patterns: 実装ができました
+  - expected: $1個
+    patterns: /([0-9]+)コ/i
+    prh: "https://github.com/asciidwango/js-primer/issues/979"
+
+  # 漢字開き
+  - expected: 呼び出す
+    patterns: 呼びだす
+  - expected: 見てい$1
+    patterns: /見て行(く|き)/
+    specs:
+      - from: では、実際にどのように書くかの例を見て行きたいと思います。
+        to:   では、実際にどのように書くかの例を見ていきたいと思います。
+  - expected: どのような
+    patterns: /どういう(?!こと)/
+    specs:
+      - from: どういうものがthenableなのか
+        to:   どのようなものがthenableなのか
+  # techbooster.ymlでは'時刻'が認められないので'刻'を追加
+  - expected: $1とき
+    pattern:  /(の)時(?!点|代|々|間|刻)/
+  # https://github.com/asciidwango/js-primer/issues/1011 の追加
+  - expected: わかる
+    pattern:  分かる
+    prh: ひらがなに統一します https://github.com/asciidwango/js-primer/issues/1011
+  - expected: エディター
+    patterns: /エディタ(?!ー)/
+  - expected: エントリー
+    patterns: /エントリ(?!ー)/
+  - expected: クォート
+    patterns: クオート
+  - expected: サーバー
+    patterns: /サーバ(?!ー)/
+  - expected: コンストラクタ
+    patterns: コンストラクター
+  - expected: フィルター
+    patterns: /フィルタ(?!ー)/
+  - expected: ユーザー
+    patterns: /ユーザ(?!ー)/
+  - expected: 明らか
+    patterns: あきらか
+  # - expected: 今
+    # patterns: いま
+  - expected: カッコ
+    patterns: かっこ
+  - expected: カッコ
+    patterns: 括弧
+  - expected: 疑似
+    patterns: 擬似
+  - expected: ループごと
+    patterns: ループ毎
+    prh: 毎 -> ごと
+  - expected: $1際
+    patterns: /(する)さい/
+    prh: さい -> 際
+  - expected: 先ほど
+    patterns:
+      - 先程
+      - さきほど
+  - expected: すべて
+    patterns: 全て
+  - expected: つける
+    patterns: 付ける
+  # - expected: ところ
+    # patterns: 所
+  # - expected: 中
+  #   patterns: なか
+  - expected: 何
+    patterns: なに
+  - expected: はじめ$1
+    patterns: /始め(に|る)/
+  - expected: $1人
+    patterns: /(する)ひと/
+  # - expected: ほう
+  #   patterns: 方
+  #   prh: ほうと読む場合はひらがなにする
+  - expected: $1方
+    patterns: /(する)かた/
+    prh: かたと読む場合は方にする
+  - expected: 元々
+    patterns: もともと
+    prh: もと -> 元に統一。基づくは例外
+  - expected: 基づく
+    patterns: もとづく
+  - expected: やり取り
+    patterns: やりとり
+  - expected: リンゴ
+    patterns: りんご
+  - expected: あるわけ
+    patterns: ある訳
+    prh: 〜する訳 -> 〜するわけ
+  - expected: あてはめる
+    patterns: 当てはめる
+  - expected: あふれる
+    patterns: 溢れる
+  - expected: 表す
+    patterns: あらわす
+  - expected: 入れる
+    patterns: いれる
+  - expected: 受け取り
+    patterns: 受けとり
+  - expected: 行う
+    patterns: おこなう
+  - expected: を押す
+    patterns: をおす
+    prh: 〜をおす -> 〜を押す
+  - expected: 終わる
+    patterns: おわる
+    prh: おわりに -> 終わりに
+  - expected: 関わる
+    patterns: かかわる
+  - expected: 気づく
+    patterns: 気付く
+  - expected: ください
+    patterns: 下さい
+  - expected: 異なる
+    patterns: ことなる
+  - expected: 過ぎる
+    prh: 「〜にすぎない」はひらがな、「〜過ぎる」などは漢字にします。
+    patterns: すぎる
+  - expected: すぎない
+    prh: 「〜にすぎない」はひらがな、「〜過ぎる」などは漢字にします。
+    patterns: 過ぎない
+  - expected: たどる
+    patterns: 辿る
+  - expected: つなぐ
+    patterns: 繋ぐ
+  - expected: できる
+    patterns: 出来る
+  # - expected: 出す
+  #   patterns: だす
+  - expected: 取り出す
+    patterns: 取りだす
+    prh: だす -> 出す
+  # - expected: 直す
+  #   patterns: なおす
+  # - expected: 投げる
+  # patterns: なげる
+  # Note: つなげるで誤爆する
+  - expected: 入る
+    patterns: はいる
+  - expected: 開く
+    patterns: ひらく
+  - expected: 待つこと
+    patterns: まつこと
+    prh: まつ -> 待つ
+  # - expected: 見る
+  #   patterns: みる
+  # - expected: 持つ
+  #   patterns: もつ
+  # TODO: 持つは要検討
+  - expected: 呼びます
+    patterns: よびます
+    prh: よぶ -> 呼ぶ
+  - expected: わかる
+    patterns: 分かる
+  - expected: 分ける
+    patterns: わける
+  - expected: 渡す
+    patterns: わたす
+  - expected: うま$
+    patterns: /上手(く|い)/
+  - expected: うれしい
+    patterns: 嬉しい
+  - expected: すばらしい
+    patterns: 素晴らしい
+  - expected: 難しい
+    patterns: むずかしい
+  - expected: しやすい
+    patterns: し易い
+    prh: 易い -> やすい
+  - expected: 改めて
+    patterns: あらためて
+  - expected: 必ず
+    patterns: かならず
+  - expected: すでに
+    patterns: 既に
+    prh: ひらがなに統一します https://github.com/asciidwango/js-primer/issues/1011
+  - expected: 再び
+    patterns: ふたたび
+  - expected: ほとんど
+    patterns: 殆ど
+  - expected: まったく
+    patterns: 全く
+  # techboosterから持ってきた辞書
+  # techbooster editor lint!!
+  # https://github.com/vvakame/prh/blob/master/misc/techbooster.yml
+  # 記号
+  # 半角括弧を全角括弧に
+  - expected: （$1）
+    pattern:  /\((.+?)\)/
+    specs:
+      - from: そうですね(笑)
+        to:   そうですね（笑）
+      - from: (@<fn>{test})
+        to:   （@<fn>{test}）
+      - from: "(ほげ)ほげ)"
+        to:   "（ほげ）ほげ)"
+    prh: 半角カッコの代わりに全角カッコを使うこと。文字のバランスが崩れるためです
+  # 開き
+  - expected: さまざま
+    pattern:  様々
+    prh: 漢字で書かず、ひらがなで書くと読みやすくなります
+  - expected: よい
+    pattern:  /良い(?!例)/
+    prh: 良し悪しを評価する表現は"良い"、しなくていい、など評価でない表現は"よい"を使います
+    specs:
+      - from: 良い
+        to:   よい
+      - from: 良い例
+        to:   良い例
+  - expected: さらに
+    pattern:  /(変)?更に/
+    regexpMustEmpty: $1
+    prh: 漢字で書かず、ひらがなで書くと読みやすくなります
+    specs:
+      - from: 変更に
+        to:   変更に
+  - expected: とおり
+    pattern:  通り
+    prh: 漢字で書かず、ひらがなで書くと読みやすくなります。"どおり"のケースもありえます
+  - expected: ひととおり
+    pattern:  /(一|ひと)通り/
+    prh: 漢字で書かず、ひらがなで書くと読みやすくなります。
+  - expected: すべて
+    pattern:  全て
+    prh: 漢字で書かず、ひらがなで書くと読みやすくなります
+  - expected: たとえば
+    pattern:  例えば
+    prh: 漢字で書かず、ひらがなで書くと読みやすくなります
+  - expected: $1中
+    pattern:  /(その)なか/
+    prh: ひらがなで書かず、漢字で書くと読みやすくなります
+  - expected: きれい
+    pattern:  綺麗
+    prh: 漢字で書かず、ひらがなで書くと読みやすくなります
+  - expected: こと
+    pattern:  /(記|大|仕|議)?事(?!情|件|前|後|例|実|体|態|項|録)/
+    regexpMustEmpty: $1
+    prh: 漢字で書かず、ひらがなで書くと読みやすくなります
+    specs:
+      - from: ある事
+        to:   あること
+      - from: 記事
+        to:   記事
+      - from: 事件
+        to:   事件
+  - expected: でき$1
+    pattern:  /出来(る|て|た|ま|上が)/
+    specs:
+      - from: 出来上がった
+        to:   でき上がった
+    prh: 漢字で書かず、ひらがなで書くと読みやすくなります
+  - expected: したがって
+    pattern:  従って
+    prh: 漢字で書かず、ひらがなで書くと読みやすくなります
+  - expected: $1ように
+    pattern:  /(の)様に/
+    prh: 漢字で書かず、ひらがなで書くと読みやすくなります
+  - expected: 次$1
+    pattern:  /(?:下記|以下)(の|に)/
+    specs:
+      - from: 以下の
+        to:   次の
+      - from: 以下に
+        to:   次に
+      - from: 次回
+        to:   次回
+      - from: 下記の
+        to:   次の
+    prh: 書籍の場合は、以下ではなく次を利用します（常に下にあるとは限らないため）
+  - expected: かかわらず
+    pattern:  /関わ?らず/
+    specs:
+      - from: 関わらず
+        to:   かかわらず
+      - from: 関らず
+        to:   かかわらず
+    prh: 漢字で書かず、ひらがなで書くと読みやすくなります
+  - expected: なる
+    pattern:  成る
+    prh: 漢字で書かず、ひらがなで書くと読みやすくなります
+  - expected: お勧め
+    pattern:  おすすめ
+    prh: ひらがなで書かず、漢字で書くと読みやすくなります
+  - expected: $1あとで
+    pattern:  /(して|した|、)後で/
+    specs:
+      - from: して後で
+        to:   してあとで
+    prh: 漢字で書かず、ひらがなで書くと読みやすくなります
+  - expected: あらかじめ
+    pattern:  予め
+    prh: 漢字で書かず、ひらがなで書くと読みやすくなります
+  - expected: なぜ
+    pattern:  何故
+    prh: 漢字で書かず、ひらがなで書くと読みやすくなります
+  - expected: ゆえに
+    pattern:  故に
+    prh: 漢字で書かず、ひらがなで書くと読みやすくなります
+  - expected: うまく
+    pattern:  巧く
+    prh: 漢字で書かず、ひらがなで書くと読みやすくなります
+  - expected: もっぱら
+    pattern:  専ら
+    prh: 漢字で書かず、ひらがなで書くと読みやすくなります
+  - expected: はやる
+    pattern:  流行る
+    prh: 漢字で書かず、ひらがなで書くと読みやすくなります
+  # 通常は、ひとつ。数詞は１つ、漢数字は数えられる固有名詞を指す場合に利用
+  - expected: ひとつ
+    pattern:  一つ
+    prh: 通常は、ひとつ。数詞は１つ、漢数字は数えられる固有名詞を指す場合に利用します
+  - expected: ふたつ
+    pattern:  二つ
+    prh: 通常は、ふたつ。数詞は１つ、漢数字は数えられる固有名詞を指す場合に利用
+  - expected: もっとも
+    pattern:  最も
+    prh: 漢字で書かず、ひらがなで書くと読みやすくなります
+  - expected: ちょうど
+    pattern:  /(丁度|調度)/
+    prh: 漢字で書かず、ひらがなで書くと読みやすくなります
+  # footnoteの末尾は読点を使わない
+  # タイトル見出しの末尾は読点を使わない
+  # 表、コード見出しの末尾は読点を使わない
+  # 箇条書きの末尾は読点を使わない
+  # 箇条書きの末尾は体言止め、または動詞でとめる、が統一されているか
+  # footnoteの参照は名詞、または末尾にかかっているか（原則、動詞にかからない）
+  # 表、ソースコードへの参照が本体より前に配置されているか。
+  # 文末の参照は（@<img>{id}）。となっているか。@<img>{id}。などはNG
+  # 。（@<list>{manifest_gradle}） などもNG
+  # だいたい、ほとんど、など：曖昧語への注意喚起Lintしたい
+  # listnum記法などあんまり積極的に使いたくない記法を喚起したい
+
+  # 本文中の半角スペースは排除したい
+
+  # 横文字
+  - expected: API Level
+    pattern:  API level
+    prh: APIドキュメントでも揺れてますが、Levelで統一してます
+  - expected: jQuery
+  - expected: Re:VIEW
+    pattern:  /ReVIEW/
+    specs:
+      - from: ReVIEW
+        to:   Re:VIEW
+      - from: review
+        to:   review
+  - expected: ライブラリ
+    pattern:  ラブライブ # C87でやらかした人がいましたね？
+    prh: C87でざきさんがやらかした思い出
+  - expected: superset
+    pattern: super set

@@ -1,0 +1,444 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>TxtAST Interface · textlint</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;TxtAST define AST(Abstract Syntax Tree) for processing in textlint.&lt;/p&gt;
+"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="TxtAST Interface · textlint"/><meta property="og:type" content="website"/><meta property="og:url" content="https://textlint.github.io/index.html"/><meta property="og:description" content="&lt;p&gt;TxtAST define AST(Abstract Syntax Tree) for processing in textlint.&lt;/p&gt;
+"/><meta name="twitter:card" content="summary"/><link rel="shortcut icon" href="/img/textlint-icon_256x256.png"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><link rel="alternate" type="application/atom+xml" href="https://textlint.github.io/blog/atom.xml" title="textlint Blog ATOM Feed"/><link rel="alternate" type="application/rss+xml" href="https://textlint.github.io/blog/feed.xml" title="textlint Blog RSS Feed"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/textlint-icon_256x256.png" alt="textlint"/><h2 class="headerTitleWithLogo">textlint</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/docs/getting-started.html" target="_self">Docs</a></li><li class=""><a href="https://github.com/textlint/textlint/wiki/Collection-of-textlint-rule" target="_self">Rules</a></li><li class=""><a href="/blog/" target="_self">Blog</a></li><li class=""><a href="/help.html" target="_self">Help</a></li><li class=""><a href="https://github.com/textlint/textlint" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Developer Guide</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">User Manual</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/getting-started.html">Getting Started with textlint</a></li><li class="navListItem"><a class="navItem" href="/docs/configuring.html">Configuring textlint</a></li><li class="navListItem"><a class="navItem" href="/docs/integrations.html">Integrating with Editors, Tools, etc..</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Developer Guide</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/rule.html">Creating Rules</a></li><li class="navListItem"><a class="navItem" href="/docs/filter-rule.html">Creating Filter Rule</a></li><li class="navListItem"><a class="navItem" href="/docs/rule-fixable.html">Creating Fixable Rule</a></li><li class="navListItem"><a class="navItem" href="/docs/rule-preset.html">Creating Preset</a></li><li class="navListItem"><a class="navItem" href="/docs/rule-advanced.html">Advanced: Paragraph Rule</a></li><li class="navListItem"><a class="navItem" href="/docs/rule-tips-after-all.html">How to implement &quot;after-all&quot; in the rule?</a></li><li class="navListItem"><a class="navItem" href="/docs/plugin.html">Plugin</a></li><li class="navListItem"><a class="navItem" href="/docs/formatter.html">Formatter</a></li><li class="navListItem"><a class="navItem" href="/docs/use-as-modules.html">Use as Node Modules</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/txtnode.html">TxtAST Interface</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Contributing</h3><ul class=""><li class="navListItem"><a class="navItem" href="/docs/contributing.html">Contributing Guideline</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><a class="edit-page-link button" href="https://github.com/textlint/textlint/edit/master/docs/txtnode.md" target="_blank" rel="noreferrer noopener">Edit</a><h1 class="postHeaderTitle">TxtAST Interface</h1></header><article><div><span><p>TxtAST define AST(Abstract Syntax Tree) for processing in textlint.</p>
+<h2><a class="anchor" aria-hidden="true" id="what-is-ast"></a><a href="#what-is-ast" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>What is AST?</h2>
+<p><a href="https://en.wikipedia.org/wiki/Abstract_syntax_tree" title="Abstract syntax tree - Wikipedia, the free encyclopedia">Abstract syntax tree</a> is a tree representation of the abstract syntactic structure of text.</p>
+<p>Each node of the tree has same interface, is called <code>TxtNode</code>.</p>
+<p><a href="https://textlint.github.io/astexplorer/"><img src="/docs/assets/ast-explorer.png" alt="ast-explorer fork"></a></p>
+<p><a href="https://textlint.github.io/astexplorer/" title="AST explorer for textlint">AST explorer for textlint</a> is useful for understanding AST.</p>
+<h3><a class="anchor" aria-hidden="true" id="txtnode"></a><a href="#txtnode" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>TxtNode</code></h3>
+<p><code>TxtNode</code> is an abstract node.</p>
+<pre><code class="hljs css language-typescript"><span class="hljs-comment">/**
+ * Basic TxtNode
+ * Probably, Real TxtNode implementation has more properties.
+ */</span>
+<span class="hljs-keyword">interface</span> TxtNode {
+    <span class="hljs-keyword">type</span>: <span class="hljs-built_in">string</span>;
+    raw: <span class="hljs-built_in">string</span>;
+    range: TextNodeRange;
+    loc: TxtNodeLineLocation;
+    <span class="hljs-comment">// parent is runtime information</span>
+    <span class="hljs-comment">// Not need in AST</span>
+    <span class="hljs-comment">// For example, top Root Node like `Document` has not parent.</span>
+    parent?: TxtNode;
+
+    [index: <span class="hljs-built_in">string</span>]: <span class="hljs-built_in">any</span>;
+}
+
+
+<span class="hljs-comment">/**
+ * Location
+ */</span>
+<span class="hljs-keyword">interface</span> TxtNodeLineLocation {
+    start: TxtNodePosition;
+    end: TxtNodePosition;
+}
+
+<span class="hljs-comment">/**
+ * Position's line start with 1.
+ * Position's column start with 0.
+ * This is for compatibility with JavaScript AST.
+ * https://gist.github.com/azu/8866b2cb9b7a933e01fe
+ */</span>
+<span class="hljs-keyword">interface</span> TxtNodePosition {
+    line: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// start with 1</span>
+    column: <span class="hljs-built_in">number</span>; <span class="hljs-comment">// start with 0</span>
+}
+
+<span class="hljs-comment">/**
+ * Range start with 0
+ */</span>
+<span class="hljs-keyword">type</span> TextNodeRange = [<span class="hljs-built_in">number</span>, <span class="hljs-built_in">number</span>];
+
+</code></pre>
+<p><code>TxtNode</code> <strong>must</strong> have these properties.</p>
+<ul>
+<li><code>type</code>: type of Node</li>
+<li><code>raw</code>: raw value of Node
+<ul>
+<li>if you want to get raw value, please use <code>getSource(&lt;node&gt;)</code> instead of it..</li>
+</ul></li>
+<li><code>loc</code>: location object</li>
+<li><code>range</code>: location info array like <code>[startIndex, endIndex]</code></li>
+<li><code>parent</code>: (optional) parent node of this node.
+<ul>
+<li>It is attached in runtime</li>
+<li>Parser user ignore this property</li>
+</ul></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="txttextnode"></a><a href="#txttextnode" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>TxtTextNode</code></h3>
+<p><code>TxtTextNode</code> is inherit the <code>TxtNode</code> abstract interface.</p>
+<pre><code class="hljs css language-typescript"><span class="hljs-comment">/**
+ * Text Node.
+ * Text Node has inline value.
+ * For example, `Str` Node is a TxtTextNode.
+ */</span>
+<span class="hljs-keyword">interface</span> TxtTextNode <span class="hljs-keyword">extends</span> TxtNode {
+    value: <span class="hljs-built_in">string</span>;
+}
+</code></pre>
+<p><code>TxtTextNode</code> <strong>must</strong> have these properties.</p>
+<ul>
+<li><code>value</code>: the value of inline node.</li>
+</ul>
+<p>Example: <code>Str</code> node is a <code>TxtTextNode</code>.</p>
+<h3><a class="anchor" aria-hidden="true" id="txtparentnode"></a><a href="#txtparentnode" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>TxtParentNode</code></h3>
+<p><code>TxtParentNode</code> is inherit the <code>TxtNode</code> abstract interface.</p>
+<pre><code class="hljs css language-typescript"><span class="hljs-comment">/**
+ * Parent Node.
+ * Parent Node has children that are consist of TxtNode or TxtTextNode
+ */</span>
+<span class="hljs-keyword">interface</span> TxtParentNode <span class="hljs-keyword">extends</span> TxtNode {
+    children: <span class="hljs-built_in">Array</span>&lt;TxtNode | TxtTextNode&gt;;
+}
+</code></pre>
+<p><code>TxtParentNode</code> <strong>must</strong> have these properties.</p>
+<ul>
+<li><code>children</code>: child nodes of this node.</li>
+</ul>
+<p>Example: <code>Paragraph</code> node is a <code>TxtParentNode</code>.</p>
+<h3><a class="anchor" aria-hidden="true" id="type"></a><a href="#type" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>type</code></h3>
+<p><code>type</code> is TxtNode type.</p>
+<p>All Types are defined in <code>@textlint/ast-node-types</code>.
+You can use this <code>ASTNodeTypes</code> value via following way:</p>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">import</span> { ASTNodeTypes } <span class="hljs-keyword">from</span> <span class="hljs-string">"@textlint/ast-node-types"</span>;
+<span class="hljs-built_in">console</span>.log(ASTNodeTypes.Str); <span class="hljs-comment">// "Str"</span>
+</code></pre>
+<p>You can get Node type for Type name by <code>TypeofTxtNode</code> in TypeScript.</p>
+<pre><code class="hljs css language-ts"><span class="hljs-comment">// In TypeScript</span>
+<span class="hljs-keyword">import</span> { ASTNodeTypes } <span class="hljs-keyword">from</span> <span class="hljs-string">"@textlint/ast-node-types"</span>;
+<span class="hljs-keyword">const</span> nodeType = TypeofTxtNode&lt;ASTNodeTypes.Str&gt;; <span class="hljs-comment">// TxtTextNode</span>
+</code></pre>
+<p>These types are defined in <code>@textlint/ast-node-types</code>.</p>
+<table>
+<thead>
+<tr><th>Type name</th><th>Node type</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td>ASTNodeTypes.Document</td><td>TxtParentNode</td><td>Root Node</td></tr>
+<tr><td>ASTNodeTypes.DocumentExit</td><td>TxtParentNode</td><td></td></tr>
+<tr><td>ASTNodeTypes.Paragraph</td><td>TxtParentNode</td><td>Paragraph Node</td></tr>
+<tr><td>ASTNodeTypes.ParagraphExit</td><td>TxtParentNode</td><td></td></tr>
+<tr><td>ASTNodeTypes.BlockQuote</td><td>TxtParentNode</td><td>&gt; Block Quote Node</td></tr>
+<tr><td>ASTNodeTypes.BlockQuoteExit</td><td>TxtParentNode</td><td></td></tr>
+<tr><td>ASTNodeTypes.List</td><td>TxtParentNode</td><td>List Node</td></tr>
+<tr><td>ASTNodeTypes.ListExit</td><td>TxtParentNode</td><td></td></tr>
+<tr><td>ASTNodeTypes.ListItem</td><td>TxtParentNode</td><td>List (each) item Node</td></tr>
+<tr><td>ASTNodeTypes.ListItemExit</td><td>TxtParentNode</td><td></td></tr>
+<tr><td>ASTNodeTypes.Header</td><td>TxtParentNode</td><td># Header Node</td></tr>
+<tr><td>ASTNodeTypes.HeaderExit</td><td>TxtParentNode</td><td></td></tr>
+<tr><td>ASTNodeTypes.CodeBlock</td><td>TxtParentNode</td><td>Code Block Node</td></tr>
+<tr><td>ASTNodeTypes.CodeBlockExit</td><td>TxtParentNode</td><td></td></tr>
+<tr><td>ASTNodeTypes.HtmlBlock</td><td>TxtParentNode</td><td>HTML Block Node</td></tr>
+<tr><td>ASTNodeTypes.HtmlBlockExit</td><td>TxtParentNode</td><td></td></tr>
+<tr><td>ASTNodeTypes.Link</td><td>TxtParentNode</td><td>Link Node</td></tr>
+<tr><td>ASTNodeTypes.LinkExit</td><td>TxtParentNode</td><td></td></tr>
+<tr><td>ASTNodeTypes.ReferenceDef</td><td>TxtParentNode</td><td>Link Reference Node(<code>[link][]</code>)</td></tr>
+<tr><td>ASTNodeTypes.ReferenceDefExit</td><td>TxtParentNode</td><td></td></tr>
+<tr><td>ASTNodeTypes.Delete</td><td>TxtParentNode</td><td>Delete Node(<code>~Str~</code>)</td></tr>
+<tr><td>ASTNodeTypes.DeleteExit</td><td>TxtParentNode</td><td></td></tr>
+<tr><td>ASTNodeTypes.Emphasis</td><td>TxtParentNode</td><td>Emphasis(<code>*Str*</code>)</td></tr>
+<tr><td>ASTNodeTypes.EmphasisExit</td><td>TxtParentNode</td><td></td></tr>
+<tr><td>ASTNodeTypes.Strong</td><td>TxtParentNode</td><td>Strong Node(<code>**Str**</code>)</td></tr>
+<tr><td>ASTNodeTypes.StrongExit</td><td>TxtParentNode</td><td></td></tr>
+<tr><td>ASTNodeTypes.Break</td><td>TxtNode</td><td>Hard Break Node(<code>Str&lt;space&gt;&lt;space&gt;</code>)</td></tr>
+<tr><td>ASTNodeTypes.BreakExit</td><td>TxtNode</td><td></td></tr>
+<tr><td>ASTNodeTypes.Image</td><td>TxtNode</td><td>Image Node</td></tr>
+<tr><td>ASTNodeTypes.ImageExit</td><td>TxtNode</td><td></td></tr>
+<tr><td>ASTNodeTypes.HorizontalRule</td><td>TxtNode</td><td>Horizontal Node(<code>---</code>)</td></tr>
+<tr><td>ASTNodeTypes.HorizontalRuleExit</td><td>TxtNode</td><td></td></tr>
+<tr><td>ASTNodeTypes.Comment</td><td>TxtTextNode</td><td>Comment Node</td></tr>
+<tr><td>ASTNodeTypes.CommentExit</td><td>TxtTextNode</td><td></td></tr>
+<tr><td>ASTNodeTypes.Str</td><td>TxtTextNode</td><td>Str Node</td></tr>
+<tr><td>ASTNodeTypes.StrExit</td><td>TxtTextNode</td><td></td></tr>
+<tr><td>ASTNodeTypes.Code</td><td>TxtTextNode</td><td>Inline Code Node</td></tr>
+<tr><td>ASTNodeTypes.CodeExit</td><td>TxtTextNode</td><td></td></tr>
+<tr><td>ASTNodeTypes.Html</td><td>TxtTextNode</td><td>Inline HTML Node</td></tr>
+<tr><td>ASTNodeTypes.HtmlExit</td><td>TxtTextNode</td><td></td></tr>
+</tbody>
+</table>
+<p>The type is based on HTML tag and Markdown syntax.
+Other plugin has define other node type that is not defined in <code>@textlint/ast-node-types</code>, but you can specify it as just a string.</p>
+<h3><a class="anchor" aria-hidden="true" id="minimal-node-property"></a><a href="#minimal-node-property" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Minimal node property</h3>
+<p>TxtAST allow to extend node property.
+But, Following node <strong>should</strong> have some properties.</p>
+<h4><a class="anchor" aria-hidden="true" id="header"></a><a href="#header" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Header</code></h4>
+<ul>
+<li><code>depth</code>: level of header
+<ul>
+<li>Example: <code>&lt;h1&gt;</code> is <code>depth:1</code>, <code>&lt;h2&gt;</code> is <code>depth:2</code>...</li>
+</ul></li>
+</ul>
+<h4><a class="anchor" aria-hidden="true" id="link"></a><a href="#link" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Link</code></h4>
+<ul>
+<li><code>url</code>: link url</li>
+</ul>
+<h4><a class="anchor" aria-hidden="true" id="image"></a><a href="#image" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>Image</code></h4>
+<ul>
+<li><code>url</code>: image url</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="built-in-parser"></a><a href="#built-in-parser" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Built-in Parser</h2>
+<p>textlint has built-in parsers.</p>
+<table>
+<thead>
+<tr><th>Package</th><th>Version</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><a href="https://github.com/textlint/textlint/tree/master/packages/@textlint/markdown-to-ast"><code>@textlint/markdown-to-ast</code></a></td><td><a href="https://www.npmjs.com/package/@textlint/markdown-to-ast"><img src="https://img.shields.io/npm/v/@textlint/markdown-to-ast.svg?style=flat-square" alt="npm"></a></td><td>markdown parser</td></tr>
+<tr><td><a href="https://github.com/textlint/textlint/tree/master/packages/@textlint/text-to-ast"><code>@textlint/text-to-ast</code></a></td><td><a href="https://www.npmjs.com/package/@textlint/text-to-ast"><img src="https://img.shields.io/npm/v/@textlint/text-to-ast.svg?style=flat-square" alt="npm"></a></td><td>plain text parser</td></tr>
+</tbody>
+</table>
+<p>If you want to get other type, please <a href="https://github.com/textlint/textlint/issues/new">create new issue</a>.</p>
+<h2><a class="anchor" aria-hidden="true" id="package"></a><a href="#package" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Package</h2>
+<p>That <code>TxtNode</code> interface is defined in <a href="https://github.com/textlint/textlint/tree/master/packages/@textlint/ast-node-types">packages/ast-node-types</a>.</p>
+<p>If you want to use this interface from TypeScript, <a href="https://github.com/textlint/textlint/tree/master/packages/@textlint/ast-node-types">packages/ast-node-types</a> is useful.</p>
+<h2><a class="anchor" aria-hidden="true" id="online-parsing-demo"></a><a href="#online-parsing-demo" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Online Parsing Demo</h2>
+<p><a href="https://textlint.github.io/astexplorer/"><img src="/docs/assets/ast-explorer.png" alt="ast-explorer fork"></a></p>
+<p><a href="https://textlint.github.io/astexplorer/" title="AST explorer for textlint">AST explorer for textlint</a> is useful for understanding AST.</p>
+<p>Minimum(recommended) rules is following code:</p>
+<pre><code class="hljs css language-js"><span class="hljs-comment">/**
+ * @param {RuleContext} context
+ */</span>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">context</span>) </span>{
+    <span class="hljs-keyword">const</span> { Syntax } = context;
+    <span class="hljs-comment">// root object</span>
+    <span class="hljs-keyword">return</span> {
+        [Syntax.Document](node) {},
+        [Syntax.Paragraph](node) {},
+        [Syntax.Str](node) {}
+    };
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="loc"></a><a href="#loc" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>loc</code></h3>
+<p><code>loc</code> is location info object.</p>
+<pre><code class="hljs css language-json">"loc": {
+    "start": {
+        "line": 2,
+        "column": 4
+    },
+    "end": {
+        "line": 2,
+        "column": 10
+    }
+}
+</code></pre>
+<ul>
+<li><code>line</code> of location start with 1 (1-indexed).</li>
+<li><code>column</code> of location start with 0 (<strong>0-indexed</strong>).</li>
+</ul>
+<p>This is for compatibility with JavaScript AST.</p>
+<ul>
+<li><a href="https://gist.github.com/azu/8866b2cb9b7a933e01fe" title="Why do `line` of location in JavaScript AST(ESTree) start with 1 and not 0?">Why do <code>line</code> of location in JavaScript AST(ESTree) start with 1 and not 0?</a></li>
+</ul>
+<p><strong>Important Note:</strong></p>
+<blockquote>
+<p>Text -&gt; AST TxtNode(<strong>0-based columns</strong> here) -&gt; textlint -&gt; TextLintMessage(1-based columns)</p>
+</blockquote>
+<p><code>TxtNode</code> has <strong>0-based columns</strong>, but the result of linting named <code>TextLintMessage</code> has <strong>1-based columns</strong>.</p>
+<p>In other word, textlint's rule handle <code>TxtNode</code>, but <a href="/docs/formatter.html" title="Formatter">formatter</a> handle <code>TextLintMessage</code>.</p>
+<h2><a class="anchor" aria-hidden="true" id="example"></a><a href="#example" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h2>
+<p>Input: <code>*text*</code></p>
+<p>Output: The AST by <a href="https://textlint.github.io/astexplorer/" title="AST explorer for textlint">AST explorer for textlint</a> + Markdown</p>
+<pre><code class="hljs css language-json">{
+    <span class="hljs-attr">"type"</span>: <span class="hljs-string">"Document"</span>,
+    <span class="hljs-attr">"children"</span>: [
+        {
+            <span class="hljs-attr">"type"</span>: <span class="hljs-string">"Paragraph"</span>,
+            <span class="hljs-attr">"children"</span>: [
+                {
+                    <span class="hljs-attr">"type"</span>: <span class="hljs-string">"Emphasis"</span>,
+                    <span class="hljs-attr">"children"</span>: [
+                        {
+                            <span class="hljs-attr">"type"</span>: <span class="hljs-string">"Str"</span>,
+                            <span class="hljs-attr">"value"</span>: <span class="hljs-string">"text"</span>,
+                            <span class="hljs-attr">"loc"</span>: {
+                                <span class="hljs-attr">"start"</span>: {
+                                    <span class="hljs-attr">"line"</span>: <span class="hljs-number">1</span>,
+                                    <span class="hljs-attr">"column"</span>: <span class="hljs-number">1</span>
+                                },
+                                <span class="hljs-attr">"end"</span>: {
+                                    <span class="hljs-attr">"line"</span>: <span class="hljs-number">1</span>,
+                                    <span class="hljs-attr">"column"</span>: <span class="hljs-number">5</span>
+                                }
+                            },
+                            <span class="hljs-attr">"range"</span>: [
+                                <span class="hljs-number">1</span>,
+                                <span class="hljs-number">5</span>
+                            ],
+                            <span class="hljs-attr">"raw"</span>: <span class="hljs-string">"text"</span>
+                        }
+                    ],
+                    <span class="hljs-attr">"loc"</span>: {
+                        <span class="hljs-attr">"start"</span>: {
+                            <span class="hljs-attr">"line"</span>: <span class="hljs-number">1</span>,
+                            <span class="hljs-attr">"column"</span>: <span class="hljs-number">0</span>
+                        },
+                        <span class="hljs-attr">"end"</span>: {
+                            <span class="hljs-attr">"line"</span>: <span class="hljs-number">1</span>,
+                            <span class="hljs-attr">"column"</span>: <span class="hljs-number">6</span>
+                        }
+                    },
+                    <span class="hljs-attr">"range"</span>: [
+                        <span class="hljs-number">0</span>,
+                        <span class="hljs-number">6</span>
+                    ],
+                    <span class="hljs-attr">"raw"</span>: <span class="hljs-string">"*text*"</span>
+                }
+            ],
+            <span class="hljs-attr">"loc"</span>: {
+                <span class="hljs-attr">"start"</span>: {
+                    <span class="hljs-attr">"line"</span>: <span class="hljs-number">1</span>,
+                    <span class="hljs-attr">"column"</span>: <span class="hljs-number">0</span>
+                },
+                <span class="hljs-attr">"end"</span>: {
+                    <span class="hljs-attr">"line"</span>: <span class="hljs-number">1</span>,
+                    <span class="hljs-attr">"column"</span>: <span class="hljs-number">6</span>
+                }
+            },
+            <span class="hljs-attr">"range"</span>: [
+                <span class="hljs-number">0</span>,
+                <span class="hljs-number">6</span>
+            ],
+            <span class="hljs-attr">"raw"</span>: <span class="hljs-string">"*text*"</span>
+        }
+    ],
+    <span class="hljs-attr">"loc"</span>: {
+        <span class="hljs-attr">"start"</span>: {
+            <span class="hljs-attr">"line"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-attr">"column"</span>: <span class="hljs-number">0</span>
+        },
+        <span class="hljs-attr">"end"</span>: {
+            <span class="hljs-attr">"line"</span>: <span class="hljs-number">1</span>,
+            <span class="hljs-attr">"column"</span>: <span class="hljs-number">6</span>
+        }
+    },
+    <span class="hljs-attr">"range"</span>: [
+        <span class="hljs-number">0</span>,
+        <span class="hljs-number">6</span>
+    ],
+    <span class="hljs-attr">"raw"</span>: <span class="hljs-string">"*text*"</span>
+}
+</code></pre>
+<p>Illustration</p>
+<pre><code class="hljs">          *   text   *
+          |   |__|   |
+          |   value  |
+          |__________|
+              <span class="hljs-built_in"> raw
+</span></code></pre>
+<ul>
+<li>Document is a <code>TxtParentNode</code> and type is Document
+<ul>
+<li>have <code>children</code>, but not have <code>value</code></li>
+</ul></li>
+<li>Paragraph is a <code>TxtParentNode</code> and type is Paragraph
+<ul>
+<li>have <code>children</code>, but not have <code>value</code></li>
+</ul></li>
+<li><em>Emphasis</em> is a <code>TxtTextNode</code> and type is Emphasis
+<ul>
+<li>have <code>value</code></li>
+</ul></li>
+<li>&quot;text&quot; is a <code>TxtTextNode</code> and type is Str
+<ul>
+<li>have <code>value</code></li>
+</ul></li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="unist"></a><a href="#unist" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Unist</h2>
+<p><code>TxtAST</code> have a minimum of compatibility for <a href="https://github.com/syntax-tree/unist" title="wooorm/unist: Universal Syntax Tree">unist: Universal Syntax Tree</a>.</p>
+<p>We discuss about Unist in <a href="https://github.com/textlint/textlint/issues/141" title="Compliances tests for TxtNode #141">Compliances tests for TxtNode #141</a>.</p>
+<h2><a class="anchor" aria-hidden="true" id="for-testing-processor-plugin"></a><a href="#for-testing-processor-plugin" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>For testing Processor plugin</h2>
+<p>You can use <a href="https://github.com/textlint/textlint/tree/master/packages/@textlint/ast-tester" title="@textlint/ast-tester">@textlint/ast-tester</a> for testing your processor plugin's parser.</p>
+<ul>
+<li><a href="https://github.com/textlint/textlint/tree/master/packages/@textlint/ast-tester">textlint/@textlint/ast-tester: Compliance tests for textlint's AST</a></li>
+</ul>
+<pre><code class="hljs css language-js"><span class="hljs-keyword">import</span> { test, isTextlintAST } <span class="hljs-keyword">from</span> <span class="hljs-string">"@textlint/ast-tester"</span>;
+<span class="hljs-comment">// your implement</span>
+<span class="hljs-keyword">import</span> yourParse <span class="hljs-keyword">from</span> <span class="hljs-string">"your-parser"</span>;
+<span class="hljs-comment">// recommenced: test much pattern test</span>
+<span class="hljs-keyword">const</span> AST = yourParse(<span class="hljs-string">"This is text"</span>);
+
+<span class="hljs-comment">// Validate AST</span>
+test(AST); <span class="hljs-comment">// if the AST is invalid, then throw Error</span>
+
+isTextlintAST(AST); <span class="hljs-comment">// true or false</span>
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="warning"></a><a href="#warning" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Warning</h2>
+<p>Other properties is not assured.</p>
+<p>For example, markdown's <code>Header</code> node has <code>level</code> property, but other format has not it.</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/use-as-modules.html"><span class="arrow-prev">← </span><span>Use as Node Modules</span></a><a class="docs-next button" href="/docs/contributing.html"><span>Contributing Guideline</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#what-is-ast">What is AST?</a><ul class="toc-headings"><li><a href="#txtnode"><code>TxtNode</code></a></li><li><a href="#txttextnode"><code>TxtTextNode</code></a></li><li><a href="#txtparentnode"><code>TxtParentNode</code></a></li><li><a href="#type"><code>type</code></a></li><li><a href="#minimal-node-property">Minimal node property</a></li></ul></li><li><a href="#built-in-parser">Built-in Parser</a></li><li><a href="#package">Package</a></li><li><a href="#online-parsing-demo">Online Parsing Demo</a><ul class="toc-headings"><li><a href="#loc"><code>loc</code></a></li></ul></li><li><a href="#example">Example</a></li><li><a href="#unist">Unist</a></li><li><a href="#for-testing-processor-plugin">For testing Processor plugin</a></li><li><a href="#warning">Warning</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/textlint-icon_256x256.png" alt="textlint" width="66" height="58"/></a><div><h5>Docs</h5><a href="/docs/en/configuring.html">User Manual</a><a href="/docs/en/rule.html">Developer Guide</a></div><div><h5>Community</h5><a href="https://gitter.im/textlint-ja/textlint-ja">Project Chat</a></div><div><h5>More</h5><a href="/blog">Blog</a><a href="https://github.com/">GitHub</a><a class="github-button" href="https://github.com/textlint/textlint" data-icon="octicon-star" data-count-href="/textlint/textlint/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><section class="copyright">Copyright © 2020 textlint organization</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: '27ef1d5fc0d12142485f3784f7d3cb46',
+                indexName: 'textlint',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {}
+              });
+            </script></body></html>

@@ -1,1 +1,2 @@
 **/packages/@secretlint/config-validator/src/*-validation.ts
+**/examples/benchmark/targets/**

@@ -1,0 +1,39 @@
+{
+  "private": true,
+  "name": "@secretlint/benchmark",
+  "version": "1.0.0",
+  "description": "Internal benchmark for Secretlint",
+  "keywords": [
+    "secretlint",
+    "benchmark"
+  ],
+  "homepage": "https://github.com/secretlint/secretlint/tree/master/benchmark/",
+  "bugs": {
+    "url": "https://github.com/secretlint/secretlint/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/secretlint/secretlint.git"
+  },
+  "license": "MIT",
+  "author": "azu",
+  "files": [
+    "index.js"
+  ],
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "benchmark": "node index.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "secretlint": "^0.1.2",
+    "@secretlint/secretlint-rule-preset-recommend": "^0.1.2",
+    "benchmark": "^2.1.4"
+  }
+}
