@@ -4,6 +4,7 @@ import { createRawSource } from "@secretlint/source-creator";
 import { createFormatter } from "@secretlint/formatter";
 import { SecretLintCoreDescriptor, SecretLintCoreResult } from "@secretlint/types";
 import path from "path";
+import { secretLintProfiler } from "@secretlint/profiler";
 
 const debug = require("debug")("@secretlint/node");
 export type SecretLintEngineOptions = {
@@ -54,13 +55,20 @@ const executeOnContent = async ({
         },
         config
     );
+    secretLintProfiler.mark({
+        type: "@node>format::start"
+    });
     const formatter = createFormatter({
         color: options.color,
         formatterName: options.formatter
     });
+    const output = formatter.format([result]);
+    secretLintProfiler.mark({
+        type: "@node>format::end"
+    });
     return {
         ok: !hasErrorMessage(result),
-        output: formatter.format([result])
+        output: output
     };
 };
 
@@ -77,16 +85,23 @@ const executeOnFiles = async ({
         return lintFile(filePath, config);
     });
     const results = await Promise.all(resultPromises);
+    secretLintProfiler.mark({
+        type: "@node>format::start"
+    });
     const formatter = createFormatter({
         color: options.color,
         formatterName: options.formatter
+    });
+    const output = formatter.format(results);
+    secretLintProfiler.mark({
+        type: "@node>format::end"
     });
     const hasErrorAtLeastOne = results.some(result => {
         return hasErrorMessage(result);
     });
     return {
         ok: !hasErrorAtLeastOne,
-        output: formatter.format(results)
+        output: output
     };
 };
 
@@ -96,9 +111,15 @@ const executeOnFiles = async ({
  * @param options
  */
 export const createEngine = async (options: SecretLintEngineOptions) => {
+    secretLintProfiler.mark({
+        type: "@node>load-config::start"
+    });
     const loadedResult = loadConfig({
         cwd: options.cwd,
         configFilePath: options.configFilePath
+    });
+    secretLintProfiler.mark({
+        type: "@node>load-config::end"
     });
     if (!loadedResult.ok) {
         throw new Error(loadedResult.errors.map(error => error.stack).join("\n\n"));
@@ -114,11 +135,18 @@ export const createEngine = async (options: SecretLintEngineOptions) => {
         executeOnContent: ({ content, filePath }: { content: string; filePath: string }) => {
             debug("content: %s", content);
             debug("filePath: %s", filePath);
+            secretLintProfiler.mark({
+                type: "@node>execute::start"
+            });
             return executeOnContent({
                 content,
                 filePath,
                 config: loadedResult.config,
                 options: options
+            }).finally(() => {
+                secretLintProfiler.mark({
+                    type: "@node>execute::end"
+                });
             });
         },
         /**
@@ -127,10 +155,17 @@ export const createEngine = async (options: SecretLintEngineOptions) => {
          */
         executeOnFiles: ({ filePathList }: { filePathList: string[] }) => {
             debug("filePathLList: %O", filePathList);
+            secretLintProfiler.mark({
+                type: "@node>execute::start"
+            });
             return executeOnFiles({
                 filePathList,
                 config: loadedResult.config,
                 options: options
+            }).finally(() => {
+                secretLintProfiler.mark({
+                    type: "@node>execute::end"
+                });
             });
         }
     };
