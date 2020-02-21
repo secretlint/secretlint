@@ -74,6 +74,7 @@ export class SecretLintProfiler {
     private entries: PerformanceEntry[] = [];
     private measures: PerformanceEntry[] = [];
 
+    private executionPromise = Promise.resolve();
     constructor(options: SecretLintProfilerOptions) {
         this.perf = options.perf;
         const pattern = /(.*?)::end(\|\|.*)?/;
@@ -93,7 +94,7 @@ export class SecretLintProfiler {
                         // create measure
                         if (startIdentifier) {
                             // FIXME: avoid ERR_INVALID_PERFORMANCE_MARK error
-                            setTimeout(() => {
+                            this.executionPromise = Promise.resolve().then(() => {
                                 this.perf.measure(
                                     endIdentifier + suffix,
                                     `${endIdentifier}::start${suffix}`,
@@ -119,11 +120,13 @@ export class SecretLintProfiler {
         }
     }
 
-    getEntries() {
+    async getEntries() {
+        await this.executionPromise;
         return this.entries;
     }
 
-    getMeasures() {
+    async getMeasures() {
+        await this.executionPromise;
         return this.measures;
     }
 }

@@ -91,11 +91,11 @@ export const run = (
             formatter: flags.format,
             color: flags.color
         }
-    }).finally(() => {
+    }).finally(async () => {
         secretLintProfiler.mark({
             type: "secretlint>cli::end"
         });
-        const measures = secretLintProfiler.getMeasures();
+        const measures = await secretLintProfiler.getMeasures();
         const cwd = flags.cwd;
         if (flags.format === "json") {
             console.log(JSON.stringify(measures, null, 4));
