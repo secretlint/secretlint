@@ -45,7 +45,8 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "ajv": "^6.11.0"
+    "ajv": "^6.11.0",
+    "@secretlint/types": "^0.1.0"
   },
   "devDependencies": {
     "@deps/traverse": "^1.0.2",
