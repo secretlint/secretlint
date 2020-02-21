@@ -68,7 +68,7 @@ export const run = (
     flags = cli.flags
 ): Promise<{ exitStatus: number; stdout: string | null; stderr: Error | null }> => {
     secretLintProfiler.mark({
-        type: "@cli>start"
+        type: "secretlint>cli::start"
     });
     const cwd = flags.cwd;
     debug("input: %O", input);
@@ -93,7 +93,7 @@ export const run = (
         }
     }).finally(() => {
         secretLintProfiler.mark({
-            type: "@cli>end"
+            type: "secretlint>cli::end"
         });
         const measures = secretLintProfiler.getMeasures();
         const cwd = flags.cwd;

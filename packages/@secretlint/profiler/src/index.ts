@@ -5,10 +5,10 @@ type Performance = typeof perf_hooks.performance | typeof performance;
 export type SecretLintProfilerMarker =
     // cli
     | {
-          type: "@cli>start";
+          type: "secretlint>cli::start";
       }
     | {
-          type: "@cli>end";
+          type: "secretlint>cli::end";
       }
     // node
     | {
