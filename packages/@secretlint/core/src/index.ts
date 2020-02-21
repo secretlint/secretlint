@@ -11,6 +11,7 @@ import {
 import { SecretLintSourceCodeImpl } from "./SecretLintSourceCodeImpl";
 import { ContextEvents, createContextEvents, createRuleContext, createRulePresetContext } from "./RuleContext";
 import { createRunningEvents, RunningEvents } from "./RunningEvents";
+import { secretLintProfiler } from "@secretlint/profiler";
 
 type SecretLintCoreOptions = SecretLintCoreDescriptor;
 
@@ -18,6 +19,10 @@ export const lintSource = (
     rawSource: SecretLintRawSource,
     options: SecretLintCoreOptions
 ): Promise<SecretLintCoreResult> => {
+    secretLintProfiler.mark({
+        type: "@core>lint::start",
+        id: rawSource.filePath
+    });
     const rules = options.rules;
     const contextEvents = createContextEvents();
     const runningEvents = createRunningEvents();
@@ -33,22 +38,46 @@ export const lintSource = (
         ext: rawSource.ext || "",
         contentType: rawSource.contentType
     });
+    secretLintProfiler.mark({
+        type: "@core>setup-rules::start"
+    });
     rules.forEach(rule => {
-        return registerRule({
+        secretLintProfiler.mark({
+            type: "@core>setup-rule::start",
+            id: rule.rule.meta.id
+        });
+        registerRule({
             sourceCode,
             options,
             descriptorRule: rule,
             contextEvents,
             runningEvents
         });
+        secretLintProfiler.mark({
+            type: "@core>setup-rule::end",
+            id: rule.rule.meta.id
+        });
+    });
+    secretLintProfiler.mark({
+        type: "@core>setup-rules::end"
     });
     // start to run
-    return runningEvents.emitFile(sourceCode).then(() => {
-        return {
-            filePath: rawSource.filePath,
-            messages: messages
-        };
-    });
+    return runningEvents
+        .runLint({
+            sourceCode
+        })
+        .then(() => {
+            return {
+                filePath: rawSource.filePath,
+                messages: messages
+            };
+        })
+        .finally(() => {
+            secretLintProfiler.mark({
+                type: "@core>lint::end",
+                id: rawSource.filePath
+            });
+        });
 };
 
 const isRulePreset = (

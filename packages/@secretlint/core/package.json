@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "@secretlint/types": "^0.1.0",
+    "@secretlint/profiler": "^0.1.0",
     "escape-string-regexp": "^2.0.0",
     "structured-source": "^3.0.2"
   },

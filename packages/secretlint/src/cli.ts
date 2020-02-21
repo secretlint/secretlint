@@ -1,6 +1,7 @@
 import meow from "meow";
 import { runSecretLint } from "./index";
 import { runConfigCreator } from "./create-secretlintrc";
+import { secretLintProfiler } from "@secretlint/profiler";
 
 const debug = require("debug")("secretlint");
 export const cli = meow(
@@ -19,6 +20,7 @@ export const cli = meow(
       --no-color disable color of output.
       --secretlintrc Path to .secretlintrc config file.
       --secretlintignore Path to .secretlintignore file. Default: .secretlintignore
+      --profile Output with profile results 
  
     Examples
       $ secretlint "**/*"
@@ -47,6 +49,9 @@ export const cli = meow(
                 type: "boolean",
                 default: true
             },
+            profile: {
+                type: "boolean"
+            },
             // DEBUG option
             cwd: {
                 type: "string",
@@ -62,6 +67,9 @@ export const run = (
     input = cli.input,
     flags = cli.flags
 ): Promise<{ exitStatus: number; stdout: string | null; stderr: Error | null }> => {
+    secretLintProfiler.mark({
+        type: "@cli>start"
+    });
     const cwd = flags.cwd;
     debug("input: %O", input);
     debug("flags: %O", flags);
@@ -82,6 +90,21 @@ export const run = (
             configFilePath: flags.secretlintrc,
             formatter: flags.format,
             color: flags.color
+        }
+    }).finally(() => {
+        secretLintProfiler.mark({
+            type: "@cli>end"
+        });
+        const measures = secretLintProfiler.getMeasures();
+        const cwd = flags.cwd;
+        if (flags.format === "json") {
+            console.log(JSON.stringify(measures, null, 4));
+        } else {
+            measures.forEach(entry => {
+                const takenMs = entry.duration;
+                const takenRoundMs = Math.round((takenMs + Number.EPSILON) * 100) / 100;
+                console.log(`${entry.name.replace(cwd, "<cwd>")} - ${takenRoundMs}ms`);
+            });
         }
     });
 };

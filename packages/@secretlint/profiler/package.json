@@ -1,12 +1,11 @@
 {
-  "name": "@secretlint/node",
-  "version": "0.1.1",
-  "description": "Secretlint client library for Node.js",
+  "name": "@secretlint/profiler",
+  "version": "0.1.0",
+  "description": "Profile manager for Secretlint.",
   "keywords": [
-    "secretlint",
-    "node.js"
+    "secretlint"
   ],
-  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/node/",
+  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/profiler/",
   "bugs": {
     "url": "https://github.com/secretlint/secretlint/issues"
   },
@@ -21,8 +20,9 @@
     "lib/",
     "src/"
   ],
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "lib/node.js",
+  "browser": "lib/browser.js",
+  "types": "lib/node.d.ts",
   "directories": {
     "lib": "lib",
     "test": "test"
@@ -40,25 +40,16 @@
     "singleQuote": false,
     "tabWidth": 4
   },
-  "dependencies": {
-    "@secretlint/config-loader": "^0.1.0",
-    "@secretlint/profiler": "^0.1.0",
-    "@secretlint/core": "^0.1.0",
-    "@secretlint/source-creator": "^0.1.0",
-    "@secretlint/formatter": "^0.1.0",
-    "debug": "^4.1.1"
-  },
   "devDependencies": {
-    "@secretlint/secretlint-rule-example": "^0.1.0",
     "@types/mocha": "^7.0.1",
-    "@types/node": "^13.7.0",
+    "@types/node": "^13.7.4",
     "cross-env": "^7.0.0",
     "mocha": "^7.0.1",
     "prettier": "^1.19.1",
     "rimraf": "^3.0.2",
     "ts-node": "^8.6.2",
     "ts-node-test-register": "^8.0.1",
-    "typescript": "^3.7.5"
+    "typescript": "^3.8.2"
   },
   "publishConfig": {
     "access": "public"
