@@ -44,13 +44,13 @@
   },
   "dependencies": {
     "@secretlint/types": "^0.1.0",
-    "meow": "^6.0.0",
+    "meow": "^6.0.1",
     "ts-node": "^8.6.2",
-    "typescript": "^3.7.5"
+    "typescript": "^3.8.2"
   },
   "devDependencies": {
     "@types/mocha": "^7.0.1",
-    "@types/node": "^13.7.0",
+    "@types/node": "^13.7.4",
     "cross-env": "^7.0.0",
     "mocha": "^7.0.1",
     "prettier": "^1.19.1",
