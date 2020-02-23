@@ -45,7 +45,8 @@
   "dependencies": {
     "@secretlint/secretlint-rule-aws": "^0.2.0",
     "@secretlint/secretlint-rule-npm": "^0.2.0",
-    "@secretlint/secretlint-rule-privatekey": "^0.2.0"
+    "@secretlint/secretlint-rule-privatekey": "^0.2.0",
+    "@secretlint/secretlint-rule-basicauth": "^0.2.0"
   },
   "devDependencies": {
     "@types/mocha": "^7.0.1",
