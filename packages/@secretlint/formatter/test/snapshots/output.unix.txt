@@ -1,0 +1,5 @@
+[SNAPSHOT]/input.txt:1:8: warning found secret: SECRET [Warning/example]
+[SNAPSHOT]/input.txt:1:8: error found secret: SECRET [Error/example]
+[SNAPSHOT]/input.txt:1:8: error found secret: SECRET [Error/parent > example]
+
+3 problems
