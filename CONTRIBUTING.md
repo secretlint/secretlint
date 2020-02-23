@@ -218,6 +218,21 @@ $ cd packages/PACKAGE
 $ yarn test
 ```
 
+#### Snapshot Test
+
+We have much Snapshot testings.
+This test is same with Jest's [Snapshot Testing](https://jestjs.io/docs/ja/snapshot-testing).
+
+You can update snapshot's output via following command:
+
+```sh
+# Root(all)
+$ yarn run updateSnapshot
+# Package
+$ cd packages/PACKAGE
+$ yarn run updateSnapshot
+```
+
 ### Pushing the Commit and Opening a Pull Request
 
 After finishing your changes and unit tests or documentation test ran fine, you can push your feature branch to GitHub. Please see [GitHub Help](https://help.github.com/articles/pushing-to-a-remote/) for detail but typically, run `git push` at your terminal.
