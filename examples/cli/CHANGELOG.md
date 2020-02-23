@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/secretlint/secretlint/compare/v0.1.2...v0.2.0) (2020-02-23)
+
+
+### Bug Fixes
+
+* **example:** fix example ([82a18a5](https://github.com/secretlint/secretlint/commit/82a18a55dfa08486e1ece1be8072c928ab92880a))
+* **example:** use preset ([73893d6](https://github.com/secretlint/secretlint/commit/73893d6e385d223e629689f9cd7aa5b35d92cbd8))
+
+
+
+
+
 ## [0.1.2](https://github.com/secretlint/secretlint/compare/v0.1.1...v0.1.2) (2020-02-16)
 
 **Note:** Version bump only for package @secretlint/example-cli

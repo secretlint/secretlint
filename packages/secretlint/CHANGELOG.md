@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/secretlint/secretlint/compare/v0.1.2...v0.2.0) (2020-02-23)
+
+
+### Bug Fixes
+
+* **cli:** prevent to output profile if no --profile flag ([17b8570](https://github.com/secretlint/secretlint/commit/17b85709be9558a744d2164884a9810a46e53635))
+
+
+### Features
+
+* **profiler:** add --profiler flag ([#40](https://github.com/secretlint/secretlint/issues/40)) ([0f86e54](https://github.com/secretlint/secretlint/commit/0f86e5415f0c249c6f5c2dfbf44465f0c58ce56e))
+
+
+
+
+
 ## [0.1.2](https://github.com/secretlint/secretlint/compare/v0.1.1...v0.1.2) (2020-02-16)
 
 **Note:** Version bump only for package secretlint

@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.2.0](https://github.com/secretlint/secretlint/compare/v0.1.2...v0.2.0) (2020-02-23)
+
+
+### Bug Fixes
+
+* **aws:** report only found Access key ([cfa0d4d](https://github.com/secretlint/secretlint/commit/cfa0d4d694ec6a8dc13bcc729c773b88567eecb5)), closes [#32](https://github.com/secretlint/secretlint/issues/32)
+* **cli:** prevent to output profile if no --profile flag ([17b8570](https://github.com/secretlint/secretlint/commit/17b85709be9558a744d2164884a9810a46e53635))
+* **example:** fix example ([82a18a5](https://github.com/secretlint/secretlint/commit/82a18a55dfa08486e1ece1be8072c928ab92880a))
+* **example:** use preset ([73893d6](https://github.com/secretlint/secretlint/commit/73893d6e385d223e629689f9cd7aa5b35d92cbd8))
+* **tester:** Make testDefinitions optional ([04b8dcc](https://github.com/secretlint/secretlint/commit/04b8dcc5dc9c93f0a9c02aa303f61b6bfe751e5d))
+
+
+### Features
+
+* **benchmark:** add benchmark scripts ([#38](https://github.com/secretlint/secretlint/issues/38)) ([8b48f42](https://github.com/secretlint/secretlint/commit/8b48f4206fe3a3b019b76c4ef0346bc487177fe5))
+* **profiler:** add --profiler flag ([#40](https://github.com/secretlint/secretlint/issues/40)) ([0f86e54](https://github.com/secretlint/secretlint/commit/0f86e5415f0c249c6f5c2dfbf44465f0c58ce56e))
+* **rule:** add `supportedContentTypes` to rule `meta` ([#39](https://github.com/secretlint/secretlint/issues/39)) ([3883c75](https://github.com/secretlint/secretlint/commit/3883c7578de38854aba2d1d20b8f167c8275f1c9))
+
+
+### Performance Improvements
+
+* **core:** skip lint with rule if the rule does not support contentType ([1e2eb3e](https://github.com/secretlint/secretlint/commit/1e2eb3eb61b6198619e0283bb05ede28f4a1d5b0)), closes [#39](https://github.com/secretlint/secretlint/issues/39)
+
+
+
+
+
 ## [0.1.2](https://github.com/secretlint/secretlint/compare/v0.1.1...v0.1.2) (2020-02-16)
 
 

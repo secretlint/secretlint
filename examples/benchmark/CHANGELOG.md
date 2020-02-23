@@ -1,0 +1,12 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# [0.2.0](https://github.com/secretlint/secretlint/compare/v0.1.2...v0.2.0) (2020-02-23)
+
+
+### Features
+
+* **benchmark:** add benchmark scripts ([#38](https://github.com/secretlint/secretlint/issues/38)) ([8b48f42](https://github.com/secretlint/secretlint/commit/8b48f4206fe3a3b019b76c4ef0346bc487177fe5))
+* **profiler:** add --profiler flag ([#40](https://github.com/secretlint/secretlint/issues/40)) ([0f86e54](https://github.com/secretlint/secretlint/commit/0f86e5415f0c249c6f5c2dfbf44465f0c58ce56e))
