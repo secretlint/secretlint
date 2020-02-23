@@ -100,6 +100,7 @@ Secretlint rules are implemented as separated modules.
 - [@secretlint/secretlint-rule-npm](./packages/@secretlint/secretlint-rule-npm)
 - [@secretlint/secretlint-rule-aws](./packages/@secretlint/secretlint-rule-aws)
 - [@secretlint/secretlint-rule-privatekey](./packages/@secretlint/secretlint-rule-privatekey)
+- [@secretlint/secretlint-rule-basicauth](./packages/@secretlint/secretlint-rule-basicauth)
 
 Also, Secretlint provide rule preset that package some rule set.
 

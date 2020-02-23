@@ -1,0 +1,29 @@
+{
+    "filePath": "[SNAPSHOT]/ng.basic-auth-http-url/input.txt",
+    "messages": [
+        {
+            "message": "found basic auth credential: https://user:pass@example.com",
+            "range": [
+                10,
+                39
+            ],
+            "ruleId": "@secretlint/secretlint-rule-basicauth",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 10
+                },
+                "end": {
+                    "line": 1,
+                    "column": 39
+                }
+            },
+            "severity": "error",
+            "data": {
+                "CREDENTIAL": "https://user:pass@example.com",
+                "user": "user",
+                "password": "pass"
+            }
+        }
+    ]
+}
