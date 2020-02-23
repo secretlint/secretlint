@@ -1,0 +1,52 @@
+{
+  "name": "@secretlint/secretlint-scripts",
+  "version": "0.2.0",
+  "description": "Secretlint rule scripts",
+  "keywords": [
+    "secretlint"
+  ],
+  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-scripts/",
+  "bugs": {
+    "url": "https://github.com/secretlint/secretlint/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/secretlint/secretlint.git"
+  },
+  "license": "MIT",
+  "author": "azu",
+  "files": [
+    "bin/",
+    "lib/",
+    "src/"
+  ],
+  "main": "bin/cmd.js",
+  "bin": {
+    "secretlint-scripts": "./bin/cmd.js"
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "# test"
+  },
+  "dependencies": {
+    "cross-spawn": "^7.0.1"
+  },
+  "peerDependencies": {
+    "ts-node": "*",
+    "ts-node-test-register": "*",
+    "typescript": "*",
+    "mocha": "*"
+  },
+  "devDependencies": {
+    "ts-node": "^8.6.2",
+    "ts-node-test-register": "^8.0.1",
+    "typescript": "^3.8.2",
+    "mocha": "^7.0.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
