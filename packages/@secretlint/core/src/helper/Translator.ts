@@ -23,7 +23,7 @@ const formatMessagePlaceholder = (message: string, data?: {}): string => {
     return output;
 };
 
-const matchLocale = (locale: SecretLintRuleLocaleTag, locales: SecretLintRuleLocalizeMessages) => {
+const getMatchedLocaleMessage = (locale: SecretLintRuleLocaleTag, locales: SecretLintRuleLocalizeMessageMulti) => {
     const localKeys = Object.keys(locales);
     const matchLocale = localKeys.find(key => {
         return key === locale;
@@ -62,18 +62,20 @@ export const createTranslator: createRuleMessageTranslator = <T extends SecretLi
     options?: SecretLintRuleMessageTranslatorOptions
 ) => {
     return <Data extends {}>(messageKey: keyof T, data?: Data) => {
-        const messageObject: SecretLintRuleLocalizeMessageMulti | string = messages[messageKey];
+        const messageObject: SecretLintRuleLocalizeMessageMulti | string | undefined = messages[messageKey];
         if (!messageObject) {
             throw new Error(`messages:${messageKey} is missing in messages.`);
         }
+        // if messages is string, use it.
         if (typeof messageObject === "string") {
             return {
                 message: applyOption(messageObject, data),
                 data
             };
         }
+        // if messages is object, pick message that is matched locale from messages.
         const defaultLocal = options && options.defaultLocale ? options.defaultLocale : DEFAULT_LOCAL;
-        const locale = matchLocale(defaultLocal, messageObject);
+        const locale = getMatchedLocaleMessage(defaultLocal, messageObject);
         const localizedMessage = messageObject[locale];
         if (!localizedMessage) {
             if (messageObject[DEFAULT_LOCAL]) {
