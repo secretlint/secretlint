@@ -32,7 +32,11 @@ const convertSecretLintResultToTextlintResult = (secretLintCoreResult: SecretLin
                     : 0;
 
             return {
-                ruleId: message.ruleId,
+                // Preset rule format
+                // {preset-id} > {rule-id}
+                // Single rule format
+                // {rule-id}
+                ruleId: message.ruleParentId ? `${message.ruleParentId} > ${message.ruleId}` : message.ruleId,
                 index: message.range[0],
                 line: message.loc.start.line,
                 column: message.loc.start.column,

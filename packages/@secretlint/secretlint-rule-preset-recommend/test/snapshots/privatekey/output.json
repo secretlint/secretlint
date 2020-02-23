@@ -8,6 +8,7 @@
                 887
             ],
             "ruleId": "@secretlint/secretlint-rule-privatekey",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
             "loc": {
                 "start": {
                     "line": 1,

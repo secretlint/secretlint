@@ -9,9 +9,10 @@ import {
     SecretLintSourceCode
 } from "@secretlint/types";
 import { SecretLintSourceCodeImpl } from "./SecretLintSourceCodeImpl";
-import { ContextEvents, createContextEvents, createRuleContext, createRulePresetContext } from "./RuleContext";
+import { ContextEvents, createContextEvents, createRuleContext } from "./RuleContext";
 import { createRunningEvents, RunningEvents } from "./RunningEvents";
 import { secretLintProfiler } from "@secretlint/profiler";
+import { createRulePresetContext } from "./RulePresetContext";
 
 type SecretLintCoreOptions = SecretLintCoreDescriptor;
 
