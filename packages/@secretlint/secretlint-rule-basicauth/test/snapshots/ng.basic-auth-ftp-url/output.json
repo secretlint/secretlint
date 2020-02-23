@@ -1,0 +1,29 @@
+{
+    "filePath": "[SNAPSHOT]/ng.basic-auth-ftp-url/input.txt",
+    "messages": [
+        {
+            "message": "found basic auth credential: ftp://user:pass@example.com",
+            "range": [
+                10,
+                37
+            ],
+            "ruleId": "@secretlint/secretlint-rule-basicauth",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 10
+                },
+                "end": {
+                    "line": 1,
+                    "column": 37
+                }
+            },
+            "severity": "error",
+            "data": {
+                "CREDENTIAL": "ftp://user:pass@example.com",
+                "user": "user",
+                "password": "pass"
+            }
+        }
+    ]
+}

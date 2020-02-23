@@ -98,9 +98,16 @@ export const snapshot = (options: SnapshotOptions) => {
                     )
                         ? require(secretlintTestCaseOptionsFilePath).options
                         : {};
-                    const actualFilePath = secretlintTestCaseOptions.inputFilePath
-                        ? path.resolve(fixtureDir, secretlintTestCaseOptions.inputFilePath)
-                        : path.join(fixtureDir, "input");
+                    const inputPrefixFileName = fs.readdirSync(fixtureDir).find(filePath => {
+                        return filePath.startsWith("input");
+                    });
+                    const actualFileName = secretlintTestCaseOptions.inputFilePath
+                        ? secretlintTestCaseOptions.inputFilePath
+                        : inputPrefixFileName;
+                    if (!actualFileName) {
+                        throw new Error(`Not found input file in ${fixtureDir}`);
+                    }
+                    const actualFilePath = path.join(fixtureDir, actualFileName);
                     const loadedConfig = await (secretlintrcFilePath
                         ? loadConfig({
                               configFilePath: secretlintrcFilePath,
