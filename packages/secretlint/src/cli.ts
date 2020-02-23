@@ -95,16 +95,18 @@ export const run = (
         secretLintProfiler.mark({
             type: "secretlint>cli::end"
         });
-        const measures = await secretLintProfiler.getMeasures();
-        const cwd = flags.cwd;
-        if (flags.format === "json") {
-            console.log(JSON.stringify(measures, null, 4));
-        } else {
-            measures.forEach(entry => {
-                const takenMs = entry.duration;
-                const takenRoundMs = Math.round((takenMs + Number.EPSILON) * 100) / 100;
-                console.log(`${entry.name.replace(cwd, "<cwd>")} - ${takenRoundMs}ms`);
-            });
+        if (flags.profile) {
+            const measures = await secretLintProfiler.getMeasures();
+            const cwd = flags.cwd;
+            if (flags.format === "json") {
+                console.log(JSON.stringify(measures, null, 4));
+            } else {
+                measures.forEach(entry => {
+                    const takenMs = entry.duration;
+                    const takenRoundMs = Math.round((takenMs + Number.EPSILON) * 100) / 100;
+                    console.log(`${entry.name.replace(cwd, "<cwd>")} - ${takenRoundMs}ms`);
+                });
+            }
         }
     });
 };
