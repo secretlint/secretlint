@@ -76,6 +76,7 @@ export type SecretLintCoreResult = {
 };
 export type SecretLintCoreResultMessage = {
     ruleId: string;
+    ruleParentId?: string;
     message: string;
     range: number[];
     loc: SecretLintSourceNodeLocation;

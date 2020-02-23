@@ -1,0 +1,25 @@
+TAP version 13
+1..2
+not ok 1 - [SNAPSHOT]/input.txt
+  ---
+  message: 'warning found secret: SECRET'
+  severity: warning
+  data:
+    line: 1
+    column: 8
+    ruleId: example
+  messages:
+    - message: 'error found secret: SECRET'
+      severity: error
+      data:
+        line: 1
+        column: 8
+        ruleId: example
+    - message: 'error found secret: SECRET'
+      severity: error
+      data:
+        line: 1
+        column: 8
+        ruleId: parent > example
+  ...
+ok 2 - [SNAPSHOT]/input.no-secret.txt

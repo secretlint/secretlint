@@ -1,21 +1,15 @@
 import { EventEmitter } from "events";
 import {
-    SecretLintCoreDescriptorRule,
-    SecretLintCoreDescriptorRulePreset,
     SecretLintCoreIgnoreDescriptor,
     SecretLintCoreReportDescriptor,
     SecretLintCoreResultMessage,
     SecretLintRuleContext,
-    SecretLintRuleCreator,
-    SecretLintRuleCreatorOptions,
     SecretLintRuleIgnoreDescriptor,
-    SecretLintRulePresetContext,
     SecretLintRuleReportDescriptor,
     SecretLintRuleSeverityLevel,
     SecretLintSourceCode
 } from "@secretlint/types";
 import { createTranslator } from "./helper/Translator";
-import { RunningEvents } from "./RunningEvents";
 
 type Handler<T> = (descriptor: T) => void;
 export type ContextEvents = {
@@ -55,81 +49,26 @@ export const createContextEvents = (): ContextEvents => {
         }
     };
 };
-export const createRulePresetContext = ({
-    descriptorRulePreset,
-    sourceCode,
-    runningEvents,
-    contextEvents,
-    sharedOptions
-}: {
-    descriptorRulePreset: SecretLintCoreDescriptorRulePreset;
-    sourceCode: SecretLintSourceCode;
-    contextEvents: ContextEvents;
-    runningEvents: RunningEvents;
-    sharedOptions: {};
-}): SecretLintRulePresetContext => {
-    const presetRules = descriptorRulePreset.rules || [];
-    if (!Array.isArray(presetRules)) {
-        console.error(`${descriptorRulePreset.id}:PresetRules is invalid format`, presetRules);
-        throw new Error("preset's rules should be an array of rule definitions");
-    }
-    return {
-        sharedOptions,
-        registerRule<Options extends SecretLintRuleCreatorOptions>(
-            rule: SecretLintRuleCreator<Options>,
-            defaultValue?: Omit<SecretLintCoreDescriptorRule<Options>, "id" | "rule">
-        ): void {
-            const descriptorRule = presetRules.find(descriptorRule => {
-                return descriptorRule.id === rule.meta.id;
-            });
-            // Use undefined instead of {}
-            // Default value will be handled by RunningEvents#registerRule
-            const descriptorRuleOptions = descriptorRule ? descriptorRule.options : undefined;
-            const descriptorRuleDisabled = descriptorRule ? descriptorRule.disabled : undefined;
-            const descriptorRuleSeverity = descriptorRule ? descriptorRule.severity : undefined;
-            const context = createRuleContext({
-                // TODO: add preset context to rule context
-                // Specialize
-                // Show this ruleId as error report
-                ruleId: rule.meta.id,
-                severity: descriptorRuleSeverity,
-                sourceCode,
-                contextEvents: contextEvents,
-                sharedOptions: sharedOptions
-            });
-            const defaultValueOfPreset = defaultValue ? defaultValue : {};
-            runningEvents.registerRule({
-                descriptorRule: {
-                    // options and disabled ...
-                    ...defaultValueOfPreset,
-                    // Prefer to use user setting
-                    // User can override preset setting
-                    ...descriptorRule,
-                    id: rule.meta.id,
-                    options: descriptorRuleOptions,
-                    rule,
-                    disabled: descriptorRuleDisabled,
-                    severity: descriptorRuleSeverity
-                },
-                context
-            });
-        }
-    };
-};
 
-export const createRuleContext = ({
-    ruleId,
-    severity,
-    sourceCode,
-    contextEvents,
-    sharedOptions
-}: {
+export type CreateRuleContextOptions = {
     ruleId: string;
+    /**
+     * If the rule is in preset, pass rule preset's id as ruleParentId
+     */
+    ruleParentId?: string;
     severity?: SecretLintRuleSeverityLevel;
     sourceCode: SecretLintSourceCode;
     contextEvents: ContextEvents;
     sharedOptions: {};
-}): SecretLintRuleContext => {
+};
+export const createRuleContext = ({
+    ruleId,
+    ruleParentId,
+    severity,
+    sourceCode,
+    contextEvents,
+    sharedOptions
+}: CreateRuleContextOptions): SecretLintRuleContext => {
     return {
         sharedOptions,
         createTranslator: createTranslator,
@@ -144,14 +83,26 @@ export const createRuleContext = ({
             const data = typeof descriptor.message === "string" ? descriptor.data : descriptor.message.data;
             // Default severity level is "error"
             const severityLevel = severity || "error";
-            contextEvents.report({
-                ...descriptor,
-                ruleId: ruleId,
-                loc: sourceCode.rangeToLocation(descriptor.range),
-                severity: severityLevel,
-                message,
-                data
-            });
+            if (ruleParentId) {
+                contextEvents.report({
+                    ...descriptor,
+                    ruleId: ruleId,
+                    ruleParentId,
+                    loc: sourceCode.rangeToLocation(descriptor.range),
+                    severity: severityLevel,
+                    message,
+                    data
+                });
+            } else {
+                contextEvents.report({
+                    ...descriptor,
+                    ruleId: ruleId,
+                    loc: sourceCode.rangeToLocation(descriptor.range),
+                    severity: severityLevel,
+                    message,
+                    data
+                });
+            }
         }
     };
 };

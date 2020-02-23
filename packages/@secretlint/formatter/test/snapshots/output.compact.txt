@@ -1,0 +1,5 @@
+[SNAPSHOT]/input.txt: line 1, col 8, Warning - warning found secret: SECRET (example)
+[SNAPSHOT]/input.txt: line 1, col 8, Error - error found secret: SECRET (example)
+[SNAPSHOT]/input.txt: line 1, col 8, Error - error found secret: SECRET (parent > example)
+
+3 problems

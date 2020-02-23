@@ -28,7 +28,7 @@
     "clean": "rimraf lib/",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
-    "test": "# mocha \"test/**/*.ts\"",
+    "test": "mocha \"test/**/*.ts\"",
     "watch": "tsc -p . --watch"
   },
   "prettier": {
@@ -43,6 +43,7 @@
     "debug": "^4.1.1"
   },
   "devDependencies": {
+    "escape-string-regexp": "^2.0.0",
     "@types/mocha": "^7.0.1",
     "@types/node": "^13.7.4",
     "cross-env": "^7.0.0",

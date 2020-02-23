@@ -1,0 +1,25 @@
+example: warning found secret: SECRET
+[SNAPSHOT]/input.txt:1:8
+              v
+    0. 
+    1. THIS IS SECRET SOURCE
+    2. 
+              ^
+
+example: error found secret: SECRET
+[SNAPSHOT]/input.txt:1:8
+              v
+    0. 
+    1. THIS IS SECRET SOURCE
+    2. 
+              ^
+
+parent > example: error found secret: SECRET
+[SNAPSHOT]/input.txt:1:8
+              v
+    0. 
+    1. THIS IS SECRET SOURCE
+    2. 
+              ^
+
+✖ 3 problems (2 errors, 1 warning)

@@ -5,7 +5,7 @@
             "filePath": "[SNAPSHOT]/preset-rule-severity-warning/input.txt",
             "messages": [
                 {
-                    "ruleId": "@secretlint/secretlint-rule-privatekey",
+                    "ruleId": "@secretlint/secretlint-rule-preset-recommend > @secretlint/secretlint-rule-privatekey",
                     "index": 0,
                     "line": 1,
                     "column": 0,
