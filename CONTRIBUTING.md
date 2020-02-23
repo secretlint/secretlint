@@ -199,13 +199,13 @@ We care version number while releasing packages to npm registry so you should no
 
 ### Running Tests
 
-We have four type of tests. You should run at least **unit test** or **documentation test** according to your type of changes before submitting a pull request.
+We have some type of tests. You should run at least **unit test** before submitting a pull request.
 
 All tests should be run at the top directory of your fork.
 
 #### Unit Test
 
-Run tests under [`packages/`](https://github.com/secretlint/secretlint/tree/master/packages):
+Run tests for all packages:
 
 ```sh
 $ yarn test
