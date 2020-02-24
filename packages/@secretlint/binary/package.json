@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/binary",
-  "version": "1.0.0",
+  "version": "0.2.0",
   "description": "A binary distribution for secretlint.",
   "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/binary/",
   "bugs": {
