@@ -153,8 +153,5 @@ fabric.properties
 
 # Customize
 
-/lib
-/packages/**/lib
-!/packages/secretlint/test/snapshots/node_modules-is-ignored-by-default/node_modules/
-!/packages/secretlint/test/snapshots/force-check-node_modules/node_modules/
-!/packages/@secretlint/binary/dist/
+lib
+dist

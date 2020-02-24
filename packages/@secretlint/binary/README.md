@@ -1,16 +1,16 @@
-# example-cli
+# @secretlint/binary
 
-An example for secretlint cli.
+A binary distribution for secretlint.
 
 ## Install
 
-    yarn install
-    
+Install with [npm](https://www.npmjs.com/):
+
+    npm install @secretlint/binary
+
 ## Usage
 
-```
-$ yarn secretlint "**/*"
-```
+- [ ] Write usage instructions
 
 ## Changelog
 
