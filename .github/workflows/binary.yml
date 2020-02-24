@@ -35,13 +35,11 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: ${{ matrix.os }}
-          path: dist
-        working-directory: ./packages/@secretlint/binary
+          path: ./packages/@secretlint/binary/dist
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: "dist/**"
+          files: "./packages/@secretlint/binary/dist/**"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        working-directory: ./packages/@secretlint/binary
