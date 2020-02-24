@@ -5,6 +5,9 @@ import { compileSecretLint } from "./index";
 // @ts-ignore
 import preset from "@secretlint/secretlint-rule-preset-recommend";
 
+fs.rmdirSync(path.join(__dirname, "../dist/"), {
+    recursive: true
+});
 fs.mkdirSync(path.join(__dirname, "../dist/"), {
     recursive: true
 });
