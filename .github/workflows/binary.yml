@@ -36,6 +36,7 @@ jobs:
         with:
           name: ${{ matrix.os }}
           path: dist
+        working-directory: ./packages/@secretlint/binary
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
@@ -43,3 +44,4 @@ jobs:
           files: "dist/**"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        working-directory: ./packages/@secretlint/binary
