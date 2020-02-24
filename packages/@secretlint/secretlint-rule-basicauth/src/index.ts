@@ -61,7 +61,7 @@ function reportIfFoundBasicAuth({
 
 export const creator: SecretLintRuleCreator<Options> = {
     meta: {
-        id: "@secretlint/secretlint-rule-privatekey",
+        id: "@secretlint/secretlint-rule-basicauth",
         recommended: true,
         type: "scanner",
         supportedContentTypes: ["text"]
