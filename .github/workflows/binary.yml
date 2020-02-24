@@ -6,8 +6,6 @@ on:
       - master
     tags:
       - "*"
-    paths:
-      - "./packages/@secretlint/binary/**/*"
 
 jobs:
   build:
