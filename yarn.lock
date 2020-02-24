@@ -2712,14 +2712,6 @@ expand-brackets@^2.1.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-expected-exit-status@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/expected-exit-status/-/expected-exit-status-1.0.2.tgz#79c5ba9ae113bc8b7a290787686216001e28cf57"
-  integrity sha512-0SWHJ91/9qRqpos+NgxKHH2wijV95B/FHIO9PtPe7dzupHCYcyKJClKO42gM96M+xnf93uPZsGVa22LIQW77iw==
-  dependencies:
-    cross-spawn "^6.0.5"
-    meow "^5.0.0"
-
 ext-list@^2.0.0:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/ext-list/-/ext-list-2.2.2.tgz#0b98e64ed82f5acf0f2931babf69212ef52ddd37"
