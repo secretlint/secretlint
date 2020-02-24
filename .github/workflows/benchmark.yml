@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        node_version: [12.9.1] # pre-build nexe https://github.com/nexe/nexe/releases/tag/v3.0.0
+        node_version: [12]
     steps:
       - name: checkout
         uses: actions/checkout@v2

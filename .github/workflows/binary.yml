@@ -15,14 +15,15 @@ jobs:
         os: [macOS-10.14, ubuntu-18.04]
 # Disable windows build https://github.com/nexe/nexe/issues/728
 #        os: [macOS-10.14, windows-2016, ubuntu-18.04]
+        node_version: [12.9.1] # pre-build nexe https://github.com/nexe/nexe/releases/tag/v3.0.0
     steps:
       - uses: actions/checkout@v1
         with:
           fetch-depth: 1
-      - name: Use Node.js 12.x
+      - name: Use Node.js ${{ matrix.node_version }}
         uses: actions/setup-node@v1
         with:
-          node-version: 12.x
+          node-version: ${{ matrix.node_version }}
       - name: Install
         run: yarn install
       - name: Build
