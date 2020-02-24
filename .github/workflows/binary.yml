@@ -12,7 +12,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macOS-10.14, windows-2016, ubuntu-18.04]
+        os: [macOS-10.14, ubuntu-18.04]
+# Disable windows build https://github.com/nexe/nexe/issues/728
+#        os: [macOS-10.14, windows-2016, ubuntu-18.04]
     steps:
       - uses: actions/checkout@v1
         with:
@@ -25,7 +27,7 @@ jobs:
         run: yarn install
       - name: Build
         run: yarn run build
-      - name: Publish
+      - name: Build binary
         run: yarn run dist
         working-directory: ./packages/@secretlint/binary
       - name: Upload artifacts
