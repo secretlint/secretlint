@@ -20,6 +20,14 @@ const formatMessagePlaceholder = (message: string, data?: {}): string => {
     Object.entries(data).forEach(([key, value]) => {
         output = output.replace(new RegExp(escapeStringRegexp(`{{${key}}}`), "g"), String(value));
     });
+    const unMatchedPlaceholder = /{{[^}]+}}/g;
+    const matchUnMatched = output.match(unMatchedPlaceholder);
+    if (matchUnMatched) {
+        throw new Error(`Placeholder:${matchUnMatched && matchUnMatched[0]} still existed.
+
+Probably, message's data key is mismatch
+`);
+    }
     return output;
 };
 

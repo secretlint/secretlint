@@ -1,13 +1,13 @@
 {
-  "name": "@secretlint/secretlint-rule-privatekey",
+  "name": "@secretlint/secretlint-rule-slack",
   "version": "0.2.0",
-  "description": "A secretlint rule for PrivateKey.",
+  "description": "A secretlint rule for slack.",
   "keywords": [
+    "rule",
     "secretlint",
-    "ssh",
-    "privatekey"
+    "slack"
   ],
-  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-privatekey/",
+  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-slack/",
   "bugs": {
     "url": "https://github.com/secretlint/secretlint/issues"
   },
@@ -33,7 +33,6 @@
     "clean": "rimraf lib/",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
-    "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
     "test": "mocha \"test/**/*.ts\"",
     "watch": "tsc -p . --watch"
   },
@@ -43,19 +42,20 @@
     "tabWidth": 4
   },
   "dependencies": {
+    "@secretlint/types": "^0.2.0",
     "@textlint/regexp-string-matcher": "^1.1.0",
     "string.prototype.matchall": "^4.0.2"
   },
   "devDependencies": {
-    "cross-env": "^7.0.0",
-    "@secretlint/secretlint-scripts": "^0.2.0",
     "@secretlint/tester": "^0.2.0",
     "@types/mocha": "^7.0.1",
     "@types/node": "^13.7.4",
+    "cross-env": "^7.0.0",
+    "mocha": "^7.0.1",
     "prettier": "^1.19.1",
     "rimraf": "^3.0.2",
-    "mocha": "^7.0.1",
     "ts-node": "^8.6.2",
+    "ts-node-test-register": "^8.0.1",
     "typescript": "^3.8.2"
   },
   "publishConfig": {

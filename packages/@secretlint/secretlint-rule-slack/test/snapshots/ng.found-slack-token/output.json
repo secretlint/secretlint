@@ -1,0 +1,71 @@
+{
+    "filePath": "[SNAPSHOT]/ng.found-slack-token/input.txt",
+    "messages": [
+        {
+            "message": "found slack token: xoxa-23984754863-2348975623103",
+            "range": [
+                48,
+                78
+            ],
+            "ruleId": "@secretlint/secretlint-rule-slack",
+            "loc": {
+                "start": {
+                    "line": 3,
+                    "column": 0
+                },
+                "end": {
+                    "line": 3,
+                    "column": 30
+                }
+            },
+            "severity": "error",
+            "data": {
+                "TOKEN": "xoxa-23984754863-2348975623103"
+            }
+        },
+        {
+            "message": "found slack token: xoxb-23984754863-2348975623103",
+            "range": [
+                79,
+                109
+            ],
+            "ruleId": "@secretlint/secretlint-rule-slack",
+            "loc": {
+                "start": {
+                    "line": 4,
+                    "column": 0
+                },
+                "end": {
+                    "line": 4,
+                    "column": 30
+                }
+            },
+            "severity": "error",
+            "data": {
+                "TOKEN": "xoxb-23984754863-2348975623103"
+            }
+        },
+        {
+            "message": "found slack token: xoxo-23984754863-2348975623103",
+            "range": [
+                110,
+                140
+            ],
+            "ruleId": "@secretlint/secretlint-rule-slack",
+            "loc": {
+                "start": {
+                    "line": 5,
+                    "column": 0
+                },
+                "end": {
+                    "line": 5,
+                    "column": 30
+                }
+            },
+            "severity": "error",
+            "data": {
+                "TOKEN": "xoxo-23984754863-2348975623103"
+            }
+        }
+    ]
+}

@@ -48,7 +48,7 @@ export const createRunningEvents = (): RunningEvents => {
         }) {
             if (registerSet.has(descriptorRule.id)) {
                 // TODO: more trivial implementation
-                console.warn(`rule.id:${descriptorRule.id} is already registered.
+                throw new Error(`rule.id:${descriptorRule.id} is already registered.
                 
 Duplicated rule.id is something wrong in .secretlintrc.                
 `);
