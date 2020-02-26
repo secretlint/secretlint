@@ -28,16 +28,16 @@ jobs:
         run: yarn run build
       - name: Build binary
         run: yarn run dist
-        working-directory: ./packages/@secretlint/binary
+        working-directory: ./packages/@secretlint/binary-compiler
       - name: Upload artifacts
         uses: actions/upload-artifact@v1
         with:
           name: ${{ matrix.os }}
-          path: ./packages/@secretlint/binary/dist
+          path: ./packages/@secretlint/binary-compiler/dist
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: "./packages/@secretlint/binary/dist/**"
+          files: "./packages/@secretlint/binary-compiler/dist/**"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

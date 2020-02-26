@@ -1,8 +1,8 @@
 {
-  "name": "@secretlint/binary",
+  "name": "@secretlint/binary-compiler",
   "version": "0.2.0",
-  "description": "A binary distribution for secretlint.",
-  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/binary/",
+  "description": "A binary compiler for secretlint.",
+  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/binary-compiler/",
   "bugs": {
     "url": "https://github.com/secretlint/secretlint/issues"
   },

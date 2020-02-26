@@ -1,6 +1,6 @@
-# @secretlint/binary
+# @secretlint/binary-compiler
 
-A binary distribution for secretlint.
+A binary compiler for secretlint.
 
 ## Install
 
