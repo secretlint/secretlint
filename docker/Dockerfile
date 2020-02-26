@@ -1,6 +1,6 @@
 FROM node:12-alpine
 
-MAINTAINER azu <azuciao@gmail.com>
+LABEL maintainer="azu <azuciao@gmail.com>"
 LABEL Description="Docker Container for secretlint"
 
 ARG SECRETLINT_VERSION
