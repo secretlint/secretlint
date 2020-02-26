@@ -20,6 +20,7 @@ jobs:
         fetch-depth: 1
     - run: brew install hadolint
     - run: hadolint ./Dockerfile
+      working-directory: ./docker
 
   push:
     runs-on: ubuntu-18.04
@@ -35,6 +36,7 @@ jobs:
         fi
         echo "::set-env name=PKG_TAG::${DOCKER_BASE_NAME}:${TAG_NAME}"
         echo "::set-env name=HUB_TAG::${DOCKER_HUB_BASE_NAME}:${TAG_NAME}"
+
 
     - name: Build image
       run: |
