@@ -77,6 +77,8 @@ Each rule has same configuration pattern
 
 Example, `@secretlint/secretlint-rule-example` has `allows` options, but the rule is disabled.
 
+AKIAIOSFODNN7SECRETS
+
 ```json
 {
   "rules": [
