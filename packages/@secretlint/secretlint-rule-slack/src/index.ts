@@ -56,6 +56,7 @@ function reportIfFoundRawPrivateKey({
 }
 
 export const creator: SecretLintRuleCreator<Options> = {
+    messages,
     meta: {
         id: "@secretlint/secretlint-rule-slack",
         recommended: true,

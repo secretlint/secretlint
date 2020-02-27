@@ -15,13 +15,16 @@ export const SecretLintConfigDescriptorSchema = {
       "$ref": "#/definitions/__type"
     },
     "Options_1": {
-      "$ref": "#/definitions/__type_2"
+      "$ref": "#/definitions/__type_3"
     },
     "SecretLintRuleCreator": {
       "$ref": "#/definitions/__type_1"
     },
+    "SecretLintRuleLocalizeMessages": {
+      "$ref": "#/definitions/__type_2"
+    },
     "SecretLintRulePresetCreator": {
-      "$ref": "#/definitions/__type_3"
+      "$ref": "#/definitions/__type_4"
     },
     "SecretLintRuleSeverityLevel": {
       "description": "Rule Severity Level",
@@ -39,6 +42,9 @@ export const SecretLintConfigDescriptorSchema = {
     },
     "__type_1": {
       "properties": {
+        "messages": {
+          "$ref": "#/definitions/SecretLintRuleLocalizeMessages"
+        },
         "meta": {
           "properties": {
             "docs": {
@@ -71,6 +77,7 @@ export const SecretLintConfigDescriptorSchema = {
             },
             "type": {
               "enum": [
+                "filter",
                 "scanner"
               ],
               "type": "string"
@@ -86,16 +93,45 @@ export const SecretLintConfigDescriptorSchema = {
         }
       },
       "required": [
+        "messages",
         "meta"
       ],
       "type": "object"
     },
     "__type_2": {
-      "properties": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "$ref": "#/definitions/{[x:string]:string;}"
+              },
+              {
+                "properties": {
+                  "en": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "en"
+                ],
+                "type": "object"
+              }
+            ]
+          },
+          {
+            "type": "string"
+          }
+        ]
       },
       "type": "object"
     },
     "__type_3": {
+      "properties": {
+      },
+      "type": "object"
+    },
+    "__type_4": {
       "properties": {
         "meta": {
           "properties": {
@@ -134,6 +170,9 @@ export const SecretLintConfigDescriptorSchema = {
       "required": [
         "meta"
       ],
+      "type": "object"
+    },
+    "{[x:string]:string;}": {
       "type": "object"
     }
   },

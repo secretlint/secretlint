@@ -1,6 +1,10 @@
 // Rule Interfaces
 import { SecretLintSourceIdentifierNode } from "./SecretLintSource";
-import { createRuleMessageTranslator, SecretLintRuleTranslatorResult } from "./SecretLintRuleTranslator";
+import {
+    createRuleMessageTranslator,
+    SecretLintRuleLocalizeMessages,
+    SecretLintRuleTranslatorResult
+} from "./SecretLintRuleTranslator";
 import { SecretLintSourceCode } from "./SecretLintSourceCode";
 
 export type SecretLintRuleReportDescriptor = {
@@ -29,15 +33,16 @@ export type SecretLintRuleContext = {
 export type SecretLintRuleCreatorOptions = {};
 export type SecretLintRuleContentType = "binary" | "text" | "all";
 export type SecretLintRuleCreator<Options = SecretLintRuleCreatorOptions> = {
+    messages: SecretLintRuleLocalizeMessages;
     meta: {
         id: string;
-        type: "scanner";
+        type: "scanner" | "filter";
         recommended: boolean;
         docs?: {
             url: string;
         };
         // meta information for optimizing
-        // If supportedContentTypes is only "text", secretelint does not pass a binary to this rule
+        // If supportedContentTypes is only "text", secretlint does not pass a binary to this rule
         // Default: all
         supportedContentTypes: SecretLintRuleContentType[];
     };

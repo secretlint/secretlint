@@ -15,7 +15,7 @@ export const SecretLintConfigDescriptorRulePresetSchema = {
       "$ref": "#/definitions/__type"
     },
     "Options_1": {
-      "$ref": "#/definitions/__type_2"
+      "$ref": "#/definitions/__type_3"
     },
     "Options_2": {
       "type": "object"
@@ -27,13 +27,16 @@ export const SecretLintConfigDescriptorRulePresetSchema = {
       "$ref": "#/definitions/__type_1"
     },
     "SecretLintRuleCreator_1": {
-      "$ref": "#/definitions/__type_4"
+      "$ref": "#/definitions/__type_5"
+    },
+    "SecretLintRuleLocalizeMessages": {
+      "$ref": "#/definitions/__type_2"
     },
     "SecretLintRulePresetCreator": {
-      "$ref": "#/definitions/__type_3"
+      "$ref": "#/definitions/__type_4"
     },
     "SecretLintRulePresetCreator_1": {
-      "$ref": "#/definitions/__type_5"
+      "$ref": "#/definitions/__type_6"
     },
     "SecretLintRuleSeverityLevel": {
       "description": "Rule Severity Level",
@@ -51,6 +54,9 @@ export const SecretLintConfigDescriptorRulePresetSchema = {
     },
     "__type_1": {
       "properties": {
+        "messages": {
+          "$ref": "#/definitions/SecretLintRuleLocalizeMessages"
+        },
         "meta": {
           "properties": {
             "docs": {
@@ -83,6 +89,7 @@ export const SecretLintConfigDescriptorRulePresetSchema = {
             },
             "type": {
               "enum": [
+                "filter",
                 "scanner"
               ],
               "type": "string"
@@ -98,54 +105,42 @@ export const SecretLintConfigDescriptorRulePresetSchema = {
         }
       },
       "required": [
+        "messages",
         "meta"
       ],
       "type": "object"
     },
     "__type_2": {
-      "properties": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "$ref": "#/definitions/{[x:string]:string;}"
+              },
+              {
+                "properties": {
+                  "en": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "en"
+                ],
+                "type": "object"
+              }
+            ]
+          },
+          {
+            "type": "string"
+          }
+        ]
       },
       "type": "object"
     },
     "__type_3": {
       "properties": {
-        "meta": {
-          "properties": {
-            "docs": {
-              "properties": {
-                "url": {
-                  "type": "string"
-                }
-              },
-              "required": [
-                "url"
-              ],
-              "type": "object"
-            },
-            "id": {
-              "type": "string"
-            },
-            "recommended": {
-              "type": "boolean"
-            },
-            "type": {
-              "enum": [
-                "preset"
-              ],
-              "type": "string"
-            }
-          },
-          "required": [
-            "id",
-            "recommended",
-            "type"
-          ],
-          "type": "object"
-        }
       },
-      "required": [
-        "meta"
-      ],
       "type": "object"
     },
     "__type_4": {
@@ -169,6 +164,50 @@ export const SecretLintConfigDescriptorRulePresetSchema = {
             "recommended": {
               "type": "boolean"
             },
+            "type": {
+              "enum": [
+                "preset"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "recommended",
+            "type"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "meta"
+      ],
+      "type": "object"
+    },
+    "__type_5": {
+      "properties": {
+        "messages": {
+          "$ref": "#/definitions/SecretLintRuleLocalizeMessages"
+        },
+        "meta": {
+          "properties": {
+            "docs": {
+              "properties": {
+                "url": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "url"
+              ],
+              "type": "object"
+            },
+            "id": {
+              "type": "string"
+            },
+            "recommended": {
+              "type": "boolean"
+            },
             "supportedContentTypes": {
               "items": {
                 "enum": [
@@ -182,6 +221,7 @@ export const SecretLintConfigDescriptorRulePresetSchema = {
             },
             "type": {
               "enum": [
+                "filter",
                 "scanner"
               ],
               "type": "string"
@@ -197,11 +237,12 @@ export const SecretLintConfigDescriptorRulePresetSchema = {
         }
       },
       "required": [
+        "messages",
         "meta"
       ],
       "type": "object"
     },
-    "__type_5": {
+    "__type_6": {
       "properties": {
         "meta": {
           "properties": {
@@ -240,6 +281,9 @@ export const SecretLintConfigDescriptorRulePresetSchema = {
       "required": [
         "meta"
       ],
+      "type": "object"
+    },
+    "{[x:string]:string;}": {
       "type": "object"
     }
   },
