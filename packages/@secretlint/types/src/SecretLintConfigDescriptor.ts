@@ -23,7 +23,7 @@ export type SecretLintConfigDescriptorRule<Options = SecretLintRuleCreatorOption
      */
     disabled?: boolean;
     /**
-     * An array of message id for disabling report.
+     * An array of message id for suppress error report.
      * message id is defined in each rule.
      */
     allowMessages?: string[];
