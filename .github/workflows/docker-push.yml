@@ -27,17 +27,16 @@ jobs:
     needs: hadolint
     steps:
     - uses: actions/checkout@v2
-    - name: Set env
+    - name: Set TAG_NAME=tags
+      run: export TAG_NAME="${GITHUB_REF:10}"
+      if: startsWith(github.ref, 'refs/tags/')
+    - name: Set TAG_NAME=LATEST
+      run: export TAG_NAME="latest"
+      if: !startsWith(github.ref, 'refs/tags/')
+    - name: Set HUB_TAG
       run: |
-        if [ "${{ github.event_name }}" = 'release' ]; then
-            export TAG_NAME="${{ github.event.release.tag_name }}"
-        else
-            export TAG_NAME="latest"
-        fi
         echo "::set-env name=PKG_TAG::${DOCKER_BASE_NAME}:${TAG_NAME}"
         echo "::set-env name=HUB_TAG::${DOCKER_HUB_BASE_NAME}:${TAG_NAME}"
-
-
     - name: Build image
       run: |
         docker build . -t "${PKG_TAG}"
