@@ -27,12 +27,14 @@ jobs:
     needs: hadolint
     steps:
     - uses: actions/checkout@v2
-    - name: Set TAG_NAME=tags
-      run: export TAG_NAME="${GITHUB_REF:10}"
+    - name: "Set TAG_NAME=tags"
       if: startsWith(github.ref, 'refs/tags/')
-    - name: Set TAG_NAME=LATEST
-      run: export TAG_NAME="latest"
-      if: !startsWith(github.ref, 'refs/tags/')
+      run: |
+        export TAG_NAME="${GITHUB_REF:10}"
+    - name: "Set TAG_NAME=LATEST"
+      if: startsWith(github.ref, 'refs/tags/') != true
+      run: |
+        export TAG_NAME="latest"
     - name: Set HUB_TAG
       run: |
         echo "::set-env name=PKG_TAG::${DOCKER_BASE_NAME}:${TAG_NAME}"
