@@ -2,7 +2,7 @@ import { SecretLintCoreIgnoreMessage, SecretLintCoreResultMessage } from "@secre
 import { filterIgnoredMessages } from "./filter-ignored-process";
 import { createMessageProcessor } from "./MessageProcessManager";
 import { filterDuplicatedMessages } from "./filter-duplicated-process";
-import { sortByLineColumn } from "./sort-messages-process";
+import { sortMessagesByLocation } from "./sort-messages-process";
 
 export type cleanupMessagesOptions = {
     reportedMessages: SecretLintCoreResultMessage[];
@@ -18,5 +18,5 @@ export type cleanupMessagesOptions = {
 export const cleanupMessages = (options: cleanupMessagesOptions): SecretLintCoreResultMessage[] => {
     const messages = filterIgnoredMessages(options);
     const filterProcess = createMessageProcessor([filterDuplicatedMessages]);
-    return sortByLineColumn(filterProcess.process(messages));
+    return sortMessagesByLocation(filterProcess.process(messages));
 };
