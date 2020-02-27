@@ -35,10 +35,10 @@ export type SecretLintCoreDescriptorRule<Options = SecretLintRuleCreatorOptions>
      */
     disabled?: boolean;
     /**
-     * An array of message id for disabling report.
-     * message id is defined in each rule.
+     * An array of message id for suppress reported message.
+     * Message id is defined in each rule, Please see each README
      */
-    disabledMessages?: string[];
+    allowMessages?: string[];
 };
 export type SecretLintCoreDescriptorRulePreset<Options = SecretLintRulePresetCreatorOptions> = {
     /**

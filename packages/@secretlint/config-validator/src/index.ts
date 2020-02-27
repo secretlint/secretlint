@@ -3,7 +3,11 @@ import SecretLintConfigDescriptorRuleValidate from "./SecretLintConfigDescriptor
 import SecretLintConfigDescriptorRulePresetValidate from "./SecretLintConfigDescriptorRulePreset-validation";
 import { SecretLintCoreDescriptorRule, SecretLintCoreDescriptorRulePreset } from "@secretlint/types";
 
-export const validate = (value: any): { ok: true } | { ok: false; error: Error } => {
+/**
+ * value should be SecretLintCoreDescriptor
+ * @param value
+ */
+export const validateRawConfig = (value: any): { ok: true } | { ok: false; error: Error } => {
     try {
         if (!Array.isArray(value.rules)) {
             const error = new Error(`secretlintrc should have required 'rules' property.
@@ -42,17 +46,6 @@ export const validate = (value: any): { ok: true } | { ok: false; error: Error }
                 const rule = ruleOrPreset as SecretLintCoreDescriptorRule;
                 try {
                     SecretLintConfigDescriptorRuleValidate(rule);
-                    // `disabledMessages` validation
-                    if (Array.isArray(rule.disabledMessages)) {
-                        const messageIds: string[] = Object.keys(rule.rule.messages);
-                        rule.disabledMessages.forEach(disabledMessageId => {
-                            if (!messageIds.includes(disabledMessageId)) {
-                                throw new Error(
-                                    `disabledMessage: ${disabledMessageId} is not defined in rule: ${rule.id}`
-                                );
-                            }
-                        });
-                    }
                 } catch (error) {
                     const errorMessage = error.message.replace(/SecretLintConfigDescriptorRule/g, ruleOrPreset.id);
                     return {
@@ -71,6 +64,40 @@ export const validate = (value: any): { ok: true } | { ok: false; error: Error }
         return {
             ok: false,
             error: new Error(errorMessage)
+        };
+    }
+};
+
+/**
+ * valid config. it is additional check
+ * please pass validateRawConfig before it.
+ * @param value
+ */
+export const validateConfig = (value: any): { ok: true } | { ok: false; error: Error } => {
+    try {
+        for (const ruleOrPreset of value.rules) {
+            // validate as preset
+            if ("rules" in ruleOrPreset) {
+            } else {
+                const rule = ruleOrPreset as SecretLintCoreDescriptorRule;
+                // `allowMessages` validation
+                if (Array.isArray(rule.allowMessages)) {
+                    const messageIds: string[] = Object.keys(rule.rule.messages);
+                    rule.allowMessages.forEach(allowMessageId => {
+                        if (!messageIds.includes(allowMessageId)) {
+                            throw new Error(`allowMessages: ${allowMessageId} is not defined in rule: ${rule.id}`);
+                        }
+                    });
+                }
+            }
+        }
+        return {
+            ok: true
+        };
+    } catch (error) {
+        return {
+            ok: false,
+            error: error
         };
     }
 };

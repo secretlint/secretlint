@@ -8,7 +8,7 @@ import {
 } from "@secretlint/types";
 import { SecretLintModuleResolver } from "./SecretLintModuleResolver";
 import { moduleInterop } from "@textlint/module-interop";
-import { validate } from "@secretlint/config-validator";
+import { validateConfig, validateRawConfig } from "@secretlint/config-validator";
 
 export type SecretLintConfigLoaderOptions = {
     cwd?: string;
@@ -69,6 +69,14 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
             errors: rawResult.errors
         };
     }
+    // Early validation, validate rawConfig by JSON Schema
+    const resultValidateRawConfig = validateRawConfig(rawResult.config);
+    if (!resultValidateRawConfig.ok) {
+        return {
+            ok: false,
+            errors: [resultValidateRawConfig.error]
+        };
+    }
     // Search secretlint's module
     const moduleResolver = new SecretLintModuleResolver({
         baseDirectory: options.node_moduleDir
@@ -113,9 +121,9 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
                           disabled: configDescriptorRule.disabled
                       }
                     : {}),
-                ...("disabledMessages" in configDescriptorRule
+                ...("allowMessages" in configDescriptorRule
                     ? {
-                          disabledMessages: configDescriptorRule.disabledMessages
+                          allowMessages: configDescriptorRule.allowMessages
                       }
                     : {})
             });
@@ -136,11 +144,11 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
     };
     // Finally, validate loadedConfig with validator
     // This validator require actual `rule` creator for `disabledMessage` option.
-    const result = validate(loadedConfig);
-    if (!result.ok) {
+    const resultValidateConfig = validateConfig(loadedConfig);
+    if (!resultValidateConfig.ok) {
         return {
             ok: false,
-            errors: [result.error]
+            errors: [resultValidateConfig.error]
         };
     }
     return {

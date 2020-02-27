@@ -1,16 +1,16 @@
 import { SecretLintCoreResultMessage } from "@secretlint/types";
 
-export type DisabledMessage = {
+export type AllowMessage = {
     ruleId: string;
     messageId: string;
 };
-export const filterByDisabledMessages = (
+export const filterByAllowMessages = (
     messages: SecretLintCoreResultMessage[],
-    disabledMessages: DisabledMessage[]
+    allowMessages: AllowMessage[]
 ): SecretLintCoreResultMessage[] => {
     const disabledSet = new Set(
-        disabledMessages.map(disabledMessage => {
-            return `${disabledMessage.ruleId}--${disabledMessage.messageId}`;
+        allowMessages.map(allowMessage => {
+            return `${allowMessage.ruleId}--${allowMessage.messageId}`;
         })
     );
     return messages.filter(message => {

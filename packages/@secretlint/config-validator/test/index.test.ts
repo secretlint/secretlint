@@ -1,11 +1,11 @@
 import fs from "fs";
 import path from "path";
 import assert from "assert";
-import { validate } from "../src/index";
+import { validateRawConfig } from "../src/index";
 
 const fixturesDir = path.join(__dirname, "snapshots");
 const validateReturn = (content: any): "OK" | string => {
-    const result = validate(content);
+    const result = validateRawConfig(content);
     if (result.ok) {
         return "OK";
     } else {

@@ -26,7 +26,7 @@ export type SecretLintConfigDescriptorRule<Options = SecretLintRuleCreatorOption
      * An array of message id for disabling report.
      * message id is defined in each rule.
      */
-    disabledMessages?: string[];
+    allowMessages?: string[];
     /**
      * Severity level for the rule.
      * Default: "error"

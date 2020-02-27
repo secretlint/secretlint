@@ -15,7 +15,7 @@ import { createRunningEvents, RunningEvents } from "./RunningEvents";
 import { secretLintProfiler } from "@secretlint/profiler";
 import { createRulePresetContext } from "./RulePresetContext";
 import { cleanupMessages } from "./messages";
-import { DisabledMessage } from "./messages/filter-message-id";
+import { AllowMessage } from "./messages/filter-message-id";
 
 type SecretLintCoreOptions = SecretLintCoreDescriptor;
 
@@ -80,7 +80,7 @@ export const lintSource = (
                 messages: cleanupMessages({
                     reportedMessages,
                     ignoredMessages,
-                    disabledMessages: createDisabledMessage(options)
+                    allowMessages: createAllowMessages(options)
                 })
             };
         })
@@ -101,20 +101,20 @@ const isRule = (ruleDescriptor: SecretLintCoreDescriptorUnionRule): ruleDescript
     return ruleDescriptor.rule.meta.type === "scanner";
 };
 
-const createDisabledMessage = (coreOptions: SecretLintCoreDescriptor) => {
-    const disabledMessages: DisabledMessage[] = [];
+const createAllowMessages = (coreOptions: SecretLintCoreDescriptor) => {
+    const allowMessages: AllowMessage[] = [];
     coreOptions.rules.forEach(rule => {
-        if (!(isRule(rule) && Array.isArray(rule.disabledMessages))) {
+        if (!(isRule(rule) && Array.isArray(rule.allowMessages))) {
             return;
         }
-        rule.disabledMessages.forEach(disabledMessageId => {
-            disabledMessages.push({
+        rule.allowMessages.forEach(allowMessageId => {
+            allowMessages.push({
                 ruleId: rule.id,
-                messageId: disabledMessageId
+                messageId: allowMessageId
             });
         });
     });
-    return disabledMessages;
+    return allowMessages;
 };
 /**
  * Rule Processing
@@ -132,6 +132,10 @@ export const registerRule = ({
     contextEvents: ContextEvents;
     runningEvents: RunningEvents;
 }): void => {
+    // Do not register disabled rule
+    if (descriptorRule.disabled) {
+        return;
+    }
     const ruleId = descriptorRule.id;
     // If option is not defined Options is {} by default
     if (isRulePreset(descriptorRule)) {

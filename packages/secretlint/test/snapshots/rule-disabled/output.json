@@ -1,22 +1,9 @@
 {
-    "exitStatus": 1,
+    "exitStatus": 0,
     "stdout": [
         {
             "filePath": "[SNAPSHOT]/rule-disabled/input.txt",
-            "messages": [
-                {
-                    "ruleId": "@secretlint/secretlint-rule-example",
-                    "index": 8,
-                    "line": 1,
-                    "column": 8,
-                    "severity": 2,
-                    "message": "found secret: SECRET",
-                    "data": {
-                        "ID": "SECRET"
-                    },
-                    "type": "lint"
-                }
-            ]
+            "messages": []
         }
     ],
     "stderr": null

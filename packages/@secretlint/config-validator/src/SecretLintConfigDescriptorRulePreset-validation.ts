@@ -308,16 +308,16 @@ export const SecretLintConfigDescriptorRulePresetSchema = {
       "description": "Preset's rule definitions\nrules is an array of rule definition\nExample\n{\n     \"id\": \"preset\"\n     \"rules\": [{ \"id\": \"example\", \"options\": {}]}\n}",
       "items": {
         "properties": {
-          "disabled": {
-            "description": "If true, Disable the rule.\nDefault: false",
-            "type": "boolean"
-          },
-          "disabledMessages": {
+          "allowMessages": {
             "description": "An array of message id for disabling report.\nmessage id is defined in each rule.",
             "items": {
               "type": "string"
             },
             "type": "array"
+          },
+          "disabled": {
+            "description": "If true, Disable the rule.\nDefault: false",
+            "type": "boolean"
           },
           "id": {
             "description": "**Required**\nRule id that is package name or shorten package name\nExamples\n- \"@scope/secretlint-rule-example\" or \"@scope/example\"(shorten)\n- \"secretlint-rule-example\" or \"example\"(shorten)",

@@ -41,7 +41,7 @@ module.exports = {
     rules: [
         {
             id: "example",
-            disabledMessages: ["message_id_a"],
+            allowMessages: ["message_id_a"],
             // debug
             rule: creator
         }
