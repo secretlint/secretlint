@@ -97,12 +97,16 @@ const reportAWSSecretAccessKey = ({
     options: Required<Options>;
 }) => {
     const AWS = "(?:AWS|aws|Aws)?_?";
-    const QUOTE = `(?:"|')?`;
+    const QUOTE = `["']?`;
     const CONNECT = "\\s*(?::|=>|=)\\s*";
-    const AWSSecretPatten = regx`${QUOTE}${AWS}(?:SECRET|secret|Secret)?_?(?:ACCESS|access|Access)?_?(?:KEY|key|Key)${QUOTE}${CONNECT}${QUOTE}([A-Za-z0-9/\+=]{40})${QUOTE}`;
+    // git-secrets implementation match _KEY=XXX, but it is false-positive
+    // https://github.com/awslabs/git-secrets/blob/5e28df337746db4f070c84f7069d365bfd0d72a8/git-secrets#L239
+    // This Pattern match only `AWS?_SECRET_ACCESS_KEY=XXX`
+    const AWSSecretPatten = regx`${QUOTE}${AWS}(?:SECRET|secret|Secret)_?(?:ACCESS|access|Access)_?(?:KEY|key|Key)${QUOTE}${CONNECT}${QUOTE}([A-Za-z0-9/\+=]{40})${QUOTE}`;
     const results = matchAll(source.content, AWSSecretPatten);
     for (const result of results) {
         const index = result.index || 0;
+        console.log(result);
         const match = result[1] || "";
         const range = [index, index + match.length];
         // Built-in ignored

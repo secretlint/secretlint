@@ -20,10 +20,26 @@ Secretlint is pluggable linting tool to prevent commit secret/credential file.
     - We also need to custom plugin by user
 		- See [Bring-your own-plugins (BYOP), via --custom-plugins option by KevinHock · Pull Request #255 · Yelp/detect-secrets](https://github.com/Yelp/detect-secrets/pull/255)
 
-## Installation and Usage
+## Installation
 
-**Prerequisites:** Secretlint is written by JavaScript. It require [Node.js 10+](https://nodejs.org/).
+### Quick Start: Using Docker　
 
+**Prerequisites:** Require [Docker](https://docs.docker.com/install/)
+
+Use our [Docker container](https://hub.docker.com/r/secretlint/secretlint) to get an environment with Node.js and secretlint and running as fast as you can download them.
+
+    # Check all files under the current directory with secretlint 
+    docker run -v `pwd`:`pwd` -w `pwd` -i -t secretlint secretlint "**/*"
+
+
+
+For more details, please see [secretlint's Dockerfile](./docker).
+
+### Using Node.js
+
+**Prerequisites:**  Require [Node.js 10+](https://nodejs.org/).
+
+Secretlint is written by JavaScript.
 You can install Secretlint using [npm](https://www.npmjs.com/):
 
 ```
@@ -76,8 +92,6 @@ Each rule has same configuration pattern
 - `disabled`: If `disabled` is `true`, disable the rule
 
 Example, `@secretlint/secretlint-rule-example` has `allows` options, but the rule is disabled.
-
-AKIAIOSFODNN7SECRETS
 
 ```json
 {

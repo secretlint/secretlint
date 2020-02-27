@@ -2,7 +2,7 @@ import { snapshot } from "@secretlint/tester";
 import path from "path";
 import rule from "../src/index";
 
-describe("Snapshot Testing", () => {
+describe("@secretlint/secretlint-rule-aws", () => {
     snapshot({
         defaultConfig: {
             rules: [

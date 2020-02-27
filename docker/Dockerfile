@@ -16,6 +16,3 @@ RUN npm install -g secretlint@${SECRETLINT_VERSION} @secretlint/secretlint-rule-
            /usr/lib/node_modules/npm/html
 
 ENV PATH=/usr/lib/node_modules/.bin:$PATH
-
-ENTRYPOINT ["secretlint"]
-CMD ["--help"]
