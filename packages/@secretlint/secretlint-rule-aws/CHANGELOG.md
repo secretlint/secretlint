@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/secretlint/secretlint/compare/v0.2.0...v0.3.0) (2020-02-27)
+
+
+### Bug Fixes
+
+* **aws:** fix false-positive _KEY=XXX pattern ([1baa241](https://github.com/secretlint/secretlint/commit/1baa24161f9f64fe40f392d3719f5396aa6913b4))
+
+
+
+
+
 # [0.2.0](https://github.com/secretlint/secretlint/compare/v0.1.2...v0.2.0) (2020-02-23)
 
 

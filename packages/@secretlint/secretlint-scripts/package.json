@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-scripts",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Secretlint rule scripts",
   "keywords": [
     "secretlint"
@@ -35,16 +35,16 @@
     "cross-spawn": "^7.0.1"
   },
   "peerDependencies": {
+    "mocha": "*",
     "ts-node": "*",
     "ts-node-test-register": "*",
-    "typescript": "*",
-    "mocha": "*"
+    "typescript": "*"
   },
   "devDependencies": {
+    "mocha": "^7.0.1",
     "ts-node": "^8.6.2",
     "ts-node-test-register": "^8.0.1",
-    "typescript": "^3.8.2",
-    "mocha": "^7.0.1"
+    "typescript": "^3.8.2"
   },
   "publishConfig": {
     "access": "public"

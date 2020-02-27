@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/secretlint/secretlint/compare/v0.2.0...v0.3.0) (2020-02-27)
+
+
+### Bug Fixes
+
+* **aws:** fix false-positive _KEY=XXX pattern ([1baa241](https://github.com/secretlint/secretlint/commit/1baa24161f9f64fe40f392d3719f5396aa6913b4))
+* **basicauth:** fix id ([3190cac](https://github.com/secretlint/secretlint/commit/3190cac6d3e14dd6281083035e841853fd7800e3))
+* **basicauth:** fix id ([148c8b2](https://github.com/secretlint/secretlint/commit/148c8b2e39b10c7298335d4a6bdf48c614aa275f))
+* **binary:** suppress fs error ([63e4e29](https://github.com/secretlint/secretlint/commit/63e4e292e587501d88e8260a762758e1e7b880dd))
+* **slack:** fix id ([761e1d0](https://github.com/secretlint/secretlint/commit/761e1d01374a23b734eecf1af2a9d40564990ded))
+
+
+### Features
+
+* **basicauth:** add @secretlint/secretlint-rule-basicauth ([464d2cd](https://github.com/secretlint/secretlint/commit/464d2cd0240df2cf6d31ba791af69e713b6a7605))
+* **binary:** add `secretlint` binary ([6acdeb7](https://github.com/secretlint/secretlint/commit/6acdeb723efa53f76d41d9e197ca1c2e9e3cdcc6))
+* **docker:** add Docker Workflow ([263bad0](https://github.com/secretlint/secretlint/commit/263bad0eec640a2d77b0a5b36ac042c55baf99a9))
+* **preset-recommend:** add @secretlint/secretlint-rule-basicauth ([0acf113](https://github.com/secretlint/secretlint/commit/0acf1131b922dced6cafc527d87f95f2af7bd104))
+* **preset-recommend:** add @secretlint/secretlint-rule-slack as preset ([1e8c4f4](https://github.com/secretlint/secretlint/commit/1e8c4f4c5a9e946f1d3de0f3a0e468f6735152f7))
+* **secretlint-rule-slack:** add @secretlint/secretlint-rule-slack ([d3d9f5b](https://github.com/secretlint/secretlint/commit/d3d9f5ba0173cd8dc46b720b13cfd9adf7e35d9d))
+* **secretlint-scripts:** add secretlint-scripts is wrapper of tsc ([3fcb7db](https://github.com/secretlint/secretlint/commit/3fcb7dbbde9b185000abaef411ccc6ebcc253066))
+
+
+
+
+
 # [0.2.0](https://github.com/secretlint/secretlint/compare/v0.1.2...v0.2.0) (2020-02-23)
 
 
