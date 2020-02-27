@@ -4,8 +4,8 @@ on:
   push:
     branches:
     - master
-  release:
-    types: [published]
+    tags:
+      - "*"
 
 env:
   DOCKER_BASE_NAME: docker.pkg.github.com/${{ github.repository }}/secretlint
