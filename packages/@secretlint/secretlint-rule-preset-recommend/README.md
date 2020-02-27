@@ -44,7 +44,7 @@ Via `.secretlintrc.json`
 }
 ```
 
-## Rules
+## Messages
 
 - [@secretlint/secretlint-rule-npm](https://www.npmjs.com/package/@secretlint/secretlint-rule-npm)
 - [@secretlint/secretlint-rule-aws](https://www.npmjs.com/package/@secretlint/secretlint-rule-aws)

@@ -22,7 +22,7 @@ Via `.secretlintrc.json`(Recommended)
 }
 ```
 
-## Rules
+## Messages
 
 ### BasicAuth
 > found basic auth credential: {{CREDENTIAL}}
