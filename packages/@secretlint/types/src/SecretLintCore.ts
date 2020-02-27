@@ -83,6 +83,18 @@ export type SecretLintCoreResultMessage = {
     severity: SecretLintRuleSeverityLevel;
     data?: {};
 };
+export type SecretLintCoreIgnoreMessage = {
+    ruleId: string;
+    ruleParentId?: string;
+    /**
+     * specific rule id or "*"
+     */
+    targetRuleId: string;
+    message: string;
+    range: number[];
+    loc: SecretLintSourceNodeLocation;
+};
+
 export type SecretLintCoreReportDescriptor = {
     ruleId: string;
 } & SecretLintRuleReportDescriptor;

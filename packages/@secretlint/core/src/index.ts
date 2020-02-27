@@ -3,6 +3,7 @@ import {
     SecretLintCoreDescriptorRule,
     SecretLintCoreDescriptorRulePreset,
     SecretLintCoreDescriptorUnionRule,
+    SecretLintCoreIgnoreMessage,
     SecretLintCoreResult,
     SecretLintCoreResultMessage,
     SecretLintRawSource,
@@ -13,6 +14,7 @@ import { ContextEvents, createContextEvents, createRuleContext } from "./RuleCon
 import { createRunningEvents, RunningEvents } from "./RunningEvents";
 import { secretLintProfiler } from "@secretlint/profiler";
 import { createRulePresetContext } from "./RulePresetContext";
+import { cleanupMessages } from "./messages";
 
 type SecretLintCoreOptions = SecretLintCoreDescriptor;
 
@@ -27,9 +29,13 @@ export const lintSource = (
     const rules = options.rules;
     const contextEvents = createContextEvents();
     const runningEvents = createRunningEvents();
-    const messages: SecretLintCoreResultMessage[] = [];
+    const reportedMessages: SecretLintCoreResultMessage[] = [];
+    const ignoredMessages: SecretLintCoreIgnoreMessage[] = [];
     contextEvents.onReport(message => {
-        messages.push(message);
+        reportedMessages.push(message);
+    });
+    contextEvents.onIgnore(message => {
+        ignoredMessages.push(message);
     });
     // setup
     // Create a SourceCode for linting
@@ -70,7 +76,10 @@ export const lintSource = (
         .then(() => {
             return {
                 filePath: rawSource.filePath,
-                messages: messages
+                messages: cleanupMessages({
+                    reportedMessages,
+                    ignoredMessages
+                })
             };
         })
         .finally(() => {

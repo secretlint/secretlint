@@ -7,6 +7,7 @@ import {
     SecretLintRuleIgnoreDescriptor,
     SecretLintRuleReportDescriptor,
     SecretLintRuleSeverityLevel,
+    SecretLintCoreIgnoreMessage,
     SecretLintSourceCode
 } from "@secretlint/types";
 import { createTranslator } from "./helper/Translator";
@@ -15,8 +16,8 @@ type Handler<T> = (descriptor: T) => void;
 export type ContextEvents = {
     report(descriptor: SecretLintCoreResultMessage): void;
     onReport(handler: Handler<SecretLintCoreResultMessage>): () => void;
-    ignore(descriptor: SecretLintRuleIgnoreDescriptor): void;
-    onIgnore(handler: Handler<SecretLintCoreIgnoreDescriptor>): () => void;
+    ignore(descriptor: SecretLintCoreIgnoreMessage): void;
+    onIgnore(handler: Handler<SecretLintCoreIgnoreMessage>): () => void;
 };
 export const createContextEvents = (): ContextEvents => {
     const contextEvents = new EventEmitter();
@@ -38,8 +39,8 @@ export const createContextEvents = (): ContextEvents => {
         ignore(descriptor: SecretLintRuleIgnoreDescriptor) {
             contextEvents.emit(IGNORE_SYMBOL, descriptor);
         },
-        onIgnore(handler: Handler<SecretLintCoreResultMessage>) {
-            const listener = (descriptor: SecretLintCoreResultMessage) => {
+        onIgnore(handler: Handler<SecretLintCoreIgnoreMessage>) {
+            const listener = (descriptor: SecretLintCoreIgnoreMessage) => {
                 handler(descriptor);
             };
             contextEvents.on(IGNORE_SYMBOL, listener);
@@ -75,7 +76,11 @@ export const createRuleContext = ({
         ignore(descriptor: SecretLintCoreIgnoreDescriptor): void {
             contextEvents.ignore({
                 ruleId: ruleId,
-                ...descriptor
+                ruleParentId,
+                range: descriptor.range,
+                targetRuleId: descriptor.targetRuleId,
+                loc: sourceCode.rangeToLocation(descriptor.range),
+                message: descriptor.message
             });
         },
         report(descriptor: SecretLintCoreReportDescriptor): void {
