@@ -8,6 +8,13 @@ export type cleanupMessagesOptions = {
     reportedMessages: SecretLintCoreResultMessage[];
     ignoredMessages: SecretLintCoreIgnoreMessage[];
 };
+/**
+ * Cleanup messages
+ * - filter ignored range
+ * - filter duplicated messages
+ * - sort messages by range
+ * @param options
+ */
 export const cleanupMessages = (options: cleanupMessagesOptions): SecretLintCoreResultMessage[] => {
     const messages = filterIgnoredMessages(options);
     const filterProcess = createMessageProcessor([filterDuplicatedMessages]);

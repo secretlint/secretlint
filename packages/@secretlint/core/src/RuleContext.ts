@@ -75,7 +75,6 @@ export const createRuleContext = ({
         createTranslator: createTranslator,
         ignore(descriptor: SecretLintCoreIgnoreDescriptor): void {
             contextEvents.ignore({
-                type: "ignore",
                 ruleId: ruleId,
                 ruleParentId,
                 range: descriptor.range,
@@ -92,7 +91,6 @@ export const createRuleContext = ({
             if (ruleParentId) {
                 contextEvents.report({
                     ...descriptor,
-                    type: "lint",
                     ruleId: ruleId,
                     ruleParentId,
                     loc: sourceCode.rangeToLocation(descriptor.range),
@@ -103,7 +101,6 @@ export const createRuleContext = ({
             } else {
                 contextEvents.report({
                     ...descriptor,
-                    type: "lint",
                     ruleId: ruleId,
                     loc: sourceCode.rangeToLocation(descriptor.range),
                     severity: severityLevel,
