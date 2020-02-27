@@ -1,15 +1,19 @@
 import fs from "fs";
 import path from "path";
 import assert from "assert";
-import { validateRawConfig } from "../src/index";
+import { validateConfig, validateRawConfig } from "../src/index";
 
 const fixturesDir = path.join(__dirname, "snapshots");
 const validateReturn = (content: any): "OK" | string => {
-    const result = validateRawConfig(content);
-    if (result.ok) {
+    const resultRawConfig = validateRawConfig(content);
+    if (resultRawConfig.ok) {
+        const resultConfig = validateConfig(content);
+        if (!resultConfig.ok) {
+            return resultConfig.error.message;
+        }
         return "OK";
     } else {
-        return result.error.message;
+        return resultRawConfig.error.message;
     }
 };
 describe("@secretlint/config-validator", function() {

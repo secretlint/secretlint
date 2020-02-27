@@ -1,1 +1,1 @@
-OK
+allowMessages: not_defined_id is not defined in rule: example
