@@ -245,6 +245,13 @@ export const SecretLintConfigDescriptorRuleSchema = {
       "description": "If true, Disable the rule.\nDefault: false",
       "type": "boolean"
     },
+    "disabledMessages": {
+      "description": "An array of message id for disabling report.\nmessage id is defined in each rule.",
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
     "id": {
       "description": "**Required**\nRule id that is package name or shorten package name\nExamples\n- \"@scope/secretlint-rule-example\" or \"@scope/example\"(shorten)\n- \"secretlint-rule-example\" or \"example\"(shorten)",
       "type": "string"

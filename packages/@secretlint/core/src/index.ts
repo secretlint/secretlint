@@ -15,6 +15,7 @@ import { createRunningEvents, RunningEvents } from "./RunningEvents";
 import { secretLintProfiler } from "@secretlint/profiler";
 import { createRulePresetContext } from "./RulePresetContext";
 import { cleanupMessages } from "./messages";
+import { DisabledMessage } from "./messages/filter-message-id";
 
 type SecretLintCoreOptions = SecretLintCoreDescriptor;
 
@@ -31,13 +32,13 @@ export const lintSource = (
     const runningEvents = createRunningEvents();
     const reportedMessages: SecretLintCoreResultMessage[] = [];
     const ignoredMessages: SecretLintCoreIgnoreMessage[] = [];
+    // setup
     contextEvents.onReport(message => {
         reportedMessages.push(message);
     });
     contextEvents.onIgnore(message => {
         ignoredMessages.push(message);
     });
-    // setup
     // Create a SourceCode for linting
     const sourceCode = new SecretLintSourceCodeImpl({
         content: rawSource.content,
@@ -78,7 +79,8 @@ export const lintSource = (
                 filePath: rawSource.filePath,
                 messages: cleanupMessages({
                     reportedMessages,
-                    ignoredMessages
+                    ignoredMessages,
+                    disabledMessages: createDisabledMessage(options)
                 })
             };
         })
@@ -99,6 +101,21 @@ const isRule = (ruleDescriptor: SecretLintCoreDescriptorUnionRule): ruleDescript
     return ruleDescriptor.rule.meta.type === "scanner";
 };
 
+const createDisabledMessage = (coreOptions: SecretLintCoreDescriptor) => {
+    const disabledMessages: DisabledMessage[] = [];
+    coreOptions.rules.forEach(rule => {
+        if (!(isRule(rule) && Array.isArray(rule.disabledMessages))) {
+            return;
+        }
+        rule.disabledMessages.forEach(disabledMessageId => {
+            disabledMessages.push({
+                ruleId: rule.id,
+                messageId: disabledMessageId
+            });
+        });
+    });
+    return disabledMessages;
+};
 /**
  * Rule Processing
  */

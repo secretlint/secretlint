@@ -8,12 +8,12 @@ import {
 import { SecretLintSourceCode } from "./SecretLintSourceCode";
 
 export type SecretLintRuleReportDescriptor = {
-    message: string | SecretLintRuleTranslatorResult<{}>;
+    message: SecretLintRuleTranslatorResult<{}>;
     range: number[];
     data?: {};
 };
 export type SecretLintRuleIgnoreDescriptor = {
-    message: string;
+    message: SecretLintRuleTranslatorResult<{}>;
     /**
      *  Specify target rule id is ignored.
      *  If Set "*", match any rule id.

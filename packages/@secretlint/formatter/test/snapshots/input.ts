@@ -10,6 +10,7 @@ export const results: SecretLintCoreResult[] = [
                     ID: "SECRET"
                 },
                 message: "warning found secret: SECRET",
+                messageId: "message-id",
                 range: [8, 14],
                 loc: {
                     start: {
@@ -29,6 +30,7 @@ export const results: SecretLintCoreResult[] = [
                     ID: "SECRET"
                 },
                 message: "error found secret: SECRET",
+                messageId: "message-id",
                 range: [8, 14],
                 loc: {
                     start: {
@@ -48,6 +50,7 @@ export const results: SecretLintCoreResult[] = [
                     ID: "SECRET"
                 },
                 message: "error found secret: SECRET",
+                messageId: "message-id",
                 range: [8, 14],
                 loc: {
                     start: {

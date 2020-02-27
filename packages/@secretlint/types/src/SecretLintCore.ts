@@ -34,6 +34,11 @@ export type SecretLintCoreDescriptorRule<Options = SecretLintRuleCreatorOptions>
      * Default: false
      */
     disabled?: boolean;
+    /**
+     * An array of message id for disabling report.
+     * message id is defined in each rule.
+     */
+    disabledMessages?: string[];
 };
 export type SecretLintCoreDescriptorRulePreset<Options = SecretLintRulePresetCreatorOptions> = {
     /**
@@ -78,6 +83,7 @@ export type SecretLintCoreResultMessage = {
     ruleId: string;
     ruleParentId?: string;
     message: string;
+    messageId: string;
     range: number[];
     loc: SecretLintSourceNodeLocation;
     severity: SecretLintRuleSeverityLevel;

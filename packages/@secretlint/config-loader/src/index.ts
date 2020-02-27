@@ -69,13 +69,6 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
             errors: rawResult.errors
         };
     }
-    const result = validate(rawResult.config);
-    if (!result.ok) {
-        return {
-            ok: false,
-            errors: [result.error]
-        };
-    }
     // Search secretlint's module
     const moduleResolver = new SecretLintModuleResolver({
         baseDirectory: options.node_moduleDir
@@ -119,6 +112,11 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
                     ? {
                           disabled: configDescriptorRule.disabled
                       }
+                    : {}),
+                ...("disabledMessages" in configDescriptorRule
+                    ? {
+                          disabledMessages: configDescriptorRule.disabledMessages
+                      }
                     : {})
             });
         } catch (error) {
@@ -133,12 +131,22 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
             errors
         };
     }
+    const loadedConfig = {
+        rules
+    };
+    // Finally, validate loadedConfig with validator
+    // This validator require actual `rule` creator for `disabledMessage` option.
+    const result = validate(loadedConfig);
+    if (!result.ok) {
+        return {
+            ok: false,
+            errors: [result.error]
+        };
+    }
     return {
         ok: true,
         configFilePath: rawResult.configFilePath,
-        config: {
-            rules
-        }
+        config: loadedConfig
     };
 };
 /**

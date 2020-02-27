@@ -20,6 +20,7 @@
                 }
             },
             "severity": "error",
+            "messageId": "AWSAccountID",
             "data": {
                 "ID": "\"AWS_ACCOUNT_ID\"=>0000-0000-0000"
             }

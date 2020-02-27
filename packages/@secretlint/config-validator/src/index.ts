@@ -1,6 +1,7 @@
 import SecretLintConfigDescriptorValidate from "./SecretLintConfigDescriptor-validation";
 import SecretLintConfigDescriptorRuleValidate from "./SecretLintConfigDescriptorRule-validation";
 import SecretLintConfigDescriptorRulePresetValidate from "./SecretLintConfigDescriptorRulePreset-validation";
+import { SecretLintCoreDescriptorRule, SecretLintCoreDescriptorRulePreset } from "@secretlint/types";
 
 export const validate = (value: any): { ok: true } | { ok: false; error: Error } => {
     try {
@@ -21,23 +22,39 @@ export const validate = (value: any): { ok: true } | { ok: false; error: Error }
             };
         }
         SecretLintConfigDescriptorValidate(value);
-        for (const rule of value.rules) {
+        for (const ruleOrPreset of value.rules) {
             // validate as preset
-            if ("rules" in rule) {
+            if ("rules" in ruleOrPreset) {
+                const rulePreset = ruleOrPreset as SecretLintCoreDescriptorRulePreset;
                 try {
-                    SecretLintConfigDescriptorRulePresetValidate(rule);
+                    SecretLintConfigDescriptorRulePresetValidate(rulePreset);
                 } catch (error) {
-                    const errorMessage = error.message.replace(/SecretLintConfigDescriptorRulePreset/g, rule.id);
+                    const errorMessage = error.message.replace(
+                        /SecretLintConfigDescriptorRulePreset/g,
+                        ruleOrPreset.id
+                    );
                     return {
                         ok: false,
                         error: new Error(errorMessage)
                     };
                 }
             } else {
+                const rule = ruleOrPreset as SecretLintCoreDescriptorRule;
                 try {
                     SecretLintConfigDescriptorRuleValidate(rule);
+                    // `disabledMessages` validation
+                    if (Array.isArray(rule.disabledMessages)) {
+                        const messageIds: string[] = Object.keys(rule.rule.messages);
+                        rule.disabledMessages.forEach(disabledMessageId => {
+                            if (!messageIds.includes(disabledMessageId)) {
+                                throw new Error(
+                                    `disabledMessage: ${disabledMessageId} is not defined in rule: ${rule.id}`
+                                );
+                            }
+                        });
+                    }
                 } catch (error) {
-                    const errorMessage = error.message.replace(/SecretLintConfigDescriptorRule/g, rule.id);
+                    const errorMessage = error.message.replace(/SecretLintConfigDescriptorRule/g, ruleOrPreset.id);
                     return {
                         ok: false,
                         error: new Error(errorMessage)

@@ -19,6 +19,7 @@
                 }
             },
             "severity": "error",
+            "messageId": "EXAMPLE_MESSAGE",
             "data": {
                 "ID": "SECRET"
             }

@@ -5,6 +5,7 @@ import {
     SecretLintRuleLocalizeMessageMulti,
     SecretLintRuleMessageTranslatorOptions
 } from "@secretlint/types";
+import { SecretLintRuleTranslatorResult } from "@secretlint/types";
 
 const escapeStringRegexp = require("escape-string-regexp");
 /**
@@ -69,15 +70,19 @@ export const createTranslator: createRuleMessageTranslator = <T extends SecretLi
     messages: T,
     options?: SecretLintRuleMessageTranslatorOptions
 ) => {
-    return <Data extends {}>(messageKey: keyof T, data?: Data) => {
-        const messageObject: SecretLintRuleLocalizeMessageMulti | string | undefined = messages[messageKey];
+    return <Data extends {}>(messageId: keyof T, data?: Data): SecretLintRuleTranslatorResult<Data> => {
+        const messageObject: SecretLintRuleLocalizeMessageMulti | string | undefined = messages[messageId];
         if (!messageObject) {
-            throw new Error(`messages:${messageKey} is missing in messages.`);
+            throw new Error(`messages:${messageId} is missing in messages.`);
         }
         // if messages is string, use it.
         if (typeof messageObject === "string") {
+            if (typeof messageId !== "string") {
+                throw new Error(`message's key:${messageId} should be string`);
+            }
             return {
                 message: applyOption(messageObject, data),
+                messageId: messageId,
                 data
             };
         }
@@ -87,12 +92,16 @@ export const createTranslator: createRuleMessageTranslator = <T extends SecretLi
         const localizedMessage = messageObject[locale];
         if (!localizedMessage) {
             if (messageObject[DEFAULT_LOCAL]) {
-                throw new Error(`messages${messageKey}.${locale} is missing in messages.`);
+                throw new Error(`messages${messageId}.${locale} is missing in messages.`);
             }
-            throw new Error(`key:${messageKey}.${DEFAULT_LOCAL} should be defined in messages.`);
+            throw new Error(`message's key:${messageId}.${DEFAULT_LOCAL} should be defined in messages.`);
+        }
+        if (typeof messageId !== "string") {
+            throw new Error(`message's key:${messageId}.${DEFAULT_LOCAL} should be string`);
         }
         return {
             message: applyOption(localizedMessage, data),
+            messageId: messageId,
             data
         };
     };

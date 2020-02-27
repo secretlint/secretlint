@@ -19,6 +19,7 @@
                 }
             },
             "severity": "error",
+            "messageId": "AWSAccessKeyID",
             "data": {
                 "ID": "AKIAIOSFODNN7SECRETS"
             }
