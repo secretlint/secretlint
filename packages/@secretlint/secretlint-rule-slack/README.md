@@ -22,7 +22,7 @@ Via `.secretlintrc.json`(Recommended)
 }
 ```
 
-## Rules
+## Messages
 
 ### FOUND_SLACK_TOKEN
 > found slack token: {{TOKEN}}

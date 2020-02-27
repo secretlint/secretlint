@@ -22,7 +22,7 @@ Via `.secretlintrc.json`(Recommended)
 }
 ```
 
-## Rules
+## Messages
 
 ### PrivateKey
 > found private key: {{KEY}}
