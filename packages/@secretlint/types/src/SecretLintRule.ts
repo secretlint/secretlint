@@ -10,8 +10,15 @@ export type SecretLintRuleReportDescriptor = {
 };
 export type SecretLintRuleIgnoreDescriptor = {
     message: string;
+    /**
+     *  Specify target rule id is ignored.
+     *  If Set "*", match any rule id.
+     *  Examples:
+     *  { targetRuleId: "@secretlint/secretelint-rule-example" }
+     *  { targetRuleId: "*" }
+     */
+    targetRuleId: string;
     range: number[];
-    data?: {};
 };
 export type SecretLintRuleContext = {
     sharedOptions?: {};

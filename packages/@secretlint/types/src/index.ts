@@ -2,6 +2,7 @@
 export {
     SecretLintCoreIgnoreDescriptor,
     SecretLintCoreReportDescriptor,
+    SecretLintCoreIgnoreMessage,
     SecretLintCoreResult,
     SecretLintCoreResultMessage,
     SecretLintCoreDescriptor,
