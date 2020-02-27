@@ -1,4 +1,5 @@
 import fs from "fs";
+import os from "os";
 import path from "path";
 import { compileSecretLint } from "./index";
 // placeholder
@@ -15,9 +16,10 @@ try {
 } catch (error) {
     // nope
 }
+const OS_SUFFIX = `${os.type()}_${os.arch()}`;
 compileSecretLint({
     input: path.join(__dirname, "entry.js"),
-    output: path.join(__dirname, "../dist/secretlint")
+    output: path.join(__dirname, `../dist/secretlint_${OS_SUFFIX}`)
 })
     .then(() => {
         console.log("success");
