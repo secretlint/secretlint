@@ -8,7 +8,7 @@ import {
 } from "@secretlint/types";
 import { SecretLintModuleResolver } from "./SecretLintModuleResolver";
 import { moduleInterop } from "@textlint/module-interop";
-import { validate } from "@secretlint/config-validator";
+import { validateConfig, validateRawConfig } from "@secretlint/config-validator";
 
 export type SecretLintConfigLoaderOptions = {
     cwd?: string;
@@ -69,11 +69,12 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
             errors: rawResult.errors
         };
     }
-    const result = validate(rawResult.config);
-    if (!result.ok) {
+    // Early validation, validate rawConfig by JSON Schema
+    const resultValidateRawConfig = validateRawConfig(rawResult.config);
+    if (!resultValidateRawConfig.ok) {
         return {
             ok: false,
-            errors: [result.error]
+            errors: [resultValidateRawConfig.error]
         };
     }
     // Search secretlint's module
@@ -119,6 +120,11 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
                     ? {
                           disabled: configDescriptorRule.disabled
                       }
+                    : {}),
+                ...("allowMessages" in configDescriptorRule
+                    ? {
+                          allowMessages: configDescriptorRule.allowMessages
+                      }
                     : {})
             });
         } catch (error) {
@@ -133,12 +139,22 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
             errors
         };
     }
+    const loadedConfig = {
+        rules
+    };
+    // Finally, validate loadedConfig with validator
+    // This validator require actual `rule` creator for `disabledMessage` option.
+    const resultValidateConfig = validateConfig(loadedConfig);
+    if (!resultValidateConfig.ok) {
+        return {
+            ok: false,
+            errors: [resultValidateConfig.error]
+        };
+    }
     return {
         ok: true,
         configFilePath: rawResult.configFilePath,
-        config: {
-            rules
-        }
+        config: loadedConfig
     };
 };
 /**

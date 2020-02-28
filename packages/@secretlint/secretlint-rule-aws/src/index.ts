@@ -160,6 +160,7 @@ const reportAWSAccountID = ({
 };
 
 export const creator: SecretLintRuleCreator<Options> = {
+    messages,
     meta: {
         id: "@secretlint/secretlint-rule-aws",
         recommended: true,

@@ -90,6 +90,7 @@ Each rule has same configuration pattern
 
 - `options`: Option definition for the rule. For more details, see each rule documentation
 - `disabled`: If `disabled` is `true`, disable the rule
+- `allowMessages`: `allowMessages` is an array of message id that you want to suppress error report
 
 Example, `@secretlint/secretlint-rule-example` has `allows` options, but the rule is disabled.
 

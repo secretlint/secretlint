@@ -15,13 +15,16 @@ export const SecretLintConfigDescriptorSchema = {
       "$ref": "#/definitions/__type"
     },
     "Options_1": {
-      "$ref": "#/definitions/__type_2"
+      "$ref": "#/definitions/__type_3"
     },
     "SecretLintRuleCreator": {
       "$ref": "#/definitions/__type_1"
     },
+    "SecretLintRuleLocalizeMessages": {
+      "$ref": "#/definitions/__type_2"
+    },
     "SecretLintRulePresetCreator": {
-      "$ref": "#/definitions/__type_3"
+      "$ref": "#/definitions/__type_4"
     },
     "SecretLintRuleSeverityLevel": {
       "description": "Rule Severity Level",
@@ -39,6 +42,9 @@ export const SecretLintConfigDescriptorSchema = {
     },
     "__type_1": {
       "properties": {
+        "messages": {
+          "$ref": "#/definitions/SecretLintRuleLocalizeMessages"
+        },
         "meta": {
           "properties": {
             "docs": {
@@ -71,6 +77,7 @@ export const SecretLintConfigDescriptorSchema = {
             },
             "type": {
               "enum": [
+                "filter",
                 "scanner"
               ],
               "type": "string"
@@ -86,16 +93,45 @@ export const SecretLintConfigDescriptorSchema = {
         }
       },
       "required": [
+        "messages",
         "meta"
       ],
       "type": "object"
     },
     "__type_2": {
-      "properties": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "allOf": [
+              {
+                "$ref": "#/definitions/{[x:string]:string;}"
+              },
+              {
+                "properties": {
+                  "en": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "en"
+                ],
+                "type": "object"
+              }
+            ]
+          },
+          {
+            "type": "string"
+          }
+        ]
       },
       "type": "object"
     },
     "__type_3": {
+      "properties": {
+      },
+      "type": "object"
+    },
+    "__type_4": {
       "properties": {
         "meta": {
           "properties": {
@@ -135,6 +171,9 @@ export const SecretLintConfigDescriptorSchema = {
         "meta"
       ],
       "type": "object"
+    },
+    "{[x:string]:string;}": {
+      "type": "object"
     }
   },
   "properties": {
@@ -143,6 +182,13 @@ export const SecretLintConfigDescriptorSchema = {
         "anyOf": [
           {
             "properties": {
+              "allowMessages": {
+                "description": "An array of message id for suppress error report.\nmessage id is defined in each rule.",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
               "disabled": {
                 "description": "If true, Disable the rule.\nDefault: false",
                 "type": "boolean"
@@ -191,6 +237,13 @@ export const SecretLintConfigDescriptorSchema = {
                 "description": "Preset's rule definitions\nrules is an array of rule definition\nExample\n{\n     \"id\": \"preset\"\n     \"rules\": [{ \"id\": \"example\", \"options\": {}]}\n}",
                 "items": {
                   "properties": {
+                    "allowMessages": {
+                      "description": "An array of message id for suppress error report.\nmessage id is defined in each rule.",
+                      "items": {
+                        "type": "string"
+                      },
+                      "type": "array"
+                    },
                     "disabled": {
                       "description": "If true, Disable the rule.\nDefault: false",
                       "type": "boolean"

@@ -60,6 +60,7 @@ function reportIfFoundBasicAuth({
 }
 
 export const creator: SecretLintRuleCreator<Options> = {
+    messages,
     meta: {
         id: "@secretlint/secretlint-rule-basicauth",
         recommended: true,

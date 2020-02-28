@@ -1,16 +1,14 @@
 import { EventEmitter } from "events";
 import {
     SecretLintCoreIgnoreDescriptor,
+    SecretLintCoreIgnoreMessage,
     SecretLintCoreReportDescriptor,
     SecretLintCoreResultMessage,
     SecretLintRuleContext,
-    SecretLintRuleIgnoreDescriptor,
-    SecretLintRuleReportDescriptor,
     SecretLintRuleSeverityLevel,
-    SecretLintCoreIgnoreMessage,
     SecretLintSourceCode
 } from "@secretlint/types";
-import { createTranslator } from "./helper/Translator";
+import { createTranslator } from "./helper/SecretLintRuleMessageTranslator";
 
 type Handler<T> = (descriptor: T) => void;
 export type ContextEvents = {
@@ -24,7 +22,7 @@ export const createContextEvents = (): ContextEvents => {
     const REPORT_SYMBOL = Symbol("report");
     const IGNORE_SYMBOL = Symbol("ignore");
     return {
-        report(descriptor: SecretLintRuleReportDescriptor) {
+        report(descriptor: SecretLintCoreResultMessage) {
             contextEvents.emit(REPORT_SYMBOL, descriptor);
         },
         onReport(handler: Handler<SecretLintCoreResultMessage>) {
@@ -36,7 +34,7 @@ export const createContextEvents = (): ContextEvents => {
                 contextEvents.off(REPORT_SYMBOL, listener);
             };
         },
-        ignore(descriptor: SecretLintRuleIgnoreDescriptor) {
+        ignore(descriptor: SecretLintCoreIgnoreMessage) {
             contextEvents.emit(IGNORE_SYMBOL, descriptor);
         },
         onIgnore(handler: Handler<SecretLintCoreIgnoreMessage>) {
@@ -74,18 +72,18 @@ export const createRuleContext = ({
         sharedOptions,
         createTranslator: createTranslator,
         ignore(descriptor: SecretLintCoreIgnoreDescriptor): void {
+            const { message } = descriptor.message;
             contextEvents.ignore({
                 ruleId: ruleId,
                 ruleParentId,
                 range: descriptor.range,
                 targetRuleId: descriptor.targetRuleId,
                 loc: sourceCode.rangeToLocation(descriptor.range),
-                message: descriptor.message
+                message: message
             });
         },
         report(descriptor: SecretLintCoreReportDescriptor): void {
-            const message = typeof descriptor.message === "string" ? descriptor.message : descriptor.message.message;
-            const data = typeof descriptor.message === "string" ? descriptor.data : descriptor.message.data;
+            const { message, messageId, data } = descriptor.message;
             // Default severity level is "error"
             const severityLevel = severity || "error";
             if (ruleParentId) {
@@ -96,6 +94,7 @@ export const createRuleContext = ({
                     loc: sourceCode.rangeToLocation(descriptor.range),
                     severity: severityLevel,
                     message,
+                    messageId,
                     data
                 });
             } else {
@@ -105,6 +104,7 @@ export const createRuleContext = ({
                     loc: sourceCode.rangeToLocation(descriptor.range),
                     severity: severityLevel,
                     message,
+                    messageId,
                     data
                 });
             }

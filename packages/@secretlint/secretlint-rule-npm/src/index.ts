@@ -102,6 +102,7 @@ const isNpmrc = (filePath?: string): boolean => {
     return filePath.endsWith(".npmrc");
 };
 export const creator: SecretLintRuleCreator<Options> = {
+    messages,
     meta: {
         id: "@secretlint/secretlint-rule-npm",
         recommended: true,

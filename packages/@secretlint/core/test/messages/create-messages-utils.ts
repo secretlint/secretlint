@@ -19,7 +19,8 @@ export const createMessageFromRange = (
                 column: 0
             }
         },
-        message: message
+        message: message,
+        messageId: message
     };
 };
 export const createIgnoredMessageFromRange = (range: number[], targetRuleId = "*"): SecretLintCoreIgnoreMessage => {

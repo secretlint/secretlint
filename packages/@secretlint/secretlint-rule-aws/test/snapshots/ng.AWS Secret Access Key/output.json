@@ -19,6 +19,7 @@
                 }
             },
             "severity": "error",
+            "messageId": "AWSSecretAccessKey",
             "data": {
                 "KEY": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYSECRETSKEY"
             }

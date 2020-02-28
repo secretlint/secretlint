@@ -8,9 +8,10 @@ Install with [npm](https://www.npmjs.com/):
 
     npm install @secretlint/secretlint-rule-example
 
-## Usage
+## Messages
 
-- [ ] Write usage instructions
+### EXAMPLE_MESSAGE
+> found secret: {{ID}}
 
 ## Changelog
 

@@ -1,7 +1,7 @@
 import { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
 
 export const messages = {
-    EXAMPLE_MESSAGE: {
+    message_id_a: {
         en: "found secret: {{ID}}",
         ja: "secret: {{ID}} がみつかりました"
     }
@@ -26,7 +26,7 @@ export const creator: SecretLintRuleCreator = {
                     const matchString = match[0] || "";
                     const range = [index, index + matchString.length];
                     context.report({
-                        message: t("EXAMPLE_MESSAGE", {
+                        message: t("message_id_a", {
                             ID: matchString
                         }),
                         range
@@ -36,4 +36,14 @@ export const creator: SecretLintRuleCreator = {
         };
     }
 };
-export default creator;
+
+module.exports = {
+    rules: [
+        {
+            id: "example",
+            allowMessages: ["message_id_a"],
+            // debug
+            rule: creator
+        }
+    ]
+};

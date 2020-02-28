@@ -1,19 +1,22 @@
 import { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
 
+export const messages = {
+    EXAMPLE_MESSAGE: {
+        en: "found secret: {{ID}}",
+        ja: "secret: {{ID}} がみつかりました"
+    }
+};
+
 export const creator: SecretLintRuleCreator = {
+    messages,
     meta: {
-        id: "secretlint-rule-example",
+        id: "@secretlint/secretlint-rule-example",
         recommended: true,
         type: "scanner",
         supportedContentTypes: ["text"]
     },
     create(context) {
-        const t = context.createTranslator({
-            message: {
-                en: "found secret: {{ID}}",
-                ja: "secret: {{ID}} がみつかりました"
-            }
-        });
+        const t = context.createTranslator(messages);
         return {
             file(source: SecretLintSourceCode) {
                 const pattern = /secret/gi;
@@ -23,7 +26,7 @@ export const creator: SecretLintRuleCreator = {
                     const matchString = match[0] || "";
                     const range = [index, index + matchString.length];
                     context.report({
-                        message: t("message", {
+                        message: t("EXAMPLE_MESSAGE", {
                             ID: matchString
                         }),
                         range

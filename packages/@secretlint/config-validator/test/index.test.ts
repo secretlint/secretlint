@@ -1,15 +1,19 @@
 import fs from "fs";
 import path from "path";
 import assert from "assert";
-import { validate } from "../src/index";
+import { validateConfig, validateRawConfig } from "../src/index";
 
 const fixturesDir = path.join(__dirname, "snapshots");
-const validateReturn = (content: unknown): "OK" | string => {
-    const result = validate(content);
-    if (result.ok) {
+const validateReturn = (content: any): "OK" | string => {
+    const resultRawConfig = validateRawConfig(content);
+    if (resultRawConfig.ok) {
+        const resultConfig = validateConfig(content);
+        if (!resultConfig.ok) {
+            return resultConfig.error.message;
+        }
         return "OK";
     } else {
-        return result.error.message;
+        return resultRawConfig.error.message;
     }
 };
 describe("@secretlint/config-validator", function() {
@@ -19,8 +23,14 @@ describe("@secretlint/config-validator", function() {
             const normalizedTestName = dirent.name;
             it(`test ${normalizedTestName}`, function() {
                 const fixtureDir = path.join(fixturesDir, normalizedTestName);
-                const actualFilePath = path.join(fixtureDir, ".secretlintrc.json");
-                const actualContent = JSON.parse(fs.readFileSync(actualFilePath, "utf-8"));
+                const secretlintrcFileName = fs.readdirSync(fixtureDir).find(filePath => {
+                    return filePath.startsWith(".secretlintrc");
+                });
+                if (!secretlintrcFileName) {
+                    throw new Error("Should put .secretelint.* file");
+                }
+                const actualFilePath = path.join(fixtureDir, secretlintrcFileName);
+                const actualContent = require(actualFilePath);
                 const actual = validateReturn(actualContent);
                 const expectedFilePath = path.join(fixtureDir, "output.txt");
                 // Usage: update snapshots

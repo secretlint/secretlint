@@ -11,10 +11,10 @@ Install with [npm](https://www.npmjs.com/):
 ## Usage
 
 ```ts
-import { validate } from "@secretlint/config-validator";
+import { validateRawConfig } from "@secretlint/config-validator";
 import fs from "fs";
 const secretlintrc = require("./.secretlintrc.json");
-const { ok, error } = validate(secretlintrc);
+const { ok, error } = validateRawConfig(secretlintrc);
 if (!ok) {
   console.error(error);
 }

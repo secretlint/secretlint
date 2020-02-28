@@ -19,6 +19,7 @@
                 }
             },
             "severity": "error",
+            "messageId": "FOUND_SLACK_TOKEN",
             "data": {
                 "TOKEN": "xoxa-23984754863-2348975623103"
             }
@@ -41,6 +42,7 @@
                 }
             },
             "severity": "error",
+            "messageId": "FOUND_SLACK_TOKEN",
             "data": {
                 "TOKEN": "xoxb-23984754863-2348975623103"
             }
@@ -63,6 +65,7 @@
                 }
             },
             "severity": "error",
+            "messageId": "FOUND_SLACK_TOKEN",
             "data": {
                 "TOKEN": "xoxo-23984754863-2348975623103"
             }

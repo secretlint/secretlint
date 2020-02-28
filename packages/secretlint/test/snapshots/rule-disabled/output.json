@@ -1,0 +1,10 @@
+{
+    "exitStatus": 0,
+    "stdout": [
+        {
+            "filePath": "[SNAPSHOT]/rule-disabled/input.txt",
+            "messages": []
+        }
+    ],
+    "stderr": null
+}

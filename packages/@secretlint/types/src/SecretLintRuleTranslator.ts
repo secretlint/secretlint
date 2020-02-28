@@ -26,6 +26,7 @@ export type SecretLintRuleMessageTranslatorOptions = {
 };
 export type SecretLintRuleTranslatorResult<T extends {}> = {
     message: string;
+    messageId: string;
     data: T | undefined;
 };
 

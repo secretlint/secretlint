@@ -19,6 +19,7 @@
                 }
             },
             "severity": "error",
+            "messageId": "PackageJSON_xOauthToken",
             "data": {
                 "TOKEN": "111da111qqqq309bqq562159952c2c2a11111a1"
             }
