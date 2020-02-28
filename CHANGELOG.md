@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.1](https://github.com/secretlint/secretlint/compare/v0.4.0...v0.4.1) (2020-02-28)
+
+
+### Bug Fixes
+
+* **aws:** remove console.log ([0bf11ae](https://github.com/secretlint/secretlint/commit/0bf11aedc033bd4217040f2198b3b43cc4197372))
+
+
+
+
+
 # [0.4.0](https://github.com/secretlint/secretlint/compare/v0.3.0...v0.4.0) (2020-02-28)
 
 
