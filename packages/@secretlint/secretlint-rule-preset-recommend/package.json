@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "@secretlint/secretlint-rule-aws": "^0.4.2",
+    "@secretlint/secretlint-rule-gcp": "^0.4.2",
     "@secretlint/secretlint-rule-basicauth": "^0.4.1",
     "@secretlint/secretlint-rule-npm": "^0.4.1",
     "@secretlint/secretlint-rule-privatekey": "^0.4.2",
