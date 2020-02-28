@@ -55,6 +55,7 @@ const executeOnContent = async ({
         },
         config
     );
+    debug("executeOnContent result: %O", result);
     secretLintProfiler.mark({
         type: "@node>format::start"
     });
@@ -85,6 +86,7 @@ const executeOnFiles = async ({
         return lintFile(filePath, config);
     });
     const results = await Promise.all(resultPromises);
+    debug("executeOnFiles results: %O", results);
     secretLintProfiler.mark({
         type: "@node>format::start"
     });
@@ -133,8 +135,8 @@ export const createEngine = async (options: SecretLintEngineOptions) => {
          * @param filePath
          */
         executeOnContent: ({ content, filePath }: { content: string; filePath: string }) => {
-            debug("content: %s", content);
-            debug("filePath: %s", filePath);
+            debug("executeOnContent content: %s", content);
+            debug("executeOnContent filePath: %s", filePath);
             secretLintProfiler.mark({
                 type: "@node>execute::start"
             });
@@ -154,7 +156,7 @@ export const createEngine = async (options: SecretLintEngineOptions) => {
          * @param filePathList
          */
         executeOnFiles: ({ filePathList }: { filePathList: string[] }) => {
-            debug("filePathLList: %O", filePathList);
+            debug("executeOnFiles filePathLList: %O", filePathList);
             secretLintProfiler.mark({
                 type: "@node>execute::start"
             });
