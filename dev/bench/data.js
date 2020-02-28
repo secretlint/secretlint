@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1582872064519,
+  "lastUpdate": 1582877770598,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -2202,6 +2202,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.74,
             "range": "±1.67%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "distinct": true,
+          "id": "7dcb506315fae72c12253c6dd7119f746f80fddc",
+          "message": "fix(core): fix allowMessageIds of preset's rule options\n\nPreviously, it does not work correctly. This commit fix to work.",
+          "timestamp": "2020-02-28T17:13:40+09:00",
+          "tree_id": "d480117d056a08fdef93fe68686ad11bddadaf15",
+          "url": "https://github.com/secretlint/secretlint/commit/7dcb506315fae72c12253c6dd7119f746f80fddc"
+        },
+        "date": 1582877770048,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.88,
+            "range": "±3.32%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.73,
+            "range": "±4.03%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
