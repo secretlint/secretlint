@@ -32,7 +32,7 @@ You can check all files under the current directory with secretlint by following
 
     docker run -v `pwd`:`pwd` -w `pwd` -it secretlint/secretlint secretlint "**/*"
 
-[`secretlint/secretlint` Docker container] work without configuration by design.
+[`secretlint/secretlint` docker container](https://hub.docker.com/r/secretlint/secretlint) work without configuration by design.
 
 Built-in rules:
 
