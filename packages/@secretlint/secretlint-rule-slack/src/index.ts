@@ -36,7 +36,7 @@ function reportIfFoundRawPrivateKey({
 }) {
     // Based on https://docs.cribl.io/docs/regexesyml
     // https://api.slack.com/docs/token-types
-    const PRIVATE_KEY_PATTERN = /xox[abposr]-(?:\d+-)+[a-z0-9]{1,255}/g;
+    const PRIVATE_KEY_PATTERN = /\bxox[abposr]-(?:\d+-)+[a-z0-9]{1,255}\b/g;
     const results = source.content.matchAll(PRIVATE_KEY_PATTERN);
     for (const result of results) {
         const index = result.index || 0;
