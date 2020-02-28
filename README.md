@@ -92,7 +92,8 @@ Each rule has same configuration pattern
 - `disabled`: If `disabled` is `true`, disable the rule
 - `allowMessages`: `allowMessages` is an array of message id that you want to suppress error report
 
-Example, `@secretlint/secretlint-rule-example` has `allows` options, but the rule is disabled.
+For example, `@secretlint/secretlint-rule-example` has `allows` in `options`.
+This `allows` option define text pattern that you want to ignore.
 
 ```json
 {
@@ -103,8 +104,7 @@ Example, `@secretlint/secretlint-rule-example` has `allows` options, but the rul
         "allows": [
           "/dummy_secret/i"
         ]
-      },
-      "disabled": true
+      }
     }
   ]
 }
