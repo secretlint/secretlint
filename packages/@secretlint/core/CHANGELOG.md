@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.4.2](https://github.com/secretlint/secretlint/compare/v0.4.1...v0.4.2) (2020-02-28)
+
+
+### Bug Fixes
+
+* **core:** fix allowMessageIds of preset's rule options ([7dcb506](https://github.com/secretlint/secretlint/commit/7dcb506315fae72c12253c6dd7119f746f80fddc))
+
+
+
+
+
 ## [0.4.1](https://github.com/secretlint/secretlint/compare/v0.4.0...v0.4.1) (2020-02-28)
 
 **Note:** Version bump only for package @secretlint/core

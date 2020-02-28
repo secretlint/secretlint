@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-slack",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "A secretlint rule for slack.",
   "keywords": [
     "rule",
@@ -47,7 +47,7 @@
     "string.prototype.matchall": "^4.0.2"
   },
   "devDependencies": {
-    "@secretlint/tester": "^0.4.1",
+    "@secretlint/tester": "^0.4.2",
     "@types/mocha": "^7.0.1",
     "@types/node": "^13.7.4",
     "cross-env": "^7.0.0",
