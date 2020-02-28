@@ -18,11 +18,13 @@ export const cli = meow(
       --format formatter name. Default: stylish
       --output-file output file path that is written of reported result.
       --no-color disable color of output.
-      --secretlintrc Path to .secretlintrc config file.
+      --secretlintrc Path to .secretlintrc config file. Default: .secretlintrc.*
       --secretlintignore Path to .secretlintignore file. Default: .secretlintignore
-      --profile Output with profile results 
+      --profile Show performance profile 
  
     Examples
+      $ secretlint ./README.md
+      # glob pattern should be wrapped with double quote
       $ secretlint "**/*"
       $ secretlint "source/**/*.ini"
 `,
