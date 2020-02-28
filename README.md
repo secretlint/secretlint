@@ -22,16 +22,21 @@ Secretlint is pluggable linting tool to prevent commit secret/credential file.
 
 ## Installation
 
-### Quick Start: Using Docker　
+### Using Docker　
 
 **Prerequisites:** Require [Docker](https://docs.docker.com/install/)
 
 Use our [Docker container](https://hub.docker.com/r/secretlint/secretlint) to get an environment with Node.js and secretlint and running as fast as you can download them.
 
-    # Check all files under the current directory with secretlint 
-    docker run -v `pwd`:`pwd` -w `pwd` -i -t secretlint secretlint "**/*"
+You can check all files under the current directory with secretlint by following command: 
 
+    docker run -v `pwd`:`pwd` -w `pwd` -it secretlint/secretlint secretlint "**/*"
 
+[`secretlint/secretlint` Docker container] work without configuration by design.
+
+Built-in rules:
+
+- [@secretlint/secretlint-rule-preset-recommend](./packages/@secretlint/secretlint-rule-preset-recommend)
 
 For more details, please see [secretlint's Dockerfile](./docker).
 
