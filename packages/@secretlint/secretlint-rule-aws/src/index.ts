@@ -106,7 +106,6 @@ const reportAWSSecretAccessKey = ({
     const results = matchAll(source.content, AWSSecretPatten);
     for (const result of results) {
         const index = result.index || 0;
-        console.log(result);
         const match = result[1] || "";
         const range = [index, index + match.length];
         // Built-in ignored
