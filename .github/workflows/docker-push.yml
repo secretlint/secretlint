@@ -31,10 +31,12 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       run: |
         echo "::set-env name=TAG_NAME::${GITHUB_REF:10}"
+        echo "::set-env name=SECRETLINT_VERSION::${GITHUB_REF:11}"
     - name: "Set TAG_NAME=LATEST"
       if: startsWith(github.ref, 'refs/tags/') != true
       run: |
         echo "::set-env name=TAG_NAME::latest"
+        echo "::set-env name=SECRETLINT_VERSION::latest"
     - name: Set HUB_TAG
       run: |
         echo "::set-env name=PKG_TAG::${DOCKER_BASE_NAME}:${TAG_NAME}"
@@ -43,6 +45,8 @@ jobs:
       run: |
         docker build . -t "${PKG_TAG}"
         docker tag "${PKG_TAG}" "${HUB_TAG}"
+      env:
+        SECRETLINT_VERSION: ${SECRETLINT_VERSION}
       working-directory: ./docker
     - name: Print version
       run: |
