@@ -116,12 +116,12 @@ The `id` property is the name of secretlint rule package.
 Secretlint does not have built-in rule.
 You want to add some rule and You should **install** the package and **add** the rule to `.secretlintrc` file.
 
-
-Each rule has same configuration pattern
+Each rule has same configuration pattern:
 
 - `options`: Option definition for the rule. For more details, see each rule documentation
 - `disabled`: If `disabled` is `true`, disable the rule
 - `allowMessages`: `allowMessages` is an array of message id that you want to suppress error report
+    - message's id is defined in each rule and please see the rule documentation
 
 For example, `@secretlint/secretlint-rule-example` has `allows` in `options`.
 This `allows` option define text pattern that you want to ignore.
