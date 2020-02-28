@@ -58,6 +58,10 @@ export const cli = meow(
             cwd: {
                 type: "string",
                 default: process.cwd()
+            },
+            debug: {
+                type: "boolean",
+                default: false
             }
         },
         autoHelp: true,
@@ -72,6 +76,10 @@ export const run = (
     secretLintProfiler.mark({
         type: "secretlint>cli::start"
     });
+    if (flags.debug) {
+        const debug = require("debug");
+        debug.enable("*secretlint*");
+    }
     const cwd = flags.cwd;
     debug("input: %O", input);
     debug("flags: %O", flags);
