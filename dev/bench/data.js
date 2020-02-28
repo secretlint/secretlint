@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1582871567611,
+  "lastUpdate": 1582872064519,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -2164,6 +2164,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.68,
             "range": "±1.35%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "distinct": true,
+          "id": "b53471a59d6505d76198aca8b06b8bed469f9ae2",
+          "message": "fix(lerna): add --no-push for waiting docker image",
+          "timestamp": "2020-02-28T15:38:50+09:00",
+          "tree_id": "313200e5669460589c7f03b455097cd6afd5f01a",
+          "url": "https://github.com/secretlint/secretlint/commit/b53471a59d6505d76198aca8b06b8bed469f9ae2"
+        },
+        "date": 1582872064004,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2,
+            "range": "±2.81%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.74,
+            "range": "±1.67%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
