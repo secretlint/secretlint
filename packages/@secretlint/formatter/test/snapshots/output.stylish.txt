@@ -1,7 +1,7 @@
 
 [SNAPSHOT]/input.txt
-  1:8  warning  warning found secret: SECRET  example
-  1:8  error    error found secret: SECRET    example
-  1:8  error    error found secret: SECRET    parent > example
+  1:8  warning  [message-id] warning found secret: SECRET  example
+  1:8  error    [message-id] error found secret: SECRET    example
+  1:8  error    [message-id] error found secret: SECRET    parent > example
 
 ✖ 3 problems (2 errors, 1 warning)

@@ -121,9 +121,9 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
                           disabled: configDescriptorRule.disabled
                       }
                     : {}),
-                ...("allowMessages" in configDescriptorRule
+                ...("allowMessageIds" in configDescriptorRule
                     ? {
-                          allowMessages: configDescriptorRule.allowMessages
+                          allowMessageIds: configDescriptorRule.allowMessageIds
                       }
                     : {})
             });

@@ -80,12 +80,12 @@ export const validateConfig = (value: any): { ok: true } | { ok: false; error: E
             if ("rules" in ruleOrPreset) {
             } else {
                 const rule = ruleOrPreset as SecretLintCoreDescriptorRule;
-                // `allowMessages` validation
-                if (Array.isArray(rule.allowMessages)) {
+                // `allowMessageIds` validation
+                if (Array.isArray(rule.allowMessageIds)) {
                     const messageIds: string[] = Object.keys(rule.rule.messages);
-                    rule.allowMessages.forEach(allowMessageId => {
+                    rule.allowMessageIds.forEach(allowMessageId => {
                         if (!messageIds.includes(allowMessageId)) {
-                            throw new Error(`allowMessages: ${allowMessageId} is not defined in rule: ${rule.id}`);
+                            throw new Error(`allowMessageIds: ${allowMessageId} is not defined in rule: ${rule.id}`);
                         }
                     });
                 }

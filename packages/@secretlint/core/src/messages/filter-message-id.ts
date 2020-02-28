@@ -4,12 +4,12 @@ export type AllowMessage = {
     ruleId: string;
     messageId: string;
 };
-export const filterByAllowMessages = (
+export const filterByAllowMessageIds = (
     messages: SecretLintCoreResultMessage[],
-    allowMessages: AllowMessage[]
+    allowMessageIds: AllowMessage[]
 ): SecretLintCoreResultMessage[] => {
     const disabledSet = new Set(
-        allowMessages.map(allowMessage => {
+        allowMessageIds.map(allowMessage => {
             return `${allowMessage.ruleId}--${allowMessage.messageId}`;
         })
     );

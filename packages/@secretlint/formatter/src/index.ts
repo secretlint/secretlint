@@ -41,7 +41,7 @@ const convertSecretLintResultToTextlintResult = (secretLintCoreResult: SecretLin
                 line: message.loc.start.line,
                 column: message.loc.start.column,
                 severity: severityLevel,
-                message: message.message,
+                message: `[${message.messageId}] ${message.message}`,
                 data: message.data,
                 // NO NEED - DUMMY DATA
                 fix: undefined,

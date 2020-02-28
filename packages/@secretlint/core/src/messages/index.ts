@@ -3,12 +3,12 @@ import { filterIgnoredMessages } from "./filter-ignored-process";
 import { createMessageProcessor } from "./MessageProcessManager";
 import { filterDuplicatedMessages } from "./filter-duplicated-process";
 import { sortMessagesByLocation } from "./sort-messages-process";
-import { filterByAllowMessages } from "./filter-message-id";
+import { filterByAllowMessageIds } from "./filter-message-id";
 
 export type cleanupMessagesOptions = {
     reportedMessages: SecretLintCoreResultMessage[];
     ignoredMessages: SecretLintCoreIgnoreMessage[];
-    allowMessages: {
+    allowMessageIds: {
         ruleId: string;
         messageId: string;
     }[];
@@ -23,7 +23,7 @@ export type cleanupMessagesOptions = {
  */
 export const cleanupMessages = (options: cleanupMessagesOptions): SecretLintCoreResultMessage[] => {
     const reportedMessages = filterIgnoredMessages(options);
-    const reportedMessagesWithoutAllowMessages = filterByAllowMessages(reportedMessages, options.allowMessages);
+    const reportedMessagesWithoutAllowMessageIds = filterByAllowMessageIds(reportedMessages, options.allowMessageIds);
     const filterProcess = createMessageProcessor([filterDuplicatedMessages]);
-    return sortMessagesByLocation(filterProcess.process(reportedMessagesWithoutAllowMessages));
+    return sortMessagesByLocation(filterProcess.process(reportedMessagesWithoutAllowMessageIds));
 };

@@ -1,4 +1,4 @@
-example: warning found secret: SECRET
+example: [message-id] warning found secret: SECRET
 [SNAPSHOT]/input.txt:1:8
               v
     0. 
@@ -6,7 +6,7 @@ example: warning found secret: SECRET
     2. 
               ^
 
-example: error found secret: SECRET
+example: [message-id] error found secret: SECRET
 [SNAPSHOT]/input.txt:1:8
               v
     0. 
@@ -14,7 +14,7 @@ example: error found secret: SECRET
     2. 
               ^
 
-parent > example: error found secret: SECRET
+parent > example: [message-id] error found secret: SECRET
 [SNAPSHOT]/input.txt:1:8
               v
     0. 

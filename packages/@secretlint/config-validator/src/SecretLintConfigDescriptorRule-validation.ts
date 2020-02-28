@@ -241,7 +241,7 @@ export const SecretLintConfigDescriptorRuleSchema = {
     }
   },
   "properties": {
-    "allowMessages": {
+    "allowMessageIds": {
       "description": "An array of message id for suppress error report.\nmessage id is defined in each rule.",
       "items": {
         "type": "string"

@@ -10,7 +10,7 @@
                     "line": 1,
                     "column": 8,
                     "severity": 2,
-                    "message": "found secret: SECRET",
+                    "message": "[EXAMPLE_MESSAGE] found secret: SECRET",
                     "data": {
                         "ID": "SECRET"
                     },

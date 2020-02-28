@@ -38,7 +38,7 @@ export type SecretLintCoreDescriptorRule<Options = SecretLintRuleCreatorOptions>
      * An array of message id for suppress reported message.
      * Message id is defined in each rule, Please see each README
      */
-    allowMessages?: string[];
+    allowMessageIds?: string[];
 };
 export type SecretLintCoreDescriptorRulePreset<Options = SecretLintRulePresetCreatorOptions> = {
     /**

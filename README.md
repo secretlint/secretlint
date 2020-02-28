@@ -120,8 +120,10 @@ Each rule has same configuration pattern:
 
 - `options`: Option definition for the rule. For more details, see each rule documentation
 - `disabled`: If `disabled` is `true`, disable the rule
-- `allowMessages`: `allowMessages` is an array of message id that you want to suppress error report
-    - message's id is defined in each rule and please see the rule documentation
+- `allowMessageIds`: `allowMessageIds` is an array of message id that you want to suppress error report
+    - message id is defined in each rule and please see the rule documentation
+
+### Example: `options`
 
 For example, `@secretlint/secretlint-rule-example` has `allows` in `options`.
 This `allows` option define text pattern that you want to ignore.
@@ -136,6 +138,34 @@ This `allows` option define text pattern that you want to ignore.
           "/dummy_secret/i"
         ]
       }
+    }
+  ]
+}
+```
+
+### Example: `allowMessageIds`
+
+For example, you have got following error report by run `secretlint`:
+
+```
+$ secretlint "**/*"
+
+SECRET.txt
+  1:8  error  [EXAMPLE_MESSAGE] found secret: SECRET  @secretlint/secretlint-rule-example
+
+✖ 1 problem (1 error, 0 warnings)
+```
+
+This error's message id is `EXAMPLE_MESSAGE` in `@secretlint/secretlint-rule-example`.
+
+If you want to ignore this error, please use `allowMessageIds`.
+
+```json
+{
+  "rules": [
+    {
+      "id": "@secretlint/secretlint-rule-example",
+      "allowMessageIds": ["EXAMPLE_MESSAGE"]
     }
   ]
 }

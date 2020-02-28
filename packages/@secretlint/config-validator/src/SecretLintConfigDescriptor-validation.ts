@@ -182,7 +182,7 @@ export const SecretLintConfigDescriptorSchema = {
         "anyOf": [
           {
             "properties": {
-              "allowMessages": {
+              "allowMessageIds": {
                 "description": "An array of message id for suppress error report.\nmessage id is defined in each rule.",
                 "items": {
                   "type": "string"
@@ -237,7 +237,7 @@ export const SecretLintConfigDescriptorSchema = {
                 "description": "Preset's rule definitions\nrules is an array of rule definition\nExample\n{\n     \"id\": \"preset\"\n     \"rules\": [{ \"id\": \"example\", \"options\": {}]}\n}",
                 "items": {
                   "properties": {
-                    "allowMessages": {
+                    "allowMessageIds": {
                       "description": "An array of message id for suppress error report.\nmessage id is defined in each rule.",
                       "items": {
                         "type": "string"

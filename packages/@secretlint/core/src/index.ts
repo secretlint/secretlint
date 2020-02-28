@@ -80,7 +80,7 @@ export const lintSource = (
                 messages: cleanupMessages({
                     reportedMessages,
                     ignoredMessages,
-                    allowMessages: createAllowMessages(options)
+                    allowMessageIds: createAllowMessageIds(options)
                 })
             };
         })
@@ -101,20 +101,20 @@ const isRule = (ruleDescriptor: SecretLintCoreDescriptorUnionRule): ruleDescript
     return ruleDescriptor.rule.meta.type === "scanner";
 };
 
-const createAllowMessages = (coreOptions: SecretLintCoreDescriptor) => {
-    const allowMessages: AllowMessage[] = [];
+const createAllowMessageIds = (coreOptions: SecretLintCoreDescriptor) => {
+    const allowMessageIds: AllowMessage[] = [];
     coreOptions.rules.forEach(rule => {
-        if (!(isRule(rule) && Array.isArray(rule.allowMessages))) {
+        if (!(isRule(rule) && Array.isArray(rule.allowMessageIds))) {
             return;
         }
-        rule.allowMessages.forEach(allowMessageId => {
-            allowMessages.push({
+        rule.allowMessageIds.forEach(allowMessageId => {
+            allowMessageIds.push({
                 ruleId: rule.id,
                 messageId: allowMessageId
             });
         });
     });
-    return allowMessages;
+    return allowMessageIds;
 };
 /**
  * Rule Processing

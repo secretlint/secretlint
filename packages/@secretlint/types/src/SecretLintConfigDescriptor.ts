@@ -26,7 +26,7 @@ export type SecretLintConfigDescriptorRule<Options = SecretLintRuleCreatorOption
      * An array of message id for suppress error report.
      * message id is defined in each rule.
      */
-    allowMessages?: string[];
+    allowMessageIds?: string[];
     /**
      * Severity level for the rule.
      * Default: "error"
