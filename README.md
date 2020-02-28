@@ -173,7 +173,7 @@ If you want to ignore this error, please use `allowMessageIds`.
 
 ## Rule Packages
 
-Secretlint rules are implemented as separated modules.
+Secretlint rules has been implemented as separated modules.
 
 - [@secretlint/secretlint-rule-npm](./packages/@secretlint/secretlint-rule-npm)
 - [@secretlint/secretlint-rule-aws](./packages/@secretlint/secretlint-rule-aws)
@@ -190,10 +190,12 @@ Also, Secretlint provide rule preset that package some rule set.
 
 ### Pre-commit Hook
 
-You can use Secretlint with a pre-commit tool.
+You can use Secretlint with some pre-commit tool.
 This can prevent to commit secret data by linting with Secretlint.
 
 #### [Husky](https://github.com/typicode/husky) + [lint-staged](https://github.com/okonet/lint-staged)
+
+**Use Case:** If you want to introduce secretlint to Node.js project, this combination is useful.
 
 Install [Husky](https://github.com/typicode/husky) and [lint-staged](https://github.com/okonet/lint-staged):
 
@@ -220,6 +222,30 @@ Edit `package.json`:
 ```
 
 This means that check each staged file by Secretlint before commit. 
+
+#### [pre-commit](https://github.com/pre-commit/pre-commit)
+
+**Use Case:** You have a project that is developing with Docker. Easy to integrate to secretlint.
+
+Install [pre-commit](https://pre-commit.com/#install)
+
+    # macOS. see also https://pre-commit.com/#install
+    brew install pre-commit
+
+Create `.pre-commit-config.yaml`:
+
+```
+-   repo: local
+    hooks:
+    -   id: secretlint
+        name: secretlint
+        language: docker_image
+        entry: secretlint/secretlint:latest secretlint
+```
+
+Example setup repository:
+
+- https://github.com/azu/secretlint-pre-commit-example
 
 ## Architecture
 
