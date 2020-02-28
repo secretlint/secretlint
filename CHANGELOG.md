@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/secretlint/secretlint/compare/v0.3.0...v0.4.0) (2020-02-28)
+
+
+### Bug Fixes
+
+* **binary-compiler:** use name includes OS ([a89e599](https://github.com/secretlint/secretlint/commit/a89e59992bbcf042592b8531f753d79cdc734590))
+
+
+### Features
+
+* **core:** support "disabled" options ([17c1391](https://github.com/secretlint/secretlint/commit/17c1391cbd19edfe72f894fcf2e3a9d50fc4a7d2))
+* **core:** support "disabledMessages" options ([17de33e](https://github.com/secretlint/secretlint/commit/17de33eaef2408c63cbaeecb4038c8878a292ca0))
+* **core:** support Context#ignore method ([7ca0445](https://github.com/secretlint/secretlint/commit/7ca0445e9a5c494ea52ab0b9efa302ef5c902e2f))
+* **types:** rule require `messages` ([412803e](https://github.com/secretlint/secretlint/commit/412803eeebe7f14ce67f1c33c2ba16eac2acf9a5))
+
+
+
+
+
 # [0.3.0](https://github.com/secretlint/secretlint/compare/v0.2.0...v0.3.0) (2020-02-27)
 
 
