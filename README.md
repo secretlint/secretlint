@@ -22,7 +22,7 @@ Secretlint is pluggable linting tool to prevent commit secret/credential file.
 
 ## Installation
 
-### Using Docker　
+### Using Docker
 
 **Prerequisites:** Require [Docker](https://docs.docker.com/install/)
 
