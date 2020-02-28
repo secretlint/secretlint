@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1582900208751,
+  "lastUpdate": 1582907181714,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -2316,6 +2316,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.67,
             "range": "±4.77%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "6d6ed9f4008aadf6c472cd1ef6773448d1601c48",
+          "message": "Merge pull request #61 from secretlint/gcp\n\nfeat(gcp): add @secretlint/secretlint-rule-gcp",
+          "timestamp": "2020-02-29T01:23:54+09:00",
+          "tree_id": "c63e3ee5f85bfab71eb1e8ebee71281634311413",
+          "url": "https://github.com/secretlint/secretlint/commit/6d6ed9f4008aadf6c472cd1ef6773448d1601c48"
+        },
+        "date": 1582907181074,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.58,
+            "range": "±1.68%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.6,
+            "range": "±1.20%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
