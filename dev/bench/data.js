@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1582858896295,
+  "lastUpdate": 1582871548409,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -2088,6 +2088,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.61,
             "range": "±2.43%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "distinct": true,
+          "id": "6fc61f4be471835dd492b1d890f20b1c9361e0c6",
+          "message": "docs(rule): add word boundary doc",
+          "timestamp": "2020-02-28T15:29:59+09:00",
+          "tree_id": "21ff4ab3ead7217436ca21386d57a43e1cee0f12",
+          "url": "https://github.com/secretlint/secretlint/commit/6fc61f4be471835dd492b1d890f20b1c9361e0c6"
+        },
+        "date": 1582871547845,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.76,
+            "range": "±1.19%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.66,
+            "range": "±2.12%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
