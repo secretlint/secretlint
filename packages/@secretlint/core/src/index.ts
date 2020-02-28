@@ -15,7 +15,6 @@ import { createRunningEvents, RunningEvents } from "./RunningEvents";
 import { secretLintProfiler } from "@secretlint/profiler";
 import { createRulePresetContext } from "./RulePresetContext";
 import { cleanupMessages } from "./messages";
-import { AllowMessage } from "./messages/filter-message-id";
 
 type SecretLintCoreOptions = SecretLintCoreDescriptor;
 
@@ -80,7 +79,7 @@ export const lintSource = (
                 messages: cleanupMessages({
                     reportedMessages,
                     ignoredMessages,
-                    allowMessageIds: createAllowMessageIds(options)
+                    allowMessageIds: runningEvents.collectAllowMessageIds()
                 })
             };
         })
@@ -101,21 +100,6 @@ const isRule = (ruleDescriptor: SecretLintCoreDescriptorUnionRule): ruleDescript
     return ruleDescriptor.rule.meta.type === "scanner";
 };
 
-const createAllowMessageIds = (coreOptions: SecretLintCoreDescriptor) => {
-    const allowMessageIds: AllowMessage[] = [];
-    coreOptions.rules.forEach(rule => {
-        if (!(isRule(rule) && Array.isArray(rule.allowMessageIds))) {
-            return;
-        }
-        rule.allowMessageIds.forEach(allowMessageId => {
-            allowMessageIds.push({
-                ruleId: rule.id,
-                messageId: allowMessageId
-            });
-        });
-    });
-    return allowMessageIds;
-};
 /**
  * Rule Processing
  */

@@ -1,24 +1,41 @@
 import {
     SecretLintRuleContext,
     SecretLintRuleCreator,
-    SecretLintRuleCreatorOptions,
+    SecretLintCoreDescriptorRule,
     SecretLintRuleReportHandler,
     SecretLintSourceCode
 } from "@secretlint/types";
+import { AllowMessage } from "./messages/filter-message-id";
 
 export type SecretLintRuleOptions = {
-    ruleCreator: SecretLintRuleCreator;
-    ruleCreatorOptions: SecretLintRuleCreatorOptions;
     context: SecretLintRuleContext;
+    descriptorRule: SecretLintCoreDescriptorRule;
 };
 
 export class SecretLintRule {
     private ruleReportHandle: SecretLintRuleReportHandler;
     private ruleCreator: SecretLintRuleCreator;
+    private descriptorRule: SecretLintCoreDescriptorRule;
 
-    constructor({ ruleCreator, ruleCreatorOptions, context }: SecretLintRuleOptions) {
-        this.ruleCreator = ruleCreator;
-        this.ruleReportHandle = ruleCreator.create(context, ruleCreatorOptions);
+    constructor({ descriptorRule, context }: SecretLintRuleOptions) {
+        this.descriptorRule = descriptorRule;
+        this.ruleCreator = descriptorRule.rule;
+        // normalize rule options
+        const ruleCreatorOptions = descriptorRule.options || {};
+        this.ruleReportHandle = this.ruleCreator.create(context, ruleCreatorOptions);
+    }
+
+    allowMessageIds(): AllowMessage[] {
+        if (!this.descriptorRule.allowMessageIds) {
+            return [];
+        }
+        const ruleId = this.ruleCreator.meta.id;
+        return this.descriptorRule.allowMessageIds.map(allowMessageId => {
+            return {
+                messageId: allowMessageId,
+                ruleId
+            };
+        });
     }
 
     supportSourceCode(sourceCode: SecretLintSourceCode) {

@@ -49,6 +49,7 @@ export const createRulePresetContext = ({
             const descriptorRuleOptions = descriptorRule ? descriptorRule.options : undefined;
             const descriptorRuleDisabled = descriptorRule ? descriptorRule.disabled : undefined;
             const descriptorRuleSeverity = descriptorRule ? descriptorRule.severity : undefined;
+            const descriptorAllowMessageIds = descriptorRule ? descriptorRule.allowMessageIds : undefined;
             const context = createRuleContext({
                 // rule id is a single rule in a preset
                 ruleId: rule.meta.id,
@@ -71,6 +72,7 @@ export const createRulePresetContext = ({
                     options: descriptorRuleOptions,
                     rule,
                     disabled: descriptorRuleDisabled,
+                    allowMessageIds: descriptorAllowMessageIds,
                     severity: descriptorRuleSeverity
                 },
                 context

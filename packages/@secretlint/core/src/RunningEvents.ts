@@ -8,8 +8,16 @@ import {
 import { PromiseEventEmitter } from "./helper/promise-event-emitter";
 import { SecretLintRule } from "./SecretLintRuleImpl";
 import { secretLintProfiler } from "@secretlint/profiler";
+import { AllowMessage } from "./messages/filter-message-id";
 
 export type RunningEvents = {
+    collectAllowMessageIds(): AllowMessage[];
+    /**
+     * register rule to Core
+     * In this function, the rule's option is frozen.
+     * @param descriptorRule
+     * @param context
+     */
     registerRule({
         descriptorRule,
         context
@@ -31,7 +39,15 @@ export const createRunningEvents = (): RunningEvents => {
     const contextEvents = new PromiseEventEmitter();
     const registerSet = new Set<string>();
     const LINT_HANDLE = Symbol("lint:start");
+    const rules: SecretLintRule[] = [];
     return {
+        collectAllowMessageIds(): AllowMessage[] {
+            const allowMessageIds: AllowMessage[] = [];
+            rules.forEach(rule => {
+                allowMessageIds.push(...rule.allowMessageIds());
+            });
+            return allowMessageIds;
+        },
         /**
          * Start to run linting
          * @param options
@@ -54,13 +70,11 @@ Duplicated rule.id is something wrong in .secretlintrc.
 `);
             }
             registerSet.add(descriptorRule.id);
-            // Normalized Rule Options
-            const ruleCreatorOptions = descriptorRule.options || {};
             const rule = new SecretLintRule({
-                ruleCreator: descriptorRule.rule,
-                ruleCreatorOptions: ruleCreatorOptions,
+                descriptorRule: descriptorRule,
                 context
             });
+            rules.push(rule);
             contextEvents.on(LINT_HANDLE, async ({ sourceCode }: { sourceCode: SecretLintSourceCode }) => {
                 // TODO: add more handler
                 // Call O￿￿rder?
@@ -88,6 +102,7 @@ Duplicated rule.id is something wrong in .secretlintrc.
         }) {
             // Normalized Rule Preset Options
             const rulePresetCreatorOptions = descriptorRulePreset.options || [];
+            // Internally, RulePreset#register call `registerRule`
             descriptorRulePreset.rule.create(context, rulePresetCreatorOptions);
         },
         isRegistered(ruleId: string): boolean {
