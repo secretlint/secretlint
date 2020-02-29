@@ -1,0 +1,80 @@
+{
+    "filePath": "[SNAPSHOT]/ng.basic-auth-in-markdown/input.txt",
+    "messages": [
+        {
+            "message": "found basic auth credential: https://user:pass@example.com",
+            "range": [
+                8,
+                37
+            ],
+            "ruleId": "@secretlint/secretlint-rule-basicauth",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 8
+                },
+                "end": {
+                    "line": 1,
+                    "column": 37
+                }
+            },
+            "severity": "error",
+            "messageId": "BasicAuth",
+            "data": {
+                "CREDENTIAL": "https://user:pass@example.com",
+                "user": "user",
+                "password": "pass"
+            }
+        },
+        {
+            "message": "found basic auth credential: https://user:pass@example.com",
+            "range": [
+                56,
+                85
+            ],
+            "ruleId": "@secretlint/secretlint-rule-basicauth",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 12
+                },
+                "end": {
+                    "line": 2,
+                    "column": 41
+                }
+            },
+            "severity": "error",
+            "messageId": "BasicAuth",
+            "data": {
+                "CREDENTIAL": "https://user:pass@example.com",
+                "user": "user",
+                "password": "pass"
+            }
+        },
+        {
+            "message": "found basic auth credential: https://user:pass@example.com",
+            "range": [
+                108,
+                137
+            ],
+            "ruleId": "@secretlint/secretlint-rule-basicauth",
+            "loc": {
+                "start": {
+                    "line": 3,
+                    "column": 17
+                },
+                "end": {
+                    "line": 3,
+                    "column": 46
+                }
+            },
+            "severity": "error",
+            "messageId": "BasicAuth",
+            "data": {
+                "CREDENTIAL": "https://user:pass@example.com",
+                "user": "user",
+                "password": "pass"
+            }
+        }
+    ]
+}

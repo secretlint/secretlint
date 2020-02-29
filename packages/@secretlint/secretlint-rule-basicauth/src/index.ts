@@ -36,7 +36,7 @@ function reportIfFoundBasicAuth({
 }) {
     // https://developer.mozilla.org/docs/Web/HTTP/Authentication
     // https://ihateregex.io/expr/url
-    const URL_PATTERN = /(?<protocol>(:?[-a-zA-Z0-9_]{1,256})):\/\/(?<user>[-a-zA-Z0-9_]{1,256}):(?<password>[-a-zA-Z0-9_]{1,256})@(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&=]*)/gm;
+    const URL_PATTERN = /(?<protocol>(:?[-a-zA-Z0-9_]{1,256})):\/\/(?<user>[-a-zA-Z0-9_]{1,256}):(?<password>[-a-zA-Z0-9_]{1,256})@[-a-zA-Z0-9%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b/g;
     const results = source.content.matchAll(URL_PATTERN);
     for (const result of results) {
         const index = result.index || 0;
