@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1582939146369,
+  "lastUpdate": 1582969150732,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -2506,6 +2506,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.65,
             "range": "±2.76%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a28ef9eb9b3803984ec37bbbd9cdf35e7d4b67a6",
+          "message": "feat: support terminalLink (#65)\n\n* feat: add docsUrl and show url in output\r\n\r\n* feat: support terminalLink\r\n\r\n* test: update snapshots",
+          "timestamp": "2020-02-29T18:36:37+09:00",
+          "tree_id": "ac807c0c6faed57fb7aca3ed9fb30dfdbecf6926",
+          "url": "https://github.com/secretlint/secretlint/commit/a28ef9eb9b3803984ec37bbbd9cdf35e7d4b67a6"
+        },
+        "date": 1582969150104,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.47,
+            "range": "±1.69%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.56,
+            "range": "±0.92%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
