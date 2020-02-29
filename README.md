@@ -279,6 +279,12 @@ jobs:
         run: npx secretlint "**/*"
 ```
 
+This configuration also integrate Pull Request review comment via [actions/setup-node](https://github.com/actions/setup-node).
+
+![github-actions.png](./docs/assets/github-actions.png)
+
+- Example Repository: https://github.com/azu/secretlint-github-actions-example
+- Example Pull Request: https://github.com/azu/secretlint-github-actions-example/pull/1/files
 
 ## Architecture
 
