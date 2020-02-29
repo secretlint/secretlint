@@ -20,6 +20,7 @@
             },
             "severity": "error",
             "messageId": "BasicAuth",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-basicauth/README.md",
             "data": {
                 "CREDENTIAL": "ftp://user:pass@example.com",
                 "user": "user",

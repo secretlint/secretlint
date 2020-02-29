@@ -248,6 +248,38 @@ Example setup repository:
 
 - https://github.com/azu/secretlint-pre-commit-example
 
+### GitHub Actions
+
+If you already set secretlint [Using Node.js](#using-nodejs), you can run secretlint with your configuration on [GitHub Actions](https://github.co.jp/features/actions).
+
+Put `.github/workflows/secretlint.yml` in your repository.
+
+```yaml
+name: Secretlint
+on: [push, pull_request]
+env:
+  CI: true
+jobs:
+  test:
+    name: "Secretlint"
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        node_version: [12]
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: setup Node ${{ matrix.node_version }}
+        uses: actions/setup-node@v1
+        with:
+          node_version: ${{ matrix.node_version }}
+      - name: Install
+        run: npm install
+      - name: Lint with Secretlint
+        run: npx secretlint "**/*"
+```
+
+
 ## Architecture
 
 ### Opt-in instead of Opt-out

@@ -95,7 +95,11 @@ export const creator: SecretLintRuleCreator<Options> = {
         id: "@secretlint/secretlint-rule-gcp",
         recommended: true,
         type: "scanner",
-        supportedContentTypes: ["all"]
+        supportedContentTypes: ["all"],
+        docs: {
+            url:
+                "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-gcp/README.md"
+        }
     },
     create(context, options) {
         const t = context.createTranslator(messages);

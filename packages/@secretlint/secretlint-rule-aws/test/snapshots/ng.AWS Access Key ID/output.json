@@ -20,6 +20,7 @@
             },
             "severity": "error",
             "messageId": "AWSAccessKeyID",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md",
             "data": {
                 "ID": "AKIAIOSFODNN7SECRETS"
             }

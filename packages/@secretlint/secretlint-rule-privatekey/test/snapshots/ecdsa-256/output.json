@@ -20,6 +20,7 @@
             },
             "severity": "error",
             "messageId": "PrivateKey",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-privatekey/README.md",
             "data": {
                 "KEY": "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAaAAAABNlY2RzYS\n1zaGEyLW5pc3RwMjU2AAAACG5pc3RwMjU2AAAAQQR5e/t7H9CI3aR7QIw8gwO9L/nlnY8i\nhiAIluGc8amA+mJtyZx9EX4pVgp37yKoIPzWA5AIaG+0jaXUu0NJTarLAAAAsJwk9LmcJP\nS5AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBHl7+3sf0IjdpHtA\njDyDA70v+eWdjyKGIAiW4ZzxqYD6Ym3JnH0RfilWCnfvIqgg/NYDkAhob7SNpdS7Q0lNqs\nsAAAAgVYqGP29bZLo1K56VK6V7OuVQISfQlD6qHCrEnFOXDacAAAAYYXp1QEFaLU1hY0Jv\nb2stUHJvLmxvY2Fs\n-----END OPENSSH PRIVATE KEY-----\n"
             }

@@ -20,6 +20,7 @@
             },
             "severity": "error",
             "messageId": "PackageJSON_xOauthToken",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-npm/README.md",
             "data": {
                 "TOKEN": "111da111qqqq309bqq562159952c2c2a11111a1"
             }

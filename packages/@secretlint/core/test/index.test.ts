@@ -2,6 +2,7 @@ import assert from "assert";
 import { lintSource } from "../src";
 import { SecretLintRawSource } from "@secretlint/types";
 import example from "./fixtures/secretlint-rule-example";
+import { assertJsonEqual } from "assert-json-equal";
 
 describe("lintSource", function() {
     it("should lint source with rules", async () => {
@@ -20,7 +21,7 @@ describe("lintSource", function() {
             ]
         });
         assert.strictEqual(result.filePath, source.filePath);
-        assert.deepStrictEqual(result.messages, [
+        assertJsonEqual(result.messages, [
             {
                 data: {
                     ID: "SECRET"

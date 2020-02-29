@@ -6,19 +6,24 @@ import {
     getFormatterList as textlintGetFormatterList
 } from "@textlint/linter-formatter";
 import { SecretLintCoreResult } from "@secretlint/types";
+import terminalLink from "terminal-link";
 
 const debug = require("debug")("@secretlint/formatter");
 
 export interface SecretLintFormatterConfig {
     formatterName: string;
     color?: boolean;
+    terminalLink?: boolean;
 }
 
 /**
  * Convert secretlint result to textlint result for formatter
  * @param secretLintCoreResult
  */
-const convertSecretLintResultToTextlintResult = (secretLintCoreResult: SecretLintCoreResult): TextlintResult => {
+const convertSecretLintResultToTextlintResult = (
+    secretLintCoreResult: SecretLintCoreResult,
+    { enableTerminalLink }: { enableTerminalLink: boolean }
+): TextlintResult => {
     return {
         filePath: secretLintCoreResult.filePath,
         messages: secretLintCoreResult.messages.map(message => {
@@ -31,6 +36,15 @@ const convertSecretLintResultToTextlintResult = (secretLintCoreResult: SecretLin
                     ? 2
                     : 0;
 
+            // If the message has docsUrl, try to link to docsUrl
+            const messageId =
+                enableTerminalLink && message.docsUrl
+                    ? terminalLink(message.messageId, `${message.docsUrl}#${message.messageId}`, {
+                          fallback: (text, _url) => {
+                              return text;
+                          }
+                      })
+                    : message.messageId;
             return {
                 // Preset rule format
                 // {preset-id} > {rule-id}
@@ -41,7 +55,7 @@ const convertSecretLintResultToTextlintResult = (secretLintCoreResult: SecretLin
                 line: message.loc.start.line,
                 column: message.loc.start.column,
                 severity: severityLevel,
-                message: `[${message.messageId}] ${message.message}`,
+                message: `[${messageId}] ${message.message}`,
                 data: message.data,
                 // NO NEED - DUMMY DATA
                 fix: undefined,
@@ -53,11 +67,18 @@ const convertSecretLintResultToTextlintResult = (secretLintCoreResult: SecretLin
 
 export function createFormatter(formatterConfig: SecretLintFormatterConfig) {
     const formatterName = formatterConfig.formatterName;
+    const enableTerminalLink = formatterConfig.terminalLink ?? true;
     debug(`formatterName: ${formatterName}`);
     const format = textlintCreateFormatter(formatterConfig);
     return {
         format: (results: SecretLintCoreResult[]) => {
-            return format(results.map(result => convertSecretLintResultToTextlintResult(result)));
+            return format(
+                results.map(result =>
+                    convertSecretLintResultToTextlintResult(result, {
+                        enableTerminalLink
+                    })
+                )
+            );
         }
     };
 }

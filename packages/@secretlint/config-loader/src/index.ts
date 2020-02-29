@@ -101,31 +101,12 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
             rules.push({
                 id: configDescriptorRule.id,
                 rule: ruleModule,
-                ...(secretLintConfigDescriptorRules
-                    ? {
-                          rules: secretLintConfigDescriptorRules
-                      }
-                    : {}),
-                ...("options" in configDescriptorRule
-                    ? {
-                          options: configDescriptorRule.options
-                      }
-                    : {}),
-                ...("severity" in configDescriptorRule
-                    ? {
-                          severity: configDescriptorRule.severity
-                      }
-                    : {}),
-                ...("disabled" in configDescriptorRule
-                    ? {
-                          disabled: configDescriptorRule.disabled
-                      }
-                    : {}),
-                ...("allowMessageIds" in configDescriptorRule
-                    ? {
-                          allowMessageIds: configDescriptorRule.allowMessageIds
-                      }
-                    : {})
+                rules: secretLintConfigDescriptorRules,
+                options: configDescriptorRule.options,
+                severity: "severity" in configDescriptorRule ? configDescriptorRule.severity : undefined,
+                disabled: configDescriptorRule.disabled,
+                allowMessageIds:
+                    "allowMessageIds" in configDescriptorRule ? configDescriptorRule.allowMessageIds : undefined
             });
         } catch (error) {
             errors.push(error);
