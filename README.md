@@ -4,11 +4,12 @@
 
 > Secretlint is that Pluggable linting tool to prevent committing credential.
 
-## Purpose
+## Features
 
-- Scan files and if the file has secret and report it
-- Prevent to commit credential files
-- Pluggable architecture
+- Scanner: Found credentials and report these
+- Project Friendly: Easy to setup your project and integrate CI services
+- Pre-Commit Hook: Prevent committing credential files
+- Pluggable: Add custom rule and flexible configuration
 
 ## Motivation
 
@@ -16,10 +17,10 @@
 	- It main use-case is globally installation
 	- Secretlint want to install for a project and customize setting per project.
 - [repo-security-scanner](https://github.com/UKHomeOffice/repo-security-scanner), [Gitleaks](https://github.com/zricethezav/gitleaks) and [truffleHog](https://github.com/dxa4481/truffleHog) is good scan tools
-	- We need to flexible customize that include ignore by comment, ignore like gitignore
+	- We need to flexible customize that include ignoring definitions, custom rules.
 - [detect-secrets](https://github.com/Yelp/detect-secrets) is similar tools, but it adopt opt-out approach
     - Secretlint adopt opt-in approach  
-    - We also need to custom plugin by user
+    - We also need to custom rules by user
 		- See [Bring-your own-plugins (BYOP), via --custom-plugins option by KevinHock · Pull Request #255 · Yelp/detect-secrets](https://github.com/Yelp/detect-secrets/pull/255)
 
 ## Installation
