@@ -11,8 +11,20 @@ import terminalLink from "terminal-link";
 const debug = require("debug")("@secretlint/formatter");
 
 export interface SecretLintFormatterConfig {
+    /**
+     * Using Formatter name
+     */
     formatterName: string;
+    /**
+     * Output color
+     * Default: true
+     */
     color?: boolean;
+    /**
+     * If terminalLink is true, some formatter will output that includes clickable click
+     * Support Terminal: https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda
+     * Default: false
+     */
     terminalLink?: boolean;
 }
 
@@ -37,14 +49,14 @@ const convertSecretLintResultToTextlintResult = (
                     : 0;
 
             // If the message has docsUrl, try to link to docsUrl
-            const messageId =
-                enableTerminalLink && message.docsUrl
-                    ? terminalLink(message.messageId, `${message.docsUrl}#${message.messageId}`, {
-                          fallback: (text, _url) => {
-                              return text;
-                          }
-                      })
-                    : message.messageId;
+            const canEmbedDocUrl = enableTerminalLink && message.docsUrl;
+            const messageId = canEmbedDocUrl
+                ? terminalLink(message.messageId, `${message.docsUrl}#${message.messageId}`, {
+                      fallback: (text, _url) => {
+                          return text;
+                      }
+                  })
+                : message.messageId;
             return {
                 // Preset rule format
                 // {preset-id} > {rule-id}
@@ -67,7 +79,11 @@ const convertSecretLintResultToTextlintResult = (
 
 export function createFormatter(formatterConfig: SecretLintFormatterConfig) {
     const formatterName = formatterConfig.formatterName;
-    const enableTerminalLink = formatterConfig.terminalLink ?? true;
+    const isHumanReadableFormat = ["stylish", "pretty-error"].includes(formatterName);
+    /**
+     * Terminal Link is enabled when use human-readable format and option is enabled
+     */
+    const enableTerminalLink = isHumanReadableFormat ?? formatterConfig.terminalLink ?? false;
     debug(`formatterName: ${formatterName}`);
     const format = textlintCreateFormatter(formatterConfig);
     return {

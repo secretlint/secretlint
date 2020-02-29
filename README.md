@@ -289,13 +289,23 @@ Secretlint adopt opt-in approach.
 In our experience, linting tools that report various errors by default is difficult to use.
 Opt-in approach help to introduce Secretlint increasing.
 
-### A documentation per a Rule
+### Rule as Documentation
 
 We think a rule as a documentation.
+So, Each rule should have reasonable documentation.
 
-Each rule should have reasonable documentation.
+We need to describe why this file is error. It lead to reduce false-positive error.
 
-- [ ]  How?
+Also, Secretlint CLI support hyperlink in Terminal.
+It means that you can jump to rule documentation from lint error message directly.
+
+![clickable link in output](./docs/assets/docsUrl.png)
+
+> Example on iTerm 2: Cmd + Click error's messageId and open [AWSSecretAccessKey](https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md#awssecretaccesskey) on your browser. 
+
+If you want to know support terminal, please see [Hyperlinks in Terminal Emulators](https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda). 
+
+Also, Welcome to Contribution about secretlint documentation!
 
 ### Why Node.js?
 
@@ -308,7 +318,7 @@ Each rule should have reasonable documentation.
 	- So Node.js user familiar with pluggable linting tools
 	- Previously, I created textlint as same approach, so I familiar with Node.js
 
-If you interesting in Docker support, please see [Docker support · Issue #7](https://github.com/secretlint/secretlint/issues/7)
+Of course, secretlint also support [Docker](https://hub.docker.com/r/secretlint/secretlint).
 
 ## Changelog
 
