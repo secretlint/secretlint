@@ -5,6 +5,7 @@ import {
     SecretLintCoreReportDescriptor,
     SecretLintCoreResultMessage,
     SecretLintRuleContext,
+    SecretLintRuleCreator,
     SecretLintRuleSeverityLevel,
     SecretLintSourceCode
 } from "@secretlint/types";
@@ -55,6 +56,7 @@ export type CreateRuleContextOptions = {
      * If the rule is in preset, pass rule preset's id as ruleParentId
      */
     ruleParentId?: string;
+    meta: SecretLintRuleCreator["meta"];
     severity?: SecretLintRuleSeverityLevel;
     sourceCode: SecretLintSourceCode;
     contextEvents: ContextEvents;
@@ -63,6 +65,7 @@ export type CreateRuleContextOptions = {
 export const createRuleContext = ({
     ruleId,
     ruleParentId,
+    meta,
     severity,
     sourceCode,
     contextEvents,
@@ -95,6 +98,7 @@ export const createRuleContext = ({
                     severity: severityLevel,
                     message,
                     messageId,
+                    docsUrl: meta.docs?.url ? `${meta.docs.url}#${messageId}` : undefined,
                     data
                 });
             } else {
@@ -105,6 +109,7 @@ export const createRuleContext = ({
                     severity: severityLevel,
                     message,
                     messageId,
+                    docsUrl: meta.docs?.url ? `${meta.docs.url}#${messageId}` : undefined,
                     data
                 });
             }

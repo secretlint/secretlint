@@ -60,7 +60,11 @@ export const creator: SecretLintRuleCreator<Options> = {
         id: "@secretlint/secretlint-rule-privatekey",
         recommended: true,
         type: "scanner",
-        supportedContentTypes: ["text"]
+        supportedContentTypes: ["text"],
+        docs: {
+            url:
+                "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-privatekey/README.md"
+        }
     },
     create(context, options) {
         const t = context.createTranslator(messages);

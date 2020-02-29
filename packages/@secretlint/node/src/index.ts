@@ -25,6 +25,12 @@ export type SecretLintEngineOptions = {
      * Specify formatter name for output
      */
     formatter: string;
+    /**
+     * If terminalLink is true, some formatter will output that includes clickable click
+     * Support Terminal: https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda
+     * Default: false
+     */
+    terminalLink?: boolean;
 };
 
 const lintFile = async (filePath: string, options: SecretLintCoreDescriptor) => {
@@ -60,8 +66,9 @@ const executeOnContent = async ({
         type: "@node>format::start"
     });
     const formatter = createFormatter({
-        color: options.color,
-        formatterName: options.formatter
+        color: options.color ?? true,
+        formatterName: options.formatter,
+        terminalLink: options.terminalLink ?? false
     });
     const output = formatter.format([result]);
     secretLintProfiler.mark({
@@ -91,8 +98,9 @@ const executeOnFiles = async ({
         type: "@node>format::start"
     });
     const formatter = createFormatter({
-        color: options.color,
-        formatterName: options.formatter
+        color: options.color ?? true,
+        formatterName: options.formatter,
+        terminalLink: options.terminalLink ?? false
     });
     const output = formatter.format(results);
     secretLintProfiler.mark({

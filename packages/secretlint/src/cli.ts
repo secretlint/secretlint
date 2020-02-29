@@ -2,6 +2,7 @@ import meow from "meow";
 import { runSecretLint } from "./index";
 import { runConfigCreator } from "./create-secretlintrc";
 import { secretLintProfiler } from "@secretlint/profiler";
+import { getFormatterList } from "@secretlint/formatter";
 
 const debug = require("debug")("secretlint");
 export const cli = meow(
@@ -14,13 +15,16 @@ export const cli = meow(
       https://github.com/micromatch/micromatch#matching-features
  
     Options
-      --init setup config file. Create .secretlintrc.json file from your package.json
-      --format formatter name. Default: stylish
-      --output-file output file path that is written of reported result.
-      --no-color disable color of output.
-      --secretlintrc Path to .secretlintrc config file. Default: .secretlintrc.*
-      --secretlintignore Path to .secretlintignore file. Default: .secretlintignore
-      --profile Show performance profile 
+      --init             setup config file. Create .secretlintrc.json file from your package.json
+      --format           formatter name. Default: "stylish". Available Formatter: ${getFormatterList()
+          .map(item => item.name)
+          .join(", ")}
+      --output-file      output file path that is written of reported result.
+      --no-color         disable ANSI-color of output.
+      --no-terminalLink  disable terminalLink of output.
+      --secretlintrc     path to .secretlintrc config file. Default: .secretlintrc.*
+      --secretlintignore path to .secretlintignore file. Default: .secretlintignore
+      --profile          show performance profile 
  
     Examples
       $ secretlint ./README.md
@@ -47,7 +51,19 @@ export const cli = meow(
                 type: "string",
                 default: ".secretlintignore"
             },
+            /**
+             * CLI enable ANSI-color of output by default
+             */
             color: {
+                type: "boolean",
+                default: true
+            },
+            /**
+             * CLI enable terminalLink by default.
+             * Some formatter will output that includes clickable clink
+             * https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda
+             */
+            terminalLink: {
                 type: "boolean",
                 default: true
             },
@@ -99,7 +115,8 @@ export const run = (
             cwd: cwd,
             configFilePath: flags.secretlintrc,
             formatter: flags.format,
-            color: flags.color
+            color: flags.color,
+            terminalLink: flags.terminalLink
         }
     }).finally(async () => {
         secretLintProfiler.mark({

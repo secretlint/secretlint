@@ -13,7 +13,11 @@ export const creator: SecretLintRuleCreator = {
         id: "@secretlint/secretlint-rule-example",
         recommended: true,
         type: "scanner",
-        supportedContentTypes: ["text"]
+        supportedContentTypes: ["text"],
+        docs: {
+            url:
+                "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-example/README.md"
+        }
     },
     create(context) {
         const t = context.createTranslator(messages);

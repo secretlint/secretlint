@@ -139,6 +139,7 @@ export const registerRule = ({
         const context = createRuleContext({
             ruleId: ruleId,
             severity: descriptorRule.severity,
+            meta: descriptorRule.rule.meta,
             sourceCode,
             contextEvents: contextEvents,
             sharedOptions: options

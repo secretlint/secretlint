@@ -55,7 +55,8 @@
     "rimraf": "^3.0.2",
     "ts-node": "^8.6.2",
     "ts-node-test-register": "^8.0.1",
-    "typescript": "^3.8.2"
+    "typescript": "^3.8.2",
+    "assert-json-equal": "^1.0.1"
   },
   "publishConfig": {
     "access": "public"

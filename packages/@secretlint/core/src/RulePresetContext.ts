@@ -55,6 +55,7 @@ export const createRulePresetContext = ({
                 ruleId: rule.meta.id,
                 // parent rule id is rule preset id
                 ruleParentId: descriptorRulePreset.id,
+                meta: rule.meta,
                 severity: descriptorRuleSeverity,
                 sourceCode,
                 contextEvents: contextEvents,

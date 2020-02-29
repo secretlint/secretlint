@@ -84,6 +84,11 @@ export type SecretLintCoreResultMessage = {
     ruleParentId?: string;
     message: string;
     messageId: string;
+    /**
+     * It is based url for documentation
+     * If it is set, show `${docsUrl}#${messageId}` in output
+     */
+    docsUrl?: string;
     range: number[];
     loc: SecretLintSourceNodeLocation;
     severity: SecretLintRuleSeverityLevel;

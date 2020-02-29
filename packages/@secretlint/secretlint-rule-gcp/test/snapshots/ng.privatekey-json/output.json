@@ -19,7 +19,8 @@
                 }
             },
             "severity": "error",
-            "messageId": "PrivateKeyJSON"
+            "messageId": "PrivateKeyJSON",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-gcp/README.md#PrivateKeyJSON"
         }
     ]
 }
