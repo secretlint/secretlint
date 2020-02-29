@@ -1,0 +1,51 @@
+{
+    "filePath": "[SNAPSHOT]/ng.IncomingWebhook/input.txt",
+    "messages": [
+        {
+            "message": "found Slack Incoming Webhook: https://hooks.slack.com/services/TXXXXX/BXXXXX/XXXXXXXXXX",
+            "range": [
+                0,
+                57
+            ],
+            "ruleId": "@secretlint/secretlint-rule-slack",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 57
+                }
+            },
+            "severity": "error",
+            "messageId": "IncomingWebhook",
+            "data": {
+                "URL": "https://hooks.slack.com/services/TXXXXX/BXXXXX/XXXXXXXXXX"
+            }
+        },
+        {
+            "message": "found Slack Incoming Webhook: https://hooks.slack.com/services/T11111AA/BAAAA111A/qKirRWalryBGqKirRWalryBG",
+            "range": [
+                65,
+                141
+            ],
+            "ruleId": "@secretlint/secretlint-rule-slack",
+            "loc": {
+                "start": {
+                    "line": 3,
+                    "column": 6
+                },
+                "end": {
+                    "line": 3,
+                    "column": 82
+                }
+            },
+            "severity": "error",
+            "messageId": "IncomingWebhook",
+            "data": {
+                "URL": "https://hooks.slack.com/services/T11111AA/BAAAA111A/qKirRWalryBGqKirRWalryBG"
+            }
+        }
+    ]
+}

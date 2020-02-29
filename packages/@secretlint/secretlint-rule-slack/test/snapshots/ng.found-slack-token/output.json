@@ -19,7 +19,7 @@
                 }
             },
             "severity": "error",
-            "messageId": "FOUND_SLACK_TOKEN",
+            "messageId": "SLACK_TOKEN",
             "data": {
                 "TOKEN": "xoxa-23984754863-2348975623111"
             }
@@ -42,7 +42,7 @@
                 }
             },
             "severity": "error",
-            "messageId": "FOUND_SLACK_TOKEN",
+            "messageId": "SLACK_TOKEN",
             "data": {
                 "TOKEN": "xoxb-23984754863-2348975623112"
             }
@@ -65,7 +65,7 @@
                 }
             },
             "severity": "error",
-            "messageId": "FOUND_SLACK_TOKEN",
+            "messageId": "SLACK_TOKEN",
             "data": {
                 "TOKEN": "xoxo-23984754863-2348975623113"
             }
@@ -88,7 +88,7 @@
                 }
             },
             "severity": "error",
-            "messageId": "FOUND_SLACK_TOKEN",
+            "messageId": "SLACK_TOKEN",
             "data": {
                 "TOKEN": "xoxa-23984754863-2348975623114"
             }
