@@ -1,6 +1,6 @@
 # Secretlint [![Actions Status](https://github.com/secretlint/secretlint/workflows/test/badge.svg)](https://github.com/secretlint/secretlint/actions?query=workflow%3A"test")
 
-Secretlint is pluggable linting tool to prevent commit secret/credential file.
+![Secretlint is that Pluggable linting tool to prevent committing credential.](./docs/assets/SecretLintLP.png)
 
 ## Purpose
 
