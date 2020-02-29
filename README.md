@@ -2,6 +2,8 @@
 
 ![Secretlint is that Pluggable linting tool to prevent committing credential.](./docs/assets/SecretLintLP.png)
 
+> Secretlint is that Pluggable linting tool to prevent committing credential.
+
 ## Purpose
 
 - Scan files and if the file has secret and report it
