@@ -10,6 +10,7 @@
 - Project Friendly: Easy to setup your project and integrate CI services
 - Pre-Commit Hook: Prevent committing credential files
 - Pluggable: Create custom rule and flexible configuration
+- Documentation: Describe the reason that rule detect it as secret
 
 ## Motivation
 
