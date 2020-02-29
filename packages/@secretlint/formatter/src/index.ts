@@ -49,14 +49,14 @@ const convertSecretLintResultToTextlintResult = (
                     : 0;
 
             // If the message has docsUrl, try to link to docsUrl
-            const canEmbedDocUrl = enableTerminalLink && message.docsUrl;
-            const messageId = canEmbedDocUrl
-                ? terminalLink(message.messageId, `${message.docsUrl}#${message.messageId}`, {
-                      fallback: (text, _url) => {
-                          return text;
-                      }
-                  })
-                : message.messageId;
+            const messageId =
+                enableTerminalLink && message.docsUrl
+                    ? terminalLink(message.messageId, message.docsUrl, {
+                          fallback: (text, _url) => {
+                              return text;
+                          }
+                      })
+                    : message.messageId;
             return {
                 // Preset rule format
                 // {preset-id} > {rule-id}

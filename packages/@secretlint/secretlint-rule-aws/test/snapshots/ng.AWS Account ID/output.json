@@ -20,7 +20,7 @@
             },
             "severity": "error",
             "messageId": "AWSAccountID",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md#AWSAccountID",
             "data": {
                 "ID": "\"AWS_ACCOUNT_ID\"=>0000-0000-0000"
             }

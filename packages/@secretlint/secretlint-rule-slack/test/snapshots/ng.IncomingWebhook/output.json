@@ -20,7 +20,7 @@
             },
             "severity": "error",
             "messageId": "IncomingWebhook",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-slack/README.md",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-slack/README.md#IncomingWebhook",
             "data": {
                 "URL": "https://hooks.slack.com/services/TXXXXX/BXXXXX/XXXXXXXXXX"
             }
@@ -44,7 +44,7 @@
             },
             "severity": "error",
             "messageId": "IncomingWebhook",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-slack/README.md",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-slack/README.md#IncomingWebhook",
             "data": {
                 "URL": "https://hooks.slack.com/services/T11111AA/BAAAA111A/qKirRWalryBGqKirRWalryBG"
             }

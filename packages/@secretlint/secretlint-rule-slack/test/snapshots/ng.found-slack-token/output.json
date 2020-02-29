@@ -20,7 +20,7 @@
             },
             "severity": "error",
             "messageId": "SLACK_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-slack/README.md",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-slack/README.md#SLACK_TOKEN",
             "data": {
                 "TOKEN": "xoxa-23984754863-2348975623111"
             }
@@ -44,7 +44,7 @@
             },
             "severity": "error",
             "messageId": "SLACK_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-slack/README.md",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-slack/README.md#SLACK_TOKEN",
             "data": {
                 "TOKEN": "xoxb-23984754863-2348975623112"
             }
@@ -68,7 +68,7 @@
             },
             "severity": "error",
             "messageId": "SLACK_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-slack/README.md",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-slack/README.md#SLACK_TOKEN",
             "data": {
                 "TOKEN": "xoxo-23984754863-2348975623113"
             }
@@ -92,7 +92,7 @@
             },
             "severity": "error",
             "messageId": "SLACK_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-slack/README.md",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-slack/README.md#SLACK_TOKEN",
             "data": {
                 "TOKEN": "xoxa-23984754863-2348975623114"
             }

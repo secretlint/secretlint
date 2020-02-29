@@ -98,7 +98,7 @@ export const createRuleContext = ({
                     severity: severityLevel,
                     message,
                     messageId,
-                    docsUrl: meta.docs?.url,
+                    docsUrl: meta.docs?.url ? `${meta.docs.url}#${messageId}` : undefined,
                     data
                 });
             } else {
@@ -109,7 +109,7 @@ export const createRuleContext = ({
                     severity: severityLevel,
                     message,
                     messageId,
-                    docsUrl: meta.docs?.url,
+                    docsUrl: meta.docs?.url ? `${meta.docs.url}#${messageId}` : undefined,
                     data
                 });
             }
