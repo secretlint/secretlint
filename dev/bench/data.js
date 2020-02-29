@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1582975372961,
+  "lastUpdate": 1582975397796,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -2810,6 +2810,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.64,
             "range": "±6.04%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "distinct": true,
+          "id": "9840ce2308acfa957d66e7aa6d46739f99e0ffb3",
+          "message": "Update README",
+          "timestamp": "2020-02-29T20:18:28+09:00",
+          "tree_id": "964a8c93ffaf4cf6ca417f410e0450d2a701d789",
+          "url": "https://github.com/secretlint/secretlint/commit/9840ce2308acfa957d66e7aa6d46739f99e0ffb3"
+        },
+        "date": 1582975396896,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.5,
+            "range": "±3.47%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±2.51%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
