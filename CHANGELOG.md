@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/secretlint/secretlint/compare/v0.5.0...v0.6.0) (2020-02-29)
+
+
+### Bug Fixes
+
+* **secretlint-rule-basicauth:** fix regexp pattern ([5bb36be](https://github.com/secretlint/secretlint/commit/5bb36be5421f347639b9f00c867cb8cb48f81f5f))
+
+
+### Features
+
+* support terminalLink ([#65](https://github.com/secretlint/secretlint/issues/65)) ([a28ef9e](https://github.com/secretlint/secretlint/commit/a28ef9eb9b3803984ec37bbbd9cdf35e7d4b67a6))
+* **slack:** support Incoming Webhook ([a68b875](https://github.com/secretlint/secretlint/commit/a68b875843b9f8f41bb21c3ad229a272bddfdf3e)), closes [#63](https://github.com/secretlint/secretlint/issues/63)
+
+
+
+
+
 # [0.5.0](https://github.com/secretlint/secretlint/compare/v0.4.2...v0.5.0) (2020-02-28)
 
 
