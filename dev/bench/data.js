@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1582936586072,
+  "lastUpdate": 1582938829648,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -2430,6 +2430,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.6,
             "range": "±1.37%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "distinct": true,
+          "id": "a68b875843b9f8f41bb21c3ad229a272bddfdf3e",
+          "message": "feat(slack): support Incoming Webhook\n\nfix #63",
+          "timestamp": "2020-02-29T10:11:07+09:00",
+          "tree_id": "c318337f56398c4a65fce43c6bd41a86aeafb6a2",
+          "url": "https://github.com/secretlint/secretlint/commit/a68b875843b9f8f41bb21c3ad229a272bddfdf3e"
+        },
+        "date": 1582938828926,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.57,
+            "range": "±0.89%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.59,
+            "range": "±0.81%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
