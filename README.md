@@ -9,7 +9,7 @@
 - Scanner: Found credentials and report these
 - Project Friendly: Easy to setup your project and integrate CI services
 - Pre-Commit Hook: Prevent committing credential files
-- Pluggable: Add custom rule and flexible configuration
+- Pluggable: Create custom rule and flexible configuration
 
 ## Motivation
 
