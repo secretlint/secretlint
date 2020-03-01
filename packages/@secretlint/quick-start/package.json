@@ -25,7 +25,7 @@
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
     "bin": {
-        "secretlint-quick-start": "./bin/quick-start.js"
+        "quick-start": "./bin/quick-start.js"
     },
     "directories": {
         "lib": "lib",
