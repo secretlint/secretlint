@@ -20,7 +20,8 @@
     "files": [
         "bin/",
         "lib/",
-        "src/"
+        "src/",
+        "config/"
     ],
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
