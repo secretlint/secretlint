@@ -23,6 +23,7 @@ export const cli = meow(
       --no-color         disable ANSI-color of output.
       --no-terminalLink  disable terminalLink of output.
       --secretlintrc     path to .secretlintrc config file. Default: .secretlintrc.*
+      --secretlintrc     path to .secretlintrc config file. Default: .secretlintrc.*
       --secretlintignore path to .secretlintignore file. Default: .secretlintignore
       --profile          show performance profile 
  

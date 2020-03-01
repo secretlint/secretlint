@@ -6,23 +6,29 @@
 
 ## Features
 
-- Scanner: Found credentials and report these
+- Scanner: Found credentials in a project and report these
 - Project Friendly: Easy to setup your project and integrate CI services
 - Pre-Commit Hook: Prevent committing credential files
 - Pluggable: Allow to create custom rule and flexible configuration
 - Documentation: Describe the reason that rule detect it as secret
 
-## Motivation
+## Quick Start
 
-- [git-secrets](https://github.com/awslabs/git-secrets) is useful, but it is hard to setup per project.
-	- It main use-case is globally installation
-	- Secretlint want to install for a project and customize setting per project.
-- [repo-security-scanner](https://github.com/UKHomeOffice/repo-security-scanner), [Gitleaks](https://github.com/zricethezav/gitleaks) and [truffleHog](https://github.com/dxa4481/truffleHog) is good scan tools
-	- Secretlint need to flexible customize that include ignoring definitions, custom rules.
-- [detect-secrets](https://github.com/Yelp/detect-secrets) is similar tools, but it adopt opt-out approach
-    - Secretlint adopt opt-in approach  
-    - We also need to custom rules by user
-		- See [Bring-your own-plugins (BYOP), via --custom-plugins option by KevinHock · Pull Request #255 · Yelp/detect-secrets](https://github.com/Yelp/detect-secrets/pull/255)
+You can try to use Secretlint on your project at one command.
+
+If you already have installed Docker:
+
+    docker run -v `pwd`:`pwd` -w `pwd` -it secretlint/secretlint secretlint "**/*"
+
+If you already have installed Node.js:
+
+    npx @secretlint/quick-start "**/*"
+
+After running, 
+If you got empty result and exit status is `0`, your project is secure.
+Otherwise you got some error report, your project includes credential as plain format.
+
+You want to get continuous security, Please see following installation guide and setup pre-commit hook and CI.
 
 ## Installation
 
@@ -298,6 +304,19 @@ This configuration also integrate Pull Request review comment via [actions/setup
 
 - Example Repository: https://github.com/azu/secretlint-github-actions-example
 - Example Pull Request: https://github.com/azu/secretlint-github-actions-example/pull/1/files
+
+
+## Motivation
+
+- [git-secrets](https://github.com/awslabs/git-secrets) is useful, but it is hard to setup per project.
+	- It main use-case is globally installation
+	- Secretlint want to install for a project and customize setting per project.
+- [repo-security-scanner](https://github.com/UKHomeOffice/repo-security-scanner), [Gitleaks](https://github.com/zricethezav/gitleaks) and [truffleHog](https://github.com/dxa4481/truffleHog) is good scan tools
+	- Secretlint need to flexible customize that include ignoring definitions, custom rules.
+- [detect-secrets](https://github.com/Yelp/detect-secrets) is similar tools, but it adopt opt-out approach
+    - Secretlint adopt opt-in approach  
+    - We also need to custom rules by user
+		- See [Bring-your own-plugins (BYOP), via --custom-plugins option by KevinHock · Pull Request #255 · Yelp/detect-secrets](https://github.com/Yelp/detect-secrets/pull/255)
 
 ## Architecture
 
