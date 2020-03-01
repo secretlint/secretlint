@@ -65,7 +65,7 @@ const executeOnContent = async ({
         },
         config
     );
-    debug("executeOnContent result: %O", result);
+    debug("executeOnContent result: %o", result);
     secretLintProfiler.mark({
         type: "@node>format::start"
     });
