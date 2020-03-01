@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1583048559384,
+  "lastUpdate": 1583050932325,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -3114,6 +3114,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.62,
             "range": "±1.41%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "8887af1adb411ba8dacce0e3e5a497f0bb822c85",
+          "message": "fix(quick-start): fix bin script name (#70)\n\n* fix(quick-start): fix bin script name\r\n\r\n* chore(changeset): enable commit\r\n\r\n* Create tough-actors-allow.md",
+          "timestamp": "2020-03-01T17:19:40+09:00",
+          "tree_id": "c776749a8eaee3dd7bfdaddcc7659d17864a8b83",
+          "url": "https://github.com/secretlint/secretlint/commit/8887af1adb411ba8dacce0e3e5a497f0bb822c85"
+        },
+        "date": 1583050931641,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.59,
+            "range": "±2.35%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.6,
+            "range": "±2.17%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
