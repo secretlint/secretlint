@@ -94,9 +94,9 @@ const executeOnFiles = async ({
     options: SecretLintEngineOptions;
 }) => {
     const mapper = async (filePath: string) => {
-        debug("executeOnFiles > execute file: %s", filePath);
+        debug("executeOnFiles file: %s", filePath);
         const result = await lintFile(filePath, config);
-        debug("executeOnFiles > execute result: %o", result);
+        debug("executeOnFiles result: %o", result);
         return result;
     };
     const results = await pMap(filePathList, mapper, {
