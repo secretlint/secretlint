@@ -18,7 +18,7 @@
 	- It main use-case is globally installation
 	- Secretlint want to install for a project and customize setting per project.
 - [repo-security-scanner](https://github.com/UKHomeOffice/repo-security-scanner), [Gitleaks](https://github.com/zricethezav/gitleaks) and [truffleHog](https://github.com/dxa4481/truffleHog) is good scan tools
-	- We need to flexible customize that include ignoring definitions, custom rules.
+	- Secretlint need to flexible customize that include ignoring definitions, custom rules.
 - [detect-secrets](https://github.com/Yelp/detect-secrets) is similar tools, but it adopt opt-out approach
     - Secretlint adopt opt-in approach  
     - We also need to custom rules by user
@@ -191,7 +191,16 @@ Also, Secretlint provide rule preset that package some rule set.
 - [@secretlint/secretlint-rule-preset-recommend](./packages/@secretlint/secretlint-rule-preset-recommend)
     - Recommended rule set
 
-## Integration
+## Custom Rules
+
+You can create own secretlint rule.
+
+You want to get a secretlint rule for suitable your project and you can create it!
+A secretlint rule is a just npm package.
+
+If you want to know creating secretlint rule, please see [docs/secretlint-rule.md](docs/secretlint-rule.md).
+
+## Integrations
 
 ### Pre-commit Hook
 
