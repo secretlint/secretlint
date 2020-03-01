@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.2](https://github.com/secretlint/secretlint/compare/v0.7.1...v0.7.2) (2020-03-01)
+
+
+### Bug Fixes
+
+* **secretlint-rule-gcp:** fix plaice holder of report ([f25cb0b](https://github.com/secretlint/secretlint/commit/f25cb0b1fae45e9420a7de7d291251cb5f4e56b5))
+
+
+
+
+
 # [0.7.0](https://github.com/secretlint/secretlint/compare/v0.6.0...v0.7.0) (2020-03-01)
 
 **Note:** Version bump only for package @secretlint/secretlint-rule-gcp
