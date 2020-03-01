@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/secretlint/secretlint/compare/v0.6.0...v0.7.0) (2020-03-01)
+
+
+### Features
+
+* **quick-start:** add @secretlint/quick-start module ([8c7c298](https://github.com/secretlint/secretlint/commit/8c7c298a0aa2cff6c03278006aacbf2468e232b1))
+
+
+
+
+
 # [0.6.0](https://github.com/secretlint/secretlint/compare/v0.5.0...v0.6.0) (2020-02-29)
 
 
