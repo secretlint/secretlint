@@ -81,27 +81,30 @@ It is also possible to install Secretlint globally using `npm install --global`.
 
 `secretlint --help` show Usage.
 
-    Usage
-      $ secretlint [file|glob*]
- 
-    Note
-      supported glob syntax is based on microglob
-      https://github.com/micromatch/micromatch#matching-features
- 
-    Options
-      --init setup config file. Create .secretlintrc.json file from your package.json
-      --format formatter name. Default: stylish
-      --output-file output file path that is written of reported result.
-      --no-color disable color of output.
-      --secretlintrc Path to .secretlintrc config file. Default: .secretlintrc.*
-      --secretlintignore Path to .secretlintignore file. Default: .secretlintignore
-      --profile Show performance profile
- 
-    Examples
-      $ secretlint ./README.md
-      # glob pattern should be wrapped with double quote
-      $ secretlint "**/*"
-      $ secretlint "source/**/*.ini"
+      Secretlint CLI that scan secret/credential data.
+    
+      Usage
+        $ secretlint [file|glob*]
+    
+      Note
+        supported glob syntax is based on microglob
+        https://github.com/micromatch/micromatch#matching-features
+    
+      Options
+        --init             setup config file. Create .secretlintrc.json file from your package.json
+        --format           formatter name. Default: "stylish". Available Formatter: checkstyle, compact, jslint-xml, json, junit, pretty-error, stylish, table, tap, unix
+        --output-file      output file path that is written of reported result.
+        --no-color         disable ANSI-color of output.
+        --no-terminalLink  disable terminalLink of output.
+        --secretlintrc     path to .secretlintrc config file. Default: .secretlintrc.*
+        --secretlintignore path to .secretlintignore file. Default: .secretlintignore
+        --profile          show performance profile
+    
+      Examples
+        $ secretlint ./README.md
+        # glob pattern should be wrapped with double quote
+        $ secretlint "**/*"
+        $ secretlint "source/**/*.ini"
 
 ## Configuration
 
