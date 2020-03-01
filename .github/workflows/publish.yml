@@ -20,7 +20,7 @@ jobs:
     - run: hadolint ./Dockerfile
       working-directory: ./docker
 
-  release:
+  changesets:
     name: Release
     runs-on: ubuntu-latest
     steps:
@@ -45,7 +45,7 @@ jobs:
 
   publish-docker:
     runs-on: ubuntu-18.04
-    needs: [hadolint, publish-npm]
+    needs: [hadolint, changesets]
     steps:
     - uses: actions/checkout@v2
     - name: "Set TAG_NAME=tags"
