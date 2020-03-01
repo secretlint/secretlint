@@ -67,7 +67,7 @@ You should then set up a configuration file:
 npx secretlint --init
 ```
 
-After that, you can run Secretlint on any file or directory like this:
+Finally, you can run Secretlint on any file or directory like this:
 
 ```
 npx secretlint "**/*"
