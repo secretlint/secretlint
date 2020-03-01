@@ -54,6 +54,8 @@ const executeOnContent = async ({
     config: SecretLintCoreDescriptor;
     options: SecretLintEngineOptions;
 }) => {
+    debug("executeOnContent content: %s", `${content.slice(0, 24)}...`);
+    debug("executeOnContent filePath: %s", filePath);
     const result = await lintSource(
         {
             filePath: filePath,
