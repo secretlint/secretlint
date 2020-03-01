@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.3](https://github.com/secretlint/secretlint/compare/v0.7.2...v0.7.3) (2020-03-01)
+
+
+### Bug Fixes
+
+* **node:** add concurrency limit to lint ([b966a3a](https://github.com/secretlint/secretlint/commit/b966a3ad39fc5188c46c23e625c0c022adcb2f55)), closes [#72](https://github.com/secretlint/secretlint/issues/72)
+
+
+
+
+
 # [0.7.0](https://github.com/secretlint/secretlint/compare/v0.6.0...v0.7.0) (2020-03-01)
 
 **Note:** Version bump only for package @secretlint/node
