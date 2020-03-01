@@ -1,11 +1,9 @@
-name: Push Docker Image
+name: Publish
 
 on:
   push:
     branches:
     - master
-    tags:
-      - "*"
 
 env:
   DOCKER_BASE_NAME: docker.pkg.github.com/${{ github.repository }}/secretlint
@@ -22,9 +20,42 @@ jobs:
     - run: hadolint ./Dockerfile
       working-directory: ./docker
 
-  push:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Install Dependencies
+        run: yarn install
+      - name: Create Release Pull Request
+        uses: changesets/action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-npm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Install Dependencies
+        run: yarn install
+      - name: Build
+        run: yarn run build
+      - name: Publish to npm
+        run: npm run release-ci
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
+  publish-docker:
     runs-on: ubuntu-18.04
-    needs: hadolint
+    needs: [hadolint, publish-npm]
     steps:
     - uses: actions/checkout@v2
     - name: "Set TAG_NAME=tags"
