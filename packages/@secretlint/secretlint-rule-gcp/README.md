@@ -25,7 +25,7 @@ Via `.secretlintrc.json`(Recommended)
 ## Messages
 
 ### PrivateKeyP12
-> found GCP Service Account's private key(p12): {{KEY}}
+> found GCP Service Account's private key(p12): {{FILE_NAME}}
 
 This p12 file includes private key for GCP Service Account.
 
@@ -35,7 +35,7 @@ Because, the pass phase for this p12 file is `notasecret`.
 - https://cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys#serviceaccountprivatekeytype
 
 ### PrivateKeyJSON
-> found GCP Service Account's private key(json): {{KEY}}
+> found GCP Service Account's private key(json): {{FILE_NAME}}
 
 This JSON file includes private key for GCP Service Account.
 

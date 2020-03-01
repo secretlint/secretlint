@@ -2,10 +2,10 @@
     "filePath": "[SNAPSHOT]/ng.privatekey-p12/input.p12",
     "messages": [
         {
-            "message": "found CP Service Account's private key(p12): {{KEY}}",
+            "message": "found CP Service Account's private key(p12): input.p12",
             "range": [
                 0,
-                0
+                2301
             ],
             "ruleId": "@secretlint/secretlint-rule-gcp",
             "loc": {
@@ -14,13 +14,16 @@
                     "column": 0
                 },
                 "end": {
-                    "line": 1,
-                    "column": 0
+                    "line": 24,
+                    "column": 71
                 }
             },
             "severity": "error",
             "messageId": "PrivateKeyP12",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-gcp/README.md#PrivateKeyP12"
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-gcp/README.md#PrivateKeyP12",
+            "data": {
+                "FILE_NAME": "input.p12"
+            }
         }
     ]
 }

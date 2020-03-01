@@ -6,15 +6,16 @@ import {
     SecretLintSourceCode
 } from "@secretlint/types";
 import forge from "node-forge";
+import path from "path";
 
 export const messages = {
     PrivateKeyP12: {
-        en: "found CP Service Account's private key(p12): {{KEY}}",
-        ja: "GCPサービスアカウントの秘密鍵(p12): {{KEY}} がみつかりました"
+        en: "found CP Service Account's private key(p12): {{FILE_NAME}}",
+        ja: "GCPサービスアカウントの秘密鍵(p12) {{FILE_NAME}} がみつかりました"
     },
     PrivateKeyJSON: {
-        en: "found GCP Service Account's private key(json): {{KEY}}",
-        ja: "GCPサービスアカウントの秘密鍵(json): {{KEY}} がみつかりました"
+        en: "found GCP Service Account's private key(json): {{FILE_NAME}}",
+        ja: "GCPサービスアカウントの秘密鍵(json): {{FILE_NAME}} がみつかりました"
     }
 };
 
@@ -48,7 +49,9 @@ function reportIfFoundPrivateKeyJSONFormat({
             return;
         }
         context.report({
-            message: t("PrivateKeyJSON"),
+            message: t("PrivateKeyJSON", {
+                FILE_NAME: source.filePath ? path.basename(source.filePath) : ""
+            }),
             range: [0, source.content.length]
         });
     } catch {
@@ -81,8 +84,10 @@ function reportIfFoundPrivateKeyP12Format({
         forge.pkcs12.pkcs12FromAsn1(p12Asn1, "notasecret");
         // because, this p12 file is credential for GCP Service Account
         context.report({
-            message: t("PrivateKeyP12"),
-            range: [0, 0]
+            message: t("PrivateKeyP12", {
+                FILE_NAME: source.filePath ? path.basename(source.filePath) : ""
+            }),
+            range: [0, source.content.length]
         });
     } catch {
         // nope
