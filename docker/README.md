@@ -16,8 +16,8 @@ This Image has built-in rules:
 
 Show help 
 
-    $ docker run -v `pwd`:`pwd` -w `pwd` -i -t secretlint/secretlint secretlint --help
+    $ docker run -v `pwd`:`pwd` -w `pwd` --rm -it secretlint/secretlint secretlint  --help
 
 Lint
 
-    $ docker run -v `pwd`:`pwd` -w `pwd` -i -t secretlint/secretlint secretlint "**/*"
+    $ docker run -v `pwd`:`pwd` -w `pwd` --rm -it secretlint/secretlint secretlint "**/*"

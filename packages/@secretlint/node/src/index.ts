@@ -3,8 +3,10 @@ import { loadConfig } from "@secretlint/config-loader";
 import { createRawSource } from "@secretlint/source-creator";
 import { createFormatter } from "@secretlint/formatter";
 import { SecretLintCoreDescriptor, SecretLintCoreResult } from "@secretlint/types";
+import os from "os";
 import path from "path";
 import { secretLintProfiler } from "@secretlint/profiler";
+import pMap from "p-map";
 
 const debug = require("debug")("@secretlint/node");
 export type SecretLintEngineOptions = {
@@ -89,11 +91,18 @@ const executeOnFiles = async ({
     config: SecretLintCoreDescriptor;
     options: SecretLintEngineOptions;
 }) => {
-    const resultPromises = filePathList.map(filePath => {
-        return lintFile(filePath, config);
+    const mapper = async (filePath: string) => {
+        debug("executeOnFiles > execute file: %s", filePath);
+        const result = await lintFile(filePath, config);
+        debug("executeOnFiles > execute result: %o", result);
+        return result;
+    };
+    const results = await pMap(filePathList, mapper, {
+        // Avoid: EMFILE: too many open files, uv_cwd
+        // https://github.com/secretlint/secretlint/issues/72
+        concurrency: os.cpus().length
     });
-    const results = await Promise.all(resultPromises);
-    debug("executeOnFiles results: %O", results);
+    debug("executeOnFiles result counts: %s", results.length);
     secretLintProfiler.mark({
         type: "@node>format::start"
     });
@@ -164,7 +173,7 @@ export const createEngine = async (options: SecretLintEngineOptions) => {
          * @param filePathList
          */
         executeOnFiles: ({ filePathList }: { filePathList: string[] }) => {
-            debug("executeOnFiles filePathLList: %O", filePathList);
+            debug("executeOnFiles file counts: %s", filePathList.length);
             secretLintProfiler.mark({
                 type: "@node>execute::start"
             });

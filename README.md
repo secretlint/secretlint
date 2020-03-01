@@ -18,7 +18,7 @@ You can try to use Secretlint on your project at one command.
 
 If you already have installed Docker:
 
-    docker run -v `pwd`:`pwd` -w `pwd` -it secretlint/secretlint secretlint "**/*"
+    docker run -v `pwd`:`pwd` -w `pwd` --rm -it secretlint/secretlint secretlint "**/*"
 
 If you already have installed Node.js:
 
@@ -40,7 +40,7 @@ Use our [Docker container](https://hub.docker.com/r/secretlint/secretlint) to ge
 
 You can check all files under the current directory with secretlint by following command: 
 
-    docker run -v `pwd`:`pwd` -w `pwd` -it secretlint/secretlint secretlint "**/*"
+    docker run -v `pwd`:`pwd` -w `pwd` --rm -it secretlint/secretlint secretlint "**/*"
 
 [`secretlint/secretlint` docker container](https://hub.docker.com/r/secretlint/secretlint) work without configuration by design.
 
