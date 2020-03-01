@@ -270,6 +270,27 @@ Example setup repository:
 
 - https://github.com/azu/secretlint-pre-commit-example
 
+#### Bash Script
+
+Alternately you can save this script as `.git/hooks/pre-commit` and give it execute permission(`chmod +x .git/hooks/pre-commit`):
+
+```bash
+#!/bin/sh
+FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g')
+[ -z "$FILES" ] && exit 0
+
+# Secretlint all selected files
+echo "$FILES" | xargs ./node_modules/.bin/secretlint
+# If you using docker
+# echo "$FILES" | xargs docker run -v `pwd`:`pwd` -w `pwd` --rm secretlint/secretlint secretlint
+RET=$?
+if [ $RET -eq 0 ] ;then
+    exit 0
+else
+    exit 1
+fi
+```
+
 ### GitHub Actions
 
 If you already set secretlint [Using Node.js](#using-nodejs), you can run secretlint with your configuration on [GitHub Actions](https://github.co.jp/features/actions).
