@@ -342,7 +342,12 @@ This configuration also integrate Pull Request review comment via [actions/setup
     - We also need to custom rules by user
 		- See [Bring-your own-plugins (BYOP), via --custom-plugins option by KevinHock · Pull Request #255 · Yelp/detect-secrets](https://github.com/Yelp/detect-secrets/pull/255)
 
-## Architecture
+
+## Philosophy
+
+- Reduce false-positive of linting
+- Integration to developing workflow
+- Empower Users to Contribute
 
 ### Opt-in instead of Opt-out
 
@@ -351,12 +356,17 @@ Secretlint adopt opt-in approach.
 In our experience, linting tools that report various errors by default is difficult to use.
 Opt-in approach help to introduce Secretlint increasing.
 
+It will help to reduce false-positive by configuration.
+
 ### Rule as Documentation
 
 We think a rule as a documentation.
 So, Each rule should have reasonable documentation.
 
-We need to describe why this file is error. It lead to reduce false-positive error.
+We need to describe why this file is error.
+A rule that has not documentation, It is just a opinionated.
+
+Describe the reason of error and then it will lead to reduce false-positive error.
 
 Also, Secretlint CLI support hyperlink in Terminal.
 It means that you can jump to rule documentation from lint error message directly.
@@ -379,6 +389,10 @@ Also, Welcome to Contribution about secretlint documentation!
 	- Node.js already has pluggable linting tools like ESLint, textlint, stylelint etc
 	- So Node.js user familiar with pluggable linting tools
 	- Previously, I created textlint as same approach, so I familiar with Node.js
+- Users
+    - JavaScript is Popular language
+    - It means that empower Users to Contribute
+    - Users can create own rule by own hand
 
 Of course, secretlint also support [Docker](https://hub.docker.com/r/secretlint/secretlint).
 
