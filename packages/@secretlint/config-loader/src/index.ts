@@ -6,6 +6,7 @@ import {
     SecretLintCoreDescriptorUnionRule,
     SecretLintUnionRuleCreator
 } from "@secretlint/types";
+import { secretLintProfiler } from "@secretlint/profiler";
 import { SecretLintModuleResolver } from "./SecretLintModuleResolver";
 import { moduleInterop } from "@textlint/module-interop";
 import { validateConfig, validateRawConfig } from "@secretlint/config-validator";
@@ -62,7 +63,16 @@ export type SecretLintConfigLoaderRawResult =
  * @param options
  */
 export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintConfigLoaderResult => {
+    secretLintProfiler.mark({
+        type: "@config-loader>load-config::start"
+    });
+    secretLintProfiler.mark({
+        type: "@config-loader>load-raw-config::start"
+    });
     const rawResult = loadRawConfig(options);
+    secretLintProfiler.mark({
+        type: "@config-loader>load-raw-config::end"
+    });
     if (!rawResult.ok) {
         return {
             ok: false,
@@ -77,6 +87,9 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
             errors: [resultValidateRawConfig.error]
         };
     }
+    secretLintProfiler.mark({
+        type: "@config-loader>resolve-modules::start"
+    });
     // Search secretlint's module
     const moduleResolver = new SecretLintModuleResolver({
         baseDirectory: options.node_moduleDir
@@ -85,6 +98,10 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
     const rules: SecretLintCoreDescriptorUnionRule[] = [];
     rawResult.config.rules.forEach(configDescriptorRule => {
         try {
+            secretLintProfiler.mark({
+                type: "@config-loader>resolve-module::start",
+                id: configDescriptorRule.id
+            });
             const replacedDefinition =
                 options.testReplaceDefinitions &&
                 options.testReplaceDefinitions.find(({ id }) => {
@@ -107,6 +124,10 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
                 disabled: configDescriptorRule.disabled,
                 allowMessageIds:
                     "allowMessageIds" in configDescriptorRule ? configDescriptorRule.allowMessageIds : undefined
+            });
+            secretLintProfiler.mark({
+                type: "@config-loader>resolve-module::end",
+                id: configDescriptorRule.id
             });
         } catch (error) {
             errors.push(error);
@@ -132,6 +153,9 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
             errors: [resultValidateConfig.error]
         };
     }
+    secretLintProfiler.mark({
+        type: "@config-loader>load-config::end"
+    });
     return {
         ok: true,
         configFilePath: rawResult.configFilePath,

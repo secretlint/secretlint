@@ -10,6 +10,33 @@ export type SecretLintProfilerMarker =
     | {
           type: "secretlint>cli::end";
       }
+    // config-loader
+    | {
+          type: "@config-loader>load-config::start";
+      }
+    | {
+          type: "@config-loader>load-config::end";
+      }
+    | {
+          type: "@config-loader>load-raw-config::start";
+      }
+    | {
+          type: "@config-loader>load-raw-config::end";
+      }
+    | {
+          type: "@config-loader>resolve-module::start";
+          id: string;
+      }
+    | {
+          type: "@config-loader>resolve-module::end";
+          id: string;
+      }
+    | {
+          type: "@config-loader>resolve-modules::start";
+      }
+    | {
+          type: "@config-loader>resolve-modules::end";
+      }
     // node
     | {
           type: "@node>load-config::start";
@@ -75,6 +102,7 @@ export class SecretLintProfiler {
     private measures: PerformanceEntry[] = [];
 
     private executionPromise = Promise.resolve();
+
     constructor(options: SecretLintProfilerOptions) {
         this.perf = options.perf;
         const pattern = /(.*?)::end(\|\|.*)?/;
