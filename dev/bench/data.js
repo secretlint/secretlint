@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1583474897881,
+  "lastUpdate": 1583596019558,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -3760,6 +3760,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±1.92%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "d7243fe9bffb233d6c04a86a1a550f96f1c0e203",
+          "message": "docs: Add git hook globally (#74)\n\nfix https://github.com/secretlint/secretlint/issues/73",
+          "timestamp": "2020-03-08T00:44:24+09:00",
+          "tree_id": "07961d05ff738d02564031a5390ee3c3dc4a6e11",
+          "url": "https://github.com/secretlint/secretlint/commit/d7243fe9bffb233d6c04a86a1a550f96f1c0e203"
+        },
+        "date": 1583596018923,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.5,
+            "range": "±1.59%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±1.21%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
