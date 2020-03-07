@@ -44,7 +44,7 @@ Via `.secretlintrc.json`
 }
 ```
 
-## Messages
+## Rules
 
 - [@secretlint/secretlint-rule-npm](https://www.npmjs.com/package/@secretlint/secretlint-rule-npm)
 - [@secretlint/secretlint-rule-aws](https://www.npmjs.com/package/@secretlint/secretlint-rule-aws)
@@ -52,6 +52,11 @@ Via `.secretlintrc.json`
 - [@secretlint/secretlint-rule-privatekey](https://www.npmjs.com/package/@secretlint/secretlint-rule-privatekey)
 - [@secretlint/secretlint-rule-basicauth](https://www.npmjs.com/package/@secretlint/secretlint-rule-basicauth)
 - [@secretlint/secretlint-rule-slack](https://www.npmjs.com/package/@secretlint/secretlint-rule-slack)
+
+## Notes
+
+This preset module is bundled by [Rollup](https://rollupjs.org).
+It is performance reason. Bundled file will reduce loading cost.
 
 ## Changelog
 

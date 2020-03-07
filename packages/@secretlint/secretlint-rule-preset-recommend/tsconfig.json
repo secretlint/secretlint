@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
     /* Basic Options */
-    "module": "commonjs",
+    "module": "ES2015",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "newLine": "LF",
-    "outDir": "./lib/",
+    "noEmit": true,
+    "rootDir": "./src",
     "target": "es2015",
     "sourceMap": true,
-    "declaration": true,
     "jsx": "preserve",
     "lib": [
       "esnext",
