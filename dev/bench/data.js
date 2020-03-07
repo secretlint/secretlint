@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1583596019558,
+  "lastUpdate": 1583596302289,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -3798,6 +3798,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±1.21%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "distinct": true,
+          "id": "f32f942f071454d8e5598129d417c064bb8988f1",
+          "message": "docs: Add Node.js for global",
+          "timestamp": "2020-03-08T00:48:52+09:00",
+          "tree_id": "69044f6adc9e39ec4d1be3306effb95870c30eee",
+          "url": "https://github.com/secretlint/secretlint/commit/f32f942f071454d8e5598129d417c064bb8988f1"
+        },
+        "date": 1583596301716,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.57,
+            "range": "±1.86%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.59,
+            "range": "±0.99%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
