@@ -445,6 +445,8 @@ For bugs and feature requests, [please create an issue](https://github.com/secre
 
 See also, [CONTRIBUTING.md](./CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
 
+- Benchmark: https://secretlint.github.io/secretlint/dev/bench/
+
 ## Author
 
 - [github/azu](https://github.com/azu)
