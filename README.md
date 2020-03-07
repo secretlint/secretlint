@@ -211,10 +211,12 @@ If you want to know creating secretlint rule, please see [docs/secretlint-rule.m
 
 ## Integrations
 
-### Pre-commit Hook
+### Pre-commit Hook per project
 
 You can use Secretlint with some pre-commit tool.
 This can prevent to commit secret data by linting with Secretlint.
+
+Applying secretlint to the project and improve security on team developing.
 
 #### [Husky](https://github.com/typicode/husky) + [lint-staged](https://github.com/okonet/lint-staged)
 
@@ -290,6 +292,32 @@ else
     exit 1
 fi
 ```
+
+### Pre-commit Hook globally
+
+**Use Case:** If you want to check any project by secretlint, you can use global git hooks.
+
+[Git 2.9+](https://github.blog/2016-06-13-git-2-9-has-been-released/) supports [`core.hooksPath`](https://git-scm.com/docs/githooks).
+It allow to integrate secretlint globally.
+
+We have created example git hooks project using secretlint + Docker.
+
+- [secretlint/git-hooks](https://github.com/secretlint/git-hooks)
+    - Requirement: Docker
+
+You can setup by following steps:
+
+```shell script
+# clone this repository
+git clone https://github.com/secretlint/git-hooks git-hooks
+cd git-hooks
+# integrate secretlint to git hook globally
+git config --global core.hooksPath $(pwd)/hooks
+```
+
+After setup of `core.hooksPath`, secretlint check any file before you commit it.  
+
+For more details, see [secretlint/git-hooks](https://github.com/secretlint/git-hooks) project.
 
 ### GitHub Actions
 
