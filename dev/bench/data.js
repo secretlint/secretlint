@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1583666130240,
+  "lastUpdate": 1583666219792,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -4254,6 +4254,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.61,
             "range": "±0.49%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "cbd2717d94ccf62386b2d84f1e7a72074992be77",
+          "message": "Merge pull request #82 from secretlint/refactor-core-registerRule\n\nrefactor(core): remove export registerRule",
+          "timestamp": "2020-03-08T20:14:38+09:00",
+          "tree_id": "f513f0bf8c517469c9ff38983345c270dbf36bf2",
+          "url": "https://github.com/secretlint/secretlint/commit/cbd2717d94ccf62386b2d84f1e7a72074992be77"
+        },
+        "date": 1583666219184,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.74,
+            "range": "±1.24%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.64,
+            "range": "±1.09%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
