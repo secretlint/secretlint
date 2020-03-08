@@ -2,6 +2,10 @@
 
 A binary compiler for secretlint.
 
+## CURRENT PROBLEM
+
+- output binary does not be code-sign.
+
 ## Install
 
 Install with [npm](https://www.npmjs.com/):
