@@ -20,8 +20,8 @@ jobs:
     - run: hadolint ./Dockerfile
       working-directory: ./publish/docker
 
-  changesets:
-    name: Release
+  publish:
+    name: Publish or Create Pull Request
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -45,7 +45,7 @@ jobs:
 
   publish-docker:
     runs-on: ubuntu-18.04
-    needs: [hadolint, changesets]
+    needs: [hadolint, publish]
     steps:
     - uses: actions/checkout@v2
     - name: "Set TAG_NAME=tags"
@@ -95,6 +95,7 @@ jobs:
       run: docker push "${HUB_TAG}"
 
   publish-binary:
+    needs: [publish]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
