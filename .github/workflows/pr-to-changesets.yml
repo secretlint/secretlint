@@ -1,0 +1,45 @@
+name: PR-to-Changesets
+
+on:
+  pull_request:
+    branches:
+      - master
+    types: [closed]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: set remote url
+        run: |
+          git remote set-url --push origin-with-token https://$GITHUB_ACTOR:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+          git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git config --global user.name "$GITHUB_ACTOR"
+      - name: setup Node ${{ matrix.node_version }}
+        uses: actions/setup-node@v1
+        with:
+          node_version: ${{ matrix.node_version }}
+      - name: Install
+        run: yarn install
+      - name: PR to Changesets
+        run: |
+          pr-to-changesets --config .github/pr-to-changesets.json --owner ${OWNER} --repo ${REPO} --pullRequestNumber ${PR_NUMBER} --output .changeset/${OWNER}-${REPO}-${PR_NUMBER}.md
+        env:
+          OWNER: ${{ github.event.pull_request.repo.owner }}
+          REPO: ${{ github.event.pull_request.repo.repo }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Git push
+        run: |
+          git add changeset
+          git commit -m "CI(changeset): add changeset for PR #${PR_NUMBER}"
+          git push origin-with-token master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
