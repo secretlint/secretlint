@@ -1,66 +1,66 @@
 {
-  "name": "@secretlint/secretlint-rule-aws",
-  "version": "0.7.0",
-  "description": "A secretlint rule for AWS.",
-  "keywords": [
-    "secretlint",
-    "rule",
-    "aws"
-  ],
-  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-aws/",
-  "bugs": {
-    "url": "https://github.com/secretlint/secretlint/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/secretlint/secretlint.git"
-  },
-  "license": "MIT",
-  "author": "azu",
-  "files": [
-    "bin/",
-    "lib/",
-    "src/"
-  ],
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
-  "directories": {
-    "lib": "lib",
-    "test": "test"
-  },
-  "scripts": {
-    "build": "cross-env NODE_ENV=production tsc -p .",
-    "clean": "rimraf lib/",
-    "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
-    "prepublish": "npm run --if-present build",
-    "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
-    "test": "mocha \"test/**/*.ts\"",
-    "watch": "tsc -p . --watch"
-  },
-  "prettier": {
-    "printWidth": 120,
-    "singleQuote": false,
-    "tabWidth": 4
-  },
-  "dependencies": {
-    "@secretlint/types": "^0.7.0",
-    "@textlint/regexp-string-matcher": "^1.1.0",
-    "regx": "^1.0.4",
-    "string.prototype.matchall": "^4.0.2"
-  },
-  "devDependencies": {
-    "@secretlint/tester": "^0.7.0",
-    "@types/mocha": "^7.0.1",
-    "@types/node": "^13.7.4",
-    "cross-env": "^7.0.0",
-    "mocha": "^7.0.1",
-    "prettier": "^1.19.1",
-    "rimraf": "^3.0.2",
-    "ts-node": "^8.6.2",
-    "ts-node-test-register": "^8.0.1",
-    "typescript": "^3.8.2"
-  },
-  "publishConfig": {
-    "access": "public"
-  }
+    "name": "@secretlint/secretlint-rule-aws",
+    "version": "0.7.1",
+    "description": "A secretlint rule for AWS.",
+    "keywords": [
+        "secretlint",
+        "rule",
+        "aws"
+    ],
+    "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-aws/",
+    "bugs": {
+        "url": "https://github.com/secretlint/secretlint/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/secretlint/secretlint.git"
+    },
+    "license": "MIT",
+    "author": "azu",
+    "files": [
+        "bin/",
+        "lib/",
+        "src/"
+    ],
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
+    "directories": {
+        "lib": "lib",
+        "test": "test"
+    },
+    "scripts": {
+        "build": "cross-env NODE_ENV=production tsc -p .",
+        "clean": "rimraf lib/",
+        "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
+        "prepublish": "npm run --if-present build",
+        "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
+        "test": "mocha \"test/**/*.ts\"",
+        "watch": "tsc -p . --watch"
+    },
+    "prettier": {
+        "printWidth": 120,
+        "singleQuote": false,
+        "tabWidth": 4
+    },
+    "dependencies": {
+        "@secretlint/types": "^0.7.0",
+        "@textlint/regexp-string-matcher": "^1.1.0",
+        "regx": "^1.0.4",
+        "string.prototype.matchall": "^4.0.2"
+    },
+    "devDependencies": {
+        "@secretlint/tester": "^0.8.0",
+        "@types/mocha": "^7.0.1",
+        "@types/node": "^13.7.4",
+        "cross-env": "^7.0.0",
+        "mocha": "^7.0.1",
+        "prettier": "^1.19.1",
+        "rimraf": "^3.0.2",
+        "ts-node": "^8.6.2",
+        "ts-node-test-register": "^8.0.1",
+        "typescript": "^3.8.2"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
 }

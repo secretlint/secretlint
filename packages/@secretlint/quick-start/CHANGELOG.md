@@ -1,5 +1,12 @@
 # Change Log
 
+## 0.7.4
+
+### Patch Changes
+
+-   Updated dependencies [4d0413a]
+    -   secretlint@0.8.0
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
@@ -7,45 +14,26 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package @secretlint/quick-start
 
-
-
-
-
 ## [0.7.2](https://github.com/secretlint/secretlint/compare/v0.7.1...v0.7.2) (2020-03-01)
 
 **Note:** Version bump only for package @secretlint/quick-start
 
-
-
-
-
 ## [0.7.1](https://github.com/secretlint/secretlint/compare/v0.7.0...v0.7.1) (2020-03-01)
-
 
 ### Bug Fixes
 
-* **quick-start:** add config/ as files ([15488ec](https://github.com/secretlint/secretlint/commit/15488ecedd6ce72f8593cb3b4c5186201e7926cb))
-
-
-
-
+-   **quick-start:** add config/ as files ([15488ec](https://github.com/secretlint/secretlint/commit/15488ecedd6ce72f8593cb3b4c5186201e7926cb))
 
 # [0.7.0](https://github.com/secretlint/secretlint/compare/v0.6.0...v0.7.0) (2020-03-01)
 
-
 ### Bug Fixes
 
-* **quick-start:** fix bin script name ([#70](https://github.com/secretlint/secretlint/issues/70)) ([8887af1](https://github.com/secretlint/secretlint/commit/8887af1adb411ba8dacce0e3e5a497f0bb822c85))
-* **quick-start:** fix env type ([9a797ac](https://github.com/secretlint/secretlint/commit/9a797ace78bf17141a89c11dbae740fdb9b233e7))
-
+-   **quick-start:** fix bin script name ([#70](https://github.com/secretlint/secretlint/issues/70)) ([8887af1](https://github.com/secretlint/secretlint/commit/8887af1adb411ba8dacce0e3e5a497f0bb822c85))
+-   **quick-start:** fix env type ([9a797ac](https://github.com/secretlint/secretlint/commit/9a797ace78bf17141a89c11dbae740fdb9b233e7))
 
 ### Features
 
-* **quick-start:** add @secretlint/quick-start module ([8c7c298](https://github.com/secretlint/secretlint/commit/8c7c298a0aa2cff6c03278006aacbf2468e232b1))
-
-
-
-
+-   **quick-start:** add @secretlint/quick-start module ([8c7c298](https://github.com/secretlint/secretlint/commit/8c7c298a0aa2cff6c03278006aacbf2468e232b1))
 
 # @secretlint/quick-start
 

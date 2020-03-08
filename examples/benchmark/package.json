@@ -1,40 +1,40 @@
 {
-  "private": true,
-  "name": "@secretlint/benchmark",
-  "version": "0.7.3",
-  "description": "Internal benchmark for Secretlint",
-  "keywords": [
-    "secretlint",
-    "benchmark"
-  ],
-  "homepage": "https://github.com/secretlint/secretlint/tree/master/benchmark/",
-  "bugs": {
-    "url": "https://github.com/secretlint/secretlint/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/secretlint/secretlint.git"
-  },
-  "license": "MIT",
-  "author": "azu",
-  "files": [
-    "index.js"
-  ],
-  "main": "index.js",
-  "directories": {
-    "lib": "lib",
-    "test": "test"
-  },
-  "scripts": {
-    "benchmark": "node index.js"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "dependencies": {
-    "@secretlint/secretlint-rule-preset-recommend": "^0.7.2",
-    "benchmark": "^2.1.4",
-    "secretlint": "^0.7.3"
-  },
-  "devDependencies": {}
+    "private": true,
+    "name": "@secretlint/benchmark",
+    "version": "0.7.4",
+    "description": "Internal benchmark for Secretlint",
+    "keywords": [
+        "secretlint",
+        "benchmark"
+    ],
+    "homepage": "https://github.com/secretlint/secretlint/tree/master/benchmark/",
+    "bugs": {
+        "url": "https://github.com/secretlint/secretlint/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/secretlint/secretlint.git"
+    },
+    "license": "MIT",
+    "author": "azu",
+    "files": [
+        "index.js"
+    ],
+    "main": "index.js",
+    "directories": {
+        "lib": "lib",
+        "test": "test"
+    },
+    "scripts": {
+        "benchmark": "node index.js"
+    },
+    "publishConfig": {
+        "access": "public"
+    },
+    "dependencies": {
+        "@secretlint/secretlint-rule-preset-recommend": "^0.7.2",
+        "benchmark": "^2.1.4",
+        "secretlint": "^0.8.0"
+    },
+    "devDependencies": {}
 }
