@@ -13,7 +13,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
         with:
-          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits 
+          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
       - name: Setup Node.js
         uses: actions/setup-node@v1
@@ -21,7 +21,8 @@ jobs:
           node-version: 12
       - name: Install Dependencies
         run: yarn install
-
+      - name: Build
+        run: yarn run build
       - name: Create Release Pull Request or Publish to npm
         uses: changesets/action@master
         with:
