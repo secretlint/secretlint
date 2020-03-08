@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1583666740541,
+  "lastUpdate": 1583666926857,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -4406,6 +4406,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.63,
             "range": "±0.78%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "026d9e32b84a86c29501f7c7ee8d17a24051c93a",
+          "message": "Merge pull request #84 from secretlint/temp-pr\n\ndocs(binary-compiler): Add issue",
+          "timestamp": "2020-03-08T20:26:17+09:00",
+          "tree_id": "ef57c8a97b61ff73937aeb4c93765a8968eab87b",
+          "url": "https://github.com/secretlint/secretlint/commit/026d9e32b84a86c29501f7c7ee8d17a24051c93a"
+        },
+        "date": 1583666926177,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.65,
+            "range": "±1.10%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.61,
+            "range": "±1.45%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
