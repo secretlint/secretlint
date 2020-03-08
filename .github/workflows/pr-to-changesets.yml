@@ -25,11 +25,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node_version: ${{ matrix.node_version }}
-      - name: Install
-        run: yarn install
       - name: PR to Changesets
         run: |
-          pr-to-changesets --config .github/pr-to-changesets.json --owner ${OWNER} --repo ${REPO} --pullRequestNumber ${PR_NUMBER} --output .changeset/${OWNER}-${REPO}-${PR_NUMBER}.md
+          npx pr-to-changesets --config .github/pr-to-changesets.json --owner ${OWNER} --repo ${REPO} --pullRequestNumber ${PR_NUMBER} --output .changeset/${OWNER}-${REPO}-${PR_NUMBER}.md
         env:
           OWNER: ${{ github.event.pull_request.repo.owner }}
           REPO: ${{ github.event.pull_request.repo.repo }}
