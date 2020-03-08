@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1583670789610,
+  "lastUpdate": 1583671023426,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -4596,6 +4596,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.61,
             "range": "±1.61%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "distinct": true,
+          "id": "c581d7676c958ac4e9e58210cae440753bae7243",
+          "message": "CI(changesets): remove duplicated workflow",
+          "timestamp": "2020-03-08T21:34:29+09:00",
+          "tree_id": "2c34d7e90bc436623d840ba27f5744123dfbb7d6",
+          "url": "https://github.com/secretlint/secretlint/commit/c581d7676c958ac4e9e58210cae440753bae7243"
+        },
+        "date": 1583671022790,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.66,
+            "range": "±2.07%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.62,
+            "range": "±0.88%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
