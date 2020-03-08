@@ -1,0 +1,9 @@
+version: '1'
+invalidStatus: "pending"
+labelRule:
+  startsWith:
+    - "Semver:"
+  values:
+    - "Type: Breaking Change"
+    - "Type: Feature"
+    - "Type: Bug"
