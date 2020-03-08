@@ -18,7 +18,7 @@ jobs:
         fetch-depth: 1
     - run: brew install hadolint
     - run: hadolint ./Dockerfile
-      working-directory: ./docker
+      working-directory: ./publish/docker
 
   changesets:
     name: Release
@@ -66,16 +66,16 @@ jobs:
       run: |
         docker build . -t "${PKG_TAG}" --build-arg SECRETLINT_VERSION=${SECRETLINT_VERSION}
         docker tag "${PKG_TAG}" "${HUB_TAG}"
-      working-directory: ./docker
+      working-directory: ./publish/docker
     - name: Print version
       run: |
         docker run --rm ${PKG_TAG} --version
-      working-directory: ./docker
+      working-directory: ./publish/docker
     - name: Scan image
       run: |
         docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
           -v ${HOME}/.cache:/root/.cache aquasec/trivy:latest --exit-code 1 ${PKG_TAG}
-      working-directory: ./docker
+      working-directory: ./publish/docker
 
     - name: Login to Registries
       if: github.event_name != 'pull_request'
@@ -93,3 +93,36 @@ jobs:
     - name: Push to Docker Hub
       if: github.event_name != 'pull_request'
       run: docker push "${HUB_TAG}"
+
+  publish-binary:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macOS-latest, windows-latest, ubuntu-18.04]
+        node_version: [12.9.1] # pre-build nexe https://github.com/nexe/nexe/releases/tag/v3.0.0
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - name: Use Node.js ${{ matrix.node_version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node_version }}
+      - name: Install
+        run: npm install # avoid hoisting https://github.com/nexe/nexe/issues/649
+        working-directory: ./publish/binary-compiler
+      - name: Build binary
+        run: npm run dist
+        working-directory: ./publish/binary-compiler
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v1
+        with:
+          name: ${{ matrix.os }}
+          path: ./publish/binary-compiler/dist
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: "./publish/binary-compiler/dist/**"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

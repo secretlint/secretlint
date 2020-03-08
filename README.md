@@ -48,7 +48,7 @@ Built-in rules:
 
 - [@secretlint/secretlint-rule-preset-recommend](./packages/@secretlint/secretlint-rule-preset-recommend)
 
-For more details, please see [secretlint's Dockerfile](./docker).
+For more details, please see [secretlint's Dockerfile](./publish/docker).
 
 ### Using Node.js
 
