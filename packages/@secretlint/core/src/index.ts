@@ -103,13 +103,13 @@ const isRule = (ruleDescriptor: SecretLintCoreDescriptorUnionRule): ruleDescript
 /**
  * Rule Processing
  */
-export const registerRule = ({
-    sourceCode,
-    options,
-    descriptorRule,
-    contextEvents,
-    runningEvents
-}: {
+const registerRule = ({
+                          sourceCode,
+                          options,
+                          descriptorRule,
+                          contextEvents,
+                          runningEvents
+                      }: {
     sourceCode: SecretLintSourceCode;
     options: SecretLintCoreOptions;
     descriptorRule: SecretLintCoreDescriptorUnionRule;
