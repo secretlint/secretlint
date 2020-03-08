@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1583600611412,
+  "lastUpdate": 1583638503837,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -3912,6 +3912,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.63,
             "range": "±2.03%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "449b4a1c78c33722c41d1251d2dde4d8d040cf88",
+          "message": "feat(cli): support --secretlintrcJSON flag (#78)\n\nIt allow to pass JSON string instead of secretlintrc file path",
+          "timestamp": "2020-03-08T12:32:41+09:00",
+          "tree_id": "b6fa3c151082985fb811d6aa2f130bb47b24e2bc",
+          "url": "https://github.com/secretlint/secretlint/commit/449b4a1c78c33722c41d1251d2dde4d8d040cf88"
+        },
+        "date": 1583638503251,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.71,
+            "range": "±1.60%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.62,
+            "range": "±3.22%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
