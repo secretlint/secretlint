@@ -23,7 +23,7 @@
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
     "bin": {
-        "secretlint-rule-messages-to-markdown": "./bin/cmd.js"
+        "messages-to-markdown": "./bin/cmd.js"
     },
     "directories": {
         "lib": "lib",
