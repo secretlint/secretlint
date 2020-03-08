@@ -1,11 +1,6 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@0.3.0/schema.json",
-  "changelog": [
-    "@changesets/changelog-github",
-    {
-      "repo": "secretlint/secretlint"
-    }
-  ],
+  "changelog": "@changesets/cli/changelog",
   "commit": false,
   "linked": [],
   "access": "public",
