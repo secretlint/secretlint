@@ -38,7 +38,7 @@ jobs:
       - name: Git push
         run: |
           git add changeset
-          git commit -m "CI(changeset): add changeset for PR #${PR_NUMBER}"
+          git commit -m "CI(changeset): add changeset for PR #${PR_NUMBER} [skip ci]"
           git push origin-with-token master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
