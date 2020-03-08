@@ -1,6 +1,6 @@
 # @secretlint/secretlint-rule-example
 
-An example rule for secretlint. It it for testing.
+An example rule for secretlint. It is for testing.
 
 ## Install
 
