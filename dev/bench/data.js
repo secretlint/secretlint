@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1583666382134,
+  "lastUpdate": 1583666477322,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -4330,6 +4330,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.56,
             "range": "±0.98%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e97b44df8efddf057a28ad1670bc4742544cf4c2",
+          "message": "Merge pull request #83 from secretlint/fix-messages-to-markdown\n\nfix(messages-to-markdown): rename bin script",
+          "timestamp": "2020-03-08T20:18:54+09:00",
+          "tree_id": "6ed402e89dfb40b7af559826efd4e893a9228336",
+          "url": "https://github.com/secretlint/secretlint/commit/e97b44df8efddf057a28ad1670bc4742544cf4c2"
+        },
+        "date": 1583666476791,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.78,
+            "range": "±2.17%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.64,
+            "range": "±1.43%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
