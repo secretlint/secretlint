@@ -1,19 +1,15 @@
 import { lintSource } from "@secretlint/core";
-import { loadConfig } from "@secretlint/config-loader";
+import { loadConfig, loadPackagesFromRawConfig } from "@secretlint/config-loader";
 import { createRawSource } from "@secretlint/source-creator";
 import { createFormatter } from "@secretlint/formatter";
-import { SecretLintCoreDescriptor, SecretLintCoreResult } from "@secretlint/types";
+import { SecretLintConfigDescriptor, SecretLintCoreDescriptor, SecretLintCoreResult } from "@secretlint/types";
 import os from "os";
 import path from "path";
 import { secretLintProfiler } from "@secretlint/profiler";
 import pMap from "p-map";
 
 const debug = require("debug")("@secretlint/node");
-export type SecretLintEngineOptions = {
-    /**
-     * If configFilePath is not defined, search config file from cwd(current working dir)
-     */
-    configFilePath?: string;
+export type SecretLintEngineOptionsBase = {
     /**
      * If cwd is not defined, cwd(current working dir) is current working dir.
      */
@@ -33,8 +29,26 @@ export type SecretLintEngineOptions = {
      * Default: false
      */
     terminalLink?: boolean;
+}
+export type SecretLintEngineOptionsConfigFilePath = SecretLintEngineOptionsBase & {
+    /**
+     * If configFilePath is not defined, search config file from cwd(current working dir)
+     */
+    configFilePath?: string;
+};
+export type SecretLintEngineOptionsConfigFileJSON = SecretLintEngineOptionsBase & {
+    /**
+     * configFileJSON is a json object
+     * that is used instead of configFilePath.
+     */
+    configFileJSON: SecretLintConfigDescriptor;
 };
 
+export type SecretLintEngineOptions = SecretLintEngineOptionsConfigFilePath | SecretLintEngineOptionsConfigFileJSON;
+
+const isConfigFileJSON = (v: any): v is SecretLintEngineOptionsConfigFileJSON => {
+    return "configFileJSON" in v && v.configFileJSON !== undefined;
+};
 const lintFile = async (filePath: string, options: SecretLintCoreDescriptor) => {
     const rawSource = await createRawSource(filePath);
     return lintSource(rawSource, options);
@@ -44,11 +58,11 @@ const hasErrorMessage = (result: SecretLintCoreResult): boolean => {
     return result.messages.length > 0;
 };
 const executeOnContent = async ({
-    content,
-    filePath,
-    config,
-    options
-}: {
+                                    content,
+                                    filePath,
+                                    config,
+                                    options
+                                }: {
     content: string;
     filePath: string;
     config: SecretLintCoreDescriptor;
@@ -85,10 +99,10 @@ const executeOnContent = async ({
 };
 
 const executeOnFiles = async ({
-    filePathList,
-    config,
-    options
-}: {
+                                  filePathList,
+                                  config,
+                                  options
+                              }: {
     filePathList: string[];
     config: SecretLintCoreDescriptor;
     options: SecretLintEngineOptions;
@@ -135,17 +149,26 @@ export const createEngine = async (options: SecretLintEngineOptions) => {
     secretLintProfiler.mark({
         type: "@node>load-config::start"
     });
-    const loadedResult = loadConfig({
-        cwd: options.cwd,
-        configFilePath: options.configFilePath
-    });
+    const loadedResult = (() => {
+        if (isConfigFileJSON(options)) {
+            debug("Load ConfigFileJSON: %s", options.configFileJSON);
+            return loadPackagesFromRawConfig({
+                rawConfig: options.configFileJSON
+            });
+        }
+        const loadConfigResult = loadConfig({
+            cwd: options.cwd,
+            configFilePath: options.configFilePath
+        });
+        debug("Loaded ConfigFilePath: %s", loadConfigResult.configFilePath);
+        return loadConfigResult;
+    })();
     secretLintProfiler.mark({
         type: "@node>load-config::end"
     });
     if (!loadedResult.ok) {
         throw new Error(loadedResult.errors.map(error => error.stack).join("\n\n"));
     }
-    debug("ConfigFilePath: %s", loadedResult.configFilePath);
     debug("Config: %O", loadedResult.config);
     return {
         /**

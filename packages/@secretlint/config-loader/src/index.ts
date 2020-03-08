@@ -32,55 +32,66 @@ export type SecretLintConfigLoaderOptions = {
 };
 export type SecretLintConfigLoaderResult =
     | {
-          ok: true;
-          configFilePath: string;
-          config: SecretLintCoreDescriptor; // Core Option object
-      }
+    ok: true;
+    config: SecretLintCoreDescriptor; // Core Option object
+    configFilePath: string;
+}
     | {
-          // load module error
-          ok: false;
-          configFilePath: string;
-          rawConfig: SecretLintConfigDescriptor;
-          errors: Error[];
-      }
-    | {
-          // load config error
-          ok: false;
-          errors: Error[];
-      };
+    // load config error
+    ok: false;
+    configFilePath?: string;
+    rawConfig?: SecretLintConfigDescriptor; // Config Raw object
+    errors: Error[];
+} ;
+
 export type SecretLintConfigLoaderRawResult =
     | {
-          ok: true;
-          configFilePath: string;
-          config: SecretLintConfigDescriptor; // Config Raw object
-      }
+    ok: true;
+    configFilePath: string;
+    rawConfig: SecretLintConfigDescriptor; // Config Raw object
+}
     | {
-          ok: false;
-          errors: Error[];
-      };
+    ok: false;
+    errors: Error[];
+};
+export type SecretLintLoadPackagesFromRawConfigOptions = {
+    /**
+     * Loaded config object
+     */
+    rawConfig: SecretLintConfigDescriptor;
+    /**
+     * node_modules directory path
+     * Default: undefined
+     */
+    node_moduleDir?: string;
+    /**
+     * This definitions replace id to rule module
+     * It is useful for replacing specific ruleId with specific rule module.
+     * Main use-case is tester.
+     */
+    testReplaceDefinitions?: {
+        id: string;
+        rule: SecretLintUnionRuleCreator;
+    }[];
+}
+export type SecretLintLoadPackagesFromRawConfigResult =
+    | {
+    ok: true;
+    config: SecretLintCoreDescriptor; // Core Option object
+}
+    | {
+    // load config error
+    ok: false;
+    errors: Error[];
+} ;
+
 /**
- *  Load config file and return config object that is loaded rule instance.
+ * Load packages in RawConfig and return loaded config object
  * @param options
  */
-export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintConfigLoaderResult => {
-    secretLintProfiler.mark({
-        type: "@config-loader>load-config::start"
-    });
-    secretLintProfiler.mark({
-        type: "@config-loader>load-raw-config::start"
-    });
-    const rawResult = loadRawConfig(options);
-    secretLintProfiler.mark({
-        type: "@config-loader>load-raw-config::end"
-    });
-    if (!rawResult.ok) {
-        return {
-            ok: false,
-            errors: rawResult.errors
-        };
-    }
+export const loadPackagesFromRawConfig = (options: SecretLintLoadPackagesFromRawConfigOptions): SecretLintLoadPackagesFromRawConfigResult => {
     // Early validation, validate rawConfig by JSON Schema
-    const resultValidateRawConfig = validateRawConfig(rawResult.config);
+    const resultValidateRawConfig = validateRawConfig(options.rawConfig);
     if (!resultValidateRawConfig.ok) {
         return {
             ok: false,
@@ -96,7 +107,7 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
     });
     const errors: Error[] = [];
     const rules: SecretLintCoreDescriptorUnionRule[] = [];
-    rawResult.config.rules.forEach(configDescriptorRule => {
+    options.rawConfig.rules.forEach(configDescriptorRule => {
         try {
             secretLintProfiler.mark({
                 type: "@config-loader>resolve-module::start",
@@ -133,11 +144,12 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
             errors.push(error);
         }
     });
+    secretLintProfiler.mark({
+        type: "@config-loader>resolve-modules::end"
+    });
     if (errors.length > 0) {
         return {
             ok: false,
-            rawConfig: rawResult.config,
-            configFilePath: rawResult.configFilePath,
             errors
         };
     }
@@ -153,13 +165,51 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
             errors: [resultValidateConfig.error]
         };
     }
-    secretLintProfiler.mark({
-        type: "@config-loader>load-config::end"
-    });
     return {
         ok: true,
-        configFilePath: rawResult.configFilePath,
         config: loadedConfig
+    };
+};
+/**
+ *  Load config file and return config object that is loaded rule instance.
+ * @param options
+ */
+export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintConfigLoaderResult => {
+    secretLintProfiler.mark({
+        type: "@config-loader>load-config-file::start"
+    });
+    const rawResult = loadRawConfig(options);
+    secretLintProfiler.mark({
+        type: "@config-loader>load-config-file::end"
+    });
+    if (!rawResult.ok) {
+        return {
+            ok: false,
+            errors: rawResult.errors
+        };
+    }
+    secretLintProfiler.mark({
+        type: "@config-loader>load-packages::start"
+    });
+    const result = loadPackagesFromRawConfig({
+        rawConfig: rawResult.rawConfig,
+        node_moduleDir: options.node_moduleDir,
+        testReplaceDefinitions: options.testReplaceDefinitions
+    });
+    secretLintProfiler.mark({
+        type: "@config-loader>load-packages::end"
+    });
+    if (!result.ok) {
+        return {
+            ok: false,
+            configFilePath: rawResult.configFilePath,
+            errors: result.errors
+        };
+    }
+    return {
+        ok: true,
+        config: result.config,
+        configFilePath: rawResult.configFilePath
     };
 };
 /**
@@ -185,7 +235,7 @@ export const loadRawConfig = (options: SecretLintConfigLoaderOptions): SecretLin
         }
         return {
             ok: true,
-            config: results.config,
+            rawConfig: results.config,
             configFilePath: results.filePath
         };
     } catch (error) {
