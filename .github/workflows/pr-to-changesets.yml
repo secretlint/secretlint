@@ -29,8 +29,8 @@ jobs:
         run: |
           npx pr-to-changesets --config .github/pr-to-changesets.json --owner ${OWNER} --repo ${REPO} --pullRequestNumber ${PR_NUMBER} --output .changeset/${OWNER}-${REPO}-${PR_NUMBER}.md
         env:
-          OWNER: ${{ github.event.pull_request.repo.owner }}
-          REPO: ${{ github.event.pull_request.repo.repo }}
+          OWNER: secretlint
+          REPO: secretlint
           PR_NUMBER: ${{ github.event.pull_request.number }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Git push
