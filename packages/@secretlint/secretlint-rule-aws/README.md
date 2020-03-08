@@ -22,7 +22,7 @@ Via `.secretlintrc.json`
 }
 ```
 
-## Messages
+## MessageIDs
 
 ### AWSAccountID
 > found AWS Account ID: {{ID}}

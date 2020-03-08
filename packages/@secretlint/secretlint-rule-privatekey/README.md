@@ -22,7 +22,7 @@ Via `.secretlintrc.json`(Recommended)
 }
 ```
 
-## Messages
+## MessageIDs
 
 ### PrivateKey
 > found private key: {{KEY}}

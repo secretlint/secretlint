@@ -22,7 +22,7 @@ Via `.secretlintrc.json`(Recommended)
 }
 ```
 
-## Messages
+## MessageIDs
 
 ### PackageJSON_xOauthToken
 > found GitHub Token: {{TOKEN}}

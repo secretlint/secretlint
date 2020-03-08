@@ -22,7 +22,7 @@ Via `.secretlintrc.json`(Recommended)
 }
 ```
 
-## Messages
+## MessageIDs
 
 ### PrivateKeyP12
 > found GCP Service Account's private key(p12): {{FILE_NAME}}
