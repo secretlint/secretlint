@@ -27,7 +27,7 @@ jobs:
           node_version: ${{ matrix.node_version }}
       - name: PR to Changesets
         run: |
-          npx pr-to-changesets --config .github/pr-to-changesets.json --owner ${OWNER} --repo ${REPO} --pullRequestNumber ${PR_NUMBER} --output .changeset/${OWNER}-${REPO}-${PR_NUMBER}.md
+          npx pr-to-changesets --config .github/pr-to-changesets.json --owner ${OWNER} --repo ${REPO} --pullRequestNumber ${PR_NUMBER} --output ".changeset/${OWNER}-${REPO}-${PR_NUMBER}.md"
         env:
           OWNER: secretlint
           REPO: secretlint
@@ -35,7 +35,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Git push
         run: |
-          git add changeset
+          git add .changeset
           git commit -m "CI(changeset): add changeset for PR #${PR_NUMBER} [skip ci]"
           git push origin-with-token master
         env:
