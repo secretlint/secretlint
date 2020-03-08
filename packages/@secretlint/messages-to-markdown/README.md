@@ -10,14 +10,13 @@ Install with [npm](https://www.npmjs.com/):
 
 ## Usage
 
-
     Usage
-      $ secretlint-rule-messages-to-markdown [index.js|index.ts]
+      $ npx @secretlint/messages-to-markdown [index.js|index.ts]
  
     Options
  
     Examples
-      $ secretlint-rule-messages-to-markdown src/index.ts
+      $ snpx @secretlint/messages-to-markdown src/index.ts
 
 ## Changelog
 
