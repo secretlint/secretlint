@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1583667040517,
+  "lastUpdate": 1583667153433,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -4482,6 +4482,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.68,
             "range": "±2.07%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "2131771fdffff1db591fb73928a9c983ed30fc61",
+          "message": "Merge pull request #85 from secretlint/fix-typo-of-example\n\ndocs(rule-example): fix typo",
+          "timestamp": "2020-03-08T20:30:10+09:00",
+          "tree_id": "ab1dd699f0654942e2d70ea70e03cb0c2b029ff1",
+          "url": "https://github.com/secretlint/secretlint/commit/2131771fdffff1db591fb73928a9c983ed30fc61"
+        },
+        "date": 1583667152811,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.73,
+            "range": "±0.87%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.63,
+            "range": "±1.76%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
