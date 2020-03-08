@@ -7,6 +7,4 @@
 "secretlint": minor
 ---
 
-## Features
-
-- **cli**: support `--secretlintrcJSON` flag
+`secretlint` CLI support `--secretlintrcJSON` flag
