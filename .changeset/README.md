@@ -6,3 +6,13 @@ find the full documentation for it [in our repository](https://github.com/change
 
 We have a quick list of common questions to get you started engaging with this project in
 [our documentation](https://github.com/changesets/changesets/blob/master/docs/common-questions.md)
+
+## Release workflow
+
+- Submit Pull Request
+- Label one of `Semver: {major, minor, patch}`
+- Merge it
+- [CI] [pr-to-changesets](https://github.com/azu/pr-to-changesets) create `.changeset/*.md` from Pull Request
+- [CI] Submit Version up Pull Request
+- Merge Version up Pull Request
+- [CI] Release to npm
