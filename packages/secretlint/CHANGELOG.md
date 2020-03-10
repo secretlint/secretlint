@@ -1,5 +1,19 @@
 # Change Log
 
+## 0.8.1
+
+### Patch Changes
+
+-   aaef596: Path Update
+-   Updated dependencies [aaef596]
+-   Updated dependencies [5a22277]
+    -   @secretlint/config-creator@0.7.1
+    -   @secretlint/formatter@0.8.1
+    -   @secretlint/node@0.8.1
+    -   @secretlint/profiler@0.7.1
+    -   @secretlint/secretlint-rule-example@0.7.1
+    -   @secretlint/secretlint-rule-preset-recommend@0.7.3
+
 ## 0.8.0
 
 ### Minor Changes

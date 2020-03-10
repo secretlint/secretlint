@@ -1,5 +1,14 @@
 # Change Log
 
+## 0.8.1
+
+### Patch Changes
+
+-   aaef596: Path Update
+-   Updated dependencies [aaef596]
+    -   @secretlint/profiler@0.7.1
+    -   @secretlint/types@0.7.1
+
 ## 0.8.0
 
 ### Minor Changes

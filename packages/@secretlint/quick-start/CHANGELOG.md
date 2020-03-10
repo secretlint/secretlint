@@ -1,5 +1,14 @@
 # Change Log
 
+## 0.7.5
+
+### Patch Changes
+
+-   aaef596: Path Update
+-   Updated dependencies [aaef596]
+    -   @secretlint/secretlint-rule-preset-recommend@0.7.3
+    -   secretlint@0.8.1
+
 ## 0.7.4
 
 ### Patch Changes
