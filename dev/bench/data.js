@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1583844182706,
+  "lastUpdate": 1583909142391,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -4748,6 +4748,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.73,
             "range": "±1.84%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ceffac0e71ed7bd2d20a518fbb74ecc6a9935161",
+          "message": "Merge pull request #86 from secretlint/changeset-release/master\n\nVersion Packages",
+          "timestamp": "2020-03-11T15:43:15+09:00",
+          "tree_id": "45f08aae07cca257b31a918a41acc81dd9fb478a",
+          "url": "https://github.com/secretlint/secretlint/commit/ceffac0e71ed7bd2d20a518fbb74ecc6a9935161"
+        },
+        "date": 1583909141745,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.7,
+            "range": "±1.82%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.64,
+            "range": "±0.86%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
