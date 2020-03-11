@@ -1,5 +1,14 @@
 # Change Log
 
+## 0.7.2
+
+### Patch Changes
+
+-   aaef596: Path Update
+-   Updated dependencies [aaef596]
+    -   @secretlint/secretlint-scripts@0.7.1
+    -   @secretlint/tester@0.8.1
+
 ## 0.7.1
 
 ### Patch Changes

@@ -1,72 +1,72 @@
 {
-  "name": "@secretlint/secretlint-rule-preset-recommend",
-  "version": "0.7.2",
-  "description": "Recommended rule preset of secretlint.",
-  "keywords": [
-    "secretlint",
-    "rule",
-    "rule-preset"
-  ],
-  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-preset-recommend/",
-  "bugs": {
-    "url": "https://github.com/secretlint/secretlint/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/secretlint/secretlint.git"
-  },
-  "license": "MIT",
-  "author": "azu",
-  "files": [
-    "bin/",
-    "lib/",
-    "src/"
-  ],
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
-  "directories": {
-    "lib": "lib",
-    "test": "test"
-  },
-  "scripts": {
-    "build": "rollup --config",
-    "build:tsc": "tsc -p .",
-    "clean": "rimraf lib/",
-    "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
-    "prepublish": "npm run --if-present build",
-    "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
-    "test": "mocha \"test/**/*.ts\"",
-    "watch": "tsc -p . --watch"
-  },
-  "prettier": {
-    "printWidth": 120,
-    "singleQuote": false,
-    "tabWidth": 4
-  },
-  "dependencies": {
-    "@secretlint/secretlint-rule-aws": "^0.7.0",
-    "@secretlint/secretlint-rule-basicauth": "^0.7.0",
-    "@secretlint/secretlint-rule-gcp": "^0.7.2",
-    "@secretlint/secretlint-rule-npm": "^0.7.0",
-    "@secretlint/secretlint-rule-privatekey": "^0.7.0",
-    "@secretlint/secretlint-rule-slack": "^0.7.0"
-  },
-  "devDependencies": {
-    "@rollup/plugin-commonjs": "^11.0.2",
-    "@rollup/plugin-node-resolve": "^7.1.1",
-    "@rollup/plugin-typescript": "^4.0.0",
-    "@types/mocha": "^7.0.1",
-    "@types/node": "^13.7.4",
-    "cross-env": "^7.0.0",
-    "mocha": "^7.0.1",
-    "prettier": "^1.19.1",
-    "rimraf": "^3.0.2",
-    "rollup": "^2.0.2",
-    "ts-node": "^8.6.2",
-    "ts-node-test-register": "^8.0.1",
-    "typescript": "^3.8.2"
-  },
-  "publishConfig": {
-    "access": "public"
-  }
+    "name": "@secretlint/secretlint-rule-preset-recommend",
+    "version": "0.7.3",
+    "description": "Recommended rule preset of secretlint.",
+    "keywords": [
+        "secretlint",
+        "rule",
+        "rule-preset"
+    ],
+    "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-preset-recommend/",
+    "bugs": {
+        "url": "https://github.com/secretlint/secretlint/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/secretlint/secretlint.git"
+    },
+    "license": "MIT",
+    "author": "azu",
+    "files": [
+        "bin/",
+        "lib/",
+        "src/"
+    ],
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
+    "directories": {
+        "lib": "lib",
+        "test": "test"
+    },
+    "scripts": {
+        "build": "rollup --config",
+        "build:tsc": "tsc -p .",
+        "clean": "rimraf lib/",
+        "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
+        "prepublish": "npm run --if-present build",
+        "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
+        "test": "mocha \"test/**/*.ts\"",
+        "watch": "tsc -p . --watch"
+    },
+    "prettier": {
+        "printWidth": 120,
+        "singleQuote": false,
+        "tabWidth": 4
+    },
+    "dependencies": {
+        "@secretlint/secretlint-rule-aws": "^0.7.2",
+        "@secretlint/secretlint-rule-basicauth": "^0.7.1",
+        "@secretlint/secretlint-rule-gcp": "^0.7.3",
+        "@secretlint/secretlint-rule-npm": "^0.7.1",
+        "@secretlint/secretlint-rule-privatekey": "^0.7.2",
+        "@secretlint/secretlint-rule-slack": "^0.7.2"
+    },
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "^11.0.2",
+        "@rollup/plugin-node-resolve": "^7.1.1",
+        "@rollup/plugin-typescript": "^4.0.0",
+        "@types/mocha": "^7.0.1",
+        "@types/node": "^13.7.4",
+        "cross-env": "^7.0.0",
+        "mocha": "^7.0.1",
+        "prettier": "^1.19.1",
+        "rimraf": "^3.0.2",
+        "rollup": "^2.0.2",
+        "ts-node": "^8.6.2",
+        "ts-node-test-register": "^8.0.1",
+        "typescript": "^3.8.2"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
 }

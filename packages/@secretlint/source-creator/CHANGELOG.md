@@ -1,5 +1,13 @@
 # Change Log
 
+## 0.7.1
+
+### Patch Changes
+
+-   aaef596: Path Update
+-   Updated dependencies [aaef596]
+    -   @secretlint/types@0.7.1
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
@@ -7,53 +15,28 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 **Note:** Version bump only for package @secretlint/source-creator
 
-
-
-
-
 # [0.6.0](https://github.com/secretlint/secretlint/compare/v0.5.0...v0.6.0) (2020-02-29)
 
 **Note:** Version bump only for package @secretlint/source-creator
-
-
-
-
 
 # [0.5.0](https://github.com/secretlint/secretlint/compare/v0.4.2...v0.5.0) (2020-02-28)
 
 **Note:** Version bump only for package @secretlint/source-creator
 
-
-
-
-
 ## [0.4.1](https://github.com/secretlint/secretlint/compare/v0.4.0...v0.4.1) (2020-02-28)
 
 **Note:** Version bump only for package @secretlint/source-creator
-
-
-
-
 
 # [0.4.0](https://github.com/secretlint/secretlint/compare/v0.3.0...v0.4.0) (2020-02-28)
 
 **Note:** Version bump only for package @secretlint/source-creator
 
-
-
-
-
 # [0.3.0](https://github.com/secretlint/secretlint/compare/v0.2.0...v0.3.0) (2020-02-27)
 
 **Note:** Version bump only for package @secretlint/source-creator
 
-
-
-
-
 # [0.2.0](https://github.com/secretlint/secretlint/compare/v0.1.2...v0.2.0) (2020-02-23)
-
 
 ### Features
 
-* **rule:** add `supportedContentTypes` to rule `meta` ([#39](https://github.com/secretlint/secretlint/issues/39)) ([3883c75](https://github.com/secretlint/secretlint/commit/3883c7578de38854aba2d1d20b8f167c8275f1c9))
+-   **rule:** add `supportedContentTypes` to rule `meta` ([#39](https://github.com/secretlint/secretlint/issues/39)) ([3883c75](https://github.com/secretlint/secretlint/commit/3883c7578de38854aba2d1d20b8f167c8275f1c9))
