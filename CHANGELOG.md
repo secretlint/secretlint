@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.9.0](https://github.com/secretlint/secretlint/compare/v0.7.3...v0.9.0) (2020-03-16)
+
+
+### Bug Fixes
+
+* **binary-compiler:** fix binary compiler workflow ([13a1660](https://github.com/secretlint/secretlint/commit/13a1660d35f533e28efa0a04f9159755c5e388b0))
+* **deps:** add @changesets/changelog-github ([4cd589a](https://github.com/secretlint/secretlint/commit/4cd589a9ddc64a04a0b656f4fda287135edcc4a6))
+* **deps:** revert @changesets/changelog-github ([f8560bd](https://github.com/secretlint/secretlint/commit/f8560bd59abf40e2eb3aa8aa6daac487cc8d6986))
+* **messages-to-markdown:** rename bin script ([c6a620c](https://github.com/secretlint/secretlint/commit/c6a620c9ba774f8373653a31fbb536712da3ae94))
+
+
+### Features
+
+* **cli:** support --secretlintrcJSON flag ([#78](https://github.com/secretlint/secretlint/issues/78)) ([449b4a1](https://github.com/secretlint/secretlint/commit/449b4a1c78c33722c41d1251d2dde4d8d040cf88))
+
+
+### Performance Improvements
+
+* **profiler:** add profile mark to config-loader ([d127d23](https://github.com/secretlint/secretlint/commit/d127d237843341d7704fe96852e0d4638da50eaa))
+* **secretlint-rule-preset-recommend:** rollup ([#76](https://github.com/secretlint/secretlint/issues/76)) ([71c382a](https://github.com/secretlint/secretlint/commit/71c382abb4c2f8bf60319e2716f3d6600f1de8ba))
+
+
+
+
+
 ## [0.7.3](https://github.com/secretlint/secretlint/compare/v0.7.2...v0.7.3) (2020-03-01)
 
 

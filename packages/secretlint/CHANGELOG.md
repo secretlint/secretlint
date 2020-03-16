@@ -1,33 +1,18 @@
 # Change Log
 
-## 0.8.1
-
-### Patch Changes
-
--   aaef596: Path Update
--   Updated dependencies [aaef596]
--   Updated dependencies [5a22277]
-    -   @secretlint/config-creator@0.7.1
-    -   @secretlint/formatter@0.8.1
-    -   @secretlint/node@0.8.1
-    -   @secretlint/profiler@0.7.1
-    -   @secretlint/secretlint-rule-example@0.7.1
-    -   @secretlint/secretlint-rule-preset-recommend@0.7.3
-
-## 0.8.0
-
-### Minor Changes
-
--   4d0413a: `secretlint` CLI support `--secretlintrcJSON` flag
-
-### Patch Changes
-
--   Updated dependencies [4d0413a]
-    -   @secretlint/formatter@0.8.0
-    -   @secretlint/node@0.8.0
-
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# [0.9.0](https://github.com/secretlint/secretlint/compare/v0.7.3...v0.9.0) (2020-03-16)
+
+
+### Features
+
+* **cli:** support --secretlintrcJSON flag ([#78](https://github.com/secretlint/secretlint/issues/78)) ([449b4a1](https://github.com/secretlint/secretlint/commit/449b4a1c78c33722c41d1251d2dde4d8d040cf88))
+
+
+
+
 
 ## [0.7.3](https://github.com/secretlint/secretlint/compare/v0.7.2...v0.7.3) (2020-03-01)
 

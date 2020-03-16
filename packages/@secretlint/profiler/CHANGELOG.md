@@ -1,13 +1,23 @@
 # Change Log
 
-## 0.7.1
-
-### Patch Changes
-
--   aaef596: Path Update
-
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# [0.9.0](https://github.com/secretlint/secretlint/compare/v0.7.3...v0.9.0) (2020-03-16)
+
+
+### Features
+
+* **cli:** support --secretlintrcJSON flag ([#78](https://github.com/secretlint/secretlint/issues/78)) ([449b4a1](https://github.com/secretlint/secretlint/commit/449b4a1c78c33722c41d1251d2dde4d8d040cf88))
+
+
+### Performance Improvements
+
+* **profiler:** add profile mark to config-loader ([d127d23](https://github.com/secretlint/secretlint/commit/d127d237843341d7704fe96852e0d4638da50eaa))
+
+
+
+
 
 # [0.7.0](https://github.com/secretlint/secretlint/compare/v0.6.0...v0.7.0) (2020-03-01)
 

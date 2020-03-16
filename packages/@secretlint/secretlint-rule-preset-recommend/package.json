@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-preset-recommend",
-    "version": "0.7.3",
+    "version": "0.9.0",
     "description": "Recommended rule preset of secretlint.",
     "keywords": [
         "secretlint",
@@ -44,12 +44,12 @@
         "tabWidth": 4
     },
     "dependencies": {
-        "@secretlint/secretlint-rule-aws": "^0.7.2",
-        "@secretlint/secretlint-rule-basicauth": "^0.7.1",
-        "@secretlint/secretlint-rule-gcp": "^0.7.3",
-        "@secretlint/secretlint-rule-npm": "^0.7.1",
-        "@secretlint/secretlint-rule-privatekey": "^0.7.2",
-        "@secretlint/secretlint-rule-slack": "^0.7.2"
+        "@secretlint/secretlint-rule-aws": "^0.9.0",
+        "@secretlint/secretlint-rule-basicauth": "^0.9.0",
+        "@secretlint/secretlint-rule-gcp": "^0.9.0",
+        "@secretlint/secretlint-rule-npm": "^0.9.0",
+        "@secretlint/secretlint-rule-privatekey": "^0.9.0",
+        "@secretlint/secretlint-rule-slack": "^0.9.0"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^11.0.2",
