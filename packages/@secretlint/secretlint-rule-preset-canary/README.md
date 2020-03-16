@@ -4,7 +4,7 @@ Canary rule preset of secretlint.
 
 This preset similar with [secretlint-rule-preset-recommend](https://www.npmjs.com/package/@secretlint/secretlint-rule-preset-recommend), but it does not base on [Semantic Versioning](https://semver.org/).
 
-In other word, This rule preset always be experimental release.
+In other words, This rule preset always be experimental release.
 It may introduce breaking change in patch release.
 
 ## Versioning Policy
