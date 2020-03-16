@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1584349644847,
+  "lastUpdate": 1584358477070,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -5090,6 +5090,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.61,
             "range": "±1.25%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "2883cfe2851e14056a9d956a0c9677ea41295c79",
+          "message": "Merge pull request #93 from secretlint/preset-canary\n\nfeat(preset-canary): add secretlint-rule-preset-canary",
+          "timestamp": "2020-03-16T20:32:04+09:00",
+          "tree_id": "d7514e3e278b032775b07691f7c027a891beff9b",
+          "url": "https://github.com/secretlint/secretlint/commit/2883cfe2851e14056a9d956a0c9677ea41295c79"
+        },
+        "date": 1584358476190,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.61,
+            "range": "±1.89%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.62,
+            "range": "±1.95%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
