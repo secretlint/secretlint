@@ -1,20 +1,18 @@
 # Change Log
 
-## 0.7.3
-
-### Patch Changes
-
--   aaef596: Path Update
--   Updated dependencies [aaef596]
-    -   @secretlint/secretlint-rule-aws@0.7.2
-    -   @secretlint/secretlint-rule-basicauth@0.7.1
-    -   @secretlint/secretlint-rule-gcp@0.7.3
-    -   @secretlint/secretlint-rule-npm@0.7.1
-    -   @secretlint/secretlint-rule-privatekey@0.7.2
-    -   @secretlint/secretlint-rule-slack@0.7.2
-
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
+# [0.9.0](https://github.com/secretlint/secretlint/compare/v0.7.3...v0.9.0) (2020-03-16)
+
+
+### Performance Improvements
+
+* **secretlint-rule-preset-recommend:** rollup ([#76](https://github.com/secretlint/secretlint/issues/76)) ([71c382a](https://github.com/secretlint/secretlint/commit/71c382abb4c2f8bf60319e2716f3d6600f1de8ba))
+
+
+
+
 
 ## [0.7.2](https://github.com/secretlint/secretlint/compare/v0.7.1...v0.7.2) (2020-03-01)
 
