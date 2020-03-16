@@ -1,0 +1,32 @@
+{
+    "filePath": "[SNAPSHOT]/basicauth/input",
+    "messages": [
+        {
+            "message": "found basic auth credential: https://user:pass@example.com",
+            "range": [
+                5,
+                34
+            ],
+            "ruleId": "@secretlint/secretlint-rule-basicauth",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 5
+                },
+                "end": {
+                    "line": 1,
+                    "column": 34
+                }
+            },
+            "severity": "error",
+            "messageId": "BasicAuth",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-basicauth/README.md#BasicAuth",
+            "data": {
+                "CREDENTIAL": "https://user:pass@example.com",
+                "user": "user",
+                "password": "pass"
+            }
+        }
+    ]
+}
