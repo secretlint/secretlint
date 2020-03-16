@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1583909142391,
+  "lastUpdate": 1584343408484,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -4786,6 +4786,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.64,
             "range": "±0.86%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "3dfb6a1a971a16f616f9ec2ab6e3467a10ab2192",
+          "message": "Merge pull request #88 from secretlint/change-release-flow\n\nCI(publish): use lerna + GitHub Actions for release",
+          "timestamp": "2020-03-16T16:20:45+09:00",
+          "tree_id": "6a87307e63f3918a4887e3ee69534ee0782ef8ae",
+          "url": "https://github.com/secretlint/secretlint/commit/3dfb6a1a971a16f616f9ec2ab6e3467a10ab2192"
+        },
+        "date": 1584343407537,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.47,
+            "range": "±2.54%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.56,
+            "range": "±1.72%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
