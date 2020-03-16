@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-aws",
-    "version": "0.9.0",
+    "version": "0.9.1",
     "description": "A secretlint rule for AWS.",
     "keywords": [
         "secretlint",
@@ -43,13 +43,13 @@
         "tabWidth": 4
     },
     "dependencies": {
-        "@secretlint/types": "^0.9.0",
+        "@secretlint/types": "^0.9.1",
         "@textlint/regexp-string-matcher": "^1.1.0",
         "regx": "^1.0.4",
         "string.prototype.matchall": "^4.0.2"
     },
     "devDependencies": {
-        "@secretlint/tester": "^0.9.0",
+        "@secretlint/tester": "^0.9.1",
         "@types/mocha": "^7.0.1",
         "@types/node": "^13.7.4",
         "cross-env": "^7.0.0",
