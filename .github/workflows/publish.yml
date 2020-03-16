@@ -104,7 +104,6 @@ jobs:
               body: '🎉 Release '
             })
 
-
   publish-docker:
     runs-on: ubuntu-18.04
     needs: [hadolint, publish]
