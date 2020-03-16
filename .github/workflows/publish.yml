@@ -23,7 +23,6 @@ jobs:
       working-directory: ./publish/docker
 
   publish:
-    name: Publish
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout
