@@ -14,8 +14,8 @@ Install with [npm](https://www.npmjs.com/):
 ```js
 import { createRawSource } from "@secretlint/source-creator"
 (async () => {
-    const rawSource = await createRawSource("/path/to/file");
-    coneols.log(rawSource);
+    const source = await createRawSource("/path/to/file");
+    coneols.log(source);
 })();
 ```
 

@@ -2,7 +2,12 @@ import { lintSource } from "@secretlint/core";
 import { loadConfig, loadPackagesFromRawConfig } from "@secretlint/config-loader";
 import { createRawSource } from "@secretlint/source-creator";
 import { createFormatter } from "@secretlint/formatter";
-import { SecretLintConfigDescriptor, SecretLintCoreDescriptor, SecretLintCoreResult } from "@secretlint/types";
+import {
+    SecretLintConfigDescriptor,
+    SecretLintCoreDescriptor,
+    SecretLintCoreResult,
+    SecretLintRuleLocaleTag
+} from "@secretlint/types";
 import os from "os";
 import path from "path";
 import { secretLintProfiler } from "@secretlint/profiler";
@@ -29,7 +34,12 @@ export type SecretLintEngineOptionsBase = {
      * Default: false
      */
     terminalLink?: boolean;
-}
+
+    /**
+     * locale for rule message
+     */
+    locale?: SecretLintRuleLocaleTag;
+};
 export type SecretLintEngineOptionsConfigFilePath = SecretLintEngineOptionsBase & {
     /**
      * If configFilePath is not defined, search config file from cwd(current working dir)
@@ -49,20 +59,26 @@ export type SecretLintEngineOptions = SecretLintEngineOptionsConfigFilePath | Se
 const isConfigFileJSON = (v: any): v is SecretLintEngineOptionsConfigFileJSON => {
     return "configFileJSON" in v && v.configFileJSON !== undefined;
 };
-const lintFile = async (filePath: string, options: SecretLintCoreDescriptor) => {
+const lintFile = async (filePath: string, config: SecretLintCoreDescriptor, options: SecretLintEngineOptions) => {
     const rawSource = await createRawSource(filePath);
-    return lintSource(rawSource, options);
+    return lintSource({
+        source: rawSource,
+        options: {
+            locale: options.locale,
+            config: config
+        }
+    });
 };
 
 const hasErrorMessage = (result: SecretLintCoreResult): boolean => {
     return result.messages.length > 0;
 };
 const executeOnContent = async ({
-                                    content,
-                                    filePath,
-                                    config,
-                                    options
-                                }: {
+    content,
+    filePath,
+    config,
+    options
+}: {
     content: string;
     filePath: string;
     config: SecretLintCoreDescriptor;
@@ -70,15 +86,18 @@ const executeOnContent = async ({
 }) => {
     debug("executeOnContent content: %s", `${content.slice(0, 24)}...`);
     debug("executeOnContent filePath: %s", filePath);
-    const result = await lintSource(
-        {
+    const result = await lintSource({
+        source: {
             filePath: filePath,
             content: content,
             ext: path.extname(filePath),
             contentType: "text"
         },
-        config
-    );
+        options: {
+            locale: options.locale,
+            config
+        }
+    });
     debug("executeOnContent result: %o", result);
     secretLintProfiler.mark({
         type: "@node>format::start"
@@ -99,17 +118,17 @@ const executeOnContent = async ({
 };
 
 const executeOnFiles = async ({
-                                  filePathList,
-                                  config,
-                                  options
-                              }: {
+    filePathList,
+    config,
+    options
+}: {
     filePathList: string[];
     config: SecretLintCoreDescriptor;
     options: SecretLintEngineOptions;
 }) => {
     const mapper = async (filePath: string) => {
         debug("executeOnFiles file: %s", filePath);
-        const result = await lintFile(filePath, config);
+        const result = await lintFile(filePath, config, options);
         debug("executeOnFiles result: %o", result);
         return result;
     };

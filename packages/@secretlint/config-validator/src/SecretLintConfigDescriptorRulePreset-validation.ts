@@ -12,10 +12,10 @@ export const SecretLintConfigDescriptorRulePresetSchema = {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "Options": {
-      "$ref": "#/definitions/__type"
+      "$ref": "#/definitions/__type_1"
     },
     "Options_1": {
-      "$ref": "#/definitions/__type_3"
+      "$ref": "#/definitions/__type_4"
     },
     "Options_2": {
       "type": "object"
@@ -24,19 +24,19 @@ export const SecretLintConfigDescriptorRulePresetSchema = {
       "type": "object"
     },
     "SecretLintRuleCreator": {
-      "$ref": "#/definitions/__type_1"
-    },
-    "SecretLintRuleCreator_1": {
-      "$ref": "#/definitions/__type_5"
-    },
-    "SecretLintRuleLocalizeMessages": {
       "$ref": "#/definitions/__type_2"
     },
+    "SecretLintRuleCreator_1": {
+      "$ref": "#/definitions/__type_6"
+    },
+    "SecretLintRuleLocalizeMessages": {
+      "$ref": "#/definitions/__type_3"
+    },
     "SecretLintRulePresetCreator": {
-      "$ref": "#/definitions/__type_4"
+      "$ref": "#/definitions/__type_5"
     },
     "SecretLintRulePresetCreator_1": {
-      "$ref": "#/definitions/__type_6"
+      "$ref": "#/definitions/__type_7"
     },
     "SecretLintRuleSeverityLevel": {
       "description": "Rule Severity Level",
@@ -47,12 +47,20 @@ export const SecretLintConfigDescriptorRulePresetSchema = {
       ],
       "type": "string"
     },
+    "SecretlintCoreSharedOptions": {
+      "$ref": "#/definitions/__type"
+    },
     "__type": {
-      "properties": {
+      "additionalProperties": {
       },
       "type": "object"
     },
     "__type_1": {
+      "properties": {
+      },
+      "type": "object"
+    },
+    "__type_2": {
       "properties": {
         "messages": {
           "$ref": "#/definitions/SecretLintRuleLocalizeMessages"
@@ -110,7 +118,7 @@ export const SecretLintConfigDescriptorRulePresetSchema = {
       ],
       "type": "object"
     },
-    "__type_2": {
+    "__type_3": {
       "additionalProperties": {
         "anyOf": [
           {
@@ -138,12 +146,12 @@ export const SecretLintConfigDescriptorRulePresetSchema = {
       },
       "type": "object"
     },
-    "__type_3": {
+    "__type_4": {
       "properties": {
       },
       "type": "object"
     },
-    "__type_4": {
+    "__type_5": {
       "properties": {
         "meta": {
           "properties": {
@@ -184,7 +192,7 @@ export const SecretLintConfigDescriptorRulePresetSchema = {
       ],
       "type": "object"
     },
-    "__type_5": {
+    "__type_6": {
       "properties": {
         "messages": {
           "$ref": "#/definitions/SecretLintRuleLocalizeMessages"
@@ -242,7 +250,7 @@ export const SecretLintConfigDescriptorRulePresetSchema = {
       ],
       "type": "object"
     },
-    "__type_6": {
+    "__type_7": {
       "properties": {
         "meta": {
           "properties": {

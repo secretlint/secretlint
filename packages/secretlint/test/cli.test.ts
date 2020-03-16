@@ -35,6 +35,7 @@ describe("cli snapshot testing", function() {
             const actualFilePath = path.join(fixtureDir, "input.txt");
             const actualOptions = require(path.join(fixtureDir, "options.ts")).options;
             const actualInputs = require(path.join(fixtureDir, "options.ts")).inputs;
+            console.log("actualOptions", actualOptions);
             const actual = await run(actualInputs ? actualInputs : [actualFilePath], {
                 ...cli.flags,
                 ...actualOptions,

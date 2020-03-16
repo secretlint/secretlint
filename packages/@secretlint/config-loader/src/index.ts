@@ -32,28 +32,28 @@ export type SecretLintConfigLoaderOptions = {
 };
 export type SecretLintConfigLoaderResult =
     | {
-    ok: true;
-    config: SecretLintCoreDescriptor; // Core Option object
-    configFilePath: string;
-}
+          ok: true;
+          config: SecretLintCoreDescriptor; // Core Option object
+          configFilePath: string;
+      }
     | {
-    // load config error
-    ok: false;
-    configFilePath?: string;
-    rawConfig?: SecretLintConfigDescriptor; // Config Raw object
-    errors: Error[];
-} ;
+          // load config error
+          ok: false;
+          configFilePath?: string;
+          rawConfig?: SecretLintConfigDescriptor; // Config Raw object
+          errors: Error[];
+      };
 
 export type SecretLintConfigLoaderRawResult =
     | {
-    ok: true;
-    configFilePath: string;
-    rawConfig: SecretLintConfigDescriptor; // Config Raw object
-}
+          ok: true;
+          configFilePath: string;
+          rawConfig: SecretLintConfigDescriptor; // Config Raw object
+      }
     | {
-    ok: false;
-    errors: Error[];
-};
+          ok: false;
+          errors: Error[];
+      };
 export type SecretLintLoadPackagesFromRawConfigOptions = {
     /**
      * Loaded config object
@@ -73,23 +73,25 @@ export type SecretLintLoadPackagesFromRawConfigOptions = {
         id: string;
         rule: SecretLintUnionRuleCreator;
     }[];
-}
+};
 export type SecretLintLoadPackagesFromRawConfigResult =
     | {
-    ok: true;
-    config: SecretLintCoreDescriptor; // Core Option object
-}
+          ok: true;
+          config: SecretLintCoreDescriptor; // Core Option object
+      }
     | {
-    // load config error
-    ok: false;
-    errors: Error[];
-} ;
+          // load config error
+          ok: false;
+          errors: Error[];
+      };
 
 /**
  * Load packages in RawConfig and return loaded config object
  * @param options
  */
-export const loadPackagesFromRawConfig = (options: SecretLintLoadPackagesFromRawConfigOptions): SecretLintLoadPackagesFromRawConfigResult => {
+export const loadPackagesFromRawConfig = (
+    options: SecretLintLoadPackagesFromRawConfigOptions
+): SecretLintLoadPackagesFromRawConfigResult => {
     // Early validation, validate rawConfig by JSON Schema
     const resultValidateRawConfig = validateRawConfig(options.rawConfig);
     if (!resultValidateRawConfig.ok) {
@@ -153,7 +155,8 @@ export const loadPackagesFromRawConfig = (options: SecretLintLoadPackagesFromRaw
             errors
         };
     }
-    const loadedConfig = {
+    const loadedConfig: SecretLintCoreDescriptor = {
+        sharedOptions: options.rawConfig.sharedOptions,
         rules
     };
     // Finally, validate loadedConfig with validator

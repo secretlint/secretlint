@@ -1,6 +1,7 @@
 import { SecretLintRuleCreator, SecretLintRuleCreatorOptions } from "./SecretLintRule";
 import { SecretLintRulePresetCreator, SecretLintRulePresetCreatorOptions } from "./SecretLintRulePreset";
 import { SecretLintRuleSeverityLevel } from "./SecretLintRuleSeverityLevel";
+import { SecretlintCoreSharedOptions } from "./SecretlintCoreSharedOptions";
 
 export type SecretLintConfigDescriptorRule<Options = SecretLintRuleCreatorOptions> = {
     /**
@@ -81,5 +82,6 @@ export type SecretLintConfigDescriptorRulePreset<Options = SecretLintRulePresetC
  * An abstraction for config file
  */
 export type SecretLintConfigDescriptor = {
+    sharedOptions?: SecretlintCoreSharedOptions;
     rules: (SecretLintConfigDescriptorRule | SecretLintConfigDescriptorRulePreset)[];
 };

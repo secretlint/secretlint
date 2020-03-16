@@ -17,17 +17,20 @@ export const cli = meow(
     Options
       --init             setup config file. Create .secretlintrc.json file from your package.json
       --format           [String] formatter name. Default: "stylish". Available Formatter: ${getFormatterList()
-        .map(item => item.name)
-        .join(", ")}
-      --output-file      [path:String] output file path that is written of reported result.
+          .map(item => item.name)
+          .join(", ")}
+      --output           [path:String] output file path that is written of reported result.
       --no-color         disable ANSI-color of output.
       --no-terminalLink  disable terminalLink of output.
       --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
       --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
-      
+
     Options for Developer
       --profile          Enable performance profile. 
       --secretlintrcJSON [String] a JSON string of .secretlintrc. use JSON string instead of rc file.
+
+    Experimental Options
+      --locale            [String] locale tag for translating message. Default: en
  
     Examples
       $ secretlint ./README.md
@@ -44,7 +47,7 @@ export const cli = meow(
                 type: "string",
                 default: "stylish"
             },
-            "output-file": {
+            output: {
                 type: "string"
             },
             secretlintrc: {
@@ -75,6 +78,9 @@ export const cli = meow(
             },
             profile: {
                 type: "boolean"
+            },
+            locale: {
+                type: "string"
             },
             // DEBUG option
             cwd: {
@@ -114,24 +120,27 @@ export const run = (
         cliOptions: {
             cwd,
             filePathOrGlobList: input,
-            outputFilePath: flags["output-file"],
+            outputFilePath: flags.output,
             ignoreFilePath: flags.secretlintignore
         },
-        engineOptions: flags.secretlintrcJSON ?
-            {
-                // Parse config string as JSON
-                configFileJSON: JSON.parse(flags.secretlintrcJSON),
-                cwd: cwd,
-                formatter: flags.format,
-                color: flags.color,
-                terminalLink: flags.terminalLink
-            } : {
-                configFilePath: flags.secretlintrc,
-                cwd: cwd,
-                formatter: flags.format,
-                color: flags.color,
-                terminalLink: flags.terminalLink
-            }
+        engineOptions: flags.secretlintrcJSON
+            ? {
+                  // Parse config string as JSON
+                  configFileJSON: JSON.parse(flags.secretlintrcJSON),
+                  cwd: cwd,
+                  formatter: flags.format,
+                  color: flags.color,
+                  terminalLink: flags.terminalLink,
+                  locale: flags.locale
+              }
+            : {
+                  configFilePath: flags.secretlintrc,
+                  cwd: cwd,
+                  formatter: flags.format,
+                  color: flags.color,
+                  terminalLink: flags.terminalLink,
+                  locale: flags.locale
+              }
     }).finally(async () => {
         secretLintProfiler.mark({
             type: "secretlint>cli::end"

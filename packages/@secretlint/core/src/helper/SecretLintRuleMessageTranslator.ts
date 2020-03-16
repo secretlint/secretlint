@@ -1,11 +1,10 @@
 import {
-    createRuleMessageTranslator,
     SecretLintRuleLocaleTag,
-    SecretLintRuleLocalizeMessages,
     SecretLintRuleLocalizeMessageMulti,
-    SecretLintRuleMessageTranslatorOptions
+    SecretLintRuleLocalizeMessages,
+    SecretLintRuleMessageTranslateData,
+    SecretLintRuleTranslatorResult
 } from "@secretlint/types";
-import { SecretLintRuleTranslatorResult } from "@secretlint/types";
 
 const escapeStringRegexp = require("escape-string-regexp");
 /**
@@ -66,11 +65,17 @@ const applyOption = (message: string, options?: object): string => {
 
     return formatMessagePlaceholder(message, options);
 };
-export const createTranslator: createRuleMessageTranslator = <T extends SecretLintRuleLocalizeMessages>(
+
+export const createTranslator = <T extends SecretLintRuleLocalizeMessages>(
     messages: T,
-    options?: SecretLintRuleMessageTranslatorOptions
+    options: {
+        defaultLocale: SecretLintRuleLocaleTag;
+    }
 ) => {
-    return <Data extends {}>(messageId: keyof T, data?: Data): SecretLintRuleTranslatorResult<Data> => {
+    return <Data extends SecretLintRuleMessageTranslateData>(
+        messageId: keyof T,
+        data?: Data
+    ): SecretLintRuleTranslatorResult<Data> => {
         const messageObject: SecretLintRuleLocalizeMessageMulti | string | undefined = messages[messageId];
         if (!messageObject) {
             throw new Error(`messages:${messageId} is missing in messages.`);

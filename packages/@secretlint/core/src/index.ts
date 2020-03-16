@@ -7,6 +7,7 @@ import {
     SecretLintCoreResult,
     SecretLintCoreResultMessage,
     SecretLintRawSource,
+    SecretLintRuleLocaleTag,
     SecretLintSourceCode
 } from "@secretlint/types";
 import { SecretLintSourceCodeImpl } from "./SecretLintSourceCodeImpl";
@@ -16,17 +17,33 @@ import { secretLintProfiler } from "@secretlint/profiler";
 import { createRulePresetContext } from "./RulePresetContext";
 import { cleanupMessages } from "./messages";
 
-type SecretLintCoreOptions = SecretLintCoreDescriptor;
-
-export const lintSource = (
-    rawSource: SecretLintRawSource,
-    options: SecretLintCoreOptions
-): Promise<SecretLintCoreResult> => {
+const debug = require("debug")("@secretlint/core");
+export type SecretLintSourceOptions = {
+    /**
+     * Lint target source
+     */
+    source: SecretLintRawSource;
+    options: {
+        /**
+         * local for translate
+         * Default: "en"
+         */
+        locale?: SecretLintRuleLocaleTag;
+        /**
+         * config present secretlintrc object
+         */
+        config: SecretLintCoreDescriptor;
+    };
+};
+export const lintSource = ({ source, options }: SecretLintSourceOptions): Promise<SecretLintCoreResult> => {
     secretLintProfiler.mark({
         type: "@core>lint::start",
-        id: rawSource.filePath
+        id: source.filePath
     });
-    const rules = options.rules;
+    debug(`source filePath: %O`, source.filePath);
+    debug(`options: %O`, options);
+    const rules = options.config.rules;
+    const locale = options.locale ?? "en";
     const contextEvents = createContextEvents();
     const runningEvents = createRunningEvents();
     const reportedMessages: SecretLintCoreResultMessage[] = [];
@@ -40,10 +57,10 @@ export const lintSource = (
     });
     // Create a SourceCode for linting
     const sourceCode = new SecretLintSourceCodeImpl({
-        content: rawSource.content,
-        filePath: rawSource.filePath,
-        ext: rawSource.ext || "",
-        contentType: rawSource.contentType
+        content: source.content,
+        filePath: source.filePath,
+        ext: source.ext || "",
+        contentType: source.contentType
     });
     secretLintProfiler.mark({
         type: "@core>setup-rules::start"
@@ -55,10 +72,11 @@ export const lintSource = (
         });
         registerRule({
             sourceCode,
-            options,
+            config: options.config,
             descriptorRule: rule,
             contextEvents,
-            runningEvents
+            runningEvents,
+            locale
         });
         secretLintProfiler.mark({
             type: "@core>setup-rule::end",
@@ -75,7 +93,7 @@ export const lintSource = (
         })
         .then(() => {
             return {
-                filePath: rawSource.filePath,
+                filePath: source.filePath,
                 messages: cleanupMessages({
                     reportedMessages,
                     ignoredMessages,
@@ -86,7 +104,7 @@ export const lintSource = (
         .finally(() => {
             secretLintProfiler.mark({
                 type: "@core>lint::end",
-                id: rawSource.filePath
+                id: source.filePath
             });
         });
 };
@@ -104,23 +122,30 @@ const isRule = (ruleDescriptor: SecretLintCoreDescriptorUnionRule): ruleDescript
  * Rule Processing
  */
 const registerRule = ({
-                          sourceCode,
-                          options,
-                          descriptorRule,
-                          contextEvents,
-                          runningEvents
-                      }: {
+    sourceCode,
+    config,
+    descriptorRule,
+    contextEvents,
+    runningEvents,
+    locale
+}: {
     sourceCode: SecretLintSourceCode;
-    options: SecretLintCoreOptions;
+    config: SecretLintCoreDescriptor;
     descriptorRule: SecretLintCoreDescriptorUnionRule;
     contextEvents: ContextEvents;
     runningEvents: RunningEvents;
+    locale: SecretLintRuleLocaleTag;
 }): void => {
+    const ruleId = descriptorRule.id;
     // Do not register disabled rule
     if (descriptorRule.disabled) {
+        debug("Skip registerRule %s, because it is disabled", ruleId);
         return;
     }
-    const ruleId = descriptorRule.id;
+    debug("registerRule %s", ruleId);
+    // sharedOptions is {} by default
+    // sharedOptions is shared between presets and rules
+    const sharedOptionsWithDefault = config.sharedOptions ?? {};
     // If option is not defined Options is {} by default
     if (isRulePreset(descriptorRule)) {
         const context = createRulePresetContext({
@@ -128,7 +153,8 @@ const registerRule = ({
             sourceCode,
             contextEvents: contextEvents,
             runningEvents: runningEvents,
-            sharedOptions: options
+            sharedOptions: sharedOptionsWithDefault,
+            locale: locale
         });
         runningEvents.registerRulePreset({
             descriptorRulePreset: descriptorRule,
@@ -142,7 +168,8 @@ const registerRule = ({
             meta: descriptorRule.rule.meta,
             sourceCode,
             contextEvents: contextEvents,
-            sharedOptions: options
+            sharedOptions: sharedOptionsWithDefault,
+            locale: locale
         });
         runningEvents.registerRule({
             descriptorRule: descriptorRule,

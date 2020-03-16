@@ -11,14 +11,20 @@ describe("lintSource", function() {
             filePath: "/path/to/secret",
             contentType: "text"
         };
-        const result = await lintSource(source, {
-            rules: [
-                {
-                    id: "example",
-                    rule: example,
-                    options: {}
+        const result = await lintSource({
+            source: source,
+            options: {
+                locale: "en",
+                config: {
+                    rules: [
+                        {
+                            id: "example",
+                            rule: example,
+                            options: {}
+                        }
+                    ]
                 }
-            ]
+            }
         });
         assert.strictEqual(result.filePath, source.filePath);
         assertJsonEqual(result.messages, [

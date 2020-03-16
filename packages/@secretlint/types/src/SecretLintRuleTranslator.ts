@@ -21,21 +21,18 @@ export type SecretLintRuleLocalizeMessages = {
     [index: string]: string | SecretLintRuleLocalizeMessageMulti;
 };
 
-export type SecretLintRuleMessageTranslatorOptions = {
-    defaultLocale: SecretLintRuleLocaleTag;
-};
-export type SecretLintRuleTranslatorResult<T extends {}> = {
+export type SecretLintRuleTranslatorResult<Data extends {}> = {
     message: string;
     messageId: string;
-    data: T | undefined;
+    data: Data | undefined;
 };
 
-export type SecretLintRuleMessageTranslate<T extends SecretLintRuleLocalizeMessages, Data extends {} = {}> = (
-    message: keyof T,
-    data?: Data
-) => SecretLintRuleTranslatorResult<Data>;
+export type SecretLintRuleMessageTranslateData = { [index: string]: any };
+export type SecretLintRuleMessageTranslate<
+    T extends SecretLintRuleLocalizeMessages,
+    Data extends SecretLintRuleMessageTranslateData = {}
+> = (message: keyof T, data?: Data) => SecretLintRuleTranslatorResult<Data>;
 
-export type createRuleMessageTranslator = <T extends SecretLintRuleLocalizeMessages>(
-    messages: T,
-    options?: SecretLintRuleMessageTranslatorOptions
+export type SecretLintCreateRuleMessageTranslator<T extends SecretLintRuleLocalizeMessages> = (
+    messages: T
 ) => SecretLintRuleMessageTranslate<T>;
