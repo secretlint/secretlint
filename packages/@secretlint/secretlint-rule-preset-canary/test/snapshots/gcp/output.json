@@ -1,0 +1,30 @@
+{
+    "filePath": "[SNAPSHOT]/gcp/input.json",
+    "messages": [
+        {
+            "message": "found GCP Service Account's private key(json): input.json",
+            "range": [
+                0,
+                1755
+            ],
+            "ruleId": "@secretlint/secretlint-rule-gcp",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 13,
+                    "column": 0
+                }
+            },
+            "severity": "error",
+            "messageId": "PrivateKeyJSON",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-gcp/README.md#PrivateKeyJSON",
+            "data": {
+                "FILE_NAME": "input.json"
+            }
+        }
+    ]
+}

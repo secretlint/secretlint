@@ -1,13 +1,13 @@
 {
-    "name": "@secretlint/secretlint-rule-preset-recommend",
+    "name": "@secretlint/secretlint-rule-preset-canary",
     "version": "0.9.2",
-    "description": "Recommended rule preset of secretlint.",
+    "description": "Canary rule preset of secretlint.",
     "keywords": [
         "secretlint",
         "rule",
         "rule-preset"
     ],
-    "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-preset-recommend/",
+    "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-preset-canary/",
     "bugs": {
         "url": "https://github.com/secretlint/secretlint/issues"
     },
@@ -29,7 +29,6 @@
         "test": "test"
     },
     "scripts": {
-        "cp-canary": "cp ../secretlint-rule-preset-canary/src/index.ts src/ && cp -r ../secretlint-rule-preset-canary/test/ test && npm run updateSnapshot",
         "build": "rollup --config",
         "build:tsc": "tsc -p .",
         "clean": "rimraf lib/",
