@@ -264,10 +264,8 @@ A Maintainer release new version of secretlint by following way.
 1. Checkout release branch
 
 ```
-# checkout release branch like "release-2019-10-10"
-git checkout -b "release-$(date '+%Y-%m-%d')"
-# push current branch 
-git push origin HEAD -u
+# checkout release branch like "release/2019-10-10"
+git checkout -b "release/$(date '+%Y-%m-%d')"
 ```
 
 2. Version up and Update CHANGELOG
@@ -275,17 +273,13 @@ git push origin HEAD -u
 ```
 # bump vesrion and update changelog
 npm run versionup
-## npm run versionup:{patch,minor,major}
-# bump version and update changelog and update GitHub release notes
-## GH_TOKEN="${GITHUB_TOKEN}" npm run versionup -- --create-release=github
+## Also, availble npm run versionup:{patch,minor,major}
 # push the changes to release branch
-git push
+git push origin HEAD -u
 ```
 
 3. Create a Pull Request and Review the release
     - If you need, write blog posts in website/blog
-4. Publish to npm via `release` script
+4. Merge the Pull Request
 
-```
-npm run release
-```
+Finally, GitHub Actions(CI) publish it as new version automatically.
