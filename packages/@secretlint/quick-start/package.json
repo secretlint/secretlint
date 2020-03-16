@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/quick-start",
-    "version": "0.9.0",
+    "version": "0.9.1",
     "description": "Quick Stater CLI for secretlint.",
     "keywords": [
         "secretlint",
@@ -46,8 +46,8 @@
         "tabWidth": 4
     },
     "dependencies": {
-        "@secretlint/secretlint-rule-preset-recommend": "^0.9.0",
-        "secretlint": "^0.9.0"
+        "@secretlint/secretlint-rule-preset-recommend": "^0.9.1",
+        "secretlint": "^0.9.1"
     },
     "devDependencies": {
         "@types/mocha": "^7.0.1",
