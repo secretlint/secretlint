@@ -50,7 +50,7 @@ jobs:
         id: tag_check
         shell: bash -ex {0}
         run: |
-          GET_API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/git/ref/tags/${GIT_TAG_NAME}"
+          GET_API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/git/ref/tags/v${CURRENT_VERSION}"
           http_status_code=$(curl -LI $GET_API_URL -o /dev/null -w '%{http_code}\n' -s \
             -H "Authorization: token ${GITHUB_TOKEN}")
           if [ "$http_status_code" -ne "404" ] ; then
