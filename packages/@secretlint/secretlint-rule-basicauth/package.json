@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-basicauth",
-    "version": "0.9.1",
+    "version": "0.9.2",
     "description": "A secretlint rule that check Basic Authentication.",
     "keywords": [
         "secretlint",
@@ -43,7 +43,7 @@
         "tabWidth": 4
     },
     "dependencies": {
-        "@secretlint/types": "^0.9.1",
+        "@secretlint/types": "^0.9.2",
         "@textlint/regexp-string-matcher": "^1.1.0",
         "string.prototype.matchall": "^4.0.2"
     },
