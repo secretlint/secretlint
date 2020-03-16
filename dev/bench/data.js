@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1584359030038,
+  "lastUpdate": 1584372369453,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -5166,6 +5166,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±1.91%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "8bbd6c9ba630121eb36bf2e9c6e8ab154523974d",
+          "message": "Merge pull request #95 from secretlint/locale\n\nfeat(core): support locale options",
+          "timestamp": "2020-03-17T00:23:29+09:00",
+          "tree_id": "dd0642b5b77c4e0c01433dc4a415ff5b5d841a6a",
+          "url": "https://github.com/secretlint/secretlint/commit/8bbd6c9ba630121eb36bf2e9c6e8ab154523974d"
+        },
+        "date": 1584372368478,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.5,
+            "range": "±3.18%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.56,
+            "range": "±2.53%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
