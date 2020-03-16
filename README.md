@@ -360,6 +360,28 @@ This configuration also integrate Pull Request review comment via [actions/setup
 - Example Repository: https://github.com/azu/secretlint-github-actions-example
 - Example Pull Request: https://github.com/azu/secretlint-github-actions-example/pull/1/files
 
+## Semantic Versioning Policy
+
+Secretlint project follow [Semantic Versioning](https://semver.org/ "Semantic Versioning") without [secretlint-rule-preset-canary](packages/@secretlint/secretlint-rule-preset-canary).
+However, secretlint is not different with most semver project.
+
+- Patch release (intended to not break your lint build)
+    - A bug fix to the CLI or core (including formatters).
+    - Improvements to documentation.
+    - Non-user-facing changes such as refactoring.
+    - Re-releasing after a failed release (i.e., publishing a release that doesn't work for anyone).
+- Minor release (might break your lint build)
+    - A new option.
+    - An existing rule is deprecated.
+    - A new CLI capability is created.
+    - New public API are added (new classes, new methods, new arguments to existing methods, etc.).
+        - It might break TypeScript definitions
+    - A new formatter is created.
+- Major release (break your lint build)
+    - A new option to an existing rule that results in secretlint reporting more errors by default.
+    - An existing formatter is removed.
+    - Add new default rule to rule preset.
+    - Part of the public API is removed or changed in an incompatible way.
 
 ## Motivation
 
@@ -372,7 +394,6 @@ This configuration also integrate Pull Request review comment via [actions/setup
     - Secretlint adopt opt-in approach  
     - We also need to custom rules by user
 		- See [Bring-your own-plugins (BYOP), via --custom-plugins option by KevinHock · Pull Request #255 · Yelp/detect-secrets](https://github.com/Yelp/detect-secrets/pull/255)
-
 
 ## Philosophy
 
