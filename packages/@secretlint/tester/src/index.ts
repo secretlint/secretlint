@@ -116,7 +116,12 @@ export const snapshot = (options: SnapshotOptions) => {
                         : undefined);
                     const config = loadedConfig && loadedConfig.ok ? loadedConfig.config : options.defaultConfig;
                     const rawSource = await createRawSource(actualFilePath);
-                    const actualResult = await lintSource(rawSource, config);
+                    const actualResult = await lintSource({
+                        source: rawSource,
+                        options: {
+                            config
+                        }
+                    });
                     const expectedFilePath = path.join(fixtureDir, "output.json");
                     // Usage: update snapshots
                     // UPDATE_SNAPSHOT=1 npm test

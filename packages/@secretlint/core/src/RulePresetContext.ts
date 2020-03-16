@@ -1,8 +1,10 @@
 import {
     SecretLintCoreDescriptorRule,
     SecretLintCoreDescriptorRulePreset,
+    SecretlintCoreSharedOptions,
     SecretLintRuleCreator,
     SecretLintRuleCreatorOptions,
+    SecretLintRuleLocaleTag,
     SecretLintRulePresetContext,
     SecretLintSourceCode
 } from "@secretlint/types";
@@ -11,24 +13,21 @@ import { ContextEvents, createRuleContext } from "./RuleContext";
 
 /**
  * Create a context for Rule Preset
- * @param descriptorRulePreset
- * @param sourceCode
- * @param runningEvents
- * @param contextEvents
- * @param sharedOptions
  */
 export const createRulePresetContext = ({
     descriptorRulePreset,
     sourceCode,
     runningEvents,
     contextEvents,
-    sharedOptions
+    sharedOptions,
+    locale
 }: {
     descriptorRulePreset: SecretLintCoreDescriptorRulePreset;
     sourceCode: SecretLintSourceCode;
     contextEvents: ContextEvents;
     runningEvents: RunningEvents;
-    sharedOptions: {};
+    sharedOptions: SecretlintCoreSharedOptions;
+    locale: SecretLintRuleLocaleTag;
 }): SecretLintRulePresetContext => {
     const presetRules = descriptorRulePreset.rules || [];
     if (!Array.isArray(presetRules)) {
@@ -59,7 +58,8 @@ export const createRulePresetContext = ({
                 severity: descriptorRuleSeverity,
                 sourceCode,
                 contextEvents: contextEvents,
-                sharedOptions: sharedOptions
+                sharedOptions: sharedOptions,
+                locale
             });
             const defaultValueOfPreset = defaultValue ? defaultValue : {};
             runningEvents.registerRule({

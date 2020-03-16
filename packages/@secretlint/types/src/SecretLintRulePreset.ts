@@ -1,9 +1,10 @@
 // Rule Interfaces
 import { SecretLintCoreDescriptorRule } from "./SecretLintCore";
 import { SecretLintRuleCreator, SecretLintRuleCreatorOptions } from "./SecretLintRule";
+import { SecretlintCoreSharedOptions } from "./SecretlintCoreSharedOptions";
 
 export type SecretLintRulePresetContext = {
-    sharedOptions?: {};
+    sharedOptions: SecretlintCoreSharedOptions;
     registerRule<Options = SecretLintRuleCreatorOptions>(
         rule: SecretLintRuleCreator<Options>,
         defaultValue?: Omit<SecretLintCoreDescriptorRule<Options>, "id" | "rule">

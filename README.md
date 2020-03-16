@@ -92,19 +92,26 @@ It is also possible to install Secretlint globally using `npm install --global`.
     
       Options
         --init             setup config file. Create .secretlintrc.json file from your package.json
-        --format           formatter name. Default: "stylish". Available Formatter: checkstyle, compact, jslint-xml, json, junit, pretty-error, stylish, table, tap, unix
-        --output-file      output file path that is written of reported result.
+        --format           [String] formatter name. Default: "stylish". Available Formatter: checkstyle, compact, jslint-xml, json, junit, pretty-error, stylish, table, tap, unix
+        --output           [path:String] output file path that is written of reported result.
         --no-color         disable ANSI-color of output.
         --no-terminalLink  disable terminalLink of output.
-        --secretlintrc     path to .secretlintrc config file. Default: .secretlintrc.*
-        --secretlintignore path to .secretlintignore file. Default: .secretlintignore
-        --profile          show performance profile
+        --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
+        --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
+    
+      Options for Developer
+        --profile          Enable performance profile.
+        --secretlintrcJSON [String] a JSON string of .secretlintrc. use JSON string instead of rc file.
+    
+      Experimental Options
+        --locale            [String] locale tag for translating message. Default: en
     
       Examples
         $ secretlint ./README.md
         # glob pattern should be wrapped with double quote
         $ secretlint "**/*"
         $ secretlint "source/**/*.ini"
+
 
 ## Configuration
 

@@ -12,6 +12,7 @@ export {
     SecretLintCoreDescriptorRule,
     SecretLintCoreDescriptorRulePreset
 } from "./SecretLintCore";
+export { SecretlintCoreSharedOptions } from "./SecretlintCoreSharedOptions";
 export { SecretLintRuleSeverityLevel } from "./SecretLintRuleSeverityLevel";
 // Rule interface
 export {
@@ -39,13 +40,13 @@ export {
     SecretLintSourceValueNode
 } from "./SecretLintSource";
 export {
-    createRuleMessageTranslator,
+    SecretLintCreateRuleMessageTranslator,
     SecretLintRuleMessageTranslate,
-    SecretLintRuleMessageTranslatorOptions,
     SecretLintRuleLocaleTag,
     SecretLintRuleLocalizeMessageMulti,
     SecretLintRuleLocalizeMessages,
-    SecretLintRuleTranslatorResult
+    SecretLintRuleTranslatorResult,
+    SecretLintRuleMessageTranslateData
 } from "./SecretLintRuleTranslator";
 export { SecretLintSourceCode } from "./SecretLintSourceCode";
 // Config

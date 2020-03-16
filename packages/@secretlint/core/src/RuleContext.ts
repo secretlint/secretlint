@@ -4,8 +4,11 @@ import {
     SecretLintCoreIgnoreMessage,
     SecretLintCoreReportDescriptor,
     SecretLintCoreResultMessage,
+    SecretlintCoreSharedOptions,
     SecretLintRuleContext,
     SecretLintRuleCreator,
+    SecretLintRuleLocaleTag,
+    SecretLintRuleLocalizeMessages,
     SecretLintRuleSeverityLevel,
     SecretLintSourceCode
 } from "@secretlint/types";
@@ -60,7 +63,8 @@ export type CreateRuleContextOptions = {
     severity?: SecretLintRuleSeverityLevel;
     sourceCode: SecretLintSourceCode;
     contextEvents: ContextEvents;
-    sharedOptions: {};
+    sharedOptions: SecretlintCoreSharedOptions;
+    locale: SecretLintRuleLocaleTag;
 };
 export const createRuleContext = ({
     ruleId,
@@ -69,11 +73,16 @@ export const createRuleContext = ({
     severity,
     sourceCode,
     contextEvents,
-    sharedOptions
+    sharedOptions,
+    locale
 }: CreateRuleContextOptions): SecretLintRuleContext => {
     return {
-        sharedOptions,
-        createTranslator: createTranslator,
+        sharedOptions: sharedOptions,
+        createTranslator: <T extends SecretLintRuleLocalizeMessages>(messages: T) => {
+            return createTranslator(messages, {
+                defaultLocale: locale
+            });
+        },
         ignore(descriptor: SecretLintCoreIgnoreDescriptor): void {
             const { message } = descriptor.message;
             contextEvents.ignore({
@@ -88,7 +97,7 @@ export const createRuleContext = ({
         report(descriptor: SecretLintCoreReportDescriptor): void {
             const { message, messageId, data } = descriptor.message;
             // Default severity level is "error"
-            const severityLevel = severity || "error";
+            const severityLevel = severity ?? "error";
             if (ruleParentId) {
                 contextEvents.report({
                     ...descriptor,

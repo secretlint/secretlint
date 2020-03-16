@@ -8,6 +8,7 @@ import {
 import { SecretLintSourceNodeLocation } from "./SecretLintSource";
 import { SecretLintRulePresetCreator, SecretLintRulePresetCreatorOptions } from "./SecretLintRulePreset";
 import { SecretLintRuleSeverityLevel } from "./SecretLintRuleSeverityLevel";
+import { SecretlintCoreSharedOptions } from "./SecretlintCoreSharedOptions";
 
 export type SecretLintCoreDescriptorRule<Options = SecretLintRuleCreatorOptions> = {
     /**
@@ -71,7 +72,9 @@ export type SecretLintUnionRuleCreator<Options = SecretLintRuleCreatorOptions | 
 export type SecretLintCoreDescriptorUnionRule<
     Options = SecretLintRuleCreatorOptions | SecretLintRulePresetCreatorOptions
 > = SecretLintCoreDescriptorRule<Options> | SecretLintCoreDescriptorRulePreset<Options>;
+
 export type SecretLintCoreDescriptor = {
+    sharedOptions?: SecretlintCoreSharedOptions;
     rules: SecretLintCoreDescriptorUnionRule[];
 };
 

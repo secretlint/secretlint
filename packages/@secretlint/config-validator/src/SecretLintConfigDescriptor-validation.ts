@@ -12,19 +12,19 @@ export const SecretLintConfigDescriptorSchema = {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
     "Options": {
-      "$ref": "#/definitions/__type"
-    },
-    "Options_1": {
-      "$ref": "#/definitions/__type_3"
-    },
-    "SecretLintRuleCreator": {
       "$ref": "#/definitions/__type_1"
     },
-    "SecretLintRuleLocalizeMessages": {
+    "Options_1": {
+      "$ref": "#/definitions/__type_4"
+    },
+    "SecretLintRuleCreator": {
       "$ref": "#/definitions/__type_2"
     },
+    "SecretLintRuleLocalizeMessages": {
+      "$ref": "#/definitions/__type_3"
+    },
     "SecretLintRulePresetCreator": {
-      "$ref": "#/definitions/__type_4"
+      "$ref": "#/definitions/__type_5"
     },
     "SecretLintRuleSeverityLevel": {
       "description": "Rule Severity Level",
@@ -35,12 +35,20 @@ export const SecretLintConfigDescriptorSchema = {
       ],
       "type": "string"
     },
+    "SecretlintCoreSharedOptions": {
+      "$ref": "#/definitions/__type"
+    },
     "__type": {
-      "properties": {
+      "additionalProperties": {
       },
       "type": "object"
     },
     "__type_1": {
+      "properties": {
+      },
+      "type": "object"
+    },
+    "__type_2": {
       "properties": {
         "messages": {
           "$ref": "#/definitions/SecretLintRuleLocalizeMessages"
@@ -98,7 +106,7 @@ export const SecretLintConfigDescriptorSchema = {
       ],
       "type": "object"
     },
-    "__type_2": {
+    "__type_3": {
       "additionalProperties": {
         "anyOf": [
           {
@@ -126,12 +134,12 @@ export const SecretLintConfigDescriptorSchema = {
       },
       "type": "object"
     },
-    "__type_3": {
+    "__type_4": {
       "properties": {
       },
       "type": "object"
     },
-    "__type_4": {
+    "__type_5": {
       "properties": {
         "meta": {
           "properties": {
@@ -281,6 +289,9 @@ export const SecretLintConfigDescriptorSchema = {
         ]
       },
       "type": "array"
+    },
+    "sharedOptions": {
+      "$ref": "#/definitions/SecretlintCoreSharedOptions"
     }
   },
   "required": [

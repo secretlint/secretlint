@@ -137,7 +137,6 @@ jobs:
         docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
           -v ${HOME}/.cache:/root/.cache aquasec/trivy:latest --exit-code 1 ${PKG_TAG}
       working-directory: ./publish/docker
-
     - name: Login to Registries
       if: github.event_name != 'pull_request'
       env:
@@ -146,11 +145,9 @@ jobs:
       run: |
         echo "${GITHUB_TOKEN}" | docker login docker.pkg.github.com -u azu --password-stdin
         echo "${DOCKER_HUB_TOKEN}" | docker login -u efcl --password-stdin
-
     - name: Push to GitHub Packages
       if: github.event_name != 'pull_request'
       run: docker push "${PKG_TAG}"
-
     - name: Push to Docker Hub
       if: github.event_name != 'pull_request'
       run: docker push "${HUB_TAG}"
