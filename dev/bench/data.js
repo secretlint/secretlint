@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1584536898684,
+  "lastUpdate": 1584540950264,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -5242,6 +5242,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.61,
             "range": "±2.44%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "6ec495072025364e3075861448c8b017020ed921",
+          "message": "Merge pull request #97 from secretlint/credentials-is-secret\n\ndocs: credentials is secret",
+          "timestamp": "2020-03-18T23:13:19+09:00",
+          "tree_id": "8fe5c6e93939346afc959e611d1a805013d3a3fb",
+          "url": "https://github.com/secretlint/secretlint/commit/6ec495072025364e3075861448c8b017020ed921"
+        },
+        "date": 1584540949534,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.59,
+            "range": "±2.70%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.59,
+            "range": "±2.89%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
