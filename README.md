@@ -112,7 +112,6 @@ It is also possible to install Secretlint globally using `npm install --global`.
         $ secretlint "**/*"
         $ secretlint "source/**/*.ini"
 
-
 ## Configuration
 
 Secretlint has a configuration file `.secretlintrc.{json,yml,js}`.
