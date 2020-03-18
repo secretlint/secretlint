@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.10.0](https://github.com/secretlint/secretlint/compare/v0.9.2...v0.10.0) (2020-03-18)
+
+
+### Bug Fixes
+
+* **publish:** split publish to binary ([b4a358c](https://github.com/secretlint/secretlint/commit/b4a358cc2a786c4f0ba8c95d4bdee4168f7e37ad))
+* **publish-binary:** fix config ([1596c37](https://github.com/secretlint/secretlint/commit/1596c379cbb535b4e43dff617cc34ef66e484490))
+* **publish-binary:** fix config ([8d82565](https://github.com/secretlint/secretlint/commit/8d82565ae5cdb5a5a4305888cf58df7def23a1a2))
+
+
+### Features
+
+* **core:** support locale options ([256a58c](https://github.com/secretlint/secretlint/commit/256a58c6cd03f585f15dd09972212ca6dfb70ac4))
+* **preset-canary:** add secretlint-rule-preset-canary ([4100626](https://github.com/secretlint/secretlint/commit/4100626b65d8e4166b1d198a81b5b1d6679c1a46))
+
+
+
+
+
 ## [0.9.2](https://github.com/secretlint/secretlint/compare/v0.9.1...v0.9.2) (2020-03-16)
 
 **Note:** Version bump only for package root

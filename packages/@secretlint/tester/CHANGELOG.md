@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.10.0](https://github.com/secretlint/secretlint/compare/v0.9.2...v0.10.0) (2020-03-18)
+
+
+### Features
+
+* **core:** support locale options ([256a58c](https://github.com/secretlint/secretlint/commit/256a58c6cd03f585f15dd09972212ca6dfb70ac4))
+
+
+
+
+
 ## [0.9.2](https://github.com/secretlint/secretlint/compare/v0.9.1...v0.9.2) (2020-03-16)
 
 **Note:** Version bump only for package @secretlint/tester
