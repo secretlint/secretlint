@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.1](https://github.com/secretlint/secretlint/compare/v0.10.0...v0.10.1) (2020-03-18)
+
+
+### Bug Fixes
+
+* **publish-binary:** fix config ([429fa9f](https://github.com/secretlint/secretlint/commit/429fa9f23055e7e48a89966ef3560c4d247774ef))
+
+
+
+
+
 # [0.10.0](https://github.com/secretlint/secretlint/compare/v0.9.2...v0.10.0) (2020-03-18)
 
 
