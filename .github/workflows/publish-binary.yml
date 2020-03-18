@@ -1,17 +1,14 @@
 name: Publish-Binary
 on:
-  push:
-    branches:
-      - master
-    tags:
-      - "*"
+  release:
+    types:
+      - created
 
 env:
   CI: true
 jobs:
   publish-binary:
     runs-on: ${{ matrix.os }}
-    if: startsWith(github.ref, 'refs/tags/')
     strategy:
       matrix:
         os: [macOS-latest, windows-latest, ubuntu-18.04]
@@ -38,6 +35,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{github.event.release.tag_name}}
           files: "./publish/binary-compiler/dist/**"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
