@@ -155,8 +155,6 @@ jobs:
   publish-binary:
     needs: [publish]
     runs-on: ${{ matrix.os }}
-    # Release only
-    if: startsWith(github.ref, 'refs/tags/')
     strategy:
       matrix:
         os: [macOS-latest, windows-latest, ubuntu-18.04]
