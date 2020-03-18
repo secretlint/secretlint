@@ -1,5 +1,11 @@
 name: Publish-Binary
-on: push
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - "*"
+
 env:
   CI: true
 jobs:
