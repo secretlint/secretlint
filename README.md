@@ -328,7 +328,9 @@ For more details, see [secretlint/git-hooks](https://github.com/secretlint/git-h
 Node.js version also can be used for global git hook.
 If you interesting in it, please see [@azu/git-hooks](https://github.com/azu/git-hooks).
 
-### GitHub Actions
+### CI
+
+#### GitHub Actions
 
 If you already set secretlint [Using Node.js](#using-nodejs), you can run secretlint with your configuration on [GitHub Actions](https://github.co.jp/features/actions).
 
