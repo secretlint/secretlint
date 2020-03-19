@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-scripts",
-    "version": "0.10.1",
+    "version": "1.0.0",
     "description": "Secretlint rule scripts",
     "keywords": [
         "secretlint"
