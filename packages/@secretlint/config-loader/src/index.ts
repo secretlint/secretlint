@@ -233,7 +233,12 @@ export const loadRawConfig = (options: SecretLintConfigLoaderOptions): SecretLin
         if (!results) {
             return {
                 ok: false,
-                errors: [new Error("secretlint config is not found")]
+                errors: [
+                    new Error(`secretlint config is not found
+                
+Secrelint require .secretlintrc config file.
+The config file define the use of rules.`)
+                ]
             };
         }
         return {

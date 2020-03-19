@@ -26,7 +26,9 @@ If you already have installed Node.js:
 
 After running, 
 If you got empty result and exit status is `0`, your project is secure.
-Otherwise you got some error report, your project includes credential as plain format.
+Otherwise you got some error report, your project includes credential as raw data.
+
+![An example of secretlint results](./docs/assets/secretlint-report-example.png)
 
 You want to get continuous security, Please see following installation guide and setup pre-commit hook and CI.
 
