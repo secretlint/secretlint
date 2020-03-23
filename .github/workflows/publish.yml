@@ -7,21 +7,7 @@ on:
       - master
     types: [closed]
 
-env:
-  DOCKER_BASE_NAME: docker.pkg.github.com/${{ github.repository }}/secretlint
-  DOCKER_HUB_BASE_NAME: secretlint/secretlint
-
 jobs:
-  hadolint:
-    runs-on: macos-latest
-    steps:
-    - uses: actions/checkout@v1
-      with:
-        fetch-depth: 1
-    - run: brew install hadolint
-    - run: hadolint ./Dockerfile
-      working-directory: ./publish/docker
-
   publish:
     runs-on: ubuntu-18.04
     steps:

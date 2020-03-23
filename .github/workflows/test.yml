@@ -7,6 +7,16 @@ on:
 env:
   CI: true
 jobs:
+  hadolint:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
+      - run: brew install hadolint
+      - run: hadolint ./Dockerfile
+        working-directory: ./publish/docker
+
   test:
     name: "Test on Node.js ${{ matrix.node_version }} OS: ${{matrix.os}}"
     runs-on: ubuntu-18.04

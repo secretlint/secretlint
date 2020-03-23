@@ -5,6 +5,9 @@ on:
     types: [publish-artifact]
 env:
   CI: true
+  DOCKER_BASE_NAME: docker.pkg.github.com/${{ github.repository }}/secretlint
+  DOCKER_HUB_BASE_NAME: secretlint/secretlint
+
 jobs:
   # npm binary
   publish-binary:
