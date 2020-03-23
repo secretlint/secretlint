@@ -8,6 +8,9 @@ jobs:
   dispatch_publish_artifact:
     if: |
       github.event_name == 'issue_comment' &&
+      # require public member
+      # private member is treated as CONTRIBUTOR
+      (github.event.comment.author_association == 'MEMBER' || github.event.comment.author_association == 'OWNER') &&
       startsWith(github.event.comment.body, '@secretlint publish artifact')
     runs-on: ubuntu-latest
     steps:
@@ -16,7 +19,6 @@ jobs:
       - name: Set Current Version
         shell: bash -ex {0}
         run: |
-          echo "${{github.event.comment.author_association}}"
           CURRENT_VERSION=$(node -p 'require("./lerna.json").version')
           echo "::set-env name=CURRENT_VERSION::${CURRENT_VERSION}"
       - name: Repository Dispatch

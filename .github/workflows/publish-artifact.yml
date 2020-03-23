@@ -60,16 +60,11 @@ jobs:
       - name: Build image
         run: |
           docker build . -t "${PKG_TAG}" --build-arg SECRETLINT_VERSION=${SECRETLINT_VERSION}
-          docker tag "${PKG_TAG}" "${HUB_TAG}"
+          docker tag "${PKG_TAG}" "${HUB_TAG}" "${PKG_LATEST_TAG}" "${HUB_LATEST_TAG}"
         working-directory: ./publish/docker
       - name: Print version
         run: |
           docker run --rm ${PKG_TAG} --version
-        working-directory: ./publish/docker
-      - name: Scan image
-        run: |
-          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
-            -v ${HOME}/.cache:/root/.cache aquasec/trivy:latest --exit-code 1 ${PKG_TAG}
         working-directory: ./publish/docker
       - name: Login to Registries
         env:
