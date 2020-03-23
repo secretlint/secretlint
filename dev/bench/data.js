@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1584977337742,
+  "lastUpdate": 1584977483044,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -5964,6 +5964,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.56,
             "range": "±1.73%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "distinct": true,
+          "id": "4c76969df093548fc08cb508fe1745c4ede0521c",
+          "message": "CI: fix docker on gh",
+          "timestamp": "2020-03-24T00:28:46+09:00",
+          "tree_id": "a9bdc25117c3ce901158ad02251346e74bd50f2e",
+          "url": "https://github.com/secretlint/secretlint/commit/4c76969df093548fc08cb508fe1745c4ede0521c"
+        },
+        "date": 1584977482415,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.52,
+            "range": "±3.42%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.59,
+            "range": "±3.35%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
