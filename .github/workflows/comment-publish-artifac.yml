@@ -1,0 +1,26 @@
+# Manual call Publish-Artifact with current version
+name: Comment-Publish-Artifact
+on:
+  issue_comment:
+    types: [created]
+jobs:
+  manual_prepare:
+    if: |
+      github.event_name == 'issue_comment' &&
+      (github.event.comment.author_association == 'member' || github.event.comment.author_association == 'owner') &&
+      startsWith(github.event.comment.body, '/publish artifact')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set Current Version
+        shell: bash -ex {0}
+        run: |
+          CURRENT_VERSION=$(node -p 'require("./lerna.json").version')
+          echo "::set-env name=CURRENT_VERSION::${CURRENT_VERSION}"
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: publish-artifact
+          client-payload: '{"version": "${{ env.CURRENT_VERSION }}"}'
