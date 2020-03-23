@@ -81,7 +81,6 @@ jobs:
       - name: Push to GitHub Packages
         run: |
           docker push "${PKG_TAG}"
-          docker push "${PKG_LATEST_TAG}"
       - name: Push to Docker Hub
         run: |
           docker push "${HUB_TAG}"
