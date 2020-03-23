@@ -60,19 +60,20 @@ jobs:
       - name: Build image
         run: |
           docker build . -t "${PKG_TAG}" --build-arg SECRETLINT_VERSION=${SECRETLINT_VERSION}
-          docker tag "${PKG_TAG}" "${HUB_TAG}" "${PKG_LATEST_TAG}" "${HUB_LATEST_TAG}"
+          docker tag "${PKG_TAG}" "${HUB_TAG}"
+          docker tag "${PKG_TAG}" "${HUB_LATEST_TAG}"
         working-directory: ./publish/docker
       - name: Print version
         run: |
           docker run --rm ${PKG_TAG} --version
         working-directory: ./publish/docker
       - name: Login to Registries
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
         run: |
           echo "${GITHUB_TOKEN}" | docker login docker.pkg.github.com -u azu --password-stdin
           echo "${DOCKER_HUB_TOKEN}" | docker login -u efcl --password-stdin
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
       - name: Push to GitHub Packages
         run: |
           docker push "${PKG_TAG}"
