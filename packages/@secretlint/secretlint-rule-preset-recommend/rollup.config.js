@@ -10,7 +10,7 @@ export default {
             format: "commonjs",
             exports: "named",
             sourcemap: true
-        },
+        }
     ],
     plugins: [resolve({ preferBuiltins: true }), commonjs(), typescript()]
 };
