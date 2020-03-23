@@ -9,7 +9,9 @@ const isEqualMessage = (aMessage: SecretLintAllMessages, bMessage: SecretLintAll
     return (
         aMessage.range[0] === bMessage.range[0] &&
         aMessage.range[1] === bMessage.range[1] &&
-        "severity" in aMessage && "severity" in bMessage && aMessage.severity === bMessage.severity &&
+        "severity" in aMessage &&
+        "severity" in bMessage &&
+        aMessage.severity === bMessage.severity &&
         aMessage.message === bMessage.message
     );
 };

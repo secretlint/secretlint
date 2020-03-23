@@ -47,7 +47,7 @@
     "lerna": "^3.20.2",
     "lint-staged": "^10.0.7",
     "pr-to-changesets": "^1.0.1",
-    "prettier": "^1.19.1"
+    "prettier": "^2.0.2"
   },
   "prettier": {
     "singleQuote": false,
