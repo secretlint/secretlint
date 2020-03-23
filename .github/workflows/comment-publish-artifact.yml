@@ -8,6 +8,7 @@ jobs:
   dispatch_publish_artifact:
     if: |
       github.event_name == 'issue_comment' &&
+      (github.event.comment.author_association == 'MEMBER' || github.event.comment.author_association == 'OWNER') &&
       startsWith(github.event.comment.body, '@secretlint publish artifact')
     runs-on: ubuntu-latest
     steps:
@@ -21,6 +22,6 @@ jobs:
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
           event-type: publish-artifact
           client-payload: '{"version": "${{ env.CURRENT_VERSION }}"}'
