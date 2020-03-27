@@ -1,0 +1,29 @@
+{
+    "filePath": "[SNAPSHOT]/ng.privkey/input.txt",
+    "messages": [
+        {
+            "data": {
+                "KEY": "c8f12fb8b20008e14b5A5ff4bad15af9b545d98144da8707892dcc2a2014ba58"
+            },
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-secp256k1-priv/README.md#secp256k1Priv",
+            "loc": {
+                "end": {
+                    "column": 100,
+                    "line": 1
+                },
+                "start": {
+                    "column": 36,
+                    "line": 1
+                }
+            },
+            "message": "found secp256k1 private key: c8f12fb8b20008e14b5A5ff4bad15af9b545d98144da8707892dcc2a2014ba58",
+            "messageId": "secp256k1Priv",
+            "range": [
+                36,
+                100
+            ],
+            "ruleId": "@secretlint/secretlint-rule-secp256k1-priv",
+            "severity": "error"
+        }
+    ]
+}
