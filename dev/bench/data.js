@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1585046500500,
+  "lastUpdate": 1585489587369,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -6116,6 +6116,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.59,
             "range": "±3.80%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "edfcf8bb105e74ffbe0a1c64fbbe27304d946777",
+          "message": "feat(rule): Add rule to detect presence of secp256k1 private keys (#103)\n\nCo-authored-by: Matheus Alencar <matheus@kleros.io>\r\nCo-authored-by: azu <azu@users.noreply.github.com>",
+          "timestamp": "2020-03-29T22:43:56+09:00",
+          "tree_id": "1a9bfedef319c9ce4116861265c75d7ab7110db0",
+          "url": "https://github.com/secretlint/secretlint/commit/edfcf8bb105e74ffbe0a1c64fbbe27304d946777"
+        },
+        "date": 1585489586714,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.6,
+            "range": "±1.28%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.6,
+            "range": "±2.17%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
