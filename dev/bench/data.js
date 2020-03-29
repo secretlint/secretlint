@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1585495132720,
+  "lastUpdate": 1585522112108,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -6306,6 +6306,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.6,
             "range": "±1.60%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "malencar@pm.me",
+            "name": "Matheus Faria de Alencar",
+            "username": "mtsalenc"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "320b3446d7afd85e342cb9bb15f6e9df7dae8036",
+          "message": "fix(secretlint-rule-secp256k1-privatekey): handle thrown exception due to invalid key (#110)",
+          "timestamp": "2020-03-30T07:45:44+09:00",
+          "tree_id": "4be621fb54720b47d187a657fbb6221d3f2ba72b",
+          "url": "https://github.com/secretlint/secretlint/commit/320b3446d7afd85e342cb9bb15f6e9df7dae8036"
+        },
+        "date": 1585522111493,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.5,
+            "range": "±1.50%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±1.08%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
