@@ -14,6 +14,9 @@ Install with [npm](https://www.npmjs.com/):
 ### secp256k1Priv
 > found secp256k1 private key: {{KEY}}
 
+Secp256k1 curve private keys such as used by Bitcoin an Ethereum.
+It should be treated as credentials.
+
 ## Changelog
 
 See [Releases page](https://github.com/secretlint/secretlint/releases).
