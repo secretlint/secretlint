@@ -8,7 +8,6 @@ Install with [npm](https://www.npmjs.com/):
 
     npm install @secretlint/secretlint-rule-secp256k1-privatekey
 
-
 ## MessageIDs
 
 ### secp256k1Priv
