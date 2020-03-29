@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.1](https://github.com/secretlint/secretlint/compare/v1.0.0...v1.0.1) (2020-03-29)
+
+
+### Bug Fixes
+
+* **secretlint-rule-preset-canary:** fix id name ([4c91c60](https://github.com/secretlint/secretlint/commit/4c91c6053194be74ea1d0f080d8a547693c40555))
+* japanese message translation ([629125a](https://github.com/secretlint/secretlint/commit/629125ae11fd5ce842bad4f216abd5ac488805c2))
+* package author ([dddd0f7](https://github.com/secretlint/secretlint/commit/dddd0f764039952ea215c90218b001b865753032))
+
+
+### Features
+
+* **secretlint-rule-preset-canary:** add secretlint-rule-secp256k1-privatekey ([d9d93ed](https://github.com/secretlint/secretlint/commit/d9d93ed657b80fd673e3172ba76792261dc022f4))
+* check for the presence of secp256k1 curve private keys ([a8f1902](https://github.com/secretlint/secretlint/commit/a8f190266c6f3def98592ba599096ddb5e007dd3))
+
+
+### Reverts
+
+* remove secretlint-rule-secp256k1-privatekey from canary ([d6b3aea](https://github.com/secretlint/secretlint/commit/d6b3aea646826334d995426e19b1e998fd6caaa6))
+
+
+
+
+
 # [1.0.0](https://github.com/secretlint/secretlint/compare/v0.10.1...v1.0.0) (2020-03-18)
 
 **Note:** Version bump only for package root

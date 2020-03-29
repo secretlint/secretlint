@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-preset-canary",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Canary rule preset of secretlint.",
     "keywords": [
         "secretlint",
@@ -44,18 +44,18 @@
         "tabWidth": 4
     },
     "dependencies": {
-        "@secretlint/secretlint-rule-aws": "^1.0.0",
-        "@secretlint/secretlint-rule-basicauth": "^1.0.0",
-        "@secretlint/secretlint-rule-gcp": "^1.0.0",
-        "@secretlint/secretlint-rule-npm": "^1.0.0",
-        "@secretlint/secretlint-rule-privatekey": "^1.0.0",
-        "@secretlint/secretlint-rule-slack": "^1.0.0"
+        "@secretlint/secretlint-rule-aws": "^1.0.1",
+        "@secretlint/secretlint-rule-basicauth": "^1.0.1",
+        "@secretlint/secretlint-rule-gcp": "^1.0.1",
+        "@secretlint/secretlint-rule-npm": "^1.0.1",
+        "@secretlint/secretlint-rule-privatekey": "^1.0.1",
+        "@secretlint/secretlint-rule-slack": "^1.0.1"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^11.0.2",
+        "@rollup/plugin-json": "^4.0.2",
         "@rollup/plugin-node-resolve": "^7.1.1",
         "@rollup/plugin-typescript": "^4.0.0",
-        "@rollup/plugin-json": "^4.0.2",
         "@types/mocha": "^7.0.1",
         "@types/node": "^13.7.4",
         "cross-env": "^7.0.0",
