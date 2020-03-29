@@ -5,7 +5,12 @@
     "keywords": [
         "secretlint",
         "rule",
-        "url"
+        "secp256k1",
+        "private",
+        "key",
+        "blockchain",
+        "ethereum",
+        "bitcoin"
     ],
     "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-secp256k1-privatekey/",
     "bugs": {
