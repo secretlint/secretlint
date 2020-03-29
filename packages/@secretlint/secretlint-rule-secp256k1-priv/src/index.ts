@@ -6,7 +6,7 @@ import BN from 'bn.js'
 export const messages = {
     secp256k1Priv: {
         en: "found secp256k1 private key: {{KEY}}",
-        ja: "secp256k1 秘密鍵 {{KEY}} が見つかりました" // TODO: Review needed.
+        ja: "秘密鍵(secp256k1) {{KEY}} が見つかりました"
     }
 };
 
