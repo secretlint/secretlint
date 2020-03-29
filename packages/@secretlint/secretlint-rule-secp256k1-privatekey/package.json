@@ -1,5 +1,5 @@
 {
-    "name": "@secretlint/secretlint-rule-secp256k1-priv",
+    "name": "@secretlint/secretlint-rule-secp256k1-privatekey",
     "version": "1.1.0",
     "description": "A secretlint rule that checks for secp256k1 private keys.",
     "keywords": [
@@ -7,7 +7,7 @@
         "rule",
         "url"
     ],
-    "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-secp256k1-priv/",
+    "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-secp256k1-privatekey/",
     "bugs": {
         "url": "https://github.com/secretlint/secretlint/issues"
     },

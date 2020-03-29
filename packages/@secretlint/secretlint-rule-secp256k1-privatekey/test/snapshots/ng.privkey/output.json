@@ -5,7 +5,7 @@
             "data": {
                 "KEY": "c8f12fb8b20008e14b5A5ff4bad15af9b545d98144da8707892dcc2a2014ba58"
             },
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-secp256k1-priv/README.md#secp256k1Priv",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-secp256k1-privatekey/README.md#secp256k1Priv",
             "loc": {
                 "end": {
                     "column": 100,
@@ -22,7 +22,7 @@
                 36,
                 100
             ],
-            "ruleId": "@secretlint/secretlint-rule-secp256k1-priv",
+            "ruleId": "@secretlint/secretlint-rule-secp256k1-privatekey",
             "severity": "error"
         }
     ]

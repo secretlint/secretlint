@@ -1,4 +1,4 @@
-# @secretlint/secretlint-rule-secp256k1-priv
+# @secretlint/secretlint-rule-secp256k1-privatekey
 
 A secretlint for secp256k1 curve private keys such as used by Bitcoin an Ethereum.
 
@@ -6,7 +6,7 @@ A secretlint for secp256k1 curve private keys such as used by Bitcoin an Ethereu
 
 Install with [npm](https://www.npmjs.com/):
 
-    npm install @secretlint/secretlint-rule-secp256k1-priv
+    npm install @secretlint/secretlint-rule-secp256k1-privatekey
 
 
 ## MessageIDs

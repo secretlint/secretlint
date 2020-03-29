@@ -21,13 +21,13 @@ export type Options = {
 export const creator: SecretLintRuleCreator<Options> = {
     messages,
     meta: {
-        id: "@secretlint/secretlint-rule-secp256k1-priv",
+        id: "@secretlint/secretlint-rule-secp256k1-privatekey",
         recommended: true,
         type: "scanner",
         supportedContentTypes: ["text"],
         docs: {
             url:
-                "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-secp256k1-priv/README.md"
+                "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-secp256k1-privatekey/README.md"
         }
     },
     create(context) {
