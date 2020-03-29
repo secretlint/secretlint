@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1585489587369,
+  "lastUpdate": 1585492829043,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -6154,6 +6154,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.6,
             "range": "±2.17%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "cff07ecbd79e50d15f4b743b97ce2e1179c6becd",
+          "message": "Merge pull request #108 from secretlint/revert-canary\n\nrevert: remove secretlint-rule-secp256k1-privatekey from canary",
+          "timestamp": "2020-03-29T23:38:08+09:00",
+          "tree_id": "f90fb826c91f913a9fd5cd8536ac19f7b6c834f8",
+          "url": "https://github.com/secretlint/secretlint/commit/cff07ecbd79e50d15f4b743b97ce2e1179c6becd"
+        },
+        "date": 1585492828429,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.8,
+            "range": "±2.41%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.66,
+            "range": "±1.32%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
