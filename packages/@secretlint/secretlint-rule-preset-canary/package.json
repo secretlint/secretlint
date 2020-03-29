@@ -49,8 +49,7 @@
         "@secretlint/secretlint-rule-gcp": "^1.0.0",
         "@secretlint/secretlint-rule-npm": "^1.0.0",
         "@secretlint/secretlint-rule-privatekey": "^1.0.0",
-        "@secretlint/secretlint-rule-slack": "^1.0.0",
-        "@secretlint/secretlint-rule-secp256k1-privatekey": "^1.0.0"
+        "@secretlint/secretlint-rule-slack": "^1.0.0"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^11.0.2",
