@@ -49,12 +49,14 @@
         "@secretlint/secretlint-rule-gcp": "^1.0.0",
         "@secretlint/secretlint-rule-npm": "^1.0.0",
         "@secretlint/secretlint-rule-privatekey": "^1.0.0",
-        "@secretlint/secretlint-rule-slack": "^1.0.0"
+        "@secretlint/secretlint-rule-slack": "^1.0.0",
+        "@secretlint/secretlint-rule-secp256k1-privatekey": "^1.0.0"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^11.0.2",
         "@rollup/plugin-node-resolve": "^7.1.1",
         "@rollup/plugin-typescript": "^4.0.0",
+        "@rollup/plugin-json": "^4.0.2",
         "@types/mocha": "^7.0.1",
         "@types/node": "^13.7.4",
         "cross-env": "^7.0.0",
