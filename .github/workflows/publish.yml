@@ -90,6 +90,7 @@ jobs:
               body: '🎉 Release https://github.com/${{ github.repository }}/releases/tag/v${{ env.CURRENT_VERSION }}'
             })
       - name: Repository Dispatch
+        if: steps.tag_check.outputs.exists_tag == 'false' && github.event.pull_request.merged == true
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}

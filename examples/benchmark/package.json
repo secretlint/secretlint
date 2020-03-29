@@ -32,7 +32,7 @@
         "access": "public"
     },
     "dependencies": {
-        "@secretlint/secretlint-rule-preset-recommend": "^1.0.0",
+        "@secretlint/secretlint-rule-preset-canary": "^1.0.0",
         "benchmark": "^2.1.4",
         "secretlint": "^1.0.0"
     }
