@@ -45,7 +45,7 @@ So, `Kind: Secret` manifest is not committable file into a repository.
 
 - [Secrets - Kubernetes](https://kubernetes.io/docs/concepts/configuration/secret/)
 
-In GitOps context, you can use another solution like [SealedSecret](https://github.com/bitnami-labs/sealed-secrets), Vault etc...
+In GitOps context, you can use another solution like [SealedSecret](https://github.com/bitnami-labs/sealed-secrets), [Vault](https://www.vaultproject.io/) etc...
 
 - [GitOps - Frequently Asked Questions](https://www.weave.works/technologies/gitops-frequently-asked-questions/#manage-secrets)
 - [Secret Management - Argo CD - Declarative GitOps CD for Kubernetes](https://argoproj.github.io/argo-cd/operator-manual/secret-management/)
