@@ -2,7 +2,7 @@
     "filePath": "[SNAPSHOT]/ng.kind-secret/input.yml",
     "messages": [
         {
-            "message": "disallow to use Kind: Secret manifest: input.yml",
+            "message": "disallow to use Kind: Secret in manifest: input.yml",
             "range": [
                 0,
                 124
