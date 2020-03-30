@@ -1,0 +1,63 @@
+{
+  "name": "@secretlint/secretlint-rule-no-k8s-kind-secret",
+  "version": "1.0.0",
+  "description": "A secretlint rule that disallow to use Kind: Secret in Kubernetes repository.",
+  "keywords": [
+    "rule",
+    "secretlint"
+  ],
+  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-no-k8s-kind-secret/",
+  "bugs": {
+    "url": "https://github.com/secretlint/secretlint/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/secretlint/secretlint.git"
+  },
+  "license": "MIT",
+  "author": "azu",
+  "files": [
+    "bin/",
+    "lib/",
+    "src/"
+  ],
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "build": "cross-env NODE_ENV=production tsc -p .",
+    "clean": "rimraf lib/",
+    "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
+    "prepublish": "npm run --if-present build",
+    "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
+    "test": "mocha \"test/**/*.ts\"",
+    "watch": "tsc -p . --watch"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "singleQuote": false,
+    "tabWidth": 4
+  },
+  "dependencies": {
+    "@secretlint/types": "^1.0.1",
+    "js-yaml": "^3.13.1"
+  },
+  "devDependencies": {
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^13.9.5",
+    "cross-env": "^7.0.2",
+    "mocha": "^7.1.1",
+    "prettier": "^2.0.2",
+    "rimraf": "^3.0.2",
+    "ts-node": "^8.8.1",
+    "ts-node-test-register": "^8.0.1",
+    "typescript": "^3.8.3",
+    "@types/js-yaml": "^3.12.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
