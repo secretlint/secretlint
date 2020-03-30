@@ -52,6 +52,8 @@ In GitOps context, you can use another solution like [SealedSecret](https://gith
 
 ## Options
 
+- No Options
+
 ## Changelog
 
 See [Releases page](https://github.com/secretlint/secretlint/releases).
