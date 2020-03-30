@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-secp256k1-privatekey",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "description": "A secretlint rule that checks for secp256k1 private keys.",
     "keywords": [
         "secretlint",
@@ -48,7 +48,7 @@
         "tabWidth": 4
     },
     "dependencies": {
-        "@secretlint/types": "^1.0.1",
+        "@secretlint/types": "^1.0.3",
         "@types/bn.js": "^4.11.6",
         "@types/secp256k1": "^3.5.3",
         "bn.js": "^5.1.1",
