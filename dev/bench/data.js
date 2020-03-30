@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1585522816698,
+  "lastUpdate": 1585581555396,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -6382,6 +6382,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.56,
             "range": "±1.79%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "5dd3982da24e1a15a40c7be2fbe72ee0f68dda03",
+          "message": "feat(secretlint-rule-no-k8s-kind-secret): add new rule (#113)\n\n* feat(secretlint-rule-no-k8s-kind-secret): add new rule\r\n\r\n* docs: Update README\r\n\r\n* test(secretlint-rule-no-k8s-kind-secret): update snapshots\r\n\r\n* docs(secretlint-rule-no-k8s-kind-secret): update README\r\n\r\n* docs(secretlint-rule-no-k8s-kind-secret): update README\r\n\r\n* fix(secretlint-rule-no-k8s-kind-secret): support multiple manifest",
+          "timestamp": "2020-03-31T00:16:38+09:00",
+          "tree_id": "6b3138febfcc6af8e169c86c09325d463122a5be",
+          "url": "https://github.com/secretlint/secretlint/commit/5dd3982da24e1a15a40c7be2fbe72ee0f68dda03"
+        },
+        "date": 1585581554822,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.7,
+            "range": "±2.82%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.62,
+            "range": "±3.35%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
