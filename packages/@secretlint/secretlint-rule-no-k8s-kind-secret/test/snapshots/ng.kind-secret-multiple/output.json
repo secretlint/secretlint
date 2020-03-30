@@ -1,11 +1,11 @@
 {
-    "filePath": "[SNAPSHOT]/ok.valid/input.yaml",
+    "filePath": "[SNAPSHOT]/ng.kind-secret-multiple/input.yml",
     "messages": [
         {
-            "message": "disallow to use Kind: Secret in manifest: input.yaml",
+            "message": "disallow to use Kind: Secret in manifest: input.yml",
             "range": [
                 0,
-                510
+                291
             ],
             "ruleId": "@secretlint/secretlint-rule-no-k8s-kind-secret",
             "loc": {
@@ -14,7 +14,7 @@
                     "column": 0
                 },
                 "end": {
-                    "line": 35,
+                    "line": 22,
                     "column": 0
                 }
             },
@@ -22,7 +22,7 @@
             "messageId": "disallowToUseKindSecret",
             "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-no-k8s-kind-secret/README.md#disallowToUseKindSecret",
             "data": {
-                "FILE_NAME": "input.yaml"
+                "FILE_NAME": "input.yml"
             }
         }
     ]

@@ -5,7 +5,7 @@ import {
     SecretLintSourceCode,
 } from "@secretlint/types";
 import path from "path";
-import { safeLoad } from "js-yaml";
+import { safeLoadAll } from "js-yaml";
 
 export const messages = {
     disallowToUseKindSecret: {
@@ -27,16 +27,19 @@ function reportIfFoundKindSecret({
     t: SecretLintRuleMessageTranslate<typeof messages>;
 }) {
     try {
-        const manifestObject = safeLoad(source.content);
-        // Kind: Secret
-        if (manifestObject["Kind"] == "Secret") {
-            return;
-        }
-        context.report({
-            message: t("disallowToUseKindSecret", {
-                FILE_NAME: source.filePath ? path.basename(source.filePath) : "",
-            }),
-            range: [0, source.content.length],
+        // Support multi manifest
+        const manifestObjects = safeLoadAll(source.content);
+        manifestObjects.forEach((manifestObject) => {
+            // Kind: Secret
+            if (manifestObject["Kind"] == "Secret") {
+                return;
+            }
+            context.report({
+                message: t("disallowToUseKindSecret", {
+                    FILE_NAME: source.filePath ? path.basename(source.filePath) : "",
+                }),
+                range: [0, source.content.length],
+            });
         });
     } catch {
         // nope
