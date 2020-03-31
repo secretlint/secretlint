@@ -55,6 +55,50 @@ describe("SecretLintRuleMessageTranslator", function () {
             messageId: "messageId",
         });
     });
+    it("translate message that include multiple template like string", () => {
+        const messages = {
+            messageId: "{{v1}} {{v2}} {{v3}} message",
+        };
+        const translate = createTranslator(messages, {
+            defaultLocale: "en",
+        });
+        const result = translate("messageId", {
+            v1: "1",
+            v2: "2",
+            v3: "3",
+        });
+        assert.deepStrictEqual(result, {
+            data: {
+                v1: "1",
+                v2: "2",
+                v3: "3",
+            },
+            message: "1 2 3 message",
+            messageId: "messageId",
+        });
+    });
+    it.skip("should not translate message of data's value", () => {
+        const messages = {
+            messageId: "{{v1}} {{v2}} {{v3}} message",
+        };
+        const translate = createTranslator(messages, {
+            defaultLocale: "en",
+        });
+        const result = translate("messageId", {
+            v1: "{{v1}} {{v2}} {{v3}}",
+            v2: "{{v1}} {{v2}} {{v3}}",
+            v3: "{{v1}} {{v2}} {{v3}}",
+        });
+        assert.deepStrictEqual(result, {
+            data: {
+                v1: "{{v1}} {{v2}} {{v3}}",
+                v2: "{{v1}} {{v2}} {{v3}}",
+                v3: "{{v1}} {{v2}} {{v3}}",
+            },
+            message: "{{v1}} {{v2}} {{v3}} {{v1}} {{v2}} {{v3}} {{v1}} {{v2}} {{v3}} message",
+            messageId: "messageId",
+        });
+    });
     it("throw error when some data is missing unless placeholder is defined", () => {
         const messages = {
             messageId: "{{key}} message",
