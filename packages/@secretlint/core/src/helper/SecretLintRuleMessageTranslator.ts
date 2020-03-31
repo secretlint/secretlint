@@ -3,7 +3,7 @@ import {
     SecretLintRuleLocalizeMessageMulti,
     SecretLintRuleLocalizeMessages,
     SecretLintRuleMessageTranslateData,
-    SecretLintRuleTranslatorResult
+    SecretLintRuleTranslatorResult,
 } from "@secretlint/types";
 
 const escapeStringRegexp = require("escape-string-regexp");
@@ -12,7 +12,27 @@ const escapeStringRegexp = require("escape-string-regexp");
  */
 const DEFAULT_LOCAL = "en";
 
-const formatMessagePlaceholder = (message: string, data?: {}): string => {
+const assertPlaceholder = (message: string, data?: {}) => {
+    const unMatchedPlaceholder = /{{([^}]+)}}/g;
+    const placeholderNames: string[] = [];
+    const keyNames: string[] = data ? Object.keys(data) : [];
+    let match;
+    while ((match = unMatchedPlaceholder.exec(message)) !== null) {
+        const matchString = match[1] || "";
+        placeholderNames.push(matchString);
+    }
+    const missingKeys = placeholderNames.filter((name) => {
+        return !keyNames.includes(name);
+    });
+    if (missingKeys.length > 0) {
+        throw new Error(`[Rule Creator Error] Placeholder:{{${missingKeys.join("}} ,{{")}}} still existed.
+
+Probably, message's data is missing.
+`);
+    }
+};
+const formatMessage = (message: string, data?: {}): string => {
+    assertPlaceholder(message, data);
     if (typeof data !== "object" || data === null) {
         return message;
     }
@@ -20,20 +40,12 @@ const formatMessagePlaceholder = (message: string, data?: {}): string => {
     Object.entries(data).forEach(([key, value]) => {
         output = output.replace(new RegExp(escapeStringRegexp(`{{${key}}}`), "g"), String(value));
     });
-    const unMatchedPlaceholder = /{{[^}]+}}/g;
-    const matchUnMatched = output.match(unMatchedPlaceholder);
-    if (matchUnMatched) {
-        throw new Error(`Placeholder:${matchUnMatched && matchUnMatched[0]} still existed.
-
-Probably, message's data key is mismatch
-`);
-    }
     return output;
 };
 
 const getMatchedLocaleMessage = (locale: SecretLintRuleLocaleTag, locales: SecretLintRuleLocalizeMessageMulti) => {
     const localKeys = Object.keys(locales);
-    const matchLocale = localKeys.find(key => {
+    const matchLocale = localKeys.find((key) => {
         return key === locale;
     });
     if (matchLocale) {
@@ -44,26 +56,13 @@ const getMatchedLocaleMessage = (locale: SecretLintRuleLocaleTag, locales: Secre
         return DEFAULT_LOCAL;
     }
     // en-US => en
-    const fallbackMatchLocal = localKeys.find(key => {
+    const fallbackMatchLocal = localKeys.find((key) => {
         return key === lang;
     });
     if (fallbackMatchLocal) {
         return fallbackMatchLocal;
     }
     return DEFAULT_LOCAL;
-};
-
-const applyOption = (message: string, options?: object): string => {
-    if (!options) {
-        return message;
-    }
-    /**
-     * {{Key}} => Value
-     * @param message
-     * @param data
-     */
-
-    return formatMessagePlaceholder(message, options);
 };
 
 export const createTranslator = <T extends SecretLintRuleLocalizeMessages>(
@@ -86,9 +85,9 @@ export const createTranslator = <T extends SecretLintRuleLocalizeMessages>(
                 throw new Error(`message's key:${messageId} should be string`);
             }
             return {
-                message: applyOption(messageObject, data),
+                message: formatMessage(messageObject, data),
                 messageId: messageId,
-                data
+                data,
             };
         }
         // if messages is object, pick message that is matched locale from messages.
@@ -105,9 +104,9 @@ export const createTranslator = <T extends SecretLintRuleLocalizeMessages>(
             throw new Error(`message's key:${messageId}.${DEFAULT_LOCAL} should be string`);
         }
         return {
-            message: applyOption(localizedMessage, data),
+            message: formatMessage(localizedMessage, data),
             messageId: messageId,
-            data
+            data,
         };
     };
 };
