@@ -203,8 +203,9 @@ Secretlint rules has been implemented as separated modules.
 - [@secretlint/secretlint-rule-basicauth](./packages/@secretlint/secretlint-rule-basicauth)
 - [@secretlint/secretlint-rule-slack](./packages/@secretlint/secretlint-rule-slack)
 - [@secretlint/secretlint-rule-secp256k1-privatekey](./packages/@secretlint/secretlint-rule-secp256k1-privatekey)
+- [@secretlint/secretlint-rule-no-k8s-kind-secret](./packages/@secretlint/secretlint-rule-no-k8s-kind-secret)
 
-Also, Secretlint provide rule preset that package some rule set.
+Also, Secretlint provide rule preset that includes recommened rule set.
 
 - [@secretlint/secretlint-rule-preset-recommend](./packages/@secretlint/secretlint-rule-preset-recommend)
     - Recommended rule set
