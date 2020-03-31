@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/node",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "Secretlint client library for Node.js",
     "keywords": [
         "secretlint",
@@ -41,16 +41,16 @@
         "tabWidth": 4
     },
     "dependencies": {
-        "@secretlint/config-loader": "^1.0.3",
-        "@secretlint/core": "^1.0.3",
-        "@secretlint/formatter": "^1.0.3",
-        "@secretlint/profiler": "^1.0.3",
-        "@secretlint/source-creator": "^1.0.3",
+        "@secretlint/config-loader": "^1.0.4",
+        "@secretlint/core": "^1.0.4",
+        "@secretlint/formatter": "^1.0.4",
+        "@secretlint/profiler": "^1.0.4",
+        "@secretlint/source-creator": "^1.0.4",
         "debug": "^4.1.1",
         "p-map": "^4.0.0"
     },
     "devDependencies": {
-        "@secretlint/secretlint-rule-example": "^1.0.3",
+        "@secretlint/secretlint-rule-example": "^1.0.4",
         "@types/mocha": "^7.0.1",
         "@types/node": "^13.9.3",
         "cross-env": "^7.0.0",
