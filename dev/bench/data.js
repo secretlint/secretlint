@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1585583124555,
+  "lastUpdate": 1585630982022,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -6496,6 +6496,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.63,
             "range": "±2.15%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "4fa809d6fbe9a5179ac0b11466f460c2b6a48e75",
+          "message": "Merge pull request #117 from secretlint/fix/116\n\nfix(core): fix placeholder assertion for rule",
+          "timestamp": "2020-03-31T14:00:31+09:00",
+          "tree_id": "51ab4baa6b8c3c85b9e19ad6d4d8946d18607e51",
+          "url": "https://github.com/secretlint/secretlint/commit/4fa809d6fbe9a5179ac0b11466f460c2b6a48e75"
+        },
+        "date": 1585630981134,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.73,
+            "range": "±1.71%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.64,
+            "range": "±1.75%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
