@@ -79,7 +79,7 @@ export default creator;
 
 ### Test: `@secretlint/secretlint-rule-example`
 
-Secretlint testing is based on Snapshot testing like [Jest]](https://jestjs.io/docs/ja/snapshot-testing).
+Secretlint testing is based on Snapshot testing like [Jest](https://jestjs.io/docs/ja/snapshot-testing).
 
 Secretlint provide `@secretlint/tester` for testing.
 It will help you to write snapshot testing for your rule.
