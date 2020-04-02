@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1585657512488,
+  "lastUpdate": 1585839093157,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -6648,6 +6648,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.61,
             "range": "±1.16%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "44e1388cbead71f09b2cb81352429002dac53a8c",
+          "message": "Merge pull request #120 from munierujp/patch-1\n\ndocs(secretlint-rule): fix link syntax",
+          "timestamp": "2020-04-02T23:48:51+09:00",
+          "tree_id": "708649879a7474a4c233ee7e4cff89d7a900edc8",
+          "url": "https://github.com/secretlint/secretlint/commit/44e1388cbead71f09b2cb81352429002dac53a8c"
+        },
+        "date": 1585839092536,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.53,
+            "range": "±0.85%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±1.21%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
