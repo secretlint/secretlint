@@ -30,6 +30,10 @@ Via `.secretlintrc.json`(Recommended)
 
 `.env` file was found.
 
+## Author
+
+- [Munieru](https://github.com/munierujp)
+
 ## License
 
 MIT © secretlint
