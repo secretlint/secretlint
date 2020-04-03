@@ -29,3 +29,7 @@ Via `.secretlintrc.json`(Recommended)
 > found .env file
 
 `.env` file was found.
+
+## License
+
+MIT © secretlint
