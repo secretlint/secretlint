@@ -15,6 +15,7 @@
         "type": "git",
         "url": "https://github.com/secretlint/secretlint.git"
     },
+    "license": "MIT",
     "files": [
         "bin/",
         "lib/",
