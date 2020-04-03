@@ -31,7 +31,7 @@ function reportIfFoundKindSecret({
         const manifestObjects = safeLoadAll(source.content);
         manifestObjects.forEach((manifestObject) => {
             // Kind: Secret
-            if (manifestObject["Kind"] == "Secret") {
+            if (manifestObject["Kind"] !== "Secret") {
                 return;
             }
             context.report({
