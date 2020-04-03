@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/config-validator",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": ".secretlintrc config validation library",
     "keywords": [
         "secretlint",
@@ -45,7 +45,7 @@
         "tabWidth": 4
     },
     "dependencies": {
-        "@secretlint/types": "^1.0.4",
+        "@secretlint/types": "^1.0.5",
         "ajv": "^6.11.0"
     },
     "devDependencies": {

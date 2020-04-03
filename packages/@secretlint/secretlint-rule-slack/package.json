@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-slack",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "A secretlint rule for slack.",
     "keywords": [
         "rule",
@@ -43,12 +43,12 @@
         "tabWidth": 4
     },
     "dependencies": {
-        "@secretlint/types": "^1.0.4",
+        "@secretlint/types": "^1.0.5",
         "@textlint/regexp-string-matcher": "^1.1.0",
         "string.prototype.matchall": "^4.0.2"
     },
     "devDependencies": {
-        "@secretlint/tester": "^1.0.4",
+        "@secretlint/tester": "^1.0.5",
         "@types/mocha": "^7.0.1",
         "@types/node": "^13.7.4",
         "cross-env": "^7.0.0",
