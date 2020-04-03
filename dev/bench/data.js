@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1585878433880,
+  "lastUpdate": 1585878605619,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -6724,6 +6724,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.6,
             "range": "±1.13%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "1ba65ca5ab0c7b081a222f645a3ce26c4f08879e",
+          "message": "Merge pull request #122 from secretlint/release/2020-04-03\n\nv1.0.5: fix @secretlint/secretlint-rule-no-k8s-kind-secret",
+          "timestamp": "2020-04-03T10:46:45+09:00",
+          "tree_id": "699bf7346c91cf96cd16f1153cd048466a7d045b",
+          "url": "https://github.com/secretlint/secretlint/commit/1ba65ca5ab0c7b081a222f645a3ce26c4f08879e"
+        },
+        "date": 1585878604824,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.42,
+            "range": "±2.20%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.54,
+            "range": "±1.34%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
