@@ -16,6 +16,10 @@
         "url": "https://github.com/secretlint/secretlint.git"
     },
     "license": "MIT",
+    "author": {
+      "name" : "Munieru",
+       "url" : "https://github.com/munierujp"
+     },
     "files": [
         "bin/",
         "lib/",
