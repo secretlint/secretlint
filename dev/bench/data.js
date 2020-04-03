@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1585839093157,
+  "lastUpdate": 1585878433880,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -6686,6 +6686,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±1.21%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "distinct": true,
+          "id": "d0cbab72ef1465db54727b7103d2ffde92e952e8",
+          "message": "fix(secretlint-rule-no-k8s-kind-secret): fix detect logic",
+          "timestamp": "2020-04-03T10:44:28+09:00",
+          "tree_id": "790eb34347df44d32d720ba8bd1d3acf89661fbc",
+          "url": "https://github.com/secretlint/secretlint/commit/d0cbab72ef1465db54727b7103d2ffde92e952e8"
+        },
+        "date": 1585878433038,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.62,
+            "range": "±1.11%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.6,
+            "range": "±1.13%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
