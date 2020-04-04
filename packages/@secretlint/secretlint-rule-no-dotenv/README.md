@@ -28,7 +28,19 @@ Via `.secretlintrc.json`(Recommended)
 ### FOUND_DOTENV_FILE
 > found .env file
 
-`.env` file was found.
+Disallow to use `.env` file, because dotenv document describe that
+
+> Should I commit my .env file?
+> 
+> No. We strongly recommend against committing your .env file to version control.
+> 
+> -- <https://github.com/motdotla/dotenv#should-i-commit-my-env-file>
+
+You can tell Secretlint to ignore `.env` file by [`.secretlintignore`](https://github.com/secretlint/secretlint/blob/master/docs/configuration.md#.secretlintignore) configuration.
+
+For more details `.secretlintignore`, see following document.
+
+- <https://github.com/secretlint/secretlint/blob/master/docs/configuration.md#.secretlintignore>
 
 ## Author
 
