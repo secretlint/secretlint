@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1585878605619,
+  "lastUpdate": 1585960050555,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -6762,6 +6762,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.54,
             "range": "±1.34%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "d12daa62ce7c132e709dc93d9722c5f74fccda98",
+          "message": "feat(secretlint-rule-no-dotenv): add new rule (#121)\n\n* feat(secretlint-rule-no-dotenv): add new rule\r\n\r\n* docs(secretlint-rule-no-dotenv): update README\r\n\r\n* docs(secretlint-rule-no-dotenv): add LICENSE file\r\n\r\n* docs(secretlint-rule-no-dotenv): add License section to README\r\n\r\n* docs(secretlint-rule-no-dotenv): add Author section to README\r\n\r\n* chore(secretlint-rule-no-dotenv): add license to package.json\r\n\r\n* chore(secretlint-rule-no-dotenv): add author to package.json",
+          "timestamp": "2020-04-04T09:24:40+09:00",
+          "tree_id": "8dcda9bcb7ee800cadda24d5fbc10eece4fe3893",
+          "url": "https://github.com/secretlint/secretlint/commit/d12daa62ce7c132e709dc93d9722c5f74fccda98"
+        },
+        "date": 1585960049866,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.5,
+            "range": "±1.89%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±1.24%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
