@@ -36,7 +36,7 @@ Disallow to use `.env` file, because dotenv document describe that
 > 
 > -- <https://github.com/motdotla/dotenv#should-i-commit-my-env-file>
 
-You can ignore `.env` file by [`.secretlintignore`](https://github.com/secretlint/secretlint/blob/master/docs/configuration.md#.secretlintignore) configuration.
+You can tell Secretlint to ignore `.env` file by [`.secretlintignore`](https://github.com/secretlint/secretlint/blob/master/docs/configuration.md#.secretlintignore) configuration.
 
 For more details `.secretlintignore`, see following document.
 
