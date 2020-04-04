@@ -1,0 +1,23 @@
+{
+    "filePath": "[SNAPSHOT]/ng.match/.env",
+    "messages": [
+        {
+            "message": "found .env file",
+            "range": [0, 8],
+            "ruleId": "@secretlint/secretlint-rule-no-dotenv",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 2,
+                    "column": 0
+                }
+            },
+            "severity": "error",
+            "messageId": "FOUND_DOTENV_FILE",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-no-dotenv/README.md#FOUND_DOTENV_FILE"
+        }
+    ]
+}
