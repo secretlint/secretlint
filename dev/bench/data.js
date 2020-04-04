@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1585960050555,
+  "lastUpdate": 1585962463877,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -6800,6 +6800,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±1.24%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "d924bd2e020439f449aa24d1673a3d212ebefa49",
+          "message": "Merge pull request #123 from secretlint/release/2020-04-04\n\nv1.1.0: Add secretlint-rule-no-dotenv",
+          "timestamp": "2020-04-04T10:05:12+09:00",
+          "tree_id": "fd4aad7b0a7ad927a6c6619b1540ebbc0ea0de4b",
+          "url": "https://github.com/secretlint/secretlint/commit/d924bd2e020439f449aa24d1673a3d212ebefa49"
+        },
+        "date": 1585962462782,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.73,
+            "range": "±3.10%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.65,
+            "range": "±2.15%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
