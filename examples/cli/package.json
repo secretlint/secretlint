@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@secretlint/example-cli",
-    "version": "1.0.5",
+    "version": "1.1.0",
     "description": "",
     "homepage": "https://github.com/secretlint/secretlint/tree/master/examples/cli/",
     "bugs": {
@@ -27,9 +27,9 @@
         "test": "expected-exit-status 1 --command 'secretlint \"**/*\"'"
     },
     "devDependencies": {
-        "@secretlint/secretlint-rule-preset-recommend": "^1.0.5",
+        "@secretlint/secretlint-rule-preset-recommend": "^1.1.0",
         "expected-exit-status": "^1.0.2",
-        "secretlint": "^1.0.5"
+        "secretlint": "^1.1.0"
     },
     "publishConfig": {
         "access": "public"
