@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1586003797720,
+  "lastUpdate": 1586350481810,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -6876,6 +6876,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.59,
             "range": "±0.62%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "45021494aa44c81c3f87eb4a38f262d4376cd081",
+          "message": "Merge pull request #126 from munierujp/migrate_mocha_config_file\n\nchore: migrate mocha.opts to .mocharc.json",
+          "timestamp": "2020-04-08T21:52:07+09:00",
+          "tree_id": "91b50b8604786446a7eeee5bbb823f1d259d7a7e",
+          "url": "https://github.com/secretlint/secretlint/commit/45021494aa44c81c3f87eb4a38f262d4376cd081"
+        },
+        "date": 1586350481129,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.65,
+            "range": "±2.55%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.61,
+            "range": "±2.49%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
