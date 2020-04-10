@@ -3,7 +3,10 @@
     "messages": [
         {
             "message": "found .env file",
-            "range": [0, 8],
+            "range": [
+                0,
+                8
+            ],
             "ruleId": "@secretlint/secretlint-rule-no-dotenv",
             "loc": {
                 "start": {

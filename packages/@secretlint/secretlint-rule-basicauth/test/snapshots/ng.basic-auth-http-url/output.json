@@ -22,9 +22,7 @@
             "messageId": "BasicAuth",
             "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-basicauth/README.md#BasicAuth",
             "data": {
-                "CREDENTIAL": "https://user:pass@example.com",
-                "user": "user",
-                "password": "pass"
+                "CREDENTIAL": "https://user:pass@example.com"
             }
         }
     ]
