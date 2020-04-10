@@ -15,23 +15,31 @@ export type SecretLintRuleLocaleTag =
     | "zh-TW"
     | string;
 
-export type SecretLintRuleLocalizeMessageMulti = { [P in SecretLintRuleLocaleTag]?: string } & { en: string };
+export type SecretLintRuleLocalizeMessageProps = { [index: string]: any };
+export type SecretLintRuleLocalizeMessageHandler<Props extends SecretLintRuleLocalizeMessageProps> = (
+    props?: Props
+) => string;
+export type SecretLintRuleLocalizeMessageMulti<Props extends SecretLintRuleLocalizeMessageProps> = {
+    [P in SecretLintRuleLocaleTag]: SecretLintRuleLocalizeMessageHandler<Props>;
+} & { en: SecretLintRuleLocalizeMessageHandler<Props> };
+
 export type SecretLintRuleLocalizeMessages = {
     // must have "en"
-    [index: string]: string | SecretLintRuleLocalizeMessageMulti;
+    [index: string]: SecretLintRuleLocalizeMessageMulti<any>;
 };
 
-export type SecretLintRuleTranslatorResult<Data extends {}> = {
+export type SecretLintRuleTranslatorResult<Props extends SecretLintRuleLocalizeMessageProps> = {
     message: string;
     messageId: string;
-    data: Data | undefined;
+    data: Props | undefined;
 };
-
-export type SecretLintRuleMessageTranslateData = { [index: string]: any };
+type ValueOf<T> = T[keyof T];
 export type SecretLintRuleMessageTranslate<
     T extends SecretLintRuleLocalizeMessages,
-    Data extends SecretLintRuleMessageTranslateData = {}
-> = (message: keyof T, data?: Data) => SecretLintRuleTranslatorResult<Data>;
+    MessageId extends keyof T = keyof T,
+    // Props is a union type of Message Handler's props
+    Props extends Parameters<ValueOf<T[MessageId]>>[0] = Parameters<ValueOf<T[MessageId]>>[0]
+> = (messageId: MessageId, props?: Props) => SecretLintRuleTranslatorResult<Props>;
 
 export type SecretLintCreateRuleMessageTranslator<T extends SecretLintRuleLocalizeMessages> = (
     messages: T

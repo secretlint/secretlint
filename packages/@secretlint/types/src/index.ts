@@ -43,10 +43,11 @@ export {
     SecretLintCreateRuleMessageTranslator,
     SecretLintRuleMessageTranslate,
     SecretLintRuleLocaleTag,
+    SecretLintRuleLocalizeMessageHandler,
     SecretLintRuleLocalizeMessageMulti,
     SecretLintRuleLocalizeMessages,
     SecretLintRuleTranslatorResult,
-    SecretLintRuleMessageTranslateData
+    SecretLintRuleLocalizeMessageProps
 } from "./SecretLintRuleTranslator";
 export { SecretLintSourceCode } from "./SecretLintSourceCode";
 // Config

@@ -10,8 +10,8 @@ require("string.prototype.matchall").shim();
 
 export const messages = {
     BasicAuth: {
-        en: "found basic auth credential: {{CREDENTIAL}}",
-        ja: "ベーシック認証情報: {{CREDENTIAL}} がみつかりました"
+        en: (props: { CREDENTIAL: string }) => `found basic auth credential: ${props.CREDENTIAL}`,
+        ja: (props: { CREDENTIAL: string }) => `ベーシック認証情報: ${props.CREDENTIAL} がみつかりました`
     }
 };
 
@@ -24,11 +24,11 @@ export type Options = {
 };
 
 function reportIfFoundBasicAuth({
-    source,
-    options,
-    context,
-    t
-}: {
+                                    source,
+                                    options,
+                                    context,
+                                    t
+                                }: {
     source: SecretLintSourceCode;
     options: Required<Options>;
     context: SecretLintRuleContext;
