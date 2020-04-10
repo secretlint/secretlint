@@ -15,7 +15,7 @@ export const SecretLintConfigDescriptorRulePresetSchema = {
       "$ref": "#/definitions/__type_1"
     },
     "Options_1": {
-      "$ref": "#/definitions/__type_5"
+      "$ref": "#/definitions/__type_4"
     },
     "Options_2": {
       "type": "object"
@@ -27,19 +27,16 @@ export const SecretLintConfigDescriptorRulePresetSchema = {
       "$ref": "#/definitions/__type_2"
     },
     "SecretLintRuleCreator_1": {
-      "$ref": "#/definitions/__type_7"
-    },
-    "SecretLintRuleLocalizeMessageHandler": {
-      "$ref": "#/definitions/__type_4"
+      "$ref": "#/definitions/__type_6"
     },
     "SecretLintRuleLocalizeMessages": {
       "$ref": "#/definitions/__type_3"
     },
     "SecretLintRulePresetCreator": {
-      "$ref": "#/definitions/__type_6"
+      "$ref": "#/definitions/__type_5"
     },
     "SecretLintRulePresetCreator_1": {
-      "$ref": "#/definitions/__type_8"
+      "$ref": "#/definitions/__type_7"
     },
     "SecretLintRuleSeverityLevel": {
       "description": "Rule Severity Level",
@@ -128,14 +125,6 @@ export const SecretLintConfigDescriptorRulePresetSchema = {
             "$ref": "#/definitions/{[x:string]:SecretLintRuleLocalizeMessageHandler<any>;}"
           },
           {
-            "properties": {
-              "en": {
-                "$ref": "#/definitions/SecretLintRuleLocalizeMessageHandler"
-              }
-            },
-            "required": [
-              "en"
-            ],
             "type": "object"
           }
         ]
@@ -143,14 +132,11 @@ export const SecretLintConfigDescriptorRulePresetSchema = {
       "type": "object"
     },
     "__type_4": {
-      "type": "object"
-    },
-    "__type_5": {
       "properties": {
       },
       "type": "object"
     },
-    "__type_6": {
+    "__type_5": {
       "properties": {
         "meta": {
           "properties": {
@@ -191,7 +177,7 @@ export const SecretLintConfigDescriptorRulePresetSchema = {
       ],
       "type": "object"
     },
-    "__type_7": {
+    "__type_6": {
       "properties": {
         "messages": {
           "$ref": "#/definitions/SecretLintRuleLocalizeMessages"
@@ -249,7 +235,7 @@ export const SecretLintConfigDescriptorRulePresetSchema = {
       ],
       "type": "object"
     },
-    "__type_8": {
+    "__type_7": {
       "properties": {
         "meta": {
           "properties": {

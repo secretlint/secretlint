@@ -14,14 +14,17 @@ export type SecretLintRuleLocaleTag =
     | "zh-CN"
     | "zh-TW"
     | string;
-
 export type SecretLintRuleLocalizeMessageProps = { [index: string]: any };
+
 export type SecretLintRuleLocalizeMessageHandler<Props extends SecretLintRuleLocalizeMessageProps> = (
     props?: Props
 ) => string;
 export type SecretLintRuleLocalizeMessageMulti<Props extends SecretLintRuleLocalizeMessageProps> = {
     [P in SecretLintRuleLocaleTag]: SecretLintRuleLocalizeMessageHandler<Props>;
-} & { en: SecretLintRuleLocalizeMessageHandler<Props> };
+} & {
+    // Workaround for https://github.com/YousefED/typescript-json-schema/issues/110
+    en(props?: Props): string;
+};
 
 export type SecretLintRuleLocalizeMessages = {
     // must have "en"
