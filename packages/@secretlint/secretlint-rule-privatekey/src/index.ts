@@ -2,7 +2,7 @@ import {
     SecretLintRuleContext,
     SecretLintRuleCreator,
     SecretLintRuleMessageTranslate,
-    SecretLintSourceCode
+    SecretLintSourceCode,
 } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
@@ -10,9 +10,9 @@ require("string.prototype.matchall").shim();
 
 export const messages = {
     PrivateKey: {
-        en: "found private key: {{KEY}}",
-        ja: "秘密鍵: {{KEY}} がみつかりました"
-    }
+        en: (props: { KEY: string }) => `found private key: ${props.KEY}`,
+        ja: (props: { KEY: string }) => `秘密鍵: ${props.KEY} がみつかりました`,
+    },
 };
 
 export type Options = {
@@ -27,7 +27,7 @@ function reportIfFoundRawPrivateKey({
     source,
     options,
     context,
-    t
+    t,
 }: {
     source: SecretLintSourceCode;
     options: Required<Options>;
@@ -47,9 +47,9 @@ function reportIfFoundRawPrivateKey({
         }
         context.report({
             message: t("PrivateKey", {
-                KEY: match
+                KEY: match,
             }),
-            range
+            range,
         });
     }
 }
@@ -63,19 +63,19 @@ export const creator: SecretLintRuleCreator<Options> = {
         supportedContentTypes: ["text"],
         docs: {
             url:
-                "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-privatekey/README.md"
-        }
+                "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-privatekey/README.md",
+        },
     },
     create(context, options) {
         const t = context.createTranslator(messages);
         const normalizedOptions = {
-            allows: options.allows || []
+            allows: options.allows || [],
         };
         return {
             file(source: SecretLintSourceCode) {
                 reportIfFoundRawPrivateKey({ source, options: normalizedOptions, context, t });
-            }
+            },
         };
-    }
+    },
 };
 export default creator;

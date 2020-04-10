@@ -39,6 +39,7 @@
     "release": "lerna publish from-package",
     "release-ci": "yarn run build && lerna publish from-package --yes --no-verify-access",
     "build": "lerna run build",
+    "build:withoutrule": "lerna run build --ignore \"@secretlint/*-rule-*\"",
     "updateSnapshot": "UPDATE_SNAPSHOT=1 lerna run test",
     "test": "lerna run test",
     "secretlint": "secretlint \"**/*\"",

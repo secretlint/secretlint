@@ -5,8 +5,8 @@ const FILE_NAME_DOTENV = ".env";
 
 export const messages = {
     FOUND_DOTENV_FILE: {
-        en: "found .env file",
-        ja: ".env ファイルがみつかりました",
+        en: () => "found .env file",
+        ja: () => ".env ファイルがみつかりました",
     },
 };
 

@@ -1,20 +1,20 @@
 // Rule Interfaces
 import { SecretLintSourceIdentifierNode } from "./SecretLintSource";
 import {
-    SecretLintCreateRuleMessageTranslator,
     SecretLintRuleLocalizeMessages,
-    SecretLintRuleTranslatorResult
+    SecretLintRuleMessageTranslate,
+    SecretLintRuleTranslatorResult,
 } from "./SecretLintRuleTranslator";
 import { SecretLintSourceCode } from "./SecretLintSourceCode";
 import { SecretlintCoreSharedOptions } from "./SecretlintCoreSharedOptions";
 
 export type SecretLintRuleReportDescriptor = {
-    message: SecretLintRuleTranslatorResult<{}>;
+    message: SecretLintRuleTranslatorResult<any>;
     range: number[];
     data?: {};
 };
 export type SecretLintRuleIgnoreDescriptor = {
-    message: SecretLintRuleTranslatorResult<{}>;
+    message: SecretLintRuleTranslatorResult<any>;
     /**
      *  Specify target rule id is ignored.
      *  If Set "*", match any rule id.
@@ -28,7 +28,7 @@ export type SecretLintRuleIgnoreDescriptor = {
 
 export type SecretLintRuleContext = {
     sharedOptions: SecretlintCoreSharedOptions;
-    createTranslator: SecretLintCreateRuleMessageTranslator<any>;
+    createTranslator<T extends SecretLintRuleLocalizeMessages>(messages: T): SecretLintRuleMessageTranslate<T>;
     report(descriptor: SecretLintRuleReportDescriptor): void;
     ignore(descriptor: SecretLintRuleIgnoreDescriptor): void;
 };
