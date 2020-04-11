@@ -43,7 +43,6 @@
         "@secretlint/profiler": "^1.1.0",
         "@secretlint/types": "^1.1.0",
         "debug": "^4.1.1",
-        "escape-string-regexp": "^2.0.0",
         "structured-source": "^3.0.2"
     },
     "devDependencies": {
