@@ -25,13 +25,23 @@ export type SecretLintRuleLocalizeMessageMulti<Props extends SecretLintRuleLocal
     // Workaround for https://github.com/YousefED/typescript-json-schema/issues/110
     en(props?: Props): string;
 };
-
+/**
+ * Rule Messages
+ *
+ * @example
+ * const messages = {
+ *     messageId: {
+ *         en: (props: { key: string }) => `message ${key}`,
+ *         ja: (props: { key: string }) => `メッセージ ${key}`
+ *     }
+ * }
+ */
 export type SecretLintRuleLocalizeMessages = {
     // must have "en"
     [index: string]: SecretLintRuleLocalizeMessageMulti<any>;
 };
 
-export type SecretLintRuleTranslatorResult<Props extends SecretLintRuleLocalizeMessageProps> = {
+export type SecretLintRuleMessageTranslateResult<Props extends SecretLintRuleLocalizeMessageProps> = {
     message: string;
     messageId: string;
     data: Props | undefined;
@@ -42,7 +52,7 @@ export type SecretLintRuleMessageTranslate<
     MessageId extends keyof T = keyof T,
     // Props is a union type of Message Handler's props
     Props extends Parameters<ValueOf<T[MessageId]>>[0] = Parameters<ValueOf<T[MessageId]>>[0]
-> = (messageId: MessageId, props?: Props) => SecretLintRuleTranslatorResult<Props>;
+> = (messageId: MessageId, props?: Props) => SecretLintRuleMessageTranslateResult<Props>;
 
 export type SecretLintCreateRuleMessageTranslator<T extends SecretLintRuleLocalizeMessages> = (
     messages: T

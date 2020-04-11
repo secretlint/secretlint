@@ -3,18 +3,18 @@ import { SecretLintSourceIdentifierNode } from "./SecretLintSource";
 import {
     SecretLintRuleLocalizeMessages,
     SecretLintRuleMessageTranslate,
-    SecretLintRuleTranslatorResult,
+    SecretLintRuleMessageTranslateResult,
 } from "./SecretLintRuleTranslator";
 import { SecretLintSourceCode } from "./SecretLintSourceCode";
 import { SecretlintCoreSharedOptions } from "./SecretlintCoreSharedOptions";
 
 export type SecretLintRuleReportDescriptor = {
-    message: SecretLintRuleTranslatorResult<any>;
+    message: SecretLintRuleMessageTranslateResult<any>;
     range: number[];
     data?: {};
 };
 export type SecretLintRuleIgnoreDescriptor = {
-    message: SecretLintRuleTranslatorResult<any>;
+    message: SecretLintRuleMessageTranslateResult<any>;
     /**
      *  Specify target rule id is ignored.
      *  If Set "*", match any rule id.

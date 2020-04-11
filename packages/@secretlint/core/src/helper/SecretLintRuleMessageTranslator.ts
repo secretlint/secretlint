@@ -3,23 +3,28 @@ import {
     SecretLintRuleLocalizeMessageMulti,
     SecretLintRuleLocalizeMessages,
     SecretLintRuleLocalizeMessageProps,
-    SecretLintRuleTranslatorResult,
-    SecretLintRuleLocalizeMessageHandler
+    SecretLintRuleLocalizeMessageHandler,
+    SecretLintRuleMessageTranslateResult,
 } from "@secretlint/types";
 
 /**
  * Default locale that is also fallback locale.
  */
 const DEFAULT_LOCAL = "en";
-const formatMessage = <Props extends SecretLintRuleLocalizeMessageProps>(messageHandler: SecretLintRuleLocalizeMessageHandler<Props>, props?: Props): string => {
-    // assertPlaceholder(messageHandler, props);
+const formatMessage = <Props extends SecretLintRuleLocalizeMessageProps>(
+    messageHandler: SecretLintRuleLocalizeMessageHandler<Props>,
+    props?: Props
+): string => {
     if (typeof props !== "object" || props === null) {
         return messageHandler();
     }
     return messageHandler(props);
 };
 
-const getMatchedLocaleMessage = <Props extends SecretLintRuleLocalizeMessageProps>(locale: SecretLintRuleLocaleTag, locales: SecretLintRuleLocalizeMessageMulti<Props>) => {
+const getMatchedLocaleMessage = <Props extends SecretLintRuleLocalizeMessageProps>(
+    locale: SecretLintRuleLocaleTag,
+    locales: SecretLintRuleLocalizeMessageMulti<Props>
+) => {
     const localKeys = Object.keys(locales);
     const matchLocale = localKeys.find((key) => {
         return key === locale;
@@ -50,8 +55,11 @@ export const createTranslator = <T extends SecretLintRuleLocalizeMessages>(
     return <MessageId extends keyof T, Props = T[MessageId]>(
         messageId: MessageId,
         props?: Props
-    ): SecretLintRuleTranslatorResult<Props> => {
-        const messageHandler: SecretLintRuleLocalizeMessageMulti<Props> | SecretLintRuleLocalizeMessageHandler<Props> | undefined = messages[messageId];
+    ): SecretLintRuleMessageTranslateResult<Props> => {
+        const messageHandler:
+            | SecretLintRuleLocalizeMessageMulti<Props>
+            | SecretLintRuleLocalizeMessageHandler<Props>
+            | undefined = messages[messageId];
         if (!messageHandler) {
             throw new Error(`messages:${messageId} is missing in messages.`);
         }
@@ -63,7 +71,7 @@ export const createTranslator = <T extends SecretLintRuleLocalizeMessages>(
             return {
                 message: formatMessage(messageHandler, props),
                 messageId: messageId,
-                data: props
+                data: props,
             };
         }
         // if messages is object, pick message that is matched locale from messages.
@@ -82,7 +90,7 @@ export const createTranslator = <T extends SecretLintRuleLocalizeMessages>(
         return {
             message: formatMessage(localizedMessage, props),
             messageId: messageId,
-            data: props
+            data: props,
         };
     };
 };
