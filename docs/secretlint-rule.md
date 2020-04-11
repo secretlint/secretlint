@@ -26,8 +26,8 @@ import { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
 // MessageIds
 export const messages = {
     EXAMPLE_MESSAGE: {
-        en: "found secret: {{ID}}",
-        ja: "secret: {{ID}} がみつかりました"
+        en: (props: { ID: string }) => `found secret: ${props.ID}`,
+        ja: (props: { ID: string }) => `secret: ${props.ID} がみつかりました`
     }
 };
 

@@ -2,7 +2,7 @@ import {
     SecretLintRuleContext,
     SecretLintRuleCreator,
     SecretLintRuleMessageTranslate,
-    SecretLintSourceCode
+    SecretLintSourceCode,
 } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
@@ -10,13 +10,13 @@ require("string.prototype.matchall").shim();
 
 export const messages = {
     SLACK_TOKEN: {
-        en: "found slack token: {{TOKEN}}",
-        ja: "Slackトークン: {{TOKEN}} がみつかりました"
+        en: (props: { TOKEN: string }) => `found slack token: ${props.TOKEN}`,
+        ja: (props: { TOKEN: string }) => `Slackトークン: ${props.TOKEN} がみつかりました`,
     },
     IncomingWebhook: {
-        en: "found Slack Incoming Webhook: {{URL}}",
-        ja: "SlackのIncoming Webhooks: {{TOKEN}} がみつかりました"
-    }
+        en: (props: { URL: string }) => `found Slack Incoming Webhook: ${props.URL}`,
+        ja: (props: { TOKEN: string }) => `SlackのIncoming Webhooks: ${props.TOKEN} がみつかりました`,
+    },
 };
 
 export type Options = {
@@ -31,7 +31,7 @@ function reportIfFoundRawPrivateKey({
     source,
     options,
     context,
-    t
+    t,
 }: {
     source: SecretLintSourceCode;
     options: Required<Options>;
@@ -56,9 +56,9 @@ function reportIfFoundRawPrivateKey({
         }
         context.report({
             message: t("SLACK_TOKEN", {
-                TOKEN: match
+                TOKEN: match,
             }),
-            range
+            range,
         });
     }
 }
@@ -75,7 +75,7 @@ function reportIfFoundIncomingWebhook({
     source,
     options,
     context,
-    t
+    t,
 }: {
     source: SecretLintSourceCode;
     options: Required<Options>;
@@ -96,9 +96,9 @@ function reportIfFoundIncomingWebhook({
         }
         context.report({
             message: t("IncomingWebhook", {
-                URL: match
+                URL: match,
             }),
-            range
+            range,
         });
     }
 }
@@ -112,20 +112,20 @@ export const creator: SecretLintRuleCreator<Options> = {
         supportedContentTypes: ["text"],
         docs: {
             url:
-                "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-slack/README.md"
-        }
+                "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-slack/README.md",
+        },
     },
     create(context, options) {
         const t = context.createTranslator(messages);
         const normalizedOptions = {
-            allows: options.allows || []
+            allows: options.allows || [],
         };
         return {
             file(source: SecretLintSourceCode) {
                 reportIfFoundRawPrivateKey({ source, options: normalizedOptions, context, t });
                 reportIfFoundIncomingWebhook({ source, options: normalizedOptions, context, t });
-            }
+            },
         };
-    }
+    },
 };
 export default creator;

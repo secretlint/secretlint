@@ -3,20 +3,21 @@ import {
     SecretLintRuleContext,
     SecretLintRuleCreator,
     SecretLintRuleMessageTranslate,
-    SecretLintSourceCode
+    SecretLintSourceCode,
 } from "@secretlint/types";
 import forge from "node-forge";
 import path from "path";
 
 export const messages = {
     PrivateKeyP12: {
-        en: "found CP Service Account's private key(p12): {{FILE_NAME}}",
-        ja: "GCPサービスアカウントの秘密鍵(p12) {{FILE_NAME}} がみつかりました"
+        en: (props: { FILE_NAME: string }) => `found CP Service Account's private key(p12): ${props.FILE_NAME}`,
+        ja: (props: { FILE_NAME: string }) => `GCPサービスアカウントの秘密鍵(p12) ${props.FILE_NAME} がみつかりました`,
     },
     PrivateKeyJSON: {
-        en: "found GCP Service Account's private key(json): {{FILE_NAME}}",
-        ja: "GCPサービスアカウントの秘密鍵(json): {{FILE_NAME}} がみつかりました"
-    }
+        en: (props: { FILE_NAME: string }) => `found GCP Service Account's private key(json): ${props.FILE_NAME}`,
+        ja: (props: { FILE_NAME: string }) =>
+            `GCPサービスアカウントの秘密鍵(json): ${props.FILE_NAME} がみつかりました`,
+    },
 };
 
 export type Options = {
@@ -30,7 +31,7 @@ export type Options = {
 function reportIfFoundPrivateKeyJSONFormat({
     source,
     context,
-    t
+    t,
 }: {
     source: SecretLintSourceCode;
     options: Required<Options>;
@@ -50,9 +51,9 @@ function reportIfFoundPrivateKeyJSONFormat({
         }
         context.report({
             message: t("PrivateKeyJSON", {
-                FILE_NAME: source.filePath ? path.basename(source.filePath) : ""
+                FILE_NAME: source.filePath ? path.basename(source.filePath) : "",
             }),
-            range: [0, source.content.length]
+            range: [0, source.content.length],
         });
     } catch {
         // nope
@@ -62,7 +63,7 @@ function reportIfFoundPrivateKeyJSONFormat({
 function reportIfFoundPrivateKeyP12Format({
     source,
     context,
-    t
+    t,
 }: {
     source: SecretLintSourceCode;
     options: Required<Options>;
@@ -85,9 +86,9 @@ function reportIfFoundPrivateKeyP12Format({
         // because, this p12 file is credential for GCP Service Account
         context.report({
             message: t("PrivateKeyP12", {
-                FILE_NAME: source.filePath ? path.basename(source.filePath) : ""
+                FILE_NAME: source.filePath ? path.basename(source.filePath) : "",
             }),
-            range: [0, source.content.length]
+            range: [0, source.content.length],
         });
     } catch {
         // nope
@@ -103,13 +104,13 @@ export const creator: SecretLintRuleCreator<Options> = {
         supportedContentTypes: ["all"],
         docs: {
             url:
-                "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-gcp/README.md"
-        }
+                "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-gcp/README.md",
+        },
     },
     create(context, options) {
         const t = context.createTranslator(messages);
         const normalizedOptions = {
-            allows: options.allows || []
+            allows: options.allows || [],
         };
         return {
             file(source: SecretLintSourceCode) {
@@ -118,8 +119,8 @@ export const creator: SecretLintRuleCreator<Options> = {
                 } else if (source.ext === ".json") {
                     reportIfFoundPrivateKeyJSONFormat({ source, options: normalizedOptions, context, t });
                 }
-            }
+            },
         };
-    }
+    },
 };
 export default creator;

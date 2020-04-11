@@ -2,7 +2,7 @@ import {
     SecretLintRuleContext,
     SecretLintRuleCreator,
     SecretLintRuleMessageTranslate,
-    SecretLintSourceCode
+    SecretLintSourceCode,
 } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
@@ -10,13 +10,13 @@ require("string.prototype.matchall").shim();
 
 export const messages = {
     PackageJSON_xOauthToken: {
-        en: "found GitHub Token: {{TOKEN}}",
-        ja: "GitHub Token: {{TOKEN}} がみつかりました"
+        en: (props: { TOKEN: string }) => `found GitHub Token: ${props.TOKEN}`,
+        ja: (props: { TOKEN: string }) => `GitHub Token: ${props.TOKEN} がみつかりました`,
     },
     Npmrc_authToken: {
-        en: "found npmrc authToken: {{TOKEN}}",
-        ja: "npmrc authToken: {{TOKEN}} がみつかりました"
-    }
+        en: (props: { TOKEN: string }) => `found npmrc authToken: ${props.TOKEN}`,
+        ja: (props: { TOKEN: string }) => `npmrc authToken: ${props.TOKEN} がみつかりました`,
+    },
 };
 
 export type Options = {
@@ -31,7 +31,7 @@ function reportIfFoundXOauthGitHubToken({
     source,
     options,
     context,
-    t
+    t,
 }: {
     source: SecretLintSourceCode;
     options: Required<Options>;
@@ -51,9 +51,9 @@ function reportIfFoundXOauthGitHubToken({
         }
         context.report({
             message: t("PackageJSON_xOauthToken", {
-                TOKEN: match
+                TOKEN: match,
             }),
-            range
+            range,
         });
     }
 }
@@ -62,7 +62,7 @@ function reportIfFound_AuthTokenInNpmrc({
     source,
     options,
     context,
-    t
+    t,
 }: {
     source: SecretLintSourceCode;
     options: Required<Options>;
@@ -82,9 +82,9 @@ function reportIfFound_AuthTokenInNpmrc({
         }
         context.report({
             message: t("Npmrc_authToken", {
-                TOKEN: match
+                TOKEN: match,
             }),
-            range
+            range,
         });
     }
 }
@@ -110,13 +110,13 @@ export const creator: SecretLintRuleCreator<Options> = {
         supportedContentTypes: ["text"],
         docs: {
             url:
-                "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-npm/README.md"
-        }
+                "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-npm/README.md",
+        },
     },
     create(context, options) {
         const t = context.createTranslator(messages);
         const normalizedOptions = {
-            allows: options.allows || []
+            allows: options.allows || [],
         };
 
         return {
@@ -126,8 +126,8 @@ export const creator: SecretLintRuleCreator<Options> = {
                 } else if (isNpmrc(source.filePath)) {
                     reportIfFound_AuthTokenInNpmrc({ source, options: normalizedOptions, context, t });
                 }
-            }
+            },
         };
-    }
+    },
 };
 export default creator;

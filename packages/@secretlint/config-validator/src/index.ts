@@ -22,7 +22,7 @@ export const validateRawConfig = (value: any): { ok: true } | { ok: false; error
 `);
             return {
                 ok: false,
-                error
+                error,
             };
         }
         SecretLintConfigDescriptorValidate(value);
@@ -39,7 +39,7 @@ export const validateRawConfig = (value: any): { ok: true } | { ok: false; error
                     );
                     return {
                         ok: false,
-                        error: new Error(errorMessage)
+                        error: new Error(errorMessage),
                     };
                 }
             } else {
@@ -50,20 +50,20 @@ export const validateRawConfig = (value: any): { ok: true } | { ok: false; error
                     const errorMessage = error.message.replace(/SecretLintConfigDescriptorRule/g, ruleOrPreset.id);
                     return {
                         ok: false,
-                        error: new Error(errorMessage)
+                        error: new Error(errorMessage),
                     };
                 }
             }
         }
         return {
-            ok: true
+            ok: true,
         };
     } catch (error) {
         // SecretLintConfigDescriptor -> secretlintrc
         const errorMessage = error.message.replace(/SecretLintConfigDescriptor/g, "secretlintrc");
         return {
             ok: false,
-            error: new Error(errorMessage)
+            error: new Error(errorMessage),
         };
     }
 };
@@ -77,13 +77,12 @@ export const validateConfig = (value: any): { ok: true } | { ok: false; error: E
     try {
         for (const ruleOrPreset of value.rules) {
             // validate as preset
-            if ("rules" in ruleOrPreset) {
-            } else {
+            if (!("rules" in ruleOrPreset)) {
                 const rule = ruleOrPreset as SecretLintCoreDescriptorRule;
                 // `allowMessageIds` validation
                 if (Array.isArray(rule.allowMessageIds)) {
                     const messageIds: string[] = Object.keys(rule.rule.messages);
-                    rule.allowMessageIds.forEach(allowMessageId => {
+                    rule.allowMessageIds.forEach((allowMessageId) => {
                         if (!messageIds.includes(allowMessageId)) {
                             throw new Error(`allowMessageIds: ${allowMessageId} is not defined in rule: ${rule.id}`);
                         }
@@ -92,12 +91,12 @@ export const validateConfig = (value: any): { ok: true } | { ok: false; error: E
             }
         }
         return {
-            ok: true
+            ok: true,
         };
     } catch (error) {
         return {
             ok: false,
-            error: error
+            error: error,
         };
     }
 };

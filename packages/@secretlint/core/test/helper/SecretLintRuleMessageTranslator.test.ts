@@ -5,8 +5,8 @@ describe("SecretLintRuleMessageTranslator", function () {
     it("translate message with defaultLocale", () => {
         const messages = {
             messageId: {
-                en: "english message",
-                ja: "japanese message",
+                en: () => "english message",
+                ja: () => "japanese message",
             },
         };
         const translate = createTranslator(messages, {
@@ -15,13 +15,15 @@ describe("SecretLintRuleMessageTranslator", function () {
         const result = translate("messageId");
         assert.deepStrictEqual(result, {
             data: undefined,
-            message: messages.messageId.en,
+            message: messages.messageId.en(),
             messageId: "messageId",
         });
     });
     it("translate message with data and get replaced placeholder", () => {
         const messages = {
-            messageId: "{{key}} message",
+            messageId: {
+                en: (props: { key: string }) => `${props.key} message`,
+            },
         };
         const translate = createTranslator(messages, {
             defaultLocale: "en",
@@ -39,7 +41,9 @@ describe("SecretLintRuleMessageTranslator", function () {
     });
     it("translate message that include template like string", () => {
         const messages = {
-            messageId: "{{key}} message",
+            messageId: {
+                en: (props: { key: string }) => `${props.key} message`,
+            },
         };
         const translate = createTranslator(messages, {
             defaultLocale: "en",
@@ -57,7 +61,9 @@ describe("SecretLintRuleMessageTranslator", function () {
     });
     it("translate message that include multiple template like string", () => {
         const messages = {
-            messageId: "{{v1}} {{v2}} {{v3}} message",
+            messageId: {
+                en: (props: { v1: string; v2: string; v3: string }) => `${props.v1} ${props.v2} ${props.v3} message`,
+            },
         };
         const translate = createTranslator(messages, {
             defaultLocale: "en",
@@ -77,9 +83,11 @@ describe("SecretLintRuleMessageTranslator", function () {
             messageId: "messageId",
         });
     });
-    it.skip("should not translate message of data's value", () => {
+    it("should not translate message of data's value", () => {
         const messages = {
-            messageId: "{{v1}} {{v2}} {{v3}} message",
+            messageId: {
+                en: (props: { v1: string; v2: string; v3: string }) => `${props.v1} ${props.v2} ${props.v3} message`,
+            },
         };
         const translate = createTranslator(messages, {
             defaultLocale: "en",
@@ -99,22 +107,11 @@ describe("SecretLintRuleMessageTranslator", function () {
             messageId: "messageId",
         });
     });
-    it("throw error when some data is missing unless placeholder is defined", () => {
-        const messages = {
-            messageId: "{{key}} message",
-        };
-        const translate = createTranslator(messages, {
-            defaultLocale: "en",
-        });
-        assert.throws(() => {
-            translate("messageId", {
-                not: true,
-            });
-        });
-    });
     it("throw error when data prop is missing unless placeholder is defined", () => {
         const messages = {
-            messageId: "{{key}} message",
+            messageId: {
+                en: (props: { key: string }) => `${props.key} message`,
+            },
         };
         const translate = createTranslator(messages, {
             defaultLocale: "en",

@@ -9,8 +9,8 @@ import { safeLoadAll } from "js-yaml";
 
 export const messages = {
     disallowToUseKindSecret: {
-        en: "disallow to use Kind: Secret in manifest: {{FILE_NAME}}",
-        ja: "Kind: Secretのmanifestがみつかりました: {{FILE_NAME}}",
+        en: (props: { FILE_NAME: string }) => `disallow to use Kind: Secret in manifest: ${props.FILE_NAME}`,
+        ja: (props: { FILE_NAME: string }) => `Kind: Secretのmanifestがみつかりました: ${props.FILE_NAME}`,
     },
 };
 

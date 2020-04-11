@@ -2,7 +2,7 @@ import {
     SecretLintRuleContext,
     SecretLintRuleCreator,
     SecretLintRuleMessageTranslate,
-    SecretLintSourceCode
+    SecretLintSourceCode,
 } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
@@ -10,9 +10,9 @@ require("string.prototype.matchall").shim();
 
 export const messages = {
     BasicAuth: {
-        en: "found basic auth credential: {{CREDENTIAL}}",
-        ja: "ベーシック認証情報: {{CREDENTIAL}} がみつかりました"
-    }
+        en: (props: { CREDENTIAL: string }) => `found basic auth credential: ${props.CREDENTIAL}`,
+        ja: (props: { CREDENTIAL: string }) => `ベーシック認証情報: ${props.CREDENTIAL} がみつかりました`,
+    },
 };
 
 export type Options = {
@@ -27,7 +27,7 @@ function reportIfFoundBasicAuth({
     source,
     options,
     context,
-    t
+    t,
 }: {
     source: SecretLintSourceCode;
     options: Required<Options>;
@@ -41,8 +41,6 @@ function reportIfFoundBasicAuth({
     for (const result of results) {
         const index = result.index || 0;
         const match = result[0] || "";
-        const user = result.groups!.user;
-        const password = result.groups!.password;
         const range = [index, index + match.length];
         const allowedResults = matchPatterns(match, options.allows);
         if (allowedResults.length > 0) {
@@ -51,10 +49,8 @@ function reportIfFoundBasicAuth({
         context.report({
             message: t("BasicAuth", {
                 CREDENTIAL: match,
-                user,
-                password
             }),
-            range
+            range,
         });
     }
 }
@@ -68,19 +64,19 @@ export const creator: SecretLintRuleCreator<Options> = {
         supportedContentTypes: ["text"],
         docs: {
             url:
-                "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-basicauth/README.md"
-        }
+                "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-basicauth/README.md",
+        },
     },
     create(context, options) {
         const t = context.createTranslator(messages);
         const normalizedOptions = {
-            allows: options.allows || []
+            allows: options.allows || [],
         };
         return {
             file(source: SecretLintSourceCode) {
                 reportIfFoundBasicAuth({ source, options: normalizedOptions, context, t });
-            }
+            },
         };
-    }
+    },
 };
 export default creator;

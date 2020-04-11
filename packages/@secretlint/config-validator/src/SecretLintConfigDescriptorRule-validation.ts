@@ -114,27 +114,12 @@ export const SecretLintConfigDescriptorRuleSchema = {
     },
     "__type_3": {
       "additionalProperties": {
-        "anyOf": [
+        "allOf": [
           {
-            "allOf": [
-              {
-                "$ref": "#/definitions/{[x:string]:string;}"
-              },
-              {
-                "properties": {
-                  "en": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "en"
-                ],
-                "type": "object"
-              }
-            ]
+            "$ref": "#/definitions/{[x:string]:SecretLintRuleLocalizeMessageHandler<any>;}"
           },
           {
-            "type": "string"
+            "type": "object"
           }
         ]
       },
@@ -244,7 +229,7 @@ export const SecretLintConfigDescriptorRuleSchema = {
       ],
       "type": "object"
     },
-    "{[x:string]:string;}": {
+    "{[x:string]:SecretLintRuleLocalizeMessageHandler<any>;}": {
       "type": "object"
     }
   },

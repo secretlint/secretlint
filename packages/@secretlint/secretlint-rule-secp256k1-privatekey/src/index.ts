@@ -5,8 +5,8 @@ import BN from "bn.js";
 
 export const messages = {
     secp256k1Priv: {
-        en: "found secp256k1 private key: {{KEY}}",
-        ja: "秘密鍵(secp256k1) {{KEY}} が見つかりました",
+        en: (props: { KEY: string }) => `found secp256k1 private key: ${props.KEY}`,
+        ja: (props: { KEY: string }) => `秘密鍵(secp256k1) ${props.KEY} が見つかりました`,
     },
 };
 
@@ -48,10 +48,10 @@ export const creator: SecretLintRuleCreator<Options> = {
                                 KEY: matchString,
                             }),
                             range,
-                        });   
+                        });
                     } catch (error) {
                         // No-op. Not a private key.
-                    }                    
+                    }
                 }
             },
         };

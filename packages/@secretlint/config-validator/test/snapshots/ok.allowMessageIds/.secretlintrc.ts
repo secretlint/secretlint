@@ -2,9 +2,9 @@ import { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
 
 export const messages = {
     message_id_a: {
-        en: "found secret: {{ID}}",
-        ja: "secret: {{ID}} がみつかりました"
-    }
+        en: (props: { ID: string }) => `found secret: ${props.ID}`,
+        ja: (props: { ID: string }) => `secret: ${props.ID} がみつかりました`,
+    },
 };
 
 export const creator: SecretLintRuleCreator = {
@@ -13,7 +13,7 @@ export const creator: SecretLintRuleCreator = {
         id: "@secretlint/secretlint-rule-example",
         recommended: true,
         type: "scanner",
-        supportedContentTypes: ["text"]
+        supportedContentTypes: ["text"],
     },
     create(context) {
         const t = context.createTranslator(messages);
@@ -27,23 +27,23 @@ export const creator: SecretLintRuleCreator = {
                     const range = [index, index + matchString.length];
                     context.report({
                         message: t("message_id_a", {
-                            ID: matchString
+                            ID: matchString,
                         }),
-                        range
+                        range,
                     });
                 }
-            }
+            },
         };
-    }
+    },
 };
 
 module.exports = {
     rules: [
         {
             id: "example",
-            allowMessageIds: ["not_defined_id"],
+            allowMessageIds: ["message_id_a"],
             // debug
-            rule: creator
-        }
-    ]
+            rule: creator,
+        },
+    ],
 };

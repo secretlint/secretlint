@@ -18,21 +18,21 @@ export interface Options {
  */
 export const BUILTIN_IGNORED = {
     AWSAccountID: ["AKIAIOSFODNN7EXAMPLE"],
-    AWSSecretAccessKey: ["wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"]
+    AWSSecretAccessKey: ["wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"],
 };
 export const messages = {
     AWSAccountID: {
-        en: "found AWS Account ID: {{ID}}",
-        ja: "AWS Account ID: {{ID}} がみつかりました"
+        en: (props: { ID: string }) => `found AWS Account ID: ${props.ID}`,
+        ja: (props: { ID: string }) => `AWS Account ID: ${props.ID} がみつかりました`,
     },
     AWSSecretAccessKey: {
-        en: "found AWS Secret Access Key: {{KEY}}",
-        ja: "AWS Secret Access Key: {{KEY}} がみつかりました"
+        en: (props: { KEY: string }) => `found AWS Secret Access Key: ${props.KEY}`,
+        ja: (props: { KEY: string }) => `AWS Secret Access Key: ${props.KEY} がみつかりました`,
     },
     AWSAccessKeyID: {
-        en: "found AWS Access Key ID: {{ID}}",
-        ja: "AWS Access Key Id: {{ID}} がみつかりました"
-    }
+        en: (props: { ID: string }) => `found AWS Access Key ID: ${props.ID}`,
+        ja: (props: { ID: string }) => `AWS Access Key Id: ${props.ID} がみつかりました`,
+    },
 };
 /*
   local aws="(AWS|aws|Aws)?_?" quote="(\"|')" connect="\s*(:|=>|=)\s*"
@@ -54,7 +54,7 @@ const reportAWSAccessKey = ({
     t,
     source,
     context,
-    options
+    options,
 }: {
     t: SecretLintRuleMessageTranslate<typeof messages>;
     source: SecretLintSourceCode;
@@ -79,9 +79,9 @@ const reportAWSAccessKey = ({
         }
         context.report({
             message: t("AWSAccessKeyID", {
-                ID: match
+                ID: match,
             }),
-            range
+            range,
         });
     }
 };
@@ -89,7 +89,7 @@ const reportAWSSecretAccessKey = ({
     t,
     source,
     context,
-    options
+    options,
 }: {
     t: SecretLintRuleMessageTranslate<typeof messages>;
     source: SecretLintSourceCode;
@@ -118,9 +118,9 @@ const reportAWSSecretAccessKey = ({
         }
         context.report({
             message: t("AWSSecretAccessKey", {
-                KEY: match
+                KEY: match,
             }),
-            range
+            range,
         });
     }
 };
@@ -129,7 +129,7 @@ const reportAWSAccountID = ({
     t,
     source,
     context,
-    options
+    options,
 }: {
     t: SecretLintRuleMessageTranslate<typeof messages>;
     source: SecretLintSourceCode;
@@ -151,9 +151,9 @@ const reportAWSAccountID = ({
         }
         context.report({
             message: t("AWSAccountID", {
-                ID: match
+                ID: match,
             }),
-            range
+            range,
         });
     }
 };
@@ -167,12 +167,12 @@ export const creator: SecretLintRuleCreator<Options> = {
         supportedContentTypes: ["text"],
         docs: {
             url:
-                "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md"
-        }
+                "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md",
+        },
     },
     create(context, options) {
         const normalizedOptions: Required<Options> = {
-            allows: options.allows || []
+            allows: options.allows || [],
         };
         const t = context.createTranslator(messages);
         return {
@@ -180,8 +180,8 @@ export const creator: SecretLintRuleCreator<Options> = {
                 reportAWSAccessKey({ t, source: source, context: context, options: normalizedOptions });
                 reportAWSSecretAccessKey({ t, source: source, context: context, options: normalizedOptions });
                 reportAWSAccountID({ t, source: source, context: context, options: normalizedOptions });
-            }
+            },
         };
-    }
+    },
 };
 export default creator;

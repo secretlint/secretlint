@@ -10,7 +10,7 @@ export {
     SecretLintUnionRuleCreator,
     SecretLintCoreDescriptorUnionRule,
     SecretLintCoreDescriptorRule,
-    SecretLintCoreDescriptorRulePreset
+    SecretLintCoreDescriptorRulePreset,
 } from "./SecretLintCore";
 export { SecretlintCoreSharedOptions } from "./SecretlintCoreSharedOptions";
 export { SecretLintRuleSeverityLevel } from "./SecretLintRuleSeverityLevel";
@@ -22,13 +22,13 @@ export {
     SecretLintRuleCreatorOptions,
     SecretLintRuleReportDescriptor,
     SecretLintRuleReportHandler,
-    SecretLintRuleContentType
+    SecretLintRuleContentType,
 } from "./SecretLintRule";
 // Rule Preset
 export {
     SecretLintRulePresetContext,
     SecretLintRulePresetCreator,
-    SecretLintRulePresetCreatorOptions
+    SecretLintRulePresetCreatorOptions,
 } from "./SecretLintRulePreset";
 // Source
 export {
@@ -37,21 +37,22 @@ export {
     SecretLintSourceNodeLocation,
     SecretLintSourceNodePosition,
     SecretLintSourceNodeRange,
-    SecretLintSourceValueNode
+    SecretLintSourceValueNode,
 } from "./SecretLintSource";
 export {
     SecretLintCreateRuleMessageTranslator,
     SecretLintRuleMessageTranslate,
     SecretLintRuleLocaleTag,
+    SecretLintRuleLocalizeMessageHandler,
     SecretLintRuleLocalizeMessageMulti,
     SecretLintRuleLocalizeMessages,
-    SecretLintRuleTranslatorResult,
-    SecretLintRuleMessageTranslateData
+    SecretLintRuleMessageTranslateResult,
+    SecretLintRuleLocalizeMessageProps,
 } from "./SecretLintRuleTranslator";
 export { SecretLintSourceCode } from "./SecretLintSourceCode";
 // Config
 export {
     SecretLintConfigDescriptor,
     SecretLintConfigDescriptorRule,
-    SecretLintConfigDescriptorRulePreset
+    SecretLintConfigDescriptorRulePreset,
 } from "./SecretLintConfigDescriptor";
