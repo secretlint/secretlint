@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1586350481810,
+  "lastUpdate": 1586599907209,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -6914,6 +6914,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.61,
             "range": "±2.49%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c09ba64dc91dd85cd3066492f1054bcd15457190",
+          "message": "Merge pull request #127 from secretlint/feature/124\n\nfix(core): change SecretLintRuleMessageTranslate to check statically",
+          "timestamp": "2020-04-11T19:08:50+09:00",
+          "tree_id": "e440226ef7ecb07513bbf94eced2e817ffcfe725",
+          "url": "https://github.com/secretlint/secretlint/commit/c09ba64dc91dd85cd3066492f1054bcd15457190"
+        },
+        "date": 1586599904527,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.46,
+            "range": "±0.86%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.56,
+            "range": "±0.92%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
