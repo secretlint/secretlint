@@ -19,8 +19,8 @@
             "message": "found Sendgrid api key: SG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313-L5528K",
             "messageId": "SENDGRID_KEY",
             "range": [
-                73,
-                142
+                84,
+                153
             ],
             "ruleId": "@secretlint/secretlint-rule-sendgrid",
             "severity": "error"
@@ -43,8 +43,8 @@
             "message": "found Sendgrid api key: SG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313-L5528Kewhere",
             "messageId": "SENDGRID_KEY",
             "range": [
-                146,
-                221
+                157,
+                232
             ],
             "ruleId": "@secretlint/secretlint-rule-sendgrid",
             "severity": "error"
