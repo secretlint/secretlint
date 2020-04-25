@@ -1,0 +1,53 @@
+{
+    "filePath": "[SNAPSHOT]/ng.apikey/input.txt",
+    "messages": [
+        {
+            "data": {
+                "KEY": "SG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313-L5528K"
+            },
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-sendgrid/README.md#SENDGRID_KEY",
+            "loc": {
+                "end": {
+                    "column": 74,
+                    "line": 2
+                },
+                "start": {
+                    "column": 5,
+                    "line": 2
+                }
+            },
+            "message": "found Sendgrid api key: SG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313-L5528K",
+            "messageId": "SENDGRID_KEY",
+            "range": [
+                73,
+                142
+            ],
+            "ruleId": "@secretlint/secretlint-rule-sendgrid",
+            "severity": "error"
+        },
+        {
+            "data": {
+                "KEY": "SG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313-L5528Kewhere"
+            },
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-sendgrid/README.md#SENDGRID_KEY",
+            "loc": {
+                "end": {
+                    "column": 78,
+                    "line": 3
+                },
+                "start": {
+                    "column": 3,
+                    "line": 3
+                }
+            },
+            "message": "found Sendgrid api key: SG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313-L5528Kewhere",
+            "messageId": "SENDGRID_KEY",
+            "range": [
+                146,
+                221
+            ],
+            "ruleId": "@secretlint/secretlint-rule-sendgrid",
+            "severity": "error"
+        }
+    ]
+}
