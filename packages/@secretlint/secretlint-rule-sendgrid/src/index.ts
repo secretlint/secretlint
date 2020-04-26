@@ -11,7 +11,7 @@ require("string.prototype.matchall").shim();
 export const messages = {
     SENDGRID_KEY: {
         en: (props: { KEY: string }) => `found Sendgrid api key: ${props.KEY}`,
-        ja: (props: { KEY: string }) => `Sendgrid APIキーが見つかりました： ${props.KEY}`, // TODO: Needs review.
+        ja: (props: { KEY: string }) => `Sendgrid APIキーが見つかりました： ${props.KEY}`,
     },
 };
 
