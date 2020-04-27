@@ -60,6 +60,14 @@ const createSnapshotRepalcer = (options: SnapshotOptions) => {
     };
 };
 
+const sortObject = <T extends { [index: string]: any }>(object: T) => {
+    return Object.keys(object)
+        .sort()
+        .reduce((result, key: keyof T) => {
+            result[key] = object[key];
+            return result;
+        }, {} as T);
+};
 /**
  * // Mocha
  * describe("Snapshot Testing", () => {
@@ -133,7 +141,11 @@ export const snapshot = (options: SnapshotOptions) => {
                         // Usage: update snapshots
                         // UPDATE_SNAPSHOT=1 npm test
                         if (!fs.existsSync(expectedFilePath) || updateSnapshot) {
-                            fs.writeFileSync(expectedFilePath, JSON.stringify(actualResult, snapshotReplacer, 4));
+                            // Sort Object by keys before Store JSON
+                            fs.writeFileSync(
+                                expectedFilePath,
+                                JSON.stringify(sortObject(actualResult), snapshotReplacer, 4)
+                            );
                             return "skip";
                         }
                         // compare input and output
