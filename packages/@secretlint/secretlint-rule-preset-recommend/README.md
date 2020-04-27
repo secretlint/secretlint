@@ -52,6 +52,7 @@ Via `.secretlintrc.json`
 - [@secretlint/secretlint-rule-privatekey](https://www.npmjs.com/package/@secretlint/secretlint-rule-privatekey)
 - [@secretlint/secretlint-rule-basicauth](https://www.npmjs.com/package/@secretlint/secretlint-rule-basicauth)
 - [@secretlint/secretlint-rule-slack](https://www.npmjs.com/package/@secretlint/secretlint-rule-slack)
+- [@secretlint/secretlint-rule-sendgrid](https://www.npmjs.com/package/@secretlint/secretlint-rule-sendgrid)
 
 ## Notes
 
