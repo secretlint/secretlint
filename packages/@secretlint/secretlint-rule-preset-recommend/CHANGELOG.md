@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/secretlint/secretlint/compare/v1.1.0...v2.0.0) (2020-04-27)
+
+
+### Features
+
+* **recommended-preset:** add sendgrid rule ([#131](https://github.com/secretlint/secretlint/issues/131)) ([0bcbe2e](https://github.com/secretlint/secretlint/commit/0bcbe2ebbf6b990912bdc0ead369c63f61b2a362))
+
+
+
+
+
 # [1.1.0](https://github.com/secretlint/secretlint/compare/v1.0.5...v1.1.0) (2020-04-04)
 
 **Note:** Version bump only for package @secretlint/secretlint-rule-preset-recommend
