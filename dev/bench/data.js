@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1586599907209,
+  "lastUpdate": 1587946012123,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -6952,6 +6952,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.56,
             "range": "±0.92%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "71d32cb41aa1dff26cebc9df31e32a9eafeb5371",
+          "message": "feat(secretelint-rule-sendgrid): add new sendgrid rule\n\nDetect SendGrid API key",
+          "timestamp": "2020-04-27T09:04:09+09:00",
+          "tree_id": "6fad7b09b68600b030296209cdccea32b878a6ff",
+          "url": "https://github.com/secretlint/secretlint/commit/71d32cb41aa1dff26cebc9df31e32a9eafeb5371"
+        },
+        "date": 1587946011299,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.64,
+            "range": "±0.88%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.6,
+            "range": "±1.36%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
