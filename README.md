@@ -465,12 +465,6 @@ Of course, secretlint also support [Docker](https://hub.docker.com/r/secretlint/
 
 See [Releases page](https://github.com/secretlint/secretlint/releases).
 
-## Running tests
-
-Install devDependencies and Run `npm test`:
-
-    yarn test
-
 ## Contributing
 
 Pull requests and stars are always welcome.
