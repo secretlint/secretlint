@@ -5,8 +5,9 @@ import ruleNpm from "@secretlint/secretlint-rule-npm";
 import ruleSlack from "@secretlint/secretlint-rule-slack";
 import ruleBasicAuth from "@secretlint/secretlint-rule-basicauth";
 import rulePrivateKey from "@secretlint/secretlint-rule-privatekey";
+import ruleSendgrid from "@secretlint/secretlint-rule-sendgrid";
 
-export const rules = [ruleAWS, ruleGCP, rulePrivateKey, ruleNpm, ruleBasicAuth, ruleSlack];
+export const rules = [ruleAWS, ruleGCP, rulePrivateKey, ruleNpm, ruleBasicAuth, ruleSlack, ruleSendgrid];
 export type Options = {};
 
 export const creator: SecretLintRulePresetCreator<Options> = {

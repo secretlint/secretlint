@@ -29,6 +29,8 @@ Via `.secretlintrc.json`(Recommended)
 
 Disallow to write sendgrid api key.
 
+- [Manage SendGrid API Keys | SendGrid Documentation](https://sendgrid.com/docs/ui/account-and-settings/api-keys/)
+
 ## Options
 
 - `allows: string[]`
