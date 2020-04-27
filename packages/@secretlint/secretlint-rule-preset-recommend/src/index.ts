@@ -12,7 +12,7 @@ export type Options = {};
 
 export const creator: SecretLintRulePresetCreator<Options> = {
     meta: {
-        id: "@secretlint/secretlint-rule-preset-canary",
+        id: "@secretlint/secretlint-rule-preset-recommend",
         recommended: true,
         type: "preset",
     },
