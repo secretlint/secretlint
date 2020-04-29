@@ -6,11 +6,11 @@
 
 ## Features
 
-- Scanner: Found credentials in a project and report these
-- Project Friendly: Easy to setup your project and integrate CI services
-- Pre-Commit Hook: Prevent committing credential files
-- Pluggable: Allow to create custom rule and flexible configuration
-- Documentation: Describe the reason that rule detect it as secret
+- **Scanner**: Found credentials in a project and report these
+- **Project** Friendly: Easy to set up your project and integrate CI services
+- **Pre-Commit Hook**: Prevent committing credential files
+- **Pluggable**: Allow creating custom rule and flexible configuration
+- **Documentation**: Describe the reason that rule detect it as secret
 
 ## Quick Start
 
@@ -26,7 +26,7 @@ If you already have installed Node.js:
 
 After running, 
 If you got empty result and exit status is `0`, your project is secure.
-Otherwise you got some error report, your project includes credential as raw data.
+Otherwise, you got some error report, your project includes credential as raw data.
 
 ![An example of secretlint results](./docs/assets/secretlint-report-example.png)
 
@@ -447,9 +447,9 @@ Also, Welcome to Contribution about secretlint documentation!
 ### Why Node.js?
 
 - Package Manager
-	- Require pacakge manager to realize flexible pluggable system
+	- Require package manager to realize flexible pluggable system
 	- Node.js has npm and yarn as package manager
-	- Package manger help to install custom plugin/rule by user
+	- Package manager help to install custom plugin/rule by user
 - Exist Reference Implementation
 	- Node.js already has pluggable linting tools like ESLint, textlint, stylelint etc
 	- So Node.js user familiar with pluggable linting tools
