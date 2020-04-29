@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/secretlint/secretlint/compare/v1.1.0...v2.0.0) (2020-04-27)
+
+**Note:** Version bump only for package @secretlint/secretlint-rule-example
+
+
+
+
+
 # [1.1.0](https://github.com/secretlint/secretlint/compare/v1.0.5...v1.1.0) (2020-04-04)
 
 **Note:** Version bump only for package @secretlint/secretlint-rule-example

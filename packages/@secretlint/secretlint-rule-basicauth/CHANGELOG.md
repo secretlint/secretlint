@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/secretlint/secretlint/compare/v1.1.0...v2.0.0) (2020-04-27)
+
+
+### Bug Fixes
+
+* **core:** change SecretLintRuleMessageTranslate to check statically ([03ccff1](https://github.com/secretlint/secretlint/commit/03ccff116390374193ca5975405b0cafeaf63932))
+
+
+### BREAKING CHANGES
+
+* **core:** It changes SecretLintRuleMessageTranslate interface
+
+Rule need to change `messages` object format.
+
+
+
+
+
 # [1.1.0](https://github.com/secretlint/secretlint/compare/v1.0.5...v1.1.0) (2020-04-04)
 
 **Note:** Version bump only for package @secretlint/secretlint-rule-basicauth

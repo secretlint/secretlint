@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/secretlint/secretlint/compare/v1.1.0...v2.0.0) (2020-04-27)
+
+
+### Bug Fixes
+
+* **tester:** sort object be property name ([#133](https://github.com/secretlint/secretlint/issues/133)) ([f684cdf](https://github.com/secretlint/secretlint/commit/f684cdfb76f7701e301ded4771fb3207e43fa7e0))
+* add word length limits for clarity ([e5b5867](https://github.com/secretlint/secretlint/commit/e5b5867a98ff7cf2145e253de43b7fd25278d5c7))
+* make rule specific to sendgrid ([cda8b6c](https://github.com/secretlint/secretlint/commit/cda8b6c2b76cf5537d4f8e61bb07b348f8f969f1))
+* missing escape on regex dot chars ([3e12160](https://github.com/secretlint/secretlint/commit/3e121606291a65dd6a0bfd82d5778cd1b44028bf))
+* remove generic api rule ([40ae9b1](https://github.com/secretlint/secretlint/commit/40ae9b1e444636d7ebee35e623db27f31e95a6a7))
+* **core:** change SecretLintRuleMessageTranslate to check statically ([03ccff1](https://github.com/secretlint/secretlint/commit/03ccff116390374193ca5975405b0cafeaf63932))
+
+
+### Features
+
+* **recommended-preset:** add sendgrid rule ([#131](https://github.com/secretlint/secretlint/issues/131)) ([0bcbe2e](https://github.com/secretlint/secretlint/commit/0bcbe2ebbf6b990912bdc0ead369c63f61b2a362))
+* add generic key detection ([8dcb023](https://github.com/secretlint/secretlint/commit/8dcb0230b2f8647b3fae4766899c6c9c705e60e1))
+
+
+### BREAKING CHANGES
+
+* **core:** It changes SecretLintRuleMessageTranslate interface
+
+Rule need to change `messages` object format.
+
+
+
+
+
 # [1.1.0](https://github.com/secretlint/secretlint/compare/v1.0.5...v1.1.0) (2020-04-04)
 
 
