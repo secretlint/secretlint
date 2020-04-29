@@ -75,7 +75,7 @@ Finally, you can run Secretlint on any file or directory like this:
 npx secretlint "**/*"
 ```
 
-:memo: Secretlint support [glob pattern](https://github.com/mrmlnc/fast-glob#basic-syntax) and glob pattern should be wrapped by double quote.
+:memo: Secretlint support [glob pattern](https://github.com/mrmlnc/fast-glob#basic-syntax) and glob pattern should be wrapped by a double quote.
 
 It is also possible to install Secretlint globally using `npm install --global`. But, We do not recommended it, some rules may be broken in globally.
 
@@ -316,7 +316,7 @@ We have created example git hooks project using secretlint + Docker.
 - [secretlint/git-hooks](https://github.com/secretlint/git-hooks)
     - Requirement: Docker
 
-You can setup by following steps:
+You can set up by following steps:
 
 ```shell script
 # clone this repository
@@ -403,7 +403,7 @@ However, secretlint is not different with most semver project.
 	- Secretlint want to install for a project and customize setting per project.
 - [repo-security-scanner](https://github.com/UKHomeOffice/repo-security-scanner), [Gitleaks](https://github.com/zricethezav/gitleaks) and [truffleHog](https://github.com/dxa4481/truffleHog) is good scan tools
 	- Secretlint need to flexible customize that include ignoring definitions, custom rules.
-- [detect-secrets](https://github.com/Yelp/detect-secrets) is similar tools, but it adopt opt-out approach
+- [detect-secrets](https://github.com/Yelp/detect-secrets) is similar tools, but it adopts opt-out approach
     - Secretlint adopt opt-in approach  
     - We also need to custom rules by user
 		- See [Bring-your own-plugins (BYOP), via --custom-plugins option by KevinHock · Pull Request #255 · Yelp/detect-secrets](https://github.com/Yelp/detect-secrets/pull/255)
