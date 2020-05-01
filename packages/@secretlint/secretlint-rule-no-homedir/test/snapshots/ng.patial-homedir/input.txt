@@ -1,0 +1,2 @@
+Partial match: /path/to/Users/exampleuser
+Partial match: ¥path¥to¥Users¥exampleuser
