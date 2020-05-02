@@ -22,7 +22,7 @@ const multiplatformPath = (dirPath: string): RegExp => {
 export const messages = {
     HOMEDIR: {
         en: (props: { PATH: string }) => `found user's homedir path: ${props.PATH}`,
-        ja: (props: { PATH: string }) => `ユーザーフォームのパスが見つかりました: ${props.PATH}`,
+        ja: (props: { PATH: string }) => `ユーザーホームのパスが見つかりました: ${props.PATH}`,
     },
 };
 
