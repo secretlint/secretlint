@@ -32,13 +32,6 @@ export type Options = {
      * See https://github.com/textlint/regexp-string-matcher#regexp-like-string
      **/
     allows?: string[];
-
-    /**
-     * allow partial match like "/path/to/Users/exampleuser/"
-     * "/Users/exampleuser/" will be secret, but it is partial match.
-     * If you want to allow it, set to true.
-     */
-    allowPartialMatch: boolean;
     /**
      * For debug
      */
