@@ -1135,6 +1135,11 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-13.11.0.tgz#390ea202539c61c8fa6ba4428b57e05bc36dc47b"
   integrity sha512-uM4mnmsIIPK/yeO+42F2RQhGUIs39K2RFmugcJANppXe6J1nvH87PvzPZYpza7Xhhs8Yn9yIAVdLZ84z61+0xQ==
 
+"@types/node@^13.13.4":
+  version "13.13.4"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-13.13.4.tgz#1581d6c16e3d4803eb079c87d4ac893ee7501c2c"
+  integrity sha512-x26ur3dSXgv5AwKS0lNfbjpCakGIduWU1DU91Zz58ONRWrIKGunmZBNv4P7N+e27sJkiGDsw/3fT4AtsqQBrBA==
+
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.0.tgz#e486d0d97396d79beedd0a6e33f4534ff6b4973e"
@@ -2518,6 +2523,11 @@ escape-string-regexp@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-2.0.0.tgz#a30304e99daa32e23b2fd20f51babd07cffca344"
   integrity sha512-UpzcLCXolUWcNu5HtVMHYdXJjArjsF9C0aNnquZYY4uW/Vu0miy5YoWvbV345HauVvcAUnpRuhMMcqTcGOY2+w==
+
+escape-string-regexp@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-4.0.0.tgz#14ba83a5d373e3d311e5afca29cf5bfad965bf34"
+  integrity sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==
 
 eslint-formatter-pretty@^1.3.0:
   version "1.3.0"
@@ -4472,7 +4482,7 @@ mkdirp@0.5.3:
   dependencies:
     minimist "^1.2.5"
 
-mkdirp@^0.5.0, mkdirp@^0.5.1:
+mkdirp@0.5.5, mkdirp@^0.5.0, mkdirp@^0.5.1:
   version "0.5.5"
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.5.tgz#d91cefd62d1436ca0f41620e251288d420099def"
   integrity sha512-NKmAlESf6jMGym1++R0Ra7wvhV+wFW63FaSOFPwRahvea0gMUcGUhVeAg/0BC0wiv9ih5NYPB1Wn1UEI1/L+xQ==
@@ -4498,6 +4508,36 @@ mocha@^7.0.1, mocha@^7.1.0, mocha@^7.1.1:
     log-symbols "3.0.0"
     minimatch "3.0.4"
     mkdirp "0.5.3"
+    ms "2.1.1"
+    node-environment-flags "1.0.6"
+    object.assign "4.1.0"
+    strip-json-comments "2.0.1"
+    supports-color "6.0.0"
+    which "1.3.1"
+    wide-align "1.1.3"
+    yargs "13.3.2"
+    yargs-parser "13.1.2"
+    yargs-unparser "1.6.0"
+
+mocha@^7.1.2:
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/mocha/-/mocha-7.1.2.tgz#8e40d198acf91a52ace122cd7599c9ab857b29e6"
+  integrity sha512-o96kdRKMKI3E8U0bjnfqW4QMk12MwZ4mhdBTf+B5a1q9+aq2HRnj+3ZdJu0B/ZhJeK78MgYuv6L8d/rA5AeBJA==
+  dependencies:
+    ansi-colors "3.2.3"
+    browser-stdout "1.3.1"
+    chokidar "3.3.0"
+    debug "3.2.6"
+    diff "3.5.0"
+    escape-string-regexp "1.0.5"
+    find-up "3.0.0"
+    glob "7.1.3"
+    growl "1.10.5"
+    he "1.2.0"
+    js-yaml "3.13.1"
+    log-symbols "3.0.0"
+    minimatch "3.0.4"
+    mkdirp "0.5.5"
     ms "2.1.1"
     node-environment-flags "1.0.6"
     object.assign "4.1.0"
@@ -5232,6 +5272,11 @@ prettier@^2.0.2:
   resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.0.2.tgz#1ba8f3eb92231e769b7fcd7cb73ae1b6b74ade08"
   integrity sha512-5xJQIPT8BraI7ZnaDwSbu5zLrB6vvi8hVV58yHQ+QK64qrY40dULy0HSRlQ2/2IdzeBpjhDkqdcFBnFeDEMVdg==
 
+prettier@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.0.5.tgz#d6d56282455243f2f92cc1716692c08aa31522d4"
+  integrity sha512-7PtVymN48hGcO4fGjybyBSIWDsLU4H4XlvOHfq91pz9kkGlonzwTfYkaIEwiRg/dAJF9YlbsduBAgtYLi+8cFg==
+
 process-nextick-args@~2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/process-nextick-args/-/process-nextick-args-2.0.1.tgz#7820d9b16120cc55ca9ae7792680ae7dba6d7fe2"
@@ -5917,6 +5962,14 @@ source-map-resolve@^0.5.0:
     source-map-url "^0.4.0"
     urix "^0.1.0"
 
+source-map-support@^0.5.17:
+  version "0.5.19"
+  resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.19.tgz#a98b62f86dcaf4f67399648c085291ab9e8fed61"
+  integrity sha512-Wonm7zOCIJzBGQdB+thsPar0kYuCIzYvxZwlBa87yi/Mdjv7Tip2cyVbLj5o0cFPN4EVkuTwb3GDDyUx2DGnGw==
+  dependencies:
+    buffer-from "^1.0.0"
+    source-map "^0.6.0"
+
 source-map-support@^0.5.6:
   version "0.5.16"
   resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.16.tgz#0ae069e7fe3ba7538c64c98515e35339eac5a042"
@@ -6488,6 +6541,17 @@ ts-node@^8.6.2, ts-node@^8.8.1:
     diff "^4.0.1"
     make-error "^1.1.1"
     source-map-support "^0.5.6"
+    yn "3.1.1"
+
+ts-node@^8.9.1:
+  version "8.9.1"
+  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-8.9.1.tgz#2f857f46c47e91dcd28a14e052482eb14cfd65a5"
+  integrity sha512-yrq6ODsxEFTLz0R3BX2myf0WBCSQh9A+py8PBo1dCzWIOcvisbyH6akNKqDHMgXePF2kir5mm5JXJTH3OUJYOQ==
+  dependencies:
+    arg "^4.1.0"
+    diff "^4.0.1"
+    make-error "^1.1.1"
+    source-map-support "^0.5.17"
     yn "3.1.1"
 
 tsconfig-loader@^1.1.0:

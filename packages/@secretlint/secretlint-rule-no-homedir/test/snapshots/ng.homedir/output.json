@@ -1,0 +1,53 @@
+{
+    "filePath": "[SNAPSHOT]/ng.homedir/input.txt",
+    "messages": [
+        {
+            "message": "found user's homedir path: /Users/exampleuser",
+            "range": [
+                9,
+                27
+            ],
+            "ruleId": "@secretlint/secretlint-rule-no-homedir",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 9
+                },
+                "end": {
+                    "line": 1,
+                    "column": 27
+                }
+            },
+            "severity": "error",
+            "messageId": "HOMEDIR",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-no-homedir/README.md#HOMEDIR",
+            "data": {
+                "PATH": "/Users/exampleuser"
+            }
+        },
+        {
+            "message": "found user's homedir path: ¥Users¥exampleuser",
+            "range": [
+                37,
+                55
+            ],
+            "ruleId": "@secretlint/secretlint-rule-no-homedir",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 9
+                },
+                "end": {
+                    "line": 2,
+                    "column": 27
+                }
+            },
+            "severity": "error",
+            "messageId": "HOMEDIR",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-no-homedir/README.md#HOMEDIR",
+            "data": {
+                "PATH": "¥Users¥exampleuser"
+            }
+        }
+    ]
+}
