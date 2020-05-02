@@ -1,6 +1,8 @@
 # @secretlint/secretlint-rule-no-homedir
 
-A secretlint rule that disallow to include user&#39;s homedir path.
+A secretlint rule that disallow to include user's homedir path.
+
+For example, The user homedir is `/Usrs/exampleuser`, then this rule check if `/Usrs/exampleuser` is included. 
 
 ## Install
 
