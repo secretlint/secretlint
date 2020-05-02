@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1588148403818,
+  "lastUpdate": 1588420411547,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -7104,6 +7104,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.55,
             "range": "±1.66%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "447e2e0b473e267934ea42ed8788de15dcea9cd8",
+          "message": "feat(secretlint-rule-no-homedir): add new rule (#136)\n\n* feat(secretlint-rule-no-homedir): add new rule\r\n\r\n* chore(no-homedir): remove unused options\r\n\r\n* chore(no-homedir): remove unused options\r\n\r\n* docs: Update README\r\n\r\n* chore: fix typo",
+          "timestamp": "2020-05-02T20:50:46+09:00",
+          "tree_id": "5fae2094c6c974470c92e7abfe9804dd6ba20ec6",
+          "url": "https://github.com/secretlint/secretlint/commit/447e2e0b473e267934ea42ed8788de15dcea9cd8"
+        },
+        "date": 1588420410820,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.63,
+            "range": "±2.08%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±1.62%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
