@@ -24,7 +24,12 @@ Via `.secretlintrc.json`(Recommended)
 
 ## MessageIDs
 
-- [ ] Rule Description
+### HOMEDIR
+> found user's homedir path: {{PATH}}
+
+If it is expected exposed, please ignore it by following way.
+
+- `.secretlintignore`: ignore specific file
 
 ## Options
 
