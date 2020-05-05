@@ -1,0 +1,10 @@
+{
+    "exitStatus": 0,
+    "stdout": [
+        {
+            "filePath": "[SNAPSHOT]/non-ascii-file/input-non-ascii-file-日本語.md",
+            "messages": []
+        }
+    ],
+    "stderr": null
+}
