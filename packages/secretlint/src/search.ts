@@ -8,7 +8,7 @@ const DEFAULT_IGNORE_PATTERNS = Object.freeze([
     "**/node_modules/**",
     "**/.secretlintrc/**",
     "**/.secretlintrc.{json,yaml,yml,js}/**",
-    "**/.secretlintignore*/**"
+    "**/.secretlintignore*/**",
 ]);
 export type SearchFilesOptions = {
     cwd: string;
@@ -49,7 +49,7 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
             const ignored = fs
                 .readFileSync(normalizeIgnoreFilePath, "utf-8")
                 .split(/\r?\n/)
-                .filter(line => !/^\s*$/.test(line) && !/^\s*#/.test(line))
+                .filter((line) => !/^\s*$/.test(line) && !/^\s*#/.test(line))
                 .map(mapGitIgnorePatternTo(baseDir));
             debug("ignored: %o", ignored);
             ignoredPatterns.push(...ignored);
@@ -60,12 +60,13 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
     const searchResultItems = await globby(patterns, {
         cwd: options.cwd,
         ignore: ignoredPatterns,
-        dot: true
+        dot: true,
+        absolute: true,
     });
     if (searchResultItems.length > 0) {
         return {
             ok: true,
-            items: searchResultItems
+            items: searchResultItems,
         };
     }
     /**
@@ -78,11 +79,11 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
         (
             await globby(patterns, {
                 cwd: options.cwd,
-                dot: true
+                dot: true,
             })
         ).length > 0;
     return {
         ok: isEmptyResultIsHappenByIgnoring,
-        items: []
+        items: [],
     };
 };
