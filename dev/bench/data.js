@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1588420411547,
+  "lastUpdate": 1591405966508,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -7142,6 +7142,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±1.62%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "510decf4605b202539c7bedf7a6ea22bdd4cc62f",
+          "message": "fix(secretlint): fix handling for non-ascii file path (#137)\n\n* fix(secretlin): fix non-ascii file path\r\n\r\n* chore: apply style",
+          "timestamp": "2020-06-06T10:09:49+09:00",
+          "tree_id": "572269381e4a1cd7c024a61b663aa865a7e37fff",
+          "url": "https://github.com/secretlint/secretlint/commit/510decf4605b202539c7bedf7a6ea22bdd4cc62f"
+        },
+        "date": 1591405965326,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.55,
+            "range": "±1.10%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±1.64%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
