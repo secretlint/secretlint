@@ -1,0 +1,29 @@
+{
+    "filePath": "[SNAPSHOT]/ng.basic-test/input.txt",
+    "messages": [
+        {
+            "message": "found matching password=: password = Password1$",
+            "range": [
+                0,
+                21
+            ],
+            "ruleId": "@secretlint/secretlint-rule-pattern",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 21
+                }
+            },
+            "severity": "error",
+            "messageId": "PATTERN",
+            "data": {
+                "CREDENTIAL": "password = Password1$",
+                "PATTERN_NAME": "password="
+            }
+        }
+    ]
+}
