@@ -36,18 +36,10 @@ function reportIfFoundPattern({
     t: SecretLintRuleMessageTranslate<typeof messages>;
 }) {
     for (const p of options.patterns) {
-      /**
-      * The next several lines were to allow the configuration to be the full regex string
-      * and to break it down to what the RegExp class expects
-      **/
-      const lastIndex = p.pattern.lastIndexOf('/')
-      const regexText = p.pattern.startsWith('/') ? p.pattern.substr(1, lastIndex - 1) : p.pattern.substr(0, lastIndex - 1)
-      const flags = p.pattern.endsWith('/') ? 'g' : p.pattern.substr(lastIndex + 1)
-      const regex = new RegExp(regexText, flags)
-      const results = source.content.matchAll(regex);
+      const results = matchPatterns(source.content, [p.pattern]);
       for (const result of results) {
-          const index = result.index || 0;
-          const match = result[0] || "";
+          const index = result.startIndex || 0;
+          const match = result.match || "";
           const range = [index, index + match.length];
           const allowedResults = matchPatterns(match, options.allows);
           if (allowedResults.length > 0) {
