@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1591405966508,
+  "lastUpdate": 1592234434910,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -7180,6 +7180,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±1.64%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "dphoude@gmail.com",
+            "name": "PseudoCoding",
+            "username": "PseudoCoding"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "097921f9682b619dbeb5e35068b1c57913bf5df9",
+          "message": "feat(rule): Creating new rule for SecretLint for using regular expressions (#139)\n\n* Creating new rule for SecretLint for using regular expressions\r\n\r\n* Rename directory and remove package-lock.json from secretlint-rule-pattern\r\n\r\n* Switching to matchPatterns instead of RegExp",
+          "timestamp": "2020-06-16T00:17:36+09:00",
+          "tree_id": "39fb5be87fd37be855958483b06550fd9d9dfbea",
+          "url": "https://github.com/secretlint/secretlint/commit/097921f9682b619dbeb5e35068b1c57913bf5df9"
+        },
+        "date": 1592234434214,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.61,
+            "range": "±2.84%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±2.24%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
