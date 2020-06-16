@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1592301120639,
+  "lastUpdate": 1592307861916,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -7256,6 +7256,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.63,
             "range": "±2.04%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "distinct": true,
+          "id": "e6770770f4a147cb4d1c8e43ff363c55253cac63",
+          "message": "docs: Add new rules\n\nfix #142",
+          "timestamp": "2020-06-16T20:41:21+09:00",
+          "tree_id": "33ffb42bf78aea1776494b2764d2d1b2158afef3",
+          "url": "https://github.com/secretlint/secretlint/commit/e6770770f4a147cb4d1c8e43ff363c55253cac63"
+        },
+        "date": 1592307860889,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.61,
+            "range": "±0.83%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.56,
+            "range": "±1.01%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
