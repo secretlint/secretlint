@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-sendgrid",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "description": "A secretlint rule for sendgrid api keys.",
     "keywords": [
         "rule",
@@ -43,12 +43,12 @@
         "tabWidth": 4
     },
     "dependencies": {
-        "@secretlint/types": "^2.0.0",
+        "@secretlint/types": "^2.1.0",
         "@textlint/regexp-string-matcher": "^1.1.0",
         "string.prototype.matchall": "^4.0.2"
     },
     "devDependencies": {
-        "@secretlint/tester": "^2.0.0",
+        "@secretlint/tester": "^2.1.0",
         "@types/mocha": "^7.0.1",
         "@types/node": "^13.7.4",
         "cross-env": "^7.0.0",
