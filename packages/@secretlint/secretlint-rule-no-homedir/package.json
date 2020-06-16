@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-no-homedir",
-  "version": "1.0.0",
+  "version": "2.1.0",
   "description": "A secretlint rule that disallow to include user's homedir path.",
   "keywords": [
     "rule",
@@ -42,8 +42,8 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "escape-string-regexp": "^4.0.0",
-    "@secretlint/types": "^2.0.0"
+    "@secretlint/types": "^2.1.0",
+    "escape-string-regexp": "^4.0.0"
   },
   "devDependencies": {
     "@types/mocha": "^7.0.2",

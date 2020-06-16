@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@secretlint/benchmark",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "description": "Internal benchmark for Secretlint",
     "keywords": [
         "secretlint",
@@ -32,8 +32,8 @@
         "access": "public"
     },
     "dependencies": {
-        "@secretlint/secretlint-rule-preset-canary": "^2.0.0",
+        "@secretlint/secretlint-rule-preset-canary": "^2.1.0",
         "benchmark": "^2.1.4",
-        "secretlint": "^2.0.0"
+        "secretlint": "^2.1.0"
     }
 }
