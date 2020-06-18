@@ -253,7 +253,7 @@ After all participants on pull request are satisfied to the changes, we will mer
 
 ## Benchmark
 
-Secretlint has continuous benchmark:
+Secretlint has a continuous benchmark:
 
 - <https://secretlint.github.io/secretlint/dev/bench/>
 
