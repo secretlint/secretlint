@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1592489843885,
+  "lastUpdate": 1595164042188,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -7332,6 +7332,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.54,
             "range": "±4.07%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b8fee2739b1e0b1731de038d0300979b26cab006",
+          "message": "chore(deps): bump lodash from 4.17.15 to 4.17.19 (#144)\n\nBumps [lodash](https://github.com/lodash/lodash) from 4.17.15 to 4.17.19.\r\n- [Release notes](https://github.com/lodash/lodash/releases)\r\n- [Commits](https://github.com/lodash/lodash/compare/4.17.15...4.17.19)\r\n\r\nSigned-off-by: dependabot[bot] <support@github.com>\r\n\r\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2020-07-19T22:04:24+09:00",
+          "tree_id": "9a12b903b09fa9b40e7621e07309188bc56abafc",
+          "url": "https://github.com/secretlint/secretlint/commit/b8fee2739b1e0b1731de038d0300979b26cab006"
+        },
+        "date": 1595164041513,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.54,
+            "range": "±1.42%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.55,
+            "range": "±1.13%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
