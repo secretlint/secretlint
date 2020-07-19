@@ -17,7 +17,7 @@ jobs:
         os: [macOS-latest, windows-latest, ubuntu-18.04]
         node_version: [12.9.1] # pre-build nexe https://github.com/nexe/nexe/releases/tag/v3.0.0
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           fetch-depth: 1
       - name: Use Node.js ${{ matrix.node_version }}
