@@ -13,10 +13,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Setup Node ${{ matrix.node_version }}
+      - name: Setup Node ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
-          node_version: 12
+          node-version: 12
       - name: Git Identity
         run: |
           git config --global user.name 'github-actions[bot]'

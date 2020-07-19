@@ -15,15 +15,15 @@ jobs:
     strategy:
       matrix:
         os: [macOS-latest, windows-latest, ubuntu-18.04]
-        node_version: [12.9.1] # pre-build nexe https://github.com/nexe/nexe/releases/tag/v3.0.0
+        node-version: [12.9.1] # pre-build nexe https://github.com/nexe/nexe/releases/tag/v3.0.0
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 1
-      - name: Use Node.js ${{ matrix.node_version }}
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node_version }}
+          node-version: ${{ matrix.node-version }}
       - name: Install
         run: npm install # avoid hoisting https://github.com/nexe/nexe/issues/649
         working-directory: ./publish/binary-compiler
