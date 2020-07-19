@@ -4,18 +4,18 @@
         {
             "message": "found GitHub Token: 111da111qqqq309bqq562159952c2c2a11111a1",
             "range": [
-                175,
-                214
+                180,
+                219
             ],
             "ruleId": "@secretlint/secretlint-rule-npm",
             "loc": {
                 "start": {
                     "line": 8,
-                    "column": 26
+                    "column": 32
                 },
                 "end": {
                     "line": 8,
-                    "column": 65
+                    "column": 71
                 }
             },
             "severity": "error",

@@ -21,8 +21,8 @@
             "severity": "error",
             "messageId": "PATTERN",
             "data": {
-                "CREDENTIAL": "password = Password1$",
-                "PATTERN_NAME": "password="
+                "PATTERN_NAME": "password=",
+                "CREDENTIAL": "password = Password1$"
             }
         }
     ]
