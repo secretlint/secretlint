@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1595176377941,
+  "lastUpdate": 1596330122054,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -7446,6 +7446,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±1.09%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "8f077d9cf45a4a8cb33e38e7da895627c0828b6e",
+          "message": "chore(deps): bump elliptic from 6.5.2 to 6.5.3 (#146)\n\nBumps [elliptic](https://github.com/indutny/elliptic) from 6.5.2 to 6.5.3.\r\n- [Release notes](https://github.com/indutny/elliptic/releases)\r\n- [Commits](https://github.com/indutny/elliptic/compare/v6.5.2...v6.5.3)\r\n\r\nSigned-off-by: dependabot[bot] <support@github.com>\r\n\r\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2020-08-02T09:58:55+09:00",
+          "tree_id": "533ed3f01fc5b9ea2799792c65bdf357e8af769a",
+          "url": "https://github.com/secretlint/secretlint/commit/8f077d9cf45a4a8cb33e38e7da895627c0828b6e"
+        },
+        "date": 1596330121395,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.56,
+            "range": "±1.08%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.52,
+            "range": "±6.19%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
