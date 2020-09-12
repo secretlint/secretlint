@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1598887526262,
+  "lastUpdate": 1599925672368,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -7560,6 +7560,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.63,
             "range": "±2.91%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "6b0caa7f6eb728d8261637ae794482256c2ee68d",
+          "message": "chore(deps): bump node-fetch from 2.6.0 to 2.6.1 (#147)\n\nBumps [node-fetch](https://github.com/bitinn/node-fetch) from 2.6.0 to 2.6.1.\r\n- [Release notes](https://github.com/bitinn/node-fetch/releases)\r\n- [Changelog](https://github.com/node-fetch/node-fetch/blob/master/docs/CHANGELOG.md)\r\n- [Commits](https://github.com/bitinn/node-fetch/compare/v2.6.0...v2.6.1)\r\n\r\nSigned-off-by: dependabot[bot] <support@github.com>\r\n\r\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2020-09-13T00:44:55+09:00",
+          "tree_id": "68306597fbabeede069068d2372ded4a3d11d963",
+          "url": "https://github.com/secretlint/secretlint/commit/6b0caa7f6eb728d8261637ae794482256c2ee68d"
+        },
+        "date": 1599925669701,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.78,
+            "range": "±0.77%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.63,
+            "range": "±0.90%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
