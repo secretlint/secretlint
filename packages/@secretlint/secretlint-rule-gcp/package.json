@@ -44,7 +44,7 @@
     "dependencies": {
         "@secretlint/types": "^2.1.0",
         "@textlint/regexp-string-matcher": "^1.1.0",
-        "node-forge": "^0.9.1"
+        "node-forge": "^0.10.0"
     },
     "devDependencies": {
         "@types/mocha": "^7.0.1",
