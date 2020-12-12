@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1604529935870,
+  "lastUpdate": 1607768511054,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -7674,6 +7674,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.7,
             "range": "±2.50%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "bfff6db593ff86e87ca4f9145d025f70036f148d",
+          "message": "chore(deps): bump ini from 1.3.5 to 1.3.8 (#152)\n\nBumps [ini](https://github.com/isaacs/ini) from 1.3.5 to 1.3.8.\r\n- [Release notes](https://github.com/isaacs/ini/releases)\r\n- [Commits](https://github.com/isaacs/ini/compare/v1.3.5...v1.3.8)\r\n\r\nSigned-off-by: dependabot[bot] <support@github.com>\r\n\r\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2020-12-12T19:19:10+09:00",
+          "tree_id": "905144889b0a51de8231d4e0687c848f5a221b64",
+          "url": "https://github.com/secretlint/secretlint/commit/bfff6db593ff86e87ca4f9145d025f70036f148d"
+        },
+        "date": 1607768509727,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.07,
+            "range": "±3.41%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.72,
+            "range": "±2.23%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
