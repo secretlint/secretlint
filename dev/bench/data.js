@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1607768511054,
+  "lastUpdate": 1617202948002,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -7712,6 +7712,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.72,
             "range": "±2.23%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "fa9e16640f6c351a7cf762e0a0bcc6fd1f98b7b4",
+          "message": "chore(deps): bump y18n from 4.0.0 to 4.0.1 (#155)\n\nBumps [y18n](https://github.com/yargs/y18n) from 4.0.0 to 4.0.1.\r\n- [Release notes](https://github.com/yargs/y18n/releases)\r\n- [Changelog](https://github.com/yargs/y18n/blob/master/CHANGELOG.md)\r\n- [Commits](https://github.com/yargs/y18n/commits)\r\n\r\nSigned-off-by: dependabot[bot] <support@github.com>\r\n\r\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2021-03-31T23:59:23+09:00",
+          "tree_id": "72abc30213eb736fc990309531953e032613cc51",
+          "url": "https://github.com/secretlint/secretlint/commit/fa9e16640f6c351a7cf762e0a0bcc6fd1f98b7b4"
+        },
+        "date": 1617202942473,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.78,
+            "range": "±2.18%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.63,
+            "range": "±2.13%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
