@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1617656344960,
+  "lastUpdate": 1617660091992,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -7788,6 +7788,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.68,
             "range": "±3.19%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c0da8dbcd16063f08a7b8b319f4a7b62b90ce6de",
+          "message": "fix(docker): fix invalid label key (#156)",
+          "timestamp": "2021-04-06T06:58:54+09:00",
+          "tree_id": "0df3ead4c96cf965cf7998191311538057f512d6",
+          "url": "https://github.com/secretlint/secretlint/commit/c0da8dbcd16063f08a7b8b319f4a7b62b90ce6de"
+        },
+        "date": 1617660090658,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2,
+            "range": "±1.78%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.7,
+            "range": "±3.74%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
