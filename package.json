@@ -46,7 +46,7 @@
     "ci": "npm run build && npm run test && npm run secretlint",
     "clean": "lerna run clean",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
-    "prepare": "git config --local core.hooksPath .githook"
+    "prepare": "git config --local core.hooksPath .githooks"
   },
   "devDependencies": {
     "lerna": "^4.0.0",
