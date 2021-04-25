@@ -19,7 +19,6 @@ const create = (name: string) => {
         allErrors: true,
         coerceTypes: "array",
         format: "fast",
-        nullable: false,
         unicode: true,
         uniqueItems: true,
         useDefaults: true
