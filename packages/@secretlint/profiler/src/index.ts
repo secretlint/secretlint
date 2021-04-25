@@ -108,7 +108,7 @@ export class SecretLintProfiler {
         const pattern = /(.*?)::end(\|\|.*)?/;
         const observer = new options.PerformanceObserver((items: PerformanceObserverEntryList) => {
             const entries = items.getEntries();
-            entries.forEach(entry => {
+            entries.forEach((entry) => {
                 if (entry.entryType === "mark") {
                     const match = entry.name.match(pattern);
                     const endIdentifier = match ? match[1] : undefined;
@@ -116,7 +116,7 @@ export class SecretLintProfiler {
                     // if mark already {mark}}::start, measure start to end
                     if (endIdentifier) {
                         const startIdentifier = `${endIdentifier}::start`;
-                        this.entries.find(savedEntry => {
+                        this.entries.find((savedEntry) => {
                             return savedEntry.name === startIdentifier;
                         });
                         // create measure

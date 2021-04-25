@@ -3,7 +3,7 @@
 import {inspect} from 'util';
 import Ajv = require('ajv');
 import {SecretLintConfigDescriptorRulePreset} from '@secretlint/types';
-export const ajv = new Ajv({"allErrors":true,"coerceTypes":"array","format":"fast","nullable":false,"unicode":true,"uniqueItems":true,"useDefaults":true});
+export const ajv = new Ajv({"allErrors":true,"coerceTypes":"array","format":"fast","unicode":true,"uniqueItems":true,"useDefaults":true});
 
 ajv.addMetaSchema(require('ajv/lib/refs/json-schema-draft-06.json'));
 

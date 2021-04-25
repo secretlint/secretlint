@@ -18,6 +18,6 @@ export const createMessageProcessor = (processors: SecretLintMessageProcessor[])
             return processors.reduce((messages, filter) => {
                 return filter(messages);
             }, originalMessages) as R[];
-        }
+        },
     };
 };

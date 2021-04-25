@@ -15,18 +15,18 @@ export const runConfigCreator = async (
         return {
             exitStatus: 1,
             stdout: null,
-            stderr: new Error("secretlint config file is already existed.")
+            stderr: new Error("secretlint config file is already existed."),
         };
     }
     const configFilePath = path.join(options.cwd, ".secretlintrc.json");
     const pkg = await readPkg({
-        cwd: options.cwd
+        cwd: options.cwd,
     });
     const configDescriptor = createConfig({ packageJSON: pkg });
     fs.writeFileSync(configFilePath, JSON.stringify(configDescriptor, null, 2) + "\n", "utf-8");
     return {
         exitStatus: 0,
         stdout: `Create ${configFilePath}`,
-        stderr: null
+        stderr: null,
     };
 };

@@ -28,9 +28,9 @@ const createSnapshotReplacer = () => {
  * - output.json
  *   - snapshot result
  */
-describe("cli snapshot testing", function() {
-    fs.readdirSync(fixturesDir).map(caseName => {
-        it(`test ${caseName}`, async function() {
+describe("cli snapshot testing", function () {
+    fs.readdirSync(fixturesDir).map((caseName) => {
+        it(`test ${caseName}`, async function () {
             const fixtureDir = path.join(fixturesDir, caseName);
             const actualFilePath = path.join(fixtureDir, "input.txt");
             const actualOptions = require(path.join(fixtureDir, "options.ts")).options;
@@ -41,8 +41,8 @@ describe("cli snapshot testing", function() {
                 cwd: fixtureDir,
                 // Less diff between env
                 color: false,
-                format: path.join(__dirname, "./test-formatter")
-            }).catch(error => {
+                format: path.join(__dirname, "./test-formatter"),
+            }).catch((error) => {
                 // if throw an error, save it
                 return `Error: ${error.message}`;
             });

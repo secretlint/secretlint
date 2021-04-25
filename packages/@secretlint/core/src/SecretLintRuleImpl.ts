@@ -3,7 +3,7 @@ import {
     SecretLintRuleCreator,
     SecretLintCoreDescriptorRule,
     SecretLintRuleReportHandler,
-    SecretLintSourceCode
+    SecretLintSourceCode,
 } from "@secretlint/types";
 import { AllowMessage } from "./messages/filter-message-id";
 
@@ -30,10 +30,10 @@ export class SecretLintRule {
             return [];
         }
         const ruleId = this.ruleCreator.meta.id;
-        return this.descriptorRule.allowMessageIds.map(allowMessageId => {
+        return this.descriptorRule.allowMessageIds.map((allowMessageId) => {
             return {
                 messageId: allowMessageId,
-                ruleId
+                ruleId,
             };
         });
     }

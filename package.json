@@ -45,13 +45,13 @@
     "secretlint": "secretlint \"**/*\"",
     "ci": "npm run build && npm run test && npm run secretlint",
     "clean": "lerna run clean",
-    "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\""
+    "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
+    "prepare": "git config --local core.hooksPath .githooks"
   },
   "devDependencies": {
-    "husky": "^4.2.3",
-    "lerna": "^3.20.2",
-    "lint-staged": "^10.0.7",
-    "prettier": "^2.0.2"
+    "lerna": "^4.0.0",
+    "lint-staged": "^10.5.4",
+    "prettier": "^2.2.1"
   },
   "prettier": {
     "singleQuote": false,
@@ -59,18 +59,9 @@
     "tabWidth": 4,
     "trailingComma": "none"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
-    "*": [
-      "secretlint"
-    ],
     "*.{js,jsx,ts,tsx,css}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   }
 }

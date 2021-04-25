@@ -9,8 +9,8 @@ export default {
             dir: "lib/",
             format: "commonjs",
             exports: "named",
-            sourcemap: true
-        }
+            sourcemap: true,
+        },
     ],
-    plugins: [resolve({ preferBuiltins: true }), commonjs(), typescript()]
+    plugins: [resolve({ preferBuiltins: true }), commonjs(), typescript()],
 };

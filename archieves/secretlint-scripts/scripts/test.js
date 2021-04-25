@@ -15,15 +15,15 @@ const mochaCommand = [mocha, "--require", `"${tsNodeRegister}"`, "--timeout", "1
 const child = spawn(mochaCommand, {
     shell: true
 });
-child.stderr.on("data", function(data) {
+child.stderr.on("data", function (data) {
     process.stderr.write(data);
 });
-child.stdout.on("data", function(data) {
+child.stdout.on("data", function (data) {
     process.stdout.write(data);
 });
-child.on("error", function(error) {
+child.on("error", function (error) {
     console.error(error);
 });
-child.on("close", function(code) {
+child.on("close", function (code) {
     process.exit(code);
 });

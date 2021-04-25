@@ -15,7 +15,7 @@ async function fsReaddir(dpath: string, opts: any = {}) {
     });
 
     if (opts.withFileTypes) {
-        const dirents = dirList.map(entName => {
+        const dirents = dirList.map((entName) => {
             return new Promise((resolve, reject) => {
                 fs.stat(path.join(dpath, entName), (err, statObj) => {
                     if (err) {
@@ -24,7 +24,7 @@ async function fsReaddir(dpath: string, opts: any = {}) {
                         // append name to stats object to behave like a dirent object
                         resolve({
                             name: entName,
-                            ...statObj
+                            ...statObj,
                         });
                     }
                 });
@@ -49,7 +49,7 @@ run(cli.input, cli.flags).then(
         }
         process.exit(exitStatus);
     },
-    error => {
+    (error) => {
         console.error(error);
         process.exit(1);
     }

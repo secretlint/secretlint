@@ -16,14 +16,14 @@ const validateReturn = (content: any): "OK" | string => {
         return resultRawConfig.error.message;
     }
 };
-describe("@secretlint/config-validator", function() {
+describe("@secretlint/config-validator", function () {
     fs.readdirSync(fixturesDir, { withFileTypes: true })
-        .filter(dirent => dirent.isDirectory())
-        .map(dirent => {
+        .filter((dirent) => dirent.isDirectory())
+        .map((dirent) => {
             const normalizedTestName = dirent.name;
-            it(`test ${normalizedTestName}`, function() {
+            it(`test ${normalizedTestName}`, function () {
                 const fixtureDir = path.join(fixturesDir, normalizedTestName);
-                const secretlintrcFileName = fs.readdirSync(fixtureDir).find(filePath => {
+                const secretlintrcFileName = fs.readdirSync(fixtureDir).find((filePath) => {
                     return filePath.startsWith(".secretlintrc");
                 });
                 if (!secretlintrcFileName) {

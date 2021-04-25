@@ -16,14 +16,14 @@ const createSnapshotReplacer = () => {
     };
 };
 
-describe("@secretlint/source-creator", function() {
+describe("@secretlint/source-creator", function () {
     fs.readdirSync(fixturesDir, { withFileTypes: true })
-        .filter(dirent => dirent.isDirectory())
-        .map(dirent => {
+        .filter((dirent) => dirent.isDirectory())
+        .map((dirent) => {
             const normalizedTestName = dirent.name;
-            it(`test ${normalizedTestName}`, async function() {
+            it(`test ${normalizedTestName}`, async function () {
                 const fixtureDir = path.join(fixturesDir, normalizedTestName);
-                const actualFilePath = fs.readdirSync(fixtureDir).find(filePath => {
+                const actualFilePath = fs.readdirSync(fixtureDir).find((filePath) => {
                     return filePath.startsWith("input");
                 });
                 if (!actualFilePath) {

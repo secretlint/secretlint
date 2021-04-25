@@ -3,7 +3,7 @@ import {
     SecretLintCoreDescriptorRulePreset,
     SecretLintRuleContext,
     SecretLintRulePresetContext,
-    SecretLintSourceCode
+    SecretLintSourceCode,
 } from "@secretlint/types";
 import { PromiseEventEmitter } from "./helper/promise-event-emitter";
 import { SecretLintRule } from "./SecretLintRuleImpl";
@@ -20,14 +20,14 @@ export type RunningEvents = {
      */
     registerRule({
         descriptorRule,
-        context
+        context,
     }: {
         descriptorRule: SecretLintCoreDescriptorRule;
         context: SecretLintRuleContext;
     }): void;
     registerRulePreset({
         descriptorRulePreset,
-        context
+        context,
     }: {
         descriptorRulePreset: SecretLintCoreDescriptorRulePreset;
         context: SecretLintRulePresetContext;
@@ -43,7 +43,7 @@ export const createRunningEvents = (): RunningEvents => {
     return {
         collectAllowMessageIds(): AllowMessage[] {
             const allowMessageIds: AllowMessage[] = [];
-            rules.forEach(rule => {
+            rules.forEach((rule) => {
                 allowMessageIds.push(...rule.allowMessageIds());
             });
             return allowMessageIds;
@@ -57,7 +57,7 @@ export const createRunningEvents = (): RunningEvents => {
         },
         registerRule({
             descriptorRule,
-            context
+            context,
         }: {
             descriptorRule: SecretLintCoreDescriptorRule;
             context: SecretLintRuleContext;
@@ -72,7 +72,7 @@ Duplicated rule.id is something wrong in .secretlintrc.
             registerSet.add(descriptorRule.id);
             const rule = new SecretLintRule({
                 descriptorRule: descriptorRule,
-                context
+                context,
             });
             rules.push(rule);
             contextEvents.on(LINT_HANDLE, async ({ sourceCode }: { sourceCode: SecretLintSourceCode }) => {
@@ -81,7 +81,7 @@ Duplicated rule.id is something wrong in .secretlintrc.
                 // - file
                 secretLintProfiler.mark({
                     type: "@core>rule-handler::start",
-                    id: descriptorRule.rule.meta.id
+                    id: descriptorRule.rule.meta.id,
                 });
                 // if this rule support the content type
                 if (rule.supportSourceCode(sourceCode)) {
@@ -89,13 +89,13 @@ Duplicated rule.id is something wrong in .secretlintrc.
                 }
                 secretLintProfiler.mark({
                     type: "@core>rule-handler::end",
-                    id: descriptorRule.rule.meta.id
+                    id: descriptorRule.rule.meta.id,
                 });
             });
         },
         registerRulePreset({
             descriptorRulePreset,
-            context
+            context,
         }: {
             descriptorRulePreset: SecretLintCoreDescriptorRulePreset;
             context: SecretLintRulePresetContext;
@@ -107,6 +107,6 @@ Duplicated rule.id is something wrong in .secretlintrc.
         },
         isRegistered(ruleId: string): boolean {
             return registerSet.has(ruleId);
-        }
+        },
     };
 };

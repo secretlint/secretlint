@@ -13,11 +13,11 @@ if (rule.file) {
 // translate
 const messages = {
     key: {
-        en: (props: { k1: string }) => `${props.k1}`
-    }
+        en: (props: { k1: string }) => `${props.k1}`,
+    },
 };
 declare var createTranslator: SecretLintCreateRuleMessageTranslator<typeof messages>;
 const t = createTranslator(messages);
 t("key", {
-    k1: "str"
+    k1: "str",
 });

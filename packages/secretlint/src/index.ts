@@ -10,14 +10,14 @@ export type SecretLintOptions = {
 };
 export const runSecretLint = async ({
     cliOptions,
-    engineOptions
+    engineOptions,
 }: {
     cliOptions: SecretLintOptions;
     engineOptions: SecretLintEngineOptions;
 }): Promise<{ exitStatus: number; stdout: string | null; stderr: Error | null }> => {
     const { ok, items } = await searchFiles(cliOptions.filePathOrGlobList, {
         cwd: cliOptions.cwd,
-        ignoreFilePath: cliOptions.ignoreFilePath
+        ignoreFilePath: cliOptions.ignoreFilePath,
     });
     if (!ok) {
         throw new Error("Not found target files");
@@ -25,7 +25,7 @@ export const runSecretLint = async ({
     const engine = await createEngine(engineOptions);
     return engine
         .executeOnFiles({
-            filePathList: items
+            filePathList: items,
         })
         .then(({ ok, output }) => {
             // TODO: if has error, this should be stderr
@@ -36,20 +36,20 @@ export const runSecretLint = async ({
                 return {
                     exitStatus: ok ? 0 : 1,
                     stdout: null,
-                    stderr: null
+                    stderr: null,
                 };
             }
             return {
                 exitStatus: ok ? 0 : 1,
                 stdout: output,
-                stderr: null
+                stderr: null,
             };
         })
-        .catch(error => {
+        .catch((error) => {
             return {
                 exitStatus: 1,
                 stdout: null,
-                stderr: error
+                stderr: error,
             };
         });
 };

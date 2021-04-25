@@ -16,13 +16,13 @@ const detectContentType = (filePath: string, content: Buffer): SecretLintRawSour
     }
 };
 export const createRawSource = (filePath: string): Promise<SecretLintRawSource> => {
-    return readFile(filePath).then(content => {
+    return readFile(filePath).then((content) => {
         const contentType = detectContentType(filePath, content);
         return {
             filePath,
             content: content.toString(),
             ext: path.extname(filePath),
-            contentType
+            contentType,
         };
     });
 };

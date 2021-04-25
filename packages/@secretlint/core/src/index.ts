@@ -8,7 +8,7 @@ import {
     SecretLintCoreResultMessage,
     SecretLintRawSource,
     SecretLintRuleLocaleTag,
-    SecretLintSourceCode
+    SecretLintSourceCode,
 } from "@secretlint/types";
 import { SecretLintSourceCodeImpl } from "./SecretLintSourceCodeImpl";
 import { ContextEvents, createContextEvents, createRuleContext } from "./RuleContext";
@@ -38,7 +38,7 @@ export type SecretLintSourceOptions = {
 export const lintSource = ({ source, options }: SecretLintSourceOptions): Promise<SecretLintCoreResult> => {
     secretLintProfiler.mark({
         type: "@core>lint::start",
-        id: source.filePath
+        id: source.filePath,
     });
     debug(`source filePath: %O`, source.filePath);
     debug(`options: %O`, options);
@@ -49,10 +49,10 @@ export const lintSource = ({ source, options }: SecretLintSourceOptions): Promis
     const reportedMessages: SecretLintCoreResultMessage[] = [];
     const ignoredMessages: SecretLintCoreIgnoreMessage[] = [];
     // setup
-    contextEvents.onReport(message => {
+    contextEvents.onReport((message) => {
         reportedMessages.push(message);
     });
-    contextEvents.onIgnore(message => {
+    contextEvents.onIgnore((message) => {
         ignoredMessages.push(message);
     });
     // Create a SourceCode for linting
@@ -60,15 +60,15 @@ export const lintSource = ({ source, options }: SecretLintSourceOptions): Promis
         content: source.content,
         filePath: source.filePath,
         ext: source.ext || "",
-        contentType: source.contentType
+        contentType: source.contentType,
     });
     secretLintProfiler.mark({
-        type: "@core>setup-rules::start"
+        type: "@core>setup-rules::start",
     });
-    rules.forEach(rule => {
+    rules.forEach((rule) => {
         secretLintProfiler.mark({
             type: "@core>setup-rule::start",
-            id: rule.rule.meta.id
+            id: rule.rule.meta.id,
         });
         registerRule({
             sourceCode,
@@ -76,20 +76,20 @@ export const lintSource = ({ source, options }: SecretLintSourceOptions): Promis
             descriptorRule: rule,
             contextEvents,
             runningEvents,
-            locale
+            locale,
         });
         secretLintProfiler.mark({
             type: "@core>setup-rule::end",
-            id: rule.rule.meta.id
+            id: rule.rule.meta.id,
         });
     });
     secretLintProfiler.mark({
-        type: "@core>setup-rules::end"
+        type: "@core>setup-rules::end",
     });
     // start to run
     return runningEvents
         .runLint({
-            sourceCode
+            sourceCode,
         })
         .then(() => {
             return {
@@ -97,14 +97,14 @@ export const lintSource = ({ source, options }: SecretLintSourceOptions): Promis
                 messages: cleanupMessages({
                     reportedMessages,
                     ignoredMessages,
-                    allowMessageIds: runningEvents.collectAllowMessageIds()
-                })
+                    allowMessageIds: runningEvents.collectAllowMessageIds(),
+                }),
             };
         })
         .finally(() => {
             secretLintProfiler.mark({
                 type: "@core>lint::end",
-                id: source.filePath
+                id: source.filePath,
             });
         });
 };
@@ -127,7 +127,7 @@ const registerRule = ({
     descriptorRule,
     contextEvents,
     runningEvents,
-    locale
+    locale,
 }: {
     sourceCode: SecretLintSourceCode;
     config: SecretLintCoreDescriptor;
@@ -154,11 +154,11 @@ const registerRule = ({
             contextEvents: contextEvents,
             runningEvents: runningEvents,
             sharedOptions: sharedOptionsWithDefault,
-            locale: locale
+            locale: locale,
         });
         runningEvents.registerRulePreset({
             descriptorRulePreset: descriptorRule,
-            context
+            context,
         });
         return;
     } else if (isRule(descriptorRule)) {
@@ -169,11 +169,11 @@ const registerRule = ({
             sourceCode,
             contextEvents: contextEvents,
             sharedOptions: sharedOptionsWithDefault,
-            locale: locale
+            locale: locale,
         });
         runningEvents.registerRule({
             descriptorRule: descriptorRule,
-            context
+            context,
         });
         return;
     }

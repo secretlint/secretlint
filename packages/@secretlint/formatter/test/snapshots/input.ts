@@ -7,7 +7,7 @@ export const results: SecretLintCoreResult[] = [
         messages: [
             {
                 data: {
-                    ID: "SECRET"
+                    ID: "SECRET",
                 },
                 message: "warning found secret: SECRET",
                 messageId: "message-id",
@@ -15,19 +15,19 @@ export const results: SecretLintCoreResult[] = [
                 loc: {
                     start: {
                         line: 1,
-                        column: 8
+                        column: 8,
                     },
                     end: {
                         line: 1,
-                        column: 14
-                    }
+                        column: 14,
+                    },
                 },
                 ruleId: "example",
-                severity: "warning"
+                severity: "warning",
             },
             {
                 data: {
-                    ID: "SECRET"
+                    ID: "SECRET",
                 },
                 message: "error found secret: SECRET",
                 messageId: "message-id",
@@ -35,19 +35,19 @@ export const results: SecretLintCoreResult[] = [
                 loc: {
                     start: {
                         line: 1,
-                        column: 8
+                        column: 8,
                     },
                     end: {
                         line: 1,
-                        column: 14
-                    }
+                        column: 14,
+                    },
                 },
                 ruleId: "example",
-                severity: "error"
+                severity: "error",
             },
             {
                 data: {
-                    ID: "SECRET"
+                    ID: "SECRET",
                 },
                 message: "error found secret: SECRET",
                 messageId: "message-id",
@@ -55,21 +55,21 @@ export const results: SecretLintCoreResult[] = [
                 loc: {
                     start: {
                         line: 1,
-                        column: 8
+                        column: 8,
                     },
                     end: {
                         line: 1,
-                        column: 14
-                    }
+                        column: 14,
+                    },
                 },
                 ruleId: "example",
                 ruleParentId: "parent",
-                severity: "error"
-            }
-        ]
+                severity: "error",
+            },
+        ],
     },
     {
         filePath: path.join(__dirname, "input.no-secret.txt"),
-        messages: []
-    }
+        messages: [],
+    },
 ];

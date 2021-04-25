@@ -12,15 +12,15 @@ export const createMessageFromRange = (
         loc: {
             start: {
                 line: 1,
-                column: 0
+                column: 0,
             },
             end: {
                 line: 1,
-                column: 0
-            }
+                column: 0,
+            },
         },
         message: message,
-        messageId: message
+        messageId: message,
     };
 };
 export const createIgnoredMessageFromRange = (range: number[], targetRuleId = "*"): SecretLintCoreIgnoreMessage => {
@@ -31,13 +31,13 @@ export const createIgnoredMessageFromRange = (range: number[], targetRuleId = "*
         loc: {
             start: {
                 line: 1,
-                column: 0
+                column: 0,
             },
             end: {
                 line: 1,
-                column: 0
-            }
+                column: 0,
+            },
         },
-        message: "messages"
+        message: "messages",
     };
 };

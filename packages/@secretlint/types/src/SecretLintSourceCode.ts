@@ -1,7 +1,7 @@
 import {
     SecretLintSourceNodeLocation,
     SecretLintSourceNodePosition,
-    SecretLintSourceNodeRange
+    SecretLintSourceNodeRange,
 } from "./SecretLintSource";
 
 /**
