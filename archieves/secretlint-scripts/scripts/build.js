@@ -11,9 +11,9 @@ const child = spawn(tscCommand, {
 });
 child.stderr.pipe(process.stderr);
 child.stdout.pipe(process.stdout);
-child.on("error", function(error) {
+child.on("error", function (error) {
     console.error(error);
 });
-child.on("close", function(code) {
+child.on("close", function (code) {
     process.exit(code);
 });
