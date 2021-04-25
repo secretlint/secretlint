@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1617660091992,
+  "lastUpdate": 1619352299145,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -7826,6 +7826,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.7,
             "range": "±3.74%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "3d6e6bc6d9a9a4e0e6b690e7ec87b98a8c4b2781",
+          "message": "chore(deps): update all typescript (#157)\n\n* chore(dep): update devDeps\r\n\r\n* chore(deps): update all typescript\r\n\r\n* fix(config-validator): fix validator schema\r\n\r\n* test(formatter): fix escaped message\r\n\r\n* style: apply prettier\r\n\r\n* chore: rename to .githooks",
+          "timestamp": "2021-04-25T21:01:47+09:00",
+          "tree_id": "6f4e747426b03e6c9cf344fcc5c18525ee42103a",
+          "url": "https://github.com/secretlint/secretlint/commit/3d6e6bc6d9a9a4e0e6b690e7ec87b98a8c4b2781"
+        },
+        "date": 1619352294733,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.76,
+            "range": "±1.59%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.63,
+            "range": "±2.42%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
