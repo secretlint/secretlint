@@ -15,7 +15,7 @@ suite
             cwd: __dirname
         });
     })
-    .on("cycle", event => {
+    .on("cycle", (event) => {
         console.log(String(event.target));
     })
     .run();

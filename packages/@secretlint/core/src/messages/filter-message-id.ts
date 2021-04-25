@@ -9,11 +9,11 @@ export const filterByAllowMessageIds = (
     allowMessageIds: AllowMessage[]
 ): SecretLintCoreResultMessage[] => {
     const disabledSet = new Set(
-        allowMessageIds.map(allowMessage => {
+        allowMessageIds.map((allowMessage) => {
             return `${allowMessage.ruleId}--${allowMessage.messageId}`;
         })
     );
-    return messages.filter(message => {
+    return messages.filter((message) => {
         return !disabledSet.has(`${message.ruleId}--${message.messageId}`);
     });
 };

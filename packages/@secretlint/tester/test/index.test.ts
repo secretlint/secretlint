@@ -9,14 +9,14 @@ describe("@secretlint/tester", () => {
                 {
                     id: "secretlint-rule-example",
                     rule,
-                    options: {}
-                }
-            ]
+                    options: {},
+                },
+            ],
         },
         updateSnapshot: !!process.env.UPDATE_SNAPSHOT,
-        snapshotDirectory: path.join(__dirname, "fixtures/snapshots")
+        snapshotDirectory: path.join(__dirname, "fixtures/snapshots"),
     }).forEach((name, test) => {
-        it(name, async function() {
+        it(name, async function () {
             const status = await test();
             if (status === "skip") {
                 this.skip();

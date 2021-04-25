@@ -3,7 +3,7 @@
 import { TextlintResult } from "@textlint/types";
 import {
     createFormatter as textlintCreateFormatter,
-    getFormatterList as textlintGetFormatterList
+    getFormatterList as textlintGetFormatterList,
 } from "@textlint/linter-formatter";
 import { SecretLintCoreResult } from "@secretlint/types";
 import terminalLink from "terminal-link";
@@ -38,7 +38,7 @@ const convertSecretLintResultToTextlintResult = (
 ): TextlintResult => {
     return {
         filePath: secretLintCoreResult.filePath,
-        messages: secretLintCoreResult.messages.map(message => {
+        messages: secretLintCoreResult.messages.map((message) => {
             const severityLevel =
                 message.severity === "info"
                     ? 0
@@ -54,7 +54,7 @@ const convertSecretLintResultToTextlintResult = (
                     ? terminalLink(message.messageId, message.docsUrl, {
                           fallback: (text, _url) => {
                               return text;
-                          }
+                          },
                       })
                     : message.messageId;
             return {
@@ -71,9 +71,9 @@ const convertSecretLintResultToTextlintResult = (
                 data: message.data,
                 // NO NEED - DUMMY DATA
                 fix: undefined,
-                type: "lint"
+                type: "lint",
             };
-        })
+        }),
     };
 };
 
@@ -89,13 +89,13 @@ export function createFormatter(formatterConfig: SecretLintFormatterConfig) {
     return {
         format: (results: SecretLintCoreResult[]) => {
             return format(
-                results.map(result =>
+                results.map((result) =>
                     convertSecretLintResultToTextlintResult(result, {
-                        enableTerminalLink
+                        enableTerminalLink,
                     })
                 )
             );
-        }
+        },
     };
 }
 

@@ -10,7 +10,7 @@ import {
     SecretLintRuleLocaleTag,
     SecretLintRuleLocalizeMessages,
     SecretLintRuleSeverityLevel,
-    SecretLintSourceCode
+    SecretLintSourceCode,
 } from "@secretlint/types";
 import { createTranslator } from "./helper/SecretLintRuleMessageTranslator";
 
@@ -49,7 +49,7 @@ export const createContextEvents = (): ContextEvents => {
             return () => {
                 contextEvents.off(IGNORE_SYMBOL, listener);
             };
-        }
+        },
     };
 };
 
@@ -74,13 +74,13 @@ export const createRuleContext = ({
     sourceCode,
     contextEvents,
     sharedOptions,
-    locale
+    locale,
 }: CreateRuleContextOptions): SecretLintRuleContext => {
     return {
         sharedOptions: sharedOptions,
         createTranslator: <T extends SecretLintRuleLocalizeMessages>(messages: T) => {
             return createTranslator(messages, {
-                defaultLocale: locale
+                defaultLocale: locale,
             });
         },
         ignore(descriptor: SecretLintCoreIgnoreDescriptor): void {
@@ -91,7 +91,7 @@ export const createRuleContext = ({
                 range: descriptor.range,
                 targetRuleId: descriptor.targetRuleId,
                 loc: sourceCode.rangeToLocation(descriptor.range),
-                message: message
+                message: message,
             });
         },
         report(descriptor: SecretLintCoreReportDescriptor): void {
@@ -108,7 +108,7 @@ export const createRuleContext = ({
                     message,
                     messageId,
                     docsUrl: meta.docs?.url ? `${meta.docs.url}#${messageId}` : undefined,
-                    data
+                    data,
                 });
             } else {
                 contextEvents.report({
@@ -119,9 +119,9 @@ export const createRuleContext = ({
                     message,
                     messageId,
                     docsUrl: meta.docs?.url ? `${meta.docs.url}#${messageId}` : undefined,
-                    data
+                    data,
                 });
             }
-        }
+        },
     };
 };

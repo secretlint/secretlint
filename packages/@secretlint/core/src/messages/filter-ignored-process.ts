@@ -26,8 +26,8 @@ export function filterIgnoredMessages(options: filterIgnoredMessagesOptions): Se
     const reportedMessages = options.reportedMessages;
     const ignoreMessages = options.ignoredMessages;
     // if match, reject the message
-    return reportedMessages.filter(message => {
-        return !ignoreMessages.some(ignoreMessage => {
+    return reportedMessages.filter((message) => {
+        return !ignoreMessages.some((ignoreMessage) => {
             const isInIgnoringRange =
                 isContainedRange(message.range[0], ignoreMessage.range) &&
                 isContainedRange(message.range[1], ignoreMessage.range);

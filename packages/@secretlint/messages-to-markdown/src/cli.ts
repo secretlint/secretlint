@@ -16,11 +16,11 @@ export const cli = meow(
         flags: {
             headerLevel: {
                 type: "number",
-                default: 3
-            }
+                default: 3,
+            },
         },
         autoHelp: true,
-        autoVersion: true
+        autoVersion: true,
     }
 );
 
@@ -31,7 +31,7 @@ export const run = (input = cli.input, flags = cli.flags) => {
             throw new Error("This rule does not export const messages = { ... }");
         }
         return messagesToMarkdown(index.messages, {
-            headerLevel: Number(flags.headerLevel)
+            headerLevel: Number(flags.headerLevel),
         });
     } catch (error) {
         console.error(new Error("Can not load rule file"));

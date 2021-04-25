@@ -17,7 +17,7 @@ export const cli = meow(
     Options
       --init             setup config file. Create .secretlintrc.json file from your package.json
       --format           [String] formatter name. Default: "stylish". Available Formatter: ${getFormatterList()
-          .map(item => item.name)
+          .map((item) => item.name)
           .join(", ")}
       --output           [path:String] output file path that is written of reported result.
       --no-color         disable ANSI-color of output.
@@ -41,31 +41,31 @@ export const cli = meow(
     {
         flags: {
             init: {
-                type: "boolean"
+                type: "boolean",
             },
             format: {
                 type: "string",
-                default: "stylish"
+                default: "stylish",
             },
             output: {
-                type: "string"
+                type: "string",
             },
             secretlintrc: {
-                type: "string"
+                type: "string",
             },
             secretlintrcJSON: {
-                type: "string"
+                type: "string",
             },
             secretlintignore: {
                 type: "string",
-                default: ".secretlintignore"
+                default: ".secretlintignore",
             },
             /**
              * CLI enable ANSI-color of output by default
              */
             color: {
                 type: "boolean",
-                default: true
+                default: true,
             },
             /**
              * CLI enable terminalLink by default.
@@ -74,26 +74,26 @@ export const cli = meow(
              */
             terminalLink: {
                 type: "boolean",
-                default: true
+                default: true,
             },
             profile: {
-                type: "boolean"
+                type: "boolean",
             },
             locale: {
-                type: "string"
+                type: "string",
             },
             // DEBUG option
             cwd: {
                 type: "string",
-                default: process.cwd()
+                default: process.cwd(),
             },
             debug: {
                 type: "boolean",
-                default: false
-            }
+                default: false,
+            },
         },
         autoHelp: true,
-        autoVersion: true
+        autoVersion: true,
     }
 );
 
@@ -102,7 +102,7 @@ export const run = (
     flags = cli.flags
 ): Promise<{ exitStatus: number; stdout: string | null; stderr: Error | null }> => {
     secretLintProfiler.mark({
-        type: "secretlint>cli::start"
+        type: "secretlint>cli::start",
     });
     if (flags.debug) {
         const debug = require("debug");
@@ -113,7 +113,7 @@ export const run = (
     debug("flags: %O", flags);
     if (flags.init) {
         return runConfigCreator({
-            cwd
+            cwd,
         });
     }
     return runSecretLint({
@@ -121,7 +121,7 @@ export const run = (
             cwd,
             filePathOrGlobList: input,
             outputFilePath: flags.output,
-            ignoreFilePath: flags.secretlintignore
+            ignoreFilePath: flags.secretlintignore,
         },
         engineOptions: flags.secretlintrcJSON
             ? {
@@ -131,7 +131,7 @@ export const run = (
                   formatter: flags.format,
                   color: flags.color,
                   terminalLink: flags.terminalLink,
-                  locale: flags.locale
+                  locale: flags.locale,
               }
             : {
                   configFilePath: flags.secretlintrc,
@@ -139,11 +139,11 @@ export const run = (
                   formatter: flags.format,
                   color: flags.color,
                   terminalLink: flags.terminalLink,
-                  locale: flags.locale
-              }
+                  locale: flags.locale,
+              },
     }).finally(async () => {
         secretLintProfiler.mark({
-            type: "secretlint>cli::end"
+            type: "secretlint>cli::end",
         });
         if (flags.profile) {
             const measures = await secretLintProfiler.getMeasures();
@@ -151,7 +151,7 @@ export const run = (
             if (flags.format === "json") {
                 console.log(JSON.stringify(measures, null, 4));
             } else {
-                measures.forEach(entry => {
+                measures.forEach((entry) => {
                     const takenMs = entry.duration;
                     const takenRoundMs = Math.round((takenMs + Number.EPSILON) * 100) / 100;
                     console.log(`${entry.name.replace(cwd, "<cwd>")} - ${takenRoundMs}ms`);

@@ -10,14 +10,14 @@ describe("Snapshot Testing", () => {
                     id: require("../package.json").name,
                     rule,
                     rules: [],
-                    options: {}
-                }
-            ]
+                    options: {},
+                },
+            ],
         },
         updateSnapshot: !!process.env.UPDATE_SNAPSHOT,
-        snapshotDirectory: path.join(__dirname, "snapshots")
+        snapshotDirectory: path.join(__dirname, "snapshots"),
     }).forEach((name, test) => {
-        it(name, async function() {
+        it(name, async function () {
             const status = await test();
             if (status === "skip") {
                 this.skip();

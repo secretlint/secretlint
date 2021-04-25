@@ -6,13 +6,13 @@ import assert from "assert";
 const normalizeFilePath = (content: string): string => {
     return content.replace(__dirname, "[TEST_DIR]");
 };
-describe("createEngine", function() {
+describe("createEngine", function () {
     it("should throw rejected promise if the config file is not found", async () => {
         return assert.rejects(
             createEngine({
                 color: false,
                 configFilePath: "/not/found/config",
-                formatter: "stylish"
+                formatter: "stylish",
             }),
             /secretlint config is not found/
         );
@@ -21,7 +21,7 @@ describe("createEngine", function() {
         const engine = await createEngine({
             color: false,
             cwd: path.join(__dirname, "fixtures/valid-config"),
-            formatter: "stylish"
+            formatter: "stylish",
         });
         const result = await engine.executeOnFiles({ filePathList: [path.join(__dirname, "fixtures/SECRET.txt")] });
         assert.strictEqual(result.ok, false);
@@ -40,13 +40,13 @@ describe("createEngine", function() {
         const engine = await createEngine({
             color: false,
             cwd: path.join(__dirname, "fixtures/valid-config"),
-            formatter: "stylish"
+            formatter: "stylish",
         });
         const filePath = path.join(__dirname, "fixtures/SECRET.txt");
         const content = fs.readFileSync(filePath, "utf-8");
         const result = await engine.executeOnContent({
             content,
-            filePath
+            filePath,
         });
         assert.strictEqual(result.ok, false);
         const normalizedOutput = normalizeFilePath(result.output);

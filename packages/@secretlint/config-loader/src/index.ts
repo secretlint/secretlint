@@ -4,7 +4,7 @@ import {
     SecretLintCoreDescriptor,
     SecretLintCoreDescriptorRule,
     SecretLintCoreDescriptorUnionRule,
-    SecretLintUnionRuleCreator
+    SecretLintUnionRuleCreator,
 } from "@secretlint/types";
 import { secretLintProfiler } from "@secretlint/profiler";
 import { SecretLintModuleResolver } from "./SecretLintModuleResolver";
@@ -97,23 +97,23 @@ export const loadPackagesFromRawConfig = (
     if (!resultValidateRawConfig.ok) {
         return {
             ok: false,
-            errors: [resultValidateRawConfig.error]
+            errors: [resultValidateRawConfig.error],
         };
     }
     secretLintProfiler.mark({
-        type: "@config-loader>resolve-modules::start"
+        type: "@config-loader>resolve-modules::start",
     });
     // Search secretlint's module
     const moduleResolver = new SecretLintModuleResolver({
-        baseDirectory: options.node_moduleDir
+        baseDirectory: options.node_moduleDir,
     });
     const errors: Error[] = [];
     const rules: SecretLintCoreDescriptorUnionRule[] = [];
-    options.rawConfig.rules.forEach(configDescriptorRule => {
+    options.rawConfig.rules.forEach((configDescriptorRule) => {
         try {
             secretLintProfiler.mark({
                 type: "@config-loader>resolve-module::start",
-                id: configDescriptorRule.id
+                id: configDescriptorRule.id,
             });
             const replacedDefinition =
                 options.testReplaceDefinitions &&
@@ -126,7 +126,9 @@ export const loadPackagesFromRawConfig = (
                 : moduleInterop(require(moduleResolver.resolveRulePackageName(configDescriptorRule.id)));
             const secretLintConfigDescriptorRules: SecretLintCoreDescriptorRule[] | undefined =
                 "rules" in configDescriptorRule && Array.isArray(configDescriptorRule.rules)
-                    ? (configDescriptorRule.rules.filter(rule => rule !== undefined) as SecretLintCoreDescriptorRule[])
+                    ? (configDescriptorRule.rules.filter(
+                          (rule) => rule !== undefined
+                      ) as SecretLintCoreDescriptorRule[])
                     : undefined;
             rules.push({
                 id: configDescriptorRule.id,
@@ -136,28 +138,28 @@ export const loadPackagesFromRawConfig = (
                 severity: "severity" in configDescriptorRule ? configDescriptorRule.severity : undefined,
                 disabled: configDescriptorRule.disabled,
                 allowMessageIds:
-                    "allowMessageIds" in configDescriptorRule ? configDescriptorRule.allowMessageIds : undefined
+                    "allowMessageIds" in configDescriptorRule ? configDescriptorRule.allowMessageIds : undefined,
             });
             secretLintProfiler.mark({
                 type: "@config-loader>resolve-module::end",
-                id: configDescriptorRule.id
+                id: configDescriptorRule.id,
             });
         } catch (error) {
             errors.push(error);
         }
     });
     secretLintProfiler.mark({
-        type: "@config-loader>resolve-modules::end"
+        type: "@config-loader>resolve-modules::end",
     });
     if (errors.length > 0) {
         return {
             ok: false,
-            errors
+            errors,
         };
     }
     const loadedConfig: SecretLintCoreDescriptor = {
         sharedOptions: options.rawConfig.sharedOptions,
-        rules
+        rules,
     };
     // Finally, validate loadedConfig with validator
     // This validator require actual `rule` creator for `disabledMessage` option.
@@ -165,12 +167,12 @@ export const loadPackagesFromRawConfig = (
     if (!resultValidateConfig.ok) {
         return {
             ok: false,
-            errors: [resultValidateConfig.error]
+            errors: [resultValidateConfig.error],
         };
     }
     return {
         ok: true,
-        config: loadedConfig
+        config: loadedConfig,
     };
 };
 /**
@@ -179,40 +181,40 @@ export const loadPackagesFromRawConfig = (
  */
 export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintConfigLoaderResult => {
     secretLintProfiler.mark({
-        type: "@config-loader>load-config-file::start"
+        type: "@config-loader>load-config-file::start",
     });
     const rawResult = loadRawConfig(options);
     secretLintProfiler.mark({
-        type: "@config-loader>load-config-file::end"
+        type: "@config-loader>load-config-file::end",
     });
     if (!rawResult.ok) {
         return {
             ok: false,
-            errors: rawResult.errors
+            errors: rawResult.errors,
         };
     }
     secretLintProfiler.mark({
-        type: "@config-loader>load-packages::start"
+        type: "@config-loader>load-packages::start",
     });
     const result = loadPackagesFromRawConfig({
         rawConfig: rawResult.rawConfig,
         node_moduleDir: options.node_moduleDir,
-        testReplaceDefinitions: options.testReplaceDefinitions
+        testReplaceDefinitions: options.testReplaceDefinitions,
     });
     secretLintProfiler.mark({
-        type: "@config-loader>load-packages::end"
+        type: "@config-loader>load-packages::end",
     });
     if (!result.ok) {
         return {
             ok: false,
             configFilePath: rawResult.configFilePath,
-            errors: result.errors
+            errors: result.errors,
         };
     }
     return {
         ok: true,
         config: result.config,
-        configFilePath: rawResult.configFilePath
+        configFilePath: rawResult.configFilePath,
     };
 };
 /**
@@ -226,8 +228,8 @@ export const loadRawConfig = (options: SecretLintConfigLoaderOptions): SecretLin
             cwd: options.cwd,
             configFileName: options.configFilePath,
             packageJSON: {
-                fieldName: "secretlint"
-            }
+                fieldName: "secretlint",
+            },
         });
         // Not Found
         if (!results) {
@@ -237,19 +239,19 @@ export const loadRawConfig = (options: SecretLintConfigLoaderOptions): SecretLin
                     new Error(`secretlint config is not found
                 
 Secrelint require .secretlintrc config file.
-The config file define the use of rules.`)
-                ]
+The config file define the use of rules.`),
+                ],
             };
         }
         return {
             ok: true,
             rawConfig: results.config,
-            configFilePath: results.filePath
+            configFilePath: results.filePath,
         };
     } catch (error) {
         return {
             ok: false,
-            errors: [error]
+            errors: [error],
         };
     }
 };

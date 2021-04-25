@@ -4,7 +4,7 @@ import {
     SecretLintSourceCode,
     SecretLintSourceNodeLocation,
     SecretLintSourceNodePosition,
-    SecretLintSourceNodeRange
+    SecretLintSourceNodeRange,
 } from "@secretlint/types";
 
 /**
@@ -22,7 +22,7 @@ export class SecretLintSourceCodeImpl implements SecretLintSourceCode {
         content = "",
         ext,
         filePath,
-        contentType
+        contentType,
     }: {
         content: string;
         ext: string;
@@ -64,12 +64,12 @@ export class SecretLintSourceCodeImpl implements SecretLintSourceCode {
         return {
             start: {
                 line: location.start.line,
-                column: location.start.column
+                column: location.start.column,
             },
             end: {
                 line: location.end.line,
-                column: location.end.column
-            }
+                column: location.end.column,
+            },
         };
     }
 
@@ -90,7 +90,7 @@ export class SecretLintSourceCodeImpl implements SecretLintSourceCode {
         // Note: unwrap class instance to get plain object
         return {
             line: position.line,
-            column: position.column
+            column: position.column,
         };
     }
 }

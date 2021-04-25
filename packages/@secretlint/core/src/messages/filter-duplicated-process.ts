@@ -22,7 +22,7 @@ const isEqualMessage = (aMessage: SecretLintAllMessages, bMessage: SecretLintAll
 export function filterDuplicatedMessages(messages: SecretLintAllMessages[] = []) {
     return messages.filter((message, index) => {
         const restMessages = messages.slice(index + 1);
-        return !restMessages.some(restMessage => {
+        return !restMessages.some((restMessage) => {
             return isEqualMessage(message, restMessage);
         });
     });

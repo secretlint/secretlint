@@ -3,7 +3,7 @@ import {
     SecretLintRuleIgnoreDescriptor,
     SecretLintRuleReportDescriptor,
     SecretLintRuleCreator,
-    SecretLintRuleCreatorOptions
+    SecretLintRuleCreatorOptions,
 } from "./SecretLintRule";
 import { SecretLintSourceNodeLocation } from "./SecretLintSource";
 import { SecretLintRulePresetCreator, SecretLintRulePresetCreatorOptions } from "./SecretLintRulePreset";

@@ -8,10 +8,10 @@ const getSecretLintPackageNames = (packageJSON: any): string[] => {
     const devDependencies = packageJSON.devDependencies || {};
     const mergedDependencies = {
         ...dependencies,
-        ...devDependencies
+        ...devDependencies,
     };
     const pkgNames = Object.keys(mergedDependencies);
-    return pkgNames.filter(pkgName => {
+    return pkgNames.filter((pkgName) => {
         // secretlint-rule- or @scope/secretlint-rule
         return pkgName.startsWith("secretlint-rule-") || pkgName.includes("/secretlint-rule-");
     });
@@ -22,11 +22,11 @@ const getSecretLintPackageNames = (packageJSON: any): string[] => {
  */
 export const createConfigDescriptor = ({ ruleNames }: { ruleNames: string[] }): SecretLintConfigDescriptor => {
     return {
-        rules: ruleNames.map(name => {
+        rules: ruleNames.map((name) => {
             return {
-                id: name
+                id: name,
             };
-        })
+        }),
     };
 };
 

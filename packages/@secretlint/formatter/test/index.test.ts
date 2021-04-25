@@ -10,15 +10,15 @@ const snapshotReplace = (value: string) => {
     return value.replace(new RegExp(escapeStringRegexp(snapshotsDir), "g"), "[SNAPSHOT]");
 };
 
-describe("@secretlint/formatter", function() {
+describe("@secretlint/formatter", function () {
     const formatters = getFormatterList();
-    formatters.forEach(formatter => {
+    formatters.forEach((formatter) => {
         const formatterName = formatter.name;
-        it(`test ${formatterName}`, async function() {
+        it(`test ${formatterName}`, async function () {
             const fixtureDir = snapshotsDir;
             const formatter = createFormatter({
                 color: false,
-                formatterName: formatterName
+                formatterName: formatterName,
             });
             const actual = snapshotReplace(formatter.format(results));
             const expectedFilePath = path.join(fixtureDir, `output.${formatterName}.txt`);

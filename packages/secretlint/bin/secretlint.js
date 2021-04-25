@@ -11,7 +11,7 @@ require("../lib/cli")
             }
             process.exit(exitStatus);
         },
-        error => {
+        (error) => {
             console.error(error);
             process.exit(1);
         }

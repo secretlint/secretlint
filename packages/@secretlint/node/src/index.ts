@@ -6,7 +6,7 @@ import {
     SecretLintConfigDescriptor,
     SecretLintCoreDescriptor,
     SecretLintCoreResult,
-    SecretLintRuleLocaleTag
+    SecretLintRuleLocaleTag,
 } from "@secretlint/types";
 import os from "os";
 import path from "path";
@@ -65,8 +65,8 @@ const lintFile = async (filePath: string, config: SecretLintCoreDescriptor, opti
         source: rawSource,
         options: {
             locale: options.locale,
-            config: config
-        }
+            config: config,
+        },
     });
 };
 
@@ -77,7 +77,7 @@ const executeOnContent = async ({
     content,
     filePath,
     config,
-    options
+    options,
 }: {
     content: string;
     filePath: string;
@@ -91,36 +91,36 @@ const executeOnContent = async ({
             filePath: filePath,
             content: content,
             ext: path.extname(filePath),
-            contentType: "text"
+            contentType: "text",
         },
         options: {
             locale: options.locale,
-            config
-        }
+            config,
+        },
     });
     debug("executeOnContent result: %o", result);
     secretLintProfiler.mark({
-        type: "@node>format::start"
+        type: "@node>format::start",
     });
     const formatter = createFormatter({
         color: options.color ?? true,
         formatterName: options.formatter,
-        terminalLink: options.terminalLink ?? false
+        terminalLink: options.terminalLink ?? false,
     });
     const output = formatter.format([result]);
     secretLintProfiler.mark({
-        type: "@node>format::end"
+        type: "@node>format::end",
     });
     return {
         ok: !hasErrorMessage(result),
-        output: output
+        output: output,
     };
 };
 
 const executeOnFiles = async ({
     filePathList,
     config,
-    options
+    options,
 }: {
     filePathList: string[];
     config: SecretLintCoreDescriptor;
@@ -135,27 +135,27 @@ const executeOnFiles = async ({
     const results = await pMap(filePathList, mapper, {
         // Avoid: EMFILE: too many open files, uv_cwd
         // https://github.com/secretlint/secretlint/issues/72
-        concurrency: os.cpus().length
+        concurrency: os.cpus().length,
     });
     debug("executeOnFiles result counts: %s", results.length);
     secretLintProfiler.mark({
-        type: "@node>format::start"
+        type: "@node>format::start",
     });
     const formatter = createFormatter({
         color: options.color ?? true,
         formatterName: options.formatter,
-        terminalLink: options.terminalLink ?? false
+        terminalLink: options.terminalLink ?? false,
     });
     const output = formatter.format(results);
     secretLintProfiler.mark({
-        type: "@node>format::end"
+        type: "@node>format::end",
     });
-    const hasErrorAtLeastOne = results.some(result => {
+    const hasErrorAtLeastOne = results.some((result) => {
         return hasErrorMessage(result);
     });
     return {
         ok: !hasErrorAtLeastOne,
-        output: output
+        output: output,
     };
 };
 
@@ -166,27 +166,27 @@ const executeOnFiles = async ({
  */
 export const createEngine = async (options: SecretLintEngineOptions) => {
     secretLintProfiler.mark({
-        type: "@node>load-config::start"
+        type: "@node>load-config::start",
     });
     const loadedResult = (() => {
         if (isConfigFileJSON(options)) {
             debug("Load ConfigFileJSON: %s", options.configFileJSON);
             return loadPackagesFromRawConfig({
-                rawConfig: options.configFileJSON
+                rawConfig: options.configFileJSON,
             });
         }
         const loadConfigResult = loadConfig({
             cwd: options.cwd,
-            configFilePath: options.configFilePath
+            configFilePath: options.configFilePath,
         });
         debug("Loaded ConfigFilePath: %s", loadConfigResult.configFilePath);
         return loadConfigResult;
     })();
     secretLintProfiler.mark({
-        type: "@node>load-config::end"
+        type: "@node>load-config::end",
     });
     if (!loadedResult.ok) {
-        throw new Error(loadedResult.errors.map(error => error.stack).join("\n\n"));
+        throw new Error(loadedResult.errors.map((error) => error.stack).join("\n\n"));
     }
     debug("Config: %O", loadedResult.config);
     return {
@@ -199,16 +199,16 @@ export const createEngine = async (options: SecretLintEngineOptions) => {
             debug("executeOnContent content: %s", content);
             debug("executeOnContent filePath: %s", filePath);
             secretLintProfiler.mark({
-                type: "@node>execute::start"
+                type: "@node>execute::start",
             });
             return executeOnContent({
                 content,
                 filePath,
                 config: loadedResult.config,
-                options: options
+                options: options,
             }).finally(() => {
                 secretLintProfiler.mark({
-                    type: "@node>execute::end"
+                    type: "@node>execute::end",
                 });
             });
         },
@@ -219,17 +219,17 @@ export const createEngine = async (options: SecretLintEngineOptions) => {
         executeOnFiles: ({ filePathList }: { filePathList: string[] }) => {
             debug("executeOnFiles file counts: %s", filePathList.length);
             secretLintProfiler.mark({
-                type: "@node>execute::start"
+                type: "@node>execute::start",
             });
             return executeOnFiles({
                 filePathList,
                 config: loadedResult.config,
-                options: options
+                options: options,
             }).finally(() => {
                 secretLintProfiler.mark({
-                    type: "@node>execute::end"
+                    type: "@node>execute::end",
                 });
             });
-        }
+        },
     };
 };

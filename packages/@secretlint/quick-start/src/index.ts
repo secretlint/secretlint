@@ -5,7 +5,7 @@ import { cli, run } from "secretlint/lib/cli";
 const defaultSecretlintRc = path.join(__dirname, "../config/.secretlintrc.json");
 const flags: typeof cli.flags = {
     ...cli.flags,
-    secretlintrc: cli.flags.secretlintrc ?? defaultSecretlintRc
+    secretlintrc: cli.flags.secretlintrc ?? defaultSecretlintRc,
 };
 // Entry Point
 run(cli.input, flags).then(
@@ -18,7 +18,7 @@ run(cli.input, flags).then(
         }
         process.exit(exitStatus);
     },
-    error => {
+    (error) => {
         console.error(error);
         process.exit(1);
     }

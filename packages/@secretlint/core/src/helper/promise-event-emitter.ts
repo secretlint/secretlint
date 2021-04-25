@@ -23,7 +23,7 @@ export class PromiseEventEmitter {
     emit(event: string | symbol, ...args: Array<any>): Promise<Array<void>> {
         const promises: Array<Promise<void>> = [];
 
-        this.events.listeners(event).forEach(listener => {
+        this.events.listeners(event).forEach((listener) => {
             promises.push(listener(...args));
         });
 
