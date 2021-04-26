@@ -207,6 +207,7 @@ Secretlint rules has been implemented as separated modules.
 - [@secretlint/secretlint-rule-no-k8s-kind-secret](./packages/@secretlint/secretlint-rule-no-k8s-kind-secret)
 - [@secretlint/secretlint-rule-pattern](./packages/@secretlint/secretlint-rule-pattern)
 - [@secretlint/secretlint-rule-no-homedir](./packages/@secretlint/secretlint-rule-no-homedir)
+- [@secretlint/secretlint-rule-no-dotenv](./packages/%40secretlint/secretlint-rule-no-dotenv)
 
 Also, Secretlint provide rule preset that includes recommened rule set.
 
