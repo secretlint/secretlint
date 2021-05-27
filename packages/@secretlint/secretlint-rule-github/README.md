@@ -68,7 +68,7 @@ For bugs and feature requests, [please create an issue](https://github.com/secre
 ## Author
 
 - [github/azu](https://github.com/azu)
-- [twitter/azure](https://twitter.com/azu_re)
+- [twitter/azu_re](https://twitter.com/azu_re)
 
 ## License
 
