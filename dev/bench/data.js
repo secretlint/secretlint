@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1621731555713,
+  "lastUpdate": 1622094127535,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -7940,6 +7940,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.6,
             "range": "±1.23%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e4294f09d9faf8d598d369837b152694be7ca3a7",
+          "message": "feat: implement @secretlint/secretlint-rule-github (#160)\n\n* feat: implement @secretlint/secretlint-rule-github\r\n\r\nsupport new GitHub Token format\r\n\r\n* chore: fix\r\n\r\n* chore: fix\r\n\r\n* chore: fix\r\n\r\n* chore: fix",
+          "timestamp": "2021-05-27T14:39:23+09:00",
+          "tree_id": "69ae40b57d23ce7397c561f401828e86e5ad69a3",
+          "url": "https://github.com/secretlint/secretlint/commit/e4294f09d9faf8d598d369837b152694be7ca3a7"
+        },
+        "date": 1622094126697,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.91,
+            "range": "±1.41%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.69,
+            "range": "±0.75%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
