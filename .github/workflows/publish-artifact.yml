@@ -49,14 +49,14 @@ jobs:
       - uses: actions/checkout@v2
       - name: "Set TAG_NAME=tags"
         run: |
-          echo "::set-env name=TAG_NAME::v${{ github.event.client_payload.version }}"
-          echo "::set-env name=SECRETLINT_VERSION::${{ github.event.client_payload.version }}"
+          echo "TAG_NAME=v${{ github.event.client_payload.version }}" >> $GITHUB_ENV
+          echo "SECRETLINT_VERSION=${{ github.event.client_payload.version }}" >> $GITHUB_ENV
       - name: Set HUB_TAG
         run: |
-          echo "::set-env name=PKG_TAG::${DOCKER_BASE_NAME}:${TAG_NAME}"
-          echo "::set-env name=PKG_LATEST_TAG::${DOCKER_BASE_NAME}:latest"
-          echo "::set-env name=HUB_TAG::${DOCKER_HUB_BASE_NAME}:${TAG_NAME}"
-          echo "::set-env name=HUB_LATEST_TAG::${DOCKER_HUB_BASE_NAME}:latest"
+          echo "PKG_TAG=${DOCKER_BASE_NAME}:${TAG_NAME}" >> $GITHUB_ENV
+          echo "PKG_LATEST_TAG=${DOCKER_BASE_NAME}:latest" >> $GITHUB_ENV
+          echo "HUB_TAG=${DOCKER_HUB_BASE_NAME}:${TAG_NAME}" >> $GITHUB_ENV
+          echo "HUB_LATEST_TAG=${DOCKER_HUB_BASE_NAME}:latest" >> $GITHUB_ENV
       - name: Build image
         run: |
           docker build . -t "${PKG_TAG}" --build-arg SECRETLINT_VERSION=${SECRETLINT_VERSION}
