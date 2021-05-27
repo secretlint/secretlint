@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/secretlint/secretlint/compare/v2.1.1...v2.2.0) (2021-05-27)
+
+
+### Bug Fixes
+
+* **docker:** fix invalid label key ([#156](https://github.com/secretlint/secretlint/issues/156)) ([c0da8db](https://github.com/secretlint/secretlint/commit/c0da8dbcd16063f08a7b8b319f4a7b62b90ce6de))
+
+
+### Features
+
+* implement @secretlint/secretlint-rule-github ([#160](https://github.com/secretlint/secretlint/issues/160)) ([e4294f0](https://github.com/secretlint/secretlint/commit/e4294f09d9faf8d598d369837b152694be7ca3a7))
+
+
+
+
+
 ## [2.1.1](https://github.com/secretlint/secretlint/compare/v2.1.0...v2.1.1) (2020-11-04)
 
 **Note:** Version bump only for package root
