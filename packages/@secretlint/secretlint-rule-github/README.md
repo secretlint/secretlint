@@ -67,9 +67,9 @@ For bugs and feature requests, [please create an issue](https://github.com/secre
 
 ## Author
 
-- [github/mtsalenc](https://github.com/mtsalenc)
-- [twitter/mtsalenc](https://twitter.com/mtsalenc)
+- [github/azu](https://github.com/azu)
+- [twitter/azure](https://twitter.com/azu_re)
 
 ## License
 
-MIT © mtsalenc
+MIT © azu
