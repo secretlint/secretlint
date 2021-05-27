@@ -16,7 +16,7 @@
         "url": "https://github.com/secretlint/secretlint.git"
     },
     "license": "MIT",
-    "author": "mtsalenc",
+    "author": "azu",
     "files": [
         "bin/",
         "lib/",
