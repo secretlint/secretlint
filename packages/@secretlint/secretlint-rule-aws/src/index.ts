@@ -3,11 +3,6 @@ import { matchPatterns } from "@textlint/regexp-string-matcher";
 import { SecretLintRuleMessageTranslate } from "@secretlint/types";
 
 const regx = require("regx").default("g");
-const matchAll: (
-    text: string,
-    regExp: RegExp
-) => ReturnType<typeof String.prototype.matchAll> = require("string.prototype.matchall");
-
 export interface Options {
     allows?: string[];
 }
@@ -62,9 +57,9 @@ const reportAWSAccessKey = ({
     options: Required<Options>;
 }) => {
     // AWS Access Key ID
-    // Example) AKIAIOSFODNN7SECRETS
+    // Example) AKIAIOSFODNN7EXAMPLE
     const AWSAccessKeyIDPattern = /\b(A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}\b/g;
-    const results = matchAll(source.content, AWSAccessKeyIDPattern);
+    const results = source.content.matchAll(AWSAccessKeyIDPattern);
     for (const result of results) {
         const index = result.index || 0;
         const match = result[0] || "";
@@ -103,7 +98,7 @@ const reportAWSSecretAccessKey = ({
     // https://github.com/awslabs/git-secrets/blob/5e28df337746db4f070c84f7069d365bfd0d72a8/git-secrets#L239
     // This Pattern match only `AWS?_SECRET_ACCESS_KEY=XXX`
     const AWSSecretPatten = regx`${QUOTE}${AWS}(?:SECRET|secret|Secret)_?(?:ACCESS|access|Access)_?(?:KEY|key|Key)${QUOTE}${CONNECT}${QUOTE}([A-Za-z0-9/\+=]{40})${QUOTE}\b`;
-    const results = matchAll(source.content, AWSSecretPatten);
+    const results = source.content.matchAll(AWSSecretPatten);
     for (const result of results) {
         const index = result.index || 0;
         const match = result[1] || "";
@@ -140,7 +135,7 @@ const reportAWSAccountID = ({
     const QUOTE = `("|')?`;
     const CONNECT = "\\s*(:|=>|=)\\s*";
     const AWSSecretPatten = regx`${QUOTE}${AWS}(ACCOUNT|account|Account)_?(ID|id|Id)?${QUOTE}${CONNECT}${QUOTE}[0-9]{4}\-?[0-9]{4}\-?[0-9]{4}${QUOTE}\b`;
-    const results = matchAll(source.content, AWSSecretPatten);
+    const results = source.content.matchAll(AWSSecretPatten);
     for (const result of results) {
         const index = result.index || 0;
         const match = result[0] || "";
@@ -166,8 +161,7 @@ export const creator: SecretLintRuleCreator<Options> = {
         type: "scanner",
         supportedContentTypes: ["text"],
         docs: {
-            url:
-                "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md",
+            url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md",
         },
     },
     create(context, options) {

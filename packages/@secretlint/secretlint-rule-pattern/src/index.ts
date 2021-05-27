@@ -6,8 +6,6 @@ import {
 } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
-require("string.prototype.matchall").shim();
-
 export const messages = {
     PATTERN: {
         en: (props: { PATTERN_NAME: string; CREDENTIAL: string }) =>

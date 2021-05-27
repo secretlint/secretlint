@@ -6,8 +6,6 @@ import {
 } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
-require("string.prototype.matchall").shim();
-
 export const messages = {
     SENDGRID_KEY: {
         en: (props: { KEY: string }) => `found Sendgrid api key: ${props.KEY}`,
@@ -61,8 +59,7 @@ export const creator: SecretLintRuleCreator<Options> = {
         type: "scanner",
         supportedContentTypes: ["text"],
         docs: {
-            url:
-                "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-sendgrid/README.md",
+            url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-sendgrid/README.md",
         },
     },
     create(context, options) {

@@ -43,8 +43,7 @@
         "tabWidth": 4
     },
     "dependencies": {
-        "@textlint/regexp-string-matcher": "^1.1.0",
-        "string.prototype.matchall": "^4.0.2"
+        "@textlint/regexp-string-matcher": "^1.1.0"
     },
     "devDependencies": {
         "@secretlint/secretlint-scripts": "^2.1.1",

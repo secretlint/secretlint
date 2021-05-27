@@ -45,13 +45,13 @@
     "secretlint": "secretlint \"**/*\"",
     "ci": "npm run build && npm run test && npm run secretlint",
     "clean": "lerna run clean",
-    "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
-    "prepare": "git config --local core.hooksPath .githooks"
+    "prepare": "git config --local core.hooksPath .githooks",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\""
   },
   "devDependencies": {
     "lerna": "^4.0.0",
-    "lint-staged": "^10.5.4",
-    "prettier": "^2.2.1"
+    "lint-staged": "^11.0.0",
+    "prettier": "^2.3.0"
   },
   "prettier": {
     "singleQuote": false,

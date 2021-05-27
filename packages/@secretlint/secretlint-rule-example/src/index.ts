@@ -15,8 +15,7 @@ export const creator: SecretLintRuleCreator = {
         type: "scanner",
         supportedContentTypes: ["text"],
         docs: {
-            url:
-                "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-example/README.md",
+            url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-example/README.md",
         },
     },
     create(context) {

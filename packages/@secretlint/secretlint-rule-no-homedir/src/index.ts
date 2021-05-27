@@ -8,8 +8,6 @@ import { matchPatterns } from "@textlint/regexp-string-matcher";
 import escapeStringRegexp from "escape-string-regexp";
 import os from "os";
 
-require("string.prototype.matchall").shim();
-
 const multiplatformPath = (dirPath: string): RegExp => {
     return new RegExp(
         dirPath
@@ -78,8 +76,7 @@ export const creator: SecretLintRuleCreator<Options> = {
         type: "scanner",
         supportedContentTypes: ["text"],
         docs: {
-            url:
-                "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-no-homedir/README.md",
+            url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-no-homedir/README.md",
         },
     },
     create(context, options) {

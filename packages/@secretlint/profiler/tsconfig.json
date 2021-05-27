@@ -6,7 +6,7 @@
     "esModuleInterop": true,
     "newLine": "LF",
     "outDir": "./lib/",
-    "target": "es5",
+    "target": "es2015",
     "sourceMap": true,
     "declaration": true,
     "jsx": "preserve",

@@ -6,8 +6,6 @@ import {
 } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
-require("string.prototype.matchall").shim();
-
 export const messages = {
     PackageJSON_xOauthToken: {
         en: (props: { TOKEN: string }) => `found GitHub Token: ${props.TOKEN}`,
@@ -109,8 +107,7 @@ export const creator: SecretLintRuleCreator<Options> = {
         type: "scanner",
         supportedContentTypes: ["text"],
         docs: {
-            url:
-                "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-npm/README.md",
+            url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-npm/README.md",
         },
     },
     create(context, options) {
