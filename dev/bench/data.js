@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1622095116461,
+  "lastUpdate": 1622254340914,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -8054,6 +8054,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.63,
             "range": "±1.57%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7b65f778f8031d621c39d00a07eb7cdd830404ef",
+          "message": "refactor: drop to support Node.js 10 (#163)\n\n* refactor: drop to support Node.js 10\r\n\r\n- remove matchAll polyfill\r\n- remove Node.js 10 from CI\r\n- update target to es2015\r\n\r\n* CI: add hub tag\r\n\r\n* CI: add hub tag",
+          "timestamp": "2021-05-29T11:08:50+09:00",
+          "tree_id": "628ed7f34c8574e48a6335cf205f2f4fa5097117",
+          "url": "https://github.com/secretlint/secretlint/commit/7b65f778f8031d621c39d00a07eb7cdd830404ef"
+        },
+        "date": 1622254340040,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.6,
+            "range": "±1.40%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±2.30%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
