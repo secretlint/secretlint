@@ -6,13 +6,14 @@ import ruleSlack from "@secretlint/secretlint-rule-slack";
 import ruleBasicAuth from "@secretlint/secretlint-rule-basicauth";
 import rulePrivateKey from "@secretlint/secretlint-rule-privatekey";
 import ruleSendgrid from "@secretlint/secretlint-rule-sendgrid";
+import ruleGitHub from "@secretlint/secretlint-rule-github";
 
-export const rules = [ruleAWS, ruleGCP, rulePrivateKey, ruleNpm, ruleBasicAuth, ruleSlack, ruleSendgrid];
+export const rules = [ruleAWS, ruleGCP, rulePrivateKey, ruleNpm, ruleBasicAuth, ruleSlack, ruleSendgrid, ruleGitHub];
 export type Options = {};
 
 export const creator: SecretLintRulePresetCreator<Options> = {
     meta: {
-        id: "@secretlint/secretlint-rule-preset-canary",
+        id: "@secretlint/secretlint-rule-preset-recommend",
         recommended: true,
         type: "preset",
     },

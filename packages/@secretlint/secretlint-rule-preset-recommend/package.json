@@ -51,7 +51,8 @@
         "@secretlint/secretlint-rule-npm": "^2.2.0",
         "@secretlint/secretlint-rule-privatekey": "^2.2.0",
         "@secretlint/secretlint-rule-sendgrid": "^2.2.0",
-        "@secretlint/secretlint-rule-slack": "^2.2.0"
+        "@secretlint/secretlint-rule-slack": "^2.2.0",
+        "@secretlint/secretlint-rule-github": "^2.2.0"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^11.0.2",
