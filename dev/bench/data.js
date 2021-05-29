@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1622255347964,
+  "lastUpdate": 1622256784724,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -8168,6 +8168,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.61,
             "range": "±1.68%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c5fb2778961b784be255549519a27d920a0278dd",
+          "message": "feat(preset-recommend): add GitHub to preset (#164)\n\nBREAKING CHANGE: secretlint-rule-preset-recommend has been changed\r\n\r\n- It includes \"@secretlint/secretlint-rule-github\" by default",
+          "timestamp": "2021-05-29T11:49:59+09:00",
+          "tree_id": "2a641714ad922e99b316afbec5fb88169ead5c74",
+          "url": "https://github.com/secretlint/secretlint/commit/c5fb2778961b784be255549519a27d920a0278dd"
+        },
+        "date": 1622256783397,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.77,
+            "range": "±1.92%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.62,
+            "range": "±1.30%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
