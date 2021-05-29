@@ -8,7 +8,7 @@
                 44
             ],
             "ruleId": "@secretlint/secretlint-rule-github",
-            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
             "loc": {
                 "start": {
                     "line": 1,
