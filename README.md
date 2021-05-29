@@ -411,7 +411,7 @@ However, secretlint is not different with most semver project.
     - Secretlint adopt opt-in approach  
     - We also need to custom rules by user
 		- See [Bring-your own-plugins (BYOP), via --custom-plugins option by KevinHock · Pull Request #255 · Yelp/detect-secrets](https://github.com/Yelp/detect-secrets/pull/255)
-- GitHub support [secret scanning](https://docs.github.com/en/code-security/secret-security/about-secret-scanning), but it work after commiting
+- GitHub support [secret scanning](https://docs.github.com/en/code-security/secret-security/about-secret-scanning), but it only works after push to your repository
     - Secretlint work on your local machine, Secretlint can prevent to commit
 
 ## Philosophy
