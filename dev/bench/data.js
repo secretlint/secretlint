@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1622254340914,
+  "lastUpdate": 1622255247948,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -8092,6 +8092,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±2.30%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "distinct": true,
+          "id": "94c30463866f3027bfba5c53bde3b4f4ae88a649",
+          "message": "docs: add GitHub secret scanning\n\nfix https://github.com/secretlint/secretlint/issues/159",
+          "timestamp": "2021-05-29T11:24:21+09:00",
+          "tree_id": "ca2c42121c01b37cbd33134638ac1d72cc41731f",
+          "url": "https://github.com/secretlint/secretlint/commit/94c30463866f3027bfba5c53bde3b4f4ae88a649"
+        },
+        "date": 1622255246681,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.81,
+            "range": "±3.82%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.64,
+            "range": "±3.39%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
