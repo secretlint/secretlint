@@ -1,0 +1,31 @@
+{
+    "filePath": "[SNAPSHOT]/github/input.txt",
+    "messages": [
+        {
+            "message": "found GitHub Token(GitHub personal access tokens): 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",
+            "range": [
+                4,
+                44
+            ],
+            "ruleId": "@secretlint/secretlint-rule-github",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 4
+                },
+                "end": {
+                    "line": 1,
+                    "column": 44
+                }
+            },
+            "severity": "error",
+            "messageId": "GITHUB_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-github/README.md#GITHUB_TOKEN",
+            "data": {
+                "KEY": "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",
+                "typeName": "GitHub personal access tokens"
+            }
+        }
+    ]
+}
