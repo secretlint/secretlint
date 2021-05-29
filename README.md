@@ -239,19 +239,20 @@ Applying secretlint to the project and improve security on team developing.
 Install [Husky](https://github.com/typicode/husky) and [lint-staged](https://github.com/okonet/lint-staged):
 
 ```
-npm install husky lint-staged --save-dev
+npx husky-init && npm install lint-staged --save-dev
+```
+
+Add hooks to `.husky/pre-commit`:
+
+```
+npx husky add .husky/pre-commit "npx --no-install lint-staged"
 ```
 
 Edit `package.json`:
 
 ```json5
 {
-  // ...
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
+  // add "lint-staged" field
   "lint-staged": {
     "*": [
       "secretlint"
@@ -355,7 +356,7 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        node-version: [12]
+        node-version: [14]
     steps:
       - name: checkout
         uses: actions/checkout@v2
