@@ -22,8 +22,8 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-18.04]
-        node-version: [10, 12]
+        os: [ macos-latest, windows-latest, ubuntu-18.04 ]
+        node-version: [ 12, 14, 16 ]
     steps:
       - name: checkout
         uses: actions/checkout@v2

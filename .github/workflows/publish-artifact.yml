@@ -61,6 +61,7 @@ jobs:
         run: |
           docker build . -t "${PKG_TAG}" --build-arg SECRETLINT_VERSION=${SECRETLINT_VERSION}
           docker tag "${PKG_TAG}" "${HUB_LATEST_TAG}"
+          docker tag "${PKG_TAG}" "${HUB_TAG}"
         working-directory: ./publish/docker
       - name: Print version
         run: |

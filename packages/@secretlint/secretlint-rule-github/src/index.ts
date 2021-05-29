@@ -6,8 +6,6 @@ import {
 } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
-require("string.prototype.matchall").shim();
-
 export const messages = {
     GITHUB_TOKEN: {
         en: (props: { KEY: string; typeName: string }) => `found GitHub Token(${props.typeName}): ${props.KEY}`,

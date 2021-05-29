@@ -6,8 +6,6 @@ import {
 } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
-require("string.prototype.matchall").shim();
-
 export const messages = {
     SLACK_TOKEN: {
         en: (props: { TOKEN: string }) => `found slack token: ${props.TOKEN}`,
@@ -84,7 +82,8 @@ function reportIfFoundIncomingWebhook({
 }) {
     // Based on https://hooks.slack.com/TXXXXX/BXXXXX/XXXXXXXXXX
     // https://api.slack.com/messaging/webhooks
-    const IncomingWebhooksPattern = /https:\/\/hooks\.slack\.com\/services\/T[a-zA-Z0-9]{1,40}\/B[a-zA-Z0-9]{1,40}\/[a-zA-Z0-9]{1,40}/gi;
+    const IncomingWebhooksPattern =
+        /https:\/\/hooks\.slack\.com\/services\/T[a-zA-Z0-9]{1,40}\/B[a-zA-Z0-9]{1,40}\/[a-zA-Z0-9]{1,40}/gi;
     const results = source.content.matchAll(IncomingWebhooksPattern);
     for (const result of results) {
         const index = result.index || 0;
@@ -111,8 +110,7 @@ export const creator: SecretLintRuleCreator<Options> = {
         type: "scanner",
         supportedContentTypes: ["text"],
         docs: {
-            url:
-                "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-slack/README.md",
+            url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-slack/README.md",
         },
     },
     create(context, options) {

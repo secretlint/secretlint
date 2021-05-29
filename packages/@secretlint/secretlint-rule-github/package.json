@@ -44,8 +44,7 @@
     },
     "dependencies": {
         "@secretlint/types": "^2.2.0",
-        "@textlint/regexp-string-matcher": "^1.1.0",
-        "string.prototype.matchall": "^4.0.2"
+        "@textlint/regexp-string-matcher": "^1.1.0"
     },
     "devDependencies": {
         "@secretlint/tester": "^2.2.0",
