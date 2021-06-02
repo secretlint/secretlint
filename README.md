@@ -359,7 +359,7 @@ jobs:
       - name: setup Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 16
+          node-version: 14
       - name: Install
         run: npm install
       - name: Lint with Secretlint
