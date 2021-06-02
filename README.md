@@ -349,22 +349,17 @@ Put `.github/workflows/secretlint.yml` in your repository.
 ```yaml
 name: Secretlint
 on: [push, pull_request]
-env:
-  CI: true
 jobs:
   test:
     name: "Secretlint"
     runs-on: ubuntu-18.04
-    strategy:
-      matrix:
-        node-version: [14]
     steps:
       - name: checkout
         uses: actions/checkout@v2
-      - name: setup Node ${{ matrix.node-version }}
+      - name: setup Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 16
       - name: Install
         run: npm install
       - name: Lint with Secretlint
