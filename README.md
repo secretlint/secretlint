@@ -147,7 +147,7 @@ Each rule has same configuration pattern:
 ### Example: `options`
 
 For example, `@secretlint/secretlint-rule-example` has `allows` in `options`.
-This `allows` option define text pattern that you want to ignore.
+This `allows` option define a list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string) that you want to ignore.
 
 ```json
 {
