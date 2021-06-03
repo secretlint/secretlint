@@ -46,6 +46,25 @@ AWS's Access key is crendential data. It should be private.
 - `allows: string[]`
     - Allows a list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string)
 
+## Examples
+
+```json
+{
+    "rules": [
+        {
+            "id": "@secretlint/aws",
+            // Ignore error related to IDs
+            "allowMessageIds": ["AWSAccountID", "AWSAccessKeyID"]
+            "options": {
+                // allow list
+                "allows": ["/IT_IS_PUBLIC/"]
+            }
+        }
+    ]
+}
+```
+
+
 ## Changelog
 
 See [Releases page](https://github.com/secretlint/secretlint/releases).
