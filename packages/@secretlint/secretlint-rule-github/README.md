@@ -42,6 +42,7 @@ This rule can detect a new format of GitHub Token.
 ## Options
 
 - `allows: string[]`
+    - Allows a list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string)
 
 ## Changelog
 

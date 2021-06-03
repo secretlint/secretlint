@@ -13,6 +13,13 @@ Install with [npm](https://www.npmjs.com/):
 ### EXAMPLE_MESSAGE
 > found secret: {{ID}}
 
+An example error message.
+
+## Options
+
+- `allows: string[]`
+    - Allows a list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string)
+
 ## Changelog
 
 See [Releases page](https://github.com/secretlint/secretlint/releases).

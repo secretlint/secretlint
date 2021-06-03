@@ -31,6 +31,11 @@ Private Key should be private.
 
 - https://en.wikipedia.org/wiki/Public-key_cryptography
 
+## Options
+
+- `allows: string[]`
+    - Allows a list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string)
+
 ## Changelog
 
 See [Releases page](https://github.com/secretlint/secretlint/releases).

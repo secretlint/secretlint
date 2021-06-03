@@ -34,6 +34,7 @@ Disallow to write sendgrid api key.
 ## Options
 
 - `allows: string[]`
+    - Allows a list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string)
 
 ## Changelog
 

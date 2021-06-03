@@ -38,6 +38,11 @@ Via `.secretlintrc.json`(Recommended)
 
 Disallow to use specified RegEx patterns from SecretLint config.
 
+## Options
+
+- `allows: string[]`
+    - Allows a list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string)
+
 ## Changelog
 
 See [Releases page](https://github.com/secretlint/secretlint/releases).

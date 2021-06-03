@@ -31,6 +31,11 @@ Via `.secretlintrc.json`(Recommended)
 Secp256k1 curve private keys such as used by Bitcoin an Ethereum.
 It should be treated as credentials.
 
+## Options
+
+- `allows: string[]`
+    - Allows a list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string)
+
 ## Changelog
 
 See [Releases page](https://github.com/secretlint/secretlint/releases).

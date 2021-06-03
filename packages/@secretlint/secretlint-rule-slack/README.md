@@ -44,6 +44,7 @@ You should encrypt it before using or inject via environment variables
 ## Options
 
 - `allows: string[]`
+    - Allows a list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string)
 
 ## Changelog
 

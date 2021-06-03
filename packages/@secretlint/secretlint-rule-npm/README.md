@@ -46,6 +46,11 @@ The `TOKEN` is credential data.
 
 - [npm - Using auth tokens in .npmrc - Stack Overflow](https://stackoverflow.com/questions/53099434/using-auth-tokens-in-npmrc)
 
+## Options
+
+- `allows: string[]`
+    - Allows a list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string)
+
 ## Changelog
 
 See [Releases page](https://github.com/secretlint/secretlint/releases).

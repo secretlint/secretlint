@@ -39,6 +39,11 @@ Because, the pass phase for this p12 file is `notasecret`.
 
 This JSON file includes private key for GCP Service Account.
 
+## Options
+
+- `allows: string[]`
+    - Allows a list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string)
+
 ## Changelog
 
 See [Releases page](https://github.com/secretlint/secretlint/releases).

@@ -41,6 +41,10 @@ AWS's Access key is crendential data. It should be private.
 
 [git-secrets](https://github.com/awslabs/git-secrets) detect it as secret.
 
+## Options
+
+- `allows: string[]`
+    - Allows a list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string)
 
 ## Changelog
 
