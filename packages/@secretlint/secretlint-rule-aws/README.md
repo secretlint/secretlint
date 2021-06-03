@@ -54,7 +54,7 @@ AWS's Access key is crendential data. It should be private.
         {
             "id": "@secretlint/aws",
             // Ignore error related to IDs
-            "allowMessageIds": ["AWSAccountID", "AWSAccessKeyID"]
+            "allowMessageIds": ["AWSAccountID", "AWSAccessKeyID"],
             "options": {
                 // allow list
                 "allows": ["/IT_IS_PUBLIC/"]
