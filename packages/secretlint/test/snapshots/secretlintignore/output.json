@@ -5,16 +5,28 @@
             "filePath": "[SNAPSHOT]/secretlintignore/input.txt",
             "messages": [
                 {
+                    "message": "found secret: SECRET",
+                    "range": [
+                        8,
+                        14
+                    ],
                     "ruleId": "@secretlint/secretlint-rule-example",
-                    "index": 8,
-                    "line": 1,
-                    "column": 8,
-                    "severity": 2,
-                    "message": "[EXAMPLE_MESSAGE] found secret: SECRET",
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 14
+                        }
+                    },
+                    "severity": "error",
+                    "messageId": "EXAMPLE_MESSAGE",
+                    "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-example/README.md#EXAMPLE_MESSAGE",
                     "data": {
                         "ID": "SECRET"
-                    },
-                    "type": "lint"
+                    }
                 }
             ]
         }
