@@ -6,7 +6,3 @@ export interface FormatterConfig {
 export interface FormatterOptions {
     color?: boolean;
 }
-
-export interface FormatterDetail {
-    name: string;
-}

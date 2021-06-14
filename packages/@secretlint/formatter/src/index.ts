@@ -7,7 +7,7 @@ import {
 } from "@textlint/linter-formatter";
 import { SecretLintCoreResult } from "@secretlint/types";
 import terminalLink from "terminal-link";
-import { FormatterConfig, FormatterDetail } from "./types";
+import { FormatterConfig } from "./types";
 import { moduleInterop } from "@textlint/module-interop";
 
 const fs = require("fs");
@@ -140,7 +140,6 @@ export function secretlintCreateFormatter(formatterConfig: FormatterConfig) {
     try {
         formatter = moduleInterop(require(formatterPath));
     } catch (ex) {
-        console.log(ex);
         throw new Error(`Could not find formatter ${formatterName}
 ${ex}`);
     }
@@ -163,7 +162,7 @@ export function getFormatterList(): SecretLintFormatterDetail[] {
     return [...externalFormatters, ...secretlintFormatters];
 }
 
-export function secretlintGetFormatterList(): FormatterDetail[] {
+export function secretlintGetFormatterList(): SecretLintFormatterDetail[] {
     return fs
         .readdirSync(path.join(__dirname, "formatters"))
         .filter((file: string) => {
