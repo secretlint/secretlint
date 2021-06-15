@@ -10,7 +10,7 @@ import path from "path";
 
 export const messages = {
     PrivateKeyP12: {
-        en: (props: { FILE_NAME: string }) => `found CP Service Account's private key(p12): ${props.FILE_NAME}`,
+        en: (props: { FILE_NAME: string }) => `found GCP Service Account's private key(p12): ${props.FILE_NAME}`,
         ja: (props: { FILE_NAME: string }) => `GCPサービスアカウントの秘密鍵(p12) ${props.FILE_NAME} がみつかりました`,
     },
     PrivateKeyJSON: {
