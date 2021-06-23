@@ -2,7 +2,7 @@
     "filePath": "[SNAPSHOT]/ng.privatekey-p12/input.p12",
     "messages": [
         {
-            "message": "found CP Service Account's private key(p12): input.p12",
+            "message": "found GCP Service Account's private key(p12): input.p12",
             "range": [
                 0,
                 2301
