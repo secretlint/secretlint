@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/secretlint/secretlint/compare/v3.0.0...v3.1.0) (2021-06-24)
+
+
+### Bug Fixes
+
+* **gcp:** Fixed typo from CP to GCP ([#170](https://github.com/secretlint/secretlint/issues/170)) ([ceab009](https://github.com/secretlint/secretlint/commit/ceab00980de07c80f2a290b45a70201250fc71d6))
+
+
+
+
+
 # [3.0.0](https://github.com/secretlint/secretlint/compare/v2.2.0...v3.0.0) (2021-05-29)
 
 **Note:** Version bump only for package @secretlint/secretlint-rule-gcp
