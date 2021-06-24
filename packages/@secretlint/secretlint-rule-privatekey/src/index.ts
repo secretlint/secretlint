@@ -33,7 +33,8 @@ function reportIfFoundRawPrivateKey({
     t: SecretLintRuleMessageTranslate<typeof messages>;
 }) {
     // Based on https://docs.cribl.io/docs/regexesyml
-    const PRIVATE_KEY_PATTERN = /-----BEGIN (DSA|RSA|EC|PGP|OPENSSH) PRIVATE KEY(\sBLOCK)?-----[\s\S]*/gm;
+    const PRIVATE_KEY_PATTERN =
+        /-----BEGIN\s?(DSA|RSA|EC|PGP|OPENSSH|[A-Z]{2,10})?\s?PRIVATE KEY(\sBLOCK)?-----[\s\S]*/gm;
     const results = source.content.matchAll(PRIVATE_KEY_PATTERN);
     for (const result of results) {
         const index = result.index || 0;
