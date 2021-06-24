@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0](https://github.com/secretlint/secretlint/compare/v3.0.0...v3.1.0) (2021-06-24)
+
+**Note:** Version bump only for package @secretlint/config-validator
+
+
+
+
+
 # [3.0.0](https://github.com/secretlint/secretlint/compare/v2.2.0...v3.0.0) (2021-05-29)
 
 **Note:** Version bump only for package @secretlint/config-validator
