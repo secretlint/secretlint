@@ -9,7 +9,7 @@ import { SecretLintCoreResult, SecretLintCoreResultMessage } from "@secretlint/t
 import chalk from "chalk";
 import { table } from "table";
 import stripAnsi from "strip-ansi";
-const pluralize = require("pluralize");
+import pluralize from "pluralize";
 
 //------------------------------------------------------------------------------
 // Helpers

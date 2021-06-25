@@ -9,12 +9,13 @@ import { SecretLintCoreResult } from "@secretlint/types";
 import terminalLink from "terminal-link";
 import { FormatterConfig } from "./types";
 import { moduleInterop } from "@textlint/module-interop";
+import fs from "fs";
+import path from "path";
+// @ts-expect-error: no @types
+import isFile from "is-file";
+// @ts-expect-error: no @types
+import tryResolve from "try-resolve";
 
-const fs = require("fs");
-const path = require("path");
-const tryResolve = require("try-resolve");
-
-const isFile = require("is-file");
 const debug = require("debug")("@secretlint/formatter");
 
 export interface SecretLintFormatterConfig {
