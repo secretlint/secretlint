@@ -7,6 +7,14 @@ import {
 } from "@textlint/linter-formatter";
 import { SecretLintCoreResult } from "@secretlint/types";
 import terminalLink from "terminal-link";
+import { FormatterConfig } from "./types";
+import { moduleInterop } from "@textlint/module-interop";
+import fs from "fs";
+import path from "path";
+// @ts-expect-error: no @types
+import isFile from "is-file";
+// @ts-expect-error: no @types
+import tryResolve from "try-resolve";
 
 const debug = require("debug")("@secretlint/formatter");
 
@@ -85,17 +93,59 @@ export function createFormatter(formatterConfig: SecretLintFormatterConfig) {
      */
     const enableTerminalLink = isHumanReadableFormat ?? formatterConfig.terminalLink ?? false;
     debug(`formatterName: ${formatterName}`);
-    const format = textlintCreateFormatter(formatterConfig);
-    return {
-        format: (results: SecretLintCoreResult[]) => {
-            return format(
-                results.map((result) =>
-                    convertSecretLintResultToTextlintResult(result, {
-                        enableTerminalLink,
-                    })
-                )
-            );
-        },
+
+    try {
+        const format = secretlintCreateFormatter(formatterConfig);
+        return {
+            format: (results: SecretLintCoreResult[]) => {
+                return format(results);
+            },
+        };
+    } catch {
+        const format = textlintCreateFormatter(formatterConfig);
+        return {
+            format: (results: SecretLintCoreResult[]) => {
+                return format(
+                    results.map((result) =>
+                        convertSecretLintResultToTextlintResult(result, {
+                            enableTerminalLink,
+                        })
+                    )
+                );
+            },
+        };
+    }
+}
+
+export function secretlintCreateFormatter(formatterConfig: FormatterConfig) {
+    const formatterName = formatterConfig.formatterName;
+    debug(`formatterName: ${formatterName}`);
+    let formatter: (results: SecretLintCoreResult[], formatterConfig: FormatterConfig) => string;
+    let formatterPath;
+    if (fs.existsSync(formatterName)) {
+        formatterPath = formatterName;
+    } else if (fs.existsSync(path.resolve(process.cwd(), formatterName))) {
+        formatterPath = path.resolve(process.cwd(), formatterName);
+    } else {
+        if (isFile(`${path.join(__dirname, "formatters/", formatterName)}.js`)) {
+            formatterPath = `${path.join(__dirname, "formatters/", formatterName)}.js`;
+        } else if (isFile(`${path.join(__dirname, "formatters/", formatterName)}.ts`)) {
+            formatterPath = `${path.join(__dirname, "formatters/", formatterName)}.ts`;
+        } else {
+            const pkgPath = tryResolve(`secretlint-formatter-${formatterName}`) || tryResolve(formatterName);
+            if (pkgPath) {
+                formatterPath = pkgPath;
+            }
+        }
+    }
+    try {
+        formatter = moduleInterop(require(formatterPath));
+    } catch (ex) {
+        throw new Error(`Could not find formatter ${formatterName}
+${ex}`);
+    }
+    return function (results: SecretLintCoreResult[]) {
+        return formatter(results, formatterConfig);
     };
 }
 
@@ -104,5 +154,26 @@ export interface SecretLintFormatterDetail {
 }
 
 export function getFormatterList(): SecretLintFormatterDetail[] {
-    return textlintGetFormatterList();
+    const textlintFormatters = textlintGetFormatterList();
+    const secretlintFormatters = secretlintGetFormatterList();
+    const secretlintFormatterNames = secretlintFormatters.map((formatter) => formatter.name);
+    const externalFormatters = textlintFormatters.filter(
+        (formatter) => !secretlintFormatterNames.includes(formatter.name)
+    );
+    return [...externalFormatters, ...secretlintFormatters];
+}
+
+export function secretlintGetFormatterList(): SecretLintFormatterDetail[] {
+    return fs
+        .readdirSync(path.join(__dirname, "formatters"))
+        .filter((file: string) => {
+            return [".js", ".ts"].some((formatterExtension) => path.extname(file) === formatterExtension);
+        })
+        .map((file: string) => {
+            const nameWithoutExtension = [".js", ".ts"].reduce(
+                (name, extension) => path.basename(name, extension),
+                file
+            );
+            return { name: nameWithoutExtension };
+        });
 }
