@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/secretlint/secretlint/compare/v3.1.0...v3.2.0) (2021-06-27)
+
+
+### Features
+
+* **formatter:** add "native" table formatter ([#169](https://github.com/secretlint/secretlint/issues/169)) ([6bd7910](https://github.com/secretlint/secretlint/commit/6bd79101458677a08a69bdfc36c0782e3fb90799))
+
+
+
+
+
 # [3.1.0](https://github.com/secretlint/secretlint/compare/v3.0.0...v3.1.0) (2021-06-24)
 
 
