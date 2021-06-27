@@ -349,6 +349,8 @@ Put `.github/workflows/secretlint.yml` in your repository.
 ```yaml
 name: Secretlint
 on: [push, pull_request]
+permissions:
+  contents: read
 jobs:
   test:
     name: "Secretlint"
