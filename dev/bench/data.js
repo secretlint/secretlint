@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1624540422131,
+  "lastUpdate": 1624773408116,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -8624,6 +8624,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.63,
             "range": "±2.09%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "46071336+susam-projects@users.noreply.github.com",
+            "name": "Sergey Belskiy",
+            "username": "susam-projects"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "6bd79101458677a08a69bdfc36c0782e3fb90799",
+          "message": "feat(formatter): add \"native\" table formatter (#169)\n\n* feat(formatter): add \"native\" table formatter\r\n\r\n* refactor: clear code\r\n\r\n* test(secretlint): update shapshots\r\n\r\n* fix(formatter): fix imports\r\n\r\n* fix(formatter): fix getting formatters list for prod\r\n\r\n* chore(deps): update yarn.lock\r\n\r\nCo-authored-by: azu <azu@users.noreply.github.com>",
+          "timestamp": "2021-06-27T14:53:27+09:00",
+          "tree_id": "5cc8aa6891f5cd77aa128e56f7a5bb71e77267ba",
+          "url": "https://github.com/secretlint/secretlint/commit/6bd79101458677a08a69bdfc36c0782e3fb90799"
+        },
+        "date": 1624773406824,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.69,
+            "range": "±3.05%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.56,
+            "range": "±1.58%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
