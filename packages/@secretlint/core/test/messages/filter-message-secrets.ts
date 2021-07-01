@@ -34,7 +34,7 @@ describe("filter-mask-secrets", function () {
             loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 0 } },
             message: "message",
             messageId: "message",
-            data: { key: "***********" },
+            data: { key: "************" },
         });
     });
     it("mask deep value", () => {
@@ -61,11 +61,11 @@ describe("filter-mask-secrets", function () {
             message: "message",
             messageId: "message",
             data: {
-                key: "***********",
+                key: "************",
                 nest: [
-                    "****************",
+                    "*****************",
                     {
-                        deep: "************",
+                        deep: "*************",
                     },
                 ],
                 n: 1,

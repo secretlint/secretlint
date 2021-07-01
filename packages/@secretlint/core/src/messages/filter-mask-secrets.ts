@@ -22,7 +22,7 @@ const deepMask = (object: Record<string, any>): Record<string, any> => {
 
 const mask = <T>(value: T): T => {
     if (typeof value === "string") {
-        return "*".repeat(value.length - 1) as unknown as T;
+        return "*".repeat(value.length) as unknown as T;
     }
     return value;
 };
