@@ -30,6 +30,12 @@ export type SecretLintSourceOptions = {
          */
         locale?: SecretLintRuleLocaleTag;
         /**
+         * If this is true, mask all message's data values
+         * Replace data value with "****" strings
+         * Default: false
+         */
+        maskSecrets?: boolean;
+        /**
          * config present secretlintrc object
          */
         config: SecretLintCoreDescriptor;
@@ -44,6 +50,7 @@ export const lintSource = ({ source, options }: SecretLintSourceOptions): Promis
     debug(`options: %O`, options);
     const rules = options.config.rules;
     const locale = options.locale ?? "en";
+    const maskSecrets = options.maskSecrets ?? false;
     const contextEvents = createContextEvents();
     const runningEvents = createRunningEvents();
     const reportedMessages: SecretLintCoreResultMessage[] = [];
@@ -98,6 +105,7 @@ export const lintSource = ({ source, options }: SecretLintSourceOptions): Promis
                     reportedMessages,
                     ignoredMessages,
                     allowMessageIds: runningEvents.collectAllowMessageIds(),
+                    maskSecrets,
                 }),
             };
         })

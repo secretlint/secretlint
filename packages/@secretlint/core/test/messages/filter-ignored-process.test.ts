@@ -18,7 +18,7 @@ describe("message-filter", function () {
     });
     context("when only lint messages", function () {
         it("should not change messages", function () {
-            const messages = [createMessageFromRange([0, 1])];
+            const messages = [createMessageFromRange({ range: [0, 1] })];
             const actual = {
                 reportedMessages: messages,
                 ignoredMessages: [],
@@ -28,7 +28,7 @@ describe("message-filter", function () {
     });
     context("when contain ignore messages", function () {
         it("should not filtered, if index < ignore's range start ", function () {
-            const reportedMessages = [createMessageFromRange([10, 15])];
+            const reportedMessages = [createMessageFromRange({ range: [10, 15] })];
             const ignoredMessaged = [createIgnoredMessageFromRange([0, 1])];
             assert.equal(
                 filterIgnoredMessages({
@@ -40,10 +40,10 @@ describe("message-filter", function () {
         });
         it("should filtered, if start <= index <= end ", function () {
             const reportedMessages = [
-                createMessageFromRange([0, 1]),
-                createMessageFromRange([1, 2]),
-                createMessageFromRange([2, 3]),
-                createMessageFromRange([3, 4]),
+                createMessageFromRange({ range: [0, 1] }),
+                createMessageFromRange({ range: [1, 2] }),
+                createMessageFromRange({ range: [2, 3] }),
+                createMessageFromRange({ range: [3, 4] }),
             ];
             const ignoredMessages = [createIgnoredMessageFromRange([0, 2])];
             assert.deepStrictEqual(
@@ -51,11 +51,14 @@ describe("message-filter", function () {
                     reportedMessages,
                     ignoredMessages,
                 }),
-                [createMessageFromRange([2, 3]), createMessageFromRange([3, 4])]
+                [createMessageFromRange({ range: [2, 3] }), createMessageFromRange({ range: [3, 4] })]
             );
         });
         it("should remove ignore message it-self", function () {
-            const reportedMessages = [createMessageFromRange([0, 1]), createMessageFromRange([1, 100])];
+            const reportedMessages = [
+                createMessageFromRange({ range: [0, 1] }),
+                createMessageFromRange({ range: [1, 100] }),
+            ];
             const ignoredMessages = [createIgnoredMessageFromRange([0, 100])];
             assert.deepStrictEqual(
                 filterIgnoredMessages({
@@ -69,9 +72,9 @@ describe("message-filter", function () {
     context("when the message has targetRuleId", function () {
         it("should only filter messages that are matched the ruleId", function () {
             const reportedMessages = [
-                createMessageFromRange([1, 10], "a"),
-                createMessageFromRange([1, 10], "b"),
-                createMessageFromRange([1, 10], "c"),
+                createMessageFromRange({ range: [1, 10], ruleId: "a" }),
+                createMessageFromRange({ range: [1, 10], ruleId: "b" }),
+                createMessageFromRange({ range: [1, 10], ruleId: "c" }),
             ];
             const ignoredMessages = [
                 createIgnoredMessageFromRange([0, 10], "a"),
@@ -82,7 +85,7 @@ describe("message-filter", function () {
                     reportedMessages,
                     ignoredMessages,
                 }),
-                [createMessageFromRange([1, 10], "c")]
+                [createMessageFromRange({ range: [1, 10], ruleId: "c" })]
             );
         });
     });
