@@ -7,6 +7,7 @@
                 0,
                 1755
             ],
+            "type": "message",
             "ruleId": "@secretlint/secretlint-rule-gcp",
             "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
             "loc": {
@@ -32,6 +33,7 @@
                 142,
                 1755
             ],
+            "type": "message",
             "ruleId": "@secretlint/secretlint-rule-privatekey",
             "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
             "loc": {

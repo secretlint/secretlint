@@ -7,6 +7,7 @@
                 180,
                 219
             ],
+            "type": "message",
             "ruleId": "@secretlint/secretlint-rule-npm",
             "loc": {
                 "start": {

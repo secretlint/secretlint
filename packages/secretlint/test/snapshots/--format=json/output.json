@@ -10,6 +10,7 @@
                         8,
                         14
                     ],
+                    "type": "message",
                     "ruleId": "@secretlint/secretlint-rule-example",
                     "loc": {
                         "start": {

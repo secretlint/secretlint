@@ -7,6 +7,7 @@
                 84,
                 153
             ],
+            "type": "message",
             "ruleId": "@secretlint/secretlint-rule-sendgrid",
             "loc": {
                 "start": {
@@ -31,6 +32,7 @@
                 157,
                 232
             ],
+            "type": "message",
             "ruleId": "@secretlint/secretlint-rule-sendgrid",
             "loc": {
                 "start": {

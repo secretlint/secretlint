@@ -7,6 +7,7 @@
                 5,
                 34
             ],
+            "type": "message",
             "ruleId": "@secretlint/secretlint-rule-basicauth",
             "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
             "loc": {

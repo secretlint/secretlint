@@ -7,6 +7,7 @@
                 36,
                 100
             ],
+            "type": "message",
             "ruleId": "@secretlint/secretlint-rule-secp256k1-privatekey",
             "loc": {
                 "start": {

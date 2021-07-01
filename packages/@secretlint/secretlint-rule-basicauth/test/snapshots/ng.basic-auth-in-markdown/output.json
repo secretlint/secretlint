@@ -7,6 +7,7 @@
                 8,
                 37
             ],
+            "type": "message",
             "ruleId": "@secretlint/secretlint-rule-basicauth",
             "loc": {
                 "start": {
@@ -31,6 +32,7 @@
                 56,
                 85
             ],
+            "type": "message",
             "ruleId": "@secretlint/secretlint-rule-basicauth",
             "loc": {
                 "start": {
@@ -55,6 +57,7 @@
                 108,
                 137
             ],
+            "type": "message",
             "ruleId": "@secretlint/secretlint-rule-basicauth",
             "loc": {
                 "start": {

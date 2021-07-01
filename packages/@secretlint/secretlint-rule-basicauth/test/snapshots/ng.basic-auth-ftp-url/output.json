@@ -7,6 +7,7 @@
                 10,
                 37
             ],
+            "type": "message",
             "ruleId": "@secretlint/secretlint-rule-basicauth",
             "loc": {
                 "start": {

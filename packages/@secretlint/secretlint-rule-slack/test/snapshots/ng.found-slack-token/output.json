@@ -7,6 +7,7 @@
                 48,
                 78
             ],
+            "type": "message",
             "ruleId": "@secretlint/secretlint-rule-slack",
             "loc": {
                 "start": {
@@ -31,6 +32,7 @@
                 85,
                 115
             ],
+            "type": "message",
             "ruleId": "@secretlint/secretlint-rule-slack",
             "loc": {
                 "start": {
@@ -55,6 +57,7 @@
                 122,
                 152
             ],
+            "type": "message",
             "ruleId": "@secretlint/secretlint-rule-slack",
             "loc": {
                 "start": {
@@ -79,6 +82,7 @@
                 160,
                 190
             ],
+            "type": "message",
             "ruleId": "@secretlint/secretlint-rule-slack",
             "loc": {
                 "start": {

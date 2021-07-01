@@ -7,6 +7,7 @@
                 23,
                 41
             ],
+            "type": "message",
             "ruleId": "@secretlint/secretlint-rule-no-homedir",
             "loc": {
                 "start": {
@@ -31,6 +32,7 @@
                 65,
                 83
             ],
+            "type": "message",
             "ruleId": "@secretlint/secretlint-rule-no-homedir",
             "loc": {
                 "start": {
