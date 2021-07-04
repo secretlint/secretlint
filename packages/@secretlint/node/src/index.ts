@@ -39,6 +39,14 @@ export type SecretLintEngineOptionsBase = {
      * locale for rule message
      */
     locale?: SecretLintRuleLocaleTag;
+
+    /**
+     * If maskSecrets is true, mask secret values with "***".
+     * If you want to hide actual secret values, set true
+     * https://github.com/secretlint/secretlint/issues/176
+     * Default: false
+     */
+    maskSecrets?: boolean;
 };
 export type SecretLintEngineOptionsConfigFilePath = SecretLintEngineOptionsBase & {
     /**
@@ -59,12 +67,20 @@ export type SecretLintEngineOptions = SecretLintEngineOptionsConfigFilePath | Se
 const isConfigFileJSON = (v: any): v is SecretLintEngineOptionsConfigFileJSON => {
     return "configFileJSON" in v && v.configFileJSON !== undefined;
 };
-const lintFile = async (filePath: string, config: SecretLintCoreDescriptor, options: SecretLintEngineOptions) => {
+const lintFile = async ({
+    filePath,
+    config,
+    options,
+}: {
+    filePath: string;
+    config: SecretLintCoreDescriptor;
+    options: SecretLintEngineOptions;
+}) => {
     const rawSource = await createRawSource(filePath);
     return lintSource({
         source: rawSource,
         options: {
-            locale: options.locale,
+            ...options,
             config: config,
         },
     });
@@ -94,7 +110,7 @@ const executeOnContent = async ({
             contentType: "text",
         },
         options: {
-            locale: options.locale,
+            ...options,
             config,
         },
     });
@@ -128,7 +144,7 @@ const executeOnFiles = async ({
 }) => {
     const mapper = async (filePath: string) => {
         debug("executeOnFiles file: %s", filePath);
-        const result = await lintFile(filePath, config, options);
+        const result = await lintFile({ filePath: filePath, config: config, options: options });
         debug("executeOnFiles result: %o", result);
         return result;
     };
