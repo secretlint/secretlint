@@ -24,8 +24,19 @@ const createMaskValue = (value: string): string => {
     return "*".repeat(value.length);
 };
 /**
- * mask all maskedValues with *** in str
- * it includes false-positive
+ * = Masking logics
+ * secretlint mask simple string replacement.
+ * If a secretlint rule report `"TOKEN_STRING"` as message data, replace all `TOKEN_STRING` with `**********` in messages.
+ * ```
+ * context.report({
+ *   message: t("MESSAGE", {
+ *       TOKEN: "TOKEN_STRING", // => replace all "TOKEN_STRING" with  `**********`.
+ *   }),
+ *   range,
+ * });
+ * ```
+ * This logics may includes false-positve.
+ * This is similar to CI logs like Travis CI or GitHub Actions.
  * @param str
  * @param maskedValues
  */
