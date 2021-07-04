@@ -15,14 +15,15 @@ describe("filter-mask-secrets", function () {
             type: "message",
             loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 0 } },
             message: "message",
-            messageId: "message",
+            messageId: "message-id",
         });
     });
     it("mask all data", () => {
         const message = createMessageFromRange({
+            message: "found SECRET_VALUE",
             range: [0, 1],
             data: {
-                key: "secret value",
+                key: "SECRET_VALUE",
             },
         });
         const [filteredMessage] = filterMaskSecretsData([message]);
@@ -32,20 +33,44 @@ describe("filter-mask-secrets", function () {
             severity: "error",
             type: "message",
             loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 0 } },
-            message: "message",
-            messageId: "message",
+            message: "found ************",
+            messageId: "message-id",
             data: { key: "************" },
         });
     });
-    it("mask deep value", () => {
+    it("mask all data, but it will includes false-positive - just match", () => {
         const message = createMessageFromRange({
+            // "This is testing code. id is ${id}"
+            message: "This is testing code. id is test",
             range: [0, 1],
             data: {
-                key: "secret value",
+                id: "test",
+            },
+        });
+        const [filteredMessage] = filterMaskSecretsData([message]);
+        assert.deepStrictEqual(filteredMessage, {
+            range: [0, 1],
+            ruleId: "example",
+            severity: "error",
+            type: "message",
+            loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 0 } },
+            message: "This is ****ing code. id is ****",
+            //                ^^^^ This is false-positive
+            messageId: "message-id",
+            data: { id: "****" },
+        });
+    });
+
+    it("mask deep values", () => {
+        const message = createMessageFromRange({
+            range: [0, 1],
+            message: "found SECRET_VALUE",
+            data: {
+                key: "SECRET_VALUE",
                 nest: [
                     "secret array item",
                     {
-                        deep: "secret values",
+                        deep: "SECRET_VALUEs",
                     },
                 ],
                 n: 1,
@@ -58,8 +83,8 @@ describe("filter-mask-secrets", function () {
             severity: "error",
             type: "message",
             loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 0 } },
-            message: "message",
-            messageId: "message",
+            message: "found ************",
+            messageId: "message-id",
             data: {
                 key: "************",
                 nest: [

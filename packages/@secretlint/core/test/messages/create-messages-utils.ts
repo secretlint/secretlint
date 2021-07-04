@@ -4,11 +4,13 @@ export const createMessageFromRange = ({
     range,
     ruleId = "example",
     message = "message",
+    messageId = "message-id",
     data,
 }: {
     range: number[];
     ruleId?: string;
     message?: string;
+    messageId?: string;
     data?: object;
 }): SecretLintCoreResultMessage => {
     return {
@@ -27,7 +29,7 @@ export const createMessageFromRange = ({
             },
         },
         message: message,
-        messageId: message,
+        messageId: messageId,
         ...(data ? { data } : {}),
     };
 };
