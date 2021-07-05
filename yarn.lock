@@ -35,11 +35,6 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@deps/traverse@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@deps/traverse/-/traverse-1.0.2.tgz#1ac9e32621bfd7b3759968a3f60dcb5ac1fdd1ed"
-  integrity sha512-RuOq2J/yYJU24qtZwY41SHi84zhBT+U0AEQPMqjViH9Z9ohPcLR4/lYTkEMnR2y7RMVAdx2skOusBJGJrIXOJg==
-
 "@lerna/add@4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@lerna/add/-/add-4.0.0.tgz#c36f57d132502a57b9e7058d1548b7a565ef183f"

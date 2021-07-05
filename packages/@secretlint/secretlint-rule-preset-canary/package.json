@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-preset-canary",
-  "version": "3.1.0",
+  "version": "3.3.0",
   "description": "Canary rule preset of secretlint.",
   "keywords": [
     "secretlint",
@@ -44,14 +44,14 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/secretlint-rule-aws": "^3.1.0",
-    "@secretlint/secretlint-rule-basicauth": "^3.1.0",
-    "@secretlint/secretlint-rule-gcp": "^3.1.0",
-    "@secretlint/secretlint-rule-github": "^3.1.0",
-    "@secretlint/secretlint-rule-npm": "^3.1.0",
-    "@secretlint/secretlint-rule-privatekey": "^3.1.0",
-    "@secretlint/secretlint-rule-sendgrid": "^3.1.0",
-    "@secretlint/secretlint-rule-slack": "^3.1.0"
+    "@secretlint/secretlint-rule-aws": "^3.3.0",
+    "@secretlint/secretlint-rule-basicauth": "^3.3.0",
+    "@secretlint/secretlint-rule-gcp": "^3.3.0",
+    "@secretlint/secretlint-rule-github": "^3.3.0",
+    "@secretlint/secretlint-rule-npm": "^3.3.0",
+    "@secretlint/secretlint-rule-privatekey": "^3.3.0",
+    "@secretlint/secretlint-rule-sendgrid": "^3.3.0",
+    "@secretlint/secretlint-rule-slack": "^3.3.0"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.0.2",

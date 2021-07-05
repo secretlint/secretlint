@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/secretlint/secretlint/compare/v3.2.0...v3.3.0) (2021-07-05)
+
+
+### Features
+
+* **core:** add `maskSecrets` option ([#177](https://github.com/secretlint/secretlint/issues/177)) ([658db4b](https://github.com/secretlint/secretlint/commit/658db4b1f0526006bec0448f9cba9a02bc8edd4a))
+
+
+
+
+
 # [3.1.0](https://github.com/secretlint/secretlint/compare/v3.0.0...v3.1.0) (2021-06-24)
 
 

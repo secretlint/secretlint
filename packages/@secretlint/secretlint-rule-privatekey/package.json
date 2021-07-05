@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-privatekey",
-    "version": "3.1.0",
+    "version": "3.3.0",
     "description": "A secretlint rule for PrivateKey.",
     "keywords": [
         "secretlint",
@@ -47,7 +47,7 @@
     },
     "devDependencies": {
         "@secretlint/secretlint-scripts": "^2.1.1",
-        "@secretlint/tester": "^3.1.0",
+        "@secretlint/tester": "^3.3.0",
         "@types/mocha": "^8.2.2",
         "@types/node": "^14.14.41",
         "cross-env": "^7.0.0",
