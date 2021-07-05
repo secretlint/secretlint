@@ -8,6 +8,9 @@ env:
   DOCKER_BASE_NAME: docker.pkg.github.com/${{ github.repository }}/secretlint
   DOCKER_HUB_BASE_NAME: secretlint/secretlint
 
+permissions:
+  contents: write
+  packages: write
 jobs:
   # npm binary
   publish-binary:

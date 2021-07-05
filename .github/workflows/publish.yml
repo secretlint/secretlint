@@ -7,6 +7,11 @@ on:
       - master
     types: [closed]
 
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
 jobs:
   publish:
     runs-on: ubuntu-18.04
@@ -67,7 +72,7 @@ jobs:
       - name: Create Release
         id: create_release
         if: steps.tag_check.outputs.exists_tag == 'false' && github.event.pull_request.merged == true
-        uses: actions/create-release@v1
+        uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:

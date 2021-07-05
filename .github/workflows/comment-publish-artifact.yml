@@ -6,6 +6,8 @@ on:
 
 # require public member
 # private member is treated as CONTRIBUTOR
+permissions:
+  contents: read
 jobs:
   dispatch_publish_artifact:
     if: |
