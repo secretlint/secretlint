@@ -32,6 +32,7 @@ describe("lintSource", function () {
                 data: {
                     ID: "SECRET",
                 },
+                type: "message",
                 message: "found secret: SECRET",
                 messageId: "EXAMPLE_MESSAGE",
                 range: [8, 14],

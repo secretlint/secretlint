@@ -10,7 +10,7 @@ Install with [npm](https://www.npmjs.com/):
 
 ## Usage
 
-- [ ] Write usage instructions
+See <https://github.com/secretlint/secretlint/blob/master/docs/secretlint-rule.md#test-secretlintsecretlint-rule-example>
 
 ## Changelog
 

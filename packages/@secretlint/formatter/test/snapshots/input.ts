@@ -9,6 +9,7 @@ export const results: SecretLintCoreResult[] = [
                 data: {
                     ID: "SECRET",
                 },
+                type: "message",
                 message: "warning found secret: SECRET",
                 messageId: "message-id",
                 range: [8, 14],
@@ -29,6 +30,7 @@ export const results: SecretLintCoreResult[] = [
                 data: {
                     ID: "SECRET",
                 },
+                type: "message",
                 message: "error found secret: SECRET",
                 messageId: "message-id",
                 range: [8, 14],
@@ -49,6 +51,7 @@ export const results: SecretLintCoreResult[] = [
                 data: {
                     ID: "SECRET",
                 },
+                type: "message",
                 message: "error found secret: SECRET",
                 messageId: "message-id",
                 range: [8, 14],

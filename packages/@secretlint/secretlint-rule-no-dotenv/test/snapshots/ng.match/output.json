@@ -7,6 +7,7 @@
                 0,
                 8
             ],
+            "type": "message",
             "ruleId": "@secretlint/secretlint-rule-no-dotenv",
             "loc": {
                 "start": {

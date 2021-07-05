@@ -4,6 +4,7 @@ import { createMessageProcessor } from "./MessageProcessManager";
 import { filterDuplicatedMessages } from "./filter-duplicated-process";
 import { sortMessagesByLocation } from "./sort-messages-process";
 import { filterByAllowMessageIds } from "./filter-message-id";
+import { filterMaskSecretsData } from "./filter-mask-secrets";
 
 export type cleanupMessagesOptions = {
     reportedMessages: SecretLintCoreResultMessage[];
@@ -12,11 +13,13 @@ export type cleanupMessagesOptions = {
         ruleId: string;
         messageId: string;
     }[];
+    maskSecrets: boolean;
 };
 /**
- * Cleanup messages
+ * Post cleanup messages
  * - filter ignored range
  * - filter disabled message
+ * - [masSecrets] mask secrets message
  * - filter duplicated messages
  * - sort messages by range
  * @param options
@@ -24,6 +27,9 @@ export type cleanupMessagesOptions = {
 export const cleanupMessages = (options: cleanupMessagesOptions): SecretLintCoreResultMessage[] => {
     const reportedMessages = filterIgnoredMessages(options);
     const reportedMessagesWithoutAllowMessageIds = filterByAllowMessageIds(reportedMessages, options.allowMessageIds);
-    const filterProcess = createMessageProcessor([filterDuplicatedMessages]);
+    const filters = options.maskSecrets
+        ? [filterDuplicatedMessages, filterMaskSecretsData]
+        : [filterDuplicatedMessages];
+    const filterProcess = createMessageProcessor(filters);
     return sortMessagesByLocation(filterProcess.process(reportedMessagesWithoutAllowMessageIds));
 };

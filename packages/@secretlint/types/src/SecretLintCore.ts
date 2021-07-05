@@ -83,6 +83,7 @@ export type SecretLintCoreResult = {
     messages: SecretLintCoreResultMessage[];
 };
 export type SecretLintCoreResultMessage = {
+    type: "message";
     ruleId: string;
     ruleParentId?: string;
     message: string;
@@ -98,6 +99,7 @@ export type SecretLintCoreResultMessage = {
     data?: {};
 };
 export type SecretLintCoreIgnoreMessage = {
+    type: "ignore";
     ruleId: string;
     ruleParentId?: string;
     /**

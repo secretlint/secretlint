@@ -98,6 +98,7 @@ It is also possible to install Secretlint globally using `npm install --global`.
         --output           [path:String] output file path that is written of reported result.
         --no-color         disable ANSI-color of output.
         --no-terminalLink  disable terminalLink of output.
+        --maskSecrets      enable masking of secret values. replace actual secrets with "***".
         --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
         --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
     

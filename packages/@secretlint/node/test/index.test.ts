@@ -60,4 +60,29 @@ describe("createEngine", function () {
 `
         );
     });
+    it("should hide secret values when enable maskSecrets", async () => {
+        const engine = await createEngine({
+            color: false,
+            cwd: path.join(__dirname, "fixtures/valid-config"),
+            formatter: "stylish",
+            maskSecrets: true,
+        });
+        const filePath = path.join(__dirname, "fixtures/SECRET.txt");
+        const content = fs.readFileSync(filePath, "utf-8");
+        const result = await engine.executeOnContent({
+            content,
+            filePath,
+        });
+        assert.strictEqual(result.ok, false);
+        const normalizedOutput = normalizeFilePath(result.output);
+        assert.strictEqual(
+            normalizedOutput,
+            `
+[TEST_DIR]/fixtures/SECRET.txt
+  1:8  error  [EXAMPLE_MESSAGE] found secret: ******  @secretlint/secretlint-rule-example
+
+✖ 1 problem (1 error, 0 warnings)
+`
+        );
+    });
 });

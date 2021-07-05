@@ -22,6 +22,7 @@ export const cli = meow(
       --output           [path:String] output file path that is written of reported result.
       --no-color         disable ANSI-color of output.
       --no-terminalLink  disable terminalLink of output.
+      --maskSecrets      enable masking of secret values. replace actual secrets with "***".
       --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
       --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
 
@@ -75,6 +76,10 @@ export const cli = meow(
             terminalLink: {
                 type: "boolean",
                 default: true,
+            },
+            maskSecrets: {
+                type: "boolean",
+                default: false,
             },
             profile: {
                 type: "boolean",
@@ -132,6 +137,7 @@ export const run = (
                   color: flags.color,
                   terminalLink: flags.terminalLink,
                   locale: flags.locale,
+                  maskSecrets: flags.maskSecrets,
               }
             : {
                   configFilePath: flags.secretlintrc,
@@ -140,6 +146,7 @@ export const run = (
                   color: flags.color,
                   terminalLink: flags.terminalLink,
                   locale: flags.locale,
+                  maskSecrets: flags.maskSecrets,
               },
     }).finally(async () => {
         secretLintProfiler.mark({

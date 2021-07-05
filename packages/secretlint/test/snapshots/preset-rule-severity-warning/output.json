@@ -10,6 +10,7 @@
                         0,
                         906
                     ],
+                    "type": "message",
                     "ruleId": "@secretlint/secretlint-rule-privatekey",
                     "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
                     "loc": {

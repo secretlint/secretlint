@@ -7,6 +7,7 @@
                 48,
                 78
             ],
+            "type": "message",
             "ruleId": "@secretlint/secretlint-rule-slack",
             "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
             "loc": {
@@ -32,6 +33,7 @@
                 79,
                 109
             ],
+            "type": "message",
             "ruleId": "@secretlint/secretlint-rule-slack",
             "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
             "loc": {
@@ -57,6 +59,7 @@
                 110,
                 140
             ],
+            "type": "message",
             "ruleId": "@secretlint/secretlint-rule-slack",
             "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
             "loc": {

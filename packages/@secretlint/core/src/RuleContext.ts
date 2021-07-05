@@ -86,6 +86,7 @@ export const createRuleContext = ({
         ignore(descriptor: SecretLintCoreIgnoreDescriptor): void {
             const { message } = descriptor.message;
             contextEvents.ignore({
+                type: "ignore",
                 ruleId: ruleId,
                 ruleParentId,
                 range: descriptor.range,
@@ -101,6 +102,7 @@ export const createRuleContext = ({
             if (ruleParentId) {
                 contextEvents.report({
                     ...descriptor,
+                    type: "message",
                     ruleId: ruleId,
                     ruleParentId,
                     loc: sourceCode.rangeToLocation(descriptor.range),
@@ -113,6 +115,7 @@ export const createRuleContext = ({
             } else {
                 contextEvents.report({
                     ...descriptor,
+                    type: "message",
                     ruleId: ruleId,
                     loc: sourceCode.rangeToLocation(descriptor.range),
                     severity: severityLevel,
