@@ -165,6 +165,31 @@ This `allows` option define a list of [RegExp-like String](https://github.com/te
 }
 ```
 
+When you use a preset like `@secretlint/secretlint-rule-preset-recommend`, you need to put the option in `rules`.
+
+For example, an option for `@secretlint/secretlint-rule-preset-recommend > @secretlint/secretlint-rule-aws` 
+
+```json5
+{
+  "rules": [
+    {
+      "id": "@secretlint/secretlint-rule-preset-recommend",
+      "rules": [
+        {
+          "id": "@secretlint/secretlint-rule-aws",
+            "options": {
+              "allows": [
+	        // it's ok
+                "xxxx-xxxx-xxxx-xxxx-xxxx"
+              ]
+            }
+        }
+      ]
+    }
+  ]
+}
+```
+
 ### Example: `allowMessageIds`
 
 For example, you have got following error report by run `secretlint`:
@@ -188,6 +213,26 @@ If you want to ignore this error, please use `allowMessageIds`.
     {
       "id": "@secretlint/secretlint-rule-example",
       "allowMessageIds": ["EXAMPLE_MESSAGE"]
+    }
+  ]
+}
+```
+
+When you use a preset like `@secretlint/secretlint-rule-preset-recommend`, you need to put the option in `rules`.
+
+For example, If you want to ignore "AWSAccountID" and "AWSAccessKeyID" of "@secretlint/secretlint-rule-aws", you can write following.
+
+```json5
+{
+  "rules": [
+    {
+      "id": "@secretlint/secretlint-rule-preset-recommend",
+      "rules": [
+        {
+          "id": "@secretlint/secretlint-rule-aws",
+          "allowMessageIds": ["AWSAccountID", "AWSAccessKeyID"]
+        }
+      ]
     }
   ]
 }
