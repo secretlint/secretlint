@@ -44,6 +44,24 @@ Via `.secretlintrc.json`
 }
 ```
 
+If you want to ignore `"AWSAccountID"` and `"AWSAccessKeyID"` of `"@secretlint/secretlint-rule-aws"`, you can configure following.
+
+```json5
+{
+  "rules": [
+    {
+      "id": "@secretlint/secretlint-rule-preset-recommend",
+      "rules": [
+        {
+          "id": "@secretlint/secretlint-rule-aws",
+          "allowMessageIds": ["AWSAccountID", "AWSAccessKeyID"]
+        }
+      ]
+    }
+  ]
+}
+```
+
 ## Rules
 
 - [@secretlint/secretlint-rule-npm](https://www.npmjs.com/package/@secretlint/secretlint-rule-npm)
