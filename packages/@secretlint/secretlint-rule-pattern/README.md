@@ -20,8 +20,8 @@ Via `.secretlintrc.json`(Recommended)
       "options": {
         "patterns": [
           {
-            "name": "password=",
-            "pattern": "password\\s*=\\s*(?<password>[\\w\\d!@#$%^&(){}\\[\\]:\";'<>,.?\/~`_+-=|]{1,256})\\b.*"
+            "name": "password",
+            "pattern": "/password\\s*=\\s*(?<password>[\\w\\d!@#$%^&(){}\\[\\]:\";'<>,.?\/~`_+-=|]{1,256})\\b.*/"
           }
         ]
       }
