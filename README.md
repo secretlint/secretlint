@@ -435,8 +435,7 @@ npx mega-linter-runner --install
 
 ## Semantic Versioning Policy
 
-Secretlint project follow [Semantic Versioning](https://semver.org/ "Semantic Versioning") without [secretlint-rule-preset-canary](packages/@secretlint/secretlint-rule-preset-canary).
-However, secretlint is not different with most semver project.
+Secretlint project follow [Semantic Versioning](https://semver.org/ "Semantic Versioning")([secretlint-rule-preset-canary](packages/@secretlint/secretlint-rule-preset-canary) is exception).
 
 - Patch release (intended to not break your lint build)
     - A bug fix to the CLI or core (including formatters).
