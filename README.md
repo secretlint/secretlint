@@ -425,7 +425,7 @@ This configuration also integrate Pull Request review comment via [actions/setup
 
 [Mega-Linter](https://nvuillam.github.io/mega-linter/) is a linters aggregator natively compliant with any CI tool, embedding [80+ linting apps](https://nvuillam.github.io/mega-linter/supported-linters/), including [**secretlint**](https://nvuillam.github.io/mega-linter/descriptors/credentials_secretlint/) by default.
 
-You can [install](https://nvuillam.github.io/mega-linter/installation/) it on any repository project using the following command (node.js must be installed previously)
+You can [install](https://nvuillam.github.io/mega-linter/installation/) it on any repository project using the following command (Node.js must be installed previously)
 
 ```shell
 npx mega-linter-runner --install
