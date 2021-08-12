@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1628481263501,
+  "lastUpdate": 1628767939588,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -8928,6 +8928,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.7,
             "range": "±1.98%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "nicolas.vuillamy@gmail.com",
+            "name": "Nicolas Vuillamy",
+            "username": "nvuillam"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c9fc3d4a593c4ffe7b2d36e2febf527388240ee3",
+          "message": "docs: Add Mega-Linter in CI Integrations (#183)\n\n* docs: Add Mega-Linter in CI Integrations\r\n\r\nCo-authored-by: azu <azu@users.noreply.github.com>",
+          "timestamp": "2021-08-12T20:23:47+09:00",
+          "tree_id": "ae72b0499a8596a32463ad85f747e6cc694601a9",
+          "url": "https://github.com/secretlint/secretlint/commit/c9fc3d4a593c4ffe7b2d36e2febf527388240ee3"
+        },
+        "date": 1628767938613,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.81,
+            "range": "±1.14%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.6,
+            "range": "±2.02%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
