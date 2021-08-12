@@ -421,6 +421,18 @@ This configuration also integrate Pull Request review comment via [actions/setup
 - Example Repository: https://github.com/azu/secretlint-github-actions-example
 - Example Pull Request: https://github.com/azu/secretlint-github-actions-example/pull/1/files
 
+#### Mega-Linter
+
+[Mega-Linter](https://nvuillam.github.io/mega-linter/) is a linters aggregator natively compliant with any CI tool, embedding [80+ linting apps](https://nvuillam.github.io/mega-linter/supported-linters/), including [**secretlint**](https://nvuillam.github.io/mega-linter/descriptors/credentials_secretlint/) by default.
+
+You can [install](https://nvuillam.github.io/mega-linter/installation/) it on any repository project using the following command (node.js must be installed previously)
+
+```shell
+npx mega-linter-runner --install
+```
+
+![megalinter-secretlint-failure.png](./docs/assets/megalinter-secretlint-failure.png)
+
 ## Semantic Versioning Policy
 
 Secretlint project follow [Semantic Versioning](https://semver.org/ "Semantic Versioning") without [secretlint-rule-preset-canary](packages/@secretlint/secretlint-rule-preset-canary).
