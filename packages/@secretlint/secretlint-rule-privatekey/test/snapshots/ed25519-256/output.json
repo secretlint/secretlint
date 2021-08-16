@@ -2,10 +2,10 @@
     "filePath": "[SNAPSHOT]/ed25519-256/input",
     "messages": [
         {
-            "message": "found private key: -----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW\nQyNTUxOQAAACAxSChbEXO6DKOLpzlLEaypbXSwfRqlS8UnaSHWR8HaIgAAAKDFNoOuxTaD\nrgAAAAtzc2gtZWQyNTUxOQAAACAxSChbEXO6DKOLpzlLEaypbXSwfRqlS8UnaSHWR8HaIg\nAAAED60CTqztyUP+21tY2Y9nxeowVJMhYVkr/DK8x6i5mPTTFIKFsRc7oMo4unOUsRrKlt\ndLB9GqVLxSdpIdZHwdoiAAAAGGF6dUBBWi1NYWNCb29rLVByby5sb2NhbAECAwQF\n-----END OPENSSH PRIVATE KEY-----\n",
+            "message": "found private key: -----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW\nQyNTUxOQAAACAxSChbEXO6DKOLpzlLEaypbXSwfRqlS8UnaSHWR8HaIgAAAKDFNoOuxTaD\nrgAAAAtzc2gtZWQyNTUxOQAAACAxSChbEXO6DKOLpzlLEaypbXSwfRqlS8UnaSHWR8HaIg\nAAAED60CTqztyUP+21tY2Y9nxeowVJMhYVkr/DK8x6i5mPTTFIKFsRc7oMo4unOUsRrKlt\ndLB9GqVLxSdpIdZHwdoiAAAAGGF6dUBBWi1NYWNCb29rLVByby5sb2NhbAECAwQF\n-----END OPENSSH PRIVATE KEY-----",
             "range": [
                 0,
-                419
+                418
             ],
             "type": "message",
             "ruleId": "secretlint-rule-privatekey",
@@ -15,15 +15,15 @@
                     "column": 0
                 },
                 "end": {
-                    "line": 8,
-                    "column": 0
+                    "line": 7,
+                    "column": 33
                 }
             },
             "severity": "error",
             "messageId": "PrivateKey",
             "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-privatekey/README.md#PrivateKey",
             "data": {
-                "KEY": "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW\nQyNTUxOQAAACAxSChbEXO6DKOLpzlLEaypbXSwfRqlS8UnaSHWR8HaIgAAAKDFNoOuxTaD\nrgAAAAtzc2gtZWQyNTUxOQAAACAxSChbEXO6DKOLpzlLEaypbXSwfRqlS8UnaSHWR8HaIg\nAAAED60CTqztyUP+21tY2Y9nxeowVJMhYVkr/DK8x6i5mPTTFIKFsRc7oMo4unOUsRrKlt\ndLB9GqVLxSdpIdZHwdoiAAAAGGF6dUBBWi1NYWNCb29rLVByby5sb2NhbAECAwQF\n-----END OPENSSH PRIVATE KEY-----\n"
+                "KEY": "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW\nQyNTUxOQAAACAxSChbEXO6DKOLpzlLEaypbXSwfRqlS8UnaSHWR8HaIgAAAKDFNoOuxTaD\nrgAAAAtzc2gtZWQyNTUxOQAAACAxSChbEXO6DKOLpzlLEaypbXSwfRqlS8UnaSHWR8HaIg\nAAAED60CTqztyUP+21tY2Y9nxeowVJMhYVkr/DK8x6i5mPTTFIKFsRc7oMo4unOUsRrKlt\ndLB9GqVLxSdpIdZHwdoiAAAAGGF6dUBBWi1NYWNCb29rLVByby5sb2NhbAECAwQF\n-----END OPENSSH PRIVATE KEY-----"
             }
         }
     ]
