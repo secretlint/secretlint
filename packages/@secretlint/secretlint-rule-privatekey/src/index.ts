@@ -34,7 +34,7 @@ function reportIfFoundRawPrivateKey({
 }) {
     // Based on https://docs.cribl.io/docs/regexesyml
     const PRIVATE_KEY_PATTERN =
-        /-----BEGIN\s?(DSA|RSA|EC|PGP|OPENSSH|[A-Z]{2,16})?\s?PRIVATE KEY(\sBLOCK)?-----[\s\S]*/gm;
+        /-----BEGIN\s?(DSA|RSA|EC|PGP|OPENSSH|[A-Z]{2,16})?\s?PRIVATE KEY(\sBLOCK)?-----[\s\S]+-----/gm;
     const results = source.content.matchAll(PRIVATE_KEY_PATTERN);
     for (const result of results) {
         const index = result.index || 0;
