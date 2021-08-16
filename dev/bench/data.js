@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1628862111582,
+  "lastUpdate": 1629088255371,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -9042,6 +9042,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.62,
             "range": "±1.65%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f3226ca5190faad1b41b8690fc294fc824c20bae",
+          "message": "fix(privatekey): fix report range (#184)\n\n* fix(privatekey): fix report range\r\n\r\nshould report Private key range between ---- { key } -----\r\n\r\n* test: update snapshot",
+          "timestamp": "2021-08-16T13:27:59+09:00",
+          "tree_id": "85c9eccbed2100c821753b199ef2ceaf8b52c3f7",
+          "url": "https://github.com/secretlint/secretlint/commit/f3226ca5190faad1b41b8690fc294fc824c20bae"
+        },
+        "date": 1629088254083,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.89,
+            "range": "±2.45%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.66,
+            "range": "±2.83%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
