@@ -433,6 +433,20 @@ npx mega-linter-runner --install
 
 ![megalinter-secretlint-failure.png](./docs/assets/megalinter-secretlint-failure.png)
 
+### Browser
+
+[Secretlint WebExtension](https://github.com/secretlint/webextension) works on your browser.
+
+- Firefox: <https://addons.mozilla.org/ja/firefox/addon/secretlint/>
+- Chrome: <https://chrome.google.com/webstore/detail/secretlint/hidpojbnemkajlnibhmeilpgoddkjjkf>
+
+This web extension aim to founds credentials that are included in your request/response.
+
+![Secretlint WebExtension](https://raw.githubusercontent.com/secretlint/webextension/main/docs/screenshot.png)
+
+Secretlint WebExtension integrate to DevTools in Chrome/Firefox.
+This extension help web developer to notice exposed credential.
+
 ## Semantic Versioning Policy
 
 Secretlint project follow [Semantic Versioning](https://semver.org/ "Semantic Versioning")([secretlint-rule-preset-canary](packages/@secretlint/secretlint-rule-preset-canary) is exception).
