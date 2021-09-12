@@ -8,9 +8,18 @@ import {
 } from "@secretlint/types";
 import { secretLintProfiler } from "@secretlint/profiler";
 import { SecretLintModuleResolver } from "./SecretLintModuleResolver";
-import { moduleInterop } from "@textlint/module-interop";
 import { validateConfig, validateRawConfig } from "@secretlint/config-validator";
 
+export function moduleInterop<T>(moduleExports: T): T {
+    if (moduleExports && (moduleExports as any).__esModule) {
+        return (moduleExports as any).default?.default!;
+    }
+    return moduleExports && (moduleExports as any).default ? (moduleExports as any).default! : moduleExports;
+}
+
+// FIXME: https://github.com/microsoft/TypeScript/issues/43329
+// module: node12 will be replace it
+const _importDynamic = new Function("modulePath", "return import(modulePath)");
 export type SecretLintConfigLoaderOptions = {
     cwd?: string;
     configFilePath?: string;
@@ -89,16 +98,13 @@ export type SecretLintLoadPackagesFromRawConfigResult =
  * Load packages in RawConfig and return loaded config object
  * @param options
  */
-export const loadPackagesFromRawConfig = (
+export const loadPackagesFromRawConfig = async (
     options: SecretLintLoadPackagesFromRawConfigOptions
-): SecretLintLoadPackagesFromRawConfigResult => {
+): Promise<SecretLintLoadPackagesFromRawConfigResult> => {
     // Early validation, validate rawConfig by JSON Schema
     const resultValidateRawConfig = validateRawConfig(options.rawConfig);
     if (!resultValidateRawConfig.ok) {
-        return {
-            ok: false,
-            errors: [resultValidateRawConfig.error],
-        };
+        throw resultValidateRawConfig.error;
     }
     secretLintProfiler.mark({
         type: "@config-loader>resolve-modules::start",
@@ -109,7 +115,7 @@ export const loadPackagesFromRawConfig = (
     });
     const errors: Error[] = [];
     const rules: SecretLintCoreDescriptorUnionRule[] = [];
-    options.rawConfig.rules.forEach((configDescriptorRule) => {
+    for (const configDescriptorRule of options.rawConfig.rules) {
         try {
             secretLintProfiler.mark({
                 type: "@config-loader>resolve-module::start",
@@ -123,7 +129,7 @@ export const loadPackagesFromRawConfig = (
             // TODO: any to be remove
             const ruleModule: any = replacedDefinition
                 ? replacedDefinition.rule
-                : moduleInterop(require(moduleResolver.resolveRulePackageName(configDescriptorRule.id)));
+                : moduleInterop(await _importDynamic(moduleResolver.resolveRulePackageName(configDescriptorRule.id)));
             const secretLintConfigDescriptorRules: SecretLintCoreDescriptorRule[] | undefined =
                 "rules" in configDescriptorRule && Array.isArray(configDescriptorRule.rules)
                     ? (configDescriptorRule.rules.filter(
@@ -147,15 +153,14 @@ export const loadPackagesFromRawConfig = (
         } catch (error) {
             errors.push(error);
         }
-    });
+    }
     secretLintProfiler.mark({
         type: "@config-loader>resolve-modules::end",
     });
     if (errors.length > 0) {
-        return {
-            ok: false,
-            errors,
-        };
+        const error = new Error("secretlint loading errors");
+        (error as any).errors = errors;
+        throw error;
     }
     const loadedConfig: SecretLintCoreDescriptor = {
         sharedOptions: options.rawConfig.sharedOptions,
@@ -165,10 +170,7 @@ export const loadPackagesFromRawConfig = (
     // This validator require actual `rule` creator for `disabledMessage` option.
     const resultValidateConfig = validateConfig(loadedConfig);
     if (!resultValidateConfig.ok) {
-        return {
-            ok: false,
-            errors: [resultValidateConfig.error],
-        };
+        throw resultValidateConfig.error;
     }
     return {
         ok: true,
@@ -179,7 +181,7 @@ export const loadPackagesFromRawConfig = (
  *  Load config file and return config object that is loaded rule instance.
  * @param options
  */
-export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintConfigLoaderResult => {
+export const loadConfig = async (options: SecretLintConfigLoaderOptions): Promise<SecretLintConfigLoaderResult> => {
     secretLintProfiler.mark({
         type: "@config-loader>load-config-file::start",
     });
@@ -196,7 +198,7 @@ export const loadConfig = (options: SecretLintConfigLoaderOptions): SecretLintCo
     secretLintProfiler.mark({
         type: "@config-loader>load-packages::start",
     });
-    const result = loadPackagesFromRawConfig({
+    const result = await loadPackagesFromRawConfig({
         rawConfig: rawResult.rawConfig,
         node_moduleDir: options.node_moduleDir,
         testReplaceDefinitions: options.testReplaceDefinitions,

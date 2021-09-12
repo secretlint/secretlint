@@ -14,8 +14,8 @@ const removeUndefined = (o: { [index: string]: any }) => {
     return o;
 };
 describe("@secretlint/config-loader", function () {
-    it("should load .secretlintrc.json", () => {
-        const config = loadConfig({
+    it("should load .secretlintrc.json", async () => {
+        const config = await loadConfig({
             cwd: path.join(__dirname, "fixtures/valid-config"),
             node_moduleDir: path.join(__dirname, "fixtures/valid-config"),
         });
@@ -40,8 +40,8 @@ describe("@secretlint/config-loader", function () {
             })
         );
     });
-    it("should return errors if rule module is not found in .secretlintrc.json", () => {
-        const config = loadConfig({
+    it("should return errors if rule module is not found in .secretlintrc.json", async () => {
+        const config = await loadConfig({
             cwd: path.join(__dirname, "fixtures/missing-rule-config"),
         });
         assert.strictEqual(config.ok, false);
@@ -49,8 +49,8 @@ describe("@secretlint/config-loader", function () {
             assert.strictEqual(config.errors.length, 1);
         }
     });
-    it("should return errors if .secretlintrc.json is invalid format", () => {
-        const config = loadConfig({
+    it("should return errors if .secretlintrc.json is invalid format", async () => {
+        const config = await loadConfig({
             cwd: path.join(__dirname, "fixtures/invalid-config"),
         });
         assert.strictEqual(config.ok, false);

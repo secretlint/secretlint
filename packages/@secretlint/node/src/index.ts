@@ -184,14 +184,14 @@ export const createEngine = async (options: SecretLintEngineOptions) => {
     secretLintProfiler.mark({
         type: "@node>load-config::start",
     });
-    const loadedResult = (() => {
+    const loadedResult = await (async () => {
         if (isConfigFileJSON(options)) {
             debug("Load ConfigFileJSON: %s", options.configFileJSON);
             return loadPackagesFromRawConfig({
                 rawConfig: options.configFileJSON,
             });
         }
-        const loadConfigResult = loadConfig({
+        const loadConfigResult = await loadConfig({
             cwd: options.cwd,
             configFilePath: options.configFilePath,
         });
