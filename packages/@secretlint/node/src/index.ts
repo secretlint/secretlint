@@ -202,7 +202,7 @@ export const createEngine = async (options: SecretLintEngineOptions) => {
         type: "@node>load-config::end",
     });
     if (!loadedResult.ok) {
-        throw new Error(loadedResult.errors.map((error) => error.stack).join("\n\n"));
+        throw new Error("Fail to load secretlint config");
     }
     debug("Config: %O", loadedResult.config);
     return {
