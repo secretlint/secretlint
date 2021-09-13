@@ -48,30 +48,17 @@ export type SecretLintConfigLoaderOptions = {
         rule: SecretLintUnionRuleCreator;
     }[];
 };
-export type SecretLintConfigLoaderResult =
-    | {
-          ok: true;
-          config: SecretLintCoreDescriptor; // Core Option object
-          configFilePath: string;
-      }
-    | {
-          // load config error
-          ok: false;
-          configFilePath?: string;
-          rawConfig?: SecretLintConfigDescriptor; // Config Raw object
-          errors: Error[];
-      };
+export type SecretLintConfigLoaderResult = {
+    ok: true;
+    config: SecretLintCoreDescriptor; // Core Option object
+    configFilePath: string;
+};
 
-export type SecretLintConfigLoaderRawResult =
-    | {
-          ok: true;
-          configFilePath: string;
-          rawConfig: SecretLintConfigDescriptor; // Config Raw object
-      }
-    | {
-          ok: false;
-          errors: Error[];
-      };
+export type SecretLintConfigLoaderRawResult = {
+    ok: true;
+    configFilePath: string;
+    rawConfig: SecretLintConfigDescriptor; // Config Raw object
+};
 export type SecretLintLoadPackagesFromRawConfigOptions = {
     /**
      * Loaded config object
@@ -92,16 +79,10 @@ export type SecretLintLoadPackagesFromRawConfigOptions = {
         rule: SecretLintUnionRuleCreator;
     }[];
 };
-export type SecretLintLoadPackagesFromRawConfigResult =
-    | {
-          ok: true;
-          config: SecretLintCoreDescriptor; // Core Option object
-      }
-    | {
-          // load config error
-          ok: false;
-          errors: Error[];
-      };
+export type SecretLintLoadPackagesFromRawConfigResult = {
+    ok: true;
+    config: SecretLintCoreDescriptor; // Core Option object
+};
 
 /**
  * Load packages in RawConfig and return loaded config object
@@ -196,9 +177,6 @@ export const loadConfig = async (options: SecretLintConfigLoaderOptions): Promis
     secretLintProfiler.mark({
         type: "@config-loader>load-config-file::end",
     });
-    if (!rawResult.ok) {
-        throw new AggregateError(rawResult.errors, "secretlint loading raw config error");
-    }
     secretLintProfiler.mark({
         type: "@config-loader>load-packages::start",
     });
@@ -210,9 +188,6 @@ export const loadConfig = async (options: SecretLintConfigLoaderOptions): Promis
     secretLintProfiler.mark({
         type: "@config-loader>load-packages::end",
     });
-    if (!result.ok) {
-        throw new AggregateError(result.errors, "secretlint loading raw config error at " + rawResult.configFilePath);
-    }
     return {
         ok: true,
         config: result.config,
