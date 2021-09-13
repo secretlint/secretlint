@@ -17,6 +17,15 @@ export function moduleInterop<T>(moduleExports: T): T {
     return moduleExports && (moduleExports as any).default ? (moduleExports as any).default! : moduleExports;
 }
 
+export class AggregateError extends Error {
+    errors: Error[];
+
+    constructor(errors: Error[], message: string) {
+        super(message);
+        this.errors = errors;
+    }
+}
+
 // FIXME: https://github.com/microsoft/TypeScript/issues/43329
 // module: node12 will be replace it
 const _importDynamic = new Function("modulePath", "return import(modulePath)");
@@ -158,9 +167,7 @@ export const loadPackagesFromRawConfig = async (
         type: "@config-loader>resolve-modules::end",
     });
     if (errors.length > 0) {
-        const error = new Error("secretlint loading errors");
-        (error as any).errors = errors;
-        throw error;
+        throw new AggregateError(errors, "secretlint loading errors");
     }
     const loadedConfig: SecretLintCoreDescriptor = {
         sharedOptions: options.rawConfig.sharedOptions,
@@ -185,15 +192,12 @@ export const loadConfig = async (options: SecretLintConfigLoaderOptions): Promis
     secretLintProfiler.mark({
         type: "@config-loader>load-config-file::start",
     });
-    const rawResult = loadRawConfig(options);
+    const rawResult = await loadRawConfig(options);
     secretLintProfiler.mark({
         type: "@config-loader>load-config-file::end",
     });
     if (!rawResult.ok) {
-        return {
-            ok: false,
-            errors: rawResult.errors,
-        };
+        throw new AggregateError(rawResult.errors, "secretlint loading raw config error");
     }
     secretLintProfiler.mark({
         type: "@config-loader>load-packages::start",
@@ -207,11 +211,7 @@ export const loadConfig = async (options: SecretLintConfigLoaderOptions): Promis
         type: "@config-loader>load-packages::end",
     });
     if (!result.ok) {
-        return {
-            ok: false,
-            configFilePath: rawResult.configFilePath,
-            errors: result.errors,
-        };
+        throw new AggregateError(result.errors, "secretlint loading raw config error at " + rawResult.configFilePath);
     }
     return {
         ok: true,
@@ -224,36 +224,26 @@ export const loadConfig = async (options: SecretLintConfigLoaderOptions): Promis
  *  It is just JSON present for config file. Raw data
  * @param options
  */
-export const loadRawConfig = (options: SecretLintConfigLoaderOptions): SecretLintConfigLoaderRawResult => {
-    try {
-        const results = rcFile<SecretLintConfigDescriptor>("secretlint", {
-            cwd: options.cwd,
-            configFileName: options.configFilePath,
-            packageJSON: {
-                fieldName: "secretlint",
-            },
-        });
-        // Not Found
-        if (!results) {
-            return {
-                ok: false,
-                errors: [
-                    new Error(`secretlint config is not found
+export const loadRawConfig = async (
+    options: SecretLintConfigLoaderOptions
+): Promise<SecretLintConfigLoaderRawResult> => {
+    const results = rcFile<SecretLintConfigDescriptor>("secretlint", {
+        cwd: options.cwd,
+        configFileName: options.configFilePath,
+        packageJSON: {
+            fieldName: "secretlint",
+        },
+    });
+    // Not Found
+    if (!results) {
+        throw new Error(`secretlint config is not found
                 
 Secrelint require .secretlintrc config file.
-The config file define the use of rules.`),
-                ],
-            };
-        }
-        return {
-            ok: true,
-            rawConfig: results.config,
-            configFilePath: results.filePath,
-        };
-    } catch (error) {
-        return {
-            ok: false,
-            errors: [error],
-        };
+The config file define the use of rules.`);
     }
+    return {
+        ok: true,
+        rawConfig: results.config,
+        configFilePath: results.filePath,
+    };
 };
