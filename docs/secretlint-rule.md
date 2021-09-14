@@ -31,8 +31,11 @@ export const messages = {
     }
 };
 
+// export named `creator`
 export const creator: SecretLintRuleCreator = {
+    // required `messages` property
     messages,
+    // meta object for rule
     meta: {
         // rule.meta.id should be same with package.json name
         id: "@secretlint/secretlint-rule-example",
@@ -73,8 +76,6 @@ export const creator: SecretLintRuleCreator = {
         };
     }
 };
-// export it as default
-export default creator;
 ```
 
 ### Test: `@secretlint/secretlint-rule-example`
@@ -89,9 +90,9 @@ It is template for testing.
 `test/index.test.ts`
 
 ```ts
-import { snapshot } from "@secretlint/tester";
 import path from "path";
-import rule from "../src/index";
+import { snapshot } from "@secretlint/tester";
+import { creator as rule } from "../src/index";
 
 describe("@secretlint/secretlint-rule-basicauth", () => {
     snapshot({

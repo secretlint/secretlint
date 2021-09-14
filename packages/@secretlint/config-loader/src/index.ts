@@ -5,16 +5,20 @@ import {
     SecretLintCoreDescriptorRule,
     SecretLintCoreDescriptorUnionRule,
     SecretLintUnionRuleCreator,
+    SecretLintRuleModule,
 } from "@secretlint/types";
 import { secretLintProfiler } from "@secretlint/profiler";
 import { SecretLintModuleResolver } from "./SecretLintModuleResolver";
 import { validateConfig, validateRawConfig } from "@secretlint/config-validator";
 
-export function moduleInterop<T>(moduleExports: T): T {
-    if (moduleExports && (moduleExports as any).__esModule) {
-        return (moduleExports as any).default?.default!;
+export function importSecretlintCreator(moduleExports?: SecretLintRuleModule): SecretLintUnionRuleCreator {
+    if (!moduleExports) {
+        throw new Error("Secretlint rule should export { creator }. module is undefined");
     }
-    return moduleExports && (moduleExports as any).default ? (moduleExports as any).default! : moduleExports;
+    if (!("creator" in moduleExports)) {
+        throw new Error("Secretlint rule should export { creator }. module does not export creator object.");
+    }
+    return moduleExports.creator;
 }
 
 export class AggregateError extends Error {
@@ -118,9 +122,10 @@ export const loadPackagesFromRawConfig = async (
                     return id === configDescriptorRule.id;
                 });
             // TODO: any to be remove
+            const moduleExports = await _importDynamic(moduleResolver.resolveRulePackageName(configDescriptorRule.id));
             const ruleModule: any = replacedDefinition
                 ? replacedDefinition.rule
-                : moduleInterop(await _importDynamic(moduleResolver.resolveRulePackageName(configDescriptorRule.id)));
+                : importSecretlintCreator(moduleExports);
             const secretLintConfigDescriptorRules: SecretLintCoreDescriptorRule[] | undefined =
                 "rules" in configDescriptorRule && Array.isArray(configDescriptorRule.rules)
                     ? (configDescriptorRule.rules.filter(
