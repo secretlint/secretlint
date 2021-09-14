@@ -405,7 +405,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 14
       - name: Install

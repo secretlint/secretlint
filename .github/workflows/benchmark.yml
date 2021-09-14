@@ -18,7 +18,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v2
       - name: setup Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install
@@ -33,8 +33,6 @@ jobs:
           name: Secretlint benchmark
           tool: 'benchmarkjs'
           output-file-path: examples/benchmark/output.txt
-          # Use "bot-user" token
-          github-token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
           auto-push: true
           # Show alert with commit comment on detecting possible performance regression
           alert-threshold: '200%'
