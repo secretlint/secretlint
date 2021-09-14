@@ -15,11 +15,6 @@
     },
     "license": "MIT",
     "author": "azu",
-    "files": [
-        "bin/",
-        "lib/",
-        "src/"
-    ],
     "main": "lib/node.js",
     "browser": "lib/browser.js",
     "types": "lib/node.d.ts",
@@ -27,6 +22,11 @@
         "lib": "lib",
         "test": "test"
     },
+    "files": [
+        "bin/",
+        "lib/",
+        "src/"
+    ],
     "scripts": {
         "build": "cross-env NODE_ENV=production tsc -p .",
         "clean": "rimraf lib/",

@@ -7,7 +7,7 @@
     "newLine": "LF",
     "noEmit": true,
     "rootDir": "./src",
-    "target": "es2015",
+    "target": "ES2018",
     "sourceMap": true,
     "jsx": "preserve",
     "lib": [

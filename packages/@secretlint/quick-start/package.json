@@ -17,12 +17,6 @@
     },
     "license": "MIT",
     "author": "azu",
-    "files": [
-        "bin/",
-        "lib/",
-        "src/",
-        "config/"
-    ],
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
     "bin": {
@@ -32,6 +26,12 @@
         "lib": "lib",
         "test": "test"
     },
+    "files": [
+        "bin/",
+        "lib/",
+        "src/",
+        "config/"
+    ],
     "scripts": {
         "build": "cross-env NODE_ENV=production tsc -p .",
         "clean": "rimraf lib/",
@@ -58,6 +58,9 @@
         "prettier": "^2.3.1",
         "rimraf": "^3.0.2",
         "typescript": "^4.3.4"
+    },
+    "engines": {
+        "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
     },
     "publishConfig": {
         "access": "public"
