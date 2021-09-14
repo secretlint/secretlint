@@ -1,6 +1,6 @@
 import { snapshot } from "@secretlint/tester";
 import path from "path";
-import rule from "../src/index";
+import { creator as rule } from "../src/index";
 
 describe("@secretlint/secretlint-rule-no-k8s-kind-secret", () => {
     snapshot({

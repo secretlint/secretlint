@@ -1,7 +1,6 @@
 import path from "path";
 import assert from "assert";
-import { loadConfig } from "../src";
-import { moduleInterop } from "@textlint/module-interop";
+import { loadConfig, importSecretlintCreator } from "../src";
 import { SecretLintCoreDescriptorUnionRule } from "@secretlint/types";
 
 const removeUndefined = (o: { [index: string]: any }) => {
@@ -28,11 +27,11 @@ describe("@secretlint/config-loader", function () {
                     rules: [
                         {
                             id: "example",
-                            rule: moduleInterop(require("@secretlint/secretlint-rule-example")),
+                            rule: importSecretlintCreator(require("@secretlint/secretlint-rule-example")),
                         },
                         {
                             id: "example-2",
-                            rule: moduleInterop(require("@secretlint/secretlint-rule-example")),
+                            rule: importSecretlintCreator(require("@secretlint/secretlint-rule-example")),
                             disabled: true,
                         },
                     ],

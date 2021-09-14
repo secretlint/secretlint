@@ -44,5 +44,3 @@ export const creator: SecretLintRuleCreator = {
         };
     },
 };
-
-export default creator;

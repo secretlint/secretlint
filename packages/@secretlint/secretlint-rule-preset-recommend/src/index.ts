@@ -1,12 +1,12 @@
 import { SecretLintRulePresetCreator } from "@secretlint/types";
-import ruleAWS from "@secretlint/secretlint-rule-aws";
-import ruleGCP from "@secretlint/secretlint-rule-gcp";
-import ruleNpm from "@secretlint/secretlint-rule-npm";
-import ruleSlack from "@secretlint/secretlint-rule-slack";
-import ruleBasicAuth from "@secretlint/secretlint-rule-basicauth";
-import rulePrivateKey from "@secretlint/secretlint-rule-privatekey";
-import ruleSendgrid from "@secretlint/secretlint-rule-sendgrid";
-import ruleGitHub from "@secretlint/secretlint-rule-github";
+import { creator as ruleAWS } from "@secretlint/secretlint-rule-aws";
+import { creator as ruleGCP } from "@secretlint/secretlint-rule-gcp";
+import { creator as ruleNpm } from "@secretlint/secretlint-rule-npm";
+import { creator as ruleSlack } from "@secretlint/secretlint-rule-slack";
+import { creator as ruleBasicAuth } from "@secretlint/secretlint-rule-basicauth";
+import { creator as rulePrivateKey } from "@secretlint/secretlint-rule-privatekey";
+import { creator as ruleSendgrid } from "@secretlint/secretlint-rule-sendgrid";
+import { creator as ruleGitHub } from "@secretlint/secretlint-rule-github";
 
 export const rules = [ruleAWS, ruleGCP, rulePrivateKey, ruleNpm, ruleBasicAuth, ruleSlack, ruleSendgrid, ruleGitHub];
 export type Options = {};
@@ -23,4 +23,3 @@ export const creator: SecretLintRulePresetCreator<Options> = {
         });
     },
 };
-export default creator;

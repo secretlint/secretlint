@@ -37,4 +37,3 @@ export const creator = {
         };
     }
 };
-export default creator;
