@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1629372964255,
+  "lastUpdate": 1631619467293,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -9118,6 +9118,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.6,
             "range": "±1.80%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "590c3339f2f10ffeaf2b6d1084f9a907466d7453",
+          "message": "feat(config-loader): support a rule written by ESM (#187)\n\n* feat(config-loader): support a rule written by ESM\r\n\r\n* test: fix test\r\n\r\n* chore: remove unused ok:false type\r\n\r\n* fix: error handling\r\n\r\n* fix: add error message\r\n\r\n* fix(tester): do not load when does not exist .secretlintrc\r\n\r\n* test: add ESM loading rule",
+          "timestamp": "2021-09-14T20:34:27+09:00",
+          "tree_id": "f90c6fbe9549b536cff2c13cdb8e635717631912",
+          "url": "https://github.com/secretlint/secretlint/commit/590c3339f2f10ffeaf2b6d1084f9a907466d7453"
+        },
+        "date": 1631619465924,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.73,
+            "range": "±1.33%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.6,
+            "range": "±2.84%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
