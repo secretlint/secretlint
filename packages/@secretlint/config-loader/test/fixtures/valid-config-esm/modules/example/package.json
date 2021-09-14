@@ -1,0 +1,8 @@
+{
+  "name": "example",
+  "main": "index.mjs",
+  "type": "module",
+  "exports": {
+    "import": "example.mjs"
+  }
+}

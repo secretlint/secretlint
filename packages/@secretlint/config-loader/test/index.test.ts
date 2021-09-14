@@ -2,6 +2,7 @@ import path from "path";
 import assert from "assert";
 import { loadConfig } from "../src";
 import { moduleInterop } from "@textlint/module-interop";
+import { SecretLintCoreDescriptorUnionRule } from "@secretlint/types";
 
 const removeUndefined = (o: { [index: string]: any }) => {
     for (let key in o) {
@@ -39,6 +40,17 @@ describe("@secretlint/config-loader", function () {
                 configFilePath: path.join(__dirname, "fixtures/valid-config/.secretlintrc.json"),
             })
         );
+    });
+    it("should load .secretlintrc.json with ESM rule", async () => {
+        const config = await loadConfig({
+            cwd: path.join(__dirname, "fixtures/valid-config-esm"),
+            node_moduleDir: path.join(__dirname, "fixtures/valid-config-esm/modules"),
+        });
+        const rule = config.config.rules[0] as SecretLintCoreDescriptorUnionRule;
+        assert.strictEqual(rule.id, "example");
+        assert.strictEqual(typeof rule.rule, "object");
+        assert.strictEqual(typeof rule.rule.create, "function");
+        assert.strictEqual(typeof rule.rule.meta, "object");
     });
     it("should return errors if rule module is not found in .secretlintrc.json", async () => {
         return loadConfig({
