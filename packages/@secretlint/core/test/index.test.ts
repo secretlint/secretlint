@@ -1,7 +1,7 @@
 import assert from "assert";
 import { lintSource } from "../src";
 import { SecretLintRawSource } from "@secretlint/types";
-import example from "./fixtures/secretlint-rule-example";
+import { creator as example } from "./fixtures/secretlint-rule-example";
 import { assertJsonEqual } from "assert-json-equal";
 
 describe("lintSource", function () {

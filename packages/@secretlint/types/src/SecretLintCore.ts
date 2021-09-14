@@ -72,7 +72,10 @@ export type SecretLintUnionRuleCreator<Options = SecretLintRuleCreatorOptions | 
 export type SecretLintCoreDescriptorUnionRule<
     Options = SecretLintRuleCreatorOptions | SecretLintRulePresetCreatorOptions
 > = SecretLintCoreDescriptorRule<Options> | SecretLintCoreDescriptorRulePreset<Options>;
-
+// module export named `creator`
+export type SecretLintRuleModule = {
+    creator: SecretLintUnionRuleCreator;
+};
 export type SecretLintCoreDescriptor = {
     sharedOptions?: SecretlintCoreSharedOptions;
     rules: SecretLintCoreDescriptorUnionRule[];

@@ -46,7 +46,6 @@
         "@secretlint/config-validator": "^3.3.0",
         "@secretlint/profiler": "^3.1.0",
         "@secretlint/types": "^3.3.0",
-        "@textlint/module-interop": "^1.0.2",
         "debug": "^4.1.1",
         "rc-config-loader": "^3.0.0",
         "try-resolve": "^1.0.1"
