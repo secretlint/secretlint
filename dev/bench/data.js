@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1631619467293,
+  "lastUpdate": 1631627615508,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -9156,6 +9156,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.6,
             "range": "±2.84%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "0d75bd15b438a6341aa50e104ce609da5d097f31",
+          "message": "fix(config-loader)!: secretlint rule should `export { creator }` (#191)\n\n* fix(config-loader)!: secretlint should export `creator`\r\n\r\n* refactor: remove default export and use import { creator }\r\n\r\n* chore: fix import rules in preset\r\n\r\n* test: fix test\r\n\r\n* chore: move to original\r\n\r\n* docs: Update secreltint-rule.md",
+          "timestamp": "2021-09-14T22:50:19+09:00",
+          "tree_id": "8754117c8b01150a639fce6e2d61bee4e08a47f0",
+          "url": "https://github.com/secretlint/secretlint/commit/0d75bd15b438a6341aa50e104ce609da5d097f31"
+        },
+        "date": 1631627614111,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.69,
+            "range": "±2.72%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.6,
+            "range": "±2.76%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
