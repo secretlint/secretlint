@@ -16,9 +16,22 @@ This secretllint rule just do following:
 
 - Found `"secret"` word and report it
 
-Implementation(TypeScript version):
+Implementation:
 
-- `@secretlint/types` package includes type definition for secretlint rule
+- A rule should export `creator` object
+  - `messages`: MessageIds
+  - `meta`: meta information for the rule
+    - `id`: `id` should be equal to `package.json`'s `name`
+    - `recommended`(optional): recommended to use 
+    - `type`: `"scanner"`
+    - `supportedContentTypes`: "text" or "binary" or "all"
+      - If specified `["text"]`, secretlint pass the content of text to the rule. 
+      - In other words, secretlint does not pass binary content
+    - `docs`
+      - `url`: document base url. secretlint show `{docs.url}#{MessageId}` in results.
+  - `create`: main logic of the rule
+
+`@secretlint/types` package includes type definition for secretlint rule.
 
 ```ts
 import { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
