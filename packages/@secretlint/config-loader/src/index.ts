@@ -122,10 +122,11 @@ export const loadPackagesFromRawConfig = async (
                     return id === configDescriptorRule.id;
                 });
             // TODO: any to be remove
-            const moduleExports = await _importDynamic(moduleResolver.resolveRulePackageName(configDescriptorRule.id));
             const ruleModule: any = replacedDefinition
                 ? replacedDefinition.rule
-                : importSecretlintCreator(moduleExports);
+                : importSecretlintCreator(
+                      await _importDynamic(moduleResolver.resolveRulePackageName(configDescriptorRule.id))
+                  );
             const secretLintConfigDescriptorRules: SecretLintCoreDescriptorRule[] | undefined =
                 "rules" in configDescriptorRule && Array.isArray(configDescriptorRule.rules)
                     ? (configDescriptorRule.rules.filter(
