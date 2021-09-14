@@ -1,4 +1,4 @@
-import { snapshot } from "@secretlint/tester";
+import { snapshot } from "../src";
 import path from "path";
 import rule from "./fixtures/secretlint-rule-example";
 

@@ -2,6 +2,7 @@ import path from "path";
 import assert from "assert";
 import { loadConfig } from "../src";
 import { moduleInterop } from "@textlint/module-interop";
+import { SecretLintCoreDescriptorUnionRule } from "@secretlint/types";
 
 const removeUndefined = (o: { [index: string]: any }) => {
     for (let key in o) {
@@ -14,8 +15,8 @@ const removeUndefined = (o: { [index: string]: any }) => {
     return o;
 };
 describe("@secretlint/config-loader", function () {
-    it("should load .secretlintrc.json", () => {
-        const config = loadConfig({
+    it("should load .secretlintrc.json", async () => {
+        const config = await loadConfig({
             cwd: path.join(__dirname, "fixtures/valid-config"),
             node_moduleDir: path.join(__dirname, "fixtures/valid-config"),
         });
@@ -40,28 +41,38 @@ describe("@secretlint/config-loader", function () {
             })
         );
     });
-    it("should return errors if rule module is not found in .secretlintrc.json", () => {
-        const config = loadConfig({
-            cwd: path.join(__dirname, "fixtures/missing-rule-config"),
+    it("should load .secretlintrc.json with ESM rule", async () => {
+        const config = await loadConfig({
+            cwd: path.join(__dirname, "fixtures/valid-config-esm"),
+            node_moduleDir: path.join(__dirname, "fixtures/valid-config-esm/modules"),
         });
-        assert.strictEqual(config.ok, false);
-        if (!config.ok) {
-            assert.strictEqual(config.errors.length, 1);
-        }
+        const rule = config.config.rules[0] as SecretLintCoreDescriptorUnionRule;
+        assert.strictEqual(rule.id, "example");
+        assert.strictEqual(typeof rule.rule, "object");
+        assert.strictEqual(typeof rule.rule.create, "function");
+        assert.strictEqual(typeof rule.rule.meta, "object");
     });
-    it("should return errors if .secretlintrc.json is invalid format", () => {
-        const config = loadConfig({
+    it("should return errors if rule module is not found in .secretlintrc.json", async () => {
+        return loadConfig({
+            cwd: path.join(__dirname, "fixtures/missing-rule-config"),
+        })
+            .then(() => assert.fail("should not be called"))
+            .catch((error: unknown) => {
+                assert.ok(error instanceof Error);
+            });
+    });
+    it("should return errors if .secretlintrc.json is invalid format", async () => {
+        return loadConfig({
             cwd: path.join(__dirname, "fixtures/invalid-config"),
-        });
-        assert.strictEqual(config.ok, false);
-        if (!config.ok) {
-            assert.strictEqual(config.errors.length, 1);
-            assert.ok(
-                config.errors[0].message.includes(
-                    `secretlintrc.rules[0] should have required property 'id', secretlintrc.rules[0] should have required property 'id', secretlintrc.rules[0] should match some schema in anyOf`
-                ),
-                config.errors[0].message
-            );
-        }
+        })
+            .then(() => assert.fail("should not be called"))
+            .catch((error: Error) => {
+                assert.ok(
+                    error.message.includes(
+                        `secretlintrc.rules[0] should have required property 'id', secretlintrc.rules[0] should have required property 'id', secretlintrc.rules[0] should match some schema in anyOf`
+                    ),
+                    error.message
+                );
+            });
     });
 });

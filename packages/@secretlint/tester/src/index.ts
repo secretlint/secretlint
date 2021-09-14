@@ -123,7 +123,7 @@ export const snapshot = (options: SnapshotOptions) => {
                             throw new Error(`Not found input file in ${fixtureDir}`);
                         }
                         const actualFilePath = path.join(fixtureDir, actualFileName);
-                        const loadedConfig = await (secretlintrcFilePath
+                        const loadedConfig = await (fs.existsSync(secretlintrcFilePath)
                             ? loadConfig({
                                   configFilePath: secretlintrcFilePath,
                                   testReplaceDefinitions: testDefinitions,
