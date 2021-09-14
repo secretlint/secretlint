@@ -1,7 +1,7 @@
 {
-    "private": true,
     "name": "@secretlint/example-cli",
     "version": "3.3.0",
+    "private": true,
     "description": "",
     "homepage": "https://github.com/secretlint/secretlint/tree/master/examples/cli/",
     "bugs": {
@@ -13,16 +13,16 @@
     },
     "license": "MIT",
     "author": "azu",
-    "files": [
-        "bin/",
-        "lib/",
-        "src/"
-    ],
     "main": "lib/cli.js",
     "directories": {
         "lib": "lib",
         "test": "test"
     },
+    "files": [
+        "bin/",
+        "lib/",
+        "src/"
+    ],
     "scripts": {
         "test": "expected-exit-status 1 --command 'secretlint \"**/*\"'"
     },
