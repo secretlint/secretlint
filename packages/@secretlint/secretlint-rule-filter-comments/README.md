@@ -1,26 +1,16 @@
-# @secretlint/secretlint-rule-example
+# @secretlint/secretlint-rule-filter-comments
 
-An example rule for secretlint. It is for testing.
-
-ALWAYS MATCH "SECRET" string.
+secretlint-disable comment features
 
 ## Install
 
 Install with [npm](https://www.npmjs.com/):
 
-    npm install @secretlint/secretlint-rule-example
+    npm install @secretlint/secretlint-rule-filter-comments
 
-## MessageIDs
+## Usage
 
-### EXAMPLE_MESSAGE
-> found secret: {{ID}}
-
-An example error message.
-
-## Options
-
-- `allows: string[]`
-    - Allows a list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string)
+- [ ] Write usage instructions
 
 ## Changelog
 
@@ -28,7 +18,9 @@ See [Releases page](https://github.com/secretlint/secretlint/releases).
 
 ## Running tests
 
-No Test to avoid Dependency cycles.
+Install devDependencies and Run `npm test`:
+
+    npm test
 
 ## Contributing
 
@@ -44,8 +36,7 @@ For bugs and feature requests, [please create an issue](https://github.com/secre
 
 ## Author
 
-- [github/azu](https://github.com/azu)
-- [twitter/azu_re](https://twitter.com/azu_re)
+- azu: [GitHub](https://github.com/azu), [Twitter](https://twitter.com/azu_re)
 
 ## License
 

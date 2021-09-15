@@ -1,0 +1,70 @@
+{
+  "name": "@secretlint/secretlint-rule-filter-comments",
+  "version": "1.0.0",
+  "description": "secretlint-disable comment features",
+  "keywords": [
+    "secretlint",
+    "filter",
+    "rule",
+    "comment",
+    "disable"
+  ],
+  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-filter-comments/",
+  "bugs": {
+    "url": "https://github.com/secretlint/secretlint/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/secretlint/secretlint.git"
+  },
+  "license": "MIT",
+  "author": "azu",
+  "sideEffects": false,
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "module/",
+    "src/"
+  ],
+  "scripts": {
+    "test": "mocha \"test/**/*.ts\"",
+    "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
+    "build": "tsc -p .",
+    "watch": "tsc -p . --watch",
+    "clean": "rimraf lib/ module/",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "singleQuote": false,
+    "tabWidth": 4,
+    "trailingComma": "none"
+  },
+  "devDependencies": {
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^16.9.1",
+    "mocha": "^9.1.1",
+    "prettier": "^2.4.0",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.2.1",
+    "ts-node-test-register": "^10.0.0",
+    "typescript": "^4.4.3",
+    "@secretlint/secretlint-rule-example": "^3.3.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
+  },
+  "dependencies": {
+    "@secretlint/types": "^3.3.0"
+  }
+}
