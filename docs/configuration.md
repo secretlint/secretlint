@@ -1,6 +1,6 @@
 # Configuring Secretlint
 
-## Setting rules
+## .secretlintrc file
 
 `.secretlintrc.json` is configuration file on secretlint.
 
