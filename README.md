@@ -119,6 +119,8 @@ It is also possible to install Secretlint globally using `npm install --global`.
 
 Secretlint has a configuration file `.secretlintrc.{json,yml,js}`.
 
+- Document: [Configuring Secretlint](./docs/configuration.md)
+
 After running `secretlint --init`, you'll have a `.secretlintrc.json` file in your directory.
 
 In it, you'll see some rules configured like this:
@@ -179,7 +181,7 @@ For example, an option for `@secretlint/secretlint-rule-preset-recommend > @secr
           "id": "@secretlint/secretlint-rule-aws",
             "options": {
               "allows": [
-	        // it's ok
+	            // it will be ignored
                 "xxxx-xxxx-xxxx-xxxx-xxxx"
               ]
             }
@@ -237,6 +239,20 @@ For example, If you want to ignore "AWSAccountID" and "AWSAccessKeyID" of "@secr
   ]
 }
 ```
+
+### Ignoring by comment
+
+[@secretlint/secretlint-rule-preset-recommend](./packages/@secretlint/secretlint-rule-preset-recommend) support ignoring comment like `secretlint-disable`.
+
+```
+// secretlint-disable
+
+THIS IS SECRET, BUT IT WILL BE IGNORED
+
+// secretlint-enable
+```
+
+For more details, please see [Configuring Secretlint](./docs/configuration.md).
 
 ## Rule Packages
 
