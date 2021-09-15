@@ -242,7 +242,7 @@ For example, If you want to ignore "AWSAccountID" and "AWSAccessKeyID" of "@secr
 
 ### Ignoring by comment
 
-[@secretlint/secretlint-rule-preset-recommend](./packages/@secretlint/secretlint-rule-preset-recommend) support ignoring comment like `secretlint-disable`.
+[@secretlint/secretlint-rule-filter-comments](https://www.npmjs.com/package/@secretlint/secretlint-rule-filter-comments) supports ignoring comment like `secretlint-disable`.
 
 ```
 // secretlint-disable
