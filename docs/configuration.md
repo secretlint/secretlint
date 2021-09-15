@@ -16,6 +16,7 @@ Also, secretlint support `.secretlintrc.{yml,yaml,js}` file.
 ```
 
 The `id` property is the name of secretlint rule package.
+For example, if you want to use `@secretlint/secretlint-rule-example`, please set `{ "id": "@secretlint/secretlint-rule-example" }` in `rules`.
 
 Secretlint does not have built-in rule.
 You want to add some rule and You should **install** the package and **add** the rule to `.secretlintrc` file.
