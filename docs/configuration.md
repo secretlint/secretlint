@@ -26,7 +26,7 @@ Each rule has same configuration pattern:
 - `allowMessageIds`: `allowMessageIds` is an array of message id that you want to suppress error report
     - message id is defined in each rule and please see the rule documentation
 
-### Example: `options`
+### `options`
 
 For example, `@secretlint/secretlint-rule-example` has `allows` in `options`.
 This `allows` option define a list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string) that you want to ignore.
@@ -64,6 +64,55 @@ For example, an option for `@secretlint/secretlint-rule-preset-recommend > @secr
                 "xxxx-xxxx-xxxx-xxxx-xxxx"
               ]
             }
+        }
+      ]
+    }
+  ]
+}
+```
+
+
+### `allowMessageIds`
+
+For example, you have got following error report by run `secretlint`:
+
+```
+$ secretlint "**/*"
+
+SECRET.txt
+  1:8  error  [EXAMPLE_MESSAGE] found secret: SECRET  @secretlint/secretlint-rule-example
+
+✖ 1 problem (1 error, 0 warnings)
+```
+
+This error's message id is `EXAMPLE_MESSAGE` in `@secretlint/secretlint-rule-example`.
+
+If you want to ignore this error, please use `allowMessageIds`.
+
+```json
+{
+  "rules": [
+    {
+      "id": "@secretlint/secretlint-rule-example",
+      "allowMessageIds": ["EXAMPLE_MESSAGE"]
+    }
+  ]
+}
+```
+
+When you use a preset like `@secretlint/secretlint-rule-preset-recommend`, you need to put the option in `rules`.
+
+For example, If you want to ignore "AWSAccountID" and "AWSAccessKeyID" of "@secretlint/secretlint-rule-aws", you can write following.
+
+```json5
+{
+  "rules": [
+    {
+      "id": "@secretlint/secretlint-rule-preset-recommend",
+      "rules": [
+        {
+          "id": "@secretlint/secretlint-rule-aws",
+          "allowMessageIds": ["AWSAccountID", "AWSAccessKeyID"]
         }
       ]
     }
