@@ -47,13 +47,13 @@
         "@secretlint/profiler": "^3.1.0",
         "@secretlint/types": "^3.3.0",
         "debug": "^4.1.1",
-        "rc-config-loader": "^3.0.0",
+        "rc-config-loader": "^4.0.0",
         "try-resolve": "^1.0.1"
     },
     "devDependencies": {
         "@secretlint/secretlint-rule-example": "^3.3.0",
-        "@types/mocha": "^8.2.2",
-        "@types/node": "^14.14.41",
+        "@types/mocha": "^9.0.0",
+        "@types/node": "^16.9.1",
         "cross-env": "^7.0.3",
         "mocha": "^9.0.1",
         "prettier": "^2.3.1",
