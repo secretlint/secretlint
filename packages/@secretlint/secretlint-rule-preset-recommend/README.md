@@ -1,6 +1,6 @@
 # @secretlint/secretlint-rule-preset-recommend
 
-Recommended rule preset of secretlint.
+Recommended rule preset for secretlint.
 
 ## Install
 
