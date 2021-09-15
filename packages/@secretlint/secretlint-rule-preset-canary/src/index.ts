@@ -7,8 +7,19 @@ import { creator as ruleBasicAuth } from "@secretlint/secretlint-rule-basicauth"
 import { creator as rulePrivateKey } from "@secretlint/secretlint-rule-privatekey";
 import { creator as ruleSendgrid } from "@secretlint/secretlint-rule-sendgrid";
 import { creator as ruleGitHub } from "@secretlint/secretlint-rule-github";
+import { creator as ruleFilterComments } from "@secretlint/secretlint-rule-filter-comments";
 
-export const rules = [ruleAWS, ruleGCP, rulePrivateKey, ruleNpm, ruleBasicAuth, ruleSlack, ruleSendgrid, ruleGitHub];
+export const rules = [
+    ruleAWS,
+    ruleGCP,
+    rulePrivateKey,
+    ruleNpm,
+    ruleBasicAuth,
+    ruleSlack,
+    ruleSendgrid,
+    ruleGitHub,
+    ruleFilterComments,
+];
 export type Options = {};
 
 export const creator: SecretLintRulePresetCreator<Options> = {

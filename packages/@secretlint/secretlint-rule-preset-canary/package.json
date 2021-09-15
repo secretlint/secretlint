@@ -51,7 +51,8 @@
     "@secretlint/secretlint-rule-npm": "^3.3.0",
     "@secretlint/secretlint-rule-privatekey": "^3.3.0",
     "@secretlint/secretlint-rule-sendgrid": "^3.3.0",
-    "@secretlint/secretlint-rule-slack": "^3.3.0"
+    "@secretlint/secretlint-rule-slack": "^3.3.0",
+    "@secretlint/secretlint-rule-filter-comments": "^3.3.0"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.0.2",

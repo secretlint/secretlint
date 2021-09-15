@@ -72,6 +72,8 @@ If you want to ignore `"AWSAccountID"` and `"AWSAccessKeyID"` of `"@secretlint/s
 - [@secretlint/secretlint-rule-slack](https://www.npmjs.com/package/@secretlint/secretlint-rule-slack)
 - [@secretlint/secretlint-rule-sendgrid](https://www.npmjs.com/package/@secretlint/secretlint-rule-sendgrid)
 - [@secretlint/secretlint-rule-github](https://www.npmjs.com/package/@secretlint/secretlint-rule-github)
+- [@secretlint/secretlint-rule-filter-comments](https://www.npmjs.com/package/@secretlint/secretlint-rule-filter-comments)
+  - `secretlint-disable` directives. For more details, see <https://github.com/secretlint/secretlint/blob/master/docs/configuration.md#ignoring-by-comments>
 
 ## Notes
 
