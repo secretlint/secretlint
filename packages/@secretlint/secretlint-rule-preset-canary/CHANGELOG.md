@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/secretlint/secretlint/compare/v3.3.0...v4.0.0) (2021-09-15)
+
+
+### Bug Fixes
+
+* **privatekey:** fix report range ([#184](https://github.com/secretlint/secretlint/issues/184)) ([f3226ca](https://github.com/secretlint/secretlint/commit/f3226ca5190faad1b41b8690fc294fc824c20bae))
+
+
+### Features
+
+* **preset:** add @secretlint/secretlint-rule-filter-comments to presets ([#198](https://github.com/secretlint/secretlint/issues/198)) ([7f25af3](https://github.com/secretlint/secretlint/commit/7f25af32977bc4726c8d2e796b08ba046e58f2fc))
+
+
+
+
+
 # [3.3.0](https://github.com/secretlint/secretlint/compare/v3.2.0...v3.3.0) (2021-07-05)
 
 

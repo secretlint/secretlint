@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/secretlint/secretlint/compare/v3.3.0...v4.0.0) (2021-09-15)
+
+
+### Features
+
+* **config-loader:** support a rule written by ESM ([#187](https://github.com/secretlint/secretlint/issues/187)) ([590c333](https://github.com/secretlint/secretlint/commit/590c3339f2f10ffeaf2b6d1084f9a907466d7453))
+
+
+
+
+
 # [3.3.0](https://github.com/secretlint/secretlint/compare/v3.2.0...v3.3.0) (2021-07-05)
 
 
