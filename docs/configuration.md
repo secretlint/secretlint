@@ -1,5 +1,76 @@
 # Configuring Secretlint
 
+## Setting rules
+
+`.secretlintrc.json` is configuration file on secretlint.
+
+```json
+{
+  "rules": [
+    {
+      "id": "@secretlint/secretlint-rule-preset-recommend"
+    }
+  ]
+}
+```
+
+The `id` property is the name of secretlint rule package.
+
+Secretlint does not have built-in rule.
+You want to add some rule and You should **install** the package and **add** the rule to `.secretlintrc` file.
+
+Each rule has same configuration pattern:
+
+- `options`: Option definition for the rule. For more details, see each rule documentation
+- `disabled`: If `disabled` is `true`, disable the rule
+- `allowMessageIds`: `allowMessageIds` is an array of message id that you want to suppress error report
+    - message id is defined in each rule and please see the rule documentation
+
+### Example: `options`
+
+For example, `@secretlint/secretlint-rule-example` has `allows` in `options`.
+This `allows` option define a list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string) that you want to ignore.
+
+```json
+{
+  "rules": [
+    {
+      "id": "@secretlint/secretlint-rule-example",
+      "options": {
+        "allows": [
+          "/dummy_secret/i"
+        ]
+      }
+    }
+  ]
+}
+```
+
+When you use a preset like `@secretlint/secretlint-rule-preset-recommend`, you need to put the option in `rules`.
+
+For example, an option for `@secretlint/secretlint-rule-preset-recommend > @secretlint/secretlint-rule-aws`
+
+```json5
+{
+  "rules": [
+    {
+      "id": "@secretlint/secretlint-rule-preset-recommend",
+      "rules": [
+        {
+          "id": "@secretlint/secretlint-rule-aws",
+            "options": {
+              "allows": [
+	            // it will be ignored
+                "xxxx-xxxx-xxxx-xxxx-xxxx"
+              ]
+            }
+        }
+      ]
+    }
+  ]
+}
+```
+
 ## Ignoring Files
 
 ### `.secretlintignore`
