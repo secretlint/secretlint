@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1631675476290,
+  "lastUpdate": 1631678118673,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -9270,6 +9270,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±1.00%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "3e834dce68e40456961059dac0b8adbe9aca6d70",
+          "message": "chore(deps): update dependencies (#196)\n\n* chore(deps): update dependencies\r\n\r\n* fix: fix catch:unknown type\r\n\r\n* fix(deps): update js-yaml\r\n\r\n* fix: type issue",
+          "timestamp": "2021-09-15T12:52:26+09:00",
+          "tree_id": "5a8e8e909be1d51fa1bd94e45b8468d2a753b7e7",
+          "url": "https://github.com/secretlint/secretlint/commit/3e834dce68e40456961059dac0b8adbe9aca6d70"
+        },
+        "date": 1631678117292,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.11,
+            "range": "±0.54%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.73,
+            "range": "±1.07%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
