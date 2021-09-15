@@ -148,7 +148,7 @@ export const loadPackagesFromRawConfig = async (
                 id: configDescriptorRule.id,
             });
         } catch (error) {
-            errors.push(error);
+            errors.push(error instanceof Error ? error : new Error(String(error)));
         }
     }
     secretLintProfiler.mark({

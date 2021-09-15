@@ -5,7 +5,7 @@ import {
     SecretLintSourceCode,
 } from "@secretlint/types";
 import path from "path";
-import { safeLoadAll } from "js-yaml";
+import { loadAll } from "js-yaml";
 
 export const messages = {
     disallowToUseKindSecret: {
@@ -28,8 +28,14 @@ function reportIfFoundKindSecret({
 }) {
     try {
         // Support multi manifest
-        const manifestObjects = safeLoadAll(source.content);
-        manifestObjects.forEach((manifestObject) => {
+        const manifestObjects = loadAll(source.content);
+        manifestObjects.forEach((manifestObject: any) => {
+            if (typeof manifestObject !== "object" || manifestObject === null) {
+                return;
+            }
+            if (!("Kind" in manifestObject)) {
+                return;
+            }
             // Kind: Secret
             if (manifestObject["Kind"] !== "Secret") {
                 return;
