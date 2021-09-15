@@ -21,7 +21,7 @@ For example, if you want to use `@secretlint/secretlint-rule-example`, please se
 Secretlint does not have built-in rule.
 You want to add some rule, and You should **install** the package and **add** the rule to `.secretlintrc` file.
 
-Each rule has same configuration pattern:
+Each rule has common configuration pattern:
 
 - `options`: Option definition for the rule. For more details, see each rule documentation
 - `disabled`: If `disabled` is `true`, disable the rule
