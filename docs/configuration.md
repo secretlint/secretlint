@@ -3,6 +3,7 @@
 ## .secretlintrc file
 
 `.secretlintrc.json` is configuration file on secretlint.
+Also, secretlint support `.secretlintrc.{json,yml,js}` file.
 
 ```json
 {
