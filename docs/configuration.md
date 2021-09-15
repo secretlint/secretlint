@@ -174,7 +174,7 @@ For example, you can use `.gitignore` file because it has the same format:
 
     secretlint --secretlintignore .gitignore "**/*"
 
-## Ignoring by comments
+## Ignoring error by comments
 
 [@secretlint/secretlint-rule-filter-comments](https://www.npmjs.com/package/@secretlint/secretlint-rule-filter-comments) support ignoring comment like `secretlint-disable`.
 
