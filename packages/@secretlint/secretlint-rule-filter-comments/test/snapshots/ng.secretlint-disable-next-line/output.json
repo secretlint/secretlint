@@ -1,0 +1,30 @@
+{
+    "filePath": "[SNAPSHOT]/ng.secretlint-disable-next-line/input.txt",
+    "messages": [
+        {
+            "message": "found matching secret-alphabet: SECRET B",
+            "range": [
+                57,
+                65
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-secret-alphabet",
+            "loc": {
+                "start": {
+                    "line": 3,
+                    "column": 8
+                },
+                "end": {
+                    "line": 3,
+                    "column": 16
+                }
+            },
+            "severity": "error",
+            "messageId": "PATTERN",
+            "data": {
+                "PATTERN_NAME": "secret-alphabet",
+                "CREDENTIAL": "SECRET B"
+            }
+        }
+    ]
+}

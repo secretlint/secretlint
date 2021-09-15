@@ -1,0 +1,10 @@
+// secretlint-disable @secretlint/secretlint-rule-secret-number
+
+THIS IS SECRET 1
+
+THIS IS SECRET 2 <-- DETECT!!
+
+// secretlint-enable @secretlint/secretlint-rule-secret-number
+
+THIS IS SECRET 0 // secretlint-disable-line @secretlint/secretlint-rule-secret-number -- ignore number
+THIS IS SECRET Z // secretlint-disable-line @secretlint/secretlint-rule-secret-alphabet -- ignore alphabet

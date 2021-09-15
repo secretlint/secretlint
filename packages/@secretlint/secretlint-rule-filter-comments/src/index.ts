@@ -23,12 +23,16 @@ export const creator: SecretLintRuleCreator = {
         return {
             file(source: SecretLintSourceCode) {
                 const state = new CommentState(source);
-                const comments = parseComments(source.content);
+                const comments = parseComments(source);
                 for (const comment of comments) {
                     if (comment.type === "secretlint-disable") {
                         state.disableReporting(comment.index, comment.options);
                     } else if (comment.type === "secretlint-enable") {
                         state.enableReporting(comment.index, comment.options);
+                    } else if (comment.type === "secretlint-disable-line") {
+                        state.disableLine(comment.line, comment.options);
+                    } else if (comment.type === "secretlint-disable-next-line") {
+                        state.disableLine(comment.line, comment.options);
                     }
                 }
                 state.getIgnoringMessages().forEach((message) => {

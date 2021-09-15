@@ -10,7 +10,7 @@ export class CommentState {
     private reportingConfig: IgnoringCommentObject[];
     private endIndex: number;
 
-    constructor(source: SecretLintSourceCode) {
+    constructor(private source: SecretLintSourceCode) {
         this.reportingConfig = [];
         this.endIndex = source.content.length;
     }
@@ -28,12 +28,38 @@ export class CommentState {
                     // filled with document's end
                     reporting.endIndex = this.endIndex;
                 }
-                if (reporting.ruleId === null) {
-                    reporting.ruleId = "*"; // all
-                }
                 return reporting;
             })
             .filter(isFilledMessage);
+    }
+
+    disableLine(lineNumber: number, rulesToDisable: string[]) {
+        const reportingConfig = this.reportingConfig;
+        const range = this.source.locationToRange({
+            start: {
+                line: lineNumber,
+                column: 0
+            },
+            end: {
+                line: lineNumber + 1,
+                column: 0
+            }
+        });
+        if (rulesToDisable.length) {
+            rulesToDisable.forEach((ruleId) => {
+                reportingConfig.push({
+                    startIndex: range[0],
+                    endIndex: range[1] - 1,
+                    ruleId: ruleId
+                });
+            });
+        } else {
+            reportingConfig.push({
+                startIndex: range[0],
+                endIndex: range[1] - 1,
+                ruleId: "*"
+            });
+        }
     }
 
     /**
@@ -55,7 +81,7 @@ export class CommentState {
             reportingConfig.push({
                 startIndex: startIndex,
                 endIndex: null,
-                ruleId: null
+                ruleId: "*"
             });
         }
     }

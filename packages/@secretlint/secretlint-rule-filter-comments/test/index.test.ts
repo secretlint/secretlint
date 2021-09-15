@@ -1,7 +1,7 @@
 import { snapshot } from "@secretlint/tester";
 import path from "path";
 import { creator as rule } from "../src/index";
-import { creator as exampleRule } from "@secretlint/secretlint-rule-example";
+import { creator as patternRule } from "@secretlint/secretlint-rule-pattern";
 
 describe("@secretlint/secretlint-rule-filter-comments", () => {
     snapshot({
@@ -13,9 +13,28 @@ describe("@secretlint/secretlint-rule-filter-comments", () => {
                     options: {}
                 },
                 {
-                    id: "@secretlint/secretlint-rule-example",
-                    rule: exampleRule,
-                    options: {}
+                    id: "@secretlint/secretlint-rule-secret-number",
+                    rule: patternRule,
+                    options: {
+                        patterns: [
+                            {
+                                name: "secret-number",
+                                pattern: "/SECRET \\d+/"
+                            }
+                        ]
+                    }
+                },
+                {
+                    id: "@secretlint/secretlint-rule-secret-alphabet",
+                    rule: patternRule,
+                    options: {
+                        patterns: [
+                            {
+                                name: "secret-alphabet",
+                                pattern: "/SECRET [a-zA-Z]/"
+                            }
+                        ]
+                    }
                 }
             ]
         },

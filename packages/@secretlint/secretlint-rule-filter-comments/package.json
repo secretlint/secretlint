@@ -56,7 +56,7 @@
     "ts-node": "^10.2.1",
     "ts-node-test-register": "^10.0.0",
     "typescript": "^4.4.3",
-    "@secretlint/secretlint-rule-example": "^3.3.0"
+    "@secretlint/secretlint-rule-pattern": "^3.3.0"
   },
   "publishConfig": {
     "access": "public"
