@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-no-dotenv",
-    "version": "3.3.0",
+    "version": "4.0.0",
     "description": "A secretlint rule for dotenv",
     "keywords": [
         "secretlint",
@@ -46,7 +46,7 @@
         "tabWidth": 4
     },
     "dependencies": {
-        "@secretlint/types": "^3.3.0"
+        "@secretlint/types": "^4.0.0"
     },
     "devDependencies": {
         "@types/mocha": "^9.0.0",
