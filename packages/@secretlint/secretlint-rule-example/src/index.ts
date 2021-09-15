@@ -22,7 +22,7 @@ export const creator: SecretLintRuleCreator = {
         const t = context.createTranslator(messages);
         return {
             file(source: SecretLintSourceCode) {
-                const pattern = /secret/gi;
+                const pattern = /SECRET/g;
                 let match;
                 while ((match = pattern.exec(source.content)) !== null) {
                     const index = match.index || 0;

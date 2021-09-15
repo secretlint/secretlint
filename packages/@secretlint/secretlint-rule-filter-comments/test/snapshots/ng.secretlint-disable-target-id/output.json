@@ -1,0 +1,30 @@
+{
+    "filePath": "[SNAPSHOT]/ng.secretlint-disable-target-id/input.txt",
+    "messages": [
+        {
+            "message": "found matching secret-alphabet: SECRET Z",
+            "range": [
+                91,
+                99
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-secret-alphabet",
+            "loc": {
+                "start": {
+                    "line": 5,
+                    "column": 8
+                },
+                "end": {
+                    "line": 5,
+                    "column": 16
+                }
+            },
+            "severity": "error",
+            "messageId": "PATTERN",
+            "data": {
+                "PATTERN_NAME": "secret-alphabet",
+                "CREDENTIAL": "SECRET Z"
+            }
+        }
+    ]
+}

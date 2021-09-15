@@ -2,6 +2,8 @@
 
 An example rule for secretlint. It is for testing.
 
+ALWAYS MATCH "SECRET" string.
+
 ## Install
 
 Install with [npm](https://www.npmjs.com/):
