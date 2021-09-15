@@ -33,10 +33,10 @@ export const validateRawConfig = (value: any): { ok: true } | { ok: false; error
                 try {
                     SecretLintConfigDescriptorRulePresetValidate(rulePreset);
                 } catch (error) {
-                    const errorMessage = error.message.replace(
-                        /SecretLintConfigDescriptorRulePreset/g,
-                        ruleOrPreset.id
-                    );
+                    const errorMessage =
+                        error instanceof Error
+                            ? error.message.replace(/SecretLintConfigDescriptorRulePreset/g, ruleOrPreset.id)
+                            : String(error);
                     return {
                         ok: false,
                         error: new Error(errorMessage),
@@ -47,7 +47,10 @@ export const validateRawConfig = (value: any): { ok: true } | { ok: false; error
                 try {
                     SecretLintConfigDescriptorRuleValidate(rule);
                 } catch (error) {
-                    const errorMessage = error.message.replace(/SecretLintConfigDescriptorRule/g, ruleOrPreset.id);
+                    const errorMessage =
+                        error instanceof Error
+                            ? error.message.replace(/SecretLintConfigDescriptorRule/g, ruleOrPreset.id)
+                            : String(error);
                     return {
                         ok: false,
                         error: new Error(errorMessage),
@@ -60,7 +63,10 @@ export const validateRawConfig = (value: any): { ok: true } | { ok: false; error
         };
     } catch (error) {
         // SecretLintConfigDescriptor -> secretlintrc
-        const errorMessage = error.message.replace(/SecretLintConfigDescriptor/g, "secretlintrc");
+        const errorMessage =
+            error instanceof Error
+                ? error.message.replace(/SecretLintConfigDescriptor/g, "secretlintrc")
+                : String(error);
         return {
             ok: false,
             error: new Error(errorMessage),
@@ -96,7 +102,7 @@ export const validateConfig = (value: any): { ok: true } | { ok: false; error: E
     } catch (error) {
         return {
             ok: false,
-            error: error,
+            error: error instanceof Error ? error : new Error(String(error)),
         };
     }
 };
