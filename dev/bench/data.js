@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1631628869027,
+  "lastUpdate": 1631675476290,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -9232,6 +9232,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.65,
             "range": "±2.46%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "607f361bebf75f532ac1966c6939ed5955f3c669",
+          "message": "feat(secretlint-rule-filter-comments): secretlint-disable/secretlint-enable comment (#195)\n\n* feat(secretlint-rule-filter-comments): secretlint-disable/secretlint-enable comment\r\n\r\n* feat(secretlint-rule-filter-comments): secretlint-disable-next-line/secretlint-disable-line\r\n\r\n* docs: Update README\r\n\r\n* test: fix test case",
+          "timestamp": "2021-09-15T12:07:48+09:00",
+          "tree_id": "dcd9af90691ebb0d1510ec4733ce13aacce2f878",
+          "url": "https://github.com/secretlint/secretlint/commit/607f361bebf75f532ac1966c6939ed5955f3c669"
+        },
+        "date": 1631675474855,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.59,
+            "range": "±0.56%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±1.00%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
