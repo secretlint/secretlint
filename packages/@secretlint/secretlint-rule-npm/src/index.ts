@@ -15,6 +15,10 @@ export const messages = {
         en: (props: { TOKEN: string }) => `found npmrc authToken: ${props.TOKEN}`,
         ja: (props: { TOKEN: string }) => `npmrc authToken: ${props.TOKEN} がみつかりました`,
     },
+    NPM_ACCESS_TOKEN: {
+        en: (props: { TOKEN: string }) => `found npm access token: ${props.TOKEN}`,
+        ja: (props: { TOKEN: string }) => `npm access token: ${props.TOKEN} がみつかりました`,
+    },
 };
 
 export type Options = {
@@ -87,6 +91,47 @@ function reportIfFound_AuthTokenInNpmrc({
     }
 }
 
+// TODO: implement
+function validChecksum(_token: string): boolean {
+    return true;
+}
+
+function reportIfFound_NPM_ACCESS_TOKEN({
+    source,
+    options,
+    context,
+    t,
+}: {
+    source: SecretLintSourceCode;
+    options: Required<Options>;
+    context: SecretLintRuleContext;
+    t: SecretLintRuleMessageTranslate<typeof messages>;
+}) {
+    // https://github.blog/2021-09-23-announcing-npms-new-access-token-format/
+    // https://github.blog/2021-04-05-behind-githubs-new-authentication-token-formats/
+    // token length should be 40
+    const NPM_ACCESS_TOKEN_PATTERN = /npm_[A-Za-z0-9_]{36}/g;
+    const results = source.content.matchAll(NPM_ACCESS_TOKEN_PATTERN);
+    for (const result of results) {
+        const index = result.index || 0;
+        const match = result[0] || "";
+        const range = [index, index + match.length];
+        const allowedResults = matchPatterns(match, options.allows);
+        if (allowedResults.length > 0) {
+            continue;
+        }
+        if (!validChecksum(match)) {
+            continue;
+        }
+        context.report({
+            message: t("NPM_ACCESS_TOKEN", {
+                TOKEN: match,
+            }),
+            range,
+        });
+    }
+}
+
 const isPackageFile = (filePath?: string): boolean => {
     if (!filePath) {
         return true;
@@ -123,6 +168,7 @@ export const creator: SecretLintRuleCreator<Options> = {
                 } else if (isNpmrc(source.filePath)) {
                     reportIfFound_AuthTokenInNpmrc({ source, options: normalizedOptions, context, t });
                 }
+                reportIfFound_NPM_ACCESS_TOKEN({ source, options: normalizedOptions, context, t });
             },
         };
     },
