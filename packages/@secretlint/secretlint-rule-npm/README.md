@@ -40,11 +40,21 @@ If you want to use some module as private, please use private registry like npm,
 ### Npmrc_authToken
 > found npmrc authToken: {{TOKEN}}
 
-Disallow to includes `<registry>:_authToken=<TOKEN>` in `.npmrc`.
+Disallow to include `<registry>:_authToken=<TOKEN>` in `.npmrc`.
 
 The `TOKEN` is credential data.
 
 - [npm - Using auth tokens in .npmrc - Stack Overflow](https://stackoverflow.com/questions/53099434/using-auth-tokens-in-npmrc)
+
+### NPM_ACCESS_TOKEN
+> found npm access token: {{TOKEN}}
+
+Disallow to include npm access token.
+
+The `TOKEN` is credential data.
+
+- [About access tokens | npm Docs](https://docs.npmjs.com/about-access-tokens)
+- [Announcing npm’s new access token format | The GitHub Blog](https://github.blog/2021-09-23-announcing-npms-new-access-token-format/)
 
 ## Options
 
