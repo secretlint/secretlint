@@ -54,8 +54,9 @@ function reportIfFoundKey({
     context: SecretLintRuleContext;
     t: SecretLintRuleMessageTranslate<typeof messages>;
 }) {
+    // token length should be 40
     // https://github.blog/2021-04-05-behind-githubs-new-authentication-token-formats/
-    const GITHUB_TOKEN_PATTERN = /(?<type>ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9_]{31,255}/g;
+    const GITHUB_TOKEN_PATTERN = /(?<type>ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9_]{36}/g;
     const results = source.content.matchAll(GITHUB_TOKEN_PATTERN);
     for (const result of results) {
         const index = result.index || 0;
