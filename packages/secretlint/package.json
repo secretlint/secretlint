@@ -1,6 +1,6 @@
 {
     "name": "secretlint",
-    "version": "4.0.0",
+    "version": "4.1.0",
     "description": "Secretlint CLI that scan secret/credential data.",
     "keywords": [
         "secretlint",
@@ -56,7 +56,7 @@
     },
     "devDependencies": {
         "@secretlint/secretlint-rule-example": "^4.0.0",
-        "@secretlint/secretlint-rule-preset-recommend": "^4.0.0",
+        "@secretlint/secretlint-rule-preset-recommend": "^4.1.0",
         "@types/mocha": "^9.0.0",
         "@types/node": "^16.9.1",
         "cross-env": "^7.0.3",

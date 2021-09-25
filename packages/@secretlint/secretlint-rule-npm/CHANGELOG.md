@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.1.0](https://github.com/secretlint/secretlint/compare/v4.0.0...v4.1.0) (2021-09-25)
+
+
+### Features
+
+* **npm:** support `npm_` prefix access token ([#201](https://github.com/secretlint/secretlint/issues/201)) ([20c4839](https://github.com/secretlint/secretlint/commit/20c483970ab1e7a2c33cedff4ac79df7201bc86f))
+
+
+
+
+
 # [4.0.0](https://github.com/secretlint/secretlint/compare/v3.3.0...v4.0.0) (2021-09-15)
 
 **Note:** Version bump only for package @secretlint/secretlint-rule-npm
