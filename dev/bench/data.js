@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1632537911889,
+  "lastUpdate": 1632537956532,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -9536,6 +9536,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.5,
             "range": "±0.93%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "distinct": true,
+          "id": "6b41e01801d9fe8d5fb25cd15250efddc36f9787",
+          "message": "fix(github): token length should be 40",
+          "timestamp": "2021-09-25T11:42:25+09:00",
+          "tree_id": "955409047174e72d362cacc80a860a5560cd133f",
+          "url": "https://github.com/secretlint/secretlint/commit/6b41e01801d9fe8d5fb25cd15250efddc36f9787"
+        },
+        "date": 1632537955235,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.88,
+            "range": "±4.16%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.62,
+            "range": "±4.68%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
