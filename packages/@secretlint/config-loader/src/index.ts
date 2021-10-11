@@ -10,6 +10,7 @@ import {
 import { secretLintProfiler } from "@secretlint/profiler";
 import { SecretLintModuleResolver } from "./SecretLintModuleResolver";
 import { validateConfig, validateRawConfig } from "@secretlint/config-validator";
+import * as url from "url";
 
 export function importSecretlintCreator(moduleExports?: SecretLintRuleModule): SecretLintUnionRuleCreator {
     if (!moduleExports) {
@@ -124,8 +125,12 @@ export const loadPackagesFromRawConfig = async (
             // TODO: any to be remove
             const ruleModule: any = replacedDefinition
                 ? replacedDefinition.rule
-                : importSecretlintCreator(
-                      await _importDynamic(moduleResolver.resolveRulePackageName(configDescriptorRule.id))
+                : // Windows's path require to convert file://
+                  // https://github.com/secretlint/secretlint/issues/205
+                  importSecretlintCreator(
+                      await _importDynamic(
+                          url.pathToFileURL(moduleResolver.resolveRulePackageName(configDescriptorRule.id)).href
+                      )
                   );
             const secretLintConfigDescriptorRules: SecretLintCoreDescriptorRule[] | undefined =
                 "rules" in configDescriptorRule && Array.isArray(configDescriptorRule.rules)
