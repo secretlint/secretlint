@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1632538330449,
+  "lastUpdate": 1633951336959,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -9612,6 +9612,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.54,
             "range": "±1.85%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "74526f4a3204a36f9c6ea2fa4bccb546e20cb8e6",
+          "message": "fix(config-loader): fix to load secretlint rule on Windows (#206)\n\n* fix(config-loader): fix to load secretlint rule on Windows\r\n\r\nfix https://github.com/secretlint/secretlint/issues/205\r\n\r\n* chore: move comment",
+          "timestamp": "2021-10-11T20:18:39+09:00",
+          "tree_id": "70738abc9fcaa020a6f978b735633d1701858aca",
+          "url": "https://github.com/secretlint/secretlint/commit/74526f4a3204a36f9c6ea2fa4bccb546e20cb8e6"
+        },
+        "date": 1633951335486,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.68,
+            "range": "±1.27%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.53,
+            "range": "±3.04%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
