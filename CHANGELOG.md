@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.1](https://github.com/secretlint/secretlint/compare/v4.1.0...v4.1.1) (2021-10-11)
+
+
+### Bug Fixes
+
+* **config-loader:** fix to load secretlint rule on Windows ([#206](https://github.com/secretlint/secretlint/issues/206)) ([74526f4](https://github.com/secretlint/secretlint/commit/74526f4a3204a36f9c6ea2fa4bccb546e20cb8e6))
+
+
+
+
+
 # [4.1.0](https://github.com/secretlint/secretlint/compare/v4.0.0...v4.1.0) (2021-09-25)
 
 

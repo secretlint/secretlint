@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-filter-comments",
-  "version": "4.0.0",
+  "version": "4.1.1",
   "description": "secretlint-disable comment directive.",
   "keywords": [
     "secretlint",
@@ -48,7 +48,7 @@
     "trailingComma": "none"
   },
   "devDependencies": {
-    "@secretlint/secretlint-rule-pattern": "^4.0.0",
+    "@secretlint/secretlint-rule-pattern": "^4.1.1",
     "@types/mocha": "^9.0.0",
     "@types/node": "^16.9.1",
     "mocha": "^9.1.1",
