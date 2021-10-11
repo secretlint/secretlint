@@ -10,6 +10,7 @@ import {
 import { secretLintProfiler } from "@secretlint/profiler";
 import { SecretLintModuleResolver } from "./SecretLintModuleResolver";
 import { validateConfig, validateRawConfig } from "@secretlint/config-validator";
+import * as url from "url";
 
 export function importSecretlintCreator(moduleExports?: SecretLintRuleModule): SecretLintUnionRuleCreator {
     if (!moduleExports) {
@@ -31,6 +32,11 @@ export class AggregateError extends Error {
     }
 }
 
+// Windows's path require to convert file://
+// https://github.com/secretlint/secretlint/issues/205
+const convertToFileUrl = (filePath: string) => {
+    return url.pathToFileURL(filePath).href;
+};
 // FIXME: https://github.com/microsoft/TypeScript/issues/43329
 // module: node12 will be replace it
 const _importDynamic = new Function("modulePath", "return import(modulePath)");
@@ -125,7 +131,9 @@ export const loadPackagesFromRawConfig = async (
             const ruleModule: any = replacedDefinition
                 ? replacedDefinition.rule
                 : importSecretlintCreator(
-                      await _importDynamic(moduleResolver.resolveRulePackageName(configDescriptorRule.id))
+                      await _importDynamic(
+                          convertToFileUrl(moduleResolver.resolveRulePackageName(configDescriptorRule.id))
+                      )
                   );
             const secretLintConfigDescriptorRules: SecretLintCoreDescriptorRule[] | undefined =
                 "rules" in configDescriptorRule && Array.isArray(configDescriptorRule.rules)
