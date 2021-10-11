@@ -32,6 +32,11 @@ export class AggregateError extends Error {
     }
 }
 
+// Windows's path require to convert file://
+// https://github.com/secretlint/secretlint/issues/205
+const convertToFileUrl = (filePath: string) => {
+    return url.pathToFileURL(filePath).href;
+};
 // FIXME: https://github.com/microsoft/TypeScript/issues/43329
 // module: node12 will be replace it
 const _importDynamic = new Function("modulePath", "return import(modulePath)");
@@ -125,11 +130,9 @@ export const loadPackagesFromRawConfig = async (
             // TODO: any to be remove
             const ruleModule: any = replacedDefinition
                 ? replacedDefinition.rule
-                : // Windows's path require to convert file://
-                  // https://github.com/secretlint/secretlint/issues/205
-                  importSecretlintCreator(
+                : importSecretlintCreator(
                       await _importDynamic(
-                          url.pathToFileURL(moduleResolver.resolveRulePackageName(configDescriptorRule.id)).href
+                          convertToFileUrl(moduleResolver.resolveRulePackageName(configDescriptorRule.id))
                       )
                   );
             const secretLintConfigDescriptorRules: SecretLintCoreDescriptorRule[] | undefined =
