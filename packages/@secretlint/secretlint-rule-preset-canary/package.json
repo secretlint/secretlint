@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-preset-canary",
-  "version": "4.1.1",
+  "version": "4.1.2",
   "description": "Canary rule preset of secretlint.",
   "keywords": [
     "secretlint",
@@ -46,7 +46,7 @@
   "dependencies": {
     "@secretlint/secretlint-rule-aws": "^4.1.1",
     "@secretlint/secretlint-rule-basicauth": "^4.0.0",
-    "@secretlint/secretlint-rule-filter-comments": "^4.1.1",
+    "@secretlint/secretlint-rule-filter-comments": "^4.1.2",
     "@secretlint/secretlint-rule-gcp": "^4.1.1",
     "@secretlint/secretlint-rule-github": "^4.1.1",
     "@secretlint/secretlint-rule-npm": "^4.1.0",
