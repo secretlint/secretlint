@@ -28,6 +28,7 @@
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "versionup": "lerna version --no-push --no-git-tag-version --conventional-commits",
+    "versionup:force-patch": "lerna version patch --force-publish --no-push --no-git-tag-version --conventional-commits",
     "versionup:patch": "lerna version patch --no-push --no-git-tag-version --conventional-commits",
     "versionup:minor": "lerna version minor --no-push --no-git-tag-version --conventional-commits",
     "versionup:major": "lerna version major --no-push --no-git-tag-version --conventional-commits",
