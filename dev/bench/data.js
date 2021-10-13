@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1633951540700,
+  "lastUpdate": 1634087404468,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -9688,6 +9688,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.53,
             "range": "±0.87%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "distinct": true,
+          "id": "cafbd3a75b108a47c86377045015ce5f258e9109",
+          "message": "CI: remove publish-binary from publish-artifact.yml",
+          "timestamp": "2021-10-13T10:06:18+09:00",
+          "tree_id": "89de13cbf9da7e3fbc24290aa758b74a85775755",
+          "url": "https://github.com/secretlint/secretlint/commit/cafbd3a75b108a47c86377045015ce5f258e9109"
+        },
+        "date": 1634087401392,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.67,
+            "range": "±1.91%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.54,
+            "range": "±2.97%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
