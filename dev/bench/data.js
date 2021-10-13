@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1634088070867,
+  "lastUpdate": 1634088800470,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -9802,6 +9802,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.55,
             "range": "±2.79%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "azuciao@gmail.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "distinct": true,
+          "id": "594ce698864729bb11936c7d86d75fcd329430c8",
+          "message": "CI: add create-release-force-patch-pr.yml\n\nto fix https://github.com/secretlint/secretlint/issues/208",
+          "timestamp": "2021-10-13T10:29:49+09:00",
+          "tree_id": "165cbf44024a31301feaf55a395f5b4a0b510ace",
+          "url": "https://github.com/secretlint/secretlint/commit/594ce698864729bb11936c7d86d75fcd329430c8"
+        },
+        "date": 1634088799063,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.67,
+            "range": "±2.72%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.53,
+            "range": "±4.96%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
