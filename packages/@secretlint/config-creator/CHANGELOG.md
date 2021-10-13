@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.3](https://github.com/secretlint/secretlint/compare/v4.1.1...v4.1.3) (2021-10-13)
+
+**Note:** Version bump only for package @secretlint/config-creator
+
+
+
+
+
 # [4.0.0](https://github.com/secretlint/secretlint/compare/v3.3.0...v4.0.0) (2021-09-15)
 
 **Note:** Version bump only for package @secretlint/config-creator

@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-pattern",
-    "version": "4.1.1",
+    "version": "4.1.3",
     "description": "A secretlint rule that checks for regex patterns stored in configuration.",
     "keywords": [
         "secretlint",
@@ -43,8 +43,8 @@
         "tabWidth": 4
     },
     "dependencies": {
-        "@secretlint/tester": "^4.1.1",
-        "@secretlint/types": "^4.0.0",
+        "@secretlint/tester": "^4.1.3",
+        "@secretlint/types": "^4.1.3",
         "@textlint/regexp-string-matcher": "^1.1.0"
     },
     "devDependencies": {
