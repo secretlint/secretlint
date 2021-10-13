@@ -8,7 +8,6 @@ Install with [npm](https://www.npmjs.com/):
 
     npm install @secretlint/secretlint-rule-filter-comments
 
-
 ## Usage
 
 Via `.secretlintrc.json`(Recommended)
