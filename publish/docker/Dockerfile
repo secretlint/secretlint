@@ -4,7 +4,7 @@ LABEL maintainer="azu <azuciao@gmail.com>"
 LABEL description="Docker Container for secretlint"
 
 ARG SECRETLINT_VERSION
-ENV SECRETLINT_VERSION ${SECRETLINT_VERSION:-0.2.0}
+ENV SECRETLINT_VERSION ${SECRETLINT_VERSION:-4.0.0}
 
 ENV SECRETLINTRC /.secretlintrc.json
 COPY .secretlintrc.json $SECRETLINTRC
