@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.1.4](https://github.com/secretlint/secretlint/compare/v4.1.3...v4.1.4) (2022-01-13)
+
+
+### Bug Fixes
+
+* **secretlint-rule-gcp:** update node-forge ([#212](https://github.com/secretlint/secretlint/issues/212)) ([10eae64](https://github.com/secretlint/secretlint/commit/10eae64760324ea53394280f3db957cd6439e8d1))
+
+
+
+
+
 ## [4.1.3](https://github.com/secretlint/secretlint/compare/v4.1.1...v4.1.3) (2021-10-13)
 
 **Note:** Version bump only for package root
