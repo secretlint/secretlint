@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1634089201415,
+  "lastUpdate": 1642070504858,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -9916,6 +9916,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.64,
             "range": "±1.06%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "94024734+cm-dyoshikawa@users.noreply.github.com",
+            "name": "cm-dyoshikawa",
+            "username": "cm-dyoshikawa"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "10eae64760324ea53394280f3db957cd6439e8d1",
+          "message": "fix(secretlint-rule-gcp): update node-forge (#212)",
+          "timestamp": "2022-01-13T19:38:25+09:00",
+          "tree_id": "a3a0f5f34ae18adeafbce64509900e10e215d432",
+          "url": "https://github.com/secretlint/secretlint/commit/10eae64760324ea53394280f3db957cd6439e8d1"
+        },
+        "date": 1642070503361,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.81,
+            "range": "±0.74%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.56,
+            "range": "±1.63%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
