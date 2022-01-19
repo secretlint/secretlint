@@ -40,6 +40,9 @@
       "test": {
         "dependsOn": [
           "build"
+        ],
+        "outputs": [
+          "snapshots/**"
         ]
       },
       "secretlint": {
