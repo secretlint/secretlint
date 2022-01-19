@@ -49,9 +49,6 @@
         "dependsOn": [
           "build"
         ]
-      },
-      "ci": {
-        "dependsOn": ["build", "test", "secretlint"]
       }
     }
   },
@@ -74,7 +71,7 @@
     "updateSnapshot": "UPDATE_SNAPSHOT=1 turbo run test",
     "test": "turbo run test",
     "secretlint": "secretlint \"**/*\"",
-    "ci": "turbo run ci",
+    "ci": "turbo run build test secretlint",
     "clean": "lerna run clean",
     "prepare": "git config --local core.hooksPath .githooks",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\""
