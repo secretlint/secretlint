@@ -39,7 +39,17 @@
       },
       "test": {
         "dependsOn": [
-          "build"
+          "build",
+          "$UPDATE_SNAPSHOT"
+        ],
+        "outputs": [
+          "snapshots/**"
+        ]
+      },
+      "updateSnapshot": {
+        "dependsOn": [
+          "build",
+          "$UPDATE_SNAPSHOT"
         ],
         "outputs": [
           "snapshots/**"
@@ -68,7 +78,7 @@
     "release-ci": "yarn run build && lerna publish from-package --yes --no-verify-access",
     "build": "turbo run build",
     "build:withoutrule": "lerna run build --ignore \"@secretlint/*-rule-*\"",
-    "updateSnapshot": "UPDATE_SNAPSHOT=1 turbo run test",
+    "updateSnapshot": "turbo run updateSnapshot",
     "test": "turbo run test",
     "secretlint": "secretlint \"**/*\"",
     "ci": "turbo run build test secretlint",
@@ -80,7 +90,7 @@
     "lerna": "^4.0.0",
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.1",
-    "turbo": "^1.0.28"
+    "turbo": "^1.0.27"
   },
   "prettier": {
     "singleQuote": false,

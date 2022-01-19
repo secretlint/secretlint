@@ -13,11 +13,11 @@ const removeUndefined = (o: { [index: string]: any }) => {
     }
     return o;
 };
-describe("@secretlint/config-loader", function () {
+describe("@secretlint/config-loader", function() {
     it("should load .secretlintrc.json", async () => {
         const config = await loadConfig({
             cwd: path.join(__dirname, "fixtures/valid-config"),
-            node_moduleDir: path.join(__dirname, "fixtures/valid-config"),
+            node_moduleDir: path.join(__dirname, "fixtures/valid-config")
         });
         assert.deepStrictEqual(
             removeUndefined(config),
@@ -27,23 +27,23 @@ describe("@secretlint/config-loader", function () {
                     rules: [
                         {
                             id: "example",
-                            rule: importSecretlintCreator(require("@secretlint/secretlint-rule-example")),
+                            rule: importSecretlintCreator(require("@secretlint/secretlint-rule-internal-test-pure-deps"))
                         },
                         {
                             id: "example-2",
-                            rule: importSecretlintCreator(require("@secretlint/secretlint-rule-example")),
-                            disabled: true,
-                        },
-                    ],
+                            rule: importSecretlintCreator(require("@secretlint/secretlint-rule-internal-test-pure-deps")),
+                            disabled: true
+                        }
+                    ]
                 },
-                configFilePath: path.join(__dirname, "fixtures/valid-config/.secretlintrc.json"),
+                configFilePath: path.join(__dirname, "fixtures/valid-config/.secretlintrc.json")
             })
         );
     });
     it("should load .secretlintrc.json with ESM rule", async () => {
         const config = await loadConfig({
             cwd: path.join(__dirname, "fixtures/valid-config-esm"),
-            node_moduleDir: path.join(__dirname, "fixtures/valid-config-esm/modules"),
+            node_moduleDir: path.join(__dirname, "fixtures/valid-config-esm/modules")
         });
         const rule = config.config.rules[0] as SecretLintCoreDescriptorUnionRule;
         assert.strictEqual(rule.id, "example");
@@ -53,7 +53,7 @@ describe("@secretlint/config-loader", function () {
     });
     it("should return errors if rule module is not found in .secretlintrc.json", async () => {
         return loadConfig({
-            cwd: path.join(__dirname, "fixtures/missing-rule-config"),
+            cwd: path.join(__dirname, "fixtures/missing-rule-config")
         })
             .then(() => assert.fail("should not be called"))
             .catch((error: unknown) => {
@@ -62,7 +62,7 @@ describe("@secretlint/config-loader", function () {
     });
     it("should return errors if .secretlintrc.json is invalid format", async () => {
         return loadConfig({
-            cwd: path.join(__dirname, "fixtures/invalid-config"),
+            cwd: path.join(__dirname, "fixtures/invalid-config")
         })
             .then(() => assert.fail("should not be called"))
             .catch((error: Error) => {
