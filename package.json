@@ -25,6 +25,43 @@
     "packages/@secretlint/*",
     "examples/*"
   ],
+  "turbo": {
+    "baseBranch": "origin/master",
+    "pipeline": {
+      "build": {
+        "dependsOn": [
+          "^build"
+        ],
+        "outputs": [
+          "lib/**",
+          "module/**"
+        ]
+      },
+      "test": {
+        "dependsOn": [
+          "build",
+          "$UPDATE_SNAPSHOT"
+        ],
+        "outputs": [
+          "snapshots/**"
+        ]
+      },
+      "updateSnapshot": {
+        "dependsOn": [
+          "build",
+          "$UPDATE_SNAPSHOT"
+        ],
+        "outputs": [
+          "snapshots/**"
+        ]
+      },
+      "secretlint": {
+        "dependsOn": [
+          "build"
+        ]
+      }
+    }
+  },
   "scripts": {
     "bootstrap": "lerna bootstrap",
     "versionup": "lerna version --no-push --no-git-tag-version --conventional-commits",
@@ -39,12 +76,12 @@
     "commit-version": "git add . && git commit -m \"chore(release): v`node -p 'require(\"./lerna.json\").version'`\"",
     "release": "lerna publish from-package",
     "release-ci": "yarn run build && lerna publish from-package --yes --no-verify-access",
-    "build": "lerna run build",
+    "build": "turbo run build",
     "build:withoutrule": "lerna run build --ignore \"@secretlint/*-rule-*\"",
-    "updateSnapshot": "UPDATE_SNAPSHOT=1 lerna run test",
-    "test": "lerna run test",
+    "updateSnapshot": "turbo run updateSnapshot",
+    "test": "turbo run test",
     "secretlint": "secretlint \"**/*\"",
-    "ci": "npm run build && npm run test && npm run secretlint",
+    "ci": "turbo run build test secretlint",
     "clean": "lerna run clean",
     "prepare": "git config --local core.hooksPath .githooks",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\""
@@ -52,7 +89,8 @@
   "devDependencies": {
     "lerna": "^4.0.0",
     "lint-staged": "^11.0.0",
-    "prettier": "^2.3.1"
+    "prettier": "^2.3.1",
+    "turbo": "^1.0.27"
   },
   "prettier": {
     "singleQuote": false,

@@ -1,11 +1,13 @@
+import { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
+
 export const messages = {
     EXAMPLE_MESSAGE: {
-        en: (props) => `found secret: ${props.ID}`,
-        ja: (props) => `secret: ${props.ID} がみつかりました`
-    }
+        en: (props: { ID: string }) => `found secret: ${props.ID}`,
+        ja: (props: { ID: string }) => `secret: ${props.ID} がみつかりました`,
+    },
 };
 
-export const creator = {
+export const creator: SecretLintRuleCreator = {
     messages,
     meta: {
         id: "@secretlint/secretlint-rule-internal-test-pure-deps",
@@ -13,14 +15,14 @@ export const creator = {
         type: "scanner",
         supportedContentTypes: ["text"],
         docs: {
-            url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-internal-test-pure-deps/README.md"
-        }
+            url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-internal-example-pure-deps/README.md",
+        },
     },
     create(context) {
         const t = context.createTranslator(messages);
         return {
-            file(source) {
-                const pattern = /secret/gi;
+            file(source: SecretLintSourceCode) {
+                const pattern = /SECRET/g;
                 let match;
                 while ((match = pattern.exec(source.content)) !== null) {
                     const index = match.index || 0;
@@ -28,12 +30,12 @@ export const creator = {
                     const range = [index, index + matchString.length];
                     context.report({
                         message: t("EXAMPLE_MESSAGE", {
-                            ID: matchString
+                            ID: matchString,
                         }),
-                        range
+                        range,
                     });
                 }
-            }
+            },
         };
-    }
+    },
 };

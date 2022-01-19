@@ -28,12 +28,12 @@
     "src/"
   ],
   "scripts": {
-    "build": "cross-env NODE_ENV=production tsc -p .",
+    "build": "tsc -p .",
     "clean": "rimraf lib/",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
-    "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
     "test": "mocha \"test/**/*.ts\"",
+    "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
     "watch": "tsc -p . --watch"
   },
   "prettier": {
@@ -46,10 +46,10 @@
     "js-yaml": "^4.1.0"
   },
   "devDependencies": {
+    "@secretlint/tester": "^4.1.3",
     "@types/js-yaml": "^4.0.3",
     "@types/mocha": "^9.0.0",
     "@types/node": "^16.9.1",
-    "cross-env": "^7.0.2",
     "mocha": "^9.0.1",
     "prettier": "^2.3.1",
     "rimraf": "^3.0.2",

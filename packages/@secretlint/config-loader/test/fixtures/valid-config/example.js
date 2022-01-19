@@ -1,1 +1,1 @@
-module.exports = require("@secretlint/secretlint-rule-example");
+module.exports = require("@secretlint/secretlint-rule-internal-test-pure-deps");

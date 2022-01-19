@@ -1,13 +1,13 @@
 {
-  "name": "@secretlint/secretlint-rule-no-dotenv",
+  "name": "@secretlint/secretlint-rule-internal-test-pure-deps",
   "version": "4.1.3",
-  "description": "A secretlint rule for dotenv",
+  "description": "An example rule for secretlint. It it for testing.",
   "keywords": [
     "secretlint",
-    "rule",
-    "dotenv"
+    "testing",
+    "rule"
   ],
-  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-no-dotenv/",
+  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-internal-test-pure-deps/",
   "bugs": {
     "url": "https://github.com/secretlint/secretlint/issues"
   },
@@ -16,10 +16,7 @@
     "url": "https://github.com/secretlint/secretlint.git"
   },
   "license": "MIT",
-  "author": {
-    "name": "Munieru",
-    "url": "https://github.com/munierujp"
-  },
+  "author": "azu",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "directories": {
@@ -36,8 +33,6 @@
     "clean": "rimraf lib/",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
-    "test": "mocha \"test/**/*.ts\"",
-    "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
     "watch": "tsc -p . --watch"
   },
   "prettier": {
@@ -49,14 +44,6 @@
     "@secretlint/types": "^4.1.3"
   },
   "devDependencies": {
-    "@secretlint/tester": "^4.1.3",
-    "@types/mocha": "^9.0.0",
-    "@types/node": "^16.9.1",
-    "mocha": "^9.0.1",
-    "prettier": "^2.3.1",
-    "rimraf": "^3.0.2",
-    "ts-node": "^10.0.0",
-    "ts-node-test-register": "^10.0.0",
     "typescript": "^4.3.4"
   },
   "engines": {

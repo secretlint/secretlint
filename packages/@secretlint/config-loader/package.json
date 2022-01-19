@@ -30,7 +30,7 @@
         "src/"
     ],
     "scripts": {
-        "build": "cross-env NODE_ENV=production tsc -p .",
+        "build": "tsc -p .",
         "clean": "rimraf lib/",
         "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
         "prepublish": "npm run --if-present build",
@@ -51,10 +51,9 @@
         "try-resolve": "^1.0.1"
     },
     "devDependencies": {
-        "@secretlint/secretlint-rule-example": "^4.1.3",
+        "@secretlint/secretlint-rule-internal-test-pure-deps": "^4.1.3",
         "@types/mocha": "^9.0.0",
         "@types/node": "^16.9.1",
-        "cross-env": "^7.0.3",
         "mocha": "^9.0.1",
         "prettier": "^2.3.1",
         "rimraf": "^3.0.2",
