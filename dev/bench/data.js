@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1642070750064,
+  "lastUpdate": 1642606382609,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -9992,6 +9992,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.62,
             "range": "±3.59%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7080b052f1e02feb9146bfb054aa17b7e0ed27a1",
+          "message": "perf: introduce turborepo (#215)\n\n* perf: introduce turborepo\r\n\r\n* chore: add snapshots\r\n\r\n* chore: add turbo ci command\r\n\r\n* fix: ci pipeline\r\n\r\n* fix deps\r\n\r\n* fix deps\r\n\r\n* fix deps\r\n\r\n* fix deps\r\n\r\n* fix deps\r\n\r\n* fix deps\r\n\r\n* fix Dependency cycles\r\n\r\n* chore(deps): remove cross-env",
+          "timestamp": "2022-01-20T00:29:23+09:00",
+          "tree_id": "200b4db80305178ec83581155ae89366194ff2db",
+          "url": "https://github.com/secretlint/secretlint/commit/7080b052f1e02feb9146bfb054aa17b7e0ed27a1"
+        },
+        "date": 1642606381033,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.75,
+            "range": "±0.98%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.55,
+            "range": "±2.78%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
