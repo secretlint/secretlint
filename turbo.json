@@ -1,0 +1,37 @@
+{
+  "baseBranch": "origin/master",
+  "pipeline": {
+    "build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "lib/**",
+        "module/**"
+      ]
+    },
+    "test": {
+      "dependsOn": [
+        "build",
+        "$UPDATE_SNAPSHOT"
+      ],
+      "outputs": [
+        "snapshots/**"
+      ]
+    },
+    "updateSnapshot": {
+      "dependsOn": [
+        "build",
+        "$UPDATE_SNAPSHOT"
+      ],
+      "outputs": [
+        "snapshots/**"
+      ]
+    },
+    "secretlint": {
+      "dependsOn": [
+        "build"
+      ]
+    }
+  }
+}
