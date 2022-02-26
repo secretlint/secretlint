@@ -1,11 +1,9 @@
 "use strict";
-import { FormatterOptions } from "../types";
-import { SecretLintCoreResult, SecretLintCoreResultMessage } from "@secretlint/types";
+import { SecretLintCoreResult, SecretLintCoreResultMessage, SecretLintFormatter } from "@secretlint/types";
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
-
 import chalk from "chalk";
 import { table } from "table";
 import stripAnsi from "strip-ansi";
@@ -105,13 +103,13 @@ function drawReport(results: SecretLintCoreResult[]): string {
 // Public Interface
 //------------------------------------------------------------------------------
 
-function formatter(report: SecretLintCoreResult[], options: FormatterOptions) {
+const formatter: SecretLintFormatter = (results, options) => {
     const useColor = options.color ?? true;
     let output = "";
     let errorCount = 0;
     let warningCount = 0;
 
-    report.forEach((fileReport) => {
+    results.forEach((fileReport) => {
         fileReport.messages.forEach((message) => {
             if (message.severity === "warning") {
                 warningCount += 1;
@@ -122,7 +120,7 @@ function formatter(report: SecretLintCoreResult[], options: FormatterOptions) {
     });
 
     if (errorCount || warningCount) {
-        output = drawReport(report);
+        output = drawReport(results);
     }
 
     output +=
@@ -149,6 +147,6 @@ function formatter(report: SecretLintCoreResult[], options: FormatterOptions) {
         return stripAnsi(output);
     }
     return output;
-}
+};
 
 export default formatter;
