@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/secretlint/secretlint/compare/v4.1.4...v4.2.0) (2022-03-02)
+
+
+### Features
+
+* **sarif:** add @secretlint/secretlint-formatter-sarif ([#217](https://github.com/secretlint/secretlint/issues/217)) ([6cdf303](https://github.com/secretlint/secretlint/commit/6cdf303073d0686a1d5ac0004e1365b1b8a70205))
+
+
+### Performance Improvements
+
+* introduce turborepo ([#215](https://github.com/secretlint/secretlint/issues/215)) ([7080b05](https://github.com/secretlint/secretlint/commit/7080b052f1e02feb9146bfb054aa17b7e0ed27a1))
+
+
+
+
+
 ## [4.1.3](https://github.com/secretlint/secretlint/compare/v4.1.1...v4.1.3) (2021-10-13)
 
 **Note:** Version bump only for package @secretlint/formatter
