@@ -57,3 +57,5 @@ export {
     SecretLintConfigDescriptorRule,
     SecretLintConfigDescriptorRulePreset,
 } from "./SecretLintConfigDescriptor";
+// Formatter
+export { SecretLintFormatterOptions, SecretLintFormatter } from "./SecretLintFormatter";

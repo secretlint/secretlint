@@ -463,6 +463,17 @@ This web extension aim to founds credentials that are included in your request/r
 Secretlint WebExtension integrate to DevTools in Chrome/Firefox.
 This extension help web developer to notice exposed credential.
 
+### Others
+
+#### SARIF format support
+
+Please use [@secretlint/secretlint-formatter-sarif](./packages/@secretlint/secretlint-formatter-sarif).
+
+```
+npm install @secretlint/secretlint-formatter-sarif --dev
+secretlint --format @secretlint/secretlint-formatter-sarif "**/*"
+```
+
 ## Semantic Versioning Policy
 
 Secretlint project follow [Semantic Versioning](https://semver.org/ "Semantic Versioning")([secretlint-rule-preset-canary](packages/@secretlint/secretlint-rule-preset-canary) is exception).

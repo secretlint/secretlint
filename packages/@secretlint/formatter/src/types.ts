@@ -1,8 +1,5 @@
-export interface FormatterConfig {
-    formatterName: string;
-    color?: boolean;
-}
+import { SecretLintFormatterOptions } from "@secretlint/types";
 
-export interface FormatterOptions {
-    color?: boolean;
-}
+export type FormatterConfig = {
+    formatterName: string;
+} & SecretLintFormatterOptions;

@@ -132,7 +132,7 @@ export function secretlintCreateFormatter(formatterConfig: FormatterConfig) {
         } else if (isFile(`${path.join(__dirname, "formatters/", formatterName)}.ts`)) {
             formatterPath = `${path.join(__dirname, "formatters/", formatterName)}.ts`;
         } else {
-            const pkgPath = tryResolve(`secretlint-formatter-${formatterName}`) || tryResolve(formatterName);
+            const pkgPath = tryResolve(formatterName) || tryResolve(`secretlint-formatter-${formatterName}`);
             if (pkgPath) {
                 formatterPath = pkgPath;
             }
