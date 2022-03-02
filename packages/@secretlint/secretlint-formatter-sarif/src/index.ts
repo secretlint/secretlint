@@ -7,9 +7,9 @@ function buildSarifResult(lintResults: SecretLintCoreResult[]) {
     const sarifBuilder = new SarifBuilder();
     // SARIF Run builder
     const sarifRunBuilder = new SarifRunBuilder().initSimple({
-        toolDriverName: "secretlint-formatter-sarif",
-        toolDriverVersion: "1.0.0",
-        url: "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-formatter-sarif/"
+        toolDriverName: "secretlint",
+        toolDriverVersion: "1.0.0", // TODO: currently can not get secretlint's version from formatter
+        url: "https://github.com/secretlint/secretlint"
     });
     // SARIF rules
     const addedRuleSet = new Set<string>();
