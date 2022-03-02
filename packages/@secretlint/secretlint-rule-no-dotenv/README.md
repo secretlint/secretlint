@@ -40,7 +40,7 @@ You can tell Secretlint to ignore `.env` file by [`.secretlintignore`](https://g
 
 For more details `.secretlintignore`, see following document.
 
-- <https://github.com/secretlint/secretlint/blob/master/docs/configuration.md#.secretlintignore>
+- <https://github.com/secretlint/secretlint/blob/master/docs/configuration.md#secretlintignore>
 
 ## Author
 
