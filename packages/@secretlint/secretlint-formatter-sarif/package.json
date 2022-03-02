@@ -18,9 +18,9 @@
   "license": "MIT",
   "author": "azu",
   "sideEffects": false,
-  "main": "lib/secretlint-formatter-sarif.js",
-  "module": "module/secretlint-formatter-sarif.js",
-  "types": "lib/secretlint-formatter-sarif.d.ts",
+  "main": "lib/index.js",
+  "module": "module/index.js",
+  "types": "lib/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "test"
