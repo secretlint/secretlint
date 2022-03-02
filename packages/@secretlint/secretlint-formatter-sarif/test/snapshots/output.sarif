@@ -5,7 +5,7 @@
     {
       "tool": {
         "driver": {
-          "name": "secretlint-formatter-sarif",
+          "name": "secretlint",
           "rules": [
             {
               "id": "example",
@@ -23,7 +23,7 @@
             }
           ],
           "version": "1.0.0",
-          "informationUri": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-formatter-sarif/"
+          "informationUri": "https://github.com/secretlint/secretlint"
         }
       },
       "results": [

@@ -1,8 +1,7 @@
 import { SecretLintCoreResult, SecretLintFormatter } from "@secretlint/types";
-import { url } from "inspector";
 import { SarifBuilder, SarifResultBuilder, SarifRuleBuilder, SarifRunBuilder } from "node-sarif-builder";
 import path from "path";
-import { fileURLToPath } from "url";
+import { pathToFileURL } from "url";
 
 function buildSarifResult(lintResults: SecretLintCoreResult[]) {
     // SARIF builder
@@ -40,7 +39,7 @@ function buildSarifResult(lintResults: SecretLintCoreResult[]) {
                 messageText: message.message,
                 ruleId: ruleId,
                 fileUri: process.env.SARIF_URI_ABSOLUTE
-                    ? fileURLToPath(result.filePath)
+                    ? pathToFileURL(result.filePath).toString()
                     : path.relative(process.cwd(), result.filePath),
                 startLine: fixLine(message.loc.start.line),
                 startColumn: fixCol(message.loc.start.column),
