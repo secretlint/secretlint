@@ -55,7 +55,7 @@ jobs:
         if: steps.tag_check.outputs.exists_tag == 'false'
         run: |
           echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-          yarn run release-ci
+          npm run release-ci
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
