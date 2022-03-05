@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1646484991180,
+  "lastUpdate": 1646492698794,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -10334,6 +10334,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.55,
             "range": "±3.11%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "288230aa9284520b6b67d7c8853ae98fe151f8cc",
+          "message": "fix(docker): update Node.js 16",
+          "timestamp": "2022-03-06T00:01:08+09:00",
+          "tree_id": "18140ae01d2ff76a8c51f5fcbbba048b58cf4a10",
+          "url": "https://github.com/secretlint/secretlint/commit/288230aa9284520b6b67d7c8853ae98fe151f8cc"
+        },
+        "date": 1646492697962,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.58,
+            "range": "±1.29%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.53,
+            "range": "±1.53%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
