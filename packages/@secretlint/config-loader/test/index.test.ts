@@ -26,14 +26,12 @@ describe("@secretlint/config-loader", function () {
                 config: {
                     rules: [
                         {
-                            type: "rule",
                             id: "example",
                             rule: importSecretlintCreator(
                                 require("@secretlint/secretlint-rule-internal-test-pure-deps")
                             ),
                         },
                         {
-                            type: "rule",
                             id: "example-2",
                             rule: importSecretlintCreator(
                                 require("@secretlint/secretlint-rule-internal-test-pure-deps")

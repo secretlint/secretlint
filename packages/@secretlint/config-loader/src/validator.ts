@@ -115,8 +115,6 @@ validateConfigOption): { ok: true } | { ok: false; error: Error } => {
             // ## Detect unknown id - the preset does not have the id
             const actualRulesForPreset = preset.rule.rules;
             const actualRuleIdsForPreset = actualRulesForPreset.map((rule) => rule.meta.id);
-            console.log("ruleConfigs", ruleConfigs);
-            console.log("actualRuleIdsForPreset", actualRuleIdsForPreset);
             ruleConfigs?.forEach((ruleCreatorOption) => {
                 const existRule = actualRuleIdsForPreset.includes(ruleCreatorOption.id);
                 if (!existRule) {
