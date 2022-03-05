@@ -42,15 +42,15 @@
     "dependencies": {
         "@secretlint/profiler": "^5.0.1",
         "@secretlint/types": "^5.0.1",
-        "debug": "^4.1.1",
+        "debug": "^4.3.3",
         "structured-source": "^3.0.2"
     },
     "devDependencies": {
-        "@types/mocha": "^9.0.0",
+        "@types/mocha": "^9.1.0",
         "@types/node": "^17.0.21",
         "@types/structured-source": "^3.0.0",
         "assert-json-equal": "^1.0.1",
-        "mocha": "^9.0.1",
+        "mocha": "^9.0.3",
         "prettier": "^2.3.1",
         "rimraf": "^3.0.2",
         "ts-node": "^10.0.0",

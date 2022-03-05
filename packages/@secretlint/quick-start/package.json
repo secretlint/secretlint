@@ -50,10 +50,10 @@
         "secretlint": "^5.0.1"
     },
     "devDependencies": {
-        "@types/mocha": "^9.0.0",
-        "@types/node": "^16.9.1",
+        "@types/mocha": "^9.1.0",
+        "@types/node": "^16.9.6",
         "expected-exit-status": "^1.0.2",
-        "mocha": "^9.0.1",
+        "mocha": "^9.0.3",
         "prettier": "^2.3.1",
         "rimraf": "^3.0.2",
         "typescript": "^4.3.4"
