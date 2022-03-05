@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.1](https://github.com/secretlint/secretlint/compare/v5.0.0...v5.0.1) (2022-03-05)
+
+
+### Bug Fixes
+
+* **config-loader:** do not apply prettier ([bfdb32d](https://github.com/secretlint/secretlint/commit/bfdb32d42d3d22212e8394df8a9dabc3d5a96aab))
+
+
+
+
+
 # [5.0.0](https://github.com/secretlint/secretlint/compare/v4.2.1...v5.0.0) (2022-03-05)
 
 
