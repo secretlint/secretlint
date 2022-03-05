@@ -48,9 +48,7 @@
     "trailingComma": "none"
   },
   "dependencies": {
-    "@secretlint/types": "^5.0.0",
-    "lint-staged": "^11.0.0",
-    "prettier": "^2.3.1"
+    "@secretlint/types": "^5.0.0"
   },
   "devDependencies": {
     "@secretlint/secretlint-rule-pattern": "^5.0.0",
