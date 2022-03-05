@@ -1,16 +1,18 @@
 import { rcFile } from "rc-config-loader";
 import {
+    SecretLintCoreConfig,
+    SecretLintCoreConfigUnionRule,
     SecretLintConfigDescriptor,
-    SecretLintCoreDescriptor,
-    SecretLintCoreDescriptorRule,
-    SecretLintCoreDescriptorUnionRule,
     SecretLintUnionRuleCreator,
     SecretLintRuleModule,
+    SecretLintRulePresetCreator,
+    SecretLintConfigDescriptorRulePreset,
 } from "@secretlint/types";
 import { secretLintProfiler } from "@secretlint/profiler";
 import { SecretLintModuleResolver } from "./SecretLintModuleResolver";
-import { validateConfig, validateRawConfig } from "@secretlint/config-validator";
+import { validateConfigWithDescriptor, validateConfigDescriptor } from "./validator";
 import * as url from "url";
+import { AggregationError } from "./AggregationError";
 
 export function importSecretlintCreator(moduleExports?: SecretLintRuleModule): SecretLintUnionRuleCreator {
     if (!moduleExports) {
@@ -20,16 +22,6 @@ export function importSecretlintCreator(moduleExports?: SecretLintRuleModule): S
         throw new Error("Secretlint rule should export { creator }. module does not export creator object.");
     }
     return moduleExports.creator;
-}
-
-export class AggregateError extends Error {
-    errors: Error[];
-
-    constructor(errors: Error[], message: string) {
-        const detailsMessage = errors.map((error) => error.message).join("\n\n");
-        super(message + "\n\n" + detailsMessage);
-        this.errors = errors;
-    }
 }
 
 // Windows's path require to convert file://
@@ -61,20 +53,28 @@ export type SecretLintConfigLoaderOptions = {
 };
 export type SecretLintConfigLoaderResult = {
     ok: true;
-    config: SecretLintCoreDescriptor; // Core Option object
+    /**
+     * Full config object
+     */
+    config: SecretLintCoreConfig;
+    /**
+     * Partial config file represent
+     */
+    configDescriptor: SecretLintConfigDescriptor;
     configFilePath: string;
 };
 
 export type SecretLintConfigLoaderRawResult = {
     ok: true;
     configFilePath: string;
-    rawConfig: SecretLintConfigDescriptor; // Config Raw object
+    // Config Raw object
+    configDescriptor: SecretLintConfigDescriptor;
 };
 export type SecretLintLoadPackagesFromRawConfigOptions = {
     /**
      * Loaded config object
      */
-    rawConfig: SecretLintConfigDescriptor;
+    configDescriptor: SecretLintConfigDescriptor;
     /**
      * node_modules directory path
      * Default: undefined
@@ -92,20 +92,20 @@ export type SecretLintLoadPackagesFromRawConfigOptions = {
 };
 export type SecretLintLoadPackagesFromRawConfigResult = {
     ok: true;
-    config: SecretLintCoreDescriptor; // Core Option object
+    config: SecretLintCoreConfig; // Core Option object
 };
 
 /**
  * Load packages in RawConfig and return loaded config object
  * @param options
  */
-export const loadPackagesFromRawConfig = async (
+export const loadPackagesFromConfigDescriptor = async (
     options: SecretLintLoadPackagesFromRawConfigOptions
 ): Promise<SecretLintLoadPackagesFromRawConfigResult> => {
     // Early validation, validate rawConfig by JSON Schema
-    const resultValidateRawConfig = validateRawConfig(options.rawConfig);
-    if (!resultValidateRawConfig.ok) {
-        throw resultValidateRawConfig.error;
+    const validateConfigDescriptorResult = validateConfigDescriptor(options.configDescriptor);
+    if (!validateConfigDescriptorResult.ok) {
+        throw validateConfigDescriptorResult.error;
     }
     secretLintProfiler.mark({
         type: "@config-loader>resolve-modules::start",
@@ -114,9 +114,13 @@ export const loadPackagesFromRawConfig = async (
     const moduleResolver = new SecretLintModuleResolver({
         baseDirectory: options.node_moduleDir,
     });
+    // TODO: remove any
+    const isSecretLintCoreConfigRulePreset = (v: SecretLintUnionRuleCreator): v is SecretLintRulePresetCreator => {
+        return v.meta.type === "preset";
+    };
     const errors: Error[] = [];
-    const rules: SecretLintCoreDescriptorUnionRule[] = [];
-    for (const configDescriptorRule of options.rawConfig.rules) {
+    const rules: SecretLintCoreConfigUnionRule[] = [];
+    for (const configDescriptorRule of options.configDescriptor.rules) {
         try {
             secretLintProfiler.mark({
                 type: "@config-loader>resolve-module::start",
@@ -128,29 +132,41 @@ export const loadPackagesFromRawConfig = async (
                     return id === configDescriptorRule.id;
                 });
             // TODO: any to be remove
-            const ruleModule: any = replacedDefinition
+            const ruleCreator: SecretLintUnionRuleCreator = replacedDefinition
                 ? replacedDefinition.rule
                 : importSecretlintCreator(
                       await _importDynamic(
                           convertToFileUrl(moduleResolver.resolveRulePackageName(configDescriptorRule.id))
                       )
                   );
-            const secretLintConfigDescriptorRules: SecretLintCoreDescriptorRule[] | undefined =
-                "rules" in configDescriptorRule && Array.isArray(configDescriptorRule.rules)
-                    ? (configDescriptorRule.rules.filter(
-                          (rule) => rule !== undefined
-                      ) as SecretLintCoreDescriptorRule[])
-                    : undefined;
-            rules.push({
-                id: configDescriptorRule.id,
-                rule: ruleModule,
-                rules: secretLintConfigDescriptorRules,
-                options: configDescriptorRule.options,
-                severity: "severity" in configDescriptorRule ? configDescriptorRule.severity : undefined,
-                disabled: configDescriptorRule.disabled,
-                allowMessageIds:
-                    "allowMessageIds" in configDescriptorRule ? configDescriptorRule.allowMessageIds : undefined,
-            });
+            if (isSecretLintCoreConfigRulePreset(ruleCreator)) {
+                const configDescriptorRulePreset = configDescriptorRule as SecretLintConfigDescriptorRulePreset;
+                rules.push({
+                    type: "preset",
+                    id: configDescriptorRule.id,
+                    rule: ruleCreator,
+                    // options for rules
+                    rules: configDescriptorRulePreset?.rules?.map((rule) => {
+                        return {
+                            ...rule,
+                            type: "rule",
+                        };
+                    }),
+                    options: configDescriptorRule.options,
+                    disabled: configDescriptorRule.disabled,
+                });
+            } else {
+                rules.push({
+                    type: "rule",
+                    id: configDescriptorRule.id,
+                    rule: ruleCreator,
+                    options: configDescriptorRule.options,
+                    severity: "severity" in configDescriptorRule ? configDescriptorRule.severity : undefined,
+                    disabled: configDescriptorRule.disabled,
+                    allowMessageIds:
+                        "allowMessageIds" in configDescriptorRule ? configDescriptorRule.allowMessageIds : undefined,
+                });
+            }
             secretLintProfiler.mark({
                 type: "@config-loader>resolve-module::end",
                 id: configDescriptorRule.id,
@@ -163,15 +179,17 @@ export const loadPackagesFromRawConfig = async (
         type: "@config-loader>resolve-modules::end",
     });
     if (errors.length > 0) {
-        throw new AggregateError(errors, "secretlint loading errors");
+        throw new AggregationError(errors, "secretlint loading errors");
     }
-    const loadedConfig: SecretLintCoreDescriptor = {
-        sharedOptions: options.rawConfig.sharedOptions,
+    const loadedConfig: SecretLintCoreConfig = {
+        sharedOptions: options.configDescriptor.sharedOptions,
         rules,
     };
     // Finally, validate loadedConfig with validator
     // This validator require actual `rule` creator for `disabledMessage` option.
-    const resultValidateConfig = validateConfig(loadedConfig);
+    const resultValidateConfig = validateConfigWithDescriptor({
+        config: loadedConfig,
+    });
     if (!resultValidateConfig.ok) {
         throw resultValidateConfig.error;
     }
@@ -188,15 +206,15 @@ export const loadConfig = async (options: SecretLintConfigLoaderOptions): Promis
     secretLintProfiler.mark({
         type: "@config-loader>load-config-file::start",
     });
-    const rawResult = await loadRawConfig(options);
+    const { configDescriptor, configFilePath } = await loadConfigDescriptor(options);
     secretLintProfiler.mark({
         type: "@config-loader>load-config-file::end",
     });
     secretLintProfiler.mark({
         type: "@config-loader>load-packages::start",
     });
-    const result = await loadPackagesFromRawConfig({
-        rawConfig: rawResult.rawConfig,
+    const configLoadResult = await loadPackagesFromConfigDescriptor({
+        configDescriptor,
         node_moduleDir: options.node_moduleDir,
         testReplaceDefinitions: options.testReplaceDefinitions,
     });
@@ -205,8 +223,9 @@ export const loadConfig = async (options: SecretLintConfigLoaderOptions): Promis
     });
     return {
         ok: true,
-        config: result.config,
-        configFilePath: rawResult.configFilePath,
+        config: configLoadResult.config,
+        configDescriptor,
+        configFilePath,
     };
 };
 /**
@@ -214,7 +233,7 @@ export const loadConfig = async (options: SecretLintConfigLoaderOptions): Promis
  *  It is just JSON present for config file. Raw data
  * @param options
  */
-export const loadRawConfig = async (
+export const loadConfigDescriptor = async (
     options: SecretLintConfigLoaderOptions
 ): Promise<SecretLintConfigLoaderRawResult> => {
     const results = rcFile<SecretLintConfigDescriptor>("secretlint", {
@@ -233,7 +252,29 @@ The config file define the use of rules.`);
     }
     return {
         ok: true,
-        rawConfig: results.config,
+        configDescriptor: results.config,
         configFilePath: results.filePath,
     };
+};
+
+export type validateConfigResult =
+    | {
+          ok: true;
+      }
+    | {
+          ok: false;
+          error: AggregationError | Error;
+      };
+export const validateConfig = async (options: SecretLintConfigLoaderOptions): Promise<validateConfigResult> => {
+    try {
+        await loadConfig(options);
+        return {
+            ok: true,
+        };
+    } catch (error) {
+        return {
+            ok: false,
+            error: error instanceof Error ? error : new Error(String(error)),
+        };
+    }
 };

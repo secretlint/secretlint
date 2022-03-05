@@ -1,6 +1,6 @@
 {
-  "name": "example",
-  "main": "index.mjs",
+  "name": "preset-rule",
+  "main": "./index.mjs",
   "type": "module",
   "exports": {
     "import": "./index.mjs"

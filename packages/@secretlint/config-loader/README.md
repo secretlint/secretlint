@@ -57,6 +57,19 @@ if(ok) {
 }
 ```
 
+## Terminology
+
+- ConfigDescriptor: config file literal that is not loaded yet
+- Config: loaded object
+
+## Workflow
+
+- Validate `ConfigDescriptor`
+- Load `ConfigDescriptor` and create `Config` object - imports each rule modules
+- Validate Loaded `Config` with `ConfigDescriptor`
+    - Invalid option, Invalid allowMessageIds, Invalid id specify for a preset 
+- If all validation is passed, get a Config.
+
 ## Changelog
 
 See [Releases page](https://github.com/secretlint/secretlint/releases).

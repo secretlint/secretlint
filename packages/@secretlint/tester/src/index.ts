@@ -4,7 +4,7 @@ import * as assert from "assert";
 import { lintSource } from "@secretlint/core";
 import { loadConfig } from "@secretlint/config-loader";
 import { createRawSource } from "@secretlint/source-creator";
-import { SecretLintCoreDescriptor, SecretLintUnionRuleCreator } from "@secretlint/types";
+import { SecretLintCoreConfig, SecretLintUnionRuleCreator } from "@secretlint/types";
 
 const canResolve = (filePath: string): boolean => {
     try {
@@ -24,7 +24,7 @@ export type SnapshotOptions = {
     /**
      * Define default config for testing
      */
-    defaultConfig: SecretLintCoreDescriptor;
+    defaultConfig: SecretLintCoreConfig;
     /**
      * testDefinitions
      * Replace `id` to `rule`  implicitly

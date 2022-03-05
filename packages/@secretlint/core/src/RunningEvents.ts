@@ -1,6 +1,6 @@
 import {
-    SecretLintCoreDescriptorRule,
-    SecretLintCoreDescriptorRulePreset,
+    SecretLintCoreConfigRule,
+    SecretLintCoreConfigRulePreset,
     SecretLintRuleContext,
     SecretLintRulePresetContext,
     SecretLintSourceCode,
@@ -22,14 +22,14 @@ export type RunningEvents = {
         descriptorRule,
         context,
     }: {
-        descriptorRule: SecretLintCoreDescriptorRule;
+        descriptorRule: SecretLintCoreConfigRule;
         context: SecretLintRuleContext;
     }): void;
     registerRulePreset({
         descriptorRulePreset,
         context,
     }: {
-        descriptorRulePreset: SecretLintCoreDescriptorRulePreset;
+        descriptorRulePreset: SecretLintCoreConfigRulePreset;
         context: SecretLintRulePresetContext;
     }): void;
     isRegistered(ruleId: string): boolean;
@@ -59,7 +59,7 @@ export const createRunningEvents = (): RunningEvents => {
             descriptorRule,
             context,
         }: {
-            descriptorRule: SecretLintCoreDescriptorRule;
+            descriptorRule: SecretLintCoreConfigRule;
             context: SecretLintRuleContext;
         }) {
             if (registerSet.has(descriptorRule.id)) {
@@ -97,7 +97,7 @@ Duplicated rule.id is something wrong in .secretlintrc.
             descriptorRulePreset,
             context,
         }: {
-            descriptorRulePreset: SecretLintCoreDescriptorRulePreset;
+            descriptorRulePreset: SecretLintCoreConfigRulePreset;
             context: SecretLintRulePresetContext;
         }) {
             // Normalized Rule Preset Options

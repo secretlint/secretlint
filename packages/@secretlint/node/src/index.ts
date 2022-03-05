@@ -1,10 +1,10 @@
 import { lintSource } from "@secretlint/core";
-import { loadConfig, loadPackagesFromRawConfig } from "@secretlint/config-loader";
+import { loadConfig, loadPackagesFromConfigDescriptor } from "@secretlint/config-loader";
 import { createRawSource } from "@secretlint/source-creator";
 import { createFormatter } from "@secretlint/formatter";
 import {
     SecretLintConfigDescriptor,
-    SecretLintCoreDescriptor,
+    SecretLintCoreConfig,
     SecretLintCoreResult,
     SecretLintRuleLocaleTag,
 } from "@secretlint/types";
@@ -73,7 +73,7 @@ const lintFile = async ({
     options,
 }: {
     filePath: string;
-    config: SecretLintCoreDescriptor;
+    config: SecretLintCoreConfig;
     options: SecretLintEngineOptions;
 }) => {
     const rawSource = await createRawSource(filePath);
@@ -97,7 +97,7 @@ const executeOnContent = async ({
 }: {
     content: string;
     filePath: string;
-    config: SecretLintCoreDescriptor;
+    config: SecretLintCoreConfig;
     options: SecretLintEngineOptions;
 }) => {
     debug("executeOnContent content: %s", `${content.slice(0, 24)}...`);
@@ -139,7 +139,7 @@ const executeOnFiles = async ({
     options,
 }: {
     filePathList: string[];
-    config: SecretLintCoreDescriptor;
+    config: SecretLintCoreConfig;
     options: SecretLintEngineOptions;
 }) => {
     const mapper = async (filePath: string) => {
@@ -187,8 +187,8 @@ export const createEngine = async (options: SecretLintEngineOptions) => {
     const loadedResult = await (async () => {
         if (isConfigFileJSON(options)) {
             debug("Load ConfigFileJSON: %s", options.configFileJSON);
-            return loadPackagesFromRawConfig({
-                rawConfig: options.configFileJSON,
+            return loadPackagesFromConfigDescriptor({
+                configDescriptor: options.configFileJSON,
             });
         }
         const loadConfigResult = await loadConfig({

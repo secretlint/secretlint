@@ -1,8 +1,8 @@
 import {
-    SecretLintCoreDescriptor,
-    SecretLintCoreDescriptorRule,
-    SecretLintCoreDescriptorRulePreset,
-    SecretLintCoreDescriptorUnionRule,
+    SecretLintCoreConfig,
+    SecretLintCoreConfigRule,
+    SecretLintCoreConfigRulePreset,
+    SecretLintCoreConfigUnionRule,
     SecretLintCoreIgnoreMessage,
     SecretLintCoreResult,
     SecretLintCoreResultMessage,
@@ -38,7 +38,7 @@ export type SecretLintSourceOptions = {
         /**
          * config present secretlintrc object
          */
-        config: SecretLintCoreDescriptor;
+        config: SecretLintCoreConfig;
     };
 };
 export const lintSource = ({ source, options }: SecretLintSourceOptions): Promise<SecretLintCoreResult> => {
@@ -118,11 +118,11 @@ export const lintSource = ({ source, options }: SecretLintSourceOptions): Promis
 };
 
 const isRulePreset = (
-    ruleDescriptor: SecretLintCoreDescriptorUnionRule
-): ruleDescriptor is SecretLintCoreDescriptorRulePreset => {
+    ruleDescriptor: SecretLintCoreConfigUnionRule
+): ruleDescriptor is SecretLintCoreConfigRulePreset => {
     return ruleDescriptor.rule.meta.type === "preset";
 };
-const isRule = (ruleDescriptor: SecretLintCoreDescriptorUnionRule): ruleDescriptor is SecretLintCoreDescriptorRule => {
+const isRule = (ruleDescriptor: SecretLintCoreConfigUnionRule): ruleDescriptor is SecretLintCoreConfigRule => {
     return ruleDescriptor.rule.meta.type === "scanner";
 };
 
@@ -138,8 +138,8 @@ const registerRule = ({
     locale,
 }: {
     sourceCode: SecretLintSourceCode;
-    config: SecretLintCoreDescriptor;
-    descriptorRule: SecretLintCoreDescriptorUnionRule;
+    config: SecretLintCoreConfig;
+    descriptorRule: SecretLintCoreConfigUnionRule;
     contextEvents: ContextEvents;
     runningEvents: RunningEvents;
     locale: SecretLintRuleLocaleTag;
@@ -157,7 +157,7 @@ const registerRule = ({
     // If option is not defined Options is {} by default
     if (isRulePreset(descriptorRule)) {
         const context = createRulePresetContext({
-            descriptorRulePreset: descriptorRule,
+            configRulePreset: descriptorRule,
             sourceCode,
             contextEvents: contextEvents,
             runningEvents: runningEvents,

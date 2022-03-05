@@ -1,7 +1,7 @@
 import {
     SecretLintRuleContext,
     SecretLintRuleCreator,
-    SecretLintCoreDescriptorRule,
+    SecretLintCoreConfigRule,
     SecretLintRuleReportHandler,
     SecretLintSourceCode,
 } from "@secretlint/types";
@@ -9,13 +9,13 @@ import { AllowMessage } from "./messages/filter-message-id";
 
 export type SecretLintRuleOptions = {
     context: SecretLintRuleContext;
-    descriptorRule: SecretLintCoreDescriptorRule;
+    descriptorRule: SecretLintCoreConfigRule;
 };
 
 export class SecretLintRule {
     private ruleReportHandle: SecretLintRuleReportHandler;
     private ruleCreator: SecretLintRuleCreator;
-    private descriptorRule: SecretLintCoreDescriptorRule;
+    private descriptorRule: SecretLintCoreConfigRule;
 
     constructor({ descriptorRule, context }: SecretLintRuleOptions) {
         this.descriptorRule = descriptorRule;

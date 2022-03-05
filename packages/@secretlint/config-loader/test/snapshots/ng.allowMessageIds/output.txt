@@ -1,0 +1,7 @@
+Secretlint Configuration Error
+
+Doe not found allowMessageIds: not_defined_id in the rule(example)
+
+Following config is invalid because the rule(example) does not have messageId: "not_defined_id".
+
+{"allowMessageIds":["not_defined_id"]}

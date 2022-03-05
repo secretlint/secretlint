@@ -10,7 +10,8 @@ import { SecretLintRulePresetCreator, SecretLintRulePresetCreatorOptions } from 
 import { SecretLintRuleSeverityLevel } from "./SecretLintRuleSeverityLevel";
 import { SecretlintCoreSharedOptions } from "./SecretlintCoreSharedOptions";
 
-export type SecretLintCoreDescriptorRule<Options = SecretLintRuleCreatorOptions> = {
+export type SecretLintCoreConfigRule<Options = SecretLintRuleCreatorOptions> = {
+    type: "rule";
     /**
      * Rule id that is package name or shorten package name
      * For example, "secretlint-rule-example" or "example"(shorten)
@@ -41,7 +42,8 @@ export type SecretLintCoreDescriptorRule<Options = SecretLintRuleCreatorOptions>
      */
     allowMessageIds?: string[];
 };
-export type SecretLintCoreDescriptorRulePreset<Options = SecretLintRulePresetCreatorOptions> = {
+export type SecretLintCoreConfigRulePreset<Options = SecretLintRulePresetCreatorOptions> = {
+    type: "preset";
     /**
      * Rule id that is package name or shorten package name
      * For example, "secretlint-rule-preset-example" or "example"(shorten)
@@ -54,7 +56,7 @@ export type SecretLintCoreDescriptorRulePreset<Options = SecretLintRulePresetCre
     /**
      * Preset's rule definitions
      */
-    rules?: SecretLintCoreDescriptorRule[];
+    rules?: Omit<SecretLintCoreConfigRule, "rule">[];
     /**
      * Rule options
      * Default: {} (empty object)
@@ -69,16 +71,20 @@ export type SecretLintCoreDescriptorRulePreset<Options = SecretLintRulePresetCre
 export type SecretLintUnionRuleCreator<Options = SecretLintRuleCreatorOptions | SecretLintRulePresetCreatorOptions> =
     | SecretLintRuleCreator<Options>
     | SecretLintRulePresetCreator<Options>;
-export type SecretLintCoreDescriptorUnionRule<
-    Options = SecretLintRuleCreatorOptions | SecretLintRulePresetCreatorOptions
-> = SecretLintCoreDescriptorRule<Options> | SecretLintCoreDescriptorRulePreset<Options>;
+export type SecretLintCoreConfigUnionRule<Options = SecretLintRuleCreatorOptions | SecretLintRulePresetCreatorOptions> =
+    SecretLintCoreConfigRule<Options> | SecretLintCoreConfigRulePreset<Options>;
 // module export named `creator`
 export type SecretLintRuleModule = {
     creator: SecretLintUnionRuleCreator;
 };
-export type SecretLintCoreDescriptor = {
+/**
+ * Loaded Config Object
+ * - Config: Full
+ * - ConfigDescriptor: Partial
+ */
+export type SecretLintCoreConfig = {
     sharedOptions?: SecretlintCoreSharedOptions;
-    rules: SecretLintCoreDescriptorUnionRule[];
+    rules: SecretLintCoreConfigUnionRule[];
 };
 
 export type SecretLintCoreResult = {

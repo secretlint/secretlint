@@ -30,11 +30,13 @@
         "src/"
     ],
     "scripts": {
-        "build": "tsc -p .",
+        "build": "npm run create-validation && tsc -p .",
         "clean": "rimraf lib/",
         "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
         "prepublish": "npm run --if-present build",
         "test": "mocha \"test/**/*.ts\"",
+        "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
+        "create-validation": "create-validator-ts src/descriptor-types.ts --additionalProperties",
         "watch": "tsc -p . --watch"
     },
     "prettier": {
@@ -43,12 +45,12 @@
         "tabWidth": 4
     },
     "dependencies": {
-        "@secretlint/config-validator": "^4.2.0",
         "@secretlint/profiler": "^4.2.0",
         "@secretlint/types": "^4.2.0",
         "debug": "^4.1.1",
         "rc-config-loader": "^4.0.0",
-        "try-resolve": "^1.0.1"
+        "try-resolve": "^1.0.1",
+        "ajv": "^6.11.0"
     },
     "devDependencies": {
         "@secretlint/secretlint-rule-internal-test-pure-deps": "^4.2.0",
@@ -59,7 +61,8 @@
         "rimraf": "^3.0.2",
         "ts-node": "^10.0.0",
         "ts-node-test-register": "^10.0.0",
-        "typescript": "^4.3.4"
+        "typescript": "^4.3.4",
+        "create-validator-ts": "^3.0.0"
     },
     "engines": {
         "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
