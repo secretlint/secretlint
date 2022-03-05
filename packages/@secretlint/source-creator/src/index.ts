@@ -3,13 +3,13 @@ import util from "util";
 import path from "path";
 import { SecretLintRawSource } from "@secretlint/types";
 
-import { isBinarySync, isTextSync } from "istextorbinary";
+import { isBinary, isText } from "istextorbinary";
 
 const readFile = util.promisify(fs.readFile);
 const detectContentType = (filePath: string, content: Buffer): SecretLintRawSource["contentType"] => {
-    if (isBinarySync(filePath, content)) {
+    if (isBinary(filePath, content)) {
         return "binary";
-    } else if (isTextSync(filePath, content)) {
+    } else if (isText(filePath, content)) {
         return "text";
     } else {
         return "unknown";
