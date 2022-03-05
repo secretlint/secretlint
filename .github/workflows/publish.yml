@@ -83,12 +83,12 @@ jobs:
             ${{ github.event.pull_request.body }}
           draft: false
           prerelease: false
-      - uses: actions/github-script@0.8.0
+      - uses: actions/github-script@v6
         if: steps.tag_check.outputs.exists_tag == 'false' && github.event.pull_request.merged == true
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            github.issues.createComment({
+            github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
