@@ -5,7 +5,9 @@ import { validateConfig, validateConfigResult } from "../src";
 
 const snapshotDir = path.join(__dirname, "snapshots");
 const formatResult = (result: validateConfigResult) => {
-    return result.ok ? "OK" : result.error.message;
+    return result.ok
+        ? "OK"
+        : result.error.message.replace(/cwd: .*/, "cwd: <cwd>").replace(/baseDir: .*/, "baseDir: <baseDir>");
 };
 describe("validateConfig", function () {
     fs.readdirSync(snapshotDir, { withFileTypes: true })

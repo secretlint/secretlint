@@ -1,6 +1,7 @@
-secretlint loading errors
+kSecretlint Configuration Error
 
-Failed to load secretlint's rule module: "example" is not found.
+Doe not found allowMessageIds: not_defined_id in the rule(example)
 
-cwd: /Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader
-baseDir: /Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/test/snapshots/ng.allowMessageIds/modules
+Following config is invalid because the rule(example) does not have messageId: "not_defined_id".
+
+{"allowMessageIds":["not_defined_id"]}
