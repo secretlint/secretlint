@@ -1,4 +1,4 @@
-kSecretlint Configuration Error
+Secretlint Configuration Error
 
 Doe not found allowMessageIds: not_defined_id in the rule(example)
 
