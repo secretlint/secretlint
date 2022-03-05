@@ -12,6 +12,13 @@ import {
     validateSecretLintConfigDescriptorRulePreset_,
 } from "./descriptor-types.validator";
 
+function invariant(condition: any, message: string): asserts condition {
+    if (condition) {
+        return;
+    }
+    throw new Error(message);
+}
+
 const isPreset = (
     value: SecretLintConfigDescriptorRule | SecretLintConfigDescriptorRulePreset
 ): value is SecretLintCoreConfigRulePreset => {
@@ -112,9 +119,11 @@ validateConfigOption): { ok: true } | { ok: false; error: Error } => {
             // Validate preset
             const preset = ruleOrPreset as SecretLintCoreConfigRulePreset;
             const ruleConfigs = preset?.rules ?? [];
+            invariant(Array.isArray(preset.rule.rules), "preset should have `rules` property");
+            invariant(typeof preset.rule.meta === "object", "preset should have `meta` property");
+            invariant(typeof preset.rule.create === "function", "preset should have `create` function");
             // ## Detect unknown id - the preset does not have the id
-            const actualRulesForPreset = preset.rule.rules;
-            const actualRuleIdsForPreset = actualRulesForPreset.map((rule) => rule.meta.id);
+            const actualRuleIdsForPreset = preset.rule.rules.map((rule) => rule.meta.id);
             ruleConfigs?.forEach((ruleCreatorOption) => {
                 const existRule = actualRuleIdsForPreset.includes(ruleCreatorOption.id);
                 if (!existRule) {
@@ -131,6 +140,8 @@ ${JSON.stringify(ruleCreatorOption)}
         } else {
             // Validate rule
             const rule = ruleOrPreset as SecretLintCoreConfigRule;
+            invariant(typeof rule.rule.meta === "object", "rule should have `meta` property");
+            invariant(typeof rule.rule.create === "function", "rule should have `create` function");
             // `allowMessageIds` validation
             if (Array.isArray(rule.allowMessageIds)) {
                 const messageIds: string[] = Object.keys(rule.rule.messages);

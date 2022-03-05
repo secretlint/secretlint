@@ -1,0 +1,1 @@
+preset should have `rules` property
