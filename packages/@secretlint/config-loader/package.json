@@ -65,7 +65,7 @@
         "create-validator-ts": "^3.0.1"
     },
     "engines": {
-        "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
+        "node": "SecretLintCoreConfig^14.13.1 || >=16.0.0"
     },
     "publishConfig": {
         "access": "public"
