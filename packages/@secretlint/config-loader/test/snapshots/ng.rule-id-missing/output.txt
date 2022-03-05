@@ -1,5 +1,5 @@
 Secretlint Configuration Error
 
-Invalid secretlintrc: secretlintrc.rules[0] should have required property 'id', secretlintrc.rules[0] should have required property 'id', secretlintrc.rules[0] should match some schema in anyOf
+Invalid secretlintrc: secretlintrc/rules/0 must have required property 'id', secretlintrc/rules/0 must have required property 'id', secretlintrc/rules/0 must match a schema in anyOf
 
-Invalid undefined: undefined should have required property 'id'
+Invalid undefined: undefined must have required property 'id'

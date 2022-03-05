@@ -73,7 +73,7 @@ describe("@secretlint/config-loader", function () {
             .catch((error: Error) => {
                 assert.ok(
                     error.message.includes(
-                        `secretlintrc.rules[0] should have required property 'id', secretlintrc.rules[0] should have required property 'id', secretlintrc.rules[0] should match some schema in anyOf`
+                        `secretlintrc/rules/0 must have required property 'id', secretlintrc/rules/0 must have required property 'id', secretlintrc/rules/0 must match a schema in anyOf`
                     ),
                     error.message
                 );
