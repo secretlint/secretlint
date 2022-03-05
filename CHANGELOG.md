@@ -3,6 +3,49 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/secretlint/secretlint/compare/v4.2.1...v5.0.0) (2022-03-05)
+
+
+### Bug Fixes
+
+* **deps:** update dependencies ([7c665d5](https://github.com/secretlint/secretlint/commit/7c665d59e9e6ac6646f69800c609b1b07be693e4))
+
+
+### chore
+
+* Drop Node.js 12 support ([#226](https://github.com/secretlint/secretlint/issues/226)) ([d05fbe6](https://github.com/secretlint/secretlint/commit/d05fbe672bc0554a4fac98dd886b080fa6ea4e6d))
+
+
+### Features
+
+* **config-loader:** improve validation to config ([#224](https://github.com/secretlint/secretlint/issues/224)) ([222555f](https://github.com/secretlint/secretlint/commit/222555f46f230c451917bf87442b9473a67855bb))
+
+
+### BREAKING CHANGES
+
+* Drop Node.js 12 support
+* **config-loader:** this change will throw error some config that is already wrong.
+
+* fix: remove unused type
+
+* chore: update test
+
+* docs: fix
+
+* test: add assertion for rule/preset impl
+
+* test: add assertion for rule/preset impl
+
+* test: fix test snapshot
+
+* fix
+
+* chore:  fix
+
+
+
+
+
 ## [4.2.1](https://github.com/secretlint/secretlint/compare/v4.2.0...v4.2.1) (2022-03-02)
 
 
