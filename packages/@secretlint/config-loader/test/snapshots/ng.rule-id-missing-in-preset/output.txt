@@ -1,0 +1,7 @@
+Secretlint Configuration Error
+
+Does not exist id: "does-not-exist-rule-in-the-preset" in the preset(preset-rule).
+
+Following config is invalid because the preset(preset-rule) does not have id: "does-not-exist-rule-in-the-preset".
+
+{"id":"does-not-exist-rule-in-the-preset","disabled":true,"type":"rule"}

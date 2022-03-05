@@ -1,5 +1,5 @@
 // Rule Interfaces
-import { SecretLintCoreDescriptorRule } from "./SecretLintCore";
+import { SecretLintCoreConfigRule } from "./SecretLintCore";
 import { SecretLintRuleCreator, SecretLintRuleCreatorOptions } from "./SecretLintRule";
 import { SecretlintCoreSharedOptions } from "./SecretlintCoreSharedOptions";
 
@@ -7,7 +7,7 @@ export type SecretLintRulePresetContext = {
     sharedOptions: SecretlintCoreSharedOptions;
     registerRule<Options = SecretLintRuleCreatorOptions>(
         rule: SecretLintRuleCreator<Options>,
-        defaultValue?: Omit<SecretLintCoreDescriptorRule<Options>, "id" | "rule">
+        defaultValue?: Omit<SecretLintCoreConfigRule<Options>, "id" | "rule">
     ): void;
 };
 export type SecretLintRulePresetCreatorOptions = {};
@@ -20,6 +20,6 @@ export type SecretLintRulePresetCreator<Options = SecretLintRulePresetCreatorOpt
             url: string;
         };
     };
-
+    rules: SecretLintRuleCreator<unknown>[];
     create(context: SecretLintRulePresetContext, options: Options): void;
 };

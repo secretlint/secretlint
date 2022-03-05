@@ -6,6 +6,25 @@ export const messages = {
         ja: (props: { ID: string }) => `secret: ${props.ID} がみつかりました`,
     },
 };
+/**
+ * It is for testing
+ * @param override
+ */
+export const createCreator = (
+    override: Partial<Pick<SecretLintRuleCreator, "messages" | "meta">>
+): SecretLintRuleCreator => {
+    return {
+        ...creator,
+        messages: {
+            ...creator.messages,
+            ...override.messages,
+        },
+        meta: {
+            ...creator.meta,
+            ...override.meta,
+        },
+    };
+};
 
 export const creator: SecretLintRuleCreator = {
     messages,

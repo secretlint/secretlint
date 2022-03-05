@@ -216,7 +216,7 @@ If you want to publish your secretlint rule, see following documents.
 
 ### Package Naming Conventions
 
-Secretlint rule package naming should have `textlint-rule-` prefix.
+Secretlint rule package naming should have `secretlint-rule-` prefix.
  
 - `secretlint-rule-<name>`
 - `@scope/textlint-rule-<name>`

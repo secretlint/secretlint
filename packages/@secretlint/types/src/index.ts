@@ -5,13 +5,13 @@ export {
     SecretLintCoreIgnoreMessage,
     SecretLintCoreResult,
     SecretLintCoreResultMessage,
-    SecretLintCoreDescriptor,
+    SecretLintCoreConfig,
     SecretLintRuleModule,
     // union
     SecretLintUnionRuleCreator,
-    SecretLintCoreDescriptorUnionRule,
-    SecretLintCoreDescriptorRule,
-    SecretLintCoreDescriptorRulePreset,
+    SecretLintCoreConfigUnionRule,
+    SecretLintCoreConfigRule,
+    SecretLintCoreConfigRulePreset,
 } from "./SecretLintCore";
 export { SecretlintCoreSharedOptions } from "./SecretlintCoreSharedOptions";
 export { SecretLintRuleSeverityLevel } from "./SecretLintRuleSeverityLevel";

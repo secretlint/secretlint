@@ -1,6 +1,6 @@
 import {
-    SecretLintCoreDescriptorRule,
-    SecretLintCoreDescriptorRulePreset,
+    SecretLintCoreConfigRule,
+    SecretLintCoreConfigRulePreset,
     SecretlintCoreSharedOptions,
     SecretLintRuleCreator,
     SecretLintRuleCreatorOptions,
@@ -15,30 +15,30 @@ import { ContextEvents, createRuleContext } from "./RuleContext";
  * Create a context for Rule Preset
  */
 export const createRulePresetContext = ({
-    descriptorRulePreset,
+    configRulePreset,
     sourceCode,
     runningEvents,
     contextEvents,
     sharedOptions,
     locale,
 }: {
-    descriptorRulePreset: SecretLintCoreDescriptorRulePreset;
+    configRulePreset: SecretLintCoreConfigRulePreset;
     sourceCode: SecretLintSourceCode;
     contextEvents: ContextEvents;
     runningEvents: RunningEvents;
     sharedOptions: SecretlintCoreSharedOptions;
     locale: SecretLintRuleLocaleTag;
 }): SecretLintRulePresetContext => {
-    const presetRules = descriptorRulePreset.rules || [];
+    const presetRules = configRulePreset.rules || [];
     if (!Array.isArray(presetRules)) {
-        console.error(`${descriptorRulePreset.id}:PresetRules is invalid format`, presetRules);
+        console.error(`${configRulePreset.id}:PresetRules is invalid format`, presetRules);
         throw new Error("preset's rules should be an array of rule definitions");
     }
     return {
         sharedOptions,
         registerRule<Options extends SecretLintRuleCreatorOptions>(
             rule: SecretLintRuleCreator<Options>,
-            defaultValue?: Omit<SecretLintCoreDescriptorRule<Options>, "id" | "rule">
+            defaultValue?: Omit<SecretLintCoreConfigRule<Options>, "id" | "rule">
         ): void {
             const descriptorRule = presetRules.find((descriptorRule) => {
                 return descriptorRule.id === rule.meta.id;
@@ -53,7 +53,7 @@ export const createRulePresetContext = ({
                 // rule id is a single rule in a preset
                 ruleId: rule.meta.id,
                 // parent rule id is rule preset id
-                ruleParentId: descriptorRulePreset.id,
+                ruleParentId: configRulePreset.id,
                 meta: rule.meta,
                 severity: descriptorRuleSeverity,
                 sourceCode,

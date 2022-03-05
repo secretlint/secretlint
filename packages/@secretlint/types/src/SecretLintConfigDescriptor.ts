@@ -1,5 +1,5 @@
-import { SecretLintRuleCreator, SecretLintRuleCreatorOptions } from "./SecretLintRule";
-import { SecretLintRulePresetCreator, SecretLintRulePresetCreatorOptions } from "./SecretLintRulePreset";
+import { SecretLintRuleCreatorOptions } from "./SecretLintRule";
+import { SecretLintRulePresetCreatorOptions } from "./SecretLintRulePreset";
 import { SecretLintRuleSeverityLevel } from "./SecretLintRuleSeverityLevel";
 import { SecretlintCoreSharedOptions } from "./SecretlintCoreSharedOptions";
 
@@ -33,12 +33,6 @@ export type SecretLintConfigDescriptorRule<Options = SecretLintRuleCreatorOption
      * Default: "error"
      */
     severity?: SecretLintRuleSeverityLevel;
-    // DEBUG USAGE
-    /**
-     * FOR DEBUG
-     * Rule instance
-     */
-    rule?: SecretLintRuleCreator<Options>;
 };
 export type SecretLintConfigDescriptorRulePreset<Options = SecretLintRulePresetCreatorOptions> = {
     /**
@@ -70,12 +64,6 @@ export type SecretLintConfigDescriptorRulePreset<Options = SecretLintRulePresetC
      * }
      */
     rules?: SecretLintConfigDescriptorRule[];
-    // DEBUG USAGE
-    /**
-     * FOR DEBUG
-     * Rule instance
-     */
-    rule?: SecretLintRulePresetCreator<Options>;
 };
 
 /**

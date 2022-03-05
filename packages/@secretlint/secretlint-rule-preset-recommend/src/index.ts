@@ -21,13 +21,13 @@ export const rules = [
     ruleFilterComments,
 ];
 export type Options = {};
-
 export const creator: SecretLintRulePresetCreator<Options> = {
     meta: {
         id: "@secretlint/secretlint-rule-preset-recommend",
         recommended: true,
         type: "preset",
     },
+    rules,
     create(context, _options) {
         rules.forEach((rule) => {
             context.registerRule(rule);

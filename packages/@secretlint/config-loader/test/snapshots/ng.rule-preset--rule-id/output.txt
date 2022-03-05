@@ -1,0 +1,3 @@
+Secretlint Configuration Error
+
+Invalid preset-rule: preset-rule.rules[0] should have required property 'id'

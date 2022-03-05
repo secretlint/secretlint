@@ -28,6 +28,7 @@ export const creator: SecretLintRulePresetCreator<Options> = {
         recommended: true,
         type: "preset",
     },
+    rules,
     create(context, _options) {
         rules.forEach((rule) => {
             context.registerRule(rule);
