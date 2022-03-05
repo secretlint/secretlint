@@ -69,7 +69,6 @@ export const createRulePresetContext = ({
                     // Prefer to use user setting
                     // User can override preset setting
                     ...descriptorRule,
-                    type: "rule",
                     id: rule.meta.id,
                     options: descriptorRuleOptions,
                     rule,

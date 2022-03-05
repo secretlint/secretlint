@@ -142,7 +142,6 @@ export const loadPackagesFromConfigDescriptor = async (
             if (isSecretLintCoreConfigRulePreset(ruleCreator)) {
                 const configDescriptorRulePreset = configDescriptorRule as SecretLintConfigDescriptorRulePreset;
                 rules.push({
-                    type: "preset",
                     id: configDescriptorRule.id,
                     rule: ruleCreator,
                     // options for rules
@@ -157,7 +156,6 @@ export const loadPackagesFromConfigDescriptor = async (
                 });
             } else {
                 rules.push({
-                    type: "rule",
                     id: configDescriptorRule.id,
                     rule: ruleCreator,
                     options: configDescriptorRule.options,

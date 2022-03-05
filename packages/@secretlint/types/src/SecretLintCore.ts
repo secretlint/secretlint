@@ -11,7 +11,6 @@ import { SecretLintRuleSeverityLevel } from "./SecretLintRuleSeverityLevel";
 import { SecretlintCoreSharedOptions } from "./SecretlintCoreSharedOptions";
 
 export type SecretLintCoreConfigRule<Options = SecretLintRuleCreatorOptions> = {
-    type: "rule";
     /**
      * Rule id that is package name or shorten package name
      * For example, "secretlint-rule-example" or "example"(shorten)
@@ -43,7 +42,6 @@ export type SecretLintCoreConfigRule<Options = SecretLintRuleCreatorOptions> = {
     allowMessageIds?: string[];
 };
 export type SecretLintCoreConfigRulePreset<Options = SecretLintRulePresetCreatorOptions> = {
-    type: "preset";
     /**
      * Rule id that is package name or shorten package name
      * For example, "secretlint-rule-preset-example" or "example"(shorten)
