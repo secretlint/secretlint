@@ -46,6 +46,9 @@
     "tabWidth": 4,
     "trailingComma": "none"
   },
+  "dependencies": {
+    "node-sarif-builder": "^2.0.2"
+  },
   "devDependencies": {
     "@secretlint/types": "^4.2.0",
     "@types/mocha": "^9.1.0",
@@ -59,8 +62,5 @@
   },
   "publishConfig": {
     "access": "public"
-  },
-  "dependencies": {
-    "node-sarif-builder": "^2.0.2"
   }
 }
