@@ -71,8 +71,8 @@ export const creator: SecretLintRuleCreator = {
             // source has `content`, `filePath` etc...
             file(source: SecretLintSourceCode) {
                 const pattern = /secret/gi;
-                let match;
-                while ((match = pattern.exec(source.content)) !== null) {
+                const matches = source.content.matchAll(pattern);
+                for (const match of matches) {
                     const index = match.index || 0;
                     const matchString = match[0] || "";
                     const range = [index, index + matchString.length];

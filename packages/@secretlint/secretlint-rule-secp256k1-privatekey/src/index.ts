@@ -34,8 +34,8 @@ export const creator: SecretLintRuleCreator<Options> = {
         return {
             file(source: SecretLintSourceCode) {
                 const pattern = /[0-9a-f]{64}/gi;
-                let match;
-                while ((match = pattern.exec(source.content)) !== null) {
+                const matches = source.content.matchAll(pattern);
+                for (const match of matches) {
                     const index = match.index || 0;
                     const matchString = match[0] || "";
                     const range = [index, index + matchString.length];
