@@ -1,0 +1,30 @@
+{
+    "filePath": "[SNAPSHOT]/ng.user-token/input.txt",
+    "messages": [
+        {
+            "message": "found slack token: xoxp-23984754863-2348975623000-2348973623000-cbbd37080273x3ef2577a1a365334",
+            "range": [
+                12,
+                86
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-slack",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 12
+                },
+                "end": {
+                    "line": 1,
+                    "column": 86
+                }
+            },
+            "severity": "error",
+            "messageId": "SLACK_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-slack/README.md#SLACK_TOKEN",
+            "data": {
+                "TOKEN": "xoxp-23984754863-2348975623000-2348973623000-cbbd37080273x3ef2577a1a365334"
+            }
+        }
+    ]
+}
