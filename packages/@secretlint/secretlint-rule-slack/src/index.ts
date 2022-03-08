@@ -40,10 +40,13 @@ function reportIfFoundRawPrivateKey({
     // https://api.slack.com/docs/token-types
     // Bot user token strings begin with xoxb-
     // User token strings begin with xoxp-
+    // App token strings begin with xapp-
     // Workspace access token strings begin with xoxa-2
-    // Workspace refresh token strings begin with xoxr.
-    const PRIVATE_KEY_PATTERN = /\bxox[abposr]-(?:\d{1,40}-)+[a-zA-Z0-9]{1,40}\b/g;
-    const results = source.content.matchAll(PRIVATE_KEY_PATTERN);
+    // Workspace refresh token strings begin with xoxr
+    // Pattern: {prefix}-(\d-)-xxxx-xxxx
+    const SLACK_TOKEN_PATTERN =
+        /\b(?:xoxb|xoxp|xapp|xoxa|xoxo|xoxr)-(?:\d-)?(?:[a-zA-Z0-9]{1,40}-)+[a-zA-Z0-9]{1,40}\b/g;
+    const results = source.content.matchAll(SLACK_TOKEN_PATTERN);
     for (const result of results) {
         const index = result.index || 0;
         const match = result[0] || "";
