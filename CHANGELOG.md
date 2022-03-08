@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/secretlint/secretlint/compare/v5.0.1...v5.1.0) (2022-03-08)
+
+
+### Bug Fixes
+
+* **docker:** update Node.js 16 ([288230a](https://github.com/secretlint/secretlint/commit/288230aa9284520b6b67d7c8853ae98fe151f8cc))
+* refactor while loop + RegExp.exec → matchAll ([#238](https://github.com/secretlint/secretlint/issues/238)) ([1276228](https://github.com/secretlint/secretlint/commit/1276228114d667955731a1738d435b02aa975d8f)), closes [#236](https://github.com/secretlint/secretlint/issues/236)
+
+
+### Features
+
+* **slack:** detect xapp- token ([#239](https://github.com/secretlint/secretlint/issues/239)) ([d603165](https://github.com/secretlint/secretlint/commit/d60316539b315e9d5d99f4a92146b0385333cb50))
+
+
+
+
+
 ## [5.0.1](https://github.com/secretlint/secretlint/compare/v5.0.0...v5.0.1) (2022-03-05)
 
 
