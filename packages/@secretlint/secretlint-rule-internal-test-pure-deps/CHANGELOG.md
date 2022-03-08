@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/secretlint/secretlint/compare/v5.0.1...v5.1.0) (2022-03-08)
+
+
+### Bug Fixes
+
+* refactor while loop + RegExp.exec → matchAll ([#238](https://github.com/secretlint/secretlint/issues/238)) ([1276228](https://github.com/secretlint/secretlint/commit/1276228114d667955731a1738d435b02aa975d8f)), closes [#236](https://github.com/secretlint/secretlint/issues/236)
+
+
+
+
+
 ## [5.0.1](https://github.com/secretlint/secretlint/compare/v5.0.0...v5.0.1) (2022-03-05)
 
 **Note:** Version bump only for package @secretlint/secretlint-rule-internal-test-pure-deps

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/secretlint/secretlint/compare/v5.0.1...v5.1.0) (2022-03-08)
+
+
+### Features
+
+* **slack:** detect xapp- token ([#239](https://github.com/secretlint/secretlint/issues/239)) ([d603165](https://github.com/secretlint/secretlint/commit/d60316539b315e9d5d99f4a92146b0385333cb50))
+
+
+
+
+
 ## [5.0.1](https://github.com/secretlint/secretlint/compare/v5.0.0...v5.0.1) (2022-03-05)
 
 **Note:** Version bump only for package @secretlint/secretlint-rule-slack
