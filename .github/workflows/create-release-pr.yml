@@ -31,7 +31,7 @@ jobs:
         run: node -p -e '`PACKAGE_VERSION=${require("./lerna.json").version}`' >> $GITHUB_ENV
       - name: Create Pull Request
         id: cpr
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: |
