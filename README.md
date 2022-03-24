@@ -434,8 +434,8 @@ This configuration also integrate Pull Request review comment via [actions/setup
 
 ![github-actions.png](./docs/assets/github-actions.png)
 
-- Example Repository: https://github.com/azu/secretlint-github-actions-example
-- Example Pull Request: https://github.com/azu/secretlint-github-actions-example/pull/1/files
+- Example Repository: https://github.com/secretlint/secretlint-github-actions-example
+- Example Pull Request: https://github.com/secretlint/secretlint-github-actions-example/pull/1/files
 
 #### Mega-Linter
 
