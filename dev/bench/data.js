@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1647164454114,
+  "lastUpdate": 1648080498973,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -10638,6 +10638,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.62,
             "range": "±1.83%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "fb5b0aa7af925c5fef11d85882af9ee428c9ef58",
+          "message": "chore(deps): bump node-forge from 1.2.1 to 1.3.0 (#243)\n\nBumps [node-forge](https://github.com/digitalbazaar/forge) from 1.2.1 to 1.3.0.\r\n- [Release notes](https://github.com/digitalbazaar/forge/releases)\r\n- [Changelog](https://github.com/digitalbazaar/forge/blob/main/CHANGELOG.md)\r\n- [Commits](https://github.com/digitalbazaar/forge/compare/v1.2.1...v1.3.0)\r\n\r\n---\r\nupdated-dependencies:\r\n- dependency-name: node-forge\r\n  dependency-type: direct:production\r\n...\r\n\r\nSigned-off-by: dependabot[bot] <support@github.com>\r\n\r\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2022-03-24T09:04:25+09:00",
+          "tree_id": "9ec41960e8b44b7e724d936ab696445fe7a8cacd",
+          "url": "https://github.com/secretlint/secretlint/commit/fb5b0aa7af925c5fef11d85882af9ee428c9ef58"
+        },
+        "date": 1648080497421,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.57,
+            "range": "±1.18%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.52,
+            "range": "±1.78%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
