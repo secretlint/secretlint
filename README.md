@@ -419,11 +419,11 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 16
       - name: Install
         run: npm install
       - name: Lint with Secretlint
@@ -434,8 +434,8 @@ This configuration also integrate Pull Request review comment via [actions/setup
 
 ![github-actions.png](./docs/assets/github-actions.png)
 
-- Example Repository: https://github.com/azu/secretlint-github-actions-example
-- Example Pull Request: https://github.com/azu/secretlint-github-actions-example/pull/1/files
+- Example Repository: https://github.com/secretlint/secretlint-github-actions-example
+- Example Pull Request: https://github.com/secretlint/secretlint-github-actions-example/pull/1/files
 
 #### Mega-Linter
 
