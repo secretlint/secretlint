@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1648080612130,
+  "lastUpdate": 1648080662040,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -10714,6 +10714,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.52,
             "range": "±2.14%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "5a7d75b492d0a720a5ab2fb94274fac67eb7a046",
+          "message": "chore(deps): update peter-evans/repository-dispatch action to v2 (#241)\n\nCo-authored-by: Renovate Bot <bot@renovateapp.com>",
+          "timestamp": "2022-03-24T09:06:48+09:00",
+          "tree_id": "dfb0df0721e680139ed2672d1151219f2d03df17",
+          "url": "https://github.com/secretlint/secretlint/commit/5a7d75b492d0a720a5ab2fb94274fac67eb7a046"
+        },
+        "date": 1648080660482,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.72,
+            "range": "±2.58%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±2.03%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
