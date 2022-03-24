@@ -96,7 +96,7 @@ jobs:
             })
       - name: Repository Dispatch
         if: steps.tag_check.outputs.exists_tag == 'false' && github.event.pull_request.merged == true
-        uses: peter-evans/repository-dispatch@v1
+        uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
           event-type: publish-artifact
