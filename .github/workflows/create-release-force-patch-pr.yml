@@ -16,7 +16,7 @@ jobs:
       - name: setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: '16'
       - name: Install
         run: yarn install
       - name: Update Version

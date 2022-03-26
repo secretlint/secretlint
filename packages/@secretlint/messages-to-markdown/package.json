@@ -17,9 +17,7 @@
     "author": "azu",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
-    "bin": {
-        "messages-to-markdown": "./bin/cmd.js"
-    },
+    "bin": "./bin/cmd.js",
     "directories": {
         "lib": "lib",
         "test": "test"
@@ -34,7 +32,6 @@
         "clean": "rimraf lib/",
         "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
         "prepublish": "npm run --if-present build",
-        "test": "# mocha \"test/**/*.ts\"",
         "watch": "tsc -p . --watch"
     },
     "prettier": {

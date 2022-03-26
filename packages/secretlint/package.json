@@ -18,9 +18,7 @@
     "author": "azu",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
-    "bin": {
-        "secretlint": "./bin/secretlint.js"
-    },
+    "bin": "./bin/secretlint.js",
     "directories": {
         "lib": "lib",
         "test": "test"
