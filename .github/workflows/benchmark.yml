@@ -27,14 +27,19 @@ jobs:
         run: yarn run build
       - name: Run Benchmark
         run: cd examples/benchmark && node index.js | tee output.txt
+      - name: Generate token
+        id: generate_token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.PRIVATE_KEY }}
       - name: Store benchmark result
         uses: rhysd/github-action-benchmark@v1
         with:
           name: Secretlint benchmark
           tool: 'benchmarkjs'
           output-file-path: examples/benchmark/output.txt
-          # Use "bot-user" token
-          github-token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
+          github-token: ${{ steps.generate_token.outputs.token }}
           auto-push: true
           # Show alert with commit comment on detecting possible performance regression
           alert-threshold: '200%'

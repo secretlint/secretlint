@@ -94,10 +94,16 @@ jobs:
               repo: context.repo.repo,
               body: '🎉 Release https://github.com/${{ github.repository }}/releases/tag/v${{ env.CURRENT_VERSION }}'
             })
+      - name: Generate token
+        id: generate_token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.PRIVATE_KEY }}
       - name: Repository Dispatch
         if: steps.tag_check.outputs.exists_tag == 'false' && github.event.pull_request.merged == true
         uses: peter-evans/repository-dispatch@v1
         with:
-          token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
+          token: ${{ steps.generate_token.outputs.token }}
           event-type: publish-artifact
           client-payload: '{"version": "${{ env.CURRENT_VERSION }}"}'
