@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1648127111150,
+  "lastUpdate": 1648268964299,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -10866,6 +10866,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.73,
             "range": "±0.84%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a14c416c51207cf5b09cd6ea7421c903a9afd9da",
+          "message": "CI: use GitHub Apps instead of PAT (#249)",
+          "timestamp": "2022-03-26T13:25:35+09:00",
+          "tree_id": "b86c9130edbb06ce890980896032a4d5b94a24fd",
+          "url": "https://github.com/secretlint/secretlint/commit/a14c416c51207cf5b09cd6ea7421c903a9afd9da"
+        },
+        "date": 1648268962779,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.69,
+            "range": "±2.37%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±2.18%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
