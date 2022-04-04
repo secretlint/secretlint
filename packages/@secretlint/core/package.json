@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/core",
-    "version": "5.1.1",
+    "version": "5.1.2",
     "description": "Core library for @secretlint.",
     "keywords": [
         "secretlint"
@@ -40,8 +40,8 @@
         "tabWidth": 4
     },
     "dependencies": {
-        "@secretlint/profiler": "^5.1.1",
-        "@secretlint/types": "^5.1.1",
+        "@secretlint/profiler": "^5.1.2",
+        "@secretlint/types": "^5.1.2",
         "debug": "^4.3.3",
         "structured-source": "^3.0.2"
     },

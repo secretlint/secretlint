@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.2](https://github.com/secretlint/secretlint/compare/v5.1.1...v5.1.2) (2022-04-04)
+
+
+### Bug Fixes
+
+* **deps:** update minor updates ([a11c9e0](https://github.com/secretlint/secretlint/commit/a11c9e0e408d4cc2a98673e7206dc285dcc33f67))
+
+
+### Features
+
+* **docker:** support arm64 for image ([#253](https://github.com/secretlint/secretlint/issues/253)) ([fcdab11](https://github.com/secretlint/secretlint/commit/fcdab11abdd4204c985f02c789459209b428c048))
+
+
+
+
+
 ## [5.1.1](https://github.com/secretlint/secretlint/compare/v5.1.0...v5.1.1) (2022-03-24)
 
 **Note:** Version bump only for package root
