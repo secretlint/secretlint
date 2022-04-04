@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.1.3](https://github.com/secretlint/secretlint/compare/v5.1.1...v5.1.3) (2022-04-04)
+
+
+### Bug Fixes
+
+* **deps:** update minor updates ([a11c9e0](https://github.com/secretlint/secretlint/commit/a11c9e0e408d4cc2a98673e7206dc285dcc33f67))
+
+
+
+
+
 ## [5.1.2](https://github.com/secretlint/secretlint/compare/v5.1.1...v5.1.2) (2022-04-04)
 
 
