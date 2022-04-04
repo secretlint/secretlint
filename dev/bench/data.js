@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1648610044141,
+  "lastUpdate": 1649083684449,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -10942,6 +10942,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.61,
             "range": "±1.04%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "korosuke613@users.noreply.github.com",
+            "name": "Futa HIRAKOBA",
+            "username": "korosuke613"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "fcdab11abdd4204c985f02c789459209b428c048",
+          "message": "feat(docker): support arm64 for image (#253)",
+          "timestamp": "2022-04-04T23:44:13+09:00",
+          "tree_id": "236f194283234551a807d584a8afb102651b006b",
+          "url": "https://github.com/secretlint/secretlint/commit/fcdab11abdd4204c985f02c789459209b428c048"
+        },
+        "date": 1649083682782,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.73,
+            "range": "±1.25%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.6,
+            "range": "±0.77%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
