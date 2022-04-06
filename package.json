@@ -51,9 +51,9 @@
   },
   "devDependencies": {
     "lerna": "^4.0.0",
-    "lint-staged": "^12.3.5",
+    "lint-staged": "^12.3.7",
     "prettier": "^2.3.1",
-    "turbo": "^1.0.29"
+    "turbo": "^1.1.10"
   },
   "prettier": {
     "singleQuote": false,
@@ -66,5 +66,5 @@
       "prettier --write"
     ]
   },
-  "packageManager": "yarn@1.22.17"
+  "packageManager": "yarn@1.22.18"
 }
