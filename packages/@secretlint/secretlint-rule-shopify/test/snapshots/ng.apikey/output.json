@@ -1,0 +1,105 @@
+{
+    "filePath": "[SNAPSHOT]/ng.apikey/input.txt",
+    "messages": [
+        {
+            "message": "found Shopify api key: shpss_QlRSJy5AXX1cILNjVatTsEIhFxuPF5ex",
+            "range": [
+                100,
+                138
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-shopify",
+            "loc": {
+                "start": {
+                    "line": 3,
+                    "column": 0
+                },
+                "end": {
+                    "line": 3,
+                    "column": 38
+                }
+            },
+            "severity": "error",
+            "messageId": "SHOPIFY_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-shopify/README.md#SHOPIFY_KEY",
+            "data": {
+                "KEY": "shpss_QlRSJy5AXX1cILNjVatTsEIhFxuPF5ex"
+            }
+        },
+        {
+            "message": "found Shopify api key: shpat_r8TRc9ZXAvcVvcrmtr7qoVw69WeeY1ex",
+            "range": [
+                249,
+                287
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-shopify",
+            "loc": {
+                "start": {
+                    "line": 7,
+                    "column": 0
+                },
+                "end": {
+                    "line": 7,
+                    "column": 38
+                }
+            },
+            "severity": "error",
+            "messageId": "SHOPIFY_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-shopify/README.md#SHOPIFY_KEY",
+            "data": {
+                "KEY": "shpat_r8TRc9ZXAvcVvcrmtr7qoVw69WeeY1ex"
+            }
+        },
+        {
+            "message": "found Shopify api key: shpca_7jqbg9cupMkZRxJKXWz3v8BvS8QBa7hMdJfAex",
+            "range": [
+                308,
+                352
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-shopify",
+            "loc": {
+                "start": {
+                    "line": 10,
+                    "column": 0
+                },
+                "end": {
+                    "line": 10,
+                    "column": 44
+                }
+            },
+            "severity": "error",
+            "messageId": "SHOPIFY_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-shopify/README.md#SHOPIFY_KEY",
+            "data": {
+                "KEY": "shpca_7jqbg9cupMkZRxJKXWz3v8BvS8QBa7hMdJfAex"
+            }
+        },
+        {
+            "message": "found Shopify api key: shppa_7jqbg9cupMkZRxJKXWz3v8BvS8QBa7hMdJfAex",
+            "range": [
+                381,
+                425
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-shopify",
+            "loc": {
+                "start": {
+                    "line": 13,
+                    "column": 0
+                },
+                "end": {
+                    "line": 13,
+                    "column": 44
+                }
+            },
+            "severity": "error",
+            "messageId": "SHOPIFY_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-shopify/README.md#SHOPIFY_KEY",
+            "data": {
+                "KEY": "shppa_7jqbg9cupMkZRxJKXWz3v8BvS8QBa7hMdJfAex"
+            }
+        }
+    ]
+}
