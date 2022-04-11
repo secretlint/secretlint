@@ -19,9 +19,7 @@
     "author": "azu",
     "main": "lib/index.js",
     "types": "lib/index.d.ts",
-    "bin": {
-        "quick-start": "./bin/quick-start.js"
-    },
+    "bin": "./bin/quick-start.js",
     "directories": {
         "lib": "lib",
         "test": "test"
