@@ -2,55 +2,29 @@
     "filePath": "[SNAPSHOT]/sendgrid/input.txt",
     "messages": [
         {
-            "message": "found Sendgrid api key: SG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313-L5528K",
+            "message": "found Shopify api key: shpss_QlRSJy5AXX1cILNjVatTsEIhFxuPF5ex",
             "range": [
-                84,
-                153
+                23,
+                61
             ],
             "type": "message",
-            "ruleId": "@secretlint/secretlint-rule-sendgrid",
+            "ruleId": "@secretlint/secretlint-rule-shopify",
             "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
             "loc": {
                 "start": {
-                    "line": 2,
-                    "column": 5
+                    "line": 1,
+                    "column": 23
                 },
                 "end": {
-                    "line": 2,
-                    "column": 74
+                    "line": 1,
+                    "column": 61
                 }
             },
             "severity": "error",
-            "messageId": "SENDGRID_KEY",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-sendgrid/README.md#SENDGRID_KEY",
+            "messageId": "SHOPIFY_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-shopify/README.md#SHOPIFY_KEY",
             "data": {
-                "KEY": "SG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313-L5528K"
-            }
-        },
-        {
-            "message": "found Sendgrid api key: SG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313-L5528Kewhere",
-            "range": [
-                157,
-                232
-            ],
-            "type": "message",
-            "ruleId": "@secretlint/secretlint-rule-sendgrid",
-            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
-            "loc": {
-                "start": {
-                    "line": 3,
-                    "column": 3
-                },
-                "end": {
-                    "line": 3,
-                    "column": 78
-                }
-            },
-            "severity": "error",
-            "messageId": "SENDGRID_KEY",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-sendgrid/README.md#SENDGRID_KEY",
-            "data": {
-                "KEY": "SG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313-L5528Kewhere"
+                "KEY": "shpss_QlRSJy5AXX1cILNjVatTsEIhFxuPF5ex"
             }
         }
     ]

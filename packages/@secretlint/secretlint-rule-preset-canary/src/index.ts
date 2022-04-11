@@ -6,6 +6,7 @@ import { creator as ruleSlack } from "@secretlint/secretlint-rule-slack";
 import { creator as ruleBasicAuth } from "@secretlint/secretlint-rule-basicauth";
 import { creator as rulePrivateKey } from "@secretlint/secretlint-rule-privatekey";
 import { creator as ruleSendgrid } from "@secretlint/secretlint-rule-sendgrid";
+import { creator as ruleShopify } from "@secretlint/secretlint-rule-shopify";
 import { creator as ruleGitHub } from "@secretlint/secretlint-rule-github";
 import { creator as ruleFilterComments } from "@secretlint/secretlint-rule-filter-comments";
 
@@ -17,6 +18,7 @@ export const rules = [
     ruleBasicAuth,
     ruleSlack,
     ruleSendgrid,
+    ruleShopify,
     ruleGitHub,
     ruleFilterComments,
 ];
