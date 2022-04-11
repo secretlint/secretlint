@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1649220207057,
+  "lastUpdate": 1649675600707,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -11132,6 +11132,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.49,
             "range": "±2.40%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "35fc82e55c819b3078051d08dc8d1e4c7813d5ce",
+          "message": "fix(monorepo): use lerna-lite instead of lerna (#250)\n\n* fix(monorepo): use lerna-lite instead of lerna\r\n\r\n* fix: ignore engines version for lerna-lite\r\n\r\n* CI: update lerna-lite and turbo\r\n\r\n* up",
+          "timestamp": "2022-04-11T20:09:30+09:00",
+          "tree_id": "776fc0572b4d48373efb25200148b564cd3a8e4b",
+          "url": "https://github.com/secretlint/secretlint/commit/35fc82e55c819b3078051d08dc8d1e4c7813d5ce"
+        },
+        "date": 1649675599900,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.63,
+            "range": "±1.08%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.52,
+            "range": "±0.73%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
