@@ -2,29 +2,55 @@
     "filePath": "[SNAPSHOT]/sendgrid/input.txt",
     "messages": [
         {
-            "message": "found Shopify api key: shpss_QlRSJy5AXX1cILNjVatTsEIhFxuPF5ex",
+            "message": "found Sendgrid api key: SG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313-L5528K",
             "range": [
-                23,
-                61
+                84,
+                153
             ],
             "type": "message",
-            "ruleId": "@secretlint/secretlint-rule-shopify",
+            "ruleId": "@secretlint/secretlint-rule-sendgrid",
             "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
             "loc": {
                 "start": {
-                    "line": 1,
-                    "column": 23
+                    "line": 2,
+                    "column": 5
                 },
                 "end": {
-                    "line": 1,
-                    "column": 61
+                    "line": 2,
+                    "column": 74
                 }
             },
             "severity": "error",
-            "messageId": "SHOPIFY_KEY",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-shopify/README.md#SHOPIFY_KEY",
+            "messageId": "SENDGRID_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-sendgrid/README.md#SENDGRID_KEY",
             "data": {
-                "KEY": "shpss_QlRSJy5AXX1cILNjVatTsEIhFxuPF5ex"
+                "KEY": "SG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313-L5528K"
+            }
+        },
+        {
+            "message": "found Sendgrid api key: SG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313-L5528Kewhere",
+            "range": [
+                157,
+                232
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-sendgrid",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 3,
+                    "column": 3
+                },
+                "end": {
+                    "line": 3,
+                    "column": 78
+                }
+            },
+            "severity": "error",
+            "messageId": "SENDGRID_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-sendgrid/README.md#SENDGRID_KEY",
+            "data": {
+                "KEY": "SG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313-L5528Kewhere"
             }
         }
     ]
