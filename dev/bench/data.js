@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1649675600707,
+  "lastUpdate": 1649678691451,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -11170,6 +11170,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.52,
             "range": "±0.73%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "3a9e1fed393fd8646c8f3a8134859454d47edfdb",
+          "message": "Merge pull request #261 from secretlint/feature/247\n\nfeat: implement rule for Shopify API keys",
+          "timestamp": "2022-04-11T21:00:37+09:00",
+          "tree_id": "f9e97139d5bf46a4a0b6e51f3c73fa8e6f384ddc",
+          "url": "https://github.com/secretlint/secretlint/commit/3a9e1fed393fd8646c8f3a8134859454d47edfdb"
+        },
+        "date": 1649678689915,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.53,
+            "range": "±2.27%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.51,
+            "range": "±1.68%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
