@@ -61,7 +61,7 @@ jobs:
           echo "HUB_TAG=${DOCKER_HUB_BASE_NAME}:${TAG_NAME}" >> $GITHUB_ENV
           echo "HUB_LATEST_TAG=${DOCKER_HUB_BASE_NAME}:latest" >> $GITHUB_ENV
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Login to Registries
