@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1649688531188,
+  "lastUpdate": 1653776289236,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -11284,6 +11284,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.51,
             "range": "±4.99%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "bot@renovateapp.com",
+            "name": "Renovate Bot",
+            "username": "renovate-bot"
+          },
+          "committer": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "distinct": true,
+          "id": "0d28402f989c633a795ddbb1cd688167f37b3285",
+          "message": "chore(deps): update dependency ts-node to ^10.8.0",
+          "timestamp": "2022-05-28T22:14:33Z",
+          "tree_id": "3a5652c98b221b12007c8a4d3e0ead7a77d3f00b",
+          "url": "https://github.com/secretlint/secretlint/commit/0d28402f989c633a795ddbb1cd688167f37b3285"
+        },
+        "date": 1653776288461,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.83,
+            "range": "±0.32%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±0.74%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
