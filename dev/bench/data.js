@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1654122981694,
+  "lastUpdate": 1654123002341,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -11360,6 +11360,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.59,
             "range": "±4.34%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b0c3c0b7f62d51d747eb172310f3688450a5963b",
+          "message": "Merge pull request #267 from secretlint/renovate/docker-setup-qemu-action-2.x\n\nchore(deps): update docker/setup-qemu-action action to v2",
+          "timestamp": "2022-06-02T07:33:19+09:00",
+          "tree_id": "cec3e367dab38a6f630b9f0fdce45d121efde990",
+          "url": "https://github.com/secretlint/secretlint/commit/b0c3c0b7f62d51d747eb172310f3688450a5963b"
+        },
+        "date": 1654123001615,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.83,
+            "range": "±0.59%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±0.67%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
