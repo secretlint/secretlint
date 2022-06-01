@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1653776289236,
+  "lastUpdate": 1654122981694,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -11322,6 +11322,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±0.74%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "244f3e6ed4253b7072448d7b2e95cbd3ba1c4f42",
+          "message": "Merge pull request #266 from secretlint/renovate/docker-setup-buildx-action-2.x\n\nchore(deps): update docker/setup-buildx-action action to v2",
+          "timestamp": "2022-06-02T07:33:02+09:00",
+          "tree_id": "ee05ad849885f2e3b092c1159bc53aa9a4fcd0af",
+          "url": "https://github.com/secretlint/secretlint/commit/244f3e6ed4253b7072448d7b2e95cbd3ba1c4f42"
+        },
+        "date": 1654122980865,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.89,
+            "range": "±2.87%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.59,
+            "range": "±4.34%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
