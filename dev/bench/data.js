@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1654123002341,
+  "lastUpdate": 1654123019526,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -11398,6 +11398,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±0.67%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e0b785bba2ceac7e5d1b088c74cd8a55bdd12ba5",
+          "message": "Merge pull request #265 from secretlint/renovate/github-codeql-action-2.x\n\nchore(deps): update github/codeql-action action to v2",
+          "timestamp": "2022-06-02T07:32:13+09:00",
+          "tree_id": "c25136d91928dc3505ea9b751b1362bff46559df",
+          "url": "https://github.com/secretlint/secretlint/commit/e0b785bba2ceac7e5d1b088c74cd8a55bdd12ba5"
+        },
+        "date": 1654123017944,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.37,
+            "range": "±2.86%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.46,
+            "range": "±3.21%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
