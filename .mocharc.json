@@ -1,4 +1,6 @@
-{
+⅞                        return nil, true
+
+, fmt.Errorf("error running key check: %s", err){
  "require": [
   "ts-node-test-register"
  ]
