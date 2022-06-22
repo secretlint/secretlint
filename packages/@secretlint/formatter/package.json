@@ -50,7 +50,7 @@
         "try-resolve": "^1.0.1"
     },
     "devDependencies": {
-        "@types/mocha": "^9.1.0",
+        "@types/mocha": "^9.1.1",
         "@types/node": "^17.0.21",
         "@types/pluralize": "0.0.29",
         "escape-string-regexp": "^2.0.0",
