@@ -37,7 +37,7 @@ function reportIfFoundKey({
     for (const result of results) {
         const index = result.index || 0;
         const match = result[0] || "";
-        const range = [index, index + match.length];
+        const range = [index, index + match.length] as const;
         const allowedResults = matchPatterns(match, options.allows);
         if (allowedResults.length > 0) {
             continue;

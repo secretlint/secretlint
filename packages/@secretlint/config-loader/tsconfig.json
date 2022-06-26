@@ -2,7 +2,7 @@
   "compilerOptions": {
     /* Basic Options */
     "module": "commonjs",
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "esModuleInterop": true,
     "newLine": "LF",
     "outDir": "./lib/",

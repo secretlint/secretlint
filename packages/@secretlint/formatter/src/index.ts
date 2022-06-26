@@ -71,9 +71,20 @@ const convertSecretLintResultToTextlintResult = (
                 // Single rule format
                 // {rule-id}
                 ruleId: message.ruleParentId ? `${message.ruleParentId} > ${message.ruleId}` : message.ruleId,
+                /**
+                 * @deprecated backword compatibility - use range or loc
+                 */
                 index: message.range[0],
+                /**
+                 * @deprecated backword compatibility - use range or loc
+                 */
                 line: message.loc.start.line,
+                /**
+                 * @deprecated backword compatibility - use range or loc
+                 */
                 column: message.loc.start.column,
+                range: message.range,
+                loc: message.loc,
                 severity: severityLevel,
                 message: `[${messageId}] ${message.message}`,
                 data: message.data,

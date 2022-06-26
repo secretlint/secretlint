@@ -7,7 +7,7 @@ export const createMessageFromRange = ({
     messageId = "message-id",
     data,
 }: {
-    range: number[];
+    range: readonly [startIndex: number, endIndex: number];
     ruleId?: string;
     message?: string;
     messageId?: string;
@@ -33,7 +33,10 @@ export const createMessageFromRange = ({
         ...(data ? { data } : {}),
     };
 };
-export const createIgnoredMessageFromRange = (range: number[], targetRuleId = "*"): SecretLintCoreIgnoreMessage => {
+export const createIgnoredMessageFromRange = (
+    range: readonly [startIndex: number, endIndex: number],
+    targetRuleId = "*"
+): SecretLintCoreIgnoreMessage => {
     return {
         range: range,
         ruleId: "ignore",

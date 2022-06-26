@@ -31,7 +31,7 @@ export type SecretLintSourceNodeLocation = {
     start: SecretLintSourceNodePosition;
     end: SecretLintSourceNodePosition;
 };
-export type SecretLintSourceNodeRange = number[];
+export type SecretLintSourceNodeRange = readonly [startIndex: number, endIndex: number];
 export type SecretLintSourceValueNode = {
     type: "Value";
     value: string;

@@ -61,12 +61,12 @@ export const createTranslator = <T extends SecretLintRuleLocalizeMessages>(
             | SecretLintRuleLocalizeMessageHandler<Props>
             | undefined = messages[messageId];
         if (!messageHandler) {
-            throw new Error(`messages:${messageId} is missing in messages.`);
+            throw new Error(`messages:${String(messageId)} is missing in messages.`);
         }
         // if messages is string, use it.
         if (typeof messageHandler === "function") {
             if (typeof messageId !== "string") {
-                throw new Error(`message's key:${messageId} should be string`);
+                throw new Error(`message's key:${String(messageId)} should be string`);
             }
             return {
                 message: formatMessage(messageHandler, props),
@@ -80,12 +80,12 @@ export const createTranslator = <T extends SecretLintRuleLocalizeMessages>(
         const localizedMessage = messageHandler[locale];
         if (!localizedMessage) {
             if (messageHandler[DEFAULT_LOCAL]) {
-                throw new Error(`messages${messageId}.${locale} is missing in messages.`);
+                throw new Error(`messages${String(messageId)}.${locale} is missing in messages.`);
             }
-            throw new Error(`message's key:${messageId}.${DEFAULT_LOCAL} should be defined in messages.`);
+            throw new Error(`message's key:${String(messageId)}.${DEFAULT_LOCAL} should be defined in messages.`);
         }
         if (typeof messageId !== "string") {
-            throw new Error(`message's key:${messageId}.${DEFAULT_LOCAL} should be string`);
+            throw new Error(`message's key:${String(messageId)}.${DEFAULT_LOCAL} should be string`);
         }
         return {
             message: formatMessage(localizedMessage, props),

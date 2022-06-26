@@ -100,7 +100,7 @@ export type SecretLintCoreResultMessage = {
      * If it is set, show `${docsUrl}#${messageId}` in output
      */
     docsUrl?: string;
-    range: number[];
+    range: readonly [startIndex: number, endIndex: number];
     loc: SecretLintSourceNodeLocation;
     severity: SecretLintRuleSeverityLevel;
     data?: {};
@@ -114,7 +114,7 @@ export type SecretLintCoreIgnoreMessage = {
      */
     targetRuleId: string;
     message: string;
-    range: number[];
+    range: readonly [startIndex: number, endIndex: number];
     loc: SecretLintSourceNodeLocation;
 };
 
