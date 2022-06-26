@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1655935735078,
+  "lastUpdate": 1656227403858,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -11550,6 +11550,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.55,
             "range": "±0.73%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "53c318cc68e5396408653642c60c1546df9b8b53",
+          "message": "Merge pull request #272 from secretlint/azu-patch-1\n\nchore(config-loader): fix typo",
+          "timestamp": "2022-06-26T16:05:47+09:00",
+          "tree_id": "1f1af58b6c2d74425af389161e1e3415d823cc1a",
+          "url": "https://github.com/secretlint/secretlint/commit/53c318cc68e5396408653642c60c1546df9b8b53"
+        },
+        "date": 1656227401440,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.5,
+            "range": "±1.45%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.49,
+            "range": "±2.12%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
