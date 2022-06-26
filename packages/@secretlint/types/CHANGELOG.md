@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.2.1](https://github.com/secretlint/secretlint/compare/v5.2.0...v5.2.1) (2022-06-26)
+
+### Bug Fixes
+
+* **config-loader:** use native import() ([#275](https://github.com/secretlint/secretlint/issues/275)) ([7699777](https://github.com/secretlint/secretlint/commit/769977776eaa5bd8b663106195f88d7e3070d1d6))
+* **deps:** update minor updates ([0913164](https://github.com/secretlint/secretlint/commit/0913164dbc3178dc7ec8230a2bcae6f2434eacfc))
+
 # [5.2.0](https://github.com/secretlint/secretlint/compare/v5.1.3...v5.2.0) (2022-04-11)
 
 **Note:** Version bump only for package @secretlint/types
