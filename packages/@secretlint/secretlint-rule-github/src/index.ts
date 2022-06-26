@@ -69,7 +69,7 @@ function reportIfFoundKey({
         if (!validChecksum(match)) {
             continue;
         }
-        const range = [index, index + match.length];
+        const range = [index, index + match.length] as const;
         const allowedResults = matchPatterns(match, options.allows);
         if (allowedResults.length > 0) {
             continue;

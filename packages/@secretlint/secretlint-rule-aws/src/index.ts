@@ -63,7 +63,7 @@ const reportAWSAccessKey = ({
     for (const result of results) {
         const index = result.index || 0;
         const match = result[0] || "";
-        const range = [index, index + match.length];
+        const range = [index, index + match.length] as const;
         // Built-in ignore
         if (BUILTIN_IGNORED.AWSAccountID.includes(match)) {
             continue;
@@ -102,7 +102,7 @@ const reportAWSSecretAccessKey = ({
     for (const result of results) {
         const index = result.index || 0;
         const match = result[1] || "";
-        const range = [index, index + match.length];
+        const range = [index, index + match.length] as const;
         // Built-in ignored
         if (BUILTIN_IGNORED.AWSSecretAccessKey.includes(match)) {
             continue;
@@ -139,7 +139,7 @@ const reportAWSAccountID = ({
     for (const result of results) {
         const index = result.index || 0;
         const match = result[0] || "";
-        const range = [index, index + match.length];
+        const range = [index, index + match.length] as const;
         const allowedResults = matchPatterns(match, options.allows);
         if (allowedResults.length > 0) {
             continue;

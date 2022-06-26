@@ -10,7 +10,7 @@ import { SecretlintCoreSharedOptions } from "./SecretlintCoreSharedOptions";
 
 export type SecretLintRuleReportDescriptor = {
     message: SecretLintRuleMessageTranslateResult<any>;
-    range: number[];
+    range: readonly [startIndex: number, endIndex: number];
     data?: {};
 };
 export type SecretLintRuleIgnoreDescriptor = {
@@ -23,7 +23,7 @@ export type SecretLintRuleIgnoreDescriptor = {
      *  { targetRuleId: "*" }
      */
     targetRuleId: string;
-    range: number[];
+    range: readonly [startIndex: number, endIndex: number];
 };
 
 export type SecretLintRuleContext = {

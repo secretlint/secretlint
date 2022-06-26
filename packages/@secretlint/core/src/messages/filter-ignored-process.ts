@@ -1,6 +1,3 @@
-// LICENSE : MIT
-"use strict";
-
 import { SecretLintCoreIgnoreMessage, SecretLintCoreResultMessage } from "@secretlint/types";
 
 /**
@@ -9,7 +6,7 @@ import { SecretLintCoreIgnoreMessage, SecretLintCoreResultMessage } from "@secre
  * @param {Number[]} range
  * @returns {boolean}
  */
-const isContainedRange = (index: number, range: number[]) => {
+const isContainedRange = (index: number, range: readonly [startIndex: number, endIndex: number]) => {
     const [start, end] = range;
     return start <= index && index <= end;
 };

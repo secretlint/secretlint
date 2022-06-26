@@ -38,10 +38,11 @@ export const creator: SecretLintRuleCreator<Options> = {
                 for (const match of matches) {
                     const index = match.index || 0;
                     const matchString = match[0] || "";
-                    const range = [index, index + matchString.length];
+                    const range = [index, index + matchString.length] as const;
                     try {
-                        if (!secp256k1.privateKeyVerify(new BN(matchString, 16).toBuffer())) return;
-
+                        if (!secp256k1.privateKeyVerify(new BN(matchString, 16).toBuffer())) {
+                            return;
+                        }
                         context.report({
                             message: t("secp256k1Priv", {
                                 KEY: matchString,
