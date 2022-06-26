@@ -24,7 +24,7 @@ export const creator: SecretLintRuleCreator = {
                 for (const match of matches) {
                     const index = match.index || 0;
                     const matchString = match[0] || "";
-                    const range = [index, index + matchString.length];
+                    const range = [index, index + matchString.length] as const;
                     context.report({
                         message: t("EXAMPLE_MESSAGE", {
                             ID: matchString,
