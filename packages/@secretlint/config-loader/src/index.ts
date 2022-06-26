@@ -245,7 +245,7 @@ export const loadConfigDescriptor = async (
     if (!results) {
         throw new Error(`secretlint config is not found
                 
-Secrelint require .secretlintrc config file.
+Secretlint require .secretlintrc config file.
 The config file define the use of rules.`);
     }
     return {
