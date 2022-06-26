@@ -29,9 +29,6 @@ export function importSecretlintCreator(moduleExports?: SecretLintRuleModule): S
 const convertToFileUrl = (filePath: string) => {
     return url.pathToFileURL(filePath).href;
 };
-// FIXME: https://github.com/microsoft/TypeScript/issues/43329
-// module: node12 will be replace it
-const _importDynamic = new Function("modulePath", "return import(modulePath)");
 export type SecretLintConfigLoaderOptions = {
     cwd?: string;
     configFilePath?: string;
@@ -135,9 +132,7 @@ export const loadPackagesFromConfigDescriptor = async (
             const ruleCreator: SecretLintUnionRuleCreator = replacedDefinition
                 ? replacedDefinition.rule
                 : importSecretlintCreator(
-                      await _importDynamic(
-                          convertToFileUrl(moduleResolver.resolveRulePackageName(configDescriptorRule.id))
-                      )
+                      await import(convertToFileUrl(moduleResolver.resolveRulePackageName(configDescriptorRule.id)))
                   );
             if (isSecretLintCoreConfigRulePreset(ruleCreator)) {
                 const configDescriptorRulePreset = configDescriptorRule as SecretLintConfigDescriptorRulePreset;
