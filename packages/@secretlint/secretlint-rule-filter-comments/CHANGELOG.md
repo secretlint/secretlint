@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.2.3](https://github.com/secretlint/secretlint/compare/v5.2.2...v5.2.3) (2022-06-28)
+
+**Note:** Version bump only for package @secretlint/secretlint-rule-filter-comments
+
 ## [5.2.1](https://github.com/secretlint/secretlint/compare/v5.2.0...v5.2.1) (2022-06-26)
 
 ### Bug Fixes

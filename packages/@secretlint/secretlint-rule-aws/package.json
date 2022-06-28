@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-aws",
-    "version": "5.2.1",
+    "version": "5.2.3",
     "description": "A secretlint rule for AWS.",
     "keywords": [
         "secretlint",

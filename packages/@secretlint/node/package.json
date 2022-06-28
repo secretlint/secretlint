@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/node",
-    "version": "5.2.1",
+    "version": "5.2.3",
     "description": "Secretlint client library for Node.js",
     "keywords": [
         "secretlint",
@@ -43,7 +43,7 @@
     "dependencies": {
         "@secretlint/config-loader": "^5.2.1",
         "@secretlint/core": "^5.2.1",
-        "@secretlint/formatter": "^5.2.1",
+        "@secretlint/formatter": "^5.2.3",
         "@secretlint/profiler": "^5.2.1",
         "@secretlint/source-creator": "^5.2.1",
         "debug": "^4.3.4",

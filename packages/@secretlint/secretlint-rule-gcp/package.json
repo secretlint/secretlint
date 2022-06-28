@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-gcp",
-    "version": "5.2.1",
+    "version": "5.2.3",
     "description": "A secretlint rule for GCP.",
     "keywords": [
         "rule",
