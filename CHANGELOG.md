@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.2.3](https://github.com/secretlint/secretlint/compare/v5.2.2...v5.2.3) (2022-06-28)
+
+### Bug Fixes
+
+* fix secretlint ignore resolve logic ([30a4f16](https://github.com/secretlint/secretlint/commit/30a4f16fcc4675eaef02333bcc6f60cb638b4692))
+* support `-` in "allows" options ([d22becc](https://github.com/secretlint/secretlint/commit/d22beccd8ebe9b91bd8cf43dec5c496c0d6cf752))
+
 ## [5.2.2](https://github.com/secretlint/secretlint/compare/v5.2.1...v5.2.2) (2022-06-28)
 
 ### Bug Fixes
