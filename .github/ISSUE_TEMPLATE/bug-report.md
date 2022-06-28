@@ -11,7 +11,7 @@ Please update secretlint and try it before bug report.
 **What version of secretlint are you using?**
 <!-- 
 # Past result of following command: 
-$ npx secretlint -v
+$ npx secretlint --version
 -->
 
 **What did you do? Please include the actual steps causing the issue.**
