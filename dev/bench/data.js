@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1656401536657,
+  "lastUpdate": 1656410282339,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -11854,6 +11854,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±1.85%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "kyontan@monora.me",
+            "name": "kyontan",
+            "username": "kyontan"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "2a81100e036107eff3ff59aab77284b872fa050b",
+          "message": "Fix issue template: how to check the secretlint's version (#284)",
+          "timestamp": "2022-06-28T18:54:43+09:00",
+          "tree_id": "a15be4060557cebb417b6bbc066ec97852bc715b",
+          "url": "https://github.com/secretlint/secretlint/commit/2a81100e036107eff3ff59aab77284b872fa050b"
+        },
+        "date": 1656410281070,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.92,
+            "range": "±0.35%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.68,
+            "range": "±0.94%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
