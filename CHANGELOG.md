@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.2.2](https://github.com/secretlint/secretlint/compare/v5.2.1...v5.2.2) (2022-06-28)
+
+### Bug Fixes
+
+* **docker:** use latest formatter version ([#282](https://github.com/secretlint/secretlint/issues/282)) ([6103ff9](https://github.com/secretlint/secretlint/commit/6103ff9a0e5f3ef09807ef0eb04d4360858ace97))
+
+### Features
+
+* **docker:** install sarif formatter to docker image ([#279](https://github.com/secretlint/secretlint/issues/279)) ([f5ae422](https://github.com/secretlint/secretlint/commit/f5ae4224b6ddc8f28923877f70cb20ce0c52efd4))
+
 ## [5.2.1](https://github.com/secretlint/secretlint/compare/v5.2.0...v5.2.1) (2022-06-26)
 
 ### Bug Fixes
