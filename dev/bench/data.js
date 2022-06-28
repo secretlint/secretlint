@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1656415666559,
+  "lastUpdate": 1656423778543,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -11930,6 +11930,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.51,
             "range": "±1.94%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "2e1aac26624300bb33af81515e0632fa88da67ca",
+          "message": "Merge pull request #287 from secretlint/feature/285\n\n fix: fix secretlint ignore resolve logic",
+          "timestamp": "2022-06-28T22:39:07+09:00",
+          "tree_id": "4dfbd0826fcb255968c573b261094e5d168f35fd",
+          "url": "https://github.com/secretlint/secretlint/commit/2e1aac26624300bb33af81515e0632fa88da67ca"
+        },
+        "date": 1656423777258,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.8,
+            "range": "±0.94%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±0.92%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
