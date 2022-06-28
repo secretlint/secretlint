@@ -17,6 +17,7 @@ describe("@secretlint/secretlint-rule-patttern", () => {
                                     "/password\\s*=\\s*(?<password>[\\w\\d!@#$%^&(){}\\[\\]:\";'<>,.?/~`_+-=|]{1,256})\\b.*/gi",
                             },
                         ],
+                        allows: ["foo-bar"],
                     },
                 },
             ],

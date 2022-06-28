@@ -14,24 +14,13 @@ export type SearchFilesOptions = {
     cwd: string;
     ignoreFilePath?: string;
 };
-/**
- * root option support of https://github.com/isaacs/node-glob#options
- * /packages -> packages
- * fast-glob ignore /dir. It is workaround.
- * @param filePath
- */
-const replaceRootDir = (filePath: string): string => {
-    if (filePath[0] === path.sep) {
-        return filePath.slice(1);
-    }
-    return filePath;
-};
+
 const mapGitIgnorePatternTo = (base: string) => (ignore: string) => {
     if (ignore.startsWith("!")) {
-        return "!" + path.posix.join(base, ignore.slice(1));
+        return "!" + path.posix.resolve(path.posix.join(base, ignore.slice(1)));
     }
 
-    return replaceRootDir(path.posix.join(base, ignore));
+    return path.posix.resolve(path.posix.join(base, ignore));
 };
 /**
  * globby wrapper that support ignore options
