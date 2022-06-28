@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1656343732165,
+  "lastUpdate": 1656400037702,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -11702,6 +11702,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.64,
             "range": "±1.93%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "koichi.h+github@gmail.com",
+            "name": "HAL",
+            "username": "k-hal"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f5ae4224b6ddc8f28923877f70cb20ce0c52efd4",
+          "message": "feat(docker): install sarif formatter to docker image (#279)",
+          "timestamp": "2022-06-28T16:03:48+09:00",
+          "tree_id": "bc8086b3cbc20a3175a0f4e49d5fb53986811e3a",
+          "url": "https://github.com/secretlint/secretlint/commit/f5ae4224b6ddc8f28923877f70cb20ce0c52efd4"
+        },
+        "date": 1656400037003,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.97,
+            "range": "±3.06%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.59,
+            "range": "±4.92%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
