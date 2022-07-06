@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1656423904654,
+  "lastUpdate": 1657066755287,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -12006,6 +12006,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.65,
             "range": "±2.18%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "8434419658c2e068aa6cc681e4faef1b5a01d563",
+          "message": "chore(deps): bump parse-url from 6.0.0 to 6.0.2 (#289)\n\nBumps [parse-url](https://github.com/IonicaBizau/parse-url) from 6.0.0 to 6.0.2.\r\n- [Release notes](https://github.com/IonicaBizau/parse-url/releases)\r\n- [Commits](https://github.com/IonicaBizau/parse-url/commits)\r\n\r\n---\r\nupdated-dependencies:\r\n- dependency-name: parse-url\r\n  dependency-type: indirect\r\n...\r\n\r\nSigned-off-by: dependabot[bot] <support@github.com>\r\n\r\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2022-07-06T09:14:49+09:00",
+          "tree_id": "d61829bccbc30df638c22ec8562fea6b78241d17",
+          "url": "https://github.com/secretlint/secretlint/commit/8434419658c2e068aa6cc681e4faef1b5a01d563"
+        },
+        "date": 1657066752872,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.42,
+            "range": "±3.74%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.47,
+            "range": "±5.83%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
