@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.2.4](https://github.com/secretlint/secretlint/compare/v5.2.3...v5.2.4) (2022-08-24)
+
+### Bug Fixes
+
+* **npm:** allow `_authToken=${NPM_TOKEN}` ([#303](https://github.com/secretlint/secretlint/issues/303)) ([a0a2f51](https://github.com/secretlint/secretlint/commit/a0a2f5142854c2659a897de46aec2e61865423c2))
+
 ## [5.2.3](https://github.com/secretlint/secretlint/compare/v5.2.2...v5.2.3) (2022-06-28)
 
 ### Bug Fixes

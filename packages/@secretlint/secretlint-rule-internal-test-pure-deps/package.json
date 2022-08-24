@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-internal-test-pure-deps",
-  "version": "5.2.1",
+  "version": "5.2.4",
   "description": "An example rule for secretlint. It it for testing.",
   "keywords": [
     "secretlint",
@@ -41,7 +41,7 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^5.2.1"
+    "@secretlint/types": "^5.2.4"
   },
   "devDependencies": {
     "typescript": "^4.7.4"

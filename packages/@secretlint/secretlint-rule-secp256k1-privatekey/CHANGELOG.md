@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.2.4](https://github.com/secretlint/secretlint/compare/v5.2.3...v5.2.4) (2022-08-24)
+
+**Note:** Version bump only for package @secretlint/secretlint-rule-secp256k1-privatekey
+
 ## [5.2.1](https://github.com/secretlint/secretlint/compare/v5.2.0...v5.2.1) (2022-06-26)
 
 ### Bug Fixes
