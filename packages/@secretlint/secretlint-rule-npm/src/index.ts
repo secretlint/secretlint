@@ -72,7 +72,7 @@ function reportIfFound_AuthTokenInNpmrc({
     t: SecretLintRuleMessageTranslate<typeof messages>;
 }) {
     // https://blog.npmjs.org/post/118393368555/deploying-with-npm-private-modules
-    // allow ${NPM_TOKEN}
+    // allow _authToken=${NPM_TOKEN}
     // https://github.com/secretlint/secretlint/issues/302
     const AuthTokenPattern = /_authToken=([^$].*)/g;
     const results = source.content.matchAll(AuthTokenPattern);
