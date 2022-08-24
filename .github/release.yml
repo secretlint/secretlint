@@ -1,0 +1,32 @@
+changelog:
+  exclude:
+    labels:
+      - 'ignore for release'
+
+  categories:
+    - title: Breaking Changes
+      labels: ['Type: Breaking Change']
+
+    - title: Bug Fixes
+      labels: ['Type: Bug']
+    - title: Documentation
+      labels: ['Type: Documentation']
+    - title: Features
+      labels: ['Type: Feature']
+    - title: Refactoring
+      labels: ['Type: Refactoring']
+    - title: Testing
+      labels: ['Type: Testing']
+    - title: Maintenance
+      labels: ['Type: Maintenance']
+    - title: CI
+      labels: ['Type: CI']
+    - title: Question
+      labels: ['Type: Question']
+    - title: Security Fixes
+      labels: ['Type: Security']
+    - title: Dependency Updates
+      labels: ['Type: Dependencies', "dependencies"]
+
+    - title: Other Changes
+      labels: ['*']
