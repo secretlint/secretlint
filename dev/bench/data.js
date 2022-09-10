@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1661344557230,
+  "lastUpdate": 1662801023438,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -12386,6 +12386,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.45,
             "range": "±2.62%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "38461277+gkzz@users.noreply.github.com",
+            "name": "Gakuji Tamaki",
+            "username": "gkzz"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "0c5db4066a61375b7954b716f952aedd16357b1b",
+          "message": "test(runConfigCreator): add tests for secretlint --init (#306)\n\nAdd tests as bellow:\r\n- Check to create `.secretlintrc.json` when `runConfigCreator` is called\r\n- Check whether `createConfig` works well\r\n\r\nclose #33",
+          "timestamp": "2022-09-10T18:07:09+09:00",
+          "tree_id": "9b63f5baa4c0c68dcc49b3e2d2f924fba8bfa11a",
+          "url": "https://github.com/secretlint/secretlint/commit/0c5db4066a61375b7954b716f952aedd16357b1b"
+        },
+        "date": 1662801022724,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.96,
+            "range": "±0.77%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.68,
+            "range": "±1.68%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
