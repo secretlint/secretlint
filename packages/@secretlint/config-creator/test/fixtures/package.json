@@ -1,0 +1,9 @@
+{
+    "name": "fixture-for-config-creator",
+    "private": true,
+    "devDependencies": {
+        "@secretlint/secretlint-rule-preset-recommend": "^5.2.4",
+        "expected-exit-status": "^2.0.0",
+        "secretlint": "^5.2.4"
+    }
+}
