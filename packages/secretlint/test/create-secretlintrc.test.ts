@@ -64,10 +64,7 @@ describe("create-secretlintrc", function () {
             if (reActual.stderr === null) {
                 assert.fail("stderr is unexpected null.");
             }
-            assert.match(
-                reActual.stderr.toString(),
-                new RegExp(`Error:\\s+secretlint\\s+config\\s+file\\s+is\\s+already\\s+existed\.`, "g")
-            );
+            assert.strictEqual(reActual.stderr.toString(), "Error: secretlint config file is already existed.");
         });
     });
 });
