@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1666056185098,
+  "lastUpdate": 1666580211628,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -12652,6 +12652,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±0.95%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "thinca@gmail.com",
+            "name": "thinca",
+            "username": "thinca"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "4b22e2dba99d31c47488e3114d9cf3def67dea4f",
+          "message": "docs(aws): Fix id of secretlint-rule-aws in README (#314)",
+          "timestamp": "2022-10-24T11:52:50+09:00",
+          "tree_id": "15c7388fb7b22a7ff932d9450fe63c8675575268",
+          "url": "https://github.com/secretlint/secretlint/commit/4b22e2dba99d31c47488e3114d9cf3def67dea4f"
+        },
+        "date": 1666580210207,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.59,
+            "range": "±1.51%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.5,
+            "range": "±2.67%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
