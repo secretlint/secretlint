@@ -16,7 +16,7 @@ Via `.secretlintrc.json`
 {
     "rules": [
         {
-            "id": "@secretlint/aws"
+            "id": "@secretlint/secretlint-rule-aws"
         }
     ]
 }
@@ -52,7 +52,7 @@ AWS's Access key is crendential data. It should be private.
 {
     "rules": [
         {
-            "id": "@secretlint/aws",
+            "id": "@secretlint/secretlint-rule-aws",
             // Ignore error related to IDs
             "allowMessageIds": ["AWSAccountID", "AWSAccessKeyID"],
             "options": {
