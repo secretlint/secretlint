@@ -50,7 +50,7 @@
     "devDependencies": {
         "@secretlint/tester": "^5.2.4",
         "@types/mocha": "^9.1.1",
-        "@types/node": "^18.11.2",
+        "@types/node": "^18.11.3",
         "mocha": "^10.1.0",
         "prettier": "^2.7.1",
         "rimraf": "^3.0.2",
