@@ -5534,7 +5534,7 @@ turbo-windows-arm64@1.6.2:
   resolved "https://registry.yarnpkg.com/turbo-windows-arm64/-/turbo-windows-arm64-1.6.2.tgz#bad383efc06da6304b5e384fcf499cf9e17b850a"
   integrity sha512-AlDYjxPU21YSefP3qMl/Zys5spglXtaBt2ZF5N2+OWcjiJZ/0mIIc69oFdzuAuiyoYkyWMdkoCSGwuljtl31vg==
 
-turbo@^1.6.0:
+turbo@^1.6.1:
   version "1.6.2"
   resolved "https://registry.yarnpkg.com/turbo/-/turbo-1.6.2.tgz#61bb7056d7266c2e07b1f3241d9d859b1715917e"
   integrity sha512-a6UM9HaAjM5ai+vxDFI/z0l4Bf6zWjf7wCf9Ip2iyd4XZkZZnhRtM6FpaUWzorjz9Dsqnfwu3nkWY3wPdH02IQ==
