@@ -3792,10 +3792,10 @@ node-gyp@^9.0.0:
     tar "^6.1.2"
     which "^2.0.2"
 
-node-sarif-builder@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/node-sarif-builder/-/node-sarif-builder-2.0.2.tgz#b69166a98808a6eccb7921f1c0b80438e5018a98"
-  integrity sha512-SkNE1BnGyO5FdHscmGQ0cQ/9S1nHt+vi+UHr5AGbzVaeeTzZBHnpDoi5XIB3Cj7KtzI3kxocKkI6HLdTBcRNLA==
+node-sarif-builder@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/node-sarif-builder/-/node-sarif-builder-2.0.3.tgz#179ae590ce020f97f9e45037dc1cde85aa4398ec"
+  integrity sha512-Pzr3rol8fvhG/oJjIq2NTVB0vmdNNlz22FENhhPojYRZ4/ee08CfK4YuKmuL54V9MLhI1kpzxfOJ/63LzmZzDg==
   dependencies:
     "@types/sarif" "^2.1.4"
     fs-extra "^10.0.0"
