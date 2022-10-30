@@ -34,10 +34,12 @@ Disallow to write GitHub Token.
 - `ghu_` for GitHub App user-to-server tokens
 - `ghs_` for GitHub App server-to-server tokens
 - `ghr_` for GitHub App refresh tokens
+- `github_pat_` for fine-grained personal access tokens
 
 This rule can detect a new format of GitHub Token.
 
 - [Authentication token format updates are generally available | GitHub Changelog](https://github.blog/changelog/2021-03-31-authentication-token-format-updates-are-generally-available/)
+- [Introducing fine-grained personal access tokens for GitHub | The GitHub Blog](https://github.blog/2022-10-18-introducing-fine-grained-personal-access-tokens-for-github/)
 
 ## Options
 
