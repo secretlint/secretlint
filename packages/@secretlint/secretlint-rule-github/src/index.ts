@@ -22,18 +22,20 @@ export type Options = {
     allows?: string[];
 };
 
-type GITHUB_TOKEN_TYPE = "ghp" | "gho" | "ghu" | "ghs" | "ghr";
+type GITHUB_TOKEN_TYPE = "ghp" | "gho" | "ghu" | "ghs" | "ghr" | "github_pat";
 // ghp for GitHub personal access tokens
 // gho for OAuth access tokens
 // ghu for GitHub user-to-server tokens
 // ghs for GitHub server-to-server tokens
 // ghr for refresh tokens
+// github_pat for fine-grained personal access tokens
 const typeMap = new Map<GITHUB_TOKEN_TYPE, string>([
     ["ghp", "GitHub personal access tokens"],
     ["gho", "OAuth access tokens"],
     ["gho", "GitHub user-to-server tokens"],
     ["ghs", "GitHub user-to-server tokens"],
     ["ghr", "refresh tokens"],
+    ["github_pat", "fine-grained personal access tokens"],
 ]);
 
 // FIXME: GitHub Token implement CRC-32 checksum
@@ -44,20 +46,19 @@ const validChecksum = (_token: string): boolean => {
 };
 
 function reportIfFoundKey({
+    pattern,
     source,
     options,
     context,
     t,
 }: {
+    pattern: RegExp;
     source: SecretLintSourceCode;
     options: Required<Options>;
     context: SecretLintRuleContext;
     t: SecretLintRuleMessageTranslate<typeof messages>;
 }) {
-    // token length should be 40
-    // https://github.blog/2021-04-05-behind-githubs-new-authentication-token-formats/
-    const GITHUB_TOKEN_PATTERN = /(?<type>ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9_]{36}/g;
-    const results = source.content.matchAll(GITHUB_TOKEN_PATTERN);
+    const results = source.content.matchAll(pattern);
     for (const result of results) {
         const index = result.index || 0;
         const type = result.groups?.type as GITHUB_TOKEN_TYPE;
@@ -96,13 +97,21 @@ export const creator: SecretLintRuleCreator<Options> = {
         },
     },
     create(context, options) {
+        // token length should be 40
+        // https://github.blog/2021-04-05-behind-githubs-new-authentication-token-formats/
+        const CLASSIC_GITHUB_TOKEN_PATTERN = /(?<type>ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9_]{36}/g;
+        // fine-grained personal access tokens. FIXME: Format of the token is unclear
+        const FINE_GRAINED_GITHUB_TOKEN_PATTERN = /(?<type>github_pat)_[A-Za-z0-9_]{82}/g;
+        const patterns = [CLASSIC_GITHUB_TOKEN_PATTERN, FINE_GRAINED_GITHUB_TOKEN_PATTERN];
         const t = context.createTranslator(messages);
         const normalizedOptions = {
             allows: options.allows || [],
         };
         return {
             file(source: SecretLintSourceCode) {
-                reportIfFoundKey({ source, options: normalizedOptions, context, t });
+                for (const pattern of patterns) {
+                    reportIfFoundKey({ pattern, source, options: normalizedOptions, context, t });
+                }
             },
         };
     },
