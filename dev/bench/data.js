@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1667172693590,
+  "lastUpdate": 1667173282388,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -12994,6 +12994,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.69,
             "range": "±0.40%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "d70f8151ffb08ea93c343b7217ff7c1f492f06a9",
+          "message": "fix(github): remove duplicated gho- prefix  (#323)\n\n* fix(github): remove duplicated `gho-` prefix\r\n\r\n* chore(github): add comment",
+          "timestamp": "2022-10-31T08:36:06+09:00",
+          "tree_id": "2645cfa83725ed164d566069713ad978830eb65d",
+          "url": "https://github.com/secretlint/secretlint/commit/d70f8151ffb08ea93c343b7217ff7c1f492f06a9"
+        },
+        "date": 1667173280846,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.37,
+            "range": "±1.15%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.46,
+            "range": "±0.43%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
