@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1667105731246,
+  "lastUpdate": 1667172693590,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -12956,6 +12956,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.69,
             "range": "±1.04%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "rhysd@users.noreply.github.com",
+            "name": "Linda_pp",
+            "username": "rhysd"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "9eae766e2bfc69b79050a2df1cabeef3a1e53427",
+          "message": "feat(secretlint-rule-github): support for fine-grained personal access tokens (#322)\n\n- blog post for introduction: https://github.blog/2022-10-18-introducing-fine-grained-personal-access-tokens-for-github/\r\n- document: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-fine-grained-personal-access-token",
+          "timestamp": "2022-10-31T08:27:53+09:00",
+          "tree_id": "58d7b79b702c20a8ce5bbd183f166c0ffd46bfc8",
+          "url": "https://github.com/secretlint/secretlint/commit/9eae766e2bfc69b79050a2df1cabeef3a1e53427"
+        },
+        "date": 1667172692812,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.96,
+            "range": "±0.59%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.69,
+            "range": "±0.40%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
