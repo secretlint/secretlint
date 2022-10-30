@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.3.0](https://github.com/secretlint/secretlint/compare/v5.2.4...v5.3.0) (2022-10-30)
+
+### Bug Fixes
+
+* **deps:** update dependency node-sarif-builder to ^2.0.3 ([c99e4cc](https://github.com/secretlint/secretlint/commit/c99e4cc461bb469ea339db248cff68df89ba5fdc))
+* **deps:** update patch updates ([eba8592](https://github.com/secretlint/secretlint/commit/eba85923f7413e3487ef70a7729e003ff07911a6))
+* **github:** remove duplicated gho- prefix  ([#323](https://github.com/secretlint/secretlint/issues/323)) ([d70f815](https://github.com/secretlint/secretlint/commit/d70f8151ffb08ea93c343b7217ff7c1f492f06a9))
+
+### Features
+
+* **secretlint-rule-github:** support for fine-grained personal access tokens ([#322](https://github.com/secretlint/secretlint/issues/322)) ([9eae766](https://github.com/secretlint/secretlint/commit/9eae766e2bfc69b79050a2df1cabeef3a1e53427))
+
 ## [5.2.4](https://github.com/secretlint/secretlint/compare/v5.2.3...v5.2.4) (2022-08-24)
 
 ### Bug Fixes
