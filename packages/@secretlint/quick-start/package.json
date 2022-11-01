@@ -49,7 +49,7 @@
     },
     "devDependencies": {
         "@types/mocha": "^9.1.1",
-        "@types/node": "^18.11.4",
+        "@types/node": "^18.11.5",
         "expected-exit-status": "^2.0.0",
         "mocha": "^10.1.0",
         "prettier": "^2.7.1",
