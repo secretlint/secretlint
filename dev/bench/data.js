@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1667434016081,
+  "lastUpdate": 1667507665398,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -13222,6 +13222,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.59,
             "range": "±1.41%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "distinct": true,
+          "id": "e8a732c61aa9bf94172a88da6505429033ac0d26",
+          "message": "fix(deps): update dependency rc-config-loader to ^4.1.1",
+          "timestamp": "2022-11-03T20:29:46Z",
+          "tree_id": "2a8509ba13ec315e7b964abb0cbcad3ec65bf398",
+          "url": "https://github.com/secretlint/secretlint/commit/e8a732c61aa9bf94172a88da6505429033ac0d26"
+        },
+        "date": 1667507663852,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.55,
+            "range": "±3.24%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.5,
+            "range": "±1.67%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
