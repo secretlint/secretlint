@@ -12,6 +12,10 @@
 - **Pluggable**: Allow creating custom rule and flexible configuration
 - **Documentation**: Describe the reason that rule detect it as secret
 
+## Quick Demo
+
+You can view secretlint linting result on <https://secretlint.github.io/>.
+
 ## Quick Start
 
 You can try to use Secretlint on your project at one command.
