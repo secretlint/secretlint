@@ -39,8 +39,8 @@
     },
     "dependencies": {
         "@secretlint/types": "^5.3.0",
-        "@textlint/linter-formatter": "^12.2.2",
-        "@textlint/types": "^12.2.2",
+        "@textlint/linter-formatter": "^12.2.3",
+        "@textlint/types": "^12.2.3",
         "chalk": "^4.1.2",
         "debug": "^4.3.4",
         "pluralize": "^8.0.0",
