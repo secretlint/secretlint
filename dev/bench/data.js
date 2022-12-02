@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1669753680377,
+  "lastUpdate": 1669980026656,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -13564,6 +13564,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.59,
             "range": "±1.46%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "distinct": true,
+          "id": "766486fd490f361378a7242fb1351e76347a6e25",
+          "message": "chore(deps): update dependency lint-staged to ^13.0.4",
+          "timestamp": "2022-12-02T11:16:43Z",
+          "tree_id": "8cfc578d6add0397ebbd933f32a4044c4092091e",
+          "url": "https://github.com/secretlint/secretlint/commit/766486fd490f361378a7242fb1351e76347a6e25"
+        },
+        "date": 1669980025274,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.94,
+            "range": "±0.82%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.59,
+            "range": "±2.03%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
