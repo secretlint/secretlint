@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1670464649011,
+  "lastUpdate": 1670747286844,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -13678,6 +13678,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.48,
             "range": "±2.66%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "distinct": true,
+          "id": "e26d9dc91c77eafe4db30f9a1e66b8ef3aacb912",
+          "message": "fix(deps): update dependency @textlint/linter-formatter to ^12.2.4",
+          "timestamp": "2022-12-11T08:24:14Z",
+          "tree_id": "d32507d07ec69481cf7dfdf4b7cb7a62b3ad40c8",
+          "url": "https://github.com/secretlint/secretlint/commit/e26d9dc91c77eafe4db30f9a1e66b8ef3aacb912"
+        },
+        "date": 1670747286026,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.89,
+            "range": "±0.44%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±2.40%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
