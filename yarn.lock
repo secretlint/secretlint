@@ -592,10 +592,10 @@
   resolved "https://registry.yarnpkg.com/@textlint/ast-node-types/-/ast-node-types-12.2.2.tgz#299c4035d26a2be8fe76bcb66798a8e82a5eb77c"
   integrity sha512-VQAXUSGdmEajHXrMxeM9ZTS8UBJSVB0ghJFHpFfqYKlcDsjIqClSmTprY6521HoCoSLoUIGBxTC3jQyUMJFIWw==
 
-"@textlint/linter-formatter@^12.2.3":
-  version "12.2.3"
-  resolved "https://registry.yarnpkg.com/@textlint/linter-formatter/-/linter-formatter-12.2.3.tgz#d19040134ef6041cf704f8f313d9083024e5df6d"
-  integrity sha512-2lwxRwaKvTLTIYqcRWjkYgcMUnPj3SMhOxkiQQM6lVhQ6E6XsbT2LkgOTG+tip+xkTH0t455lF9pszwrNmAN7A==
+"@textlint/linter-formatter@^12.2.4":
+  version "12.2.4"
+  resolved "https://registry.yarnpkg.com/@textlint/linter-formatter/-/linter-formatter-12.2.4.tgz#e633c3856c3f67fa45683cbc27131a38d95107a4"
+  integrity sha512-vF/qPrDYLH9jGB/HU8euVLv7BBATYmviBl9fGcx5vO8Lq/D2vHS9MUdk1JddgW/cDqnrI0nNVlLFUphJsXtp6w==
   dependencies:
     "@azu/format-text" "^1.0.1"
     "@azu/style-format" "^1.0.0"
