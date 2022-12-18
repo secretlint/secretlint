@@ -50,7 +50,7 @@
         "@types/node": "^18.11.13",
         "@types/structured-source": "^3.0.0",
         "assert-json-equal": "^1.0.1",
-        "mocha": "^10.1.0",
+        "mocha": "^10.2.0",
         "prettier": "^2.7.1",
         "rimraf": "^3.0.2",
         "ts-node": "^10.9.1",
