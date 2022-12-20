@@ -47,7 +47,7 @@
     },
     "devDependencies": {
         "@types/mocha": "^9.1.1",
-        "@types/node": "^18.11.14",
+        "@types/node": "^18.11.15",
         "@types/structured-source": "^3.0.0",
         "assert-json-equal": "^1.0.1",
         "mocha": "^10.2.0",
