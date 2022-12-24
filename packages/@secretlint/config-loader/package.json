@@ -55,7 +55,7 @@
     "devDependencies": {
         "@secretlint/secretlint-rule-internal-test-pure-deps": "^5.3.0",
         "@types/mocha": "^9.1.1",
-        "@types/node": "^18.11.16",
+        "@types/node": "^18.11.17",
         "create-validator-ts": "^3.0.1",
         "mocha": "^10.2.0",
         "prettier": "^2.7.1",
