@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1671925903353,
+  "lastUpdate": 1672105226352,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -14058,6 +14058,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.56,
             "range": "±1.76%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "distinct": true,
+          "id": "0cd52733f37f6940b5bc69d0ce8abdd0ccb1eeea",
+          "message": "fix(deps): update dependency nexe to ^4.0.0-rc.2",
+          "timestamp": "2022-12-27T01:36:25Z",
+          "tree_id": "bc2a98691f8d58dce21b555298ce84c76b08b8cc",
+          "url": "https://github.com/secretlint/secretlint/commit/0cd52733f37f6940b5bc69d0ce8abdd0ccb1eeea"
+        },
+        "date": 1672105225537,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.91,
+            "range": "±0.77%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.6,
+            "range": "±0.67%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
