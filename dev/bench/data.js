@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1672668521529,
+  "lastUpdate": 1672668761198,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -14210,6 +14210,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.48,
             "range": "±1.11%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e4e60a5b78cbef1f4e9d74211b3eead3eee4dc92",
+          "message": "fix!: Update README (#364)\n\nBREAKING CHANGE: It is just update for rule creator",
+          "timestamp": "2023-01-02T23:08:57+09:00",
+          "tree_id": "0f7f4bcb8f3d81a9ef009cec1974765eb6e4bed1",
+          "url": "https://github.com/secretlint/secretlint/commit/e4e60a5b78cbef1f4e9d74211b3eead3eee4dc92"
+        },
+        "date": 1672668759494,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.92,
+            "range": "±0.53%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.67,
+            "range": "±1.45%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
