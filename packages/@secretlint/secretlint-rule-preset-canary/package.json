@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-preset-canary",
-  "version": "5.3.0",
+  "version": "5.4.0",
   "description": "Canary rule preset of secretlint.",
   "keywords": [
     "secretlint",
@@ -44,23 +44,23 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/secretlint-rule-aws": "^5.3.0",
-    "@secretlint/secretlint-rule-basicauth": "^5.3.0",
-    "@secretlint/secretlint-rule-filter-comments": "^5.3.0",
-    "@secretlint/secretlint-rule-gcp": "^5.3.0",
-    "@secretlint/secretlint-rule-github": "^5.3.0",
-    "@secretlint/secretlint-rule-npm": "^5.3.0",
-    "@secretlint/secretlint-rule-privatekey": "^5.3.0",
-    "@secretlint/secretlint-rule-sendgrid": "^5.3.0",
-    "@secretlint/secretlint-rule-shopify": "^5.3.0",
-    "@secretlint/secretlint-rule-slack": "^5.3.0"
+    "@secretlint/secretlint-rule-aws": "^5.4.0",
+    "@secretlint/secretlint-rule-basicauth": "^5.4.0",
+    "@secretlint/secretlint-rule-filter-comments": "^5.4.0",
+    "@secretlint/secretlint-rule-gcp": "^5.4.0",
+    "@secretlint/secretlint-rule-github": "^5.4.0",
+    "@secretlint/secretlint-rule-npm": "^5.4.0",
+    "@secretlint/secretlint-rule-privatekey": "^5.4.0",
+    "@secretlint/secretlint-rule-sendgrid": "^5.4.0",
+    "@secretlint/secretlint-rule-shopify": "^5.4.0",
+    "@secretlint/secretlint-rule-slack": "^5.4.0"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^22.0.2",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@rollup/plugin-typescript": "^8.5.0",
-    "@secretlint/tester": "^5.3.0",
+    "@secretlint/tester": "^5.4.0",
     "@types/mocha": "^9.1.1",
     "@types/node": "^18.11.17",
     "mocha": "^10.2.0",

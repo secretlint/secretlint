@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.4.0](https://github.com/secretlint/secretlint/compare/v5.3.0...v5.4.0) (2023-01-02)
+
+### Bug Fixes
+
+* **deps:** update dependency @textlint/linter-formatter to ^12.2.4 ([e26d9dc](https://github.com/secretlint/secretlint/commit/e26d9dc91c77eafe4db30f9a1e66b8ef3aacb912))
+* **deps:** update dependency ajv to ^8.11.2 ([497c106](https://github.com/secretlint/secretlint/commit/497c10652912c54c921b559d80089dc0fd48e83a))
+* **deps:** update dependency nexe to ^4.0.0-rc.2 ([0cd5273](https://github.com/secretlint/secretlint/commit/0cd52733f37f6940b5bc69d0ce8abdd0ccb1eeea))
+* **deps:** update dependency rc-config-loader to ^4.1.1 ([e8a732c](https://github.com/secretlint/secretlint/commit/e8a732c61aa9bf94172a88da6505429033ac0d26))
+* **deps:** update dependency table to ^6.8.1 ([489f457](https://github.com/secretlint/secretlint/commit/489f457ec0feddefdced1ac5dd36c1acf306c84f))
+* **deps:** update patch updates to ^12.2.3 ([78aa14f](https://github.com/secretlint/secretlint/commit/78aa14fa970155b5aaad15555fb79dfcd6a314b0))
+
+### Documentation
+
+* add "sourceContent" and "sourceContentType" to message ([#362](https://github.com/secretlint/secretlint/issues/362)) ([4cf620f](https://github.com/secretlint/secretlint/commit/4cf620f0f5c70e7ba9f94fc7fdfbc3a26f43a4ff))
+
+### Features
+
+* **formatter:** add --format=mask-result ([#359](https://github.com/secretlint/secretlint/issues/359)) ([eb49c31](https://github.com/secretlint/secretlint/commit/eb49c314ba45048a6b2d40e90fa4d0f5f82ca1d0))
+
+### BREAKING CHANGES
+
+* you may need to update snapshots via @secretlint/tester
+
 # [5.3.0](https://github.com/secretlint/secretlint/compare/v5.2.4...v5.3.0) (2022-10-30)
 
 ### Bug Fixes
