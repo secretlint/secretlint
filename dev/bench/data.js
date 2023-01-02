@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1672670400630,
+  "lastUpdate": 1672671463433,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -14324,6 +14324,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.49,
             "range": "±1.79%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "bc69a4d9c59859236cc458d5d4750e280eb69a6f",
+          "message": "CI: drop support Node.js 14 (#367)",
+          "timestamp": "2023-01-02T23:53:09+09:00",
+          "tree_id": "d69c4ed9c95186e043f90f474f824cf1ef48fbc6",
+          "url": "https://github.com/secretlint/secretlint/commit/bc69a4d9c59859236cc458d5d4750e280eb69a6f"
+        },
+        "date": 1672671461913,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.58,
+            "range": "±1.78%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.5,
+            "range": "±1.21%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
