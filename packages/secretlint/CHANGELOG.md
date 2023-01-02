@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.1](https://github.com/secretlint/secretlint/compare/v5.3.0...v6.0.1) (2023-01-02)
+
+* fix!: Update README (#364) ([e4e60a5](https://github.com/secretlint/secretlint/commit/e4e60a5b78cbef1f4e9d74211b3eead3eee4dc92)), closes [#364](https://github.com/secretlint/secretlint/issues/364)
+
+### Features
+
+* **formatter:** add --format=mask-result ([#359](https://github.com/secretlint/secretlint/issues/359)) ([eb49c31](https://github.com/secretlint/secretlint/commit/eb49c314ba45048a6b2d40e90fa4d0f5f82ca1d0))
+
+### BREAKING CHANGES
+
+* It is just update for rule creator
+
 # [6.0.0](https://github.com/secretlint/secretlint/compare/v5.3.0...v6.0.0) (2023-01-02)
 
 * fix!: Update README (#364) ([e4e60a5](https://github.com/secretlint/secretlint/commit/e4e60a5b78cbef1f4e9d74211b3eead3eee4dc92)), closes [#364](https://github.com/secretlint/secretlint/issues/364)
