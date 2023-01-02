@@ -150,7 +150,7 @@ export const snapshot = (options: SnapshotOptions) => {
                         }
                         // compare input and output
                         const expected = JSON.parse(fs.readFileSync(expectedFilePath, "utf-8"));
-                        assert.deepEqual(
+                        assert.deepStrictEqual(
                             JSON.parse(JSON.stringify(actualResult, snapshotReplacer)),
                             expected,
                             `

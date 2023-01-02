@@ -51,5 +51,7 @@
                 "PATH": "¥Users¥exampleuser"
             }
         }
-    ]
+    ],
+    "sourceContent": "Partial match: /path/to/Users/exampleuser\nPartial match: ¥path¥to¥Users¥exampleuser\n",
+    "sourceContentType": "text"
 }

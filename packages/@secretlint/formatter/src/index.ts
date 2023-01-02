@@ -38,7 +38,6 @@ export interface SecretLintFormatterConfig {
 
 /**
  * Convert secretlint result to textlint result for formatter
- * @param secretLintCoreResult
  */
 const convertSecretLintResultToTextlintResult = (
     secretLintCoreResult: SecretLintCoreResult,
@@ -80,7 +79,7 @@ const convertSecretLintResultToTextlintResult = (
                  */
                 line: message.loc.start.line,
                 /**
-                 * @deprecated backword compatibility - use range or loc
+                 * @deprecated backward compatibility - use range or loc
                  */
                 column: message.loc.start.column,
                 range: message.range,
@@ -178,7 +177,9 @@ export function secretlintGetFormatterList(): SecretLintFormatterDetail[] {
     return fs
         .readdirSync(path.join(__dirname, "formatters"))
         .filter((file: string) => {
-            return [".js", ".ts"].some((formatterExtension) => path.extname(file) === formatterExtension);
+            return [".js", ".ts"].some(
+                (formatterExtension) => path.extname(file) === formatterExtension && !file.endsWith(".d.ts")
+            );
         })
         .map((file: string) => {
             const nameWithoutExtension = [".js", ".ts"].reduce(

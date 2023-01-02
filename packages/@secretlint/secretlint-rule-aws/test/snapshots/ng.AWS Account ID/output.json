@@ -26,5 +26,7 @@
                 "ID": "\"AWS_ACCOUNT_ID\"=>0000-0000-0000"
             }
         }
-    ]
+    ],
+    "sourceContent": "\"AWS_ACCOUNT_ID\"=>0000-0000-0000\n",
+    "sourceContentType": "text"
 }

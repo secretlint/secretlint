@@ -26,5 +26,7 @@
                 "TOKEN": "111111aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
             }
         }
-    ]
+    ],
+    "sourceContent": "//npm.pkg.github.com/:_authToken=111111aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n@example:registry=\"https://npm.pkg.github.com\"\n",
+    "sourceContentType": "text"
 }

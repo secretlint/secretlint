@@ -27,5 +27,7 @@
                 "CREDENTIAL": "https://user:pass@example.com"
             }
         }
-    ]
+    ],
+    "sourceContent": "URL: https://user:pass@example.com\n",
+    "sourceContentType": "text"
 }

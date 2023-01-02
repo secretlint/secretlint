@@ -101,5 +101,7 @@
                 "KEY": "shppa_7jqbg9cupMkZRxJKXWz3v8BvS8QBa7hMdJfAex"
             }
         }
-    ]
+    ],
+    "sourceContent": "// Source: https://shopify.dev/changelog/app-secret-key-length-has-increased\n// for app secret keys\nshpss_QlRSJy5AXX1cILNjVatTsEIhFxuPF5ex\n\n// Source: https://shopify.dev/changelog/length-of-the-shopify-access-token-is-increasing\n// for public apps\nshpat_r8TRc9ZXAvcVvcrmtr7qoVw69WeeY1ex\n\n// for custom apps\nshpca_7jqbg9cupMkZRxJKXWz3v8BvS8QBa7hMdJfAex\n\n// for legacy private apps\nshppa_7jqbg9cupMkZRxJKXWz3v8BvS8QBa7hMdJfAex\n",
+    "sourceContentType": "text"
 }

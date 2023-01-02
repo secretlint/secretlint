@@ -1,4 +1,6 @@
 {
     "filePath": "[SNAPSHOT]/options.allows/input",
-    "messages": []
+    "messages": [],
+    "sourceContent": "AWS_SECRET_ACCESS_KEY = wJalrXUtnFEMI/K7MDENG/bPxRfiCYSECRETSKEY\n",
+    "sourceContentType": "text"
 }

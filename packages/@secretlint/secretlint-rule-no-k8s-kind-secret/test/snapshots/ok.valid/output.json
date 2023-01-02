@@ -1,4 +1,6 @@
 {
     "filePath": "[SNAPSHOT]/ok.valid/input.yaml",
-    "messages": []
+    "messages": [],
+    "sourceContent": "apiVersion: v1\nkind: Service\nmetadata:\n  name: my-nginx-svc\n  labels:\n    app: nginx\nspec:\n  type: LoadBalancer\n  ports:\n    - port: 80\n  selector:\n    app: nginx\n---\napiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: my-nginx\n  labels:\n    app: nginx\nspec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: nginx\n  template:\n    metadata:\n      labels:\n        app: nginx\n    spec:\n      containers:\n        - name: nginx\n          image: nginx:1.14.2\n          ports:\n            - containerPort: 80\n",
+    "sourceContentType": "text"
 }

@@ -3,6 +3,8 @@
     "stdout": [
         {
             "filePath": "[SNAPSHOT]/--format=json/input.txt",
+            "sourceContent": "THIS IS SECRET DATA!!\n",
+            "sourceContentType": "text",
             "messages": [
                 {
                     "message": "found secret: SECRET",

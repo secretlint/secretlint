@@ -4,6 +4,8 @@ import path from "path";
 export const results: SecretLintCoreResult[] = [
     {
         filePath: path.join(__dirname, "input.txt"),
+        sourceContent: "THIS IS SECRET SOURCE\n",
+        sourceContentType: "text",
         messages: [
             {
                 data: {
@@ -73,6 +75,8 @@ export const results: SecretLintCoreResult[] = [
     },
     {
         filePath: path.join(__dirname, "input.no-secret.txt"),
+        sourceContent: "THIS IS PUBLIC SOURCE\n",
+        sourceContentType: "text",
         messages: [],
     },
 ];

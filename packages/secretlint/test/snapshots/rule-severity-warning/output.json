@@ -3,6 +3,8 @@
     "stdout": [
         {
             "filePath": "[SNAPSHOT]/rule-severity-warning/input.txt",
+            "sourceContent": "THIS IS SECRET DATA! BUT IT IS WARNING\n",
+            "sourceContentType": "text",
             "messages": [
                 {
                     "message": "found secret: SECRET",

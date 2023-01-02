@@ -101,5 +101,7 @@
                 "TOKEN": "xoxa-23984754863-2348975623114"
             }
         }
-    ]
+    ],
+    "sourceContent": "Examples https://docs.cribl.io/docs/regexesyml\n\nxoxa-23984754863-2348975623111\ntoken=xoxb-23984754863-2348975623112\ntoken:xoxo-23984754863-2348975623113\ntoken=\"xoxa-23984754863-2348975623114\"\n",
+    "sourceContentType": "text"
 }

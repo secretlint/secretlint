@@ -1,4 +1,6 @@
 {
     "filePath": "[SNAPSHOT]/ok.valid-url/input.txt",
-    "messages": []
+    "messages": [],
+    "sourceContent": "https://example.com is good\n",
+    "sourceContentType": "text"
 }

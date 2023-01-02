@@ -1,4 +1,6 @@
 {
     "filePath": "[SNAPSHOT]/ok._authToken_env/.npmrc",
-    "messages": []
+    "messages": [],
+    "sourceContent": "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}\n@example:registry=\"https://npm.pkg.github.com\"\n",
+    "sourceContentType": "text"
 }

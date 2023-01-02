@@ -51,5 +51,7 @@
                 "URL": "https://hooks.slack.com/services/T11111AA/BAAAA111A/qKirRWalryBGqKirRWalryBG"
             }
         }
-    ]
+    ],
+    "sourceContent": "https://hooks.slack.com/services/TXXXXX/BXXXXX/XXXXXXXXXX\n\nTreat https://hooks.slack.com/services/T11111AA/BAAAA111A/qKirRWalryBGqKirRWalryBG as secret.\n",
+    "sourceContentType": "text"
 }

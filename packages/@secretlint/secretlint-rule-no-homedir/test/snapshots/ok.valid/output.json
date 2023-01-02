@@ -1,4 +1,6 @@
 {
     "filePath": "[SNAPSHOT]/ok.valid/input.txt",
-    "messages": []
+    "messages": [],
+    "sourceContent": "/path/to/dir\nIt is not path: ~Users~exampleuser\nIt is not homedir: /Users/to/dir/exampleuser\n",
+    "sourceContentType": "text"
 }

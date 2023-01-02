@@ -1,4 +1,6 @@
 {
     "filePath": "[SNAPSHOT]/ok.valid-json/input.json",
-    "messages": []
+    "messages": [],
+    "sourceContent": "{\n  \"private_key_id\": \"DUMMY\",\n  \"private_key\": \"DUMMY\"\n}\n",
+    "sourceContentType": "text"
 }

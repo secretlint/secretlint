@@ -5,7 +5,7 @@ import {
     SecretLintRuleCreator,
     SecretLintRuleCreatorOptions,
 } from "./SecretLintRule";
-import { SecretLintSourceNodeLocation } from "./SecretLintSource";
+import { SecretLintRawSource, SecretLintSourceNodeLocation } from "./SecretLintSource";
 import { SecretLintRulePresetCreator, SecretLintRulePresetCreatorOptions } from "./SecretLintRulePreset";
 import { SecretLintRuleSeverityLevel } from "./SecretLintRuleSeverityLevel";
 import { SecretlintCoreSharedOptions } from "./SecretlintCoreSharedOptions";
@@ -87,6 +87,9 @@ export type SecretLintCoreConfig = {
 
 export type SecretLintCoreResult = {
     filePath: string;
+    // binary content always be undefined
+    sourceContent: string | undefined;
+    sourceContentType: SecretLintRawSource["contentType"];
     messages: SecretLintCoreResultMessage[];
 };
 export type SecretLintCoreResultMessage = {
