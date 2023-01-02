@@ -58,7 +58,7 @@ For more details, please see [secretlint's Dockerfile](./publish/docker).
 
 ### Using Node.js
 
-**Prerequisites:**  Require [Node.js 14+](https://nodejs.org/).
+**Prerequisites:**  Require [Node.js 16+](https://nodejs.org/).
 
 Secretlint is written by JavaScript.
 You can install Secretlint using [npm](https://www.npmjs.com/):
