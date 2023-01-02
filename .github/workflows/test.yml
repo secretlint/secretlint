@@ -21,11 +21,11 @@ jobs:
 
   test:
     name: "Test on Node.js ${{ matrix.node-version }} OS: ${{matrix.os}}"
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ macos-latest, windows-latest, ubuntu-18.04 ]
-        node-version: [ 14, 16 ]
+        os: [ macos-latest, windows-latest, ubuntu-latest ]
+        node-version: [ 16, 18 ]
     steps:
       - name: checkout
         uses: actions/checkout@v3

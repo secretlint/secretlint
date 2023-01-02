@@ -29,7 +29,7 @@ search_for_python() {
                 if [ ! -z "$candidate_path" ]
                 then
                     if [ -x "$candidate_path/$candidate_python" ]
-                    then 
+                    then
                         printf "$candidate_path/$candidate_python"
                         return
                     fi
