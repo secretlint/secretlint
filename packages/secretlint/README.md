@@ -18,15 +18,32 @@ Install with [npm](https://www.npmjs.com/):
       https://github.com/micromatch/micromatch#matching-features
  
     Options
-      --format formatter name. Default: stylish
-      --output-file output file path that is written of reported result.
-      --no-color disable color of output.
-      --secretlintrc Path to .secretlintrc config file.
-      --secretlintignore Path to .secretlintignore file. Default: .secretlintignore
+      --init             setup config file. Create .secretlintrc.json file from your package.json
+      --format           [String] formatter name. Default: "stylish". Available Formatter: ${getFormatterList()
+          .map((item) => item.name)
+          .join(", ")}
+      --output           [path:String] output file path that is written of reported result.
+      --no-color         disable ANSI-color of output.
+      --no-terminalLink  disable terminalLink of output.
+      --maskSecrets      enable masking of secret values. replace actual secrets with "***".
+      --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
+      --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
+
+    Options for Developer
+      --profile          Enable performance profile. 
+      --secretlintrcJSON [String] a JSON string of .secretlintrc. use JSON string instead of rc file.
+
+    Experimental Options
+      --locale            [String] locale tag for translating message. Default: en
  
     Examples
+      $ secretlint ./README.md
+      # glob pattern should be wrapped with double quote
       $ secretlint "**/*"
       $ secretlint "source/**/*.ini"
+      # found secrets and mask the secrets
+      $ secretlint .zsh_history --format=mask-result --output=.zsh_history
+
 
 
 ## Changelog
