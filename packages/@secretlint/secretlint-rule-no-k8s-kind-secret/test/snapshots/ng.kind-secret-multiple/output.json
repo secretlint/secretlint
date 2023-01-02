@@ -1,4 +1,6 @@
 {
     "filePath": "[SNAPSHOT]/ng.kind-secret-multiple/input.yml",
-    "messages": []
+    "messages": [],
+    "sourceContent": "apiVersion: v1\nkind: Service\nmetadata:\n  name: my-nginx-svc\n  labels:\n    app: nginx\nspec:\n  type: LoadBalancer\n  ports:\n    - port: 80\n  selector:\n    app: nginx\n---\napiVersion: v1\nkind: Secret\nmetadata:\n  name: mysecret\ntype: Opaque\ndata:\n  username: YWRtaW4=\n  password: MWYyZDFlMmU2N2Rm\n",
+    "sourceContentType": "text"
 }

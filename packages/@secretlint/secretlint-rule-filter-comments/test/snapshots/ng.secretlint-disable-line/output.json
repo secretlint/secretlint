@@ -26,5 +26,7 @@
                 "CREDENTIAL": "SECRET B"
             }
         }
-    ]
+    ],
+    "sourceContent": "THIS IS SECRET A // secretlint-disable-line\nTHIS IS SECRET B\n",
+    "sourceContentType": "text"
 }

@@ -1,4 +1,6 @@
 {
     "filePath": "[SNAPSHOT]/ok.suffix/.env.example",
-    "messages": []
+    "messages": [],
+    "sourceContent": "FOO=foo\n",
+    "sourceContentType": "text"
 }

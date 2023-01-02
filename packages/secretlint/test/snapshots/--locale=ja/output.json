@@ -3,6 +3,8 @@
     "stdout": [
         {
             "filePath": "[SNAPSHOT]/--locale=ja/input.txt",
+            "sourceContent": "THIS IS SECRET DATA!!\n",
+            "sourceContentType": "text",
             "messages": [
                 {
                     "message": "secret: SECRET がみつかりました",

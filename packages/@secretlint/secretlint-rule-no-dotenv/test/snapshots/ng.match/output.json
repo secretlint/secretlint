@@ -23,5 +23,7 @@
             "messageId": "FOUND_DOTENV_FILE",
             "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-no-dotenv/README.md#FOUND_DOTENV_FILE"
         }
-    ]
+    ],
+    "sourceContent": "FOO=foo\n",
+    "sourceContentType": "text"
 }

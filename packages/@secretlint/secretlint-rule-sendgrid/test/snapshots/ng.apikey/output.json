@@ -51,5 +51,7 @@
                 "KEY": "SG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313-L5528Kewhere"
             }
         }
-    ]
+    ],
+    "sourceContent": "Oh no I'm accidentally committing something that looks like a sendgrid api key\noops SG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313-L5528K\nsomSG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313-L5528Kewhere lost in staging files. This is not a real key by the way.\n",
+    "sourceContentType": "text"
 }

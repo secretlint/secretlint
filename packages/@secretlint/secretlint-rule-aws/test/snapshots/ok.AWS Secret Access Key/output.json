@@ -1,4 +1,6 @@
 {
     "filePath": "[SNAPSHOT]/ok.AWS Secret Access Key/input",
-    "messages": []
+    "messages": [],
+    "sourceContent": "# THIS IS NOT AWS SECRET\nANY_KEY = ZHVtbXkgdGV4dCBkYXRhIGRhdGEgZGF0YQ==\n# This is encrypted\nAWS_SECRET_ACCESS_KEY = R6WCNd0erkAuZyD+Fe8C4IwjpYQtniKqnHAzE7Pk5fPrBRpwOnuYxA==\n",
+    "sourceContentType": "text"
 }

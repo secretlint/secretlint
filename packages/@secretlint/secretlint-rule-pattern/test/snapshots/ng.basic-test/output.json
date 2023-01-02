@@ -26,5 +26,7 @@
                 "CREDENTIAL": "password = Password1$"
             }
         }
-    ]
+    ],
+    "sourceContent": "password = Password1$\n",
+    "sourceContentType": "text"
 }

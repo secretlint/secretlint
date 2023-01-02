@@ -26,5 +26,7 @@
                 "KEY": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYSECRETSKEY"
             }
         }
-    ]
+    ],
+    "sourceContent": "AWS_SECRET_ACCESS_KEY = wJalrXUtnFEMI/K7MDENG/bPxRfiCYSECRETSKEY\n",
+    "sourceContentType": "text"
 }

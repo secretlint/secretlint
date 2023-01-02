@@ -51,5 +51,7 @@
                 "PATH": "¥Users¥exampleuser"
             }
         }
-    ]
+    ],
+    "sourceContent": "Homedir: /Users/exampleuser\nWindows: ¥Users¥exampleuser\n",
+    "sourceContentType": "text"
 }

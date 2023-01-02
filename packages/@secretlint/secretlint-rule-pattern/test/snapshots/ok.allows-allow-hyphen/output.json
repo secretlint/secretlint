@@ -1,4 +1,6 @@
 {
     "filePath": "[SNAPSHOT]/ok.allows-allow-hyphen/input.txt",
-    "messages": []
+    "messages": [],
+    "sourceContent": "foo-bar\n",
+    "sourceContentType": "text"
 }

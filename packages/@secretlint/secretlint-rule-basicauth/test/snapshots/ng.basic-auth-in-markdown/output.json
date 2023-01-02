@@ -76,5 +76,7 @@
                 "CREDENTIAL": "https://user:pass@example.com"
             }
         }
-    ]
+    ],
+    "sourceContent": "- Ja: このhttps://user:pass@example.comはBasic\n- pathname: https://user:pass@example.com/test\n- markdown [url](https://user:pass@example.com)\n",
+    "sourceContentType": "text"
 }

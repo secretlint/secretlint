@@ -26,5 +26,7 @@
                 "CREDENTIAL": "https://user:pass@example.com"
             }
         }
-    ]
+    ],
+    "sourceContent": "This URL: https://user:pass@example.com includes credential.\n",
+    "sourceContentType": "text"
 }

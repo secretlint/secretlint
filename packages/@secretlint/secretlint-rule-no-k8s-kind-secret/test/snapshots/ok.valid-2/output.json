@@ -1,4 +1,6 @@
 {
     "filePath": "[SNAPSHOT]/ok.valid-2/input.yaml",
-    "messages": []
+    "messages": [],
+    "sourceContent": "kind: ServiceAccount\napiVersion: v1\nmetadata:\n  name: ops\n  namespace: ops\n",
+    "sourceContentType": "text"
 }

@@ -26,5 +26,7 @@
                 "ID": "SECRET"
             }
         }
-    ]
+    ],
+    "sourceContent": "THIS IS SECRET.\n",
+    "sourceContentType": "text"
 }

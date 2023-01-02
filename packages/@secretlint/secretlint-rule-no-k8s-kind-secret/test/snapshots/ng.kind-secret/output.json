@@ -1,4 +1,6 @@
 {
     "filePath": "[SNAPSHOT]/ng.kind-secret/input.yml",
-    "messages": []
+    "messages": [],
+    "sourceContent": "apiVersion: v1\nkind: Secret\nmetadata:\n  name: mysecret\ntype: Opaque\ndata:\n  username: YWRtaW4=\n  password: MWYyZDFlMmU2N2Rm\n",
+    "sourceContentType": "text"
 }
