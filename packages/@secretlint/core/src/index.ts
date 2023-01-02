@@ -101,6 +101,9 @@ export const lintSource = ({ source, options }: SecretLintSourceOptions): Promis
         .then(() => {
             return {
                 filePath: source.filePath,
+                // binary content should be skipped
+                sourceContent: source.contentType === "text" ? source.content : undefined,
+                sourceContentType: source.contentType,
                 messages: cleanupMessages({
                     reportedMessages,
                     ignoredMessages,
