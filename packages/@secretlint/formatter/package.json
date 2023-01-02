@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/formatter",
-    "version": "5.3.0",
+    "version": "6.0.0",
     "description": "A formatter collection for Secretlint.",
     "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/formatter/",
     "bugs": {
@@ -38,7 +38,7 @@
         "tabWidth": 4
     },
     "dependencies": {
-        "@secretlint/types": "^5.3.0",
+        "@secretlint/types": "^6.0.0",
         "@textlint/linter-formatter": "^12.2.4",
         "@textlint/types": "^12.2.3",
         "chalk": "^4.1.2",
