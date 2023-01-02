@@ -98,7 +98,7 @@ It is also possible to install Secretlint globally using `npm install --global`.
     
       Options
         --init             setup config file. Create .secretlintrc.json file from your package.json
-        --format           [String] formatter name. Default: "stylish". Available Formatter: checkstyle, compact, jslint-xml, json, junit, pretty-error, stylish, table, tap, unix
+        --format           [String] formatter name. Default: "stylish". Available Formatter: checkstyle, compact, jslint-xml, json, junit, pretty-error, stylish, table, tap, unix, mask-result
         --output           [path:String] output file path that is written of reported result.
         --no-color         disable ANSI-color of output.
         --no-terminalLink  disable terminalLink of output.
@@ -118,6 +118,8 @@ It is also possible to install Secretlint globally using `npm install --global`.
         # glob pattern should be wrapped with double quote
         $ secretlint "**/*"
         $ secretlint "source/**/*.ini"
+        # found secrets and mask the secrets
+        $ secretlint .zsh_history --format=mask-result --output=.zsh_history
 
 ## Configuration
 
@@ -257,6 +259,28 @@ THIS IS SECRET, BUT IT WILL BE IGNORED
 ```
 
 For more details, please see [Configuring Secretlint](./docs/configuration.md).
+
+## Use Cases
+
+### Hide secrets in lint error message
+
+Secretlint support `--maskSecrets` option that mask secrets in lint error message.
+It is useful that you want to hide secrets in CI logs.
+
+```bash
+$ secretlint --maskSecrets "**/*"
+```
+
+### Fix secrets
+
+Secretlint can not fix the secrets automatically.
+However, It is useful that `--format=mask-result` mask the secrets of input file.
+
+For example, you can mask the secrets of `.zsh_history` file and overwrite it.
+
+```bash
+$ secretlint .zsh_history --format=mask-result --output=.zsh_history
+```
 
 ## Rule Packages
 

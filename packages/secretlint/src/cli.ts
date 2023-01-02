@@ -38,6 +38,8 @@ export const cli = meow(
       # glob pattern should be wrapped with double quote
       $ secretlint "**/*"
       $ secretlint "source/**/*.ini"
+      # found secrets and mask the secrets
+      $ secretlint .zsh_history --format=mask-result --output=.zsh_history
 `,
     {
         flags: {
