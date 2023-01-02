@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1672669291044,
+  "lastUpdate": 1672670400630,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -14286,6 +14286,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.61,
             "range": "±1.75%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "41898282+github-actions[bot]@users.noreply.github.com",
+            "name": "github-actions[bot]",
+            "username": "github-actions[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "67f291f3857b462d2b998d00c26d3c58a26c0d72",
+          "message": "chore(release): 6.0.1 (#366)\n\nCo-authored-by: azu <azu@users.noreply.github.com>",
+          "timestamp": "2023-01-02T23:35:14+09:00",
+          "tree_id": "ebb5526e10a296d8f62d77317a73ad24211d88b2",
+          "url": "https://github.com/secretlint/secretlint/commit/67f291f3857b462d2b998d00c26d3c58a26c0d72"
+        },
+        "date": 1672670398976,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.54,
+            "range": "±2.28%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.49,
+            "range": "±1.79%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
