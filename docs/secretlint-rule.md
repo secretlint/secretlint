@@ -178,6 +178,8 @@ The `output.json` for `ng.secret/input.txt` is following json.
 ```json
 {
     "filePath": "[SNAPSHOT]/ng.secret/input.txt",
+    "sourceContent": "THIS IS SECRET.",
+    "sourceContentType": "text",
     "messages": [
         {
             "message": "found secret: SECRET",
