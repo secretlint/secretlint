@@ -75,7 +75,7 @@ export const results: SecretLintCoreResult[] = [
     },
     {
         filePath: path.join(__dirname, "input.no-secret.txt"),
-        sourceContent: "THIS IS SECRET SOURCE\n",
+        sourceContent: "THIS IS PUBLIC SOURCE\n",
         sourceContentType: "text",
         messages: [],
     },
