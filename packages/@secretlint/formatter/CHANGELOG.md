@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.1](https://github.com/secretlint/secretlint/compare/v5.3.0...v6.0.1) (2023-01-02)
+
+### Bug Fixes
+
+* **deps:** update dependency @textlint/linter-formatter to ^12.2.4 ([e26d9dc](https://github.com/secretlint/secretlint/commit/e26d9dc91c77eafe4db30f9a1e66b8ef3aacb912))
+* **deps:** update dependency table to ^6.8.1 ([489f457](https://github.com/secretlint/secretlint/commit/489f457ec0feddefdced1ac5dd36c1acf306c84f))
+* **deps:** update patch updates to ^12.2.3 ([78aa14f](https://github.com/secretlint/secretlint/commit/78aa14fa970155b5aaad15555fb79dfcd6a314b0))
+
+### Features
+
+* **formatter:** add --format=mask-result ([#359](https://github.com/secretlint/secretlint/issues/359)) ([eb49c31](https://github.com/secretlint/secretlint/commit/eb49c314ba45048a6b2d40e90fa4d0f5f82ca1d0))
+
 # [6.0.0](https://github.com/secretlint/secretlint/compare/v5.3.0...v6.0.0) (2023-01-02)
 
 ### Bug Fixes
