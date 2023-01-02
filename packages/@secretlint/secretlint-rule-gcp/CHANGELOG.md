@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.4.0](https://github.com/secretlint/secretlint/compare/v5.3.0...v5.4.0) (2023-01-02)
+
+### Features
+
+* **formatter:** add --format=mask-result ([#359](https://github.com/secretlint/secretlint/issues/359)) ([eb49c31](https://github.com/secretlint/secretlint/commit/eb49c314ba45048a6b2d40e90fa4d0f5f82ca1d0))
+
 # [5.3.0](https://github.com/secretlint/secretlint/compare/v5.2.4...v5.3.0) (2022-10-30)
 
 **Note:** Version bump only for package @secretlint/secretlint-rule-gcp
