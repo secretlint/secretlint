@@ -36,7 +36,6 @@ export interface SecretLintFormatterConfig {
     terminalLink?: boolean;
 }
 
-// type SecretlintResultExtension = Pick<SecretLintCoreResult, "sourceContent" | "sourceContentType">;
 /**
  * Convert secretlint result to textlint result for formatter
  */
