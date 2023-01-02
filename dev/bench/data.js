@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1672667809292,
+  "lastUpdate": 1672668277467,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -14134,6 +14134,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.5,
             "range": "±1.84%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "4cf620f0f5c70e7ba9f94fc7fdfbc3a26f43a4ff",
+          "message": "docs: add \"sourceContent\" and \"sourceContentType\" to message (#362)\n\nBREAKING CHANGE: you may need to update snapshots via @secretlint/tester",
+          "timestamp": "2023-01-02T23:00:16+09:00",
+          "tree_id": "67f6d86aa3e028bd9fee9e918fc69b74adaf55cb",
+          "url": "https://github.com/secretlint/secretlint/commit/4cf620f0f5c70e7ba9f94fc7fdfbc3a26f43a4ff"
+        },
+        "date": 1672668275687,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.96,
+            "range": "±0.51%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.69,
+            "range": "±0.76%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
