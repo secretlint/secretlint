@@ -445,7 +445,7 @@ permissions:
 jobs:
   test:
     name: "Secretlint"
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v3
