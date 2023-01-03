@@ -51,7 +51,7 @@
   "devDependencies": {
     "@lerna-lite/cli": "^1.13.0",
     "lint-staged": "^13.1.0",
-    "prettier": "^2.7.1",
+    "prettier": "^2.8.1",
     "turbo": "^1.6.3"
   },
   "prettier": {
