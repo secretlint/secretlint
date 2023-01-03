@@ -36,12 +36,20 @@ export const parseComments = (source: SecretLintSourceCode) => {
 
 /**
  * Parses a config of values separated by comma.
+ *
+ * secretlint-disable a,b,c => ["a", "b", "c"]
+ * secretlint-disable -- comment　=> []
  */
 export function parseComment(options?: string): string[] {
+    if (!options) {
+        return [];
+    }
+    const commentStart = options.indexOf("--");
+    const ruleIdString = commentStart === -1 ? options : options.slice(0, commentStart);
     return (
-        options
-            ?.split(/\s{0, 5},\s{0,5}/)
-            .map((arg) => arg.split(/\s-{2,}\s/u)[0].trim())
+        ruleIdString
+            .split(/,/)
+            .map((arg) => arg.trim())
             .filter((arg) => arg !== "") ?? []
     );
 }
