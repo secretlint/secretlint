@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.2](https://github.com/secretlint/secretlint/compare/v6.0.1...v6.0.2) (2023-01-03)
+
+### Bug Fixes
+
+* **filter-comment:** fix secretlint-disable comment parsing ([#372](https://github.com/secretlint/secretlint/issues/372)) ([df75539](https://github.com/secretlint/secretlint/commit/df755395280f6314624e61b4763067d55f5cf951))
+
 ## [6.0.1](https://github.com/secretlint/secretlint/compare/v5.3.0...v6.0.1) (2023-01-02)
 
 ### Bug Fixes

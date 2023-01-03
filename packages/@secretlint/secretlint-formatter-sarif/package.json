@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-formatter-sarif",
-  "version": "6.0.1",
+  "version": "6.0.2",
   "description": "A secretlint formatter for SARIF format",
   "keywords": [
     "sarif",
@@ -50,7 +50,7 @@
     "node-sarif-builder": "^2.0.3"
   },
   "devDependencies": {
-    "@secretlint/types": "^6.0.1",
+    "@secretlint/types": "^6.0.2",
     "@types/mocha": "^10.0.1",
     "@types/node": "^18.11.18",
     "mocha": "^10.2.0",
