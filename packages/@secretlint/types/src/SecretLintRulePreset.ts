@@ -5,7 +5,7 @@ import { SecretlintCoreSharedOptions } from "./SecretlintCoreSharedOptions";
 
 export type SecretLintRulePresetContext = {
     sharedOptions: SecretlintCoreSharedOptions;
-    registerRule<Options = SecretLintRuleCreatorOptions>(
+    registerRule<Options extends SecretLintRuleCreatorOptions = SecretLintRuleCreatorOptions>(
         rule: SecretLintRuleCreator<Options>,
         defaultValue?: Omit<SecretLintCoreConfigRule<Options>, "id" | "rule">
     ): void;

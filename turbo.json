@@ -12,20 +12,24 @@
     },
     "test": {
       "dependsOn": [
-        "build",
-        "$UPDATE_SNAPSHOT"
+        "build"
       ],
       "outputs": [
         "snapshots/**"
+      ],
+      "env": [
+        "UPDATE_SNAPSHOT"
       ]
     },
     "updateSnapshot": {
       "dependsOn": [
-        "build",
-        "$UPDATE_SNAPSHOT"
+        "build"
       ],
       "outputs": [
         "snapshots/**"
+      ],
+      "env": [
+        "UPDATE_SNAPSHOT"
       ]
     },
     "secretlint": {
