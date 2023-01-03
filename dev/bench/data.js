@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1672696516753,
+  "lastUpdate": 1672708351436,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -14438,6 +14438,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±1.66%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c3418997a21eb78541128934828901e990954223",
+          "message": "chore(deps): update dependencies (#370)\n\n* chore(deps): update deps\r\n\r\n* refactor: update rollup and typescript\r\n\r\n* chore(turborepo): migrate env",
+          "timestamp": "2023-01-03T10:09:02+09:00",
+          "tree_id": "701903cfa163f8b5b3c0468e58f59b1b248ea748",
+          "url": "https://github.com/secretlint/secretlint/commit/c3418997a21eb78541128934828901e990954223"
+        },
+        "date": 1672708350587,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.94,
+            "range": "±0.57%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.68,
+            "range": "±2.55%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
