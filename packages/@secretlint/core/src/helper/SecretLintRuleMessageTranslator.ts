@@ -52,7 +52,7 @@ export const createTranslator = <T extends SecretLintRuleLocalizeMessages>(
         defaultLocale: SecretLintRuleLocaleTag;
     }
 ) => {
-    return <MessageId extends keyof T, Props = T[MessageId]>(
+    return <MessageId extends keyof T, Props extends SecretLintRuleLocalizeMessageProps = T[MessageId]>(
         messageId: MessageId,
         props?: Props
     ): SecretLintRuleMessageTranslateResult<Props> => {
