@@ -2,11 +2,13 @@
 
 - https://hub.docker.com/r/secretlint/secretlint
 
-## Rules
+## Built-in
 
-This Image has built-in rules:
+This Image has built-in packages:
 
 - [@secretlint/secretlint-rule-preset-recommend](https://www.npmjs.com/package/@secretlint/secretlint-rule-preset-recommend) 
+- [@secretlint/secretlint-rule-pattern](https://www.npmjs.com/package/@secretlint/secretlint-rule-pattern)
+- [@secretlint/secretlint-formatter-sarif](https://www.npmjs.com/package/@secretlint/secretlint-formatter-sarif)
 
 ## Installation
 
