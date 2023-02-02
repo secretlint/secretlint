@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1675298355295,
+  "lastUpdate": 1675299585066,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -15046,6 +15046,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.7,
             "range": "±1.24%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "61628901473ec6a123b0c32ab1437bcaf28e7238",
+          "message": "CI: use new release flow based on GitHub Release (#390)\n\n* CI: use new release flow based on GitHub Releases\r\n\r\nReference: https://github.com/azu/monorepo-github-releases\r\n\r\n* chore: Update release.yml",
+          "timestamp": "2023-02-02T09:56:01+09:00",
+          "tree_id": "081c9b6d4ae32e45de469eb00f93462e6f4fc89b",
+          "url": "https://github.com/secretlint/secretlint/commit/61628901473ec6a123b0c32ab1437bcaf28e7238"
+        },
+        "date": 1675299584196,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.85,
+            "range": "±0.61%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±1.82%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
