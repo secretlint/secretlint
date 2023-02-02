@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.3](https://github.com/secretlint/secretlint/compare/v6.0.2...v6.0.3) (2023-02-02)
+
+### Bug Fixes
+
+* **deps:** update dependency ajv to ^8.12.0 ([0fda742](https://github.com/secretlint/secretlint/commit/0fda742affefedde6db9e4ea4d3ec5640a78b320))
+* **deps:** update minor updates to ^12.5.0 ([114c990](https://github.com/secretlint/secretlint/commit/114c99059ff4fbe296ad0c8f1e02a2bb848d1d51))
+* **deps:** update patch updates to ^12.5.2 ([cbf11a2](https://github.com/secretlint/secretlint/commit/cbf11a241c5d9ff2415fd7860876eecc2d3f58b3))
+* **deps:** update patch updates to ^12.6.0 ([3a13d69](https://github.com/secretlint/secretlint/commit/3a13d69f7e9a5d651ad364d3a7bb0fb4b821c66b))
+* **deps:** update patch updates to ^12.6.1 ([9b79aa0](https://github.com/secretlint/secretlint/commit/9b79aa0f3bc3eb3b773bcee08cbd8e4279c6d19d))
+
+### Features
+
+* **Dockerfile:** install secretlint-rule-pattern ([#387](https://github.com/secretlint/secretlint/issues/387)) ([b232cb8](https://github.com/secretlint/secretlint/commit/b232cb8233c9ddea0e5673665562debc4464d7cb)), closes [#380](https://github.com/secretlint/secretlint/issues/380)
+
 ## [6.0.2](https://github.com/secretlint/secretlint/compare/v6.0.1...v6.0.2) (2023-01-03)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.3](https://github.com/secretlint/secretlint/compare/v6.0.2...v6.0.3) (2023-02-02)
+
+### Bug Fixes
+
+* **deps:** update dependency ajv to ^8.12.0 ([0fda742](https://github.com/secretlint/secretlint/commit/0fda742affefedde6db9e4ea4d3ec5640a78b320))
+
 ## [6.0.2](https://github.com/secretlint/secretlint/compare/v6.0.1...v6.0.2) (2023-01-03)
 
 **Note:** Version bump only for package @secretlint/config-loader

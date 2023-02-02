@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/config-loader",
-    "version": "6.0.2",
+    "version": "6.0.3",
     "description": "Config loader for secretlint.",
     "keywords": [
         "secretlint",
