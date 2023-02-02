@@ -44,9 +44,9 @@ jobs:
           http_status_code=$(curl -LI $GET_API_URL -o /dev/null -w '%{http_code}\n' -s \
             -H "Authorization: token ${GITHUB_TOKEN}")
           if [ "$http_status_code" -ne "404" ] ; then
-            echo "::set-output name=exists_tag::true"
+            echo "exists_tag=true" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=exists_tag::false"
+            echo "exists_tag=false" >> $GITHUB_OUTPUT
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
