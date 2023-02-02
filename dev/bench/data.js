@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1675281628642,
+  "lastUpdate": 1675298355295,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -15008,6 +15008,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.47,
             "range": "±1.42%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "arvid.bjurklint@hotmail.com",
+            "name": "Arvid Bjurklint",
+            "username": "slarwise"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b232cb8233c9ddea0e5673665562debc4464d7cb",
+          "message": "feat(Dockerfile): install secretlint-rule-pattern (#387)\n\nCloses #380.",
+          "timestamp": "2023-02-02T09:35:49+09:00",
+          "tree_id": "f9c8718a1948007660b73c690ddae554a4ac0128",
+          "url": "https://github.com/secretlint/secretlint/commit/b232cb8233c9ddea0e5673665562debc4464d7cb"
+        },
+        "date": 1675298354330,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.97,
+            "range": "±0.54%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.7,
+            "range": "±1.24%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
