@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1675301115381,
+  "lastUpdate": 1675301185742,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -15236,6 +15236,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.67,
             "range": "±2.50%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "49699333+dependabot[bot]@users.noreply.github.com",
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "0397026d63726ee1d2b557fd4685d43d6f62aa86",
+          "message": "chore(deps): bump http-cache-semantics from 4.1.0 to 4.1.1 (#391)\n\nBumps [http-cache-semantics](https://github.com/kornelski/http-cache-semantics) from 4.1.0 to 4.1.1.\r\n- [Release notes](https://github.com/kornelski/http-cache-semantics/releases)\r\n- [Commits](https://github.com/kornelski/http-cache-semantics/commits)\r\n\r\n---\r\nupdated-dependencies:\r\n- dependency-name: http-cache-semantics\r\n  dependency-type: indirect\r\n...\r\n\r\nSigned-off-by: dependabot[bot] <support@github.com>\r\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2023-02-02T10:22:52+09:00",
+          "tree_id": "a116decce2d2a4b1ffe457877fc1c4f2afd735a8",
+          "url": "https://github.com/secretlint/secretlint/commit/0397026d63726ee1d2b557fd4685d43d6f62aa86"
+        },
+        "date": 1675301184841,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.92,
+            "range": "±0.57%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.59,
+            "range": "±3.16%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
