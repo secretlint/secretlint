@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1675359335350,
+  "lastUpdate": 1675432323765,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -15312,6 +15312,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.5,
             "range": "±1.06%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "bittrance@gmail.com",
+            "name": "Bittrance",
+            "username": "bittrance"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "09d0908cbb23a96f9c649e343032a76489ae80e2",
+          "message": "Simple detection of common Azure and Azure AD secrets (#396)\n\n* Simple detection of common Azure and Azure AD secrets.\r\n\r\n* Azure rule doc improvements.\r\n\r\n* Delete CHANGELOG.md\r\n\r\n---------\r\n\r\nCo-authored-by: azu <azu@users.noreply.github.com>",
+          "timestamp": "2023-02-03T22:47:37+09:00",
+          "tree_id": "ef86ec38298ff84de83857d17365d6a5ffe12c6c",
+          "url": "https://github.com/secretlint/secretlint/commit/09d0908cbb23a96f9c649e343032a76489ae80e2"
+        },
+        "date": 1675432322719,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.53,
+            "range": "±2.22%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.49,
+            "range": "±1.92%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
