@@ -1,0 +1,32 @@
+{
+    "filePath": "[SNAPSHOT]/ng.azure_client_id/input",
+    "messages": [
+        {
+            "message": "found Azure Client ID: dac6fb3d-713c-4555-8a97-4089aa3849be",
+            "range": [
+                0,
+                36
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-azure",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 36
+                }
+            },
+            "severity": "error",
+            "messageId": "AzureClientId",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-azure/README.md#AzureClientId",
+            "data": {
+                "ID": "dac6fb3d-713c-4555-8a97-4089aa3849be"
+            }
+        }
+    ],
+    "sourceContent": "AZURE_CLIENT_ID=dac6fb3d-713c-4555-8a97-4089aa3849be\n",
+    "sourceContentType": "text"
+}

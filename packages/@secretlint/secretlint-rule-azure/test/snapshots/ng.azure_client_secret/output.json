@@ -1,0 +1,32 @@
+{
+    "filePath": "[SNAPSHOT]/ng.azure_client_secret/input",
+    "messages": [
+        {
+            "message": "found Azure Client Secret: ahDzWAqqBHgpAeUBUULuU0gA4p09rt0WDAsUOmFg",
+            "range": [
+                4,
+                44
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-azure",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 4
+                },
+                "end": {
+                    "line": 1,
+                    "column": 44
+                }
+            },
+            "severity": "error",
+            "messageId": "AzureClientSecret",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-azure/README.md#AzureClientSecret",
+            "data": {
+                "SECRET": "ahDzWAqqBHgpAeUBUULuU0gA4p09rt0WDAsUOmFg"
+            }
+        }
+    ],
+    "sourceContent": "var azureClientSecret := \"ahDzWAqqBHgpAeUBUULuU0gA4p09rt0WDAsUOmFg\"\n",
+    "sourceContentType": "text"
+}
