@@ -259,27 +259,24 @@ Secretlint has a continuous benchmark:
 
 ## Release Flow
 
-A Maintainer release new version of secretlint by following way.
+A Maintainer release new version of textlint by following way.
 
-1. Checkout release branch
+1. Create Release PR via GitHub Actions: <https://github.com/secretlint/secretlint/actions/workflows/create-release-pr.yml>
+   - Run workflow with `version` input
+      - You can select new version with semver(patch,minor,major)
+2. [CI] Create Release PR
+   - Update `lerna.json`'s `version` and `packages/*/package.json`'s `version`
+   - Fill the Pull Request body with [Automatically generated release notes](https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes)
+   - e.g. https://github.com/azu/monorepo-github-releases/pull/18
+3. Review the Release PR
+   - You can modify PR body for changelog
+4. Merge the Release PR
+5. [CI] Publish new version to npm and GitHub Release
+   - The release note content is same to PR body
+   - CI copy to release note from PR body when merge the PR
+   - e.g. https://github.com/azu/monorepo-github-releases/releases/tag/v1.6.3
 
-```
-# checkout release branch like "release/2019-10-10"
-git checkout -b "release/$(date '+%Y-%m-%d')"
-```
+> **Warning**
+> If the publishing(Step 5) is failed, you can re-run the workflow.  
+> Or, Open <https://github.com/textlint/secretlint/actions/workflows/publish.yml> and do "Run workflow".
 
-2. Version up and Update CHANGELOG
-
-```
-# bump vesrion and update changelog
-npm run versionup
-## Also, availble npm run versionup:{patch,minor,major}
-# push the changes to release branch
-git push origin HEAD -u
-```
-
-3. Create a Pull Request and Review the release
-    - If you need, write blog posts in website/blog
-4. Merge the Pull Request
-
-Finally, GitHub Actions(CI) publish it as new version automatically.
