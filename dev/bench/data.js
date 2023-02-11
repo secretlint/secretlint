@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1675933409300,
+  "lastUpdate": 1676077559906,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -15578,6 +15578,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.67,
             "range": "±0.73%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "0f3ffc7db1452f99daeab485180f1f0dff4035da",
+          "message": "feat(canary): add \"browser\" build experimental (#405)\n\n* feat(canary): add \"browser\" build\r\n\r\n- polyfill node core packages\r\n- use esm\r\n\r\n* Update yarn.lock\r\n\r\n* Update packages/@secretlint/secretlint-rule-preset-canary/package.json\r\n\r\n* fix: add \"types\" to preset\r\n\r\n* Revert \"fix: add \"types\" to preset\"\r\n\r\nThis reverts commit 585580d79428a27691b0fdfc8c5cd410035fe490.",
+          "timestamp": "2023-02-11T10:02:05+09:00",
+          "tree_id": "3e0e33820d95f954c730a5b3ba9763fb32c80889",
+          "url": "https://github.com/secretlint/secretlint/commit/0f3ffc7db1452f99daeab485180f1f0dff4035da"
+        },
+        "date": 1676077559069,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.84,
+            "range": "±0.50%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±2.77%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
