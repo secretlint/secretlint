@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-preset-recommend",
-    "version": "6.2.1",
+    "version": "6.2.2",
     "description": "Recommended rule preset of secretlint.",
     "keywords": [
         "secretlint",
@@ -45,21 +45,21 @@
         "tabWidth": 4
     },
     "dependencies": {
-        "@secretlint/secretlint-rule-aws": "^6.2.1",
-        "@secretlint/secretlint-rule-basicauth": "^6.2.1",
-        "@secretlint/secretlint-rule-filter-comments": "^6.2.1",
-        "@secretlint/secretlint-rule-gcp": "^6.2.1",
-        "@secretlint/secretlint-rule-github": "^6.2.1",
-        "@secretlint/secretlint-rule-npm": "^6.2.1",
-        "@secretlint/secretlint-rule-privatekey": "^6.2.1",
-        "@secretlint/secretlint-rule-sendgrid": "^6.2.1",
-        "@secretlint/secretlint-rule-slack": "^6.2.1"
+        "@secretlint/secretlint-rule-aws": "^6.2.2",
+        "@secretlint/secretlint-rule-basicauth": "^6.2.2",
+        "@secretlint/secretlint-rule-filter-comments": "^6.2.2",
+        "@secretlint/secretlint-rule-gcp": "^6.2.2",
+        "@secretlint/secretlint-rule-github": "^6.2.2",
+        "@secretlint/secretlint-rule-npm": "^6.2.2",
+        "@secretlint/secretlint-rule-privatekey": "^6.2.2",
+        "@secretlint/secretlint-rule-sendgrid": "^6.2.2",
+        "@secretlint/secretlint-rule-slack": "^6.2.2"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^24.0.1",
         "@rollup/plugin-node-resolve": "^15.0.1",
         "@rollup/plugin-typescript": "^10.0.1",
-        "@secretlint/tester": "^6.2.1",
+        "@secretlint/tester": "^6.2.2",
         "@types/mocha": "^10.0.1",
         "@types/node": "^18.11.18",
         "mocha": "^10.2.0",
