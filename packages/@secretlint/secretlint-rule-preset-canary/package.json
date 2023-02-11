@@ -18,6 +18,7 @@
   "license": "MIT",
   "author": "azu",
   "main": "lib/index.js",
+  "browser": "browser/index.js",
   "types": "lib/index.d.ts",
   "directories": {
     "lib": "lib",
@@ -67,6 +68,7 @@
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
     "rollup": "^3.12.1",
+    "rollup-plugin-polyfill-node": "^0.12.0",
     "ts-node": "^10.9.1",
     "ts-node-test-register": "^10.0.0",
     "typescript": "^4.9.4"
