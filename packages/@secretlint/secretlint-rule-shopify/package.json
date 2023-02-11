@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-shopify",
-  "version": "6.2.0",
+  "version": "6.2.1",
   "description": "A secretlint rule for shopify",
   "keywords": [
     "secretlint",
@@ -46,11 +46,11 @@
     "trailingComma": "none"
   },
   "dependencies": {
-    "@secretlint/types": "^6.2.0",
+    "@secretlint/types": "^6.2.1",
     "@textlint/regexp-string-matcher": "^2.0.2"
   },
   "devDependencies": {
-    "@secretlint/tester": "^6.2.0",
+    "@secretlint/tester": "^6.2.1",
     "@types/mocha": "^10.0.1",
     "@types/node": "^18.11.18",
     "mocha": "^10.2.0",
