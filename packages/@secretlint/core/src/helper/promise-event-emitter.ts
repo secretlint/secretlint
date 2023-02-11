@@ -44,7 +44,7 @@ export class EventEmitter<T extends Listener = Listener> {
         return this.#listeners.get(type)?.size ?? 0;
     }
 
-    listeners(type: string): T[] {
+    listeners(type: string | Symbol): T[] {
         return Array.from(this.#listeners.get(type) ?? []);
     }
 }
