@@ -159,3 +159,4 @@ fabric.properties
 lib/
 module/
 dist/
+browser/
