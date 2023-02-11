@@ -40,7 +40,7 @@ export class EventEmitter<T extends Listener = Listener> {
         this.#listeners.clear();
     }
 
-    listenerCount(type: string): number {
+    listenerCount(type: string | Symbol): number {
         return this.#listeners.get(type)?.size ?? 0;
     }
 
@@ -56,15 +56,15 @@ export class PromiseEventEmitter {
         this.events = new EventEmitter();
     }
 
-    listenerCount(type: string): number {
+    listenerCount(type: string | Symbol): number {
         return this.events.listenerCount(type);
     }
 
-    on(event: string, listener: (...args: any[]) => Promise<void> | void) {
+    on(event: string | Symbol, listener: (...args: any[]) => Promise<void> | void) {
         return this.events.on(event, listener);
     }
 
-    emit(event: string, ...args: any[]): Promise<void[]> {
+    emit(event: string | Symbol, ...args: any[]): Promise<void[]> {
         const promises: (Promise<void> | void)[] = [];
 
         this.events.listeners(event).forEach((listener) => {
