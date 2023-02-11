@@ -1,4 +1,3 @@
-import * as assert from "assert";
 import StructuredSource from "structured-source";
 import {
     SecretLintSourceCode,
@@ -6,6 +5,7 @@ import {
     SecretLintSourceNodePosition,
     SecretLintSourceNodeRange,
 } from "@secretlint/types";
+import { invariant } from "./helper/invariant";
 
 /**
  * This class represent of source code.
@@ -29,7 +29,7 @@ export class SecretLintSourceCodeImpl implements SecretLintSourceCode {
         filePath: string;
         contentType: "binary" | "text" | "unknown";
     }) {
-        assert.ok(ext || filePath, "should be set either of fileExt or filePath.");
+        invariant(ext || filePath, "should be set either of fileExt or filePath.");
         this.hasBOM = content.charCodeAt(0) === 0xfeff;
         this.content = this.hasBOM ? content.slice(1) : content;
         this.structuredSource = new StructuredSource(this.content);

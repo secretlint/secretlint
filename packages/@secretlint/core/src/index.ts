@@ -16,8 +16,8 @@ import { createRunningEvents, RunningEvents } from "./RunningEvents";
 import { secretLintProfiler } from "@secretlint/profiler";
 import { createRulePresetContext } from "./RulePresetContext";
 import { cleanupMessages } from "./messages";
-
-const debug = require("debug")("@secretlint/core");
+import debug0 from "debug";
+const debug = debug0("@secretlint/core");
 export type SecretLintSourceOptions = {
     /**
      * Lint target source

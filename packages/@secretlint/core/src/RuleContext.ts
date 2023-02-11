@@ -1,4 +1,4 @@
-import { EventEmitter } from "events";
+import { EventEmitter } from "./helper/promise-event-emitter";
 import {
     SecretLintCoreIgnoreDescriptor,
     SecretLintCoreIgnoreMessage,
