@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1676079668877,
+  "lastUpdate": 1676081312642,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -15730,6 +15730,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±0.76%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "9d8b465ef6b7e6c899033f25779cc51b4227a795",
+          "message": "refactor(core): remove \"events\" and \"assert\" from core (#410)\n\n* refactor(core): remove \"events\" from core\r\n\r\nIt does not exists in browser\r\n\r\n* fix: support symbol\r\n\r\n* fix: support symbol\r\n\r\n* refactor(core): remove \"events\" from core\r\n\r\nIt does not exists in browser\r\n\r\n* fix: remove \"assert\"",
+          "timestamp": "2023-02-11T11:04:51+09:00",
+          "tree_id": "55955b1c43180681120715ed0f12494e2d636dea",
+          "url": "https://github.com/secretlint/secretlint/commit/9d8b465ef6b7e6c899033f25779cc51b4227a795"
+        },
+        "date": 1676081311834,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.87,
+            "range": "±0.52%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.6,
+            "range": "±1.28%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
