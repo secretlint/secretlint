@@ -4782,7 +4782,7 @@ rollup-plugin-polyfill-node@^0.12.0:
   dependencies:
     "@rollup/plugin-inject" "^5.0.1"
 
-rollup@^3.14.0:
+rollup@^3.15.0:
   version "3.15.0"
   resolved "https://registry.yarnpkg.com/rollup/-/rollup-3.15.0.tgz#6f4105e8c4b8145229657b74ad660b02fbfacc05"
   integrity sha512-F9hrCAhnp5/zx/7HYmftvsNBkMfLfk/dXUh73hPSM2E3CRgap65orDNJbLetoiUFwSAk6iHPLvBrZ5iHYvzqsg==
