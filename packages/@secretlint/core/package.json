@@ -48,7 +48,7 @@
     "devDependencies": {
         "@types/debug": "^4.1.7",
         "@types/mocha": "^10.0.1",
-        "@types/node": "^18.14.1",
+        "@types/node": "^18.14.2",
         "@types/structured-source": "^3.0.0",
         "assert-json-equal": "^1.0.1",
         "mocha": "^10.2.0",
