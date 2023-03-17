@@ -5560,10 +5560,10 @@ ts-node@^10.9.1:
     v8-compile-cache-lib "^3.0.1"
     yn "3.1.1"
 
-tsd@^0.26.1:
-  version "0.26.1"
-  resolved "https://registry.yarnpkg.com/tsd/-/tsd-0.26.1.tgz#e54f7b1fbc456c0d49abce8c9a0c6587c779c89f"
-  integrity sha512-HbYaRQqL7imva6ZbSE/7KSIPN/dhwyoLIwPfbjyE7nwWqjkLUTwvyvyhhOUuMLOKWMo4mIx66KyqlTpEqNngdA==
+tsd@^0.27.0:
+  version "0.27.0"
+  resolved "https://registry.yarnpkg.com/tsd/-/tsd-0.27.0.tgz#5f02d6e75cac36d9db7fe4e52109284ace1268b8"
+  integrity sha512-G/2Sejk9N21TcuWlHwrvVWwIyIl2mpECFPbnJvFMsFN1xQCIbi2QnvG4fkw3VitFhNF6dy38cXxKJ8Paq8kOGQ==
   dependencies:
     "@tsd/typescript" "~4.9.5"
     eslint-formatter-pretty "^4.1.0"
