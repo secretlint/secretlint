@@ -94,16 +94,16 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@lerna-lite/cli@^1.16.0":
-  version "1.16.0"
-  resolved "https://registry.yarnpkg.com/@lerna-lite/cli/-/cli-1.16.0.tgz#d804ee61c29aac7ce2b698fde1206e811027a2e5"
-  integrity sha512-9Z8KIMpxGfw4uvvqPumSy9shftdfXgV+gQtiYqjBDL1dPWzcFCWVAym1VQlCV3NeFm8uCzpsXUHST9Siao4bIA==
+"@lerna-lite/cli@^1.16.1":
+  version "1.17.0"
+  resolved "https://registry.yarnpkg.com/@lerna-lite/cli/-/cli-1.17.0.tgz#8a717f3300b40001a9f545a4696f621d913215f3"
+  integrity sha512-kNqrEtUs1oIDHgOBGwHkRZGl/E7VTW+2wX89akQtpmfW7oV6qPdpjBirN9Hv9cVYW7UJzE2Hrk273WVZGoK7Jw==
   dependencies:
-    "@lerna-lite/core" "1.16.0"
-    "@lerna-lite/init" "1.16.0"
-    "@lerna-lite/listable" "1.16.0"
-    "@lerna-lite/publish" "1.16.0"
-    "@lerna-lite/version" "1.16.0"
+    "@lerna-lite/core" "1.17.0"
+    "@lerna-lite/init" "1.17.0"
+    "@lerna-lite/listable" "1.17.0"
+    "@lerna-lite/publish" "1.17.0"
+    "@lerna-lite/version" "1.17.0"
     dedent "^0.7.0"
     dotenv "^16.0.3"
     import-local "^3.1.0"
@@ -112,10 +112,10 @@
     path "^0.12.7"
     yargs "^17.7.1"
 
-"@lerna-lite/core@1.16.0":
-  version "1.16.0"
-  resolved "https://registry.yarnpkg.com/@lerna-lite/core/-/core-1.16.0.tgz#82eff9633704eccbec112f02fdaa70b2aa61fe8c"
-  integrity sha512-xWIWNe3XbkggsIdkQkjJNUuFHriKHTLvT43Axw1PiAQ9G+OErlcp6JzGQwhMamOlckXGbSqfpVbVP4OyLoF+wg==
+"@lerna-lite/core@1.17.0":
+  version "1.17.0"
+  resolved "https://registry.yarnpkg.com/@lerna-lite/core/-/core-1.17.0.tgz#d77cc0bebf9bcd1f94b5270d4dbb97242a9fc8d1"
+  integrity sha512-lxiEHXOzDF8RYFWjc8IqIr6G4w0JUB174SJD/h2DI/eXN9wjv8tEZjzhOkTTSs45Aoe1qY7BbaeApEulpoYmcA==
   dependencies:
     "@npmcli/run-script" "^6.0.0"
     chalk "^4.1.2"
@@ -144,34 +144,34 @@
     write-json-file "^4.3.0"
     write-pkg "^4.0.0"
 
-"@lerna-lite/init@1.16.0":
-  version "1.16.0"
-  resolved "https://registry.yarnpkg.com/@lerna-lite/init/-/init-1.16.0.tgz#a90362a465f92f7bae8baeaef7f4852aa096e04c"
-  integrity sha512-6nSFJYebMoMlJLCHZ5L5rfhHbbu0KdBw9gAzKrJFXUd5htOzGRmgnv/zCoF0fuVOCWCZHsu5WcviQZs25FSzow==
+"@lerna-lite/init@1.17.0":
+  version "1.17.0"
+  resolved "https://registry.yarnpkg.com/@lerna-lite/init/-/init-1.17.0.tgz#e8bef9f8b7481b91c04168ec11489cf1d6900e36"
+  integrity sha512-JKRmfOzZ43AIzhE1wU265gbsnMWhjZ54gxYA2twBrWi4RIn+45jXViTgmVHsXfhUeD9XkBKW7Sc9hhdC5HOtZg==
   dependencies:
-    "@lerna-lite/core" "1.16.0"
+    "@lerna-lite/core" "1.17.0"
     fs-extra "^11.1.0"
     p-map "^4.0.0"
     path "^0.12.7"
     write-json-file "^4.3.0"
 
-"@lerna-lite/listable@1.16.0":
-  version "1.16.0"
-  resolved "https://registry.yarnpkg.com/@lerna-lite/listable/-/listable-1.16.0.tgz#47eb2066011bbdc351c072004f2ba000a6a6a1dd"
-  integrity sha512-sWoZmQTaLDobKXtN7eZuPPjWTcsxmNMWYUeDLedGuHQQnsHHLSpz7lSjJWcqJKpbTn8zURAFlR5Qzq15pkQl5w==
+"@lerna-lite/listable@1.17.0":
+  version "1.17.0"
+  resolved "https://registry.yarnpkg.com/@lerna-lite/listable/-/listable-1.17.0.tgz#274e70dfb012909281710a1ffc709cb1a1b18fd9"
+  integrity sha512-Ns7dxHkR1rMg7NflSjgB15wjb2MTyjsRKzPFKn2s46yX7GmXZojzolQflSQZDtyO4W9U/Apsd6MJsAdMmeqNyQ==
   dependencies:
-    "@lerna-lite/core" "1.16.0"
+    "@lerna-lite/core" "1.17.0"
     chalk "^4.1.2"
     columnify "^1.6.0"
 
-"@lerna-lite/publish@1.16.0":
-  version "1.16.0"
-  resolved "https://registry.yarnpkg.com/@lerna-lite/publish/-/publish-1.16.0.tgz#cb45d2497b76ba4e8d7c566b9f608f3311494e15"
-  integrity sha512-X3dGiK6Bhe87Q8lwvyT8FvD9iXzJAmaf7sXsvLOXd0Mf5+JcsnCVWCN0FfMeGnnNzSz1zMMBXI7pgfhYbJ0mOw==
+"@lerna-lite/publish@1.17.0":
+  version "1.17.0"
+  resolved "https://registry.yarnpkg.com/@lerna-lite/publish/-/publish-1.17.0.tgz#249193ac273db0699d5f0d384e30672e41e55a4c"
+  integrity sha512-aL8h3heerQijHkKRvc71Tb1WLz1FFTTYdwmNbwIPeS3hQq8JTFnYnhG+eSbjy2UJXYCzJvjIM9MNgW4UO6MXWA==
   dependencies:
-    "@lerna-lite/core" "1.16.0"
-    "@lerna-lite/version" "1.16.0"
-    "@npmcli/arborist" "^6.2.4"
+    "@lerna-lite/core" "1.17.0"
+    "@lerna-lite/version" "1.17.0"
+    "@npmcli/arborist" "^6.2.5"
     byte-size "^7.0.1"
     chalk "^4.1.2"
     columnify "^1.6.0"
@@ -179,7 +179,7 @@
     glob "^7.2.3"
     has-unicode "^2.0.1"
     libnpmaccess "^7.0.2"
-    libnpmpublish "^7.1.0"
+    libnpmpublish "^7.1.2"
     npm-package-arg "^10.1.0"
     npm-packlist "^7.0.4"
     npm-registry-fetch "^14.0.3"
@@ -195,12 +195,12 @@
     tar "^6.1.13"
     temp-dir "^2.0.0"
 
-"@lerna-lite/version@1.16.0":
-  version "1.16.0"
-  resolved "https://registry.yarnpkg.com/@lerna-lite/version/-/version-1.16.0.tgz#d336932a218b00c777a8039e93b9e86c1c3c13e3"
-  integrity sha512-myTVttd5Szyw4edJQ28Kqi2xYTordlQzDWklXxZ4oj637Bhjhr3cWtzLuJWPMko4B7ZdD+CZTteKwKVDlyfUmg==
+"@lerna-lite/version@1.17.0":
+  version "1.17.0"
+  resolved "https://registry.yarnpkg.com/@lerna-lite/version/-/version-1.17.0.tgz#5df110224b90b68004984649debbbc95bc7decca"
+  integrity sha512-N4Wh2xeFCpUprlLPXTT08o8dkZcTzwkicVk+gr+jYM/ZqumGd7OckeDGfJiQ7ndh7CaH9Q8ZAQJfI5i80Za7YA==
   dependencies:
-    "@lerna-lite/core" "1.16.0"
+    "@lerna-lite/core" "1.17.0"
     "@octokit/plugin-enterprise-rest" "^6.0.1"
     "@octokit/rest" "^19.0.7"
     chalk "^4.1.2"
@@ -254,7 +254,7 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@npmcli/arborist@^6.2.4":
+"@npmcli/arborist@^6.2.5":
   version "6.2.5"
   resolved "https://registry.yarnpkg.com/@npmcli/arborist/-/arborist-6.2.5.tgz#b35c6ec42feeb7b44d6a6fcd2ea323e35b256d80"
   integrity sha512-+GPm+9WrDnl9q+LvuMB2W+roVinHTGDdYWOtYzRfpAnuiqaATFbH14skpXjlJ7LvyUcyd1oJhuGq6XXJLGFNng==
@@ -3175,15 +3175,16 @@ libnpmaccess@^7.0.2:
     npm-package-arg "^10.1.0"
     npm-registry-fetch "^14.0.3"
 
-libnpmpublish@^7.1.0:
-  version "7.1.1"
-  resolved "https://registry.yarnpkg.com/libnpmpublish/-/libnpmpublish-7.1.1.tgz#68ea941b83aff0ec3c31008b3d0de1f8b509c111"
-  integrity sha512-O4DPBkqEeYO5xvMsl31jliC/Y8MFVvOAO9EspbIR8Qu9YJ4Pv4btN4r65UB804nZsd3A8TY96AnquG2ZRJxTRA==
+libnpmpublish@^7.1.2:
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/libnpmpublish/-/libnpmpublish-7.1.2.tgz#9a82a3a3df641378fcf5370f2f2d456a15d9fb4b"
+  integrity sha512-IUjE5R3jCmTVWGEcJtzoRz3kAWoDqZUZzwhcpBN+rMIDiRRjS9ZGkyeT0KxXocg2DJEggyZyxSIdpaV//aLz/w==
   dependencies:
     ci-info "^3.6.1"
     normalize-package-data "^5.0.0"
     npm-package-arg "^10.1.0"
     npm-registry-fetch "^14.0.3"
+    proc-log "^3.0.0"
     semver "^7.3.7"
     sigstore "^1.0.0"
     ssri "^10.0.1"
