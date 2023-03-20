@@ -94,7 +94,7 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@lerna-lite/cli@^1.16.1":
+"@lerna-lite/cli@^1.16.2":
   version "1.17.0"
   resolved "https://registry.yarnpkg.com/@lerna-lite/cli/-/cli-1.17.0.tgz#8a717f3300b40001a9f545a4696f621d913215f3"
   integrity sha512-kNqrEtUs1oIDHgOBGwHkRZGl/E7VTW+2wX89akQtpmfW7oV6qPdpjBirN9Hv9cVYW7UJzE2Hrk273WVZGoK7Jw==
