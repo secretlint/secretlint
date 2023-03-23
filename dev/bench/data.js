@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1679386464412,
+  "lastUpdate": 1679538963386,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -17022,6 +17022,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.55,
             "range": "±4.29%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "distinct": true,
+          "id": "af9d98a82045d476502300a329e341a779eefbd1",
+          "message": "chore(deps): update dependency @lerna-lite/cli to ^1.17.0",
+          "timestamp": "2023-03-23T02:31:13Z",
+          "tree_id": "d8bc70218ad5304650f45215eff92d53de975e35",
+          "url": "https://github.com/secretlint/secretlint/commit/af9d98a82045d476502300a329e341a779eefbd1"
+        },
+        "date": 1679538961694,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.44,
+            "range": "±3.06%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.47,
+            "range": "±3.36%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
