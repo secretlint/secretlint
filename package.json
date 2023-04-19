@@ -47,7 +47,7 @@
     "@lerna-lite/cli": "^1.17.0",
     "lint-staged": "^13.2.1",
     "prettier": "^2.8.1",
-    "turbo": "^1.9.0"
+    "turbo": "^1.9.1"
   },
   "prettier": {
     "singleQuote": false,
