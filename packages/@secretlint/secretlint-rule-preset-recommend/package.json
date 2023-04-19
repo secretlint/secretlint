@@ -56,7 +56,7 @@
         "@secretlint/secretlint-rule-slack": "^6.2.3"
     },
     "devDependencies": {
-        "@rollup/plugin-commonjs": "^24.0.1",
+        "@rollup/plugin-commonjs": "^24.1.0",
         "@rollup/plugin-node-resolve": "^15.0.2",
         "@rollup/plugin-typescript": "^10.0.1",
         "@secretlint/tester": "^6.2.3",
