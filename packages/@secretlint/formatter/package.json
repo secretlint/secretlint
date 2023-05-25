@@ -51,7 +51,7 @@
     },
     "devDependencies": {
         "@types/mocha": "^10.0.1",
-        "@types/node": "^18.16.12",
+        "@types/node": "^18.16.13",
         "@types/pluralize": "0.0.29",
         "escape-string-regexp": "^4.0.0",
         "mocha": "^10.2.0",
