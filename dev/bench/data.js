@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1686522822335,
+  "lastUpdate": 1686703570908,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -19226,6 +19226,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.65,
             "range": "±0.85%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "distinct": true,
+          "id": "0c5a5a259e2670ccc4821a6466091101e7d03472",
+          "message": "chore(deps): update dependency turbo to ^1.10.2",
+          "timestamp": "2023-06-14T00:42:26Z",
+          "tree_id": "dcb9e90d315a3cd3a3946e81175bd41391516072",
+          "url": "https://github.com/secretlint/secretlint/commit/0c5a5a259e2670ccc4821a6466091101e7d03472"
+        },
+        "date": 1686703569902,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.88,
+            "range": "±0.65%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.59,
+            "range": "±0.96%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
