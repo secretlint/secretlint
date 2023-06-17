@@ -61,7 +61,7 @@
         "@rollup/plugin-typescript": "^10.0.1",
         "@secretlint/tester": "^6.2.3",
         "@types/mocha": "^10.0.1",
-        "@types/node": "^18.16.16",
+        "@types/node": "^18.16.17",
         "mocha": "^10.2.0",
         "prettier": "^2.8.1",
         "rimraf": "^3.0.2",
