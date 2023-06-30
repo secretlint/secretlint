@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
 import globby from "globby";
-import readPkg from "read-pkg";
 import { createConfig } from "@secretlint/config-creator";
 
 export type runConfigCreatorOptions = {
@@ -19,7 +18,8 @@ export const runConfigCreator = async (
         };
     }
     const configFilePath = path.join(options.cwd, ".secretlintrc.json");
-    const pkg = await readPkg({
+    const { readPackage } = await import("read-pkg");
+    const pkg = await readPackage({
         cwd: options.cwd,
     });
     const configDescriptor = createConfig({ packageJSON: pkg });

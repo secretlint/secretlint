@@ -3,6 +3,7 @@ import util from "util";
 import path from "path";
 import { SecretLintRawSource } from "@secretlint/types";
 
+// @ts-expect-error invalid type?
 import { isBinary, isText } from "istextorbinary";
 
 const readFile = util.promisify(fs.readFile);

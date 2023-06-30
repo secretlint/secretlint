@@ -2,7 +2,7 @@
   "compilerOptions": {
     /* Basic Options */
     "module": "commonjs",
-    "moduleResolution": "node",
+    "moduleResolution": "NodeNext",
     "newLine": "LF",
     "outDir": "./lib/",
     "target": "ES2018",
