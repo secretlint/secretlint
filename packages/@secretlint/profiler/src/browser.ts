@@ -1,4 +1,4 @@
-import { SecretLintProfiler } from "./index";
+import { SecretLintProfiler } from "./index.js";
 
 export { SecretLintProfiler };
 export const secretLintProfiler = new SecretLintProfiler({
