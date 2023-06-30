@@ -2,7 +2,7 @@
   "compilerOptions": {
     /* Basic Options */
     "module": "ES2015",
-    "moduleResolution": "node",
+    "moduleResolution": "NodeNext",
     "esModuleInterop": true,
     "newLine": "LF",
     "noEmit": true,
