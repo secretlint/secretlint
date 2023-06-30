@@ -31,7 +31,7 @@
     "clean": "tsc --build --clean",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
-    "test": "mocha",
+    "test": "tsc -p ./tsconfig.test.json --noEmit",
     "watch": "tsc --build --watch",
     "prepublishOnly": "npm run clean && npm run build"
   },
