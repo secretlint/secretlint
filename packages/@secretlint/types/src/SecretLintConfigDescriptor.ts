@@ -1,7 +1,7 @@
-import { SecretLintRuleCreatorOptions } from "./SecretLintRule";
-import { SecretLintRulePresetCreatorOptions } from "./SecretLintRulePreset";
-import { SecretLintRuleSeverityLevel } from "./SecretLintRuleSeverityLevel";
-import { SecretlintCoreSharedOptions } from "./SecretlintCoreSharedOptions";
+import type { SecretLintRuleCreatorOptions } from "./SecretLintRule.js";
+import type { SecretLintRulePresetCreatorOptions } from "./SecretLintRulePreset.js";
+import type { SecretLintRuleSeverityLevel } from "./SecretLintRuleSeverityLevel.js";
+import type { SecretlintCoreSharedOptions } from "./SecretlintCoreSharedOptions.js";
 
 export type SecretLintConfigDescriptorRule<Options = SecretLintRuleCreatorOptions> = {
     /**

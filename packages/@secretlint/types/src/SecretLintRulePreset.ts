@@ -1,7 +1,7 @@
 // Rule Interfaces
-import { SecretLintCoreConfigRule } from "./SecretLintCore";
-import { SecretLintRuleCreator, SecretLintRuleCreatorOptions } from "./SecretLintRule";
-import { SecretlintCoreSharedOptions } from "./SecretlintCoreSharedOptions";
+import type { SecretLintCoreConfigRule } from "./SecretLintCore.js";
+import type { SecretLintRuleCreator, SecretLintRuleCreatorOptions } from "./SecretLintRule.js";
+import type { SecretlintCoreSharedOptions } from "./SecretlintCoreSharedOptions.js";
 
 export type SecretLintRulePresetContext = {
     sharedOptions: SecretlintCoreSharedOptions;

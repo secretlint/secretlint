@@ -1,4 +1,4 @@
-import { SecretLintCoreResult } from "./SecretLintCore";
+import type { SecretLintCoreResult } from "./SecretLintCore.js";
 
 export type SecretLintFormatterOptions = {
     /**

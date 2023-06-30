@@ -1,14 +1,14 @@
 // Core Input and Output
-import {
+import type {
     SecretLintRuleIgnoreDescriptor,
     SecretLintRuleReportDescriptor,
     SecretLintRuleCreator,
     SecretLintRuleCreatorOptions,
-} from "./SecretLintRule";
-import { SecretLintRawSource, SecretLintSourceNodeLocation } from "./SecretLintSource";
-import { SecretLintRulePresetCreator, SecretLintRulePresetCreatorOptions } from "./SecretLintRulePreset";
-import { SecretLintRuleSeverityLevel } from "./SecretLintRuleSeverityLevel";
-import { SecretlintCoreSharedOptions } from "./SecretlintCoreSharedOptions";
+} from "./SecretLintRule.js";
+import type { SecretLintRawSource, SecretLintSourceNodeLocation } from "./SecretLintSource.js";
+import type { SecretLintRulePresetCreator, SecretLintRulePresetCreatorOptions } from "./SecretLintRulePreset.js";
+import type { SecretLintRuleSeverityLevel } from "./SecretLintRuleSeverityLevel.js";
+import type { SecretlintCoreSharedOptions } from "./SecretlintCoreSharedOptions.js";
 
 export type SecretLintCoreConfigRule<Options = SecretLintRuleCreatorOptions> = {
     /**
