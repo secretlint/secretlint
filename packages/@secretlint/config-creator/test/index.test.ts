@@ -4,9 +4,12 @@ import assert from "assert";
 import path from "path";
 import fs from "fs/promises";
 import os from "os";
-import readPkg from "read-pkg";
 import { createConfig } from "@secretlint/config-creator";
-
+const readPkg = (filePath: string) => {
+    return fs.readFile(filePath, "utf-8").then((content) => {
+        return JSON.parse(content);
+    });
+};
 /**
  *
  * Run config-creator
@@ -38,9 +41,7 @@ describe("@secretlint/config-creator", function () {
 
     context("When config-creator is called", function () {
         it("Run config-creator successfully", async () => {
-            const pkg = await readPkg({
-                cwd: tmpConfigDir,
-            });
+            const pkg = await readPkg(path.join(tmpConfigDir, "package.json"));
             const actual = createConfig({ packageJSON: pkg });
             actual.rules.forEach((rule) => {
                 assert.strictEqual(rule.id, "@secretlint/secretlint-rule-preset-recommend");
