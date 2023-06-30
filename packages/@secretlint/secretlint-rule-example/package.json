@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-example",
-    "version": "6.2.3",
+    "version": "6.2.4",
     "description": "An example rule for secretlint. It it for testing.",
     "keywords": [
         "secretlint",
@@ -43,10 +43,10 @@
         "tabWidth": 4
     },
     "dependencies": {
-        "@secretlint/types": "^6.2.3"
+        "@secretlint/types": "^6.2.4"
     },
     "devDependencies": {
-        "@secretlint/tester": "^6.2.3",
+        "@secretlint/tester": "^6.2.4",
         "@types/mocha": "^10.0.1",
         "@types/node": "^18.16.18",
         "mocha": "^10.2.0",

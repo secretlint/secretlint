@@ -1,6 +1,6 @@
 {
     "name": "secretlint",
-    "version": "6.2.3",
+    "version": "6.2.4",
     "description": "Secretlint CLI that scan secret/credential data.",
     "keywords": [
         "secretlint",
@@ -43,18 +43,18 @@
         "tabWidth": 4
     },
     "dependencies": {
-        "@secretlint/config-creator": "^6.2.3",
-        "@secretlint/formatter": "^6.2.3",
-        "@secretlint/node": "^6.2.3",
-        "@secretlint/profiler": "^6.2.3",
+        "@secretlint/config-creator": "^6.2.4",
+        "@secretlint/formatter": "^6.2.4",
+        "@secretlint/node": "^6.2.4",
+        "@secretlint/profiler": "^6.2.4",
         "debug": "^4.3.4",
         "globby": "^11.1.0",
         "meow": "^9.0.0",
         "read-pkg": "^8.0.0"
     },
     "devDependencies": {
-        "@secretlint/secretlint-rule-example": "^6.2.3",
-        "@secretlint/secretlint-rule-preset-recommend": "^6.2.3",
+        "@secretlint/secretlint-rule-example": "^6.2.4",
+        "@secretlint/secretlint-rule-preset-recommend": "^6.2.4",
         "@types/mocha": "^10.0.1",
         "@types/node": "^18.16.18",
         "mocha": "^10.2.0",
