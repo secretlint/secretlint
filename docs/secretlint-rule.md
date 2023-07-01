@@ -95,13 +95,14 @@ export const creator: SecretLintRuleCreator = {
 
 Secretlint testing is based on Snapshot testing like [Jest](https://jestjs.io/docs/ja/snapshot-testing).
 
-Secretlint use Node.js's [Test runner](https://nodejs.org/dist/latest-v18.x/docs/api/test.html#test-reporters) for testing.
-It requires Node.js 18+.
-
 Secretlint provide `@secretlint/tester` for testing.
 It will help you to write snapshot testing for your rule.
 
-It is a template for testing.
+`@secretlint/tester` supports Node.js's [Test runner](https://nodejs.org/dist/latest-v18.x/docs/api/test.html#test-reporters) for testing as test runner.
+
+- Requires Node.js 18+
+
+There are a template for testing.
 
 `test/index.test.ts`
 
@@ -109,7 +110,7 @@ It is a template for testing.
 import test from "node:test";
 import path from "path";
 import { snapshot } from "@secretlint/tester";
-import { creator as rule } from "../src/index";
+import { creator as rule } from "../src/index.js";
 
 test("@secretlint/secretlint-rule-basicauth", async (t) => {
     return snapshot({
