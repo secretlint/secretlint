@@ -1,8 +1,10 @@
-import path from "path";
-import assert from "assert";
-import { importSecretlintCreator, loadConfig } from "../src";
+import path from "node:path";
+import assert from "node:assert";
+import { importSecretlintCreator, loadConfig } from "../src/index.js";
 import { SecretLintCoreConfigUnionRule } from "@secretlint/types";
+import fs from "node:fs";
 
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const removeUndefined = (o: { [index: string]: any }) => {
     for (let key in o) {
         if (o[key] === undefined) {
@@ -28,20 +30,22 @@ describe("@secretlint/config-loader", function () {
                         {
                             id: "example",
                             rule: importSecretlintCreator(
-                                require("@secretlint/secretlint-rule-internal-test-pure-deps")
+                                await import("@secretlint/secretlint-rule-internal-test-pure-deps")
                             ),
                         },
                         {
                             id: "example-2",
                             rule: importSecretlintCreator(
-                                require("@secretlint/secretlint-rule-internal-test-pure-deps")
+                                await import("@secretlint/secretlint-rule-internal-test-pure-deps")
                             ),
                             disabled: true,
                         },
                     ],
                 },
                 configFilePath: path.join(__dirname, "fixtures/valid-config/.secretlintrc.json"),
-                configDescriptor: require(path.join(__dirname, "fixtures/valid-config/.secretlintrc.json")),
+                configDescriptor: JSON.parse(
+                    fs.readFileSync(path.join(__dirname, "fixtures/valid-config/.secretlintrc.json"), "utf-8")
+                ),
             })
         );
     });

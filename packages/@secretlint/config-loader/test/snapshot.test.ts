@@ -1,8 +1,8 @@
-import fs from "fs";
-import path from "path";
-import assert from "assert";
-import { validateConfig, validateConfigResult } from "../src";
-
+import fs from "node:fs";
+import path from "node:path";
+import assert from "node:assert";
+import { validateConfig, validateConfigResult } from "../src/index.js";
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const snapshotDir = path.join(__dirname, "snapshots");
 const formatResult = (result: validateConfigResult) => {
     return result.ok

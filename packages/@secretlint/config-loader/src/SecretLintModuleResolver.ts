@@ -1,10 +1,19 @@
 // LICENSE : MIT
-"use strict";
-import * as path from "path";
-import { createFullPackageName } from "./package-name-util";
+import * as path from "node:path";
+import { createFullPackageName } from "./package-name-util.js";
+import { createRequire } from "node:module";
+import debug0 from "debug";
 
-const tryResolve = require("try-resolve");
-const debug = require("debug")("@secretlint/config-loader");
+const require = createRequire(import.meta.url);
+const debug = debug0("@secretlint/config-loader");
+
+const tryResolve = (packageName: string) => {
+    try {
+        return require.resolve(packageName);
+    } catch {
+        return false;
+    }
+};
 
 /**
  * This class aim to resolve secretlint's package name and get the module path.

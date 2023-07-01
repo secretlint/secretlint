@@ -9,10 +9,10 @@ import {
     SecretLintConfigDescriptorRulePreset,
 } from "@secretlint/types";
 import { secretLintProfiler } from "@secretlint/profiler";
-import { SecretLintModuleResolver } from "./SecretLintModuleResolver";
-import { validateConfigWithDescriptor, validateConfigDescriptor } from "./validator";
-import * as url from "url";
-import { AggregationError } from "./AggregationError";
+import { SecretLintModuleResolver } from "./SecretLintModuleResolver.js";
+import { validateConfigWithDescriptor, validateConfigDescriptor } from "./validator.js";
+import * as url from "node:url";
+import { AggregationError } from "./AggregationError.js";
 
 export function importSecretlintCreator(moduleExports?: SecretLintRuleModule): SecretLintUnionRuleCreator {
     if (!moduleExports) {
