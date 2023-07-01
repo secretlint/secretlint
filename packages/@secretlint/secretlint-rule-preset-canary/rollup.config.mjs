@@ -26,8 +26,7 @@ export default defineConfig([
                 dir: "browser/",
                 format: "es",
                 exports: "named",
-                sourcemap: true,
-                treeshake: true
+                sourcemap: true
             }
         ],
         // Delete process.version

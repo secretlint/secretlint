@@ -6,6 +6,7 @@ import { loadConfig } from "@secretlint/config-loader";
 import { createRawSource } from "@secretlint/source-creator";
 import { SecretLintCoreConfig, SecretLintUnionRuleCreator } from "@secretlint/types";
 import { pathToFileURL } from "node:url";
+import { fileURLToPath } from "url";
 
 const canResolve = (filePath: string): boolean => {
     return fs.existsSync(filePath) && fs.statSync(filePath).isFile();
@@ -16,7 +17,7 @@ export type SnapshotOptions = {
      *
      * Example: <snapshotDirectory>/{test-case-name}/
      */
-    snapshotDirectory: string;
+    snapshotDirectory: string | URL;
     /**
      * Define default config for testing
      */
@@ -78,7 +79,7 @@ const sortObject = <T extends { [index: string]: any }>(object: T) => {
  * })
  */
 export const snapshot = (options: SnapshotOptions) => {
-    const fixturesDir = options.snapshotDirectory;
+    const snapshotDirectory = options.snapshotDirectory;
     const updateSnapshot = !!process.env.UPDATE_SNAPSHOT || options.updateSnapshot;
     const snapshotReplacer = createSnapshotRepalcer(options);
     const testDefinitions: {
@@ -91,7 +92,7 @@ export const snapshot = (options: SnapshotOptions) => {
           });
     return {
         forEach(handler: (testCaseName: string, testFunction: () => Promise<"skip" | "done">) => void) {
-            fs.readdirSync(fixturesDir, { withFileTypes: true })
+            fs.readdirSync(snapshotDirectory, { withFileTypes: true })
                 .filter((dirent) => dirent.isDirectory())
                 .map(({ name }) => name)
                 .filter((caseName) => {
@@ -101,7 +102,11 @@ export const snapshot = (options: SnapshotOptions) => {
                 .map((caseName: string) => {
                     const normalizedTestName = caseName.replace(/[-_]/g, " ");
                     handler(normalizedTestName, async () => {
-                        const fixtureDir = path.join(fixturesDir, caseName);
+                        const normalizedTestCaseDir =
+                            typeof snapshotDirectory === "string"
+                                ? snapshotDirectory
+                                : fileURLToPath(snapshotDirectory);
+                        const fixtureDir = path.join(normalizedTestCaseDir, caseName);
                         const secretlintrcFilePath = path.join(fixtureDir, ".secretlintrc.json");
                         const secretlintTestCaseOptionsFilePath = path.join(fixtureDir, "options");
                         const secretlintTestCaseOptions: SecretLintTestCaseOptions = canResolve(
