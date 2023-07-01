@@ -15,8 +15,8 @@
   },
   "license": "MIT",
   "author": "azu",
-  "main": "./module/index.js",
-  "types": "./module/index.d.ts",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "test"
@@ -56,16 +56,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "type": "module",
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./module/index.d.ts",
-        "default": "./module/index.js"
-      },
-      "default": "./module/index.js"
-    },
-    "./package.json": "./package.json"
-  },
+  "type": "commonjs",
   "packageManager": "yarn@1.22.18"
 }
