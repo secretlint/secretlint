@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1688220805509,
+  "lastUpdate": 1688227114090,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -19834,6 +19834,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.74,
             "range": "±1.96%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "distinct": true,
+          "id": "57ced41e463dd9086c1821e5bdcf8d8ddd061d8f",
+          "message": "chore(deps): update yarn to v1.22.19",
+          "timestamp": "2023-07-01T15:55:52Z",
+          "tree_id": "6439e9df4b1a4a650bc53990339ed5dda86fd741",
+          "url": "https://github.com/secretlint/secretlint/commit/57ced41e463dd9086c1821e5bdcf8d8ddd061d8f"
+        },
+        "date": 1688227113137,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.87,
+            "range": "±0.93%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.69,
+            "range": "±1.71%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
