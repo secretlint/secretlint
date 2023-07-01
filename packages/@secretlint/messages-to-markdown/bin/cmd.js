@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
-require("ts-node").register();
-const output = require("../lib/cli").run();
+import { register } from "ts-node";
+import { run } from "../module/cli";
+register();
+const output = run();
 console.log(output);

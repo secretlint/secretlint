@@ -1,6 +1,6 @@
 import meow from "meow";
-import { messagesToMarkdown } from "./index";
-import path from "path";
+import { messagesToMarkdown } from "./index.js";
+import path from "node:path";
 
 export const cli = meow(
     `
