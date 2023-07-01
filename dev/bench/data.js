@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1688227114090,
+  "lastUpdate": 1688250680851,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -19872,6 +19872,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.69,
             "range": "±1.71%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c742c76657b58545ac521a3945f46a4f6655e1bf",
+          "message": "Merge pull request #532 from secretlint/feature/turbo-schema\n\nfix(turbo): add $schema",
+          "timestamp": "2023-07-02T07:28:40+09:00",
+          "tree_id": "eaa9ce30c925214143325707933925785f1dbe1a",
+          "url": "https://github.com/secretlint/secretlint/commit/c742c76657b58545ac521a3945f46a4f6655e1bf"
+        },
+        "date": 1688250679343,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.93,
+            "range": "±0.85%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.75,
+            "range": "±0.82%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
