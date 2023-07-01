@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import assert from "assert";
-import { loadFormatter, getFormatterList } from "../src/index.js";
+import { loadFormatter, getFormatterList } from "../src/index";
 import { results } from "./snapshots/input";
 
 const escapeStringRegexp = require("escape-string-regexp");
