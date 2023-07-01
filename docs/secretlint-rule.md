@@ -161,12 +161,18 @@ test/
 Run Test
 
 ```sh
+# for .js file
+$ node --test test/index.test.js
+# for .ts file
 $ node --loader ts-node/esm --test test/index.test.ts
 ```
 
 Update snapshots
 
 ```sh
+# for .js file
+$ UPDATE_SNAPSHOT=1 node --test test/index.test.js
+# for .ts file
 $ UPDATE_SNAPSHOT=1 node --loader ts-node/esm --test test/index.test.ts
 ```
 
