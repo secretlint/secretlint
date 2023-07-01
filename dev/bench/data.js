@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1688158811482,
+  "lastUpdate": 1688220805509,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -19796,6 +19796,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.67,
             "range": "±1.60%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "4373bf95239ee4ee20fa15e9e8e12cea8749350b",
+          "message": "Merge pull request #529 from secretlint/feature/esm\n\nrefactor!(secretlint): convert to ESM",
+          "timestamp": "2023-07-01T23:10:41+09:00",
+          "tree_id": "0c6ee8f287446cc5b00774f67708acfbe1d85c11",
+          "url": "https://github.com/secretlint/secretlint/commit/4373bf95239ee4ee20fa15e9e8e12cea8749350b"
+        },
+        "date": 1688220804037,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.85,
+            "range": "±2.12%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.74,
+            "range": "±1.96%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
