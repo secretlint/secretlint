@@ -15,25 +15,42 @@
   },
   "license": "MIT",
   "author": "azu",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./module/index.d.ts",
+        "default": "./module/index.js"
+      },
+      "require": {
+        "types": "./lib/index.d.ts",
+        "default": "./lib/index.js"
+      },
+      "default": "./lib/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
+  "module": "./module/index.js",
+  "types": "./module/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "test"
   },
   "files": [
     "bin/",
+    "lib/",
     "module/",
     "src/"
   ],
   "scripts": {
-    "build": "tsc --build",
-    "clean": "tsc --build --clean",
+    "build": "tsc --build . && tsc --build ./tsconfig.cjs.json && tsconfig-to-dual-package",
+    "clean": "tsc --build --clean && tsc --build --clean ./tsconfig.cjs.json",
+    "prepublishOnly": "npm run clean && npm run build",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
-    "test": "tsc -p ./tsconfig.test.json --noEmit",
-    "watch": "tsc --build --watch",
-    "prepublishOnly": "npm run clean && npm run build"
+    "test": "tsc -p ./tsconfig.test.json"
   },
   "prettier": {
     "printWidth": 120,
@@ -41,21 +58,19 @@
     "tabWidth": 4
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.1",
-    "@types/node": "^20.3.2",
-    "mocha": "^10.2.0",
+    "@types/node": "^20.3.3",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
     "ts-node": "^10.9.1",
+    "tsconfig-to-dual-package": "^1.2.0",
     "tsd": "^0.28.1",
     "typescript": "^5.1.6"
   },
+  "packageManager": "yarn@1.22.18",
   "engines": {
     "node": "^14.13.1 || >=16.0.0"
   },
   "publishConfig": {
     "access": "public"
-  },
-  "type": "commonjs",
-  "packageManager": "yarn@1.22.18"
+  }
 }

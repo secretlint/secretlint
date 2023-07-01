@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
     /* Basic Options */
-    "module": "CommonJS",
-    "moduleResolution": "Node",
+    "module": "ESNext",
+    "moduleResolution": "NodeNext",
     "esModuleInterop": true,
     "newLine": "LF",
-    "outDir": "./lib/",
+    "outDir": "./module/",
     "target": "ES2020",
     "sourceMap": true,
     "declaration": true,
