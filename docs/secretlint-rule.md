@@ -95,20 +95,24 @@ export const creator: SecretLintRuleCreator = {
 
 Secretlint testing is based on Snapshot testing like [Jest](https://jestjs.io/docs/ja/snapshot-testing).
 
+Secretlint use Node.js's [Test runner](https://nodejs.org/dist/latest-v18.x/docs/api/test.html#test-reporters) for testing.
+It requires Node.js 18+.
+
 Secretlint provide `@secretlint/tester` for testing.
 It will help you to write snapshot testing for your rule.
 
-It is template for testing.
+It is a template for testing.
 
 `test/index.test.ts`
 
 ```ts
+import test from "node:test";
 import path from "path";
 import { snapshot } from "@secretlint/tester";
 import { creator as rule } from "../src/index";
 
-describe("@secretlint/secretlint-rule-basicauth", () => {
-    snapshot({
+test("@secretlint/secretlint-rule-basicauth", async (t) => {
+    return snapshot({
         // Base Config
         // You can override by each snapshot
         defaultConfig: {
@@ -123,10 +127,10 @@ describe("@secretlint/secretlint-rule-basicauth", () => {
         updateSnapshot: !!process.env.UPDATE_SNAPSHOT,
         snapshotDirectory: path.join(__dirname, "snapshots")
     }).forEach((name, test) => {
-        it(name, async function() {
+        return it(name, async (context) => {
             const status = await test();
             if (status === "skip") {
-                this.skip();  // It call mocha's skip, you can anothor testing framework
+                context.skip();  // skip test when update snapshot
             }
         });
     });
@@ -157,17 +161,17 @@ test/
 Run Test
 
 ```sh
-$ npx mocha "test/**/*.{js,ts}"
+$ node --loader ts-node/esm --test test/index.test.ts
 ```
 
 Update snapshots
 
 ```sh
-$ UPDATE_SNAPSHOT=1 npx mocha "test/**/*.{js,ts}"
+$ UPDATE_SNAPSHOT=1 node --loader ts-node/esm --test test/index.test.ts
 ```
 
 
-For example, `test/snapshots/ng.secret/input.txt` has following content
+For example, `test/snapshots/ng.secret/input.txt` has the following content
 
 ```
 THIS IS SECRET.
