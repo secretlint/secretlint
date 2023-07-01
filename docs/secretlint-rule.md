@@ -114,7 +114,7 @@ describe("@secretlint/secretlint-rule-basicauth", () => {
         defaultConfig: {
             rules: [
                 {
-                    id: require("../package.json").name,
+                    id: "@secretlint/secretlint-rule-basicauth",
                     rule,
                     options: {}
                 }

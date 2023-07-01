@@ -8,7 +8,7 @@
                 886
             ],
             "type": "message",
-            "ruleId": "secretlint-rule-privatekey",
+            "ruleId": "@secretlint/secretlint-rule-privatekey",
             "loc": {
                 "start": {
                     "line": 1,
