@@ -67,6 +67,7 @@ const sortObject = <T extends { [index: string]: any }>(object: T) => {
 };
 /**
  * // Mocha
+ * // $ mocha --loader ts-node/esm test/index.test.ts
  * describe("Snapshot Testing", () => {
  *  snapshot(options).forEach((name, test) => {
  *    it(name, async function() {
@@ -76,7 +77,20 @@ const sortObject = <T extends { [index: string]: any }>(object: T) => {
  *        }
  *    });
  *  }
- * })
+ * });
+ * // note:test
+ * // $ node --loader ts-node/esm --test test/index.test.ts
+ * import test from "node:test";
+ * describe("Snapshot Testing", (t) => {
+ *  return snapshot(options).forEach((name, test) => {
+ *    return t.it(name, async function(context) {
+ *        const status = await test();
+ *        if(status === "skip"){
+ *            context.skip();
+ *        }
+ *    });
+ *  }
+ * });
  */
 export const snapshot = (options: SnapshotOptions) => {
     const snapshotDirectory = options.snapshotDirectory;
@@ -92,7 +106,8 @@ export const snapshot = (options: SnapshotOptions) => {
           });
     return {
         forEach(handler: (testCaseName: string, testFunction: () => Promise<"skip" | "done">) => void) {
-            fs.readdirSync(snapshotDirectory, { withFileTypes: true })
+            const promises = fs
+                .readdirSync(snapshotDirectory, { withFileTypes: true })
                 .filter((dirent) => dirent.isDirectory())
                 .map(({ name }) => name)
                 .filter((caseName) => {
@@ -101,29 +116,29 @@ export const snapshot = (options: SnapshotOptions) => {
                 })
                 .map((caseName: string) => {
                     const normalizedTestName = caseName.replace(/[-_]/g, " ");
-                    handler(normalizedTestName, async () => {
+                    return handler(normalizedTestName, async () => {
                         const normalizedTestCaseDir =
                             typeof snapshotDirectory === "string"
                                 ? snapshotDirectory
                                 : fileURLToPath(snapshotDirectory);
-                        const fixtureDir = path.join(normalizedTestCaseDir, caseName);
-                        const secretlintrcFilePath = path.join(fixtureDir, ".secretlintrc.json");
-                        const secretlintTestCaseOptionsFilePath = path.join(fixtureDir, "options");
+                        const testCaseDir = path.join(normalizedTestCaseDir, caseName);
+                        const secretlintrcFilePath = path.join(testCaseDir, ".secretlintrc.json");
+                        const secretlintTestCaseOptionsFilePath = path.join(testCaseDir, "options");
                         const secretlintTestCaseOptions: SecretLintTestCaseOptions = canResolve(
                             secretlintTestCaseOptionsFilePath
                         )
                             ? (await import(pathToFileURL(secretlintTestCaseOptionsFilePath).href)).options
                             : {};
-                        const inputPrefixFileName = fs.readdirSync(fixtureDir).find((filePath) => {
+                        const inputPrefixFileName = fs.readdirSync(testCaseDir).find((filePath) => {
                             return filePath.startsWith("input");
                         });
                         const actualFileName = secretlintTestCaseOptions.inputFilePath
                             ? secretlintTestCaseOptions.inputFilePath
                             : inputPrefixFileName;
                         if (!actualFileName) {
-                            throw new Error(`Not found input file in ${fixtureDir}`);
+                            throw new Error(`Not found input file in ${testCaseDir}`);
                         }
-                        const actualFilePath = path.join(fixtureDir, actualFileName);
+                        const actualFilePath = path.join(testCaseDir, actualFileName);
                         const loadedConfig = await (fs.existsSync(secretlintrcFilePath)
                             ? loadConfig({
                                   configFilePath: secretlintrcFilePath,
@@ -138,7 +153,7 @@ export const snapshot = (options: SnapshotOptions) => {
                                 config,
                             },
                         });
-                        const expectedFilePath = path.join(fixtureDir, "output.json");
+                        const expectedFilePath = path.join(testCaseDir, "output.json");
                         // Usage: update snapshots
                         // UPDATE_SNAPSHOT=1 npm test
                         if (!fs.existsSync(expectedFilePath) || updateSnapshot) {
@@ -154,14 +169,15 @@ export const snapshot = (options: SnapshotOptions) => {
                         assert.deepStrictEqual(
                             JSON.parse(JSON.stringify(actualResult, snapshotReplacer)),
                             expected,
-                            `
-${fixtureDir}
+                            `TestCaseDir: ${testCaseDir}
+Actual Result:
 ${JSON.stringify(actualResult, snapshotReplacer)}
 `
                         );
                         return "done";
                     });
                 });
+            return Promise.all(promises);
         },
     };
 };
