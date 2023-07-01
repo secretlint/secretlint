@@ -69,6 +69,23 @@ const sortObject = <T extends { [index: string]: any }>(object: T) => {
             return result;
         }, {} as T);
 };
+const defaultInterop = (module: any) => {
+    // if ".default" is defined, use it
+    return "default" in module ? module.default : module;
+};
+const loadSecretlintTestCaseOptions: (testCaseDir: string) => Promise<SecretLintTestCaseOptions> = async (
+    testCaseDir: string
+) => {
+    if (canResolve(path.join(testCaseDir, "options.js"))) {
+        return defaultInterop(await import(pathToFileURL(path.join(testCaseDir, "options.js")).href)).options;
+    } else if (canResolve(path.join(testCaseDir, "options.json"))) {
+        return JSON.parse(await fs.promises.readFile(path.join(testCaseDir, "options.json"), "utf-8"));
+    } else if (canResolve(path.join(testCaseDir, "options.ts"))) {
+        return defaultInterop(await import(pathToFileURL(path.join(testCaseDir, "options.ts")).href)).options;
+    }
+    return {};
+};
+
 /**
  * // Mocha
  * // $ mocha --loader ts-node/esm test/index.test.ts
@@ -127,12 +144,7 @@ export const snapshot = (options: SnapshotOptions) => {
                                 : fileURLToPath(snapshotDirectory);
                         const testCaseDir = path.join(normalizedTestCaseDir, caseName);
                         const secretlintrcFilePath = path.join(testCaseDir, ".secretlintrc.json");
-                        const secretlintTestCaseOptionsFilePath = path.join(testCaseDir, "options");
-                        const secretlintTestCaseOptions: SecretLintTestCaseOptions = canResolve(
-                            secretlintTestCaseOptionsFilePath
-                        )
-                            ? (await import(pathToFileURL(secretlintTestCaseOptionsFilePath).href)).options
-                            : {};
+                        const secretlintTestCaseOptions = await loadSecretlintTestCaseOptions(testCaseDir);
                         const inputPrefixFileName = fs.readdirSync(testCaseDir).find((filePath) => {
                             return filePath.startsWith("input");
                         });

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { run } from "../module/cli.js";
+import { run, cli } from "../module/cli.js";
 
 // Entry Point
 try {
