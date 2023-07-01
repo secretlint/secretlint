@@ -51,7 +51,11 @@ const createSnapshotRepalcer = (options: SnapshotOptions) => {
     return (key: string, value: any) => {
         // Filtering out properties
         if (key === "filePath") {
-            return value.replace(options.snapshotDirectory, "[SNAPSHOT]");
+            if (typeof options.snapshotDirectory === "string") {
+                return value.replace(options.snapshotDirectory, "[SNAPSHOT]");
+            } else {
+                return value.replace(fileURLToPath(options.snapshotDirectory), "[SNAPSHOT]");
+            }
         }
         return value;
     };
@@ -166,14 +170,7 @@ export const snapshot = (options: SnapshotOptions) => {
                         }
                         // compare input and output
                         const expected = JSON.parse(fs.readFileSync(expectedFilePath, "utf-8"));
-                        assert.deepStrictEqual(
-                            JSON.parse(JSON.stringify(actualResult, snapshotReplacer)),
-                            expected,
-                            `TestCaseDir: ${testCaseDir}
-Actual Result:
-${JSON.stringify(actualResult, snapshotReplacer)}
-`
-                        );
+                        assert.deepStrictEqual(JSON.parse(JSON.stringify(actualResult, snapshotReplacer)), expected);
                         return "done";
                     });
                 });
