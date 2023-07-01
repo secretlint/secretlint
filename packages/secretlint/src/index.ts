@@ -1,6 +1,6 @@
-import fs from "fs";
+import fs from "node:fs";
 import { createEngine, SecretLintEngineOptions } from "@secretlint/node";
-import { searchFiles } from "./search";
+import { searchFiles } from "./search.js";
 
 export type SecretLintOptions = {
     cwd: string;

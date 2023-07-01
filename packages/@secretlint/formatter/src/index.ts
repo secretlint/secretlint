@@ -2,7 +2,7 @@
 "use strict";
 import { TextlintResult } from "@textlint/types";
 import {
-    createFormatter as textlintCreateFormatter,
+    loadFormatter as textlintCreateFormatter,
     getFormatterList as textlintGetFormatterList,
 } from "@textlint/linter-formatter";
 import { SecretLintCoreResult } from "@secretlint/types";
@@ -95,7 +95,7 @@ const convertSecretLintResultToTextlintResult = (
     };
 };
 
-export function createFormatter(formatterConfig: SecretLintFormatterConfig) {
+export async function loadFormatter(formatterConfig: SecretLintFormatterConfig) {
     const formatterName = formatterConfig.formatterName;
     const isHumanReadableFormat = ["stylish", "pretty-error"].includes(formatterName);
     /**
@@ -112,10 +112,10 @@ export function createFormatter(formatterConfig: SecretLintFormatterConfig) {
             },
         };
     } catch {
-        const format = textlintCreateFormatter(formatterConfig);
+        const formatter = await textlintCreateFormatter(formatterConfig);
         return {
             format: (results: SecretLintCoreResult[]) => {
-                return format(
+                return formatter.format(
                     results.map((result) =>
                         convertSecretLintResultToTextlintResult(result, {
                             enableTerminalLink,

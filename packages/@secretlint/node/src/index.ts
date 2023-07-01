@@ -1,7 +1,7 @@
 import { lintSource } from "@secretlint/core";
 import { loadConfig, loadPackagesFromConfigDescriptor } from "@secretlint/config-loader";
 import { createRawSource } from "@secretlint/source-creator";
-import { createFormatter } from "@secretlint/formatter";
+import { loadFormatter } from "@secretlint/formatter";
 import {
     SecretLintConfigDescriptor,
     SecretLintCoreConfig,
@@ -118,7 +118,7 @@ const executeOnContent = async ({
     secretLintProfiler.mark({
         type: "@node>format::start",
     });
-    const formatter = createFormatter({
+    const formatter = await loadFormatter({
         color: options.color ?? true,
         formatterName: options.formatter,
         terminalLink: options.terminalLink ?? false,
@@ -157,7 +157,7 @@ const executeOnFiles = async ({
     secretLintProfiler.mark({
         type: "@node>format::start",
     });
-    const formatter = createFormatter({
+    const formatter = await loadFormatter({
         color: options.color ?? true,
         formatterName: options.formatter,
         terminalLink: options.terminalLink ?? false,

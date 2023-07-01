@@ -1,10 +1,10 @@
 import meow from "meow";
-import { runSecretLint } from "./index";
-import { runConfigCreator } from "./create-secretlintrc";
+import { runSecretLint } from "./index.js";
+import { runConfigCreator } from "./create-secretlintrc.js";
 import { secretLintProfiler } from "@secretlint/profiler";
 import { getFormatterList } from "@secretlint/formatter";
-
-const debug = require("debug")("secretlint");
+import debug0 from "debug";
+const debug = debug0("secretlint");
 export const cli = meow(
     `
     Usage
@@ -104,7 +104,7 @@ export const cli = meow(
     }
 );
 
-export const run = (
+export const run = async (
     input = cli.input,
     flags = cli.flags
 ): Promise<{ exitStatus: number; stdout: string | null; stderr: Error | null }> => {
@@ -112,7 +112,7 @@ export const run = (
         type: "secretlint>cli::start",
     });
     if (flags.debug) {
-        const debug = require("debug");
+        const debug = await import("debug");
         debug.enable("*secretlint*");
     }
     const cwd = flags.cwd;

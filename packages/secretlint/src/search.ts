@@ -1,8 +1,8 @@
 import globby from "globby";
-import fs from "fs";
-import path from "path";
-
-const debug = require("debug")("secretlint");
+import fs from "node:fs";
+import path from "node:path";
+import debug0 from "debug";
+const debug = debug0("secretlint");
 const DEFAULT_IGNORE_PATTERNS = Object.freeze([
     "**/.git/**",
     "**/node_modules/**",

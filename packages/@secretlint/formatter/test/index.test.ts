@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import assert from "assert";
-import { createFormatter, getFormatterList } from "../src/index";
+import { loadFormatter, getFormatterList } from "../src/index";
 import { results } from "./snapshots/input";
 
 const escapeStringRegexp = require("escape-string-regexp");
@@ -16,7 +16,7 @@ describe("@secretlint/formatter", function () {
         const formatterName = formatter.name;
         it(`test ${formatterName}`, async function () {
             const fixtureDir = snapshotsDir;
-            const formatter = createFormatter({
+            const formatter = loadFormatter({
                 color: false,
                 formatterName: formatterName,
             });

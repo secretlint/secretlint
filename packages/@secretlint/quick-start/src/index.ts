@@ -1,5 +1,5 @@
 import path from "path";
-import { cli, run } from "secretlint/lib/cli";
+import { cli, run } from "secretlint/cli";
 
 // Override secretlintrc with quick-start pkg if it is not defined.
 const defaultSecretlintRc = path.join(__dirname, "../config/.secretlintrc.json");
