@@ -1,10 +1,9 @@
 // LICENSE : MIT
-"use strict";
-import assert from "assert";
-import path from "path";
-import fs from "fs/promises";
-import os from "os";
-import { runConfigCreator } from "../src/create-secretlintrc";
+import assert from "node:assert";
+import path from "node:path";
+import fs from "node:fs/promises";
+import os from "node:os";
+import { runConfigCreator } from "../src/create-secretlintrc.js";
 
 /**
  *
@@ -27,7 +26,7 @@ describe("create-secretlintrc", function () {
 
     beforeEach(async () => {
         tmpConfigDir = await fs.mkdtemp(path.join(os.tmpdir(), "secretlint-config"));
-        const packageFilePath = path.join(__dirname, "fixtures", "package.json");
+        const packageFilePath = new URL(path.join("fixtures", "package.json"), import.meta.url);
         await fs.copyFile(packageFilePath, path.join(tmpConfigDir + "/package.json"));
     });
 

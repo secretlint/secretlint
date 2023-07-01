@@ -1,9 +1,9 @@
-import { snapshot } from "@secretlint/tester";
 import path from "path";
 import { creator as rule } from "../src/index";
-
-describe(rule.meta.id, () => {
-    snapshot({
+import test from "node:test";
+test(rule.meta.id, async (t) => {
+    const snapshot = (await import("@secretlint/tester")).snapshot;
+    return snapshot({
         defaultConfig: {
             rules: [
                 {
@@ -16,10 +16,10 @@ describe(rule.meta.id, () => {
         updateSnapshot: !!process.env.UPDATE_SNAPSHOT,
         snapshotDirectory: path.join(__dirname, "snapshots")
     }).forEach((name, test) => {
-        it(name, async function () {
+        return t.test(name, async (context) => {
             const status = await test();
             if (status === "skip") {
-                this.skip();
+                context.skip();
             }
         });
     });

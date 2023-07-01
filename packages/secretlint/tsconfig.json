@@ -1,29 +1,25 @@
 {
   "compilerOptions": {
     /* Basic Options */
-    "module": "commonjs",
+    "module": "ESNext",
     "moduleResolution": "NodeNext",
     "esModuleInterop": true,
     "newLine": "LF",
-    "outDir": "./lib/",
+    "outDir": "./module/",
     "target": "ES2018",
     "sourceMap": true,
     "declaration": true,
+    "declarationMap": true,
     "jsx": "preserve",
     "lib": [
       "esnext",
       "dom"
     ],
-    /* Strict Type-Checking Options */
     "strict": true,
-    /* Additional Checks */
-    /* Report errors on unused locals. */
+    "skipLibCheck": true,
     "noUnusedLocals": true,
-    /* Report errors on unused parameters. */
     "noUnusedParameters": true,
-    /* Report error when not all code paths in function return a value. */
     "noImplicitReturns": true,
-    /* Report errors for fallthrough cases in switch statement. */
     "noFallthroughCasesInSwitch": true
   },
   "include": [

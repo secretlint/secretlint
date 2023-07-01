@@ -1,12 +1,12 @@
 // Rule Interfaces
-import { SecretLintSourceIdentifierNode } from "./SecretLintSource";
-import {
+import type { SecretLintSourceIdentifierNode } from "./SecretLintSource.js";
+import type {
     SecretLintRuleLocalizeMessages,
     SecretLintRuleMessageTranslate,
     SecretLintRuleMessageTranslateResult,
-} from "./SecretLintRuleTranslator";
-import { SecretLintSourceCode } from "./SecretLintSourceCode";
-import { SecretlintCoreSharedOptions } from "./SecretlintCoreSharedOptions";
+} from "./SecretLintRuleTranslator.js";
+import type { SecretLintSourceCode } from "./SecretLintSourceCode.js";
+import type { SecretlintCoreSharedOptions } from "./SecretlintCoreSharedOptions.js";
 
 export type SecretLintRuleReportDescriptor = {
     message: SecretLintRuleMessageTranslateResult<any>;

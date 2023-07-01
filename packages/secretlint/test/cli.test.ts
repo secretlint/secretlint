@@ -1,13 +1,13 @@
-import fs from "fs";
-import path from "path";
-import assert from "assert";
-import { cli, run } from "../src/cli";
+import fs from "node:fs";
+import assert from "node:assert";
+import { cli, run } from "../src/cli.js";
+import { fileURLToPath } from "url";
 
-const fixturesDir = path.join(__dirname, "snapshots");
+const SNAPSHOT_DIR = new URL("./snapshots/", import.meta.url);
 const createSnapshotReplacer = () => {
     return (_key: string, value: any) => {
         if (typeof value === "string") {
-            return value.replace(fixturesDir, "[SNAPSHOT]");
+            return value.replace(fileURLToPath(SNAPSHOT_DIR), "[SNAPSHOT]/");
         }
         return value;
     };
@@ -29,19 +29,21 @@ const createSnapshotReplacer = () => {
  *   - snapshot result
  */
 describe("cli snapshot testing", function () {
-    fs.readdirSync(fixturesDir).map((caseName) => {
+    fs.readdirSync(SNAPSHOT_DIR).map((caseName) => {
         it(`test ${caseName}`, async function () {
-            const fixtureDir = path.join(fixturesDir, caseName);
-            const actualFilePath = path.join(fixtureDir, "input.txt");
-            const actualOptions = require(path.join(fixtureDir, "options.ts")).options;
-            const actualInputs = require(path.join(fixtureDir, "options.ts")).inputs;
-            const actual = await run(actualInputs ? actualInputs : [actualFilePath], {
+            const fixtureDir = new URL(caseName + "/", SNAPSHOT_DIR);
+            // url join input.txt
+            const actualFilePath = new URL("./input.txt", fixtureDir);
+            const options = await import(new URL("./options.ts", fixtureDir).href);
+            const actualOptions = options.options;
+            const actualInputs = options.inputs;
+            const actual = await run(actualInputs ? actualInputs : [fileURLToPath(actualFilePath)], {
                 ...cli.flags,
                 ...actualOptions,
-                cwd: fixtureDir,
+                cwd: fileURLToPath(fixtureDir),
                 // Less diff between env
                 color: false,
-                format: path.join(__dirname, "./test-formatter"),
+                format: "json",
             }).catch((error) => {
                 // if throw an error, save it
                 return `Error: ${error.message}`;
@@ -51,7 +53,7 @@ describe("cli snapshot testing", function () {
                 actual.stdout = JSON.parse(actual.stdout);
             }
             const normalizedActual = JSON.parse(JSON.stringify(actual, createSnapshotReplacer(), 4));
-            const expectedFilePath = path.join(fixtureDir, "output.json");
+            const expectedFilePath = new URL("output.json", fixtureDir);
             // Usage: update snapshots
             // UPDATE_SNAPSHOT=1 npm test
             if (!fs.existsSync(expectedFilePath) || process.env.UPDATE_SNAPSHOT) {
@@ -69,7 +71,8 @@ describe("cli snapshot testing", function () {
                 normalizedActual,
                 expected,
                 `
-${fixtureDir}
+Fixture: ${fixtureDir}
+Result:
 ${JSON.stringify(normalizedActual, createSnapshotReplacer(), 4)}
 `
             );

@@ -1,10 +1,10 @@
-import fs from "fs";
-import path from "path";
-import assert from "assert";
-import { createFormatter, getFormatterList } from "../src/index";
-import { results } from "./snapshots/input";
-
-const escapeStringRegexp = require("escape-string-regexp");
+import fs from "node:fs";
+import path from "node:path";
+import assert from "node:assert";
+import { loadFormatter, getFormatterList } from "../src/index.js";
+import { results } from "./snapshots/input.js";
+import escapeStringRegexp from "escape-string-regexp";
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const snapshotsDir = path.join(__dirname, "snapshots");
 const snapshotReplace = (value: string) => {
     return value.replace(new RegExp(escapeStringRegexp(snapshotsDir), "g"), "[SNAPSHOT]");
@@ -12,11 +12,11 @@ const snapshotReplace = (value: string) => {
 
 describe("@secretlint/formatter", function () {
     const formatters = getFormatterList();
-    formatters.forEach((formatter) => {
+    for (const formatter of formatters) {
         const formatterName = formatter.name;
         it(`test ${formatterName}`, async function () {
             const fixtureDir = snapshotsDir;
-            const formatter = createFormatter({
+            const formatter = await loadFormatter({
                 color: false,
                 formatterName: formatterName,
             });
@@ -33,5 +33,5 @@ describe("@secretlint/formatter", function () {
             const expected = fs.readFileSync(expectedFilePath, "utf-8");
             assert.strictEqual(actual, expected);
         });
-    });
+    }
 });

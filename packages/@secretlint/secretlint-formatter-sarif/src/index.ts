@@ -1,7 +1,7 @@
 import { SecretLintCoreResult, SecretLintFormatter } from "@secretlint/types";
 import { SarifBuilder, SarifResultBuilder, SarifRuleBuilder, SarifRunBuilder } from "node-sarif-builder";
-import path from "path";
-import { pathToFileURL } from "url";
+import path from "node:path";
+import { pathToFileURL } from "node:url";
 
 function buildSarifResult(lintResults: SecretLintCoreResult[]) {
     // SARIF builder

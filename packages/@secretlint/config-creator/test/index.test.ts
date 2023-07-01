@@ -1,10 +1,10 @@
 // LICENSE : MIT
-"use strict";
-import assert from "assert";
-import path from "path";
-import fs from "fs/promises";
-import os from "os";
-import { createConfig } from "@secretlint/config-creator";
+import assert from "node:assert";
+import path from "node:path";
+import fs from "node:fs/promises";
+import os from "node:os";
+import { createConfig } from "../src/index.js";
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const readPkg = (filePath: string) => {
     return fs.readFile(filePath, "utf-8").then((content) => {
         return JSON.parse(content);

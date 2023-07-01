@@ -1,19 +1,19 @@
 import { lintSource } from "@secretlint/core";
 import { loadConfig, loadPackagesFromConfigDescriptor } from "@secretlint/config-loader";
 import { createRawSource } from "@secretlint/source-creator";
-import { createFormatter } from "@secretlint/formatter";
+import { loadFormatter } from "@secretlint/formatter";
 import {
     SecretLintConfigDescriptor,
     SecretLintCoreConfig,
     SecretLintCoreResult,
     SecretLintRuleLocaleTag,
 } from "@secretlint/types";
-import os from "os";
-import path from "path";
+import os from "node:os";
+import path from "node:path";
 import { secretLintProfiler } from "@secretlint/profiler";
 import pMap from "p-map";
-
-const debug = require("debug")("@secretlint/node");
+import debug0 from "debug";
+const debug = debug0("@secretlint/node");
 export type SecretLintEngineOptionsBase = {
     /**
      * If cwd is not defined, cwd(current working dir) is current working dir.
@@ -118,7 +118,7 @@ const executeOnContent = async ({
     secretLintProfiler.mark({
         type: "@node>format::start",
     });
-    const formatter = createFormatter({
+    const formatter = await loadFormatter({
         color: options.color ?? true,
         formatterName: options.formatter,
         terminalLink: options.terminalLink ?? false,
@@ -157,7 +157,7 @@ const executeOnFiles = async ({
     secretLintProfiler.mark({
         type: "@node>format::start",
     });
-    const formatter = createFormatter({
+    const formatter = await loadFormatter({
         color: options.color ?? true,
         formatterName: options.formatter,
         terminalLink: options.terminalLink ?? false,

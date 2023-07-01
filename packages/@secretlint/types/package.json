@@ -1,59 +1,76 @@
 {
-    "name": "@secretlint/types",
-    "version": "6.2.4",
-    "description": "A typing package for @secretlint",
-    "keywords": [
-        "secretlint"
-    ],
-    "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/types/",
-    "bugs": {
-        "url": "https://github.com/secretlint/secretlint/issues"
+  "name": "@secretlint/types",
+  "version": "6.2.4",
+  "description": "A typing package for @secretlint",
+  "keywords": [
+    "secretlint"
+  ],
+  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/types/",
+  "bugs": {
+    "url": "https://github.com/secretlint/secretlint/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/secretlint/secretlint.git"
+  },
+  "license": "MIT",
+  "author": "azu",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./module/index.d.ts",
+        "default": "./module/index.js"
+      },
+      "require": {
+        "types": "./lib/index.d.ts",
+        "default": "./lib/index.js"
+      },
+      "default": "./lib/index.js"
     },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/secretlint/secretlint.git"
-    },
-    "license": "MIT",
-    "author": "azu",
-    "main": "lib/index.js",
-    "types": "lib/index.d.ts",
-    "directories": {
-        "lib": "lib",
-        "test": "test"
-    },
-    "files": [
-        "bin/",
-        "lib/",
-        "src/"
-    ],
-    "scripts": {
-        "build": "tsc -p .",
-        "clean": "rimraf lib/",
-        "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
-        "prepublish": "npm run --if-present build",
-        "test": "tsc -p test",
-        "watch": "tsc -p . --watch"
-    },
-    "prettier": {
-        "printWidth": 120,
-        "singleQuote": false,
-        "tabWidth": 4
-    },
-    "devDependencies": {
-        "@types/mocha": "^10.0.1",
-        "@types/node": "^18.16.18",
-        "mocha": "^10.2.0",
-        "prettier": "^2.8.1",
-        "rimraf": "^3.0.2",
-        "ts-node": "^10.9.1",
-        "ts-node-test-register": "^10.0.0",
-        "tsd": "^0.28.1",
-        "typescript": "^4.9.4"
-    },
-    "engines": {
-        "node": "^14.13.1 || >=16.0.0"
-    },
-    "publishConfig": {
-        "access": "public"
-    }
+    "./package.json": "./package.json"
+  },
+  "main": "./lib/index.js",
+  "module": "./module/index.js",
+  "types": "./module/index.d.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "module/",
+    "src/"
+  ],
+  "scripts": {
+    "build": "tsc --build . && tsc --build ./tsconfig.cjs.json && tsconfig-to-dual-package",
+    "clean": "tsc --build --clean && tsc --build --clean ./tsconfig.cjs.json",
+    "prepublishOnly": "npm run clean && npm run build",
+    "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
+    "prepublish": "npm run --if-present build",
+    "test": "tsc -p ./tsconfig.test.json"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "singleQuote": false,
+    "tabWidth": 4
+  },
+  "devDependencies": {
+    "@types/node": "^20.3.3",
+    "prettier": "^2.8.1",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.9.1",
+    "tsconfig-to-dual-package": "^1.2.0",
+    "tsd": "^0.28.1",
+    "typescript": "^5.1.6"
+  },
+  "packageManager": "yarn@1.22.18",
+  "engines": {
+    "node": "^14.13.1 || >=16.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

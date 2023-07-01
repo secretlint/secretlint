@@ -1,6 +1,6 @@
-import { createMessageFromRange } from "./create-messages-utils";
-import { filterMaskSecretsData } from "../../src/messages/filter-mask-secrets";
-import * as assert from "assert";
+import { createMessageFromRange } from "./create-messages-utils.js";
+import { filterMaskSecretsData } from "../../src/messages/filter-mask-secrets.js";
+import * as assert from "node:assert";
 
 describe("filter-mask-secrets", function () {
     it("should not mask if data is not defined", () => {

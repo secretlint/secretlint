@@ -33,7 +33,7 @@
         "clean": "rimraf lib/",
         "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
         "prepublish": "npm run --if-present build",
-        "test": "mocha \"test/**/*.ts\"",
+        "test": "node --loader ts-node/esm --test test/index.test.ts",
         "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
         "watch": "tsc -p . --watch"
     },
@@ -49,13 +49,10 @@
     },
     "devDependencies": {
         "@secretlint/tester": "^6.2.4",
-        "@types/mocha": "^10.0.1",
         "@types/node": "^18.16.18",
-        "mocha": "^10.2.0",
         "prettier": "^2.8.1",
         "rimraf": "^3.0.2",
         "ts-node": "^10.9.1",
-        "ts-node-test-register": "^10.0.0",
         "typescript": "^4.9.4"
     },
     "engines": {

@@ -1,4 +1,3 @@
-"use strict";
 import { SecretLintCoreResult, SecretLintCoreResultMessage, SecretLintFormatter } from "@secretlint/types";
 
 //------------------------------------------------------------------------------

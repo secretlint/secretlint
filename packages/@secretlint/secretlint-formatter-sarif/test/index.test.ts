@@ -1,17 +1,19 @@
-import fs from "fs";
-import path from "path";
-import assert from "assert";
-import { results } from "./snapshots/input";
-import formatter from "../src/index";
+import fs from "node:fs";
+import path from "node:path";
+import test from "node:test";
+import assert from "node:assert";
+import { results } from "./snapshots/input.js";
+import formatter from "../src/index.js";
+import escapeStringRegexp from "escape-string-regexp";
 
-const escapeStringRegexp = require("escape-string-regexp");
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const snapshotsDir = path.join(__dirname, "snapshots");
 const snapshotReplace = (value: string) => {
     return value.replace(new RegExp(escapeStringRegexp(snapshotsDir), "g"), "[SNAPSHOT]");
 };
 
-describe("@secretlint/secretlint-formatter-sarif", function () {
-    it(`snapshot testing`, async function () {
+test("@secretlint/secretlint-formatter-sarif", (t) => {
+    t.test(`snapshot testing`, async (context) => {
         const fixtureDir = snapshotsDir;
         const actual = snapshotReplace(
             formatter(results, {
@@ -23,7 +25,7 @@ describe("@secretlint/secretlint-formatter-sarif", function () {
         // UPDATE_SNAPSHOT=1 npm test
         if (!fs.existsSync(expectedFilePath) || process.env.UPDATE_SNAPSHOT) {
             fs.writeFileSync(expectedFilePath, actual);
-            this.skip(); // skip when updating snapshots
+            context.skip(); // skip when updating snapshots
             return;
         }
         // compare input and output

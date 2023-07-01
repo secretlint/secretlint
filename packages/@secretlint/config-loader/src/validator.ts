@@ -4,13 +4,13 @@ import type {
     SecretLintCoreConfigRule,
     SecretLintCoreConfigRulePreset,
 } from "@secretlint/types";
-import { AggregationError } from "./AggregationError";
+import { AggregationError } from "./AggregationError.js";
 import { SecretLintConfigDescriptorRule, SecretLintConfigDescriptorRulePreset } from "@secretlint/types";
 import {
     validateSecretLintConfigDescriptor_,
     validateSecretLintConfigDescriptorRule_,
     validateSecretLintConfigDescriptorRulePreset_,
-} from "./descriptor-types.validator";
+} from "./descriptor-types.validator.js";
 
 function invariant(condition: any, message: string): asserts condition {
     if (condition) {

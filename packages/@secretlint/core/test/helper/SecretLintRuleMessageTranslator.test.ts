@@ -1,5 +1,5 @@
-import assert from "assert";
-import { createTranslator } from "../../src/helper/SecretLintRuleMessageTranslator";
+import assert from "node:assert";
+import { createTranslator } from "../../src/helper/SecretLintRuleMessageTranslator.js";
 
 describe("SecretLintRuleMessageTranslator", function () {
     it("translate message with defaultLocale", () => {

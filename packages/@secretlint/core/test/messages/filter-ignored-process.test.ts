@@ -1,8 +1,7 @@
 // LICENSE : MIT
-"use strict";
-import { filterIgnoredMessages } from "../../src/messages/filter-ignored-process";
-import * as assert from "assert";
-import { createIgnoredMessageFromRange, createMessageFromRange } from "./create-messages-utils";
+import { filterIgnoredMessages } from "../../src/messages/filter-ignored-process.js";
+import * as assert from "node:assert";
+import { createIgnoredMessageFromRange, createMessageFromRange } from "./create-messages-utils.js";
 
 describe("message-filter", function () {
     context("when pass empty messages", function () {

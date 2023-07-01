@@ -1,5 +1,5 @@
-import { SecretLintProfiler } from "./index";
-import perf_hooks from "perf_hooks";
+import { SecretLintProfiler } from "./index.js";
+import perf_hooks from "node:perf_hooks";
 
 export { SecretLintProfiler };
 export const secretLintProfiler = new SecretLintProfiler({

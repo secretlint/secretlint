@@ -1,5 +1,3 @@
-import { SecretLintTestCaseOptions } from "@secretlint/tester";
-
-export const options: SecretLintTestCaseOptions = {
+export const options = {
     inputFilePath: ".env",
 };

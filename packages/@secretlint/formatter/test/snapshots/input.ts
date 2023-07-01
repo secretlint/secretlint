@@ -1,6 +1,6 @@
 import { SecretLintCoreResult } from "@secretlint/types";
-import path from "path";
-
+import path from "node:path";
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 export const results: SecretLintCoreResult[] = [
     {
         filePath: path.join(__dirname, "input.txt"),

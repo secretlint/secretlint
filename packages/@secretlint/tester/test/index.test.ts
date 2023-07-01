@@ -1,9 +1,11 @@
-import { snapshot } from "../src";
-import path from "path";
-import { creator as rule } from "./fixtures/secretlint-rule-example";
+import test from "node:test";
+import { snapshot } from "../src/index.js";
+import path from "node:path";
+import { creator as rule } from "./fixtures/secretlint-rule-example.js";
 
-describe("@secretlint/tester", () => {
-    snapshot({
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
+test("@secretlint/tester", (t) => {
+    return snapshot({
         defaultConfig: {
             rules: [
                 {
@@ -16,10 +18,10 @@ describe("@secretlint/tester", () => {
         updateSnapshot: !!process.env.UPDATE_SNAPSHOT,
         snapshotDirectory: path.join(__dirname, "fixtures/snapshots"),
     }).forEach((name, test) => {
-        it(name, async function () {
+        return t.test(name, async (context) => {
             const status = await test();
             if (status === "skip") {
-                this.skip();
+                context.skip();
             }
         });
     });

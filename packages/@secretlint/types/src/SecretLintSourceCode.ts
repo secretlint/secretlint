@@ -1,8 +1,8 @@
-import {
+import type {
     SecretLintSourceNodeLocation,
     SecretLintSourceNodePosition,
     SecretLintSourceNodeRange,
-} from "./SecretLintSource";
+} from "./SecretLintSource.js";
 
 /**
  * This class represent of source code.

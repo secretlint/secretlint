@@ -26,8 +26,7 @@ export default defineConfig([
                 dir: "browser/",
                 format: "es",
                 exports: "named",
-                sourcemap: true,
-                treeshake: true
+                sourcemap: true
             }
         ],
         // Delete process.version
@@ -35,7 +34,8 @@ export default defineConfig([
             "__DEV__": false,
             "process.platform": null,
             "process.version": null,
-            "process.env.NODE_ENV": JSON.stringify("production")
+            "process.env.NODE_ENV": JSON.stringify("production"),
+            preventAssignment: false
         }), resolve({ preferBuiltins: false }), commonjs(), typescript(), nodePolyfills()]
     }
 ]);

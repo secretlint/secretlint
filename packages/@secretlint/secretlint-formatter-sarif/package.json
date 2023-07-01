@@ -18,27 +18,37 @@
   "license": "MIT",
   "author": "azu",
   "sideEffects": false,
-  "main": "lib/index.js",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./module/index.d.ts",
+        "default": "./module/index.js"
+      },
+      "default": "./module/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./module/index.js",
   "module": "module/index.js",
-  "types": "lib/index.d.ts",
+  "types": "./module/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "test"
   },
   "files": [
     "bin/",
-    "lib/",
     "module/",
     "src/"
   ],
   "scripts": {
-    "build": "tsc -p . && tsc -p ./tsconfig.module.json",
-    "clean": "rimraf lib/ module/",
+    "build": "tsc --build",
+    "clean": "tsc --build --clean",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublishOnly": "npm run clean && npm run build",
-    "test": "mocha \"test/**/*.ts\"",
+    "test": "node --loader ts-node/esm --test test/index.test.ts",
     "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
-    "watch": "tsc -p . --watch"
+    "watch": "tsc --build --watch"
   },
   "prettier": {
     "printWidth": 120,
@@ -52,14 +62,15 @@
   "devDependencies": {
     "@secretlint/types": "^6.2.4",
     "@types/mocha": "^10.0.1",
-    "@types/node": "^18.16.18",
+    "@types/node": "^20.3.3",
+    "escape-string-regexp": "^5.0.0",
     "mocha": "^10.2.0",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
     "ts-node": "^10.9.1",
-    "ts-node-test-register": "^10.0.0",
-    "typescript": "^4.9.4"
+    "typescript": "^5.1.6"
   },
+  "packageManager": "yarn@1.22.18",
   "publishConfig": {
     "access": "public"
   }

@@ -1,5 +1,5 @@
 // Core Interface
-export {
+export type {
     SecretLintCoreIgnoreDescriptor,
     SecretLintCoreReportDescriptor,
     SecretLintCoreIgnoreMessage,
@@ -12,11 +12,11 @@ export {
     SecretLintCoreConfigUnionRule,
     SecretLintCoreConfigRule,
     SecretLintCoreConfigRulePreset,
-} from "./SecretLintCore";
-export { SecretlintCoreSharedOptions } from "./SecretlintCoreSharedOptions";
-export { SecretLintRuleSeverityLevel } from "./SecretLintRuleSeverityLevel";
+} from "./SecretLintCore.js";
+export type { SecretlintCoreSharedOptions } from "./SecretlintCoreSharedOptions.js";
+export type { SecretLintRuleSeverityLevel } from "./SecretLintRuleSeverityLevel.js";
 // Rule interface
-export {
+export type {
     SecretLintRuleIgnoreDescriptor,
     SecretLintRuleCreator,
     SecretLintRuleContext,
@@ -24,23 +24,23 @@ export {
     SecretLintRuleReportDescriptor,
     SecretLintRuleReportHandler,
     SecretLintRuleContentType,
-} from "./SecretLintRule";
+} from "./SecretLintRule.js";
 // Rule Preset
-export {
+export type {
     SecretLintRulePresetContext,
     SecretLintRulePresetCreator,
     SecretLintRulePresetCreatorOptions,
-} from "./SecretLintRulePreset";
+} from "./SecretLintRulePreset.js";
 // Source
-export {
+export type {
     SecretLintRawSource,
     SecretLintSourceIdentifierNode,
     SecretLintSourceNodeLocation,
     SecretLintSourceNodePosition,
     SecretLintSourceNodeRange,
     SecretLintSourceValueNode,
-} from "./SecretLintSource";
-export {
+} from "./SecretLintSource.js";
+export type {
     SecretLintCreateRuleMessageTranslator,
     SecretLintRuleMessageTranslate,
     SecretLintRuleLocaleTag,
@@ -49,13 +49,13 @@ export {
     SecretLintRuleLocalizeMessages,
     SecretLintRuleMessageTranslateResult,
     SecretLintRuleLocalizeMessageProps,
-} from "./SecretLintRuleTranslator";
-export { SecretLintSourceCode } from "./SecretLintSourceCode";
+} from "./SecretLintRuleTranslator.js";
+export type { SecretLintSourceCode } from "./SecretLintSourceCode.js";
 // Config
-export {
+export type {
     SecretLintConfigDescriptor,
     SecretLintConfigDescriptorRule,
     SecretLintConfigDescriptorRulePreset,
-} from "./SecretLintConfigDescriptor";
+} from "./SecretLintConfigDescriptor.js";
 // Formatter
-export { SecretLintFormatterOptions, SecretLintFormatter } from "./SecretLintFormatter";
+export type { SecretLintFormatterOptions, SecretLintFormatter } from "./SecretLintFormatter.js";

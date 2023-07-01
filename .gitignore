@@ -160,3 +160,5 @@ lib/
 module/
 dist/
 browser/
+/module/
+/lib/

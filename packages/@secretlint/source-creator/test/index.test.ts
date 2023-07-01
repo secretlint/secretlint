@@ -1,8 +1,8 @@
-import fs from "fs";
-import path from "path";
-import assert from "assert";
-import { createRawSource } from "../src/index";
-
+import fs from "node:fs";
+import path from "node:path";
+import assert from "node:assert";
+import { createRawSource } from "../src/index.js";
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const fixturesDir = path.join(__dirname, "snapshots");
 const createSnapshotReplacer = () => {
     return (key: string, value: any) => {

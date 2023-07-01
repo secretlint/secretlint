@@ -1,6 +1,6 @@
-import fs from "fs";
-import util from "util";
-import path from "path";
+import fs from "node:fs";
+import util from "node:util";
+import path from "node:path";
 import { SecretLintRawSource } from "@secretlint/types";
 
 // @ts-expect-error invalid type?
