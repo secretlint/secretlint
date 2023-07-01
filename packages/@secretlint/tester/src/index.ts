@@ -26,7 +26,7 @@ export type SnapshotOptions = {
      * Replace `id` to `rule`  implicitly
      * If this options is not defined, create testDefinitions from defaultConfig.
      *
-     * This options is not required almost case.
+     * This options are not required almost case.
      */
     testDefinitions?: {
         id: string;
