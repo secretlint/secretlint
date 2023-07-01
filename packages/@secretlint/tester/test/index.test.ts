@@ -1,7 +1,7 @@
-import { snapshot } from "../src";
-import path from "path";
-import { creator as rule } from "./fixtures/secretlint-rule-example";
-
+import { snapshot } from "../src/index.js";
+import path from "node:path";
+import { creator as rule } from "./fixtures/secretlint-rule-example.js";
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 describe("@secretlint/tester", () => {
     snapshot({
         defaultConfig: {

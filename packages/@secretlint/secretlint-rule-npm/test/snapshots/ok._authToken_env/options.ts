@@ -1,5 +1,3 @@
-import type { SecretLintTestCaseOptions } from "@secretlint/tester";
-
-export const options: SecretLintTestCaseOptions = {
+export const options = {
     inputFilePath: ".npmrc",
 };

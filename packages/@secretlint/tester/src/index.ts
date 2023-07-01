@@ -1,18 +1,14 @@
-import * as fs from "fs";
-import * as path from "path";
-import * as assert from "assert";
+import * as fs from "node:fs";
+import * as path from "node:path";
+import * as assert from "node:assert";
 import { lintSource } from "@secretlint/core";
 import { loadConfig } from "@secretlint/config-loader";
 import { createRawSource } from "@secretlint/source-creator";
 import { SecretLintCoreConfig, SecretLintUnionRuleCreator } from "@secretlint/types";
+import { pathToFileURL } from "node:url";
 
 const canResolve = (filePath: string): boolean => {
-    try {
-        require.resolve(filePath);
-        return true;
-    } catch {
-        return false;
-    }
+    return fs.existsSync(filePath) && fs.statSync(filePath).isFile();
 };
 export type SnapshotOptions = {
     /**
@@ -111,7 +107,7 @@ export const snapshot = (options: SnapshotOptions) => {
                         const secretlintTestCaseOptions: SecretLintTestCaseOptions = canResolve(
                             secretlintTestCaseOptionsFilePath
                         )
-                            ? require(secretlintTestCaseOptionsFilePath).options
+                            ? (await import(pathToFileURL(secretlintTestCaseOptionsFilePath).href)).options
                             : {};
                         const inputPrefixFileName = fs.readdirSync(fixtureDir).find((filePath) => {
                             return filePath.startsWith("input");
