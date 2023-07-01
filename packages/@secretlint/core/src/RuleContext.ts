@@ -1,4 +1,4 @@
-import { EventEmitter } from "./helper/promise-event-emitter";
+import { EventEmitter } from "./helper/promise-event-emitter.js";
 import {
     SecretLintCoreIgnoreDescriptor,
     SecretLintCoreIgnoreMessage,
@@ -12,7 +12,7 @@ import {
     SecretLintRuleSeverityLevel,
     SecretLintSourceCode,
 } from "@secretlint/types";
-import { createTranslator } from "./helper/SecretLintRuleMessageTranslator";
+import { createTranslator } from "./helper/SecretLintRuleMessageTranslator.js";
 
 type Handler<T> = (descriptor: T) => void;
 export type ContextEvents = {

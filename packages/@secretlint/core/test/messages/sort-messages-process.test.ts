@@ -1,8 +1,7 @@
 // LICENSE : MIT
-"use strict";
-import * as assert from "assert";
-import { sortMessagesByLocation } from "../../src/messages/sort-messages-process";
-import { createMessageFromRange } from "./create-messages-utils";
+import * as assert from "node:assert";
+import { sortMessagesByLocation } from "../../src/messages/sort-messages-process.js";
+import { createMessageFromRange } from "./create-messages-utils.js";
 
 describe("sort-message", function () {
     context("when empty array", function () {

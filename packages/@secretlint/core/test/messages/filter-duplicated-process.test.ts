@@ -1,8 +1,7 @@
 // LICENSE : MIT
-"use strict";
-import { filterDuplicatedMessages } from "../../src/messages/filter-duplicated-process";
-import * as assert from "assert";
-import { createMessageFromRange } from "./create-messages-utils";
+import { filterDuplicatedMessages } from "../../src/messages/filter-duplicated-process.js";
+import * as assert from "node:assert";
+import { createMessageFromRange } from "./create-messages-utils.js";
 
 describe("message-filter", function () {
     context("when pass empty messages", function () {

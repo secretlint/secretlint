@@ -1,10 +1,10 @@
 import { SecretLintCoreIgnoreMessage, SecretLintCoreResultMessage } from "@secretlint/types";
-import { filterIgnoredMessages } from "./filter-ignored-process";
-import { createMessageProcessor } from "./MessageProcessManager";
-import { filterDuplicatedMessages } from "./filter-duplicated-process";
-import { sortMessagesByLocation } from "./sort-messages-process";
-import { filterByAllowMessageIds } from "./filter-message-id";
-import { filterMaskSecretsData } from "./filter-mask-secrets";
+import { filterIgnoredMessages } from "./filter-ignored-process.js";
+import { createMessageProcessor } from "./MessageProcessManager.js";
+import { filterDuplicatedMessages } from "./filter-duplicated-process.js";
+import { sortMessagesByLocation } from "./sort-messages-process.js";
+import { filterByAllowMessageIds } from "./filter-message-id.js";
+import { filterMaskSecretsData } from "./filter-mask-secrets.js";
 
 export type cleanupMessagesOptions = {
     reportedMessages: SecretLintCoreResultMessage[];

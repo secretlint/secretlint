@@ -5,7 +5,7 @@ import {
     SecretLintRuleReportHandler,
     SecretLintSourceCode,
 } from "@secretlint/types";
-import { AllowMessage } from "./messages/filter-message-id";
+import { AllowMessage } from "./messages/filter-message-id.js";
 
 export type SecretLintRuleOptions = {
     context: SecretLintRuleContext;

@@ -5,10 +5,10 @@ import {
     SecretLintRulePresetContext,
     SecretLintSourceCode,
 } from "@secretlint/types";
-import { PromiseEventEmitter } from "./helper/promise-event-emitter";
-import { SecretLintRule } from "./SecretLintRuleImpl";
+import { PromiseEventEmitter } from "./helper/promise-event-emitter.js";
+import { SecretLintRule } from "./SecretLintRuleImpl.js";
 import { secretLintProfiler } from "@secretlint/profiler";
-import { AllowMessage } from "./messages/filter-message-id";
+import { AllowMessage } from "./messages/filter-message-id.js";
 
 export type RunningEvents = {
     collectAllowMessageIds(): AllowMessage[];

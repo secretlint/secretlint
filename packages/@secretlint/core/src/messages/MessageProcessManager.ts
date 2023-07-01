@@ -1,5 +1,4 @@
 // LICENSE : MIT
-"use strict";
 import { SecretLintCoreResultMessage, SecretLintCoreIgnoreMessage } from "@secretlint/types";
 
 export type SecretLintAllMessages = SecretLintCoreResultMessage | SecretLintCoreIgnoreMessage;

@@ -5,7 +5,7 @@ import {
     SecretLintSourceNodePosition,
     SecretLintSourceNodeRange,
 } from "@secretlint/types";
-import { invariant } from "./helper/invariant";
+import { invariant } from "./helper/invariant.js";
 
 /**
  * This class represent of source code.

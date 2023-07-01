@@ -10,12 +10,12 @@ import {
     SecretLintRuleLocaleTag,
     SecretLintSourceCode,
 } from "@secretlint/types";
-import { SecretLintSourceCodeImpl } from "./SecretLintSourceCodeImpl";
-import { ContextEvents, createContextEvents, createRuleContext } from "./RuleContext";
-import { createRunningEvents, RunningEvents } from "./RunningEvents";
+import { SecretLintSourceCodeImpl } from "./SecretLintSourceCodeImpl.js";
+import { ContextEvents, createContextEvents, createRuleContext } from "./RuleContext.js";
+import { createRunningEvents, RunningEvents } from "./RunningEvents.js";
 import { secretLintProfiler } from "@secretlint/profiler";
-import { createRulePresetContext } from "./RulePresetContext";
-import { cleanupMessages } from "./messages";
+import { createRulePresetContext } from "./RulePresetContext.js";
+import { cleanupMessages } from "./messages/index.js";
 import debug0 from "debug";
 const debug = debug0("@secretlint/core");
 export type SecretLintSourceOptions = {

@@ -8,8 +8,8 @@ import {
     SecretLintRulePresetContext,
     SecretLintSourceCode,
 } from "@secretlint/types";
-import { RunningEvents } from "./RunningEvents";
-import { ContextEvents, createRuleContext } from "./RuleContext";
+import { RunningEvents } from "./RunningEvents.js";
+import { ContextEvents, createRuleContext } from "./RuleContext.js";
 
 /**
  * Create a context for Rule Preset

@@ -1,6 +1,5 @@
 // LICENSE : MIT
-"use strict";
-import { SecretLintAllMessages } from "./MessageProcessManager";
+import { SecretLintAllMessages } from "./MessageProcessManager.js";
 
 /**
  * equal message
