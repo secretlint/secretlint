@@ -1,5 +1,4 @@
 // LICENSE : MIT
-"use strict";
 import { TextlintResult } from "@textlint/types";
 import {
     loadFormatter as textlintCreateFormatter,
@@ -7,16 +6,18 @@ import {
 } from "@textlint/linter-formatter";
 import { SecretLintCoreResult } from "@secretlint/types";
 import terminalLink from "terminal-link";
-import { FormatterConfig } from "./types";
+import { FormatterConfig } from "./types.js";
 import { moduleInterop } from "@textlint/module-interop";
-import fs from "fs";
-import path from "path";
+import fs from "node:fs";
+import path from "node:path";
 // @ts-expect-error: no @types
 import isFile from "is-file";
 // @ts-expect-error: no @types
 import tryResolve from "try-resolve";
+import debug0 from "debug";
 
-const debug = require("debug")("@secretlint/formatter");
+const debug = debug0("@secretlint/formatter");
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 export interface SecretLintFormatterConfig {
     /**
@@ -105,10 +106,10 @@ export async function loadFormatter(formatterConfig: SecretLintFormatterConfig) 
     debug(`formatterName: ${formatterName}`);
 
     try {
-        const format = secretlintCreateFormatter(formatterConfig);
+        const formatter = await secretlintCreateFormatter(formatterConfig);
         return {
             format: (results: SecretLintCoreResult[]) => {
-                return format(results);
+                return formatter.format(results);
             },
         };
     } catch {
@@ -127,7 +128,7 @@ export async function loadFormatter(formatterConfig: SecretLintFormatterConfig) 
     }
 }
 
-export function secretlintCreateFormatter(formatterConfig: FormatterConfig) {
+export async function secretlintCreateFormatter(formatterConfig: FormatterConfig) {
     const formatterName = formatterConfig.formatterName;
     debug(`formatterName: ${formatterName}`);
     let formatter: (results: SecretLintCoreResult[], formatterConfig: FormatterConfig) => string;
@@ -149,13 +150,15 @@ export function secretlintCreateFormatter(formatterConfig: FormatterConfig) {
         }
     }
     try {
-        formatter = moduleInterop(require(formatterPath));
+        formatter = moduleInterop(await import(formatterPath)).default;
     } catch (ex) {
         throw new Error(`Could not find formatter ${formatterName}
 ${ex}`);
     }
-    return function (results: SecretLintCoreResult[]) {
-        return formatter(results, formatterConfig);
+    return {
+        format: function secretlintFormatterFormat(results: SecretLintCoreResult[]) {
+            return formatter(results, formatterConfig);
+        },
     };
 }
 
