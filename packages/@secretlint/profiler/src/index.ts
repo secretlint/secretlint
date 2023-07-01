@@ -1,4 +1,4 @@
-import perf_hooks from "perf_hooks";
+import perf_hooks from "node:perf_hooks";
 
 type Performance = typeof perf_hooks.performance | typeof performance;
 
@@ -113,7 +113,7 @@ export class SecretLintProfiler {
                     const match = entry.name.match(pattern);
                     const endIdentifier = match ? match[1] : undefined;
                     const suffix = match && match[2] ? match[2] : "";
-                    // if mark already {mark}}::start, measure start to end
+                    // if mark already {mark}::start, measure start to end
                     if (endIdentifier) {
                         const startIdentifier = `${endIdentifier}::start`;
                         this.entries.find((savedEntry) => {
