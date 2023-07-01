@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 import assert from "assert";
-import { loadFormatter, getFormatterList } from "../src/index";
+import { loadFormatter, getFormatterList } from "../src/index.js";
 import { results } from "./snapshots/input";
 
 const escapeStringRegexp = require("escape-string-regexp");
@@ -12,11 +12,11 @@ const snapshotReplace = (value: string) => {
 
 describe("@secretlint/formatter", function () {
     const formatters = getFormatterList();
-    formatters.forEach((formatter) => {
+    for (const formatter of formatters) {
         const formatterName = formatter.name;
         it(`test ${formatterName}`, async function () {
             const fixtureDir = snapshotsDir;
-            const formatter = loadFormatter({
+            const formatter = await loadFormatter({
                 color: false,
                 formatterName: formatterName,
             });
@@ -33,5 +33,5 @@ describe("@secretlint/formatter", function () {
             const expected = fs.readFileSync(expectedFilePath, "utf-8");
             assert.strictEqual(actual, expected);
         });
-    });
+    }
 });

@@ -8,12 +8,12 @@ import {
     SecretLintCoreResult,
     SecretLintRuleLocaleTag,
 } from "@secretlint/types";
-import os from "os";
-import path from "path";
+import os from "node:os";
+import path from "node:path";
 import { secretLintProfiler } from "@secretlint/profiler";
 import pMap from "p-map";
-
-const debug = require("debug")("@secretlint/node");
+import debug0 from "debug";
+const debug = debug0("@secretlint/node");
 export type SecretLintEngineOptionsBase = {
     /**
      * If cwd is not defined, cwd(current working dir) is current working dir.
