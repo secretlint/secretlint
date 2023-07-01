@@ -9,6 +9,7 @@ const debug = debug0("@secretlint/config-loader");
 
 const tryResolve = (packageName: string) => {
     try {
+        // TODO: use import.meta.resolve to support exports fields
         return require.resolve(packageName);
     } catch {
         return false;
