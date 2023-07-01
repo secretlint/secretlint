@@ -3,7 +3,7 @@ import { run, cli } from "../module/cli.js";
 
 // Entry Point
 try {
-    const { exitStatus, stderr, stdout } = await run(cli.input, flags);
+    const { exitStatus, stderr, stdout } = await run(cli.input, cli.flags);
     if (stdout) {
         console.log(stdout);
     }
