@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1688305250247,
+  "lastUpdate": 1688307253459,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -20252,6 +20252,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.55,
             "range": "±2.63%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "11a6da024779de4a75c1749dfc8d1ad525a4eaec",
+          "message": "fix(secretlint): update meow and globby and exit status (#547)\n\n* fix(secretlint): update meow and globby\r\n\r\n* fix(messages-to-markdown): update meow\r\n\r\n* fix globby reference\r\n\r\n* fix(secretlint): exit status 2 when crash process\r\n\r\n* Update Exit Status\r\n\r\n* fix: if --output is specified, exit status should be 0\r\n\r\n* fix: if --output is specified, exit status should be 0",
+          "timestamp": "2023-07-02T23:12:14+09:00",
+          "tree_id": "ca995cccaf4d9b6f33fdda262a5ff137a4555291",
+          "url": "https://github.com/secretlint/secretlint/commit/11a6da024779de4a75c1749dfc8d1ad525a4eaec"
+        },
+        "date": 1688307252473,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.79,
+            "range": "±1.01%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.69,
+            "range": "±1.42%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
