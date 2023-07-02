@@ -1,4 +1,4 @@
-import { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
+import type { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
 
 import secp256k1 from "secp256k1";
 import BN from "bn.js";

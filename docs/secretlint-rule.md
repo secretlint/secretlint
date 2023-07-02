@@ -34,7 +34,7 @@ Implementation:
 `@secretlint/types` package includes type definition for secretlint rule.
 
 ```ts
-import { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
+import type { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
 
 // MessageIds
 export const messages = {
@@ -108,12 +108,11 @@ There are a template for testing.
 
 ```ts
 import test from "node:test";
-import path from "path";
 import { snapshot } from "@secretlint/tester";
 import { creator as rule } from "../src/index.js";
 
 test("@secretlint/secretlint-rule-basicauth", async (t) => {
-    return snapshot({
+    await snapshot({
         // Base Config
         // You can override by each snapshot
         defaultConfig: {
@@ -126,7 +125,7 @@ test("@secretlint/secretlint-rule-basicauth", async (t) => {
             ]
         },
         updateSnapshot: !!process.env.UPDATE_SNAPSHOT,
-        snapshotDirectory: path.join(__dirname, "snapshots")
+        snapshotDirectory: new URL("./snapshots", import.meta.url),
     }).forEach((name, test) => {
         return it(name, async (context) => {
             const status = await test();
@@ -137,6 +136,42 @@ test("@secretlint/secretlint-rule-basicauth", async (t) => {
     });
 });
 ```
+
+<details>
+<summary>CommonJS version</summary>
+
+Basically, recommended to write ESM.
+If you have written a rule in CommonJS, you can use dynamic import for loading `@secretlint/tester`.
+
+```js
+const test = require("node:test");
+const { creator: rule } = require("../src/index.js");
+test("@secretlint/secretlint-rule-example", async (t) => {
+  const snapshot = (await import("@secretlint/tester")).snapshot;
+  return snapshot({
+    defaultConfig: {
+      rules: [
+        {
+          id: "@secretlint/secretlint-rule-example",
+          rule,
+          options: {},
+        },
+      ],
+    },
+    updateSnapshot: !!process.env.UPDATE_SNAPSHOT,
+    snapshotDirectory: new URL("snapshots", import.meta.url),
+  }).forEach((name, test) => {
+    return t.test(name, async (context) => {
+      const status = await test();
+      if (status === "skip") {
+        context.skip();
+      }
+    });
+  });
+});
+```
+
+</details>
 
 Creating test case
 

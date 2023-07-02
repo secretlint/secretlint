@@ -1,4 +1,4 @@
-import { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
+import type { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
 export const messages = {
     EXAMPLE_MESSAGE: {
         en: (props: { ID: string }) => `found secret: ${props.ID}`,
