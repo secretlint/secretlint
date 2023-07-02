@@ -5,7 +5,7 @@
     "moduleResolution": "NodeNext",
     "newLine": "LF",
     "outDir": "./lib/",
-    "target": "ES2018",
+    "target": "ES2022",
     "sourceMap": false,
     "declaration": false,
     "jsx": "preserve",

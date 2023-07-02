@@ -7,7 +7,7 @@
     "noEmit": true,
     "newLine": "LF",
     "outDir": "./module/",
-    "target": "ES2018",
+    "target": "ES2022",
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
