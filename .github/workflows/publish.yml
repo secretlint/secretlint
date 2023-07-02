@@ -22,7 +22,7 @@ jobs:
       - name: Setup Node ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
       - name: Git Identity
         run: |
           git config --global user.name 'github-actions[bot]'

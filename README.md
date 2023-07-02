@@ -60,7 +60,7 @@ For more details, please see [secretlint's Dockerfile](./publish/docker).
 
 ### Using Node.js
 
-**Prerequisites:**  Require [Node.js 16+](https://nodejs.org/).
+**Prerequisites:**  Require [Node.js 18+](https://nodejs.org/).
 
 Secretlint is written by JavaScript.
 You can install Secretlint using [npm](https://www.npmjs.com/):
@@ -454,7 +454,7 @@ jobs:
       - name: setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
       - name: Install
         run: npm install
       - name: Lint with Secretlint
