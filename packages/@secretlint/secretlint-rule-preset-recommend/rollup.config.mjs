@@ -4,6 +4,7 @@ import commonjs from "@rollup/plugin-commonjs";
 
 export default {
     input: "src/index.ts",
+    // treeshake: "smallest",
     output: [
         {
             dir: "module/",
@@ -11,7 +12,7 @@ export default {
             exports: "named",
             sourcemap: true,
             // Node.js ESM does not recognize `__esModule` flag interop
-            interop: "esModule"
+            interop: "esModule",
         }
     ],
     plugins: [resolve({ preferBuiltins: true }), commonjs({

@@ -1,0 +1,7 @@
+// secretlint-disable
+
+THIS IS SECRET A
+
+// secretlint-enable
+
+THIS IS SECRET B

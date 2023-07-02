@@ -47,7 +47,8 @@
     "prepublishOnly": "npm run clean && npm run build",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
-    "test": "node --loader ts-node/esm --test test/index.test.ts",
+    "import-test": "node import-tests.js && npm run build && npm run updateSnapshot:",
+    "test": "npm run build && node --loader ts-node/esm --test test/index.test.ts",
     "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
     "watch": "tsc --build --watch"
   },

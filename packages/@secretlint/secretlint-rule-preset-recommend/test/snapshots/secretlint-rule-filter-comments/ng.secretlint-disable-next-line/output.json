@@ -1,0 +1,6 @@
+{
+    "filePath": "[SNAPSHOT]/ng.secretlint-disable-next-line/input.txt",
+    "messages": [],
+    "sourceContent": "// secretlint-disable-next-line\nTHIS IS SECRET A\nTHIS IS SECRET B\n",
+    "sourceContentType": "text"
+}

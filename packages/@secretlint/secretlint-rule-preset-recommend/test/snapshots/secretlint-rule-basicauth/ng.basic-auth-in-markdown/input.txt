@@ -1,0 +1,3 @@
+- Ja: このhttps://user:pass@example.comはBasic
+- pathname: https://user:pass@example.com/test
+- markdown [url](https://user:pass@example.com)

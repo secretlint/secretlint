@@ -1,0 +1,3 @@
+/path/to/dir
+It is not path: ~Users~exampleuser
+It is not homedir: /Users/to/dir/exampleuser
