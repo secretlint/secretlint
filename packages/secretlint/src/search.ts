@@ -1,4 +1,4 @@
-import globby from "globby";
+import { globby } from "globby";
 import fs from "node:fs";
 import path from "node:path";
 import debug0 from "debug";
