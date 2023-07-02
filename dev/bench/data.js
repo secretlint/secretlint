@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1688298279649,
+  "lastUpdate": 1688299591579,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -20100,6 +20100,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.77,
             "range": "±1.17%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "42b368855a7515eac6162ba9349c3e07abd88476",
+          "message": "Merge pull request #540 from secretlint/feature/468\n\n feat(docker): use Node.js 18 as base image",
+          "timestamp": "2023-07-02T21:04:27+09:00",
+          "tree_id": "dccb7279f4929f5f0dc997d7c484eb6e24a2973f",
+          "url": "https://github.com/secretlint/secretlint/commit/42b368855a7515eac6162ba9349c3e07abd88476"
+        },
+        "date": 1688299590596,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.88,
+            "range": "±0.98%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.68,
+            "range": "±0.88%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
