@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1688259807404,
+  "lastUpdate": 1688271319416,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -19948,6 +19948,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.56,
             "range": "±0.92%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "88891a986a19e556e5b03c40b49effa15ece81d4",
+          "message": "Merge pull request #534 from secretlint/azu-patch-1\n\nfix(renovate): use \"automergeType\": \"pr\"",
+          "timestamp": "2023-07-02T13:09:21+09:00",
+          "tree_id": "8cd273681f80478c6f30f50fffe4e5539f38acfb",
+          "url": "https://github.com/secretlint/secretlint/commit/88891a986a19e556e5b03c40b49effa15ece81d4"
+        },
+        "date": 1688271317627,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.31,
+            "range": "±2.51%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.52,
+            "range": "±1.88%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
