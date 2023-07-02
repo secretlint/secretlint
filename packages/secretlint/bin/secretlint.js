@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-import { run, cli } from "../module/cli.js";
 
 // Exit Status
 // 0: No Error
@@ -11,6 +10,8 @@ import { run, cli } from "../module/cli.js";
 // Fail to load config/rule/plugin etc...
 // Entry Point
 try {
+    // if imported code is syntax error, throw error -> exit 2
+    const { run, cli } = await import("../module/cli.js");
     const { exitStatus, stderr, stdout } = await run(cli.input, cli.flags);
     if (stdout) {
         console.log(stdout);
