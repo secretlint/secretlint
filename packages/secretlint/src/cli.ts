@@ -44,9 +44,13 @@ export const cli = meow(
     Exit Status
       Secretlint exits with the following values:
     
-      - 0: Linting succeeded, no errors found. Found lint error but --output is specified.
-      - 1: Linting failed, errors found.
-      - 2: Unexpected error occurred, fatal error.
+      - 0: 
+        - Linting succeeded, no errors found. 
+        - Found lint error but --output is specified.
+      - 1: 
+        - Linting failed, errors found.
+      - 2: 
+        - Unexpected error occurred, fatal error.
 `,
     {
         flags: {
