@@ -58,6 +58,7 @@
     "@textlint/regexp-string-matcher": "^2.0.2"
   },
   "devDependencies": {
+    "@secretlint/types": "^6.2.4",
     "@secretlint/tester": "^6.2.4",
     "@types/node": "^20.3.3",
     "prettier": "^2.8.1",

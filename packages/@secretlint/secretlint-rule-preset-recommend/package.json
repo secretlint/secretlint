@@ -68,6 +68,7 @@
     "@secretlint/secretlint-rule-privatekey": "^6.2.4",
     "@secretlint/secretlint-rule-sendgrid": "^6.2.4",
     "@secretlint/secretlint-rule-slack": "^6.2.4",
+    "@secretlint/secretlint-rule-shopify": "^6.2.4",
     "@secretlint/types": "^6.2.4",
     "@rollup/plugin-commonjs": "^24.1.0",
     "@rollup/plugin-node-resolve": "^15.1.0",

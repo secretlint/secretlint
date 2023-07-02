@@ -61,6 +61,7 @@
     "@secretlint/types": "^6.2.4"
   },
   "devDependencies": {
+    "@secretlint/tester": "^6.2.4",
     "@secretlint/secretlint-rule-pattern": "^6.2.4",
     "@types/node": "^20.3.3",
     "prettier": "^2.8.1",
