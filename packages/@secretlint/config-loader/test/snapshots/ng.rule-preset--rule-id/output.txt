@@ -1,8 +1,5 @@
 Secretlint Configuration Error
 
-Error: Invalid preset-rule: preset-rule/rules/0 must have required property 'id'
-    at validateConfigDescriptor (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/src/validator.ts:73:29)
-    at loadPackagesFromConfigDescriptor (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/src/index.ts:107:44)
-    at loadConfig (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/src/index.ts:214:36)
-    at async validateConfig (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/src/index.ts:268:9)
-    at async Context.<anonymous> (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/test/snapshot.test.ts:26:32)
+----
+
+Invalid preset-rule: preset-rule/rules/0 must have required property 'id'
