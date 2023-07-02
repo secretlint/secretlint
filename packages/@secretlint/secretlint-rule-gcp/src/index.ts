@@ -41,7 +41,7 @@ function reportIfFoundPrivateKeyJSONFormat({
     try {
         const credentialObject = JSON.parse(source.content);
         // Private Key Pattern
-        const PRIVATE_KEY_PATTERN = /-----BEGIN\s*(DSA|RSA|EC|PGP|OPENSSH)?\s*PRIVATE KEY/gm;
+        const PRIVATE_KEY_PATTERN = /-----BEGIN\s?(DSA|RSA|EC|PGP|OPENSSH)?\s?PRIVATE KEY/gm;
         const isGCPServiceAccountPrivateKeyJSON =
             "private_key_id" in credentialObject &&
             "private_key" in credentialObject &&
