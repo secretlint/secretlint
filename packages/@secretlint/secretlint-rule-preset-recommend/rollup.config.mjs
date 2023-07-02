@@ -4,6 +4,7 @@ import commonjs from "@rollup/plugin-commonjs";
 
 export default {
     input: "src/index.ts",
+    // gcp rule is broken by moduleSideEffects option
     // treeshake: "smallest",
     output: [
         {
