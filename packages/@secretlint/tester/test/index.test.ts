@@ -3,7 +3,7 @@ import { snapshot } from "../src/index.js";
 import { creator as rule } from "./fixtures/secretlint-rule-example.js";
 
 test("@secretlint/tester", (t) => {
-    return snapshot({
+    await snapshot({
         defaultConfig: {
             rules: [
                 {

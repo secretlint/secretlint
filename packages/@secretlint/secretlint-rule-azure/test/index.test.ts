@@ -2,7 +2,7 @@ import { creator as rule } from "../src/index.js";
 import test from "node:test";
 test("@secretlint/secretlint-rule-azure", async (t) => {
     const snapshot = (await import("@secretlint/tester")).snapshot;
-    return snapshot({
+    await snapshot({
         defaultConfig: {
             rules: [
                 {

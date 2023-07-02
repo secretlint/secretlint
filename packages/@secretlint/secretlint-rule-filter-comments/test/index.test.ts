@@ -4,7 +4,7 @@ import { creator as patternRule } from "@secretlint/secretlint-rule-pattern";
 import test from "node:test";
 test("@secretlint/secretlint-rule-filter-comments", async (t) => {
     const snapshot = (await import("@secretlint/tester")).snapshot;
-    return snapshot({
+    await snapshot({
         defaultConfig: {
             rules: [
                 {
