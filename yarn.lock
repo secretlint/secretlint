@@ -108,7 +108,7 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@lerna-lite/cli@2.4.2", "@lerna-lite/cli@^2.0.0":
+"@lerna-lite/cli@2.4.2", "@lerna-lite/cli@^2.4.2":
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/@lerna-lite/cli/-/cli-2.4.2.tgz#1f8c2b3a7a079a9bc5d95fa1789e78bcd0b0cb3b"
   integrity sha512-n7qykx847XePkaLoCW2WYz/Tr27Q8HOKHGXFtHHiv6XX/68BbGk5w5icp8w4esrk4xvenEXNSm6tm6Z9oPdbww==
@@ -164,7 +164,7 @@
     p-map "^6.0.0"
     write-json-file "^5.0.0"
 
-"@lerna-lite/publish@^2.0.0":
+"@lerna-lite/publish@^2.4.3":
   version "2.4.3"
   resolved "https://registry.yarnpkg.com/@lerna-lite/publish/-/publish-2.4.3.tgz#f74da88ff6c60a8374fae81065f8bd58310e574a"
   integrity sha512-iTwE6sUZxkiEllcIEbLF/sql6BzdglNGCUm9MiUY8aImBVqr6E6+d5Y4CkkSU1Ff8fzheZ6nmfJhbSljgiroag==
@@ -196,7 +196,7 @@
     tar "^6.1.15"
     temp-dir "^3.0.0"
 
-"@lerna-lite/version@2.4.2", "@lerna-lite/version@^2.0.0":
+"@lerna-lite/version@2.4.2", "@lerna-lite/version@^2.4.2":
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/@lerna-lite/version/-/version-2.4.2.tgz#fb09128a6b331005456719b168f3939dc786f683"
   integrity sha512-N7DY01sIM6/V2Tbb8tHUxCYNEE8sACYc6R7UrGa6WdKdGOq5KeRIeekIclO2ybrlMqR+YhfgZlZ33Rxxe8UOKQ==
