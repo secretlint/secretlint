@@ -1,34 +1,29 @@
 {
   "compilerOptions": {
     /* Basic Options */
-    "module": "ESNext",
-    "moduleResolution": "NodeNext",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
     "esModuleInterop": true,
     "newLine": "LF",
-    "noEmit": true,
-    "outDir": "./module/",
+    "outDir": "./lib/",
     "target": "ES2018",
     "sourceMap": true,
     "declaration": true,
+    "declarationMap": true,
     "jsx": "preserve",
     "lib": [
       "esnext",
       "dom"
     ],
-    /* Strict Type-Checking Options */
     "strict": true,
-    /* Additional Checks */
-    /* Report errors on unused locals. */
+    "skipLibCheck": true,
     "noUnusedLocals": true,
-    /* Report errors on unused parameters. */
     "noUnusedParameters": true,
-    /* Report error when not all code paths in function return a value. */
     "noImplicitReturns": true,
-    /* Report errors for fallthrough cases in switch statement. */
     "noFallthroughCasesInSwitch": true
   },
   "include": [
-    "**/*"
+    "src/**/*"
   ],
   "exclude": [
     ".git",

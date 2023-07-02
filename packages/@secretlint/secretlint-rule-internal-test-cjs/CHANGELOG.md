@@ -5,23 +5,23 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [6.0.2](https://github.com/secretlint/secretlint/compare/v6.0.1...v6.0.2) (2023-01-03)
 
-**Note:** Version bump only for package @secretlint/secretlint-rule-internal-test-pure-deps
+**Note:** Version bump only for package @secretlint/secretlint-rule-internal-test-esm
 
 ## [6.0.1](https://github.com/secretlint/secretlint/compare/v5.3.0...v6.0.1) (2023-01-02)
 
-**Note:** Version bump only for package @secretlint/secretlint-rule-internal-test-pure-deps
+**Note:** Version bump only for package @secretlint/secretlint-rule-internal-test-esm
 
 # [6.0.0](https://github.com/secretlint/secretlint/compare/v5.3.0...v6.0.0) (2023-01-02)
 
-**Note:** Version bump only for package @secretlint/secretlint-rule-internal-test-pure-deps
+**Note:** Version bump only for package @secretlint/secretlint-rule-internal-test-esm
 
 # [5.3.0](https://github.com/secretlint/secretlint/compare/v5.2.4...v5.3.0) (2022-10-30)
 
-**Note:** Version bump only for package @secretlint/secretlint-rule-internal-test-pure-deps
+**Note:** Version bump only for package @secretlint/secretlint-rule-internal-test-esm
 
 ## [5.2.4](https://github.com/secretlint/secretlint/compare/v5.2.3...v5.2.4) (2022-08-24)
 
-**Note:** Version bump only for package @secretlint/secretlint-rule-internal-test-pure-deps
+**Note:** Version bump only for package @secretlint/secretlint-rule-internal-test-esm
 
 ## [5.2.1](https://github.com/secretlint/secretlint/compare/v5.2.0...v5.2.1) (2022-06-26)
 
@@ -31,19 +31,19 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 # [5.2.0](https://github.com/secretlint/secretlint/compare/v5.1.3...v5.2.0) (2022-04-11)
 
-**Note:** Version bump only for package @secretlint/secretlint-rule-internal-test-pure-deps
+**Note:** Version bump only for package @secretlint/secretlint-rule-internal-test-esm
 
 ## [5.1.3](https://github.com/secretlint/secretlint/compare/v5.1.1...v5.1.3) (2022-04-04)
 
-**Note:** Version bump only for package @secretlint/secretlint-rule-internal-test-pure-deps
+**Note:** Version bump only for package @secretlint/secretlint-rule-internal-test-esm
 
 ## [5.1.2](https://github.com/secretlint/secretlint/compare/v5.1.1...v5.1.2) (2022-04-04)
 
-**Note:** Version bump only for package @secretlint/secretlint-rule-internal-test-pure-deps
+**Note:** Version bump only for package @secretlint/secretlint-rule-internal-test-esm
 
 ## [5.1.1](https://github.com/secretlint/secretlint/compare/v5.1.0...v5.1.1) (2022-03-24)
 
-**Note:** Version bump only for package @secretlint/secretlint-rule-internal-test-pure-deps
+**Note:** Version bump only for package @secretlint/secretlint-rule-internal-test-esm
 
 # [5.1.0](https://github.com/secretlint/secretlint/compare/v5.0.1...v5.1.0) (2022-03-08)
 
@@ -53,7 +53,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [5.0.1](https://github.com/secretlint/secretlint/compare/v5.0.0...v5.0.1) (2022-03-05)
 
-**Note:** Version bump only for package @secretlint/secretlint-rule-internal-test-pure-deps
+**Note:** Version bump only for package @secretlint/secretlint-rule-internal-test-esm
 
 # [5.0.0](https://github.com/secretlint/secretlint/compare/v4.2.1...v5.0.0) (2022-03-05)
 

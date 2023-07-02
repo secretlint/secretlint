@@ -8,12 +8,12 @@ export const messages = {
 export const creator = {
     messages,
     meta: {
-        id: "@secretlint/secretlint-rule-internal-test-pure-deps",
+        id: "@secretlint/secretlint-rule-internal-test-esm",
         recommended: true,
         type: "scanner",
         supportedContentTypes: ["text"],
         docs: {
-            url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-internal-test-pure-deps/README.md"
+            url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-internal-test-esm/README.md"
         }
     },
     create(context) {

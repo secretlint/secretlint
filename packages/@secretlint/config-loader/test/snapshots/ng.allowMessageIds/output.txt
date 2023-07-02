@@ -1,7 +1,15 @@
 Secretlint Configuration Error
 
-Doe not found allowMessageIds: not_defined_id in the rule(example)
+Error: Doe not found allowMessageIds: not_defined_id in the rule(example)
 
 Following config is invalid because the rule(example) does not have messageId: "not_defined_id".
 
 {"allowMessageIds":["not_defined_id"]}
+
+    at file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/src/validator.ts:151:29
+    at Array.forEach (<anonymous>)
+    at validateConfigWithDescriptor (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/src/validator.ts:148:38)
+    at loadPackagesFromConfigDescriptor (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/src/index.ts:188:34)
+    at async loadConfig (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/src/index.ts:214:30)
+    at async validateConfig (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/src/index.ts:268:9)
+    at async Context.<anonymous> (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/test/snapshot.test.ts:26:32)

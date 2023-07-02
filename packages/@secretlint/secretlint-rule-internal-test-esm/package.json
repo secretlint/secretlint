@@ -1,14 +1,14 @@
 {
-  "name": "@secretlint/config-loader",
+  "private": false,
+  "name": "@secretlint/secretlint-rule-internal-test-esm",
   "version": "6.2.4",
-  "description": "Config loader for secretlint.",
+  "description": "An example ESM rule for secretlint. It it for testing.",
   "keywords": [
     "secretlint",
-    "node",
-    "config",
-    "loader"
+    "testing",
+    "rule"
   ],
-  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/config-loader/",
+  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-internal-test-esm/",
   "bugs": {
     "url": "https://github.com/secretlint/secretlint/issues"
   },
@@ -43,12 +43,9 @@
   "scripts": {
     "build": "tsc --build",
     "clean": "tsc --build --clean",
-    "create-validation": "create-validator-ts src/descriptor-types.ts --additionalProperties",
     "prepublishOnly": "npm run clean && npm run build",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
-    "test": "mocha",
-    "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
     "watch": "tsc --build --watch"
   },
   "prettier": {
@@ -57,26 +54,12 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/profiler": "^6.2.4",
-    "@secretlint/types": "^6.2.4",
-    "ajv": "^8.12.0",
-    "debug": "^4.3.4",
-    "rc-config-loader": "^4.1.3",
-    "try-resolve": "^1.0.1"
+    "@secretlint/types": "^6.2.4"
   },
   "devDependencies": {
-    "@secretlint/secretlint-rule-internal-test-esm": "^6.2.4",
-    "@secretlint/secretlint-rule-internal-test-cjs": "^6.2.4",
-    "@types/mocha": "^10.0.1",
-    "@types/node": "^20.3.3",
-    "create-validator-ts": "^4.0.2",
-    "mocha": "^10.2.0",
-    "prettier": "^2.8.1",
-    "rimraf": "^3.0.2",
-    "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
   },
-  "packageManager": "yarn@1.22.19",
+  "packageManager": "yarn@1.22.18",
   "engines": {
     "node": "^14.13.1 || >=16.0.0"
   },

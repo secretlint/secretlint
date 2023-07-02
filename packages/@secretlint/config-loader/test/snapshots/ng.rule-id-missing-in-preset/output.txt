@@ -1,7 +1,15 @@
 Secretlint Configuration Error
 
-Does not exist id: "does-not-exist-rule-in-the-preset" in the preset(preset-rule).
+Error: Does not exist id: "does-not-exist-rule-in-the-preset" in the preset(preset-rule).
 
 Following config is invalid because the preset(preset-rule) does not have id: "does-not-exist-rule-in-the-preset".
 
 {"id":"does-not-exist-rule-in-the-preset","disabled":true,"type":"rule"}
+
+    at file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/src/validator.ts:131:25
+    at Array.forEach (<anonymous>)
+    at validateConfigWithDescriptor (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/src/validator.ts:127:26)
+    at loadPackagesFromConfigDescriptor (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/src/index.ts:188:34)
+    at async loadConfig (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/src/index.ts:214:30)
+    at async validateConfig (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/src/index.ts:268:9)
+    at async Context.<anonymous> (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/test/snapshot.test.ts:26:32)

@@ -1,3 +1,8 @@
 Secretlint Configuration Error
 
-Can not "allowMessageIds" option to preset(preset-rule) 
+Error: Can not "allowMessageIds" option to preset(preset-rule) 
+    at validateConfigDescriptor (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/src/validator.ts:76:29)
+    at loadPackagesFromConfigDescriptor (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/src/index.ts:107:44)
+    at loadConfig (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/src/index.ts:214:36)
+    at async validateConfig (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/src/index.ts:268:9)
+    at async Context.<anonymous> (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/test/snapshot.test.ts:26:32)

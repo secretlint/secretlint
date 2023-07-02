@@ -1,5 +1,15 @@
 Secretlint Configuration Error
 
-Invalid secretlintrc: secretlintrc/rules/0 must have required property 'id', secretlintrc/rules/0 must have required property 'id', secretlintrc/rules/0 must match a schema in anyOf
+Error: Invalid secretlintrc: secretlintrc/rules/0 must have required property 'id', secretlintrc/rules/0 must have required property 'id', secretlintrc/rules/0 must match a schema in anyOf
+    at validateConfigDescriptor (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/src/validator.ts:59:21)
+    at loadPackagesFromConfigDescriptor (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/src/index.ts:107:44)
+    at loadConfig (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/src/index.ts:214:36)
+    at async validateConfig (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/src/index.ts:268:9)
+    at async Context.<anonymous> (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/test/snapshot.test.ts:26:32)
 
-Invalid undefined: undefined must have required property 'id'
+Error: Invalid undefined: undefined must have required property 'id'
+    at validateConfigDescriptor (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/src/validator.ts:90:29)
+    at loadPackagesFromConfigDescriptor (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/src/index.ts:107:44)
+    at loadConfig (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/src/index.ts:214:36)
+    at async validateConfig (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/src/index.ts:268:9)
+    at async Context.<anonymous> (file:///Users/azu/ghq/github.com/secretlint/secretlint/packages/@secretlint/config-loader/test/snapshot.test.ts:26:32)

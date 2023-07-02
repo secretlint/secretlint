@@ -1,6 +1,6 @@
-import rule from "@secretlint/secretlint-rule-internal-test-pure-deps";
+import { createCreator } from "@secretlint/secretlint-rule-internal-test-esm";
 
-const rules = [rule.createCreator({
+const rules = [createCreator({
     meta: {
         id: "example"
     }

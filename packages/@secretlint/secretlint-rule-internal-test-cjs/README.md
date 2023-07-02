@@ -1,16 +1,10 @@
-# @secretlint/secretlint-rule-internal-test-pure-deps
+# @secretlint/secretlint-rule-internal-test-cjs
 
-Internal Example Package.
+Internal Rule Package in written CJS
 
 - Pure Deps
   - Prevent Dependency cycles
 - ALWAYS MATCH "SECRET" string.
-
-## Install
-
-Install with [npm](https://www.npmjs.com/):
-
-    npm install @secretlint/secretlint-rule-internal-test-pure-deps
 
 ## MessageIDs
 

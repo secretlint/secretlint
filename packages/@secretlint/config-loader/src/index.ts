@@ -15,9 +15,6 @@ import * as url from "node:url";
 import { AggregationError } from "./AggregationError.js";
 
 export function importSecretlintCreator(moduleExports?: SecretLintRuleModule): SecretLintUnionRuleCreator {
-    console.log({
-        moduleExports,
-    });
     if (!moduleExports) {
         throw new Error("Secretlint rule should export { creator }. module is undefined");
     }
