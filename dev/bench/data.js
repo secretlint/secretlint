@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1688299591579,
+  "lastUpdate": 1688300429650,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -20138,6 +20138,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.68,
             "range": "±0.88%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e50f0a0119608c8128a8d8b2380a82d0be7d87e5",
+          "message": "docs: Update rule document (#542)\n\n* docs: Update rule document\r\n\r\n* chore use await\r\n\r\n* chore use await\r\n\r\n* update doc",
+          "timestamp": "2023-07-02T21:18:30+09:00",
+          "tree_id": "1da826c15a6e900d9f44e29d1d0df8afa3a8d337",
+          "url": "https://github.com/secretlint/secretlint/commit/e50f0a0119608c8128a8d8b2380a82d0be7d87e5"
+        },
+        "date": 1688300428228,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.93,
+            "range": "±0.87%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.69,
+            "range": "±1.52%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
