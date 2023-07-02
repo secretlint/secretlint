@@ -101,6 +101,7 @@ export const cli = meow(
         },
         autoHelp: true,
         autoVersion: true,
+        importMeta: import.meta,
     }
 );
 
