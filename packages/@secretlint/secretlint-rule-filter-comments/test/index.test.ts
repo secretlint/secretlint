@@ -1,4 +1,4 @@
-import { creator as rule } from "../src/index";
+import { creator as rule } from "../src/index.js";
 import { creator as patternRule } from "@secretlint/secretlint-rule-pattern";
 
 import test from "node:test";
@@ -39,7 +39,7 @@ test("@secretlint/secretlint-rule-filter-comments", async (t) => {
             ]
         },
         updateSnapshot: !!process.env.UPDATE_SNAPSHOT,
-        snapshotDirectory: new URL("snapshots", import.meta.url)
+        snapshotDirectory: new URL("./snapshots", import.meta.url)
     }).forEach((name, test) => {
         return t.test(name, async (context) => {
             const status = await test();
