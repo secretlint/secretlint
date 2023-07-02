@@ -1,7 +1,7 @@
 {
   "private": false,
   "name": "@secretlint/secretlint-rule-internal-test-cjs",
-  "version": "6.2.4",
+  "version": "7.0.0",
   "description": "An example CJS rule for secretlint. It it for testing.",
   "keywords": [
     "secretlint",
@@ -40,7 +40,7 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^6.2.4"
+    "@secretlint/types": "^7.0.0"
   },
   "devDependencies": {
     "typescript": "^5.1.6"

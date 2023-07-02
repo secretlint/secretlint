@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/formatter",
-  "version": "6.2.4",
+  "version": "7.0.0",
   "description": "A formatter collection for Secretlint.",
   "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/formatter/",
   "bugs": {
@@ -50,18 +50,18 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^6.2.4",
+    "@secretlint/types": "^7.0.0",
     "@textlint/linter-formatter": "^12.6.1",
-    "@textlint/types": "^12.6.1",
     "@textlint/module-interop": "^13.3.3",
+    "@textlint/types": "^12.6.1",
     "chalk": "^4.1.2",
     "debug": "^4.3.4",
+    "is-file": "^1.0.0",
     "pluralize": "^8.0.0",
     "strip-ansi": "^6.0.1",
     "table": "^6.8.1",
     "terminal-link": "^2.1.1",
-    "try-resolve": "^1.0.1",
-    "is-file": "^1.0.0"
+    "try-resolve": "^1.0.1"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.1",
