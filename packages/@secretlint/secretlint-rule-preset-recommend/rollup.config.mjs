@@ -10,7 +10,13 @@ export default {
             format: "esm",
             exports: "named",
             sourcemap: true,
-        },
+            // Node.js ESM does not recognize `__esModule` flag interop
+            interop: "esModule"
+        }
     ],
-    plugins: [resolve({ preferBuiltins: true }), commonjs(), typescript()],
+    plugins: [resolve({ preferBuiltins: true }), commonjs({
+        // disable __esModule interop
+        // Node.js ESM does not recognize `__esModule` flag interop
+        defaultIsModuleExports: true
+    }), typescript()]
 };

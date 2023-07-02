@@ -165,7 +165,20 @@ export const loadPackagesFromConfigDescriptor = async (
                 id: configDescriptorRule.id,
             });
         } catch (error) {
-            errors.push(error instanceof Error ? error : new Error(String(error)));
+            const newError =
+                error instanceof Error
+                    ? new Error(
+                          `Failed to load rule module: ${configDescriptorRule.id}
+
+Error: ${error.message}`,
+                          {
+                              cause: error,
+                          }
+                      )
+                    : new Error(`Failed to load rule module: ${configDescriptorRule.id}
+
+Error: ${String(error)}`);
+            errors.push(newError);
         }
     }
     secretLintProfiler.mark({
