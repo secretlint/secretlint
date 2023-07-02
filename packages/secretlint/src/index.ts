@@ -32,9 +32,10 @@ export const runSecretLint = async ({
             const outputFilePath = cliOptions.outputFilePath;
             if (outputFilePath !== undefined) {
                 fs.writeFileSync(outputFilePath, output, "utf-8");
-                // Return empty to console
+                // Return empty to console with exit code 0
+                // because output is success
                 return {
-                    exitStatus: ok ? 0 : 1,
+                    exitStatus: 0,
                     stdout: null,
                     stderr: null,
                 };

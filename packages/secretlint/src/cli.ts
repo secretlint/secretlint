@@ -40,6 +40,17 @@ export const cli = meow(
       $ secretlint "source/**/*.ini"
       # found secrets and mask the secrets
       $ secretlint .zsh_history --format=mask-result --output=.zsh_history
+      
+    Exit Status
+      Secretlint exits with the following values:
+    
+      - 0: 
+        - Linting succeeded, no errors found. 
+        - Found lint error but --output is specified.
+      - 1: 
+        - Linting failed, errors found.
+      - 2: 
+        - Unexpected error occurred, fatal error.
 `,
     {
         flags: {
@@ -101,6 +112,7 @@ export const cli = meow(
         },
         autoHelp: true,
         autoVersion: true,
+        importMeta: import.meta,
     }
 );
 

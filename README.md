@@ -123,6 +123,17 @@ It is also possible to install Secretlint globally using `npm install --global`.
         # found secrets and mask the secrets
         $ secretlint .zsh_history --format=mask-result --output=.zsh_history
 
+    Exit Status
+      Secretlint exits with the following values:
+    
+      - 0: 
+        - Linting succeeded, no errors found. 
+        - Found lint error but --output is specified.
+      - 1: 
+        - Linting failed, errors found.
+      - 2: 
+        - Unexpected error occurred, fatal error.
+
 ## Configuration
 
 Secretlint has a configuration file `.secretlintrc.{json,yml,js}`.
