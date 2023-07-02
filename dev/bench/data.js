@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1688298256375,
+  "lastUpdate": 1688298279649,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -20062,6 +20062,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.78,
             "range": "±1.37%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "d0ad8d7a8986eadeab93283a6d773a5dacf83e61",
+          "message": "Merge pull request #539 from secretlint/renovate/patch-patch-updates\n\nchore(deps): update yarn to v1.22.19",
+          "timestamp": "2023-07-02T20:42:40+09:00",
+          "tree_id": "50ca39a7add707cd794f969496e78d92b9ef4083",
+          "url": "https://github.com/secretlint/secretlint/commit/d0ad8d7a8986eadeab93283a6d773a5dacf83e61"
+        },
+        "date": 1688298277822,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.97,
+            "range": "±1.19%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.77,
+            "range": "±1.17%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
