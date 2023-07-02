@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1688300429650,
+  "lastUpdate": 1688301404256,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -20176,6 +20176,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.69,
             "range": "±1.52%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e3cb33d11295d44ed17cf5129294bd09ce70c792",
+          "message": "fix(core): update structured-source@4 (#544)\n\n* fix(core): update structured-source@4\r\n\r\n* Update yarn.lock",
+          "timestamp": "2023-07-02T21:34:24+09:00",
+          "tree_id": "ad8907d558cefadf3497019d400eef0ac8d32053",
+          "url": "https://github.com/secretlint/secretlint/commit/e3cb33d11295d44ed17cf5129294bd09ce70c792"
+        },
+        "date": 1688301402676,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.55,
+            "range": "±2.47%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±1.55%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
