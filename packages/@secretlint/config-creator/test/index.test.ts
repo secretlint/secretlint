@@ -1,6 +1,6 @@
 // LICENSE : MIT
 import assert from "node:assert";
-import path from "path";
+import path from "node:path";
 import fs from "node:fs/promises";
 import os from "node:os";
 import { createConfig } from "../src/index.js";
