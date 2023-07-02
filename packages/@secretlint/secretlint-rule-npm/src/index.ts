@@ -41,7 +41,8 @@ function reportIfFoundXOauthGitHubToken({
     t: SecretLintRuleMessageTranslate<typeof messages>;
 }) {
     // https://github.blog/2012-09-21-easier-builds-and-deployments-using-git-over-https-and-oauth/
-    const XOAuthPattern = /https?:\/\/(.*?):x-oauth-basic@github.com.*/g;
+    // https://stackoverflow.com/questions/14402407/maximum-length-of-a-domain-name-without-the-http-www-com-parts
+    const XOAuthPattern = /https?:\/\/(.{1,256}):x-oauth-basic@github.com\//g;
     const results = source.content.matchAll(XOAuthPattern);
     for (const result of results) {
         const index = result.index || 0;
