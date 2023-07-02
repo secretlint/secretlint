@@ -6,7 +6,9 @@ import { SecretLintRuleMessageTranslate } from "@secretlint/types";
 // - https://learn.microsoft.com/en-us/dotnet/api/azure.identity.environmentcredential
 // - https://learn.microsoft.com/en-us/microsoft-365/compliance/sit-defn-azure-ad-client-secret
 
-const regx = require("regx").default("gi");
+// @ts-expect-error: missing types
+import regx_ from "regx";
+const regx = regx_.default("gi");
 export interface Options {
     allows?: string[];
 }

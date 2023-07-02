@@ -1,5 +1,5 @@
 import { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
-import path from "path";
+import path from "node:path";
 
 const FILE_NAME_DOTENV = ".env";
 

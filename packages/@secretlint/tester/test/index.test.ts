@@ -1,9 +1,7 @@
 import test from "node:test";
 import { snapshot } from "../src/index.js";
-import path from "node:path";
 import { creator as rule } from "./fixtures/secretlint-rule-example.js";
 
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
 test("@secretlint/tester", (t) => {
     return snapshot({
         defaultConfig: {
@@ -16,7 +14,7 @@ test("@secretlint/tester", (t) => {
             ],
         },
         updateSnapshot: !!process.env.UPDATE_SNAPSHOT,
-        snapshotDirectory: path.join(__dirname, "fixtures/snapshots"),
+        snapshotDirectory: new URL("./fixtures/snapshots", import.meta.url),
     }).forEach((name, test) => {
         return t.test(name, async (context) => {
             const status = await test();

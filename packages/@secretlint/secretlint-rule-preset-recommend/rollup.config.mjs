@@ -6,8 +6,8 @@ export default {
     input: "src/index.ts",
     output: [
         {
-            dir: "lib/",
-            format: "commonjs",
+            dir: "module/",
+            format: "esm",
             exports: "named",
             sourcemap: true,
         },

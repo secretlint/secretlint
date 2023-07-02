@@ -1,5 +1,4 @@
-import path from "path";
-import { creator as rule } from "../src/index";
+import { creator as rule } from "../src/index.js";
 
 import test from "node:test";
 test("@secretlint/secretlint-rule-aws", async (t) => {
@@ -14,7 +13,7 @@ test("@secretlint/secretlint-rule-aws", async (t) => {
             ],
         },
         updateSnapshot: !!process.env.UPDATE_SNAPSHOT,
-        snapshotDirectory: path.join(__dirname, "snapshots"),
+        snapshotDirectory: new URL("snapshots", import.meta.url),
     }).forEach((name, test) => {
         return t.test(name, async (context) => {
             const status = await test();

@@ -4,7 +4,7 @@ import {
     SecretLintRuleMessageTranslate,
     SecretLintSourceCode,
 } from "@secretlint/types";
-import path from "path";
+import path from "node:path";
 import { loadAll } from "js-yaml";
 
 export const messages = {

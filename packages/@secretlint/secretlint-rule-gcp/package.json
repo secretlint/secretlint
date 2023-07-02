@@ -1,64 +1,77 @@
 {
-    "name": "@secretlint/secretlint-rule-gcp",
-    "version": "6.2.4",
-    "description": "A secretlint rule for GCP.",
-    "keywords": [
-        "rule",
-        "secretlint"
-    ],
-    "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-gcp/",
-    "bugs": {
-        "url": "https://github.com/secretlint/secretlint/issues"
+  "name": "@secretlint/secretlint-rule-gcp",
+  "version": "6.2.4",
+  "description": "A secretlint rule for GCP.",
+  "keywords": [
+    "rule",
+    "secretlint"
+  ],
+  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-gcp/",
+  "bugs": {
+    "url": "https://github.com/secretlint/secretlint/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/secretlint/secretlint.git"
+  },
+  "license": "MIT",
+  "author": "azu",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./module/index.d.ts",
+        "default": "./module/index.js"
+      },
+      "default": "./module/index.js"
     },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/secretlint/secretlint.git"
-    },
-    "license": "MIT",
-    "author": "azu",
-    "main": "lib/index.js",
-    "types": "lib/index.d.ts",
-    "directories": {
-        "lib": "lib",
-        "test": "test"
-    },
-    "files": [
-        "bin/",
-        "lib/",
-        "src/"
-    ],
-    "scripts": {
-        "build": "tsc -p .",
-        "clean": "rimraf lib/",
-        "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
-        "prepublish": "npm run --if-present build",
-        "test": "node --loader ts-node/esm --test test/index.test.ts",
-        "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
-        "watch": "tsc -p . --watch"
-    },
-    "prettier": {
-        "printWidth": 120,
-        "singleQuote": false,
-        "tabWidth": 4
-    },
-    "dependencies": {
-        "@secretlint/types": "^6.2.4",
-        "@textlint/regexp-string-matcher": "^2.0.2",
-        "node-forge": "^1.3.1"
-    },
-    "devDependencies": {
-        "@secretlint/tester": "^6.2.4",
-        "@types/node": "^18.16.18",
-        "@types/node-forge": "^1.3.2",
-        "prettier": "^2.8.1",
-        "rimraf": "^3.0.2",
-        "ts-node": "^10.9.1",
-        "typescript": "^4.9.4"
-    },
-    "engines": {
-        "node": "^14.13.1 || >=16.0.0"
-    },
-    "publishConfig": {
-        "access": "public"
-    }
+    "./package.json": "./package.json"
+  },
+  "main": "./module/index.js",
+  "types": "./module/index.d.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "files": [
+    "bin/",
+    "module/",
+    "src/"
+  ],
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "tsc --build --clean",
+    "prepublishOnly": "npm run clean && npm run build",
+    "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
+    "prepublish": "npm run --if-present build",
+    "test": "node --loader ts-node/esm --test test/index.test.ts",
+    "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
+    "watch": "tsc --build --watch"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "singleQuote": false,
+    "tabWidth": 4
+  },
+  "dependencies": {
+    "@secretlint/types": "^6.2.4",
+    "@textlint/regexp-string-matcher": "^2.0.2",
+    "node-forge": "^1.3.1"
+  },
+  "devDependencies": {
+    "@secretlint/tester": "^6.2.4",
+    "@types/node": "^20.3.3",
+    "@types/node-forge": "^1.3.2",
+    "prettier": "^2.8.1",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  },
+  "packageManager": "yarn@1.22.18",
+  "engines": {
+    "node": "^14.13.1 || >=16.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

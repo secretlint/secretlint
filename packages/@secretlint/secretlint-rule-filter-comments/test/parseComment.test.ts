@@ -1,5 +1,5 @@
-import { parseComment } from "../src/parse-comment";
-import * as assert from "assert";
+import { parseComment } from "../src/parse-comment.js";
+import * as assert from "node:assert";
 
 describe("parseComment", function () {
     it("should return [] when no option ", () => {

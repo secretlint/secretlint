@@ -17,23 +17,35 @@
   },
   "license": "MIT",
   "author": "azu",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./module/index.d.ts",
+        "default": "./module/index.js"
+      },
+      "default": "./module/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./module/index.js",
+  "types": "./module/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "test"
   },
   "files": [
     "bin/",
-    "lib/",
+    "module/",
     "src/"
   ],
   "scripts": {
-    "build": "tsc -p .",
-    "clean": "rimraf lib/",
+    "build": "tsc --build",
+    "clean": "tsc --build --clean",
+    "prepublishOnly": "npm run clean && npm run build",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
-    "watch": "tsc -p . --watch"
+    "watch": "tsc --build --watch"
   },
   "prettier": {
     "printWidth": 120,
@@ -44,8 +56,9 @@
     "@secretlint/types": "^6.2.4"
   },
   "devDependencies": {
-    "typescript": "^4.9.4"
+    "typescript": "^5.1.6"
   },
+  "packageManager": "yarn@1.22.18",
   "engines": {
     "node": "^14.13.1 || >=16.0.0"
   },

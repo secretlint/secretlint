@@ -1,4 +1,4 @@
-import fs from "fs";
+import fs from "node:fs";
 import {
     SecretLintRuleContext,
     SecretLintRuleCreator,
@@ -6,7 +6,7 @@ import {
     SecretLintSourceCode,
 } from "@secretlint/types";
 import forge from "node-forge";
-import path from "path";
+import path from "node:path";
 
 export const messages = {
     PrivateKeyP12: {

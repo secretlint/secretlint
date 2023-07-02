@@ -1,8 +1,8 @@
+import fs from "node:fs";
 import path from "node:path";
 import assert from "node:assert";
-import { importSecretlintCreator, loadConfig } from "../src/index.js";
 import { SecretLintCoreConfigUnionRule } from "@secretlint/types";
-import fs from "node:fs";
+import { importSecretlintCreator, loadConfig } from "../src/index.js";
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const removeUndefined = (o: { [index: string]: any }) => {

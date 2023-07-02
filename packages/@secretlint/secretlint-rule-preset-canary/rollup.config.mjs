@@ -11,8 +11,8 @@ export default defineConfig([
         input: "src/index.ts",
         output: [
             {
-                dir: "lib/",
-                format: "commonjs",
+                dir: "module/",
+                format: "esm",
                 exports: "named",
                 sourcemap: true
             }
@@ -24,7 +24,7 @@ export default defineConfig([
         output: [
             {
                 dir: "browser/",
-                format: "es",
+                format: "esm",
                 exports: "named",
                 sourcemap: true
             }
@@ -36,6 +36,8 @@ export default defineConfig([
             "process.version": null,
             "process.env.NODE_ENV": JSON.stringify("production"),
             preventAssignment: false
-        }), resolve({ preferBuiltins: false }), commonjs(), typescript(), nodePolyfills()]
+        }), resolve({ preferBuiltins: false }), commonjs(), typescript({
+            tsconfig: "tsconfig.browser.json"
+        }), nodePolyfills()]
     }
 ]);
