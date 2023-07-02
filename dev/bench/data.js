@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1688307253459,
+  "lastUpdate": 1688307905015,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -20290,6 +20290,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.69,
             "range": "±1.42%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e6dac9a548a47c9f5df91bf2c8b339f1593c70ac",
+          "message": "chore(deps): update to lerna-lite v2 (#549)\n\n* chore(deps): update to lerna-lite v2\r\n\r\n* chore(deps): update rollup",
+          "timestamp": "2023-07-02T23:23:06+09:00",
+          "tree_id": "7cafa7447ee05cb3951fe9bd792d2fffe0a4afaa",
+          "url": "https://github.com/secretlint/secretlint/commit/e6dac9a548a47c9f5df91bf2c8b339f1593c70ac"
+        },
+        "date": 1688307903953,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.86,
+            "range": "±0.94%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.77,
+            "range": "±1.28%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
