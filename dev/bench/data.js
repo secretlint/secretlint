@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1688295026049,
+  "lastUpdate": 1688298256375,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -20024,6 +20024,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.65,
             "range": "±2.75%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "235a945b0e1db8f7ccdc6d8d0f1a57edb6389ddd",
+          "message": "Merge pull request #538 from secretlint/feature/537\n\nperf: output target is ES2022",
+          "timestamp": "2023-07-02T20:42:18+09:00",
+          "tree_id": "243c0ab869d96f7102840d88f806fae320cfb76a",
+          "url": "https://github.com/secretlint/secretlint/commit/235a945b0e1db8f7ccdc6d8d0f1a57edb6389ddd"
+        },
+        "date": 1688298254587,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.98,
+            "range": "±1.08%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.78,
+            "range": "±1.37%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
