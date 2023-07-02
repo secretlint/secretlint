@@ -4,8 +4,8 @@ Secretlint Rule is a npm package.
 
 ## Requirements
 
-- `export default ruleCreatorFunction`
-    - `ruleCreatorFunction` should have `meta`, `messages`, and `create` function
+- `export const creator: SecretLintRuleCreator = { /* rule implementation */}`
+    - `creator` function should have `meta`, `messages`, and `create` function
 - Package name should start with `secretlint-rule-*` or `@scope/secretlint-rule-*`
 
 ## Example: `@secretlint/secretlint-rule-example`
