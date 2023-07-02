@@ -55,13 +55,12 @@
     "@secretlint/profiler": "^6.2.4",
     "@secretlint/types": "^6.2.4",
     "debug": "^4.3.4",
-    "structured-source": "^3.0.2"
+    "structured-source": "^4.0.0"
   },
   "devDependencies": {
     "@types/debug": "^4.1.8",
     "@types/mocha": "^10.0.1",
     "@types/node": "^20.3.3",
-    "@types/structured-source": "^3.0.0",
     "assert-json-equal": "^1.0.1",
     "mocha": "^10.2.0",
     "prettier": "^2.8.1",
