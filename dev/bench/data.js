@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1688301404256,
+  "lastUpdate": 1688305250247,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -20214,6 +20214,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±1.55%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "adb8ee61cc8e51b3151b47c3b522bd0f5b72a4d1",
+          "message": "fix(no-homedir): add @textlint/regexp-string-matcher as deps (#545)\n\n* chore: add type\r\n\r\n* fix(no-homedir): add @textlint/regexp-string-matcher as deps",
+          "timestamp": "2023-07-02T22:38:24+09:00",
+          "tree_id": "75aaee3ca227b2cdee77dd2f61a6075dcf4736a3",
+          "url": "https://github.com/secretlint/secretlint/commit/adb8ee61cc8e51b3151b47c3b522bd0f5b72a4d1"
+        },
+        "date": 1688305248419,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.52,
+            "range": "±4.46%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.55,
+            "range": "±2.63%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
