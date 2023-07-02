@@ -2,7 +2,7 @@ import test from "node:test";
 import { snapshot } from "../src/index.js";
 import { creator as rule } from "./fixtures/secretlint-rule-example.js";
 
-test("@secretlint/tester", (t) => {
+test("@secretlint/tester", async (t) => {
     await snapshot({
         defaultConfig: {
             rules: [
