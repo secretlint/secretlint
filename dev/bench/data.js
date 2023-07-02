@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1688271319416,
+  "lastUpdate": 1688295026049,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -19986,6 +19986,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.52,
             "range": "±1.88%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "77646c2e3c9708f71c329968ee5389e8012f4804",
+          "message": "Merge pull request #535 from secretlint/530-rules-convert-to-esm-1\n\nrefactor!: Convert all rules to ESM",
+          "timestamp": "2023-07-02T19:48:23+09:00",
+          "tree_id": "1362118aec70b0689e7f3ed07b8adfb5e93e0487",
+          "url": "https://github.com/secretlint/secretlint/commit/77646c2e3c9708f71c329968ee5389e8012f4804"
+        },
+        "date": 1688295024963,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.88,
+            "range": "±0.95%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.65,
+            "range": "±2.75%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
