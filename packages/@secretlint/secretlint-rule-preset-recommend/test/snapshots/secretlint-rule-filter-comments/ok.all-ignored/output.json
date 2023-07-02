@@ -1,0 +1,6 @@
+{
+    "filePath": "[SNAPSHOT]/ok.all-ignored/input.txt",
+    "messages": [],
+    "sourceContent": "// secretlint-disable -- comment\n\nTHIS IS SECRET A\nTHIS IS SECRET B\nTHIS IS SECRET C\n\n// secretlint-enable -- comment\n\n\n// secretlint-disable-next-line -- comment\nTHIS IS SECRET D\nTHIS IS SECRET E // secretlint-disable-line -- comment\n",
+    "sourceContentType": "text"
+}

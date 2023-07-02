@@ -1,6 +1,6 @@
 import { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
-import { parseComments } from "./parse-comment";
-import { CommentState } from "./CommentState";
+import { parseComments } from "./parse-comment.js";
+import { CommentState } from "./CommentState.js";
 
 export const messages = {
     IGNORE_MESSAGE: {

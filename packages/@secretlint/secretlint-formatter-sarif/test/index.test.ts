@@ -1,6 +1,6 @@
 import fs from "node:fs";
-import path from "node:path";
 import test from "node:test";
+import path from "node:path";
 import assert from "node:assert";
 import { results } from "./snapshots/input.js";
 import formatter from "../src/index.js";

@@ -1,0 +1,33 @@
+{
+    "filePath": "[SNAPSHOT]/ng.xapp-token/input.txt",
+    "messages": [
+        {
+            "message": "found slack token: xapp-1-AA2JWS7BEDD-1234576618999",
+            "range": [
+                0,
+                32
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-slack",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 32
+                }
+            },
+            "severity": "error",
+            "messageId": "SLACK_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-slack/README.md#SLACK_TOKEN",
+            "data": {
+                "TOKEN": "xapp-1-AA2JWS7BEDD-1234576618999"
+            }
+        }
+    ],
+    "sourceContent": "xapp-1-AA2JWS7BEDD-1234576618999-1234010643963577ab7449ef8014ade5482143da98cb46bb85355c04281234 is app tokens\n",
+    "sourceContentType": "text"
+}

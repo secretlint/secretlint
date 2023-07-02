@@ -1,8 +1,8 @@
+import fs from "node:fs";
 import path from "node:path";
 import assert from "node:assert";
-import { importSecretlintCreator, loadConfig } from "../src/index.js";
 import { SecretLintCoreConfigUnionRule } from "@secretlint/types";
-import fs from "node:fs";
+import { importSecretlintCreator, loadConfig } from "../src/index.js";
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const removeUndefined = (o: { [index: string]: any }) => {
@@ -16,10 +16,10 @@ const removeUndefined = (o: { [index: string]: any }) => {
     return o;
 };
 describe("@secretlint/config-loader", function () {
-    it("should load .secretlintrc.json", async () => {
+    it("should load .secretlintrc.json with CJS rules", async () => {
         const config = await loadConfig({
-            cwd: path.join(__dirname, "fixtures/valid-config"),
-            node_moduleDir: path.join(__dirname, "fixtures/valid-config"),
+            cwd: path.join(__dirname, "fixtures/valid-config-cjs/"),
+            node_moduleDir: path.join(__dirname, "fixtures/valid-config-cjs/modules"),
         });
         assert.deepStrictEqual(
             removeUndefined(config),
@@ -30,21 +30,21 @@ describe("@secretlint/config-loader", function () {
                         {
                             id: "example",
                             rule: importSecretlintCreator(
-                                await import("@secretlint/secretlint-rule-internal-test-pure-deps")
+                                await import("@secretlint/secretlint-rule-internal-test-cjs")
                             ),
                         },
                         {
                             id: "example-2",
                             rule: importSecretlintCreator(
-                                await import("@secretlint/secretlint-rule-internal-test-pure-deps")
+                                await import("@secretlint/secretlint-rule-internal-test-cjs")
                             ),
                             disabled: true,
                         },
                     ],
                 },
-                configFilePath: path.join(__dirname, "fixtures/valid-config/.secretlintrc.json"),
+                configFilePath: path.join(__dirname, "fixtures/valid-config-cjs/.secretlintrc.json"),
                 configDescriptor: JSON.parse(
-                    fs.readFileSync(path.join(__dirname, "fixtures/valid-config/.secretlintrc.json"), "utf-8")
+                    fs.readFileSync(path.join(__dirname, "fixtures/valid-config-cjs/.secretlintrc.json"), "utf-8")
                 ),
             })
         );

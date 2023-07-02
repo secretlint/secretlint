@@ -2,7 +2,10 @@ import { SecretLintRuleContext, SecretLintRuleCreator, SecretLintSourceCode } fr
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 import { SecretLintRuleMessageTranslate } from "@secretlint/types";
 
-const regx = require("regx").default("g");
+// @ts-expect-error: missing types
+import regx_ from "regx";
+const regx = regx_.default("g");
+
 export interface Options {
     allows?: string[];
 }

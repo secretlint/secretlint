@@ -2,6 +2,8 @@ import fs from "node:fs";
 import path from "node:path";
 import assert from "node:assert";
 import { validateConfig, validateConfigResult } from "../src/index.js";
+import { isAggregationError } from "../src/AggregationError.js";
+
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const snapshotDir = path.join(__dirname, "snapshots");
 const formatResult = (result: validateConfigResult) => {
@@ -38,9 +40,19 @@ describe("validateConfig", function () {
                 }
                 // compare input and output
                 const expected = fs.readFileSync(expectedFilePath, "utf-8");
-                assert.strictEqual(formatResult(actual), expected);
+                try {
+                    assert.strictEqual(formatResult(actual), expected);
+                } catch (error) {
+                    console.error(`Test failed: ${normalizedTestName}`);
+                    if ("error" in actual && isAggregationError(actual.error)) {
+                        actual.error.errors.forEach((error) => {
+                            console.error(error);
+                        });
+                    }
+                    throw error;
+                }
                 if (normalizedTestName.startsWith("ok.")) {
-                    assert.ok(actual.ok, "This validation should be passed ");
+                    assert.ok(actual.ok, "This validation should be passed");
                 } else {
                     assert.ok(!actual.ok, "This validation should be failed");
                 }

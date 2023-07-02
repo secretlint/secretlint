@@ -1,0 +1,32 @@
+{
+    "filePath": "[SNAPSHOT]/ng.privatekey-p12/input.p12",
+    "messages": [
+        {
+            "message": "found GCP Service Account's private key(p12): input.p12",
+            "range": [
+                0,
+                2301
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-gcp",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 24,
+                    "column": 71
+                }
+            },
+            "severity": "error",
+            "messageId": "PrivateKeyP12",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-gcp/README.md#PrivateKeyP12",
+            "data": {
+                "FILE_NAME": "input.p12"
+            }
+        }
+    ],
+    "sourceContentType": "binary"
+}

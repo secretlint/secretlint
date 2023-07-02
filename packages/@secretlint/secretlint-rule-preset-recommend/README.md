@@ -91,6 +91,12 @@ Install devDependencies and Run `npm test`:
 
     npm test
 
+Import rule tests and update snapshot:
+
+    npm run import-test
+
+:memo: It aims to test bundle version
+
 ## Contributing
 
 Pull requests and stars are always welcome.

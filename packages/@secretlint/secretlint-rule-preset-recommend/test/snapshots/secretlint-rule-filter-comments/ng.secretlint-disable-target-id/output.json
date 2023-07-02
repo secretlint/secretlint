@@ -1,0 +1,6 @@
+{
+    "filePath": "[SNAPSHOT]/ng.secretlint-disable-target-id/input.txt",
+    "messages": [],
+    "sourceContent": "// secretlint-disable @secretlint/secretlint-rule-secret-number\n\nTHIS IS SECRET 1\n\nTHIS IS SECRET Z <-- DETECT!!\n\n// secretlint-enable @secretlint/secretlint-rule-secret-number\n\nTHIS IS SECRET 0 // secretlint-disable-line @secretlint/secretlint-rule-secret-number -- ignore number\nTHIS IS SECRET Z // secretlint-disable-line @secretlint/secretlint-rule-secret-alphabet -- ignore alphabet\n",
+    "sourceContentType": "text"
+}

@@ -73,10 +73,10 @@ export const validateConfigDescriptor = (
                 errors.push(new Error(errorMessage));
             }
             if ("allowMessageIds" in ruleOrPreset) {
-                errors.push(new Error(`Can not "allowMessageIds" option to preset(${rulePreset.id}) `));
+                errors.push(new Error(`Can not set "allowMessageIds" option to preset(${rulePreset.id}) `));
             }
             if ("severity" in ruleOrPreset) {
-                errors.push(new Error(`Can not "severity" option to preset(${rulePreset.id})`));
+                errors.push(new Error(`Can not set "severity" option to preset(${rulePreset.id})`));
             }
         } else {
             const rule = ruleOrPreset as SecretLintCoreConfigRule;

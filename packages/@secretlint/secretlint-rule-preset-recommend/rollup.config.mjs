@@ -4,13 +4,21 @@ import commonjs from "@rollup/plugin-commonjs";
 
 export default {
     input: "src/index.ts",
+    // gcp rule is broken by moduleSideEffects option
+    // treeshake: "smallest",
     output: [
         {
-            dir: "lib/",
-            format: "commonjs",
+            dir: "module/",
+            format: "esm",
             exports: "named",
             sourcemap: true,
-        },
+            // Node.js ESM does not recognize `__esModule` flag interop
+            interop: "esModule",
+        }
     ],
-    plugins: [resolve({ preferBuiltins: true }), commonjs(), typescript()],
+    plugins: [resolve({ preferBuiltins: true }), commonjs({
+        // disable __esModule interop
+        // Node.js ESM does not recognize `__esModule` flag interop
+        defaultIsModuleExports: true
+    }), typescript()]
 };

@@ -6,7 +6,7 @@ import {
 } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 import escapeStringRegexp from "escape-string-regexp";
-import os from "os";
+import os from "node:os";
 
 const multiplatformPath = (dirPath: string): RegExp => {
     return new RegExp(

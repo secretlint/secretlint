@@ -5,6 +5,7 @@
     "moduleResolution": "NodeNext",
     "esModuleInterop": true,
     "newLine": "LF",
+    "noEmit": true,
     "outDir": "./module/",
     "target": "ES2018",
     "sourceMap": true,
@@ -27,7 +28,7 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": [
-    "src/**/*"
+    "**/*"
   ],
   "exclude": [
     ".git",
