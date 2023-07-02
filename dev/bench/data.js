@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1688316862980,
+  "lastUpdate": 1688336926358,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -20404,6 +20404,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.76,
             "range": "±2.36%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "daf5d8ae94344dc8f4a00e1d8742b22d461c97c7",
+          "message": "fix: fix weak regex pattern (#553)\n\n* fix(gcp): fix weak regex pattern\r\n\r\n* fix(npm): limit domain length",
+          "timestamp": "2023-07-03T07:26:44+09:00",
+          "tree_id": "cfdbccfda6590bdd2b130b7d1bcb27ed691b9b00",
+          "url": "https://github.com/secretlint/secretlint/commit/daf5d8ae94344dc8f4a00e1d8742b22d461c97c7"
+        },
+        "date": 1688336924907,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.87,
+            "range": "±0.87%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.77,
+            "range": "±1.12%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
