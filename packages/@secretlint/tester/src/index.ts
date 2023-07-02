@@ -103,7 +103,7 @@ const loadSecretlintTestCaseOptions: (testCaseDir: string) => Promise<SecretLint
  * // $ node --loader ts-node/esm --test test/index.test.ts
  * import test from "node:test";
  * describe("Snapshot Testing", (t) => {
- *  return snapshot(options).forEach((name, test) => {
+ *  await snapshot(options).forEach((name, test) => {
  *    return t.it(name, async function(context) {
  *        const status = await test();
  *        if(status === "skip"){

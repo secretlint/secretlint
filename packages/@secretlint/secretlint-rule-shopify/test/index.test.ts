@@ -3,7 +3,7 @@ import test from "node:test";
 
 test(rule.meta.id, async (t) => {
     const snapshot = (await import("@secretlint/tester")).snapshot;
-    return snapshot({
+    await snapshot({
         defaultConfig: {
             rules: [
                 {

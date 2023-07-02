@@ -4,7 +4,7 @@ import test from "node:test";
 
 test("@secretlint/secretlint-rule-basicauth", async (t) => {
     const snapshot = (await import("@secretlint/tester")).snapshot;
-    return snapshot({
+    await snapshot({
         defaultConfig: {
             rules: [
                 {

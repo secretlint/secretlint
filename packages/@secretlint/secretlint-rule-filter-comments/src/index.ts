@@ -1,4 +1,4 @@
-import { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
+import type { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
 import { parseComments } from "./parse-comment.js";
 import { CommentState } from "./CommentState.js";
 
