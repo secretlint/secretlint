@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1688336926358,
+  "lastUpdate": 1688353731344,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -20442,6 +20442,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.77,
             "range": "±1.12%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "hirocueki@gmail.com",
+            "name": "Hiroshi Ueki",
+            "username": "uekkie"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "9241131987bda44e74dd245feb0201b54d8696e6",
+          "message": "fix: add the config directory to the install file list (#555)",
+          "timestamp": "2023-07-03T12:06:47+09:00",
+          "tree_id": "9505c7836fb6691c497ac08838ebad129362ef74",
+          "url": "https://github.com/secretlint/secretlint/commit/9241131987bda44e74dd245feb0201b54d8696e6"
+        },
+        "date": 1688353729610,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.84,
+            "range": "±0.61%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.76,
+            "range": "±0.69%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
