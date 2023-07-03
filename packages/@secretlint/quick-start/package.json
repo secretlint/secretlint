@@ -38,7 +38,8 @@
   "files": [
     "bin/",
     "module/",
-    "src/"
+    "src/",
+    "config/"
   ],
   "scripts": {
     "build": "tsc --build",
