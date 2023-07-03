@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-import { quickStart } from "../module/index.js";
 try {
+    const { quickStart } = await import("../module/index.js");
     const { exitStatus, stderr, stdout } = await quickStart();
     if (stdout) {
         console.log(stdout);
@@ -12,5 +12,5 @@ try {
     process.exit(exitStatus);
 } catch (error) {
     console.error(error);
-    process.exit(1);
+    process.exit(2); // fatal error
 }
