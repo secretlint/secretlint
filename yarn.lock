@@ -2028,6 +2028,13 @@ expected-exit-status@^2.0.0:
     cross-spawn "^7.0.3"
     meow "^10.1.2"
 
+expected-exit-status@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/expected-exit-status/-/expected-exit-status-3.1.0.tgz#bd9a5b71b46aba751af0077242770c0142d73a19"
+  integrity sha512-GidLDupNVvyQqzxB8c9go4CQMWWGgoN3VbAvyNEC6rfX21nqVSF9GFleoEt4IFLQDwjfA3IuD69NcWrDRSujNg==
+  dependencies:
+    cross-spawn "^7.0.3"
+
 exponential-backoff@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/exponential-backoff/-/exponential-backoff-3.1.1.tgz#64ac7526fe341ab18a39016cd22c787d01e00bf6"
