@@ -48,7 +48,7 @@
     "@lerna-lite/cli": "^2.4.2",
     "@lerna-lite/publish": "^2.4.3",
     "@lerna-lite/version": "^2.4.2",
-    "lint-staged": "^13.2.2",
+    "lint-staged": "^13.2.3",
     "prettier": "^2.8.1",
     "turbo": "^1.10.6"
   },
