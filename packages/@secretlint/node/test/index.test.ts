@@ -2,8 +2,9 @@ import { createEngine } from "../src/index.js";
 import fs from "node:fs";
 import assert from "node:assert";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const normalizeFilePath = (content: string): string => {
     return content.replace(__dirname, "[TEST_DIR]");
 };

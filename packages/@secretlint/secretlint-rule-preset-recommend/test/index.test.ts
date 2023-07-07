@@ -1,10 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import test from "node:test";
 // Test target is bundled file
 import { creator as rule } from "../module/index.js";
 
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 test("Snapshot Testing", async (t) => {
     const snapshot = (await import("@secretlint/tester")).snapshot;
     const eachRulesDir = fs

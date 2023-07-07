@@ -1,12 +1,13 @@
 import fs from "node:fs";
 import test from "node:test";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import assert from "node:assert";
 import { results } from "./snapshots/input.js";
 import formatter from "../src/index.js";
 import escapeStringRegexp from "escape-string-regexp";
 
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const snapshotsDir = path.join(__dirname, "snapshots");
 const snapshotReplace = (value: string) => {
     return value.replace(new RegExp(escapeStringRegexp(snapshotsDir), "g"), "[SNAPSHOT]");

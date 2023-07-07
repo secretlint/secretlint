@@ -1,10 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import assert from "node:assert";
 import { validateConfig, validateConfigResult } from "../src/index.js";
 import { isAggregationError } from "../src/AggregationError.js";
 
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const snapshotDir = path.join(__dirname, "snapshots");
 const formatResult = (result: validateConfigResult) => {
     return result.ok

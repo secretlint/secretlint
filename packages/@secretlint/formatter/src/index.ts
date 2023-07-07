@@ -10,6 +10,7 @@ import { FormatterConfig } from "./types.js";
 import { moduleInterop } from "@textlint/module-interop";
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 // @ts-expect-error: no @types
 import isFile from "is-file";
 // @ts-expect-error: no @types
@@ -17,7 +18,7 @@ import tryResolve from "try-resolve";
 import debug0 from "debug";
 
 const debug = debug0("@secretlint/formatter");
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export interface SecretLintFormatterConfig {
     /**
