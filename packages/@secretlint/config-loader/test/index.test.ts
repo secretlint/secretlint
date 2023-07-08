@@ -1,10 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import assert from "node:assert";
 import { SecretLintCoreConfigUnionRule } from "@secretlint/types";
 import { importSecretlintCreator, loadConfig } from "../src/index.js";
 
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const removeUndefined = (o: { [index: string]: any }) => {
     for (let key in o) {
         if (o[key] === undefined) {

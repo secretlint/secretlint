@@ -1,10 +1,11 @@
 // LICENSE : MIT
 import assert from "node:assert";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import fs from "node:fs/promises";
 import os from "node:os";
 import { createConfig } from "../src/index.js";
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const readPkg = (filePath: string) => {
     return fs.readFile(filePath, "utf-8").then((content) => {
         return JSON.parse(content);
