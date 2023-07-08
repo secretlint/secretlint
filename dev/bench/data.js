@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1688786860044,
+  "lastUpdate": 1688794379997,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -20784,6 +20784,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.66,
             "range": "±1.08%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "79110363+risu729@users.noreply.github.com",
+            "name": "Risu",
+            "username": "risu729"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "82fcb4d6543301dfe39cbbfaf7eb42c0f2bdda40",
+          "message": "fix: use fileURLToPath for mimicked __dirname (#563)\n\n* fix: use fileURLToPath for mimicked __dirname\r\n\r\nFix the __dirname mimic to remove a leading slash in it by using fileURLToPath\r\ninstead.\r\n\r\nCloses #562.\r\n\r\n* fix(quick-start): replace URL() by fileURLToPath\r\n\r\n* fix(quick-start): fix defaultSecretlintRc\r\n\r\nCo-authored-by: azu <azu@users.noreply.github.com>\r\n\r\n---------\r\n\r\nCo-authored-by: azu <azu@users.noreply.github.com>",
+          "timestamp": "2023-07-08T14:30:57+09:00",
+          "tree_id": "f5a5fa9c0852c9546ca8c92105c2b0e27db3ef6a",
+          "url": "https://github.com/secretlint/secretlint/commit/82fcb4d6543301dfe39cbbfaf7eb42c0f2bdda40"
+        },
+        "date": 1688794378432,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.86,
+            "range": "±0.89%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.75,
+            "range": "±1.39%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
