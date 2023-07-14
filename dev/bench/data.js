@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1689286104228,
+  "lastUpdate": 1689298316681,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -21050,6 +21050,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.76,
             "range": "±1.01%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "distinct": true,
+          "id": "072e54e5f96c7fb4ec57d9b56e61f62d8cf5ac0a",
+          "message": "chore(deps): update dependency @types/pluralize to v0.0.30",
+          "timestamp": "2023-07-14T01:29:07Z",
+          "tree_id": "7a47b9c2e8d87fb933e4739e3c7a83ea05911eea",
+          "url": "https://github.com/secretlint/secretlint/commit/072e54e5f96c7fb4ec57d9b56e61f62d8cf5ac0a"
+        },
+        "date": 1689298314737,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.36,
+            "range": "±3.21%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.51,
+            "range": "±3.15%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
