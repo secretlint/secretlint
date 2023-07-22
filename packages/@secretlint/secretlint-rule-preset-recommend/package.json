@@ -58,7 +58,7 @@
     "tabWidth": 4
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^25.0.2",
+    "@rollup/plugin-commonjs": "^25.0.3",
     "@rollup/plugin-node-resolve": "^15.1.0",
     "@rollup/plugin-typescript": "^11.1.2",
     "@secretlint/secretlint-rule-aws": "^7.0.3",
