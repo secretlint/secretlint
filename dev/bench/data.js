@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1691217419625,
+  "lastUpdate": 1691217932099,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -21620,6 +21620,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.77,
             "range": "±1.70%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "229cca7faac919be9400b7cf216ec752eda704af",
+          "message": "CI: fix to test on Windows (#591)",
+          "timestamp": "2023-08-05T15:43:07+09:00",
+          "tree_id": "f9f945f01399ea34b66b714329e69a3db45a064b",
+          "url": "https://github.com/secretlint/secretlint/commit/229cca7faac919be9400b7cf216ec752eda704af"
+        },
+        "date": 1691217930214,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.49,
+            "range": "±1.76%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±1.13%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
