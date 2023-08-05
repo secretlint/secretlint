@@ -37,7 +37,7 @@ test("@secretlint/secretlint-formatter-sarif", (t) => {
             return;
         }
         // compare input and output
-        const expected = fs.readFileSync(expectedFilePath, "utf-8");
+        const expected = snapshotReplace(fs.readFileSync(expectedFilePath, "utf-8"));
         assert.strictEqual(actual, expected);
     });
 });
