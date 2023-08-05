@@ -18,7 +18,7 @@ const createSnapshotReplacer = () => {
                     // normalize path separator for Windows
                     // -  "filePath": "[SNAPSHOT]\\txt/input.txt"
                     // +  "filePath": "[SNAPSHOT]/txt/input.txt"
-                    .replace(/\\\\/g, "/")
+                    .replace(/\\/g, "/")
                     // normalize CRLF to LF
                     .replace(/\r\n/g, "\n")
             );
