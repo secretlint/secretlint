@@ -49,12 +49,12 @@ describe("cli snapshot testing", function () {
             const actualOptions = options.options;
             const actualInputs = options.inputs;
             const actual = await run(actualInputs ? actualInputs : [actualFilePath], {
-                debug: true,
                 ...cli.flags,
                 ...actualOptions,
                 cwd: fixtureDir,
                 // Less diff between env
                 color: false,
+                debug: true,
                 format: "json",
             }).catch((error) => {
                 // if throw an error, save it
