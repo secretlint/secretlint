@@ -11,7 +11,7 @@ const createSnapshotReplacer = () => {
                 value
                     .replace(fileURLToPath(SNAPSHOT_DIR), "[SNAPSHOT]/")
                     // normalize path separator for Windows
-                    .replace(/\\\\(?![rtn])/g, "/")
+                    .replace(/\\/g, "/")
                     // normalize CRLF to LF
                     .replace(/\r\n/g, "\n")
             );

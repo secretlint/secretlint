@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import assert from "node:assert";
 import { createRawSource } from "../src/index.js";
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const fixturesDir = path.join(__dirname, "snapshots");
 const createSnapshotReplacer = () => {
@@ -15,6 +16,8 @@ const createSnapshotReplacer = () => {
                 value
                     .replace(fixturesDir, "[SNAPSHOT]")
                     // normalize path separator for Windows
+                    // -  "filePath": "[SNAPSHOT]\\txt/input.txt"
+                    // +  "filePath": "[SNAPSHOT]/txt/input.txt"
                     .replace(/\\\\/g, "/")
                     // normalize CRLF to LF
                     .replace(/\r\n/g, "\n")
