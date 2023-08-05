@@ -49,6 +49,7 @@ describe("cli snapshot testing", function () {
             const actualOptions = options.options;
             const actualInputs = options.inputs;
             const actual = await run(actualInputs ? actualInputs : [actualFilePath], {
+                debug: true,
                 ...cli.flags,
                 ...actualOptions,
                 cwd: fixtureDir,
