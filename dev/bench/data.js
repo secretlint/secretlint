@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1691218496958,
+  "lastUpdate": 1691279326952,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -21696,6 +21696,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.69,
             "range": "±0.83%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "2a11017a3c010237f65fcb22ecc42d72ae49dd08",
+          "message": "fix: fix behaviour on Windows. (#593)\n\n* test: fix tests on Windows\r\n\r\n* test: fix tests on Windows\r\n\r\n* fix tests\r\n\r\n* test: normalize line break\r\n\r\n* test: normalize line break\r\n\r\n* fix tests\r\n\r\n* fix tests\r\n\r\n* fix tests\r\n\r\n* fix\r\n\r\n* fix\r\n\r\n* fix path replace\r\n\r\n* fix\r\n\r\n* fix test\r\n\r\n* fix test\r\n\r\n* fix\r\n\r\n* fix test\r\n\r\n* fix\r\n\r\n* fix\r\n\r\n* fix\r\n\r\n* fix\r\n\r\n* remove slash\r\n\r\n* log\r\n\r\n* log\r\n\r\n* fix\r\n\r\n* fix\r\n\r\n* fix\r\n\r\n* fix\r\n\r\n* fix\r\n\r\n* add * text=auto eol=lf\r\n\r\n* fix(tester): normalize filePath\r\n\r\n* increase timeout\r\n\r\n* fix tests\r\n\r\n* use path\r\n\r\n* fix example-cli test\r\n\r\n* add debug\r\n\r\n* add debug\r\n\r\n* add debug\r\n\r\n* fix glob pattern\r\n\r\n* increase timeout\r\n\r\n* use npx\r\n\r\n* test: native command\r\n\r\n* test: native command\r\n\r\n* update lock\r\n\r\n* use native\r\n\r\n* increase timeout\r\n\r\n* increase timeout\r\n\r\n* restore path\r\n\r\n* restore path\r\n\r\n* test: avoid to use regexp\r\n\r\n* test: avoid to use regexp\r\n\r\n* remove\r\n\r\n* use cwd option\r\n\r\n* fix: interop",
+          "timestamp": "2023-08-06T08:46:46+09:00",
+          "tree_id": "febe0512e4da7ebf39b718ebf260a76137c4aa67",
+          "url": "https://github.com/secretlint/secretlint/commit/2a11017a3c010237f65fcb22ecc42d72ae49dd08"
+        },
+        "date": 1691279325908,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.83,
+            "range": "±0.82%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.7,
+            "range": "±1.93%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
