@@ -19,6 +19,7 @@ const snapshotReplace = (value: string) => {
             .replace(/\\/g, "/")
             // 3. restore \n \t \r
             .replace(/_!!!_/g, "\\")
+            .replace(/\r?\n/g, "\n")
     );
 };
 
