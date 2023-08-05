@@ -47,14 +47,24 @@ export type SnapshotOptions = {
 export type SecretLintTestCaseOptions = {
     inputFilePath?: string;
 };
-const createSnapshotRepalcer = (options: SnapshotOptions) => {
+const createSnapshotReplacer = (options: SnapshotOptions) => {
     return (key: string, value: any) => {
         // Filtering out properties
         if (key === "filePath") {
             if (typeof options.snapshotDirectory === "string") {
-                return value.replace(options.snapshotDirectory, "[SNAPSHOT]");
+                return (
+                    value
+                        .replace(options.snapshotDirectory, "[SNAPSHOT]")
+                        // normalize path separator for Windows
+                        .replace(/\\/g, "/")
+                );
             } else {
-                return value.replace(fileURLToPath(options.snapshotDirectory), "[SNAPSHOT]");
+                return (
+                    value
+                        .replace(fileURLToPath(options.snapshotDirectory), "[SNAPSHOT]")
+                        // normalize path separator for Windows
+                        .replace(/\\/g, "/")
+                );
             }
         }
         return value;
@@ -116,7 +126,7 @@ const loadSecretlintTestCaseOptions: (testCaseDir: string) => Promise<SecretLint
 export const snapshot = (options: SnapshotOptions) => {
     const snapshotDirectory = options.snapshotDirectory;
     const updateSnapshot = !!process.env.UPDATE_SNAPSHOT || options.updateSnapshot;
-    const snapshotReplacer = createSnapshotRepalcer(options);
+    const snapshotReplacer = createSnapshotReplacer(options);
     const testDefinitions: {
         id: string;
         rule: SecretLintUnionRuleCreator;
