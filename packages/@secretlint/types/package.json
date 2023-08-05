@@ -33,7 +33,7 @@
   },
   "main": "./lib/index.js",
   "module": "./module/index.js",
-  "types": "./module/index.d.ts",
+  "types": "./lib/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "test"
