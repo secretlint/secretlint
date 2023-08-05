@@ -18,7 +18,9 @@ const formatResult = (result: validateConfigResult) => {
               // 2. normalize path separator for Windows
               .replace(/\\/g, "/")
               // 3. restore \n \t \r
-              .replace(/_!!!_/g, "\\");
+              .replace(/_!!!_/g, "\\")
+              // \r\n -> \n
+              .replace(/\r\n/g, "\n");
 };
 describe("validateConfig", function () {
     fs.readdirSync(snapshotDir, { withFileTypes: true })
