@@ -10,7 +10,12 @@ import escapeStringRegexp from "escape-string-regexp";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const snapshotsDir = path.join(__dirname, "snapshots");
 const snapshotReplace = (value: string) => {
-    return value.replace(new RegExp(escapeStringRegexp(snapshotsDir), "g"), "[SNAPSHOT]");
+    return (
+        value
+            .replace(new RegExp(escapeStringRegexp(snapshotsDir), "g"), "[SNAPSHOT]")
+            // normalize path separator for Windows
+            .replace(/\\/g, "/")
+    );
 };
 
 test("@secretlint/secretlint-formatter-sarif", (t) => {
