@@ -16,6 +16,7 @@ import isFile from "is-file";
 // @ts-expect-error: no @types
 import tryResolve from "try-resolve";
 import debug0 from "debug";
+import url from "node:url";
 
 const debug = debug0("@secretlint/formatter");
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -151,8 +152,9 @@ export async function secretlintCreateFormatter(formatterConfig: FormatterConfig
         }
     }
     try {
-        console.log({ formatterPath });
-        formatter = moduleInterop(await import(formatterPath)).default;
+        // dynamic import require file url
+        const fileUrl = url.pathToFileURL(formatterPath).href;
+        formatter = moduleInterop(await import(fileUrl)).default;
     } catch (ex) {
         throw new Error(`Could not find formatter ${formatterName}
 ${ex}`);
