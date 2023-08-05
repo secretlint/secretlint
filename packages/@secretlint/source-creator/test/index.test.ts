@@ -15,7 +15,7 @@ const createSnapshotReplacer = () => {
                 value
                     .replace(fixturesDir, "[SNAPSHOT]")
                     // normalize path separator for Windows
-                    .replace(/\\\\(?![rtn])/g, "/")
+                    .replace(/\\(?![rtn])/g, "/")
                     // normalize CRLF to LF
                     .replace(/\r\n/g, "\n")
             );
