@@ -13,6 +13,8 @@ const createSnapshotReplacer = () => {
             return (
                 value
                     .replace(SNAPSHOT_DIR, "[SNAPSHOT]")
+                    // glob use / , but Windows use \
+                    .replace(SNAPSHOT_DIR.replaceAll("/", "\\"), "[SNAPSHOT]")
                     // normalize path separator for Windows
                     .replace(/\\\\/g, "/")
                     // normalize CRLF to LF
@@ -54,7 +56,6 @@ describe("cli snapshot testing", function () {
                 cwd: fixtureDir,
                 // Less diff between env
                 color: false,
-                debug: true,
                 format: "json",
             }).catch((error) => {
                 // if throw an error, save it
