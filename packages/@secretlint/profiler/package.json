@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/profiler",
-  "version": "7.0.3",
+  "version": "7.0.4",
   "description": "Profile manager for Secretlint.",
   "keywords": [
     "secretlint"
