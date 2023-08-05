@@ -24,7 +24,7 @@
         "src/"
     ],
     "scripts": {
-        "test": "expected-exit-status 1 --stdout '/\\d+ problems/' --command 'secretlint \"**/*\"'"
+        "test": "expected-exit-status 1 --stdout '/\\d+ problems/' --command 'node_modules/.bin/secretlint \"**/*\"'"
     },
     "devDependencies": {
         "@secretlint/secretlint-rule-preset-recommend": "^7.0.3",
