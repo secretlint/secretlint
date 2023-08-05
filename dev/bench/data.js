@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1691217932099,
+  "lastUpdate": 1691218496958,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -21658,6 +21658,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±1.13%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "79110363+risu729@users.noreply.github.com",
+            "name": "Risu",
+            "username": "risu729"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "45126d30dbea7ccb7632f187e4b7076c0ffcfc68",
+          "message": "fix: stop using path.posix (#590)\n\nCo-authored-by: azu <azu@users.noreply.github.com>",
+          "timestamp": "2023-08-05T15:52:52+09:00",
+          "tree_id": "ff2dd24b41ea6995f2bd865b7c248a16c48977df",
+          "url": "https://github.com/secretlint/secretlint/commit/45126d30dbea7ccb7632f187e4b7076c0ffcfc68"
+        },
+        "date": 1691218495141,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.8,
+            "range": "±0.96%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.69,
+            "range": "±0.83%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
