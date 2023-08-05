@@ -14,7 +14,7 @@ const createSnapshotReplacer = () => {
                 value
                     .replace(SNAPSHOT_DIR, "[SNAPSHOT]")
                     // glob use / , but Windows use \
-                    .replace(SNAPSHOT_DIR.replaceAll("/", "\\"), "[SNAPSHOT]")
+                    .replace(SNAPSHOT_DIR.replaceAll(path.sep, path.posix.sep), "[SNAPSHOT]")
                     // normalize path separator for Windows
                     .replace(/\\\\/g, "/")
                     // normalize CRLF to LF
