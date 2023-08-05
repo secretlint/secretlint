@@ -7,7 +7,14 @@ const SNAPSHOT_DIR = new URL("./snapshots/", import.meta.url);
 const createSnapshotReplacer = () => {
     return (_key: string, value: any) => {
         if (typeof value === "string") {
-            return value.replace(fileURLToPath(SNAPSHOT_DIR), "[SNAPSHOT]/");
+            return (
+                value
+                    .replace(fileURLToPath(SNAPSHOT_DIR), "[SNAPSHOT]/")
+                    // normalize path separator for Windows
+                    .replace(/\\\\(?![rtn])/g, "/")
+                    // normalize CRLF to LF
+                    .replace(/\r\n/g, "\n")
+            );
         }
         return value;
     };

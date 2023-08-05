@@ -11,7 +11,14 @@ const createSnapshotReplacer = () => {
             return "[SNIP]";
         }
         if (typeof value === "string") {
-            return value.replace(fixturesDir, "[SNAPSHOT]");
+            return (
+                value
+                    .replace(fixturesDir, "[SNAPSHOT]")
+                    // normalize path separator for Windows
+                    .replace(/\\\\(?![rtn])/g, "/")
+                    // normalize CRLF to LF
+                    .replace(/\r\n/g, "\n")
+            );
         }
         return value;
     };
