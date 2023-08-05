@@ -43,9 +43,13 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
             ignoredPatterns.push(...ignored);
         }
     }
-    debug("search patterns: %o", patterns);
+    // glob pattern should be used "/" as path separator
+    const globPatterns = patterns.map((pattern) => {
+        return pattern.replace(/\\/g, "/");
+    });
+    debug("search patterns: %o", globPatterns);
     debug("search ignore patterns: %o", ignoredPatterns);
-    const searchResultItems = await globby(patterns, {
+    const searchResultItems = await globby(globPatterns, {
         cwd: options.cwd,
         ignore: ignoredPatterns,
         dot: true,
@@ -65,7 +69,7 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
      */
     const isEmptyResultIsHappenByIgnoring =
         (
-            await globby(patterns, {
+            await globby(globPatterns, {
                 cwd: options.cwd,
                 dot: true,
             })

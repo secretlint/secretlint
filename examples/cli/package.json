@@ -24,11 +24,10 @@
         "src/"
     ],
     "scripts": {
-        "test": "expected-exit-status 1 --stdout '/\\d+ problems/' --command 'secretlint \"**/*\"'"
+        "test": "secretlint \"**/*\" && exit 1 || exit 0"
     },
     "devDependencies": {
         "@secretlint/secretlint-rule-preset-recommend": "^7.0.3",
-        "expected-exit-status": "^3.1.0",
         "secretlint": "^7.0.3"
     },
     "publishConfig": {

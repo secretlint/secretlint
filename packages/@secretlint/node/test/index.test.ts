@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const normalizeFilePath = (content: string): string => {
-    return content.replace(__dirname, "[TEST_DIR]");
+    return content.replace(__dirname, "[TEST_DIR]").replace(/\\/g, "/");
 };
 describe("createEngine", function () {
     it("should throw rejected promise if the config file is not found", async () => {

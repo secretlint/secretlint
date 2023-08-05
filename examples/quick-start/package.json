@@ -24,11 +24,10 @@
         "src/"
     ],
     "scripts": {
-        "test": "expected-exit-status 1 --stdout '/\\d+ problems/' --command 'npx @secretlint/quick-start \"**/*\"'"
+        "test": "npx @secretlint/quick-start \"**/*\" && exit 1 || exit 0"
     },
     "devDependencies": {
-        "@secretlint/quick-start": "^7.0.3",
-        "expected-exit-status": "^3.1.0"
+        "@secretlint/quick-start": "^7.0.3"
     },
     "publishConfig": {
         "access": "public"

@@ -10,7 +10,14 @@ import escapeStringRegexp from "escape-string-regexp";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const snapshotsDir = path.join(__dirname, "snapshots");
 const snapshotReplace = (value: string) => {
-    return value.replace(new RegExp(escapeStringRegexp(snapshotsDir), "g"), "[SNAPSHOT]");
+    return (
+        value
+            // replace snapshotsDir to [SNAPSHOT]
+            .replace(new RegExp(escapeStringRegexp(snapshotsDir), "g"), "[SNAPSHOT]")
+            // 2. normalize path separator for Windows
+            .replace(/\\\\/g, "/")
+            .replace(/\r?\n/g, "\n")
+    );
 };
 
 test("@secretlint/secretlint-formatter-sarif", (t) => {
@@ -30,7 +37,7 @@ test("@secretlint/secretlint-formatter-sarif", (t) => {
             return;
         }
         // compare input and output
-        const expected = fs.readFileSync(expectedFilePath, "utf-8");
+        const expected = snapshotReplace(fs.readFileSync(expectedFilePath, "utf-8"));
         assert.strictEqual(actual, expected);
     });
 });

@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import assert from "node:assert";
 import { createRawSource } from "../src/index.js";
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const fixturesDir = path.join(__dirname, "snapshots");
 const createSnapshotReplacer = () => {
@@ -11,7 +12,12 @@ const createSnapshotReplacer = () => {
             return "[SNIP]";
         }
         if (typeof value === "string") {
-            return value.replace(fixturesDir, "[SNAPSHOT]");
+            return (
+                value
+                    // replace snapshotsDir to [SNAPSHOT]
+                    .replace(fixturesDir, "[SNAPSHOT]")
+                    .replace(/\\/g, "/")
+            );
         }
         return value;
     };

@@ -9,7 +9,9 @@ export type runConfigCreatorOptions = {
 export const runConfigCreator = async (
     options: runConfigCreatorOptions
 ): Promise<{ exitStatus: number; stdout: string | null; stderr: Error | null }> => {
-    const existingConfigFiles = await globby(`${options.cwd}/.secretlintrc*`);
+    const existingConfigFiles = await globby(`.secretlintrc*`, {
+        cwd: options.cwd,
+    });
     if (existingConfigFiles.length > 0) {
         return {
             exitStatus: 1,

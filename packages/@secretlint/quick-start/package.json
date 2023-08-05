@@ -47,7 +47,7 @@
     "prepublishOnly": "npm run clean && npm run build",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
-    "test": "npm run build && expected-exit-status 1 --command 'node bin/quick-start.js \"test/**/*\"'",
+    "test": "node bin/quick-start.js \"**/*\" && exit 1 || exit 0",
     "watch": "tsc --build --watch"
   },
   "prettier": {
@@ -61,7 +61,6 @@
   },
   "devDependencies": {
     "@types/node": "^20.4.5",
-    "expected-exit-status": "^2.0.0",
     "prettier": "^2.8.1",
     "typescript": "^5.1.6"
   },

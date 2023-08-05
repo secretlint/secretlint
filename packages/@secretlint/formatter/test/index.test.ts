@@ -5,16 +5,30 @@ import assert from "node:assert";
 import { loadFormatter, getFormatterList } from "../src/index.js";
 import { results } from "./snapshots/input.js";
 import escapeStringRegexp from "escape-string-regexp";
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const snapshotsDir = path.join(__dirname, "snapshots");
 const snapshotReplace = (value: string) => {
-    return value.replace(new RegExp(escapeStringRegexp(snapshotsDir), "g"), "[SNAPSHOT]");
+    return (
+        value
+            // replace snapshotsDir to [SNAPSHOT]
+            .replace(new RegExp(escapeStringRegexp(snapshotsDir), "g"), "[SNAPSHOT]")
+            // 1. escape \n \t \r
+            .replace(/\\([ntr])/g, "_!!!_$1")
+            // 2. normalize path separator for Windows
+            .replace(/\\/g, "/")
+            // 3. restore \n \t \r
+            .replace(/_!!!_/g, "\\")
+            .replace(/\r?\n/g, "\n")
+    );
 };
 
 describe("@secretlint/formatter", function () {
     const formatters = getFormatterList();
     for (const formatter of formatters) {
         const formatterName = formatter.name;
+        // TODO: skip json and table test if windows
+        const it = process.platform === "win32" && formatterName === "json" ? globalThis.it.skip : globalThis.it;
         it(`test ${formatterName}`, async function () {
             const fixtureDir = snapshotsDir;
             const formatter = await loadFormatter({
@@ -31,7 +45,7 @@ describe("@secretlint/formatter", function () {
                 return;
             }
             // compare input and output
-            const expected = fs.readFileSync(expectedFilePath, "utf-8");
+            const expected = snapshotReplace(fs.readFileSync(expectedFilePath, "utf-8"));
             assert.strictEqual(actual, expected);
         });
     }

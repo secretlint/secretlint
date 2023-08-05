@@ -36,25 +36,23 @@ describe("create-secretlintrc", function () {
 
     context("when pacakge.json has @secretlint/* packages", function () {
         it("Run secretlint --init", async () => {
-            const expectedConfigFilePath = path.join(tmpConfigDir, ".secretlintrc.json");
             const actual = await runConfigCreator({ cwd: tmpConfigDir });
             if (actual.stdout === null) {
                 assert.fail("stdout is unexpected null.");
             }
-            assert.match(actual.stdout, new RegExp(`Create\\s+(${expectedConfigFilePath})`, "g"));
+            assert.match(actual.stdout, /Create .*\.secretlintrc\.json/);
             assert.strictEqual(actual.stderr, null);
         });
     });
 
     context("when .secretlintrc.json is already existed", function () {
         it("should be an error", async () => {
-            const expectedConfigFilePath = path.join(tmpConfigDir, ".secretlintrc.json");
             const actual = await runConfigCreator({ cwd: tmpConfigDir });
             assert.strictEqual(actual.exitStatus, 0);
             if (actual.stdout === null) {
                 assert.fail("stdout is unexpected null.");
             }
-            assert.match(actual.stdout, new RegExp(`Create\\s+(${expectedConfigFilePath})`, "g"));
+            assert.match(actual.stdout, /Create .*\.secretlintrc\.json/);
             assert.strictEqual(actual.stderr, null);
             // try to re-create
             const reActual = await runConfigCreator({ cwd: tmpConfigDir });

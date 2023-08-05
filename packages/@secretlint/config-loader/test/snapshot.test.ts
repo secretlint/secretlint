@@ -10,7 +10,17 @@ const snapshotDir = path.join(__dirname, "snapshots");
 const formatResult = (result: validateConfigResult) => {
     return result.ok
         ? "OK"
-        : result.error.message.replace(/cwd: .*/, "cwd: <cwd>").replace(/baseDir: .*/, "baseDir: <baseDir>");
+        : result.error.message
+              .replace(/cwd: .*/, "cwd: <cwd>")
+              .replace(/baseDir: .*/, "baseDir: <baseDir>")
+              // 1. escape \n \t \r
+              .replace(/\\([ntr])/g, "_!!!_$1")
+              // 2. normalize path separator for Windows
+              .replace(/\\/g, "/")
+              // 3. restore \n \t \r
+              .replace(/_!!!_/g, "\\")
+              // \r\n -> \n
+              .replace(/\r\n/g, "\n");
 };
 describe("validateConfig", function () {
     fs.readdirSync(snapshotDir, { withFileTypes: true })
