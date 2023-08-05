@@ -41,7 +41,7 @@ describe("create-secretlintrc", function () {
             if (actual.stdout === null) {
                 assert.fail("stdout is unexpected null.");
             }
-            assert.match(actual.stdout, new RegExp(`Create\\s+(${expectedConfigFilePath})`, "g"));
+            assert.ok(actual.stdout?.includes(`Create ${expectedConfigFilePath}`));
             assert.strictEqual(actual.stderr, null);
         });
     });
@@ -54,7 +54,7 @@ describe("create-secretlintrc", function () {
             if (actual.stdout === null) {
                 assert.fail("stdout is unexpected null.");
             }
-            assert.match(actual.stdout, new RegExp(`Create\\s+(${expectedConfigFilePath})`, "g"));
+            assert.ok(actual.stdout?.includes(`Create ${expectedConfigFilePath}`));
             assert.strictEqual(actual.stderr, null);
             // try to re-create
             const reActual = await runConfigCreator({ cwd: tmpConfigDir });
