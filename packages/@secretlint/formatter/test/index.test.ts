@@ -12,8 +12,8 @@ const snapshotReplace = (value: string) => {
     return (
         value
             .replace(new RegExp(escapeStringRegexp(snapshotsDir), "g"), "[SNAPSHOT]")
-            // normalize path fow windows
-            .replace(/\\+/g, "/")
+            // normalize path sep for windows, but it should not replace \n etc...
+            .replace(/\\(?![tn])/g, "/")
     );
 };
 
