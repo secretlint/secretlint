@@ -33,7 +33,7 @@
   },
   "main": "./lib/index.js",
   "module": "./module/index.js",
-  "types": "./module/index.d.ts",
+  "types": "./lib/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "test"
@@ -58,7 +58,7 @@
     "tabWidth": 4
   },
   "devDependencies": {
-    "@types/node": "^20.4.1",
+    "@types/node": "^20.4.5",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
     "ts-node": "^10.9.1",
