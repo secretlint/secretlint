@@ -4,6 +4,7 @@ import { runConfigCreator } from "./create-secretlintrc.js";
 import { secretLintProfiler } from "@secretlint/profiler";
 import { getFormatterList } from "@secretlint/formatter";
 import debug0 from "debug";
+
 const debug = debug0("secretlint");
 export const cli = meow(
     `
@@ -125,7 +126,7 @@ export const run = async (
     });
     if (flags.debug) {
         const debug = await import("debug");
-        debug.default?.enable("*secretlint*");
+        debug.default?.enable?.("*secretlint*");
     }
     const cwd = flags.cwd;
     debug("input: %O", input);
