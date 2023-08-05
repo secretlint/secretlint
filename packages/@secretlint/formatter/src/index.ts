@@ -139,10 +139,10 @@ export async function secretlintCreateFormatter(formatterConfig: FormatterConfig
     } else if (fs.existsSync(path.resolve(process.cwd(), formatterName))) {
         formatterPath = path.resolve(process.cwd(), formatterName);
     } else {
-        if (isFile(`${path.join(__dirname, "formatters/", formatterName)}.js`)) {
-            formatterPath = `${path.join(__dirname, "formatters/", formatterName)}.js`;
-        } else if (isFile(`${path.join(__dirname, "formatters/", formatterName)}.ts`)) {
-            formatterPath = `${path.join(__dirname, "formatters/", formatterName)}.ts`;
+        if (isFile(`${path.join(__dirname, "formatters", formatterName)}.js`)) {
+            formatterPath = `${path.join(__dirname, "formatters", formatterName)}.js`;
+        } else if (isFile(`${path.join(__dirname, "formatters", formatterName)}.ts`)) {
+            formatterPath = `${path.join(__dirname, "formatters", formatterName)}.ts`;
         } else {
             const pkgPath = tryResolve(formatterName) || tryResolve(`secretlint-formatter-${formatterName}`);
             if (pkgPath) {
