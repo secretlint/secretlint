@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-npm",
-  "version": "7.0.3",
+  "version": "7.0.4",
   "description": "A secretlint rule for npm.",
   "keywords": [
     "npm",
@@ -55,11 +55,11 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^7.0.3",
+    "@secretlint/types": "^7.0.4",
     "@textlint/regexp-string-matcher": "^2.0.2"
   },
   "devDependencies": {
-    "@secretlint/tester": "^7.0.3",
+    "@secretlint/tester": "^7.0.4",
     "@types/node": "^20.4.5",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
