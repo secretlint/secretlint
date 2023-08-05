@@ -129,7 +129,7 @@ export async function loadFormatter(formatterConfig: SecretLintFormatterConfig) 
     }
 }
 
-export async function secretlintCreateFormatter(formatterConfig: FormatterConfig) {
+export async function   secretlintCreateFormatter(formatterConfig: FormatterConfig) {
     const formatterName = formatterConfig.formatterName;
     debug(`formatterName: ${formatterName}`);
     let formatter: (results: SecretLintCoreResult[], formatterConfig: FormatterConfig) => string;
@@ -151,6 +151,7 @@ export async function secretlintCreateFormatter(formatterConfig: FormatterConfig
         }
     }
     try {
+        console.log({ formatterPath }}
         formatter = moduleInterop(await import(formatterPath)).default;
     } catch (ex) {
         throw new Error(`Could not find formatter ${formatterName}
