@@ -28,7 +28,6 @@
     },
     "devDependencies": {
         "@secretlint/secretlint-rule-preset-recommend": "^7.0.3",
-        "expected-exit-status": "^3.1.0",
         "secretlint": "^7.0.3"
     },
     "publishConfig": {
