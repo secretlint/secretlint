@@ -125,7 +125,7 @@ export const run = async (
     });
     if (flags.debug) {
         const debug = await import("debug");
-        debug.enable("*secretlint*");
+        debug.default?.enable("*secretlint*");
     }
     const cwd = flags.cwd;
     debug("input: %O", input);
