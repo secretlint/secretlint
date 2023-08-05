@@ -11,11 +11,14 @@ const snapshotsDir = path.join(__dirname, "snapshots");
 const snapshotReplace = (value: string) => {
     return (
         value
+            // replace snapshotsDir to [SNAPSHOT]
             .replace(new RegExp(escapeStringRegexp(snapshotsDir), "g"), "[SNAPSHOT]")
-            // normalize path separator for Windows
-            .replace(/\\\\/g, "/")
-            // normalize CRLF to LF
-            .replace(/\r\n/g, "\n")
+            // 1. escape \n \t \r
+            .replace(/\\([ntr])/g, "_!!!_$1")
+            // 2. normalize path separator for Windows
+            .replace(/\\/g, "/")
+            // 3. restore \n \t \r
+            .replace(/_!!!_/g, "\\")
     );
 };
 

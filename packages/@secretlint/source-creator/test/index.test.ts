@@ -14,13 +14,14 @@ const createSnapshotReplacer = () => {
         if (typeof value === "string") {
             return (
                 value
+                    // replace snapshotsDir to [SNAPSHOT]
                     .replace(fixturesDir, "[SNAPSHOT]")
-                    // normalize path separator for Windows
-                    // -  "filePath": "[SNAPSHOT]\\txt/input.txt"
-                    // +  "filePath": "[SNAPSHOT]/txt/input.txt"
+                    // 1. escape \n \t \r
+                    .replace(/\\([ntr])/g, "_!!!_$1")
+                    // 2. normalize path separator for Windows
                     .replace(/\\/g, "/")
-                    // normalize CRLF to LF
-                    .replace(/\r\n/g, "\n")
+                    // 3. restore \n \t \r
+                    .replace(/_!!!_/g, "\\")
             );
         }
         return value;
