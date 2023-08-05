@@ -16,11 +16,10 @@ export type SearchFilesOptions = {
 };
 
 const mapGitIgnorePatternTo = (base: string) => (ignore: string) => {
-    if (ignore.startsWith("!")) {
-        return "!" + path.posix.resolve(path.posix.join(base, ignore.slice(1)));
-    }
-
-    return path.posix.resolve(path.posix.join(base, ignore));
+    const mapped = ignore.startsWith("!")
+        ? "!" + path.resolve(path.join(base, ignore.slice(1)))
+        : path.resolve(path.join(base, ignore));
+    return mapped.replace(/\\/g, "/");
 };
 /**
  * globby wrapper that support ignore options
