@@ -37,8 +37,7 @@ export async function reportIfFoundPrivateKeyP12Format({
             }),
             range: [0, source.content.length],
         });
-    } catch (err) {
+    } catch {
         // nope
-        console.error(err);
     }
 }
