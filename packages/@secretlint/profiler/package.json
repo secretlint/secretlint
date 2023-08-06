@@ -27,7 +27,7 @@
     "./package.json": "./package.json"
   },
   "main": "./module/node.js",
-  "browser": "lib/browser.js",
+  "browser": "./module/browser.js",
   "types": "./module/node.d.ts",
   "directories": {
     "lib": "lib",
