@@ -1,12 +1,11 @@
-import fs from "node:fs";
 import {
     SecretLintRuleContext,
     SecretLintRuleCreator,
     SecretLintRuleMessageTranslate,
     SecretLintSourceCode,
 } from "@secretlint/types";
-import forge from "node-forge";
 import path from "node:path";
+import { reportIfFoundPrivateKeyP12Format } from "./reportIfFoundPrivateKeyP12Format.js";
 
 export const messages = {
     PrivateKeyP12: {
@@ -60,41 +59,6 @@ function reportIfFoundPrivateKeyJSONFormat({
     }
 }
 
-function reportIfFoundPrivateKeyP12Format({
-    source,
-    context,
-    t,
-}: {
-    source: SecretLintSourceCode;
-    options: Required<Options>;
-    context: SecretLintRuleContext;
-    t: SecretLintRuleMessageTranslate<typeof messages>;
-}) {
-    if (!source.filePath) {
-        return;
-    }
-    try {
-        // Read file as Buffer to Base64 -> bytes -> asn1
-        const p12String = fs.readFileSync(source.filePath).toString("base64");
-        const p12Der = forge.util.decode64(p12String);
-        const p12Asn1 = forge.asn1.fromDer(p12Der);
-        // read p12 file with "notasecret" pass phase
-        // The password for Service Account's the PKCS12 file is "notasecret".
-        // If success read p12 file, report it as error
-        // https://cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys#serviceaccountprivatekeytype
-        forge.pkcs12.pkcs12FromAsn1(p12Asn1, "notasecret");
-        // because, this p12 file is credential for GCP Service Account
-        context.report({
-            message: t("PrivateKeyP12", {
-                FILE_NAME: source.filePath ? path.basename(source.filePath) : "",
-            }),
-            range: [0, source.content.length],
-        });
-    } catch {
-        // nope
-    }
-}
-
 export const creator: SecretLintRuleCreator<Options> = {
     messages,
     meta: {
@@ -114,9 +78,9 @@ export const creator: SecretLintRuleCreator<Options> = {
         return {
             file(source: SecretLintSourceCode) {
                 if (source.ext === ".p12") {
-                    reportIfFoundPrivateKeyP12Format({ source, options: normalizedOptions, context, t });
+                    return reportIfFoundPrivateKeyP12Format({ source, options: normalizedOptions, context, t });
                 } else if (source.ext === ".json") {
-                    reportIfFoundPrivateKeyJSONFormat({ source, options: normalizedOptions, context, t });
+                    return reportIfFoundPrivateKeyJSONFormat({ source, options: normalizedOptions, context, t });
                 }
             },
         };
