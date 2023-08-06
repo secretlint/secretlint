@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1691285994896,
+  "lastUpdate": 1691288529093,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -21886,6 +21886,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.65,
             "range": "±1.93%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "2f281a19c20ad1ea7db1fded2387ec12d6116485",
+          "message": "fix(gcp): make reportIfFoundPrivateKeyP12Format lazy load (#597)\n\n* fix(gcp): make reportIfFoundPrivateKeyP12Format lazy load\r\n\r\n- browser can not load node:fs\r\n- node-forge is heavy module\r\n\r\n* fix remove log",
+          "timestamp": "2023-08-06T11:20:04+09:00",
+          "tree_id": "a7982a2105563b8cc93562edc1fb662705a4ea84",
+          "url": "https://github.com/secretlint/secretlint/commit/2f281a19c20ad1ea7db1fded2387ec12d6116485"
+        },
+        "date": 1691288527969,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.74,
+            "range": "±2.02%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.68,
+            "range": "±2.00%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
