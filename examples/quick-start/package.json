@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/example-quick-start",
-    "version": "7.0.6",
+    "version": "7.0.7",
     "private": true,
     "description": "",
     "homepage": "https://github.com/secretlint/secretlint/tree/master/examples/quick-start/",
@@ -27,7 +27,7 @@
         "test": "npx @secretlint/quick-start \"**/*\" && exit 1 || exit 0"
     },
     "devDependencies": {
-        "@secretlint/quick-start": "^7.0.6"
+        "@secretlint/quick-start": "^7.0.7"
     },
     "publishConfig": {
         "access": "public"
