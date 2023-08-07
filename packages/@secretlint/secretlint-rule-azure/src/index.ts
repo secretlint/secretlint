@@ -6,9 +6,6 @@ import { SecretLintRuleMessageTranslate } from "@secretlint/types";
 // - https://learn.microsoft.com/en-us/dotnet/api/azure.identity.environmentcredential
 // - https://learn.microsoft.com/en-us/microsoft-365/compliance/sit-defn-azure-ad-client-secret
 
-// @ts-expect-error: missing types
-import regx_ from "regx";
-const regx = regx_.default("gi");
 export interface Options {
     allows?: string[];
 }
@@ -41,7 +38,10 @@ const reportAzureTenantId = ({
     context: SecretLintRuleContext;
     options: Required<Options>;
 }) => {
-    const pattern = regx`${QUOTE}(?:azure|ad)_?tenant_?id${QUOTE}${CONNECT}${QUOTE}(${GUID})${QUOTE}\b`;
+    const pattern = new RegExp(
+        String.raw`${QUOTE}(?:azure|ad)_?tenant_?id${QUOTE}${CONNECT}${QUOTE}(${GUID})${QUOTE}\b`,
+        "gi"
+    );
     const results = source.content.matchAll(pattern);
     for (const result of results) {
         const index = result.index || 0;
@@ -71,7 +71,10 @@ const reportAzureClientId = ({
     context: SecretLintRuleContext;
     options: Required<Options>;
 }) => {
-    const pattern = regx`${QUOTE}(?:azure)?_?client_?id${QUOTE}${CONNECT}${QUOTE}(${GUID})${QUOTE}\b`;
+    const pattern = new RegExp(
+        String.raw`${QUOTE}(?:azure)?_?client_?id${QUOTE}${CONNECT}${QUOTE}(${GUID})${QUOTE}\b`,
+        "gi"
+    );
     const results = source.content.matchAll(pattern);
     for (const result of results) {
         const index = result.index || 0;
@@ -101,7 +104,11 @@ const reportAzureClientSecret = ({
     context: SecretLintRuleContext;
     options: Required<Options>;
 }) => {
-    const pattern = regx`${QUOTE}(?:azure)?_?client_?secret${QUOTE}${CONNECT}${QUOTE}(${SECRET})${QUOTE}\b`;
+    const pattern = new RegExp(
+        String.raw`${QUOTE}(?:azure)?_?client_?secret${QUOTE}${CONNECT}${QUOTE}(${SECRET})${QUOTE}\b`,
+        "gi"
+    );
+
     const results = source.content.matchAll(pattern);
     for (const result of results) {
         const index = result.index || 0;

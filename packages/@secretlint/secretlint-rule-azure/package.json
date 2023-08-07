@@ -56,8 +56,7 @@
   },
   "dependencies": {
     "@secretlint/types": "^7.0.6",
-    "@textlint/regexp-string-matcher": "^2.0.2",
-    "regx": "^1.0.4"
+    "@textlint/regexp-string-matcher": "^2.0.2"
   },
   "devDependencies": {
     "@secretlint/tester": "^7.0.6",
