@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-privatekey",
-  "version": "7.0.6",
+  "version": "7.0.7",
   "description": "A secretlint rule for PrivateKey.",
   "keywords": [
     "secretlint",
@@ -58,8 +58,8 @@
     "@textlint/regexp-string-matcher": "^2.0.2"
   },
   "devDependencies": {
-    "@secretlint/tester": "^7.0.6",
-    "@secretlint/types": "^7.0.6",
+    "@secretlint/tester": "^7.0.7",
+    "@secretlint/types": "^7.0.7",
     "@types/node": "^20.4.5",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
