@@ -59,7 +59,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.4",
-    "@rollup/plugin-node-resolve": "^15.1.0",
+    "@rollup/plugin-node-resolve": "^15.2.0",
     "@rollup/plugin-typescript": "^11.1.2",
     "@secretlint/secretlint-rule-aws": "^7.0.7",
     "@secretlint/secretlint-rule-basicauth": "^7.0.7",

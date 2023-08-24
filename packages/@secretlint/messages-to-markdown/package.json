@@ -54,7 +54,7 @@
   },
   "dependencies": {
     "@secretlint/types": "^7.0.7",
-    "meow": "^12.0.1"
+    "meow": "^12.1.0"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.1",
