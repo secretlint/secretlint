@@ -51,8 +51,8 @@ function reportIfFoundKey({
      * shppa_[a-zA-Z0-9]{32,64}
      * e.g.) shppa_7jqbg9cupMkZRxJKXWz3v8BvS8QBa7hMdJfAex
      */
-    const SENDGRID_KEY_PATTERN = /(shppa|shpca|shpat|shpss)_[a-zA-Z0-9]{32,64}/g;
-    const results = source.content.matchAll(SENDGRID_KEY_PATTERN);
+    const SHOPIFY_KEY_PATTERN = /(shppa|shpca|shpat|shpss)_[a-zA-Z0-9]{32,64}/g;
+    const results = source.content.matchAll(SHOPIFY_KEY_PATTERN);
     for (const result of results) {
         const index = result.index || 0;
         const match = result[0] || "";
