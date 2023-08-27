@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1692999412964,
+  "lastUpdate": 1693124626718,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -22496,6 +22496,44 @@ window.BENCHMARK_DATA = {
             "range": "±1.44%",
             "unit": "ops/sec",
             "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "camelmasa@gmail.com",
+            "name": "Masahiro Saito",
+            "username": "camelmasa"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "90f126524367bd74f19c61d9f78c2c6f197d3199",
+          "message": "fix: typo in Shopify key pattern constant (#614)\n\nCorrected the name of the constant used for matching Shopify keys.\r\nChanged from `SENDGRID_KEY_PATTERN` to `SHOPIFY_KEY_PATTERN` to accurately reflect its purpose.",
+          "timestamp": "2023-08-27T17:21:43+09:00",
+          "tree_id": "da59834df33b39370ee673a79d15db947fc70a2a",
+          "url": "https://github.com/secretlint/secretlint/commit/90f126524367bd74f19c61d9f78c2c6f197d3199"
+        },
+        "date": 1693124625230,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.08,
+            "range": "±0.77%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.81,
+            "range": "±0.82%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
           }
         ]
       }
