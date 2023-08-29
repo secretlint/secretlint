@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1693313145635,
+  "lastUpdate": 1693334799503,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -22570,6 +22570,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±3.51%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "distinct": true,
+          "id": "92e315727ed3b3a4ed8ccab07c63360b35d2f22c",
+          "message": "fix(deps): update dependency read-pkg to ^8.1.0",
+          "timestamp": "2023-08-29T18:43:30Z",
+          "tree_id": "c764eebbe8c895271111a1b37e9ee1ddefbad9de",
+          "url": "https://github.com/secretlint/secretlint/commit/92e315727ed3b3a4ed8ccab07c63360b35d2f22c"
+        },
+        "date": 1693334797524,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.57,
+            "range": "±3.77%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.59,
+            "range": "±1.77%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
