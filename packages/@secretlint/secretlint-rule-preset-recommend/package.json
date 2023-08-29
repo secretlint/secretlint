@@ -59,7 +59,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.4",
-    "@rollup/plugin-node-resolve": "^15.2.0",
+    "@rollup/plugin-node-resolve": "^15.2.1",
     "@rollup/plugin-typescript": "^11.1.2",
     "@secretlint/secretlint-rule-aws": "^7.0.7",
     "@secretlint/secretlint-rule-basicauth": "^7.0.7",
@@ -73,10 +73,10 @@
     "@secretlint/secretlint-rule-slack": "^7.0.7",
     "@secretlint/tester": "^7.0.7",
     "@secretlint/types": "^7.0.7",
-    "@types/node": "^20.5.1",
+    "@types/node": "^20.5.2",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
-    "rollup": "^3.28.0",
+    "rollup": "^3.28.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
   },
