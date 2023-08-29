@@ -2562,6 +2562,13 @@ hosted-git-info@^6.0.0, hosted-git-info@^6.1.1:
   dependencies:
     lru-cache "^7.5.1"
 
+hosted-git-info@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-7.0.0.tgz#276330b8ad9f4566e82c8ccb16050decc096076b"
+  integrity sha512-ICclEpTLhHj+zCuSb2/usoNXSVkxUSIopre+b1w8NDY9Dntp9LO4vLdHYI336TH8sAqwrRgnSfdkBG2/YpisHA==
+  dependencies:
+    lru-cache "^10.0.1"
+
 http-cache-semantics@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/http-cache-semantics/-/http-cache-semantics-4.1.1.tgz#abe02fcb2985460bf0323be664436ec3476a6d5a"
@@ -3277,6 +3284,11 @@ log-update@^5.0.1:
     strip-ansi "^7.0.1"
     wrap-ansi "^8.0.1"
 
+lru-cache@^10.0.1:
+  version "10.0.1"
+  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-10.0.1.tgz#0a3be479df549cca0e5d693ac402ff19537a6b7a"
+  integrity sha512-IJ4uwUTi2qCccrioU6g9g/5rvvVl13bsdczUUcqbciD9iLr095yj8DQKdObriEvuNSx325N1rV1O0sJFszx75g==
+
 lru-cache@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-6.0.0.tgz#6d6fe6570ebd96aaf90fcad1dafa3b2566db3a94"
@@ -3794,6 +3806,16 @@ normalize-package-data@^5.0.0:
   integrity sha512-h9iPVIfrVZ9wVYQnxFgtw1ugSvGEMOlyPWWtm8BMJhnwyEL/FLbYbTY3V3PpjI/BUK67n9PEWDu6eHzu1fB15Q==
   dependencies:
     hosted-git-info "^6.0.0"
+    is-core-module "^2.8.1"
+    semver "^7.3.5"
+    validate-npm-package-license "^3.0.4"
+
+normalize-package-data@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/normalize-package-data/-/normalize-package-data-6.0.0.tgz#68a96b3c11edd462af7189c837b6b1064a484196"
+  integrity sha512-UL7ELRVxYBHBgYEtZCXjxuD5vPxnmvMGq0jp/dGPKKrN7tfsBh2IY7TlJ15WWwdjRWD3RJbnsygUurTK3xkPkg==
+  dependencies:
+    hosted-git-info "^7.0.0"
     is-core-module "^2.8.1"
     semver "^7.3.5"
     validate-npm-package-license "^3.0.4"
@@ -4476,15 +4498,15 @@ read-pkg@^5.2.0:
     parse-json "^5.0.0"
     type-fest "^0.6.0"
 
-read-pkg@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/read-pkg/-/read-pkg-8.0.0.tgz#78b93774c15a3f151b56d5790d5127a5cb9fc507"
-  integrity sha512-Ajb9oSjxXBw0YyOiwtQ2dKbAA/vMnUPnY63XcCk+mXo0BwIdQEMgZLZiMWGttQHcUhUgbK0mH85ethMPKXxziw==
+read-pkg@^8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/read-pkg/-/read-pkg-8.1.0.tgz#6cf560b91d90df68bce658527e7e3eee75f7c4c7"
+  integrity sha512-PORM8AgzXeskHO/WEv312k9U03B8K9JSiWF/8N9sUuFjBa+9SF2u6K7VClzXwDXab51jCd8Nd36CNM+zR97ScQ==
   dependencies:
     "@types/normalize-package-data" "^2.4.1"
-    normalize-package-data "^5.0.0"
+    normalize-package-data "^6.0.0"
     parse-json "^7.0.0"
-    type-fest "^3.8.0"
+    type-fest "^4.2.0"
 
 readable-stream@^2.0.2, readable-stream@~2.3.6:
   version "2.3.8"
@@ -5379,6 +5401,11 @@ type-fest@^3.8.0:
   version "3.12.0"
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-3.12.0.tgz#4ce26edc1ccc59fc171e495887ef391fe1f5280e"
   integrity sha512-qj9wWsnFvVEMUDbESiilKeXeHL7FwwiFcogfhfyjmvT968RXSvnl23f1JOClTHYItsi7o501C/7qVllscUP3oA==
+
+type-fest@^4.2.0:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-4.3.1.tgz#5cb58cdab5120f7ab0b40cfdc35073fb9adb651d"
+  integrity sha512-pphNW/msgOUSkJbH58x8sqpq8uQj6b0ZKGxEsLKMUnGorRcDjrUaLS+39+/ub41JNTwrrMyJcUB8+YZs3mbwqw==
 
 typedarray-to-buffer@^3.1.5:
   version "3.1.5"
