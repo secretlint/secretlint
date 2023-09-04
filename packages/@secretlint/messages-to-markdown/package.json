@@ -54,11 +54,11 @@
   },
   "dependencies": {
     "@secretlint/types": "^7.0.7",
-    "meow": "^12.1.0"
+    "meow": "^12.1.1"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.1",
-    "@types/node": "^20.5.6",
+    "@types/node": "^20.5.7",
     "mocha": "^10.2.0",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
