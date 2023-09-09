@@ -666,10 +666,10 @@
   resolved "https://registry.yarnpkg.com/@tsconfig/node16/-/node16-1.0.4.tgz#0b92dcc0cc1c81f6f306a381f28e31b1a56536e9"
   integrity sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==
 
-"@tsd/typescript@~5.0.2":
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/@tsd/typescript/-/typescript-5.0.4.tgz#18aa4eb2c35c6bf9aab3199c289be319bedb7e9c"
-  integrity sha512-YQi2lvZSI+xidKeUjlbv6b6Zw7qB3aXHw5oGJLs5OOGAEqKIOvz5UIAkWyg0bJbkSUWPBEtaOHpVxU4EYBO1Jg==
+"@tsd/typescript@~5.2.2":
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/@tsd/typescript/-/typescript-5.2.2.tgz#b3a11006737a41abb492fe5a16de17a1c3a0126e"
+  integrity sha512-VtjHPAKJqLJoHHKBDNofzvQB2+ZVxjXU/Gw6INAS9aINLQYVsxfzrQ2s84huCeYWZRTtrr7R0J7XgpZHjNwBCw==
 
 "@tufjs/canonical-json@1.0.0":
   version "1.0.0"
@@ -5291,12 +5291,12 @@ tsconfig-to-dual-package@^1.2.0:
   dependencies:
     resolve-tsconfig "^1.3.0"
 
-tsd@^0.28.1:
-  version "0.28.1"
-  resolved "https://registry.yarnpkg.com/tsd/-/tsd-0.28.1.tgz#a470bd88a80ff138496c71606072893fe5820e62"
-  integrity sha512-FeYrfJ05QgEMW/qOukNCr4fAJHww4SaKnivAXRv4g5kj4FeLpNV7zH4dorzB9zAfVX4wmA7zWu/wQf7kkcvfbw==
+tsd@^0.29.0:
+  version "0.29.0"
+  resolved "https://registry.yarnpkg.com/tsd/-/tsd-0.29.0.tgz#eed29647bf67ae77e4d686e9fdde5dd27bd1529f"
+  integrity sha512-5B7jbTj+XLMg6rb9sXRBGwzv7h8KJlGOkTHxY63eWpZJiQ5vJbXEjL0u7JkIxwi5EsrRE1kRVUWmy6buK/ii8A==
   dependencies:
-    "@tsd/typescript" "~5.0.2"
+    "@tsd/typescript" "~5.2.2"
     eslint-formatter-pretty "^4.1.0"
     globby "^11.0.1"
     jest-diff "^29.0.3"
