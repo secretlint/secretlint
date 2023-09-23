@@ -60,7 +60,7 @@
   "devDependencies": {
     "@secretlint/tester": "^7.0.7",
     "@types/js-yaml": "^4.0.6",
-    "@types/node": "^20.6.1",
+    "@types/node": "^20.6.2",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
     "ts-node": "^10.9.1",
