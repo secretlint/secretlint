@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1696120730490,
+  "lastUpdate": 1696120772625,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -23406,6 +23406,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±1.81%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "00a58a8feb13e44309f3b56cbda4fcb9fce75088",
+          "message": "chore(deps): update tibdex/github-app-token action to v2 (#625)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2023-10-01T09:36:59+09:00",
+          "tree_id": "98e34c54b7949fb1c279b70b7317d50503804d29",
+          "url": "https://github.com/secretlint/secretlint/commit/00a58a8feb13e44309f3b56cbda4fcb9fce75088"
+        },
+        "date": 1696120770894,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.54,
+            "range": "±3.74%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.59,
+            "range": "±5.36%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
