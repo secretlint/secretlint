@@ -64,7 +64,7 @@
     "@types/bn.js": "^5.1.2",
     "@types/secp256k1": "^4.0.3",
     "bn.js": "^5.2.1",
-    "secp256k1": "^4.0.3"
+    "secp256k1": "^5.0.0"
   },
   "devDependencies": {
     "@secretlint/tester": "^7.0.7",
