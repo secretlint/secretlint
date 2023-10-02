@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1696199344737,
+  "lastUpdate": 1696260491595,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -23520,6 +23520,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.69,
             "range": "±2.05%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "distinct": true,
+          "id": "1e47dfc75ac2a68c2f79ad98dd4fadb3c47a5ea1",
+          "message": "fix(deps): update dependency @types/secp256k1 to ^4.0.4",
+          "timestamp": "2023-10-02T15:25:58Z",
+          "tree_id": "418d1011bd7649dbb36aaf87df60d21656094dc1",
+          "url": "https://github.com/secretlint/secretlint/commit/1e47dfc75ac2a68c2f79ad98dd4fadb3c47a5ea1"
+        },
+        "date": 1696260489526,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 1.87,
+            "range": "±1.81%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.73,
+            "range": "±2.90%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
