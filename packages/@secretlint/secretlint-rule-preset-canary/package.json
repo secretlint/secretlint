@@ -76,7 +76,7 @@
     "@types/node": "^20.7.1",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
-    "rollup": "^3.29.3",
+    "rollup": "^3.29.4",
     "rollup-plugin-polyfill-node": "^0.12.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
