@@ -1,4 +1,4 @@
-FROM node:18-alpine
+FROM node:21-alpine
 
 LABEL maintainer="azu <azuciao@gmail.com>"
 LABEL description="Docker Container for secretlint"
