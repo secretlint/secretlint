@@ -45,9 +45,9 @@
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\""
   },
   "devDependencies": {
-    "@lerna-lite/cli": "^2.5.1",
-    "@lerna-lite/publish": "^2.5.1",
-    "@lerna-lite/version": "^2.5.1",
+    "@lerna-lite/cli": "^2.6.0",
+    "@lerna-lite/publish": "^2.6.0",
+    "@lerna-lite/version": "^2.6.0",
     "lint-staged": "^13.3.0",
     "prettier": "^2.8.1",
     "turbo": "^1.10.15"
