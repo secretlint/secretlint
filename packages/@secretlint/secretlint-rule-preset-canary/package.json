@@ -59,7 +59,7 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
-    "@rollup/plugin-replace": "^5.0.4",
+    "@rollup/plugin-replace": "^5.0.5",
     "@rollup/plugin-typescript": "^11.1.5",
     "@secretlint/secretlint-rule-aws": "^7.0.8",
     "@secretlint/secretlint-rule-basicauth": "^7.0.8",
@@ -73,7 +73,7 @@
     "@secretlint/secretlint-rule-slack": "^7.0.8",
     "@secretlint/tester": "^7.0.8",
     "@secretlint/types": "^7.0.8",
-    "@types/node": "^20.8.9",
+    "@types/node": "^20.8.10",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
     "rollup": "^3.29.4",
