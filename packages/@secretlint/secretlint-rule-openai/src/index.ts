@@ -1,9 +1,9 @@
 import type { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
 
 export const messages = {
-    EXAMPLE_MESSAGE: {
-        en: (props: { ID: string }) => `found secret: ${props.ID}`,
-        ja: (props: { ID: string }) => `secret: ${props.ID} がみつかりました`,
+    OPENAI_TOKEN: {
+        en: (props: { TOKEN: string }) => `found OpenAI API token: ${props.TOKEN}`,
+        ja: (props: { TOKEN: string }) => `OpenAI API トークン: ${props.TOKEN} がみつかりました`,
     },
 };
 
@@ -22,15 +22,15 @@ export const creator: SecretLintRuleCreator = {
         const t = context.createTranslator(messages);
         return {
             file(source: SecretLintSourceCode) {
-                const pattern = /SECRET/g;
+                const pattern = /sk-[a-zA-Z0-9]{20}T3BlbkFJ[a-zA-Z0-9]{20}/g;
                 const matches = source.content.matchAll(pattern);
                 for (const match of matches) {
                     const index = match.index ?? 0;
                     const matchString = match[0] ?? "";
                     const range = [index, index + matchString.length] as const;
                     context.report({
-                        message: t("EXAMPLE_MESSAGE", {
-                            ID: matchString,
+                        message: t("OPENAI_TOKEN", {
+                            TOKEN: matchString,
                         }),
                         range,
                     });

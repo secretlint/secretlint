@@ -1,6 +1,6 @@
 # @secretlint/secretlint-rule-openai
 
-An example rule for secretlint.
+A secretline rule for OpenAI.
 
 ## Install
 
@@ -10,14 +10,35 @@ Install with [npm](https://www.npmjs.com/):
 
 ## MessageIDs
 
-### EXAMPLE_MESSAGE
+### OPENAI_TOKEN
 
-An example error message.
+> found OpenAI API Token: {{KEY}}
+
+OpenAI API tokens should be private.
 
 ## Options
 
 - `allows: string[]`
     - Allows a list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string)
+
+## Examples
+
+```json5
+
+{
+    "rules": [
+        {
+            "id": "@secretlint/secretlint-rule-openai",
+            // Ignore error related to IDs
+            "allowMessageIds": ["OPENAI_TOKEN"],
+            "options": {
+                // allow list
+                "allows": ["/IT_IS_PUBLIC/"]
+            }
+        }
+    ]
+}
+```
 
 ## Changelog
 
@@ -25,7 +46,9 @@ See [Releases page](https://github.com/secretlint/secretlint/releases).
 
 ## Running tests
 
-No Test to avoid Dependency cycles.
+Install devDependencies and Run `npm test`:
+
+    npm test
 
 ## Contributing
 
@@ -38,6 +61,11 @@ For bugs and feature requests, [please create an issue](https://github.com/secre
 3. Commit your changes: `git commit -am 'Add some feature'`
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request :D
+
+## Author
+
+- [github/siketyan](https://github.com/siketyan)
+- [twitter/s6n_jp](https://twitter.com/s6n_jp)
 
 ## License
 
