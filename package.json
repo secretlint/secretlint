@@ -43,7 +43,7 @@
     "clean": "turbo run clean",
     "prepare": "git config --local core.hooksPath .githooks",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
-    "gen:rule": "npx scaffdog generate new-rule --output packages/ --answer \"owner:$(git config user.name)\""
+    "gen:rule": "npx scaffdog generate new-rule --output packages/ --answer \"owner:$(git config user.name)\" --answer \"version:$(node -e 'console.log(require(\"./lerna.json\").version)')\""
   },
   "devDependencies": {
     "@lerna-lite/cli": "^2.6.0",

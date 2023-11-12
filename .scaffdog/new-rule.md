@@ -6,6 +6,7 @@ ignore: [ ]
 questions:
   name: 'Please enter a rule name. (e.g. shopify)'
   owner: 'Please enter a rule owner. (e.g. azu)'
+  version: 'Please enter a secretlint version'
 ---
 
 # `@secretlint/secretlint-rule-{{ inputs.name }}/README.md`

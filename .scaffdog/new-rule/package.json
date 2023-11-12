@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-{{ inputs.name }}",
-  "version": "7.0.8",
+  "version": "{{ inputs.version }}",
   "description": "An example rule for secretlint.",
   "keywords": [
     "secretlint",
@@ -51,10 +51,10 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^7.0.8"
+    "@secretlint/types": "^{{ inputs.version }}"
   },
   "devDependencies": {
-    "@secretlint/tester": "^7.0.8",
+    "@secretlint/tester": "^{{ inputs.version }}",
     "@types/node": "^20.8.9",
     "prettier": "^2.8.1",
     "ts-node": "^10.9.1",
