@@ -1,0 +1,32 @@
+{
+    "filePath": "[SNAPSHOT]/ng.secret/input.txt",
+    "messages": [
+        {
+            "message": "found OpenAI API token: sk-sUeBP9asw6GiYHXqtg70T3BlbkFJJuLwJFco90bOpU0Ntest",
+            "range": [
+                0,
+                51
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-openai",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 51
+                }
+            },
+            "severity": "error",
+            "messageId": "OPENAI_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-openai/README.md#OPENAI_TOKEN",
+            "data": {
+                "TOKEN": "sk-sUeBP9asw6GiYHXqtg70T3BlbkFJJuLwJFco90bOpU0Ntest"
+            }
+        }
+    ],
+    "sourceContent": "sk-sUeBP9asw6GiYHXqtg70T3BlbkFJJuLwJFco90bOpU0Ntest\n",
+    "sourceContentType": "text"
+}
