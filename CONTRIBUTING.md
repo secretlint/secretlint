@@ -251,6 +251,21 @@ Once a pull request has been created, it will initiate continuous integration bu
 
 After all participants on pull request are satisfied to the changes, we will merge your code into the secretlint master branch. Yay!
 
+
+## Add New Rule
+
+This project has a template for creating a new rule.
+
+```sh
+npm run gen:rule
+```
+
+1. Enter rule name
+   - e.g.) `aws`
+   - This generator create `@secretlint/secretlint-rule-aws` package
+2. Implement it and run tests!
+3. Update README.md
+
 ## Benchmark
 
 Secretlint has a continuous benchmark:

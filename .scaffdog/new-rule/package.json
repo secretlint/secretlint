@@ -1,0 +1,69 @@
+{
+  "name": "@secretlint/secretlint-rule-{{ inputs.name }}",
+  "version": "{{ inputs.version }}",
+  "description": "An example rule for secretlint.",
+  "keywords": [
+    "secretlint",
+    "testing",
+    "rule"
+  ],
+  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-{{ inputs.name }}/",
+  "bugs": {
+    "url": "https://github.com/secretlint/secretlint/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/secretlint/secretlint.git"
+  },
+  "license": "MIT",
+  "author": "{{ inputs.owner }}",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./module/index.d.ts",
+        "default": "./module/index.js"
+      },
+      "default": "./module/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./module/index.js",
+  "types": "./module/index.d.ts",
+  "files": [
+    "bin/",
+    "module/",
+    "src/"
+  ],
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "tsc --build --clean",
+    "prepublishOnly": "npm run clean && npm run build",
+    "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
+    "prepublish": "npm run --if-present build",
+    "test": "node --loader ts-node/esm --test test/index.test.ts",
+    "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
+    "watch": "tsc --build --watch"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "singleQuote": false,
+    "tabWidth": 4
+  },
+  "dependencies": {
+    "@secretlint/types": "^{{ inputs.version }}"
+  },
+  "devDependencies": {
+    "@secretlint/tester": "^{{ inputs.version }}",
+    "@types/node": "^20.8.9",
+    "prettier": "^2.8.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

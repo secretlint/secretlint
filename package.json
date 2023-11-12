@@ -42,7 +42,8 @@
     "ci": "turbo run build test secretlint",
     "clean": "turbo run clean",
     "prepare": "git config --local core.hooksPath .githooks",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\""
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
+    "gen:rule": "scaffdog generate new-rule --output packages/ --answer \"owner:$(git config user.name)\" --answer \"version:$(node -e 'console.log(require(\"./lerna.json\").version)')\""
   },
   "devDependencies": {
     "@lerna-lite/cli": "^2.6.0",
@@ -50,6 +51,7 @@
     "@lerna-lite/version": "^2.6.0",
     "lint-staged": "^13.3.0",
     "prettier": "^2.8.1",
+    "scaffdog": "^3.0.0",
     "turbo": "^1.10.16"
   },
   "prettier": {
