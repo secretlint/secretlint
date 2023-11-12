@@ -617,6 +617,20 @@ For bugs and feature requests, [please create an issue](https://github.com/secre
 
 See also, [CONTRIBUTING.md](./CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
 
+### Add New Rule
+
+You can use `npm run gen:rule` command to create new rule.
+
+```shell script
+npm run gen:rule
+```
+
+For more details, please see [CONTRIBUTING.md](./CONTRIBUTING.md)
+
+### Benchmark
+
+Benchmark workflow is run on every commit.
+
 - Benchmark: https://secretlint.github.io/secretlint/dev/bench/
 
 ## Author
