@@ -67,7 +67,7 @@
     "@secretlint/node": "^7.0.7",
     "@secretlint/profiler": "^7.0.7",
     "debug": "^4.3.4",
-    "globby": "^13.2.2",
+    "globby": "^14.0.0",
     "meow": "^12.1.1",
     "read-pkg": "^8.1.0"
   },

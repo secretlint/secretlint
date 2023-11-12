@@ -1,57 +1,36 @@
 import { globby } from "globby";
-import fs from "node:fs";
-import path from "node:path";
 import debug0 from "debug";
+
 const debug = debug0("secretlint");
-const DEFAULT_IGNORE_PATTERNS = Object.freeze([
+const DEFAULT_IGNORE_PATTERNS = [
     "**/.git/**",
     "**/node_modules/**",
     "**/.secretlintrc/**",
     "**/.secretlintrc.{json,yaml,yml,js}/**",
     "**/.secretlintignore*/**",
-]);
+];
 export type SearchFilesOptions = {
     cwd: string;
     ignoreFilePath?: string;
 };
 
-const mapGitIgnorePatternTo = (base: string) => (ignore: string) => {
-    const mapped = ignore.startsWith("!")
-        ? "!" + path.resolve(path.join(base, ignore.slice(1)))
-        : path.resolve(path.join(base, ignore));
-    return mapped.replace(/\\/g, "/");
-};
 /**
  * globby wrapper that support ignore options
  * @param patterns
  * @param options
  */
 export const searchFiles = async (patterns: string[], options: SearchFilesOptions) => {
-    const ignoredPatterns = [];
-    ignoredPatterns.push(...DEFAULT_IGNORE_PATTERNS);
-    if (options.ignoreFilePath) {
-        const baseDir = path.relative(options.cwd, path.dirname(options.ignoreFilePath));
-        const normalizeIgnoreFilePath = path.resolve(options.cwd, options.ignoreFilePath);
-        debug("searchFiles ignore baseDir: %s, normalizeIgnoreFilePath: %s", baseDir, normalizeIgnoreFilePath);
-        if (fs.existsSync(normalizeIgnoreFilePath)) {
-            const ignored = fs
-                .readFileSync(normalizeIgnoreFilePath, "utf-8")
-                .split(/\r?\n/)
-                .filter((line) => !/^\s*$/.test(line) && !/^\s*#/.test(line))
-                .map(mapGitIgnorePatternTo(baseDir));
-            debug("ignored: %o", ignored);
-            ignoredPatterns.push(...ignored);
-        }
-    }
     // glob pattern should be used "/" as path separator
     const globPatterns = patterns.map((pattern) => {
         return pattern.replace(/\\/g, "/");
     });
     debug("search patterns: %o", globPatterns);
-    debug("search ignore patterns: %o", ignoredPatterns);
+    debug("search DEFAULT_IGNORE_PATTERNS: %o", DEFAULT_IGNORE_PATTERNS);
+    debug("search ignoreFilePath: %s", options.ignoreFilePath);
     const searchResultItems = await globby(globPatterns, {
         cwd: options.cwd,
-        ignore: ignoredPatterns,
+        ignore: DEFAULT_IGNORE_PATTERNS,
+        ignoreFiles: options.ignoreFilePath ? [options.ignoreFilePath] : undefined,
         dot: true,
         absolute: true,
     });
