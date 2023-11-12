@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1699760509931,
+  "lastUpdate": 1699760848013,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -24470,6 +24470,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 1.03,
             "range": "±0.84%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "40ed0f641e0e67fcd351884caed5cb2c7403b13f",
+          "message": "Update renovate.json (#657)\n\nuse https://github.com/azu/renovate-config/releases/tag/v4.0.0",
+          "timestamp": "2023-11-12T12:45:55+09:00",
+          "tree_id": "7507805bdfeec1e326e2bf82031eee3478f7bf44",
+          "url": "https://github.com/secretlint/secretlint/commit/40ed0f641e0e67fcd351884caed5cb2c7403b13f"
+        },
+        "date": 1699760846799,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.5,
+            "range": "±1.49%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 1.02,
+            "range": "±1.16%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
