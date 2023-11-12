@@ -50,3 +50,9 @@ questions:
 ```
 {{ read "new-rule/test/snapshots/ok.valid/input.txt" }}
 ```
+
+# `@secretlint/secretlint-rule-{{ inputs.name }}/tsconfig.json`
+
+```
+{{ read "new-rule/tsconfig.json" }}
+```
