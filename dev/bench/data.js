@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1698877165725,
+  "lastUpdate": 1699760443874,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -24396,6 +24396,44 @@ window.BENCHMARK_DATA = {
             "range": "±1.62%",
             "unit": "ops/sec",
             "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "8772cdc907077cf43cc1ebbf5911c93e16f24b89",
+          "message": "fix(secretlint): fix secretlintginore matching logics (#672)\n\n* test(secretlint): add ignore test for #671\r\n\r\n* fix(secretlint): use `ignoreFiles` option for ignoring\r\n\r\nfix https://github.com/secretlint/secretlint/issues/671",
+          "timestamp": "2023-11-12T12:38:41+09:00",
+          "tree_id": "6bb9f61c1a8b3efc600280a27938224ccee438a7",
+          "url": "https://github.com/secretlint/secretlint/commit/8772cdc907077cf43cc1ebbf5911c93e16f24b89"
+        },
+        "date": 1699760441883,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.04,
+            "range": "±0.67%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.8,
+            "range": "±0.36%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
           }
         ]
       }
