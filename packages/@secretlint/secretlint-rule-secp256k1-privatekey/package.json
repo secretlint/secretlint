@@ -62,13 +62,13 @@
   "dependencies": {
     "@secretlint/types": "^7.1.0",
     "@types/bn.js": "^5.1.5",
-    "@types/secp256k1": "^4.0.5",
+    "@types/secp256k1": "^4.0.6",
     "bn.js": "^5.2.1",
     "secp256k1": "^5.0.0"
   },
   "devDependencies": {
     "@secretlint/tester": "^7.1.0",
-    "@types/node": "^20.8.10",
+    "@types/node": "^20.9.0",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
     "ts-node": "^10.9.1",
