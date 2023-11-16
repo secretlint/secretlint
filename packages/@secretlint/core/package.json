@@ -58,7 +58,7 @@
     "structured-source": "^4.0.0"
   },
   "devDependencies": {
-    "@types/debug": "^4.1.11",
+    "@types/debug": "^4.1.12",
     "@types/mocha": "^10.0.4",
     "@types/node": "^20.9.0",
     "assert-json-equal": "^1.0.1",
