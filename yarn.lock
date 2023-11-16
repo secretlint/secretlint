@@ -817,7 +817,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/debug@^4.0.0", "@types/debug@^4.1.11":
+"@types/debug@^4.0.0", "@types/debug@^4.1.12":
   version "4.1.12"
   resolved "https://registry.yarnpkg.com/@types/debug/-/debug-4.1.12.tgz#a155f21690871953410df4b6b6f53187f0500917"
   integrity sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==
