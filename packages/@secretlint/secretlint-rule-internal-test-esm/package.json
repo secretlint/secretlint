@@ -59,7 +59,7 @@
   "devDependencies": {
     "typescript": "^5.1.6"
   },
-  "packageManager": "yarn@1.22.19",
+  "packageManager": "yarn@1.22.20",
   "engines": {
     "node": "^14.13.1 || >=16.0.0"
   },
