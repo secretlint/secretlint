@@ -1,3 +1,5 @@
+const path = require("node:path");
+const fs = require("node:fs");
 // copy devDependencies to package.json from canary
 const canaryPackageJSON = require("../secretlint-rule-preset-canary/package.json");
 const canaryDevDependencies = canaryPackageJSON.devDependencies;
