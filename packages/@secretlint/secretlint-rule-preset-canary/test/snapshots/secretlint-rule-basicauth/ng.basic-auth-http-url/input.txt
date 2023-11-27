@@ -1,0 +1,1 @@
+This URL: https://user:pass@example.com includes credential.

@@ -1,0 +1,3 @@
+https://hooks.slack.com/services/TXXXXX/BXXXXX/XXXXXXXXXX
+
+Treat https://hooks.slack.com/services/T11111AA/BAAAA111A/qKirRWalryBGqKirRWalryBG as secret.

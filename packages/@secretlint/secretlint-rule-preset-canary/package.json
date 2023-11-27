@@ -29,7 +29,6 @@
     "./package.json": "./package.json"
   },
   "main": "./module/index.js",
-  "browser": "browser/index.js",
   "types": "./module/index.d.ts",
   "directories": {
     "lib": "lib",
@@ -47,6 +46,7 @@
     "prepublishOnly": "npm run clean && npm run build",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
+    "import-test": "node import-tests.js && npm run build && npm run updateSnapshot",
     "test": "node --loader ts-node/esm --test test/index.test.ts",
     "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
     "watch": "tsc --build --watch"
@@ -58,8 +58,6 @@
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
-    "@rollup/plugin-node-resolve": "^15.2.3",
-    "@rollup/plugin-replace": "^5.0.5",
     "@rollup/plugin-typescript": "^11.1.5",
     "@secretlint/secretlint-rule-aws": "^7.2.0",
     "@secretlint/secretlint-rule-azure": "^7.2.0",
@@ -79,7 +77,7 @@
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
     "rollup": "^3.29.4",
-    "rollup-plugin-polyfill-node": "^0.12.0",
+    "rollup-plugin-polyfill-node": "^0.13.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
   },
