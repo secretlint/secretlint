@@ -43,7 +43,7 @@
     "build": "rollup --config",
     "build:tsc": "tsc -p . --noEmit",
     "clean": "rimraf module/",
-    "cp-canary": "cp ../secretlint-rule-preset-canary/src/index.ts src/ && sed -i '' -e 's/\\@secretlint\\/secretlint-rule-preset-canary/\\@secretlint\\/secretlint-rule-preset-recommend/' src/index.ts && cp -r ../secretlint-rule-preset-canary/test/ test && npm run updateSnapshot",
+    "cp-canary": "cp ../secretlint-rule-preset-canary/src/index.ts src/ && sed -i '' -e 's/\\@secretlint\\/secretlint-rule-preset-canary/\\@secretlint\\/secretlint-rule-preset-recommend/' src/index.ts && cp -r ../secretlint-rule-preset-canary/test/ test && node cp-canary-deps.cjs && npm run updateSnapshot",
     "prepublishOnly": "npm run clean && npm run build",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
