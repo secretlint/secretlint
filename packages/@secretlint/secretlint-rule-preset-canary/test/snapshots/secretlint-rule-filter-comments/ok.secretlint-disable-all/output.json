@@ -1,0 +1,6 @@
+{
+    "filePath": "[SNAPSHOT]/ok.secretlint-disable-all/input.txt",
+    "messages": [],
+    "sourceContent": "// secretlint-disable\n\nTHIS IS SECRET A\nTHIS IS SECRET B\nTHIS IS SECRET C\n",
+    "sourceContentType": "text"
+}

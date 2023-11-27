@@ -1,0 +1,12 @@
+// secretlint-disable -- comment
+
+THIS IS SECRET A
+THIS IS SECRET B
+THIS IS SECRET C
+
+// secretlint-enable -- comment
+
+
+// secretlint-disable-next-line -- comment
+THIS IS SECRET D
+THIS IS SECRET E // secretlint-disable-line -- comment

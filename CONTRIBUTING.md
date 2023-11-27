@@ -251,7 +251,6 @@ Once a pull request has been created, it will initiate continuous integration bu
 
 After all participants on pull request are satisfied to the changes, we will merge your code into the secretlint master branch. Yay!
 
-
 ## Add New Rule
 
 This project has a template for creating a new rule.
@@ -265,6 +264,25 @@ npm run gen:rule
    - This generator create `@secretlint/secretlint-rule-aws` package
 2. Implement it and run tests!
 3. Update README.md
+
+## Add a rule to preset rules
+
+This project has two preset rules:
+
+- [secretlint-rule-preset-canary](./packages/@secretlint/secretlint-rule-preset-canary)
+- [secretlint-rule-preset-recommend](./packages/@secretlint/secretlint-rule-preset-recommend)
+
+At first, you need to add a rule to [secretlint-rule-preset-canary](./packages/@secretlint/secretlint-rule-preset-canary).
+
+1. Add rule package to `packages/@secretlint/secretlint-rule-preset-canary/package.json`'s `devDependencies`
+2. Add rule importing to `packages/@secretlint/secretlint-rule-preset-canary/src/index.ts`
+3. `npm run import-test`
+4. `npm test`
+
+After testing on canary, you need to add a rule to [secretlint-rule-preset-recommend](./packages/@secretlint/secretlint-rule-preset-recommend).
+
+1. `npm run cp-canary`
+2. `npm test`
 
 ## Benchmark
 

@@ -1,0 +1,111 @@
+{
+    "filePath": "[SNAPSHOT]/ng.found-slack-token/input.txt",
+    "messages": [
+        {
+            "message": "found slack token: xoxa-23984754863-2348975623111",
+            "range": [
+                48,
+                78
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-slack",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 3,
+                    "column": 0
+                },
+                "end": {
+                    "line": 3,
+                    "column": 30
+                }
+            },
+            "severity": "error",
+            "messageId": "SLACK_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-slack/README.md#SLACK_TOKEN",
+            "data": {
+                "TOKEN": "xoxa-23984754863-2348975623111"
+            }
+        },
+        {
+            "message": "found slack token: xoxb-23984754863-2348975623112",
+            "range": [
+                85,
+                115
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-slack",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 4,
+                    "column": 6
+                },
+                "end": {
+                    "line": 4,
+                    "column": 36
+                }
+            },
+            "severity": "error",
+            "messageId": "SLACK_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-slack/README.md#SLACK_TOKEN",
+            "data": {
+                "TOKEN": "xoxb-23984754863-2348975623112"
+            }
+        },
+        {
+            "message": "found slack token: xoxo-23984754863-2348975623113",
+            "range": [
+                122,
+                152
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-slack",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 5,
+                    "column": 6
+                },
+                "end": {
+                    "line": 5,
+                    "column": 36
+                }
+            },
+            "severity": "error",
+            "messageId": "SLACK_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-slack/README.md#SLACK_TOKEN",
+            "data": {
+                "TOKEN": "xoxo-23984754863-2348975623113"
+            }
+        },
+        {
+            "message": "found slack token: xoxa-23984754863-2348975623114",
+            "range": [
+                160,
+                190
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-slack",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 6,
+                    "column": 7
+                },
+                "end": {
+                    "line": 6,
+                    "column": 37
+                }
+            },
+            "severity": "error",
+            "messageId": "SLACK_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-slack/README.md#SLACK_TOKEN",
+            "data": {
+                "TOKEN": "xoxa-23984754863-2348975623114"
+            }
+        }
+    ],
+    "sourceContent": "Examples https://docs.cribl.io/docs/regexesyml\n\nxoxa-23984754863-2348975623111\ntoken=xoxb-23984754863-2348975623112\ntoken:xoxo-23984754863-2348975623113\ntoken=\"xoxa-23984754863-2348975623114\"\n",
+    "sourceContentType": "text"
+}
