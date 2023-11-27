@@ -274,15 +274,18 @@ This project has two preset rules:
 
 At first, you need to add a rule to [secretlint-rule-preset-canary](./packages/@secretlint/secretlint-rule-preset-canary).
 
-1. Add rule package to `packages/@secretlint/secretlint-rule-preset-canary/package.json`'s `devDependencies`
-2. Add rule importing to `packages/@secretlint/secretlint-rule-preset-canary/src/index.ts`
+1. Add rule to `packages/@secretlint/secretlint-rule-preset-canary/package.json`'s `devDependencies`
+2. Add rule to `packages/@secretlint/secretlint-rule-preset-canary/src/index.ts`
 3. `npm run import-test`
 4. `npm test`
 
-After testing on canary, you need to add a rule to [secretlint-rule-preset-recommend](./packages/@secretlint/secretlint-rule-preset-recommend).
+After testing on canary, you can sync to [secretlint-rule-preset-recommend](./packages/@secretlint/secretlint-rule-preset-recommend).
 
-1. `npm run cp-canary`
-2. `npm test`
+```angular2html
+cd packages/@secretlint/secretlint-rule-preset-recommend
+npm run sync-canary
+npm test
+```
 
 ## Benchmark
 
