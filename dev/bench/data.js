@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1700957790530,
+  "lastUpdate": 1701045155796,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -25040,6 +25040,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 1.03,
             "range": "±1.04%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "0f3c0e06a3062c420cc9680f2debd337f8dbf069",
+          "message": "feat(canary): add Azure and OpenAI rule to preset-canary (#692)\n\n* feat(canary): add Azure and OpenAI rule to preset-canary\r\n\r\n* chore: fix description",
+          "timestamp": "2023-11-27T09:30:43+09:00",
+          "tree_id": "f6175f8bc0028480cd5220288c1aefd57de655f9",
+          "url": "https://github.com/secretlint/secretlint/commit/0f3c0e06a3062c420cc9680f2debd337f8dbf069"
+        },
+        "date": 1701045153965,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.24,
+            "range": "±2.96%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.84,
+            "range": "±1.32%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
