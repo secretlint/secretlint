@@ -46,9 +46,9 @@
     "gen:rule": "scaffdog generate new-rule --output packages/ --answer \"owner:$(git config user.name)\" --answer \"version:$(node -e 'console.log(require(\"./lerna.json\").version)')\""
   },
   "devDependencies": {
-    "@lerna-lite/cli": "^2.7.0",
-    "@lerna-lite/publish": "^2.7.0",
-    "@lerna-lite/version": "^2.7.0",
+    "@lerna-lite/cli": "^2.7.1",
+    "@lerna-lite/publish": "^2.7.1",
+    "@lerna-lite/version": "^2.7.1",
     "lint-staged": "^13.3.0",
     "prettier": "^2.8.1",
     "scaffdog": "^3.0.0",
