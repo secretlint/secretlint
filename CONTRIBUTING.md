@@ -281,7 +281,7 @@ At first, you need to add a rule to [secretlint-rule-preset-canary](./packages/@
 
 After testing on canary, you can sync to [secretlint-rule-preset-recommend](./packages/@secretlint/secretlint-rule-preset-recommend).
 
-```angular2html
+```sh
 cd packages/@secretlint/secretlint-rule-preset-recommend
 npm run sync-canary
 npm test
