@@ -1,7 +1,7 @@
 {
   "name": "@secretlint/secretlint-rule-{{ inputs.name }}",
   "version": "{{ inputs.version }}",
-  "description": "An example rule for secretlint.",
+  "description": "A secretlint rule for {{ inputs.name }}",
   "keywords": [
     "secretlint",
     "testing",
