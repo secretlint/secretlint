@@ -57,8 +57,8 @@
     "meow": "^12.1.1"
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.4",
-    "@types/node": "^20.9.2",
+    "@types/mocha": "^10.0.5",
+    "@types/node": "^20.9.3",
     "mocha": "^10.2.0",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
