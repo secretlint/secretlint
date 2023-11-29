@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1701256950440,
+  "lastUpdate": 1701257051464,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -25344,6 +25344,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.93,
             "range": "±1.06%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "389c86c3887685b3058c3506aaded01139a34931",
+          "message": "chore(canary): remove azure from preset (#698)\n\nfalse positive\r\nhttps://github.com/secretlint/secretlint/issues/561#issuecomment-1829045931",
+          "timestamp": "2023-11-29T20:22:34+09:00",
+          "tree_id": "3c6575cc3ceda06a2d0d22c48cd25f54ca40c404",
+          "url": "https://github.com/secretlint/secretlint/commit/389c86c3887685b3058c3506aaded01139a34931"
+        },
+        "date": 1701257050176,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.46,
+            "range": "±0.41%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.97,
+            "range": "±0.34%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
