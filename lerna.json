@@ -4,7 +4,7 @@
     "packages/@secretlint/*",
     "examples/*"
   ],
-  "version": "7.2.0",
+  "version": "8.0.0",
   "npmClient": "yarn",
   "includeMergedTags": true
 }
