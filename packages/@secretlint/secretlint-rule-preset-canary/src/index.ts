@@ -1,5 +1,4 @@
 import { SecretLintRulePresetCreator } from "@secretlint/types";
-import { creator as ruleAzure } from "@secretlint/secretlint-rule-azure";
 import { creator as ruleAWS } from "@secretlint/secretlint-rule-aws";
 import { creator as ruleGCP } from "@secretlint/secretlint-rule-gcp";
 import { creator as ruleNpm } from "@secretlint/secretlint-rule-npm";
@@ -13,7 +12,6 @@ import { creator as ruleGitHub } from "@secretlint/secretlint-rule-github";
 import { creator as ruleFilterComments } from "@secretlint/secretlint-rule-filter-comments";
 
 export const rules = [
-    ruleAzure,
     ruleAWS,
     ruleGCP,
     rulePrivateKey,
