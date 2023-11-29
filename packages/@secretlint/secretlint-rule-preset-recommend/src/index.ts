@@ -4,6 +4,7 @@ import { creator as ruleGCP } from "@secretlint/secretlint-rule-gcp";
 import { creator as ruleNpm } from "@secretlint/secretlint-rule-npm";
 import { creator as ruleSlack } from "@secretlint/secretlint-rule-slack";
 import { creator as ruleBasicAuth } from "@secretlint/secretlint-rule-basicauth";
+import { creator as ruleOpenAi } from "@secretlint/secretlint-rule-openai";
 import { creator as rulePrivateKey } from "@secretlint/secretlint-rule-privatekey";
 import { creator as ruleSendgrid } from "@secretlint/secretlint-rule-sendgrid";
 import { creator as ruleShopify } from "@secretlint/secretlint-rule-shopify";
@@ -20,6 +21,7 @@ export const rules = [
     ruleSendgrid,
     ruleShopify,
     ruleGitHub,
+    ruleOpenAi,
     ruleFilterComments,
 ];
 export type Options = {};
