@@ -67,8 +67,8 @@
   "devDependencies": {
     "@secretlint/secretlint-rule-internal-test-cjs": "^7.2.0",
     "@secretlint/secretlint-rule-internal-test-esm": "^7.2.0",
-    "@types/mocha": "^10.0.5",
-    "@types/node": "^20.9.3",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.9.4",
     "create-validator-ts": "^4.0.2",
     "mocha": "^10.2.0",
     "prettier": "^2.8.1",

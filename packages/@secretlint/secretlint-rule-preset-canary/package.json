@@ -73,7 +73,7 @@
     "@secretlint/secretlint-rule-slack": "^7.2.0",
     "@secretlint/tester": "^7.2.0",
     "@secretlint/types": "^7.2.0",
-    "@types/node": "^20.9.3",
+    "@types/node": "^20.9.4",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
     "rollup": "^3.29.4",
