@@ -6,7 +6,7 @@ import test from "node:test";
 import { creator as rule } from "../module/index.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-test("Snapshot Testing", async (t) => {
+test("@secretlint/secretlint-rule-preset-recommend", async (t) => {
     const snapshot = (await import("@secretlint/tester")).snapshot;
     const eachRulesDir = fs
         .readdirSync(path.join(__dirname, "snapshots"), {
