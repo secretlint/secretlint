@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1701257051464,
+  "lastUpdate": 1701257640187,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -25382,6 +25382,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.97,
             "range": "±0.34%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c9bf0d8800dea6bd2f78885e00925ea0d86d5c49",
+          "message": "feat(recommend): Add OpenAI rule to recommend (#700)",
+          "timestamp": "2023-11-29T20:32:15+09:00",
+          "tree_id": "ad9cae01a8bae2e85af49155ffb6186e3dd45e8f",
+          "url": "https://github.com/secretlint/secretlint/commit/c9bf0d8800dea6bd2f78885e00925ea0d86d5c49"
+        },
+        "date": 1701257639141,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.46,
+            "range": "±0.79%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.97,
+            "range": "±1.70%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
