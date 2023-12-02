@@ -52,7 +52,7 @@
   "dependencies": {
     "@secretlint/types": "^8.0.0",
     "@textlint/linter-formatter": "^12.6.1",
-    "@textlint/module-interop": "^13.4.0",
+    "@textlint/module-interop": "^13.4.1",
     "@textlint/types": "^12.6.1",
     "chalk": "^4.1.2",
     "debug": "^4.3.4",
