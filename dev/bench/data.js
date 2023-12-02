@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1701447104414,
+  "lastUpdate": 1701500476785,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -25572,6 +25572,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.97,
             "range": "±1.35%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "distinct": true,
+          "id": "5fd75c866863c7f256e657d7fd04e172c9f60c6b",
+          "message": "fix(deps): update dependency @textlint/module-interop to ^13.4.1",
+          "timestamp": "2023-12-02T06:59:41Z",
+          "tree_id": "59da0a34fc9f914177410cd9bcd9f4b80984bd8a",
+          "url": "https://github.com/secretlint/secretlint/commit/5fd75c866863c7f256e657d7fd04e172c9f60c6b"
+        },
+        "date": 1701500475163,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.47,
+            "range": "±0.63%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.97,
+            "range": "±1.08%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
