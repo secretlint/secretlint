@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1703032039169,
+  "lastUpdate": 1703200486401,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -25914,6 +25914,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.95,
             "range": "±1.23%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "39899689+hotoolong@users.noreply.github.com",
+            "name": "hotoolong",
+            "username": "hotoolong"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "bcde0e7850406431fae1cfe0ee2a69cf948e6729",
+          "message": "Add v to tag_name (#717)\n\nThe v was missing from the Full Changelog in the release information.",
+          "timestamp": "2023-12-22T08:13:14+09:00",
+          "tree_id": "d7fbd0f379ad24a8c1e4ff780a0fa40bdb172ac6",
+          "url": "https://github.com/secretlint/secretlint/commit/bcde0e7850406431fae1cfe0ee2a69cf948e6729"
+        },
+        "date": 1703200485356,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.53,
+            "range": "±0.61%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.99,
+            "range": "±1.25%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
