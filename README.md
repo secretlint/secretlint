@@ -2,7 +2,7 @@
 
 [![Version](https://img.shields.io/npm/v/secretlint.svg)](https://npmjs.org/package/secretlint)
 [![Downloads/week](https://img.shields.io/npm/dw/secretlint.svg)](https://npmjs.org/package/secretlint)
-[![GitHub stars](https://img.shields.io/github/stars/secretlint/secretlint?cacheSeconds=3600)](https://github.com/secretlint/secretlint/stargazers/)
+[![GitHub stars](https://img.shields.io/github/stars/secretlint/secretlint?cacheSeconds=3600)](https://github.com/secretlint/secretlint/stargazers/)<!-- gh-dependents-info-used-by-start --><!-- gh-dependents-info-used-by-end -->
 [![Actions Status](https://github.com/secretlint/secretlint/workflows/test/badge.svg)](https://github.com/secretlint/secretlint/actions?query=workflow%3A"test")
 
 ![Secretlint is that Pluggable linting tool to prevent committing credential.](./docs/assets/SecretLintLP.png)
