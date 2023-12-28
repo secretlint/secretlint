@@ -11,8 +11,13 @@ Install with [npm](https://www.npmjs.com/):
 ## MessageIDs
 
 ### OPS_TOKEN
+> found 1Password Service Account token:
 
-An example error message.
+1Password Service Account token was found.
+This token is used for 1Password CLI.
+It should be treated as a secret.
+
+- [1Password Service Account security | 1Password Developer](https://developer.1password.com/docs/service-accounts/security/)
 
 ## Options
 
