@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1703745945091,
+  "lastUpdate": 1703746747621,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -26066,6 +26066,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.99,
             "range": "±0.83%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "9cc9621541b6942d561b102bd251a637607af743",
+          "message": "feat(canary): add 1Password to canary presets (#722)",
+          "timestamp": "2023-12-28T15:57:35+09:00",
+          "tree_id": "c91c8294aa8f8934acddef0563520e2ac21839aa",
+          "url": "https://github.com/secretlint/secretlint/commit/9cc9621541b6942d561b102bd251a637607af743"
+        },
+        "date": 1703746746678,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.54,
+            "range": "±0.80%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.95,
+            "range": "±1.24%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
