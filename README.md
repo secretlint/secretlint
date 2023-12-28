@@ -308,11 +308,13 @@ Secretlint rules has been implemented as separated modules.
 - [@secretlint/secretlint-rule-slack](./packages/@secretlint/secretlint-rule-slack)
 - [@secretlint/secretlint-rule-sendgrid](./packages/%40secretlint/secretlint-rule-sendgrid)
 - [@secretlint/secretlint-rule-shopify](./packages/%40secretlint/secretlint-rule-shopify)
+- [@secretlint/secretlint-rule-openai](./packages/%40secretlint/secretlint-rule-openai)
 - [@secretlint/secretlint-rule-secp256k1-privatekey](./packages/@secretlint/secretlint-rule-secp256k1-privatekey)
 - [@secretlint/secretlint-rule-no-k8s-kind-secret](./packages/@secretlint/secretlint-rule-no-k8s-kind-secret)
 - [@secretlint/secretlint-rule-pattern](./packages/@secretlint/secretlint-rule-pattern)
 - [@secretlint/secretlint-rule-no-homedir](./packages/@secretlint/secretlint-rule-no-homedir)
 - [@secretlint/secretlint-rule-no-dotenv](./packages/%40secretlint/secretlint-rule-no-dotenv)
+
 
 Also, Secretlint provide rule preset that includes recommened rule set.
 
