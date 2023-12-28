@@ -70,6 +70,7 @@
     "@secretlint/secretlint-rule-sendgrid": "^8.0.0",
     "@secretlint/secretlint-rule-shopify": "^8.0.0",
     "@secretlint/secretlint-rule-slack": "^8.0.0",
+    "@secretlint/secretlint-rule-1password": "^8.0.0",
     "@secretlint/tester": "^8.0.0",
     "@secretlint/types": "^8.0.0",
     "@types/node": "^20.10.5",
