@@ -11,7 +11,7 @@ Install with [npm](https://www.npmjs.com/):
 ## MessageIDs
 
 ### OPS_TOKEN
-> found 1Password Service Account token:
+> found 1Password Service Account token: {token}
 
 1Password Service Account token was found.
 This token is used for 1Password CLI.
