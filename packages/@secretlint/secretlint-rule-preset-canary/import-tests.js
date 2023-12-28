@@ -3,17 +3,17 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, "package.json"), "utf-8"));
+const ruleDependencies = Object.keys(pkg.devDependencies).filter((name) => {
+    return name.startsWith("@secretlint/secretlint-rule-");
+});
 const packagesDir = path.join(__dirname, "../");
 const ruleDirs = fs
     .readdirSync(packagesDir, {
         withFileTypes: true,
     })
     .filter((dirent) => {
-        return (
-            dirent.isDirectory() &&
-            dirent.name.startsWith("secretlint-rule-") &&
-            !dirent.name.startsWith("secretlint-rule-preset")
-        );
+        return dirent.isDirectory() && ruleDependencies.includes(`@secretlint/${dirent.name}`);
     });
 
 /**
