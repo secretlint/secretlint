@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-openai",
-  "version": "8.0.0",
+  "version": "8.1.0",
   "description": "An example rule for secretlint.",
   "keywords": [
     "secretlint",
@@ -51,10 +51,10 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^8.0.0"
+    "@secretlint/types": "^8.1.0"
   },
   "devDependencies": {
-    "@secretlint/tester": "^8.0.0",
+    "@secretlint/tester": "^8.1.0",
     "@types/node": "^20.10.5",
     "prettier": "^2.8.1",
     "ts-node": "^10.9.2",
