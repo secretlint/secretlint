@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1703476377317,
+  "lastUpdate": 1703745945091,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -26028,6 +26028,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.99,
             "range": "±0.91%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "87e2056fe8100b3362df0636525463de5f8de70c",
+          "message": "feat(1password): add 1Password rule (#721)\n\n* feat(1password): add 1Password rule\r\n\r\n* docs(1password): update docs\r\n\r\n* docs(1password): update docs\r\n\r\n* add allows options\r\n\r\n* fix",
+          "timestamp": "2023-12-28T15:44:12+09:00",
+          "tree_id": "f1e9a70206cc4e35e84d452d38f60116209ec5d9",
+          "url": "https://github.com/secretlint/secretlint/commit/87e2056fe8100b3362df0636525463de5f8de70c"
+        },
+        "date": 1703745944172,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.52,
+            "range": "±0.84%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.99,
+            "range": "±0.83%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
