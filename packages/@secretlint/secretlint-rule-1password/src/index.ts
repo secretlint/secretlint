@@ -41,7 +41,7 @@ export const creator: SecretLintRuleCreator<Options> = {
                 // https://developer.1password.com/docs/service-accounts/security/
                 // It will be like ops_{"email":"ejwe64qmlxhri@1passwordserviceaccounts.lcl","muk":{"alg":"A256GCM","ext":true,"k":"M8VPfIc8VEfThcMXLaKCKF8sMh5JMZsPAtu92fQNb-o","key_ops":["encrypt","decrypt"],"kty":"oct","kid":"mp"},"secretKey":"A3-C4ZJMN-PQTZTL-HGL84-G64M7-KVZRN-4ZVP6","srpX":"870d67a9e626625d9e368507804c9c32e661c57e7e558778291bf29d5a279ae1","signInAddress":"gotham.b5local.com:4000","userAuth":{"method":"SRPg-4096","alg":"PBES2g-HS256","iterations":100000,"salt":"FMRUPiyrN4Xf_8Hoh6YRXQ"}}
                 // This regexp match `ops_{...}` pattern
-                const pattern = /ops_(ey[A-Za-z0-9+/=]{100,1280}fQ)/g;
+                const pattern = /ops_(ey[A-Za-z0-9+/=]{100,1280}fQ={0,2})/g;
                 const matches = source.content.matchAll(pattern);
                 for (const match of matches) {
                     const index = match.index ?? 0;
