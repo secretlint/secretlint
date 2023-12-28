@@ -1,4 +1,5 @@
 import type { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
+import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export const messages = {
     OPS_TOKEN: {
@@ -15,7 +16,10 @@ const is1PasswordServiceAccountToken = (base64String: string) => {
         return false;
     }
 };
-export const creator: SecretLintRuleCreator = {
+export type Options = {
+    allows?: string[];
+};
+export const creator: SecretLintRuleCreator<Options> = {
     messages,
     meta: {
         id: "@secretlint/secretlint-rule-1password",
@@ -26,8 +30,11 @@ export const creator: SecretLintRuleCreator = {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-1password/README.md",
         },
     },
-    create(context) {
+    create(context, options) {
         const t = context.createTranslator(messages);
+        const normalizedOptions = {
+            allows: options?.allows ?? [],
+        };
         return {
             file(source: SecretLintSourceCode) {
                 // 1Password Service Account format is `ops_<base64>`
@@ -41,6 +48,10 @@ export const creator: SecretLintRuleCreator = {
                     const matchString = match[0] ?? "";
                     const base64String = match[1] ?? "";
                     if (!is1PasswordServiceAccountToken(base64String)) {
+                        continue;
+                    }
+                    const allowedResults = matchPatterns(matchString, normalizedOptions.allows);
+                    if (allowedResults.length > 0) {
                         continue;
                     }
                     const range = [index, index + matchString.length] as const;

@@ -51,7 +51,8 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^8.0.0"
+    "@secretlint/types": "^8.0.0",
+    "@textlint/regexp-string-matcher": "^2.0.2"
   },
   "devDependencies": {
     "@secretlint/tester": "^8.0.0",
