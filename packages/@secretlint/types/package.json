@@ -63,7 +63,7 @@
     "rimraf": "^3.0.2",
     "ts-node": "^10.9.2",
     "tsconfig-to-dual-package": "^1.2.0",
-    "tsd": "^0.30.0",
+    "tsd": "^0.30.1",
     "typescript": "^5.1.6"
   },
   "packageManager": "yarn@1.22.21",
