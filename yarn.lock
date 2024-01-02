@@ -6548,10 +6548,10 @@ tsconfig-to-dual-package@^1.2.0:
   dependencies:
     resolve-tsconfig "^1.3.0"
 
-tsd@^0.30.0:
-  version "0.30.0"
-  resolved "https://registry.yarnpkg.com/tsd/-/tsd-0.30.0.tgz#c38b2d36b2fd608c9b5635e7fa7fd59358655c10"
-  integrity sha512-aHL4rEuf3wwRzKCH8yqsE1oMAJYn7SAQ2JfWSgjr1e5/fqr+ggohQazECMpSoRAqSQeM/iIFugoyL/0eFwdTcA==
+tsd@^0.30.1:
+  version "0.30.2"
+  resolved "https://registry.yarnpkg.com/tsd/-/tsd-0.30.2.tgz#7640e30c44954fa1dde8b3d534c7ad10212e1cc7"
+  integrity sha512-+uZLtEMP6Jsntv5Bvrf+1kc26Aci/sDXeMqRz9Rr7zyK4osOCbv1GOBf86fssWJWoOr1yyvyxnLtxtmbsvubWg==
   dependencies:
     "@tsd/typescript" "~5.3.3"
     eslint-formatter-pretty "^4.1.0"
