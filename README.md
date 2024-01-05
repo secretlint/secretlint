@@ -548,11 +548,11 @@ Secretlint project follow [Semantic Versioning](https://semver.org/ "Semantic Ve
 - [repo-security-scanner](https://github.com/UKHomeOffice/repo-security-scanner), [Gitleaks](https://github.com/zricethezav/gitleaks) and [truffleHog](https://github.com/dxa4481/truffleHog) is good scan tools
 	- Secretlint need to flexible customize that include ignoring definitions, custom rules.
 - [detect-secrets](https://github.com/Yelp/detect-secrets) is similar tools, but it adopts opt-out approach
-    - Secretlint adopt opt-in approach  
+    - Secretlint adopts opt-in approach  
     - We also need to custom rules by user
 		- See [Bring-your own-plugins (BYOP), via --custom-plugins option by KevinHock · Pull Request #255 · Yelp/detect-secrets](https://github.com/Yelp/detect-secrets/pull/255)
-- GitHub support [secret scanning](https://docs.github.com/en/code-security/secret-security/about-secret-scanning), but it only works after push to your repository
-    - Secretlint work on your local machine, Secretlint can prevent to commit
+- GitHub support [secret scanning](https://docs.github.com/en/code-security/secret-security/about-secret-scanning), but it only works after commit [~~push~~](https://docs.github.com/en/code-security/secret-scanning/push-protection-for-users)
+    - Secretlint works on your local machine, Secretlint can prevent to commit
 
 ## Philosophy
 
