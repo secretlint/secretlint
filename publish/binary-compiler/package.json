@@ -57,7 +57,7 @@
         "access": "public"
     },
     "dependencies": {
-        "nexe": "^4.0.0-rc.3",
+        "nexe": "^4.0.0-rc.4",
         "readdir-withfiletypes": "^1.0.2",
         "secretlint": "*",
         "@secretlint/secretlint-rule-preset-recommend": "*"
