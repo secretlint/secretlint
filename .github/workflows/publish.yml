@@ -102,7 +102,7 @@ jobs:
           private_key: ${{ secrets.PRIVATE_KEY }}
       - name: Repository Dispatch
         if: steps.tag_check.outputs.exists_tag == 'false' && github.event.pull_request.merged == true
-        uses: peter-evans/repository-dispatch@v2
+        uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ steps.generate_token.outputs.token }}
           event-type: publish-artifact
