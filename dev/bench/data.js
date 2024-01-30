@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1706107139699,
+  "lastUpdate": 1706603842916,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -26902,6 +26902,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.93,
             "range": "±0.64%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "yuki.shimizu.me@gmail.com",
+            "name": "Yuki Shimizu",
+            "username": "uki1014"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "0a8acbfd96dbfb291f854a1c119ff6225fd48b45",
+          "message": "fix(sendgrid): fix SENDGRID_KEY_PATTERN (#745)",
+          "timestamp": "2024-01-30T17:35:45+09:00",
+          "tree_id": "debbc33009e18c81dbead2f10b41b013c70a5e0d",
+          "url": "https://github.com/secretlint/secretlint/commit/0a8acbfd96dbfb291f854a1c119ff6225fd48b45"
+        },
+        "date": 1706603841231,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.53,
+            "range": "±0.44%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.96,
+            "range": "±0.57%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
