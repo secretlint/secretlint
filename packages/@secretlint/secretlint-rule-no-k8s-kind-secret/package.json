@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-no-k8s-kind-secret",
-  "version": "8.1.0",
+  "version": "8.1.1",
   "description": "A secretlint rule that disallow to use Kind: Secret in Kubernetes repository.",
   "keywords": [
     "rule",
@@ -54,11 +54,11 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^8.1.0",
+    "@secretlint/types": "^8.1.1",
     "js-yaml": "^4.1.0"
   },
   "devDependencies": {
-    "@secretlint/tester": "^8.1.0",
+    "@secretlint/tester": "^8.1.1",
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^20.11.5",
     "prettier": "^2.8.1",
