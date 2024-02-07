@@ -6589,47 +6589,47 @@ tuf-js@^2.1.0:
     debug "^4.3.4"
     make-fetch-happen "^13.0.0"
 
-turbo-darwin-64@1.11.3:
-  version "1.11.3"
-  resolved "https://registry.yarnpkg.com/turbo-darwin-64/-/turbo-darwin-64-1.11.3.tgz#fb51f6fa030ee7a169d383b5f4f7641df6a3bdb8"
-  integrity sha512-IsOOg2bVbIt3o/X8Ew9fbQp5t1hTHN3fGNQYrPQwMR2W1kIAC6RfbVD4A9OeibPGyEPUpwOH79hZ9ydFH5kifw==
+turbo-darwin-64@1.12.3:
+  version "1.12.3"
+  resolved "https://registry.yarnpkg.com/turbo-darwin-64/-/turbo-darwin-64-1.12.3.tgz#98c9340ecfb74eee746478713c0cd94290293bc9"
+  integrity sha512-dDglIaux+A4jOnB9CDH69sujmrnuLJLrKw1t3J+if6ySlFuxSwC++gDq9TVuOZo2+S7lFkGh+x5ytn3wp+jE8Q==
 
-turbo-darwin-arm64@1.11.3:
-  version "1.11.3"
-  resolved "https://registry.yarnpkg.com/turbo-darwin-arm64/-/turbo-darwin-arm64-1.11.3.tgz#f936cc7ba5565bd9be1ddc8ef4f15284044a63a5"
-  integrity sha512-FsJL7k0SaPbJzI/KCnrf/fi3PgCDCjTliMc/kEFkuWVA6Httc3Q4lxyLIIinz69q6JTx8wzh6yznUMzJRI3+dg==
+turbo-darwin-arm64@1.12.3:
+  version "1.12.3"
+  resolved "https://registry.yarnpkg.com/turbo-darwin-arm64/-/turbo-darwin-arm64-1.12.3.tgz#09ed8f44b0753c221035510062d6ae99d23efddd"
+  integrity sha512-5TqqeujEyHMoVUWGzSzUl5ERSg7HDCdbU3gBs5ziWTpFRpeJ/+Y15kYyZJcMQcubRIH3Y1hL/yA5IhlGdgXOMA==
 
-turbo-linux-64@1.11.3:
-  version "1.11.3"
-  resolved "https://registry.yarnpkg.com/turbo-linux-64/-/turbo-linux-64-1.11.3.tgz#86f56a91c05eea512a187079f7f7f860d8168be6"
-  integrity sha512-SvW7pvTVRGsqtSkII5w+wriZXvxqkluw5FO/MNAdFw0qmoov+PZ237+37/NgArqE3zVn1GX9P6nUx9VO+xcQAg==
+turbo-linux-64@1.12.3:
+  version "1.12.3"
+  resolved "https://registry.yarnpkg.com/turbo-linux-64/-/turbo-linux-64-1.12.3.tgz#b5999763ff49e42e2fca2ec76d380aa81a93685d"
+  integrity sha512-yUreU+/gq4vlBtcdyfjz7slwz4zM1RG8sSXvyHmAS+QXqSrGkegg4qLl2fRbv/c3EyA/XbfcZuD6tcrXkejr6g==
 
-turbo-linux-arm64@1.11.3:
-  version "1.11.3"
-  resolved "https://registry.yarnpkg.com/turbo-linux-arm64/-/turbo-linux-arm64-1.11.3.tgz#0001dab6ded89154e2a5be21e87720daba953056"
-  integrity sha512-YhUfBi1deB3m+3M55X458J6B7RsIS7UtM3P1z13cUIhF+pOt65BgnaSnkHLwETidmhRh8Dl3GelaQGrB3RdCDw==
+turbo-linux-arm64@1.12.3:
+  version "1.12.3"
+  resolved "https://registry.yarnpkg.com/turbo-linux-arm64/-/turbo-linux-arm64-1.12.3.tgz#a72ef82697e77e84f782b0b6374feaa880ecc92e"
+  integrity sha512-XRwAsp2eRSqZmaMVNrmHoKqofeJMuD87zmefZLTRAObh38hIwKgyl2QRsJIbteob5RN77yFbv3lAJ36UIY5h7w==
 
-turbo-windows-64@1.11.3:
-  version "1.11.3"
-  resolved "https://registry.yarnpkg.com/turbo-windows-64/-/turbo-windows-64-1.11.3.tgz#8d03c4fd8a46b81f2aecf60fc9845674c84d15a8"
-  integrity sha512-s+vEnuM2TiZuAUUUpmBHDr6vnNbJgj+5JYfnYmVklYs16kXh+EppafYQOAkcRIMAh7GjV3pLq5/uGqc7seZeHA==
+turbo-windows-64@1.12.3:
+  version "1.12.3"
+  resolved "https://registry.yarnpkg.com/turbo-windows-64/-/turbo-windows-64-1.12.3.tgz#c2f76bce1e4e84d447b8a052f871138c5ed19009"
+  integrity sha512-CPnRfnUCtmFeShOtUdMCthySjmyHaoTyh9JueiYFvtCNeO3WfDMj63dpOQstQWHdJFYmIrIGfhAclcds9ePQYA==
 
-turbo-windows-arm64@1.11.3:
-  version "1.11.3"
-  resolved "https://registry.yarnpkg.com/turbo-windows-arm64/-/turbo-windows-arm64-1.11.3.tgz#cc436d1462f5450e97f985ba6d8d447272bb97db"
-  integrity sha512-ZR5z5Zpc7cASwfdRAV5yNScCZBsgGSbcwiA/u3farCacbPiXsfoWUkz28iyrx21/TRW0bi6dbsB2v17swa8bjw==
+turbo-windows-arm64@1.12.3:
+  version "1.12.3"
+  resolved "https://registry.yarnpkg.com/turbo-windows-arm64/-/turbo-windows-arm64-1.12.3.tgz#5e6971ea4cea1373908f708fe852f6b91bb16d15"
+  integrity sha512-cYA/wlzvp4vlCNHYJ2AjNS3FLXWwUC/5CJompBkTeKFFB6AviE/iLkbIhFikCVSNXZk/3AGanpMUXIkt3bdlwg==
 
-turbo@^1.11.3:
-  version "1.11.3"
-  resolved "https://registry.yarnpkg.com/turbo/-/turbo-1.11.3.tgz#3bd823043585e1acfe125727bcecd4f91ef2103b"
-  integrity sha512-RCJOUFcFMQNIGKSjC9YmA5yVP1qtDiBA0Lv9VIgrXraI5Da1liVvl3VJPsoDNIR9eFMyA/aagx1iyj6UWem5hA==
+turbo@^1.12.0:
+  version "1.12.3"
+  resolved "https://registry.yarnpkg.com/turbo/-/turbo-1.12.3.tgz#a15c01f6c4b0fcf70404f00918f3ecac627820c0"
+  integrity sha512-a6q8I0TK9ohACYbkmxzG/JYPuDC4VCvfmXLTlf321qQ4BIAhoyaOj/O2g+zJ6L1vNYnZ82G4LrbMfgLLngbLsg==
   optionalDependencies:
-    turbo-darwin-64 "1.11.3"
-    turbo-darwin-arm64 "1.11.3"
-    turbo-linux-64 "1.11.3"
-    turbo-linux-arm64 "1.11.3"
-    turbo-windows-64 "1.11.3"
-    turbo-windows-arm64 "1.11.3"
+    turbo-darwin-64 "1.12.3"
+    turbo-darwin-arm64 "1.12.3"
+    turbo-linux-64 "1.12.3"
+    turbo-linux-arm64 "1.12.3"
+    turbo-windows-64 "1.12.3"
+    turbo-windows-arm64 "1.12.3"
 
 type-check@^0.4.0, type-check@~0.4.0:
   version "0.4.0"
