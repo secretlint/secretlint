@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1708171135384,
+  "lastUpdate": 1708171358256,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -27548,6 +27548,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.94,
             "range": "±0.97%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b4ff542d220aa1f86ab968c13a57d07ee3d4c57f",
+          "message": "fix(secretlint): fix \"ENOENT: no such file or directory\" (#762)\n\n- update globby@14.0.1 which  Fix read permission error on ignore files search\r\n\r\nrefs https://github.com/sindresorhus/globby/pull/259\r\ncloses https://github.com/secretlint/secretlint/issues/460",
+          "timestamp": "2024-02-17T21:01:06+09:00",
+          "tree_id": "34f5d145ccfc1db189e0e47b7b7ed8d678164bb9",
+          "url": "https://github.com/secretlint/secretlint/commit/b4ff542d220aa1f86ab968c13a57d07ee3d4c57f"
+        },
+        "date": 1708171357092,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.51,
+            "range": "±1.23%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.94,
+            "range": "±1.12%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
