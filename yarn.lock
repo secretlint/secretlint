@@ -6539,7 +6539,7 @@ tsconfig-to-dual-package@^1.2.0:
   dependencies:
     resolve-tsconfig "^1.3.0"
 
-tsd@^0.30.6:
+tsd@^0.30.7:
   version "0.30.7"
   resolved "https://registry.yarnpkg.com/tsd/-/tsd-0.30.7.tgz#319a0403073df6d3f572c4089378901662554ae5"
   integrity sha512-oTiJ28D6B/KXoU3ww/Eji+xqHJojiuPVMwA12g4KYX1O72N93Nb6P3P3h2OAhhf92Xl8NIhb/xFmBZd5zw/xUw==
