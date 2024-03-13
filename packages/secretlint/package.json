@@ -76,7 +76,7 @@
     "@secretlint/secretlint-rule-preset-recommend": "^8.1.2",
     "@secretlint/types": "^8.1.2",
     "@types/mocha": "^10.0.6",
-    "@types/node": "^20.11.24",
+    "@types/node": "^20.11.25",
     "mocha": "^10.3.0",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
