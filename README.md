@@ -481,6 +481,10 @@ This configuration also integrate Pull Request review comment via [actions/setup
 - Example Repository: https://github.com/secretlint/secretlint-github-actions-example
 - Example Pull Request: https://github.com/secretlint/secretlint-github-actions-example/pull/1/files
 
+If you want to only check diff files, please see following example:
+
+- [test-diff.yml](.github/workflows/test-diff.yml)
+
 #### Mega-Linter
 
 [Mega-Linter](https://nvuillam.github.io/mega-linter/) is a linters aggregator natively compliant with any CI tool, embedding [80+ linting apps](https://nvuillam.github.io/mega-linter/supported-linters/), including [**secretlint**](https://nvuillam.github.io/mega-linter/descriptors/credentials_secretlint/) by default.
