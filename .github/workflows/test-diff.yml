@@ -25,11 +25,11 @@ jobs:
       - name: Show changed files
         run: echo "${{ steps.changed-files.outputs.all_changed_files }}"
       - name: Install
-        if: steps.changed-files.outputs.any_changed == 'true'
+        if: steps.changed-files.outputs.all_changed_files != ''
         run: yarn install
       - name: Build
-        if: steps.changed-files.outputs.any_changed == 'true'
+        if: steps.changed-files.outputs.all_changed_files != ''
         run: yarn run build
       - name: Run secretlint
-        if: steps.changed-files.outputs.any_changed == 'true'
+        if: steps.changed-files.outputs.all_changed_files != ''
         run: yarn secretlint ${{ steps.changed-files.outputs.all_changed_files }}
