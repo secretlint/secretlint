@@ -10,8 +10,8 @@ jobs:
       - name: checkout for push
         uses: actions/checkout@v4
         with:
-          # fetch all history to get all changed files
-          fetch-depth: 0
+          # fetch history to get all changed files on push or pull_request event
+          fetch-depth: 1000
       - name: setup Node ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
