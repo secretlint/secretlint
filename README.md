@@ -484,7 +484,6 @@ This configuration also integrate Pull Request review comment via [actions/setup
 If you want to only check diff files, please see following example:
 
 ```yaml
-
 name: test-diff
 on: [push, pull_request]
 permissions:
