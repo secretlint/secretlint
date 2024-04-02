@@ -9,7 +9,7 @@ jobs:
     name: "Run secretlint to diff files"
     runs-on: ubuntu-latest
     steps:
-      - name: checkout for push
+      - name: checkout
         uses: actions/checkout@v4
         with:
           # fetch history to get all changed files on push or pull_request event
