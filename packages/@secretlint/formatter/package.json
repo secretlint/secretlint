@@ -59,7 +59,7 @@
     "is-file": "^1.0.0",
     "pluralize": "^8.0.0",
     "strip-ansi": "^6.0.1",
-    "table": "^6.8.1",
+    "table": "^6.8.2",
     "terminal-link": "^2.1.1",
     "try-resolve": "^1.0.1"
   },
