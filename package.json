@@ -38,7 +38,7 @@
     "build:withoutrule": "turbo run build --ignore=\"packages/@secretlint/*-rule-*\"",
     "updateSnapshot": "turbo run updateSnapshot",
     "test": "turbo run test",
-    "secretlint": "secretlint \"**/*\"",
+    "lint": "secretlint \"**/*\"",
     "ci": "turbo run build test secretlint",
     "clean": "turbo run clean",
     "prepare": "git config --local core.hooksPath .githooks",

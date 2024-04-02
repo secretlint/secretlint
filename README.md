@@ -485,29 +485,36 @@ If you want to only check diff files, please see following example:
 
 ```yaml
 name: test-diff
-on: [push, pull_request]
-permissions:
-  contents: read
+on:
+  push:
+  pull_request:
 jobs:
   test-diff:
+    permissions:
+      contents: read
     name: "Run secretlint to diff files"
     runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v4
+        with:
+          # fetch history to get all changed files on push or pull_request event
+          fetch-depth: 0
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
       - name: setup Node ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Get changed files
-        id: changed-files-yaml
-        uses: tj-actions/changed-files@v41
+      - name: Show changed files
+        run: echo "${{ steps.changed-files.outputs.all_changed_files }}"
       - name: Install
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: npm ci
       - name: Run secretlint
-        run: npx secretlint "${{ steps.changed-files-yaml.outputs.added_files }}"
-        env:
-          ADDED_FILES: ${{ steps.changed-files.outputs.added_files }}
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: npx secretlint ${{ steps.changed-files.outputs.all_changed_files }}
 ```
 
 #### Mega-Linter
