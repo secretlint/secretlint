@@ -1,0 +1,37 @@
+name: test-diff
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+permissions:
+  contents: read
+jobs:
+  test-diff:
+    name: "Run secretlint to diff files"
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Get changed files
+        id: changed-files-yaml
+        uses: tj-actions/changed-files@v41
+      - name: Install
+        run: yarn install
+      - name: Build
+        run: yarn run build
+      - name: Run secretlint
+        run: yarn secretlint "${{ steps.changed-files-yaml.outputs.added_files }}"
+        env:
+          ADDED_FILES: ${{ steps.changed-files.outputs.added_files }}
+      - name: "How to Fix?"
+        if: failure()
+        run: |
+          echo '# Sectlint found credentials' >> $GITHUB_STEP_SUMMARY
+          echo 'Please check secretlint result and fix it' >> $GITHUB_STEP_SUMMARY
+          echo 'if you need to ignore the result, please use .secretlintignore file' >> $GITHUB_STEP_SUMMARY
+          echo 'Please see <https://github.com/secretlint/secretlint/blob/master/docs/configuration.md#ignoring-files> for more details' >> $GITHUB_STEP_SUMMARY
