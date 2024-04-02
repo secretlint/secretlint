@@ -503,8 +503,10 @@ jobs:
         id: changed-files-yaml
         uses: tj-actions/changed-files@v41
       - name: Install
+        if: steps.changed-files-yaml.outputs.doc_any_changed == 'true'
         run: npm ci
       - name: Run secretlint
+        if: steps.changed-files-yaml.outputs.doc_any_changed == 'true'
         run: npx secretlint "${{ steps.changed-files-yaml.outputs.added_files }}"
         env:
           ADDED_FILES: ${{ steps.changed-files.outputs.added_files }}
