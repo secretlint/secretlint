@@ -32,6 +32,4 @@ jobs:
         run: yarn run build
       - name: Run secretlint
         if: steps.changed-files.outputs.all_changed_files != ''
-        run: yarn secretlint ${ALL_CHANGED_FILES}
-        env:
-          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        run: yarn secretlint ${{ steps.changed-files.outputs.all_changed_files }}
