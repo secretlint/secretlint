@@ -507,9 +507,9 @@ jobs:
         run: npm ci
       - name: Run secretlint
         if: steps.changed-files.outputs.any_changed == 'true'
-        run: npx secretlint "${{ steps.changed-files.outputs.added_files }}"
+        run: npx secretlint "${{ steps.changed-files.outputs.all_changed_files }}"
         env:
-          ADDED_FILES: ${{ steps.changed-files.outputs.added_files }}
+          all_changed_files: ${{ steps.changed-files.outputs.all_changed_files }}
 ```
 
 #### Mega-Linter
