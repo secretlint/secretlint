@@ -16,17 +16,17 @@ jobs:
         with:
           node-version: 20
       - name: Get changed files
-        id: changed-files-yaml
+        id: changed-files
         uses: tj-actions/changed-files@v41
       - name: Install
-        if: steps.changed-files-yaml.outputs.doc_any_changed == 'true'
+        if: steps.changed-files.outputs.doc_any_changed == 'true'
         run: yarn install
       - name: Build
-        if: steps.changed-files-yaml.outputs.doc_any_changed == 'true'
+        if: steps.changed-files.outputs.doc_any_changed == 'true'
         run: yarn run build
       - name: Run secretlint
-        if: steps.changed-files-yaml.outputs.doc_any_changed == 'true'
-        run: yarn secretlint "${{ steps.changed-files-yaml.outputs.added_files }}"
+        if: steps.changed-files.outputs.doc_any_changed == 'true'
+        run: yarn secretlint "${{ steps.changed-files.outputs.added_files }}"
         env:
           ADDED_FILES: ${{ steps.changed-files.outputs.added_files }}
       - name: "How to Fix?"
