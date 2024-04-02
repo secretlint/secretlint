@@ -19,8 +19,10 @@ jobs:
         id: changed-files-yaml
         uses: tj-actions/changed-files@v41
       - name: Install
+        if: steps.changed-files-yaml.outputs.doc_any_changed == 'true'
         run: yarn install
       - name: Build
+        if: steps.changed-files-yaml.outputs.doc_any_changed == 'true'
         run: yarn run build
       - name: Run secretlint
         if: steps.changed-files-yaml.outputs.doc_any_changed == 'true'
