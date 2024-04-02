@@ -2,15 +2,19 @@ name: test-diff
 on:
   push:
   pull_request:
-permissions:
-  contents: read
 jobs:
-  test-diff:
+  test-diff-push:
     name: "Run secretlint to diff files"
     runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    permissions:
+      contents: read
     steps:
-      - name: checkout
+      - name: checkout for push
         uses: actions/checkout@v4
+        with:
+          # https://github.com/tj-actions/changed-files?tab=readme-ov-file#on-push-%EF%B8%8F
+          fetch-depth: 2
       - name: setup Node ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
@@ -31,10 +35,36 @@ jobs:
         run: yarn secretlint "${{ steps.changed-files.outputs.added_files }}"
         env:
           ADDED_FILES: ${{ steps.changed-files.outputs.added_files }}
-      - name: "How to Fix?"
-        if: failure()
-        run: |
-          echo '# Sectlint found credentials' >> $GITHUB_STEP_SUMMARY
-          echo 'Please check secretlint result and fix it' >> $GITHUB_STEP_SUMMARY
-          echo 'if you need to ignore the result, please use .secretlintignore file' >> $GITHUB_STEP_SUMMARY
-          echo 'Please see <https://github.com/secretlint/secretlint/blob/master/docs/configuration.md#ignoring-files> for more details' >> $GITHUB_STEP_SUMMARY
+  test-diff-pull-request:
+     name: "Run secretlint to diff files"
+     runs-on: ubuntu-latest
+     if: github.event_name == 'pull_request'
+     permissions:
+       contents: read
+       pull-requests: read
+     steps:
+         - name: checkout for pull_request
+           uses: actions/checkout@v4
+           with:
+             # https://github.com/tj-actions/changed-files?tab=readme-ov-file#on-pull_request-
+             fetch-depth: 1
+         - name: setup Node ${{ matrix.node-version }}
+           uses: actions/setup-node@v4
+           with:
+             node-version: 20
+         - name: Get changed files
+           id: changed-files
+           uses: tj-actions/changed-files@v41
+         - name: Show changed files
+           run: echo "${{ steps.changed-files.outputs.added_files }}"
+         - name: Install
+           if: steps.changed-files.outputs.any_changed == 'true'
+           run: yarn install
+         - name: Build
+           if: steps.changed-files.outputs.any_changed == 'true'
+           run: yarn run build
+         - name: Run secretlint
+           if: steps.changed-files.outputs.any_changed == 'true'
+           run: yarn secretlint "${{ steps.changed-files.outputs.added_files }}"
+           env:
+             ADDED_FILES: ${{ steps.changed-files.outputs.added_files }}
