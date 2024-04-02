@@ -469,7 +469,7 @@ jobs:
         with:
           node-version: 20
       - name: Install
-        run: npm install
+        run: npm ci
       - name: Lint with Secretlint
         run: npx secretlint "**/*"
 ```
@@ -483,7 +483,33 @@ This configuration also integrate Pull Request review comment via [actions/setup
 
 If you want to only check diff files, please see following example:
 
-- [test-diff.yml](.github/workflows/test-diff.yml)
+```yaml
+
+name: test-diff
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test-diff:
+    name: "Run secretlint to diff files"
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Get changed files
+        id: changed-files-yaml
+        uses: tj-actions/changed-files@v41
+      - name: Install
+        run: npm ci
+      - name: Run secretlint
+        run: npx secretlint "${{ steps.changed-files-yaml.outputs.added_files }}"
+        env:
+          ADDED_FILES: ${{ steps.changed-files.outputs.added_files }}
+```
 
 #### Mega-Linter
 
