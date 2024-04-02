@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1711656144587,
+  "lastUpdate": 1712042343219,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -28346,6 +28346,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.94,
             "range": "±1.10%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "84dc1efa3e5029226fc36885d4445957a85008e2",
+          "message": "CI: add test-diff actions (#786)\n\n* CI: add test-diff actions\r\n\r\n* docs: add diff actions docs\r\n\r\n* CI: nit\r\n\r\n* add ignore\r\n\r\n* docs: update REAMDE\r\n\r\n* docs: update REAMDE",
+          "timestamp": "2024-04-02T16:17:30+09:00",
+          "tree_id": "a5737dd8f8ff512ad86e65c65dc4bc39bcf04a96",
+          "url": "https://github.com/secretlint/secretlint/commit/84dc1efa3e5029226fc36885d4445957a85008e2"
+        },
+        "date": 1712042342013,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.49,
+            "range": "±0.97%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.95,
+            "range": "±1.32%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
