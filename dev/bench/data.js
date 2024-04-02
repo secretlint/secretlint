@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1712043323049,
+  "lastUpdate": 1712049011207,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -28422,6 +28422,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.93,
             "range": "±1.25%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "93b35fe566865e31d9197f9accebad0cf935e60d",
+          "message": "chore: rename secretlint -> lint (#788)\n\n* chore: rename secretlint -> lint\r\n\r\n* CI: nits\r\n\r\n* update readme\r\n\r\n* CI: add any change\r\n\r\n* fix\r\n\r\n* fix\r\n\r\n* CI: update\r\n\r\n* CI: separete\r\n\r\n* fix\r\n\r\n* simplify\r\n\r\n* fi\r\n\r\n* CI: add permissions\r\n\r\n* fix\r\n\r\n* fix\r\n\r\n* fix\r\n\r\n* fix\r\n\r\n* fix\r\n\r\n* space\r\n\r\n* fix\r\n\r\n* check\r\n\r\n* add credential\r\n\r\n* revert\r\n\r\n* 1000\r\n\r\n* fix\r\n\r\n* update docs\r\n\r\n* update docs\r\n\r\n* fix\r\n\r\n* fix\r\n\r\n* 1000",
+          "timestamp": "2024-04-02T18:08:29+09:00",
+          "tree_id": "e3c9df9b2a464549f5af58667fd043377c6c80d4",
+          "url": "https://github.com/secretlint/secretlint/commit/93b35fe566865e31d9197f9accebad0cf935e60d"
+        },
+        "date": 1712049009917,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.46,
+            "range": "±0.59%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.93,
+            "range": "±1.18%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
