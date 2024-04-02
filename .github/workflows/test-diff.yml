@@ -4,6 +4,8 @@ on:
   pull_request:
 jobs:
   test-diff:
+    permissions:
+      contents: read
     name: "Run secretlint to diff files"
     runs-on: ubuntu-latest
     steps:
