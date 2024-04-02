@@ -510,10 +510,10 @@ jobs:
       - name: Show changed files
         run: echo "${{ steps.changed-files.outputs.all_changed_files }}"
       - name: Install
-        if: steps.changed-files.outputs.all_changed_files != ''
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: npm ci
       - name: Run secretlint
-        if: steps.changed-files.outputs.all_changed_files != ''
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: npx secretlint ${{ steps.changed-files.outputs.all_changed_files }}
 ```
 
