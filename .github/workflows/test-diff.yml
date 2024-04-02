@@ -23,6 +23,7 @@ jobs:
       - name: Build
         run: yarn run build
       - name: Run secretlint
+        if: steps.changed-files-yaml.outputs.doc_any_changed == 'true'
         run: yarn secretlint "${{ steps.changed-files-yaml.outputs.added_files }}"
         env:
           ADDED_FILES: ${{ steps.changed-files.outputs.added_files }}
