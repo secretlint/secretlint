@@ -506,7 +506,7 @@ jobs:
         if: steps.changed-files.outputs.doc_any_changed == 'true'
         run: npm ci
       - name: Run secretlint
-        if: steps.changed-files.outputs.doc_any_changed == 'true'
+        if: steps.changed-files.outputs.any_changed == 'true'
         run: npx secretlint "${{ steps.changed-files.outputs.added_files }}"
         env:
           ADDED_FILES: ${{ steps.changed-files.outputs.added_files }}

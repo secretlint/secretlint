@@ -18,6 +18,8 @@ jobs:
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v41
+      - name: Show changed files
+        run: echo "${{ steps.changed-files.outputs.added_files }}"
       - name: Install
         if: steps.changed-files.outputs.any_changed == 'true'
         run: yarn install
