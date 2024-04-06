@@ -33,7 +33,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Use Bun
+        uses: actions/setup-bun@v1
+        with:
+          bun-version: 1.1.0
       - name: Install
         run: yarn install
       - name: Test
         run: yarn ci
+      # binary tet
+      - name: Build binary
+        run: npm run dist
+        working-directory: ./publish/binary-compiler
+      - name: Test binary
+        run: npm run test-run
+        working-directory: ./publish/binary-compiler

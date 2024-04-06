@@ -30,11 +30,11 @@
     "test": "test"
   },
   "scripts": {
-    "build": "bun build src/entry.ts --compile --minify --sourcemap --outfile dist/secretlint",
+    "dist": "bun build src/entry.ts --compile --minify --sourcemap --outfile dist/secretlint",
     "clean": "tsc --build --clean",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
-    "test": "./dist/secretlint --help && ./dist/secretlint \"**/*\"",
+    "test-run": "./dist/secretlint --help && ./dist/secretlint \"**/*\"",
     "watch": "tsc -p . --watch"
   },
   "prettier": {

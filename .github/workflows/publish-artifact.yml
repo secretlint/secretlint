@@ -32,7 +32,7 @@ jobs:
       - name: Install
         run: yarn install
       - name: Build binary
-        run: npm run build
+        run: npm run dist
         working-directory: ./publish/binary-compiler
       - name: Upload artifacts
         uses: actions/upload-artifact@v1
