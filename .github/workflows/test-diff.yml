@@ -22,6 +22,8 @@ jobs:
         with:
           node-version: 20
           cache: 'yarn'
+      - name: Enable corepack
+        run: corepack enable
       - name: Show changed files
         run: echo "${{ steps.changed-files.outputs.all_changed_files }}"
       - name: Install

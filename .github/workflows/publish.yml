@@ -30,6 +30,8 @@ jobs:
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Enable corepack
+        run: corepack enable
       - name: Install
         run: yarn install
       # Define ${CURRENT_VERSION}
