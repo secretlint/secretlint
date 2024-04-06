@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1712413929434,
+  "lastUpdate": 1712415205891,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -28840,6 +28840,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.95,
             "range": "±0.36%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "445908a17505e57c8b55ee7b80f8f28630a81917",
+          "message": "CI: remove macos-latest-xlarge (#800)\n\n* CI: remove macos-latest-xlarge\r\n\r\n* Update package.json+1",
+          "timestamp": "2024-04-06T23:51:49+09:00",
+          "tree_id": "998c6887acf94432771389dbbea4552e3390f328",
+          "url": "https://github.com/secretlint/secretlint/commit/445908a17505e57c8b55ee7b80f8f28630a81917"
+        },
+        "date": 1712415204609,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.51,
+            "range": "±0.35%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.95,
+            "range": "±0.44%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
