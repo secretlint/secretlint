@@ -37,7 +37,6 @@ Please install following development prerequisites. You also need a [GitHub](htt
 - [Git](https://git-scm.com/)
 - [Node.js](https://nodejs.org/en/)
 - [Yarn](https://classic.yarnpkg.com/en/)
-- Corepack: `corepack enable`
 - Text editor
 - Terminal emulator
 
@@ -65,19 +64,13 @@ After getting your clone, you can start playing with secretlint.
     $ cd YOUR_FORKED_REPOSITORY
     ```
 
-2. Enable corepack:
-
-    ```sh
-    $ corepack enable
-    ```
-
-3. Install dependencies and build packages:
+2. Install dependencies and build packages:
 
     ```sh
     $ yarn install
     ```
 
-4. Run build:
+3. Run build:
 
     ```sh
     $ yarn run build

@@ -31,8 +31,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Enable corepack
-        run: corepack enable
-      - name: Install
         run: yarn install
       # Define ${CURRENT_VERSION}
       - name: Set Current Version
