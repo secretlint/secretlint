@@ -1,4 +1,5 @@
 {
+  "private": true,
   "name": "@secretlint/secretlint-rule-internal-test-esm",
   "version": "8.1.2",
   "description": "An example ESM rule for secretlint. It it for testing.",
