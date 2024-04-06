@@ -17,8 +17,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        # [amd64, arm64, x86]
-        os: [macOS-latest, macos-latest-xlarge, ubuntu-latest]
+        os: [macOS-latest, ubuntu-latest]
         node-version: [20]
     steps:
       - uses: actions/checkout@v4
