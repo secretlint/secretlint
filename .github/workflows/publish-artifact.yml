@@ -46,7 +46,7 @@ jobs:
           ARCH=$(uname -m | tr '[:upper:]' '[:lower:]' | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/')
           mv ./publish/binary-compiler/dist/secretlint ./publish/binary-compiler/dist/secretlint_${{ github.event.client_payload.version }}_${OS}_${ARCH}
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ github.event.client_payload.version }}
           files: "./publish/binary-compiler/dist/**"
