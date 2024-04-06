@@ -1,20 +1,19 @@
 # @secretlint/binary-compiler
 
-A binary compiler for secretlint.
+Single executable binary compiler for secretlint using [Bun](https://bun.sh/).
+
+- [Single-file executable – Runtime | Bun Docs](https://bun.sh/docs/bundler/executables)
 
 ## CURRENT PROBLEM
 
 - output binary does not be code-sign.
 
-## Install
-
-Install with [npm](https://www.npmjs.com/):
-
-    npm install @secretlint/binary
-
 ## Usage
 
-- [ ] Write usage instructions
+```
+npm run build
+./dist/secretlint --help
+```
 
 ## Changelog
 

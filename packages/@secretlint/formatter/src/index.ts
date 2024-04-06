@@ -181,18 +181,15 @@ export function getFormatterList(): SecretLintFormatterDetail[] {
 }
 
 export function secretlintGetFormatterList(): SecretLintFormatterDetail[] {
-    return fs
-        .readdirSync(path.join(__dirname, "formatters"))
-        .filter((file: string) => {
-            return [".js", ".ts"].some(
-                (formatterExtension) => path.extname(file) === formatterExtension && !file.endsWith(".d.ts")
-            );
-        })
-        .map((file: string) => {
-            const nameWithoutExtension = [".js", ".ts"].reduce(
-                (name, extension) => path.basename(name, extension),
-                file
-            );
-            return { name: nameWithoutExtension };
-        });
+    return [
+        {
+            name: "json",
+        },
+        {
+            name: "mask-result",
+        },
+        {
+            name: "table",
+        },
+    ];
 }

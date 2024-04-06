@@ -24,6 +24,7 @@
   "workspaces": [
     "packages/*",
     "packages/@secretlint/*",
+    "publish/binary-compiler",
     "examples/*"
   ],
   "scripts": {
@@ -65,5 +66,5 @@
       "prettier --write"
     ]
   },
-  "packageManager": "yarn@1.22.22"
+  "packageManager": "yarn@4.1.1"
 }

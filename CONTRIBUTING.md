@@ -76,7 +76,7 @@ After getting your clone, you can start playing with secretlint.
     $ yarn run build
     ```
 
-Under the hood, secretlint uses [Lerna](https://lerna.js.org/) to manage multiple packages:
+Under the hood, secretlint uses Turbopack to manage multiple packages:
 
 - `packages/*`
 - `packages/@secretlint/*`
