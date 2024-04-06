@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1712398333194,
+  "lastUpdate": 1712408762535,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -28536,6 +28536,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.96,
             "range": "±0.58%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "79a42623de3c865a61adaeadab7572ed26db657f",
+          "message": "feat(binary): add secretlint single executable binary (#792)\n\n* feat(binary): add `secretlint` single executable binary\r\n\r\n* chore(yarn): update yarn v4\r\n\r\n* Update .yarn/install-state.gz+1\r\n\r\n* Delete .yarn/install-state.gz\r\n\r\n* Update .gitignore\r\n\r\n* CI: enable corepack\r\n\r\n* fix yarn\r\n\r\n* fix yarn\r\n\r\n* add yarn\r\n\r\n* CI: update binary test\r\n\r\n* fix\r\n\r\n* fix\r\n\r\n* fix\r\n\r\n* rever\r\n\r\n* exclude windows",
+          "timestamp": "2024-04-06T22:04:26+09:00",
+          "tree_id": "3217862c0e36e14368a37599ad6a9259fb24d61f",
+          "url": "https://github.com/secretlint/secretlint/commit/79a42623de3c865a61adaeadab7572ed26db657f"
+        },
+        "date": 1712408761511,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.49,
+            "range": "±0.61%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.93,
+            "range": "±1.02%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
