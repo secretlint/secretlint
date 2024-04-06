@@ -31,6 +31,8 @@ jobs:
           bun-version: 1.1.0
       - name: Install
         run: yarn install
+      - name: Build
+        run: yarn run build
       - name: Build binary
         run: npm run dist
         working-directory: ./publish/binary-compiler
