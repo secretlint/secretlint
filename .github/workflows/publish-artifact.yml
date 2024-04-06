@@ -44,7 +44,7 @@ jobs:
           name: secretlint-${{ runner.os }}-${{ runner.arch }}
           path: ./publish/binary-compiler/dist/secretlint
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ github.event.client_payload.version }}
           files: "./publish/binary-compiler/dist/**"
