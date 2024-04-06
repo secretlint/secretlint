@@ -38,8 +38,13 @@ jobs:
         working-directory: ./publish/binary-compiler
       - name: Rename binary
         run: |
-          # secretlint-{ver}-{os}-{arch}
-          mv ./publish/binary-compiler/dist/secretlint ./publish/binary-compiler/dist/secretlint_${{ github.event.client_payload.version }}_${{ runner.os }}_${{ runner.arch }}
+          # secretlint-{verion}-{os}-{arch}
+          # e.g. 
+          # secretlint_0.0.1_linux_amd64
+          # secretlint_0.0.1_darwin_amd64
+          OS=$(uname | tr '[:upper:]' '[:lower:]')
+          ARCH=$(uname -m | tr '[:upper:]' '[:lower:]' | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/')
+          mv ./publish/binary-compiler/dist/secretlint ./publish/binary-compiler/dist/secretlint_${{ github.event.client_payload.version }}_${OS}_${ARCH}
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
