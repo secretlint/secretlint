@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1712410912346,
+  "lastUpdate": 1712413929434,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -28802,6 +28802,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.95,
             "range": "±1.00%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "47ced1709624ae27aeaf8975a2464464dc801083",
+          "message": "CI: add macOS m1 build (#799)",
+          "timestamp": "2024-04-06T23:30:30+09:00",
+          "tree_id": "a03f59cefdcf10030fae5f5cceceafaec98ba152",
+          "url": "https://github.com/secretlint/secretlint/commit/47ced1709624ae27aeaf8975a2464464dc801083"
+        },
+        "date": 1712413928197,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.48,
+            "range": "±1.85%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.95,
+            "range": "±0.36%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
