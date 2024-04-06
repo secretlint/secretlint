@@ -32,4 +32,4 @@ jobs:
         run: yarn run build
       - name: Run secretlint
         if: steps.changed-files.outputs.any_changed == 'true'
-        run: yarn exec secretlint ${{ steps.changed-files.outputs.all_changed_files }}
+        run: ./node_modules/.bin/secretlint ${{ steps.changed-files.outputs.all_changed_files }}
