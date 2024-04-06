@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/source-creator",
-  "version": "8.1.2",
+  "version": "8.2.0",
   "description": "Create SecretLintRawSource from content.",
   "keywords": [
     "secretlint",
@@ -54,7 +54,7 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^8.1.2",
+    "@secretlint/types": "^8.2.0",
     "istextorbinary": "^6.0.0"
   },
   "devDependencies": {
