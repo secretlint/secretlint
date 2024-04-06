@@ -35,7 +35,7 @@ jobs:
         run: npm run dist
         working-directory: ./publish/binary-compiler
       - name: Upload artifacts
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           # secretlint-{os}-{arch}
           # secretlint_1.6.27_darwin_amd64
