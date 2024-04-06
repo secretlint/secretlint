@@ -21,6 +21,10 @@
       },
       "default": "./module/index.js"
     },
+    "./module/": {
+      "import": "./module/",
+      "types": "./module/"
+    },
     "./package.json": "./package.json"
   },
   "main": "./module/index.js",
