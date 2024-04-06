@@ -34,15 +34,10 @@ jobs:
       - name: Build binary
         run: npm run dist
         working-directory: ./publish/binary-compiler
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v1
-        with:
-          # secretlint-{os}-{arch}
-          # secretlint_1.6.27_darwin_amd64
-          # secretlint_1.6.27_darwin_arm64
-          # secretlint_1.6.27_windows_386
-          name: secretlint-${{ runner.os }}-${{ runner.arch }}
-          path: ./publish/binary-compiler/dist/secretlint
+      - name: Rename binary
+        run: |
+          # secretlint-{ver}-{os}-{arch}
+          mv ./publish/binary-compiler/dist/secretlint ./publish/binary-compiler/dist/secretlint_${{ github.event.client_payload.version }}_${{ runner.os }}_${{ runner.arch }}
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
