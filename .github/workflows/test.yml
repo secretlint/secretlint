@@ -26,6 +26,10 @@ jobs:
       matrix:
         os: [ macos-latest, windows-latest, ubuntu-latest ]
         node-version: [ 18, 20 ]
+        # but exclude macOs x node 18
+        exclude:
+          - os: macos-latest
+            node-version: 18
     steps:
       - name: checkout
         uses: actions/checkout@v4
