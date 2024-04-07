@@ -15,6 +15,6 @@ for ((i=0; i<${#platforms[@]}; ++i));
 do
   echo "Building for ${platforms[$i]}"
   # secretlint-{version}-{platform}
-  outputFilePath="${distDir}/${binaryName}-${secretlintVersion}-${platforms[$i]}"r
+  outputFilePath="${distDir}/${binaryName}-${secretlintVersion}-${platforms[$i]}"
   deno compile --no-lock --allow-read --allow-sys --allow-env --allow-write --target "${platforms[$i]}" --output "$outputFilePath" src/entry.ts
 done
