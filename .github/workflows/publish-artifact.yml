@@ -4,7 +4,6 @@ on:
   repository_dispatch:
     types: [publish-artifact]
 env:
-  CI: true
   DOCKER_BASE_NAME: ghcr.io/${{ github.repository }}
   DOCKER_HUB_BASE_NAME: secretlint/secretlint
 
@@ -12,7 +11,7 @@ permissions:
   contents: write
   packages: write
 jobs:
-  # TODO: deno depened on npm registry
+  # TODO: deno depend on npm registry
   # so, we need to wait for npm publish
   test-binary:
     permissions:
