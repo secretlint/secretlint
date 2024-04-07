@@ -1,8 +1,6 @@
 # @secretlint/binary-compiler
 
-Single executable binary compiler for secretlint using [Bun](https://bun.sh/).
-
-- [Single-file executable – Runtime | Bun Docs](https://bun.sh/docs/bundler/executables)
+Single executable binary compiler for secretlint using [Deno](https://deno.land/).
 
 ## CURRENT PROBLEM
 
@@ -11,9 +9,14 @@ Single executable binary compiler for secretlint using [Bun](https://bun.sh/).
 ## Usage
 
 ```
-npm run build
+npm run dist
 ./dist/secretlint --help
 ```
+
+## Built-in
+
+- Recommended Rules
+- @secretlint/secretlint-formatter-sarif
 
 ## Changelog
 

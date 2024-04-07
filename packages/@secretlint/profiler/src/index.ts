@@ -91,9 +91,15 @@ export type SecretLintProfilerMarker =
 export type Constructor<I> = {
     new (...args: any[]): I;
 };
+export type LimitedPerformanceObserver = Constructor<{
+    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/PerformanceObserver/disconnect) */
+    disconnect(): void;
+    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/PerformanceObserver/observe) */
+    observe(options?: any): void;
+}>;
 export type SecretLintProfilerOptions = {
     perf: Performance;
-    PerformanceObserver: any;
+    PerformanceObserver: LimitedPerformanceObserver;
 };
 
 export class SecretLintProfiler {

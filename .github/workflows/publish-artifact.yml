@@ -25,26 +25,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Use Bun
-        uses: oven-sh/setup-bun@v1
+      - name: Use Deno
+        uses: denoland/setup-deno@v1
         with:
-          bun-version: 1.1.0
-      - name: Install
-        run: yarn install
-      - name: Build
-        run: yarn run build
+          deno-version: v1.x
       - name: Build binary
-        run: npm run dist
+        run: bash build.sh
         working-directory: ./publish/binary-compiler
-      - name: Rename binary
-        run: |
-          # secretlint-{verion}-{os}-{arch}
-          # e.g. 
-          # secretlint_0.0.1_linux_amd64
-          # secretlint_0.0.1_darwin_amd64
-          OS=$(uname | tr '[:upper:]' '[:lower:]')
-          ARCH=$(uname -m | tr '[:upper:]' '[:lower:]' | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/')
-          mv ./publish/binary-compiler/dist/secretlint ./publish/binary-compiler/dist/secretlint_${{ github.event.client_payload.version }}_${OS}_${ARCH}
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
