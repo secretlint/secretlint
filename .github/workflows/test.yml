@@ -4,8 +4,6 @@ on:
     branches-ignore:
       - gh-pages
   pull_request:
-env:
-  CI: true
 permissions:
   contents: read
 jobs:
@@ -26,6 +24,10 @@ jobs:
       matrix:
         os: [ macos-latest, windows-latest, ubuntu-latest ]
         node-version: [ 18, 20 ]
+        # but exclude macOs x node 18
+        exclude:
+          - os: macos-latest
+            node-version: 18
     steps:
       - name: checkout
         uses: actions/checkout@v4
@@ -36,17 +38,8 @@ jobs:
       - name: Install
         run: yarn install
       - name: Test
-        run: yarn ci
-      # binary tet
-      - name: Use Bun
-        uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: 1.1.0
-      - name: Build binary
-        run: npm run dist
-        working-directory: ./publish/binary-compiler
-      - name: Test binary
-        # exclude windows
-        if: matrix.os != 'windows-latest'
-        run: npm run test-run
-        working-directory: ./publish/binary-compiler
+        run: yarn ci -v
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true

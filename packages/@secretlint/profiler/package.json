@@ -20,6 +20,7 @@
     ".": {
       "import": {
         "types": "./module/node.d.ts",
+        "browser": "./module/browser.js",
         "default": "./module/node.js"
       },
       "default": "./module/node.js"

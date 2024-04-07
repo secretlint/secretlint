@@ -1,5 +1,9 @@
-// preload for embeded binary
-import { cli, run } from "secretlint/cli";
+// preload for embedded binary
+// TODO: use local file path instead of npm registry
+// https://github.com/denoland/deno/issues/18474
+import "npm:@secretlint/secretlint-rule-preset-recommend";
+import "npm:@secretlint/secretlint-formatter-sarif";
+import { cli, run } from "npm:secretlint/cli";
 run(cli.input, cli.flags).then(
     ({ exitStatus, stderr, stdout }) => {
         if (stdout) {
@@ -8,10 +12,10 @@ run(cli.input, cli.flags).then(
         if (stderr) {
             console.error(stderr);
         }
-        process.exit(exitStatus);
+        Deno.exit(exitStatus);
     },
     (error) => {
         console.error(error);
-        process.exit(1);
+        Deno.exit(1);
     }
 );

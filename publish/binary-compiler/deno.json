@@ -1,0 +1,5 @@
+{
+  "tasks": {
+    "dev": "deno run --no-lock --allow-read --allow-sys --allow-env src/entry.ts \"**/*\""
+  }
+}

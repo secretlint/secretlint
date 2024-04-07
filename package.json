@@ -24,7 +24,6 @@
   "workspaces": [
     "packages/*",
     "packages/@secretlint/*",
-    "publish/binary-compiler",
     "examples/*"
   ],
   "scripts": {
