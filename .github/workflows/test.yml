@@ -38,7 +38,7 @@ jobs:
       - name: Install
         run: yarn install
       - name: Test
-        run: yarn ci -v
+        run: yarn ci -vvv
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
