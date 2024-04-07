@@ -16,5 +16,5 @@ do
   echo "Building for ${platforms[$i]}"
   # secretlint-{version}-{platform}
   outputFilePath="${distDir}/${binaryName}-${secretlintVersion}-${platforms[$i]}"r
-  deno compile --allow-read --allow-sys --allow-env --allow-write --target "${platforms[$i]}" --output "$outputFilePath" src/entry.ts
+  deno compile --no-lock --allow-read --allow-sys --allow-env --allow-write --target "${platforms[$i]}" --output "$outputFilePath" src/entry.ts
 done

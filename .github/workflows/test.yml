@@ -37,16 +37,3 @@ jobs:
         run: yarn install
       - name: Test
         run: yarn ci
-      # binary tet
-      - name: Use Bun
-        uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: 1.1.0
-      - name: Build binary
-        run: npm run dist
-        working-directory: ./publish/binary-compiler
-      - name: Test binary
-        # exclude windows
-        if: matrix.os != 'windows-latest'
-        run: npm run test-run
-        working-directory: ./publish/binary-compiler

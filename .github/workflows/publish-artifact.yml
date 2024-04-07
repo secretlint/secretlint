@@ -12,19 +12,30 @@ permissions:
   contents: write
   packages: write
 jobs:
+  # TODO: deno depened on npm registry
+  # so, we need to wait for npm publish
+  test-binary:
+    permissions:
+      contents: read
+    name: "Build and Test"
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: Use Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+      - name: Test binary
+        run: deno task dev
+        working-directory: ./publish/binary-compiler
+
   # Single Executable binary
   publish-binary:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [macOS-latest, ubuntu-latest]
-        node-version: [20]
+    runs-on: ubuntu-latest
+    needs: test-binary
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
       - name: Use Deno
         uses: denoland/setup-deno@v1
         with:
