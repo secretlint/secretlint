@@ -13,22 +13,6 @@ permissions:
 jobs:
   # TODO: deno depend on npm registry
   # so, we need to wait for npm publish
-  test-binary:
-    permissions:
-      contents: read
-    name: "Build and Test"
-    runs-on: ubuntu-latest
-    steps:
-      - name: checkout
-        uses: actions/checkout@v4
-      - name: Use Deno
-        uses: denoland/setup-deno@v1
-        with:
-          deno-version: v1.x
-      - name: Test binary
-        run: deno task dev
-        working-directory: ./publish/binary-compiler
-
   # Single Executable binary
   publish-binary:
     runs-on: ubuntu-latest
@@ -39,6 +23,9 @@ jobs:
         uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
+      - name: Test binary
+        run: deno task dev
+        working-directory: ./publish/binary-compiler
       - name: Build binary
         run: bash build.sh
         working-directory: ./publish/binary-compiler
