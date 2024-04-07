@@ -4,8 +4,6 @@ on:
     branches-ignore:
       - gh-pages
   pull_request:
-env:
-  CI: true
 permissions:
   contents: read
 jobs:
