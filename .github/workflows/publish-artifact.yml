@@ -16,7 +16,6 @@ jobs:
   # Single Executable binary
   publish-binary:
     runs-on: ubuntu-latest
-    needs: test-binary
     steps:
       - uses: actions/checkout@v4
       - name: Use Deno
