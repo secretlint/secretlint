@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1712430737818,
+  "lastUpdate": 1712482440985,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -28916,6 +28916,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.94,
             "range": "±0.85%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "cebbe6defcef91df4198320be9fa963be400bb76",
+          "message": "feat(binary): use deno for build binary (#802)\n\n* feat(binary): use deno for build binary\r\n\r\n* rm\r\n\r\n* Update yarn.lock\r\n\r\n* CI: add deno test\r\n\r\n* chore: remove CI env\r\n\r\n* CI: simple and merge\r\n\r\n* fix\r\n\r\n* CI: remove macOS x Node.js 18\r\n\r\n* CI: cancel\r\n\r\n* CI: add yarn ci -vvv\r\n\r\n* CI: remove env CI\r\n\r\n* CI: -v",
+          "timestamp": "2024-04-07T18:32:27+09:00",
+          "tree_id": "a3a421c3cad8a81fe076e9b4478c63597eca6a74",
+          "url": "https://github.com/secretlint/secretlint/commit/cebbe6defcef91df4198320be9fa963be400bb76"
+        },
+        "date": 1712482439941,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.49,
+            "range": "±1.03%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.95,
+            "range": "±1.16%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
