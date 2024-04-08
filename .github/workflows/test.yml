@@ -8,6 +8,7 @@ permissions:
   contents: read
 env:
   TURBO_TELEMETRY_DISABLED: 1
+  DO_NOT_TRACK: 1
 jobs:
   hadolint:
     runs-on: macos-latest
