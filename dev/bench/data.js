@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1712483962852,
+  "lastUpdate": 1712544727562,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -29106,6 +29106,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.95,
             "range": "±0.54%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "3ab9e3353f7e141cc6ece45cc115b173c5fe2fcc",
+          "message": "CI: add -vvv to turbo run (#807)\n\n* CI: add -vvv to turbo run\r\n\r\n* CI: add TURBO_TELEMETRY_DISABLED=1\r\n\r\n* CI: add DO_NOT_TRACK",
+          "timestamp": "2024-04-08T11:50:33+09:00",
+          "tree_id": "794af0553946c1016e4b5c5bed821e7a2317b5ec",
+          "url": "https://github.com/secretlint/secretlint/commit/3ab9e3353f7e141cc6ece45cc115b173c5fe2fcc"
+        },
+        "date": 1712544726439,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.49,
+            "range": "±1.04%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.94,
+            "range": "±0.63%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
