@@ -256,7 +256,7 @@ After all participants on pull request are satisfied to the changes, we will mer
 This project has a template for creating a new rule.
 
 ```sh
-npm run gen:rule
+yarn run gen:rule
 ```
 
 1. Enter rule name
@@ -276,15 +276,15 @@ At first, you need to add a rule to [secretlint-rule-preset-canary](./packages/@
 
 1. Add rule to `packages/@secretlint/secretlint-rule-preset-canary/package.json`'s `devDependencies`
 2. Add rule to `packages/@secretlint/secretlint-rule-preset-canary/src/index.ts`
-3. `npm run import-test`
-4. `npm test`
+3. `yarn run import-test`
+4. `yarn test`
 
 After testing on canary, you can sync to [secretlint-rule-preset-recommend](./packages/@secretlint/secretlint-rule-preset-recommend).
 
 ```sh
 cd packages/@secretlint/secretlint-rule-preset-recommend
-npm run sync-canary
-npm test
+yarn run sync-canary
+yarn test
 ```
 
 ## Benchmark
@@ -295,7 +295,7 @@ Secretlint has a continuous benchmark:
 
 ## Release Flow
 
-A Maintainer release new version of textlint by following way.
+A Maintainer release new version of secretlint by following way.
 
 1. Create Release PR via GitHub Actions: <https://github.com/secretlint/secretlint/actions/workflows/create-release-pr.yml>
    - Run workflow with `version` input
