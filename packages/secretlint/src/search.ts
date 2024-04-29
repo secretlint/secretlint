@@ -28,15 +28,12 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
         // because \\ is used for escape
         // https://github.com/secretlint/secretlint/issues/816
         // In Windows, user need to use `secretint "**/*"` if user want to use glob pattern
-        if (isDynamicPattern(pattern)) {
+        const normalizedPattern = process.platform === "win32" ? pattern.replace(/\\/g, "/") : pattern;
+        if (isDynamicPattern(normalizedPattern)) {
             return pattern;
         }
-        // In Windows, need to replace path separator to "/"
-        const isWindows = process.platform === "win32";
-        if (isWindows) {
-            return pattern.replace(/\\/g, "/");
-        }
-        return pattern;
+        // static path
+        return normalizedPattern;
     });
     debug("search patterns: %o", globPatterns);
     debug("search DEFAULT_IGNORE_PATTERNS: %o", DEFAULT_IGNORE_PATTERNS);
