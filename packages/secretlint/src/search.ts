@@ -22,8 +22,15 @@ export type SearchFilesOptions = {
 export const searchFiles = async (patterns: string[], options: SearchFilesOptions) => {
     const globPatterns = patterns.map((pattern) => {
         // glob pattern should be used "/" as path separator in Windows
+        if (isDynamicPattern(pattern)) {
+            return pattern;
+        }
         const isWindows = process.platform === "win32";
-        if (isWindows && !isDynamicPattern(pattern)) {
+        if (isWindows) {
+            // We can not replace \\ to / if pattern is glob pattern
+            // because \\ is used for escape
+            // https://github.com/secretlint/secretlint/issues/816
+            // In Windows, user need to use `secretint "**/*"` if user want to use glob pattern
             return pattern.replace(/\\/g, "/");
         }
         return pattern;
