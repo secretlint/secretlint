@@ -1,1 +1,12 @@
-"Error: Not found target files"
+{
+    "exitStatus": 0,
+    "stdout": [
+        {
+            "filePath": "[SNAPSHOT]/escape-glob-characters-path/input-(group).md",
+            "sourceContent": "Include glob special characters in path\n",
+            "sourceContentType": "text",
+            "messages": []
+        }
+    ],
+    "stderr": null
+}
