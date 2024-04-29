@@ -1,4 +1,4 @@
-import { globby, isDynamicPattern } from "globby";
+import { globby, isDynamicPattern, convertPathToPattern } from "globby";
 import debug0 from "debug";
 
 const debug = debug0("secretlint");
@@ -21,7 +21,7 @@ export type SearchFilesOptions = {
  */
 export const searchFiles = async (patterns: string[], options: SearchFilesOptions) => {
     // secretelint support glob pattern
-    const globPatterns = patterns.map((pattern) => {
+    const normalizedPatterns = patterns.map((pattern) => {
         // glob can not handle Windows style path separator
         // So, replace path separator to POSIX style
         // https://github.com/secretlint/secretlint/issues/816
@@ -30,15 +30,23 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
         // isDynamicPattern("C:\\path\\to\\file") => true
         // If pattern includes glob pattern, just return `pattern`
         // Because user need to use `secretint "**/*"` in any platform(Windows, macOS, Linux)
-        if (isDynamicPattern(normalizedPattern)) {
-            return pattern;
+        const isDynamic = isDynamicPattern(normalizedPattern);
+        if (isDynamic) {
+            return {
+                pattern: normalizedPattern,
+                isDynamic: true,
+            };
         }
         // static path should be normalized
-        return normalizedPattern;
+        return {
+            pattern: convertPathToPattern(normalizedPattern),
+            isDynamic: false,
+        };
     });
-    debug("search patterns: %o", globPatterns);
+    debug("search patterns: %o", normalizedPatterns);
     debug("search DEFAULT_IGNORE_PATTERNS: %o", DEFAULT_IGNORE_PATTERNS);
     debug("search ignoreFilePath: %s", options.ignoreFilePath);
+    const globPatterns = normalizedPatterns.map((pattern) => pattern.pattern);
     const searchResultItems = await globby(globPatterns, {
         cwd: options.cwd,
         ignore: DEFAULT_IGNORE_PATTERNS,
