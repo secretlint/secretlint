@@ -57,6 +57,7 @@ describe("cli snapshot testing", function () {
                 // Less diff between env
                 color: false,
                 format: "json",
+                debug: true,
             }).catch((error) => {
                 // if throw an error, save it
                 return `Error: ${error.message}`;
