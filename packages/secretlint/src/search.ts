@@ -1,4 +1,4 @@
-import { globby } from "globby";
+import { globby, isDynamicPattern, convertPathToPattern } from "globby";
 import debug0 from "debug";
 
 const debug = debug0("secretlint");
@@ -20,13 +20,33 @@ export type SearchFilesOptions = {
  * @param options
  */
 export const searchFiles = async (patterns: string[], options: SearchFilesOptions) => {
-    // glob pattern should be used "/" as path separator
-    const globPatterns = patterns.map((pattern) => {
-        return pattern.replace(/\\/g, "/");
+    // secretelint support glob pattern
+    const normalizedPatterns = patterns.map((pattern) => {
+        // glob can not handle Windows style path separator
+        // So, replace path separator to POSIX style
+        // https://github.com/secretlint/secretlint/issues/816
+        const normalizedPattern = process.platform === "win32" ? pattern.replace(/\\/g, "/") : pattern;
+        // isDynamicPattern arguments should be posix path
+        // isDynamicPattern("C:\\path\\to\\file") => true
+        // If pattern includes glob pattern, just return `pattern`
+        // Because user need to use `secretint "**/*"` in any platform(Windows, macOS, Linux)
+        const isPatternGlobStyle = isDynamicPattern(normalizedPattern);
+        if (isPatternGlobStyle) {
+            return {
+                pattern: pattern,
+                isDynamic: true,
+            };
+        }
+        // static path should be escaped special characters
+        return {
+            pattern: convertPathToPattern(normalizedPattern),
+            isDynamic: false,
+        };
     });
-    debug("search patterns: %o", globPatterns);
+    debug("search patterns: %o", normalizedPatterns);
     debug("search DEFAULT_IGNORE_PATTERNS: %o", DEFAULT_IGNORE_PATTERNS);
     debug("search ignoreFilePath: %s", options.ignoreFilePath);
+    const globPatterns = normalizedPatterns.map((pattern) => pattern.pattern);
     const searchResultItems = await globby(globPatterns, {
         cwd: options.cwd,
         ignore: DEFAULT_IGNORE_PATTERNS,
