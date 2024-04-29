@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1713319969982,
+  "lastUpdate": 1714395549023,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -29372,6 +29372,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.95,
             "range": "±0.87%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "8950a3745f5888eb8a4793cd8f6ea5aec5d3097c",
+          "message": "fix: support escape for glob (#817)\n\n* test: add test case\r\n\r\nref https://github.com/secretlint/secretlint/issues/816\r\n\r\n* fix: \\\\ -> / in Windows only\r\n\r\n* test: update snapshot\r\n\r\n* debug\r\n\r\n* fix\r\n\r\n* fix\r\n\r\n* fix\r\n\r\n* fix\r\n\r\n* update comment\r\n\r\n* fix\r\n\r\n* fix",
+          "timestamp": "2024-04-29T21:57:27+09:00",
+          "tree_id": "efd6465a2359b70efd4024f2ac48ddea7b4abef3",
+          "url": "https://github.com/secretlint/secretlint/commit/8950a3745f5888eb8a4793cd8f6ea5aec5d3097c"
+        },
+        "date": 1714395547583,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.47,
+            "range": "±0.53%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.93,
+            "range": "±1.18%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
