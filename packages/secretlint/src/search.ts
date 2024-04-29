@@ -20,10 +20,9 @@ export type SearchFilesOptions = {
  * @param options
  */
 export const searchFiles = async (patterns: string[], options: SearchFilesOptions) => {
-    // glob pattern should be used "/" as path separator
-    const globPatterns = patterns.map((pattern) => {
-        return pattern.replace(/\\/g, "/");
-    });
+    // glob pattern should be used "/" as path separator in Windows
+    const globPatterns =
+        process.platform === "win32" ? patterns.map((pattern) => pattern.replace(/\\/g, "/")) : patterns;
     debug("search patterns: %o", globPatterns);
     debug("search DEFAULT_IGNORE_PATTERNS: %o", DEFAULT_IGNORE_PATTERNS);
     debug("search ignoreFilePath: %s", options.ignoreFilePath);
