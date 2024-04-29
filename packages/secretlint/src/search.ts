@@ -30,14 +30,14 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
         // isDynamicPattern("C:\\path\\to\\file") => true
         // If pattern includes glob pattern, just return `pattern`
         // Because user need to use `secretint "**/*"` in any platform(Windows, macOS, Linux)
-        const isDynamic = isDynamicPattern(normalizedPattern);
-        if (isDynamic) {
+        const isPatternGlobStyle = isDynamicPattern(normalizedPattern);
+        if (isPatternGlobStyle) {
             return {
-                pattern: normalizedPattern,
+                pattern: pattern,
                 isDynamic: true,
             };
         }
-        // static path should be normalized
+        // static path should be escaped special characters
         return {
             pattern: convertPathToPattern(normalizedPattern),
             isDynamic: false,
