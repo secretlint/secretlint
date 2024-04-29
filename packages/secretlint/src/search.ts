@@ -1,4 +1,4 @@
-import { globby } from "globby";
+import { globby, isDynamicPattern } from "globby";
 import debug0 from "debug";
 
 const debug = debug0("secretlint");
@@ -20,9 +20,14 @@ export type SearchFilesOptions = {
  * @param options
  */
 export const searchFiles = async (patterns: string[], options: SearchFilesOptions) => {
-    // glob pattern should be used "/" as path separator in Windows
-    const globPatterns =
-        process.platform === "win32" ? patterns.map((pattern) => pattern.replace(/\\/g, "/")) : patterns;
+    const globPatterns = patterns.map((pattern) => {
+        // glob pattern should be used "/" as path separator in Windows
+        const isWindows = process.platform === "win32";
+        if (isWindows && !isDynamicPattern(pattern)) {
+            return pattern.replace(/\\/g, "/");
+        }
+        return pattern;
+    });
     debug("search patterns: %o", globPatterns);
     debug("search DEFAULT_IGNORE_PATTERNS: %o", DEFAULT_IGNORE_PATTERNS);
     debug("search ignoreFilePath: %s", options.ignoreFilePath);
