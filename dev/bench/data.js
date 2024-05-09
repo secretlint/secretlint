@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1715207972929,
+  "lastUpdate": 1715292359297,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -29562,6 +29562,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.95,
             "range": "±0.80%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "distinct": true,
+          "id": "6e1a97d71ecd8f2a1f433a636e0b31d81cdf3d68",
+          "message": "chore(deps): update yarn to v4.2.1",
+          "timestamp": "2024-05-09T22:04:23Z",
+          "tree_id": "617e27cfc46576244c22df70e9ca45a07eafce34",
+          "url": "https://github.com/secretlint/secretlint/commit/6e1a97d71ecd8f2a1f433a636e0b31d81cdf3d68"
+        },
+        "date": 1715292358203,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.49,
+            "range": "±0.73%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.94,
+            "range": "±0.79%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
