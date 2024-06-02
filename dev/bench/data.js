@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1717020740131,
+  "lastUpdate": 1717292979034,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -29790,6 +29790,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.96,
             "range": "±0.73%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "distinct": true,
+          "id": "4a184fc70dc674627088db3006dc606427cabd75",
+          "message": "fix(deps): update dependency ajv to ^8.14.0",
+          "timestamp": "2024-06-02T01:48:04Z",
+          "tree_id": "138e9f882986c03603bfa4dd0d4d138faefe9229",
+          "url": "https://github.com/secretlint/secretlint/commit/4a184fc70dc674627088db3006dc606427cabd75"
+        },
+        "date": 1717292978002,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.42,
+            "range": "±1.10%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.94,
+            "range": "±0.81%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
