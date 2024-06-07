@@ -59,7 +59,7 @@
     "@textlint/module-interop": "^13.4.1",
     "@textlint/types": "^12.6.1",
     "chalk": "^4.1.2",
-    "debug": "^4.3.4",
+    "debug": "^4.3.5",
     "is-file": "^1.0.0",
     "pluralize": "^8.0.0",
     "strip-ansi": "^6.0.1",
