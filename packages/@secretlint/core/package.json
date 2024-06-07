@@ -54,7 +54,7 @@
   "dependencies": {
     "@secretlint/profiler": "^8.2.4",
     "@secretlint/types": "^8.2.4",
-    "debug": "^4.3.4",
+    "debug": "^4.3.5",
     "structured-source": "^4.0.0"
   },
   "devDependencies": {
