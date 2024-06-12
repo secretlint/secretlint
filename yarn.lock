@@ -904,7 +904,7 @@ __metadata:
     "@secretlint/types": "npm:^8.2.4"
     "@types/mocha": "npm:^10.0.6"
     "@types/node": "npm:^20.14.1"
-    ajv: "npm:^8.15.0"
+    ajv: "npm:^8.16.0"
     create-validator-ts: "npm:^4.0.2"
     debug: "npm:^4.3.5"
     mocha: "npm:^10.4.0"
@@ -1956,7 +1956,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv@npm:^8.15.0":
+"ajv@npm:^8.16.0":
   version: 8.16.0
   resolution: "ajv@npm:8.16.0"
   dependencies:
