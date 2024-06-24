@@ -1477,7 +1477,7 @@ __metadata:
     rimraf: "npm:^3.0.2"
     ts-node: "npm:^10.9.2"
     tsconfig-to-dual-package: "npm:^1.2.0"
-    tsd: "npm:^0.31.0"
+    tsd: "npm:^0.31.1"
     typescript: "npm:^5.1.6"
   languageName: unknown
   linkType: soft
@@ -9292,9 +9292,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tsd@npm:^0.31.0":
-  version: 0.31.0
-  resolution: "tsd@npm:0.31.0"
+"tsd@npm:^0.31.1":
+  version: 0.31.1
+  resolution: "tsd@npm:0.31.1"
   dependencies:
     "@tsd/typescript": "npm:~5.4.3"
     eslint-formatter-pretty: "npm:^4.1.0"
@@ -9305,7 +9305,7 @@ __metadata:
     read-pkg-up: "npm:^7.0.0"
   bin:
     tsd: dist/cli.js
-  checksum: 10c0/1e866f6fa820a5d456a6040d772a6af910aa4737dda930d34f9b5a407fa8f020b08eef958c86c6568b7d5af1f3cf69680d4e4c31bf1f2ae92bbd10b630392d52
+  checksum: 10c0/02cf032d57d21b77a9413ebdc4fce2fb080af3d3d189d6c002fbb5e0e6a4eae87a1d7302db5a6dadef9c83061ead6f878f96d425a8b0439786e199a842aab151
   languageName: node
   linkType: hard
 
