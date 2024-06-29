@@ -54,7 +54,7 @@
     "tabWidth": 4
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.6",
+    "@types/mocha": "^10.0.7",
     "@types/node": "^20.14.8",
     "mocha": "^10.4.0",
     "prettier": "^2.8.1",
