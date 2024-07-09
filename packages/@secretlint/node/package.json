@@ -66,7 +66,7 @@
     "@secretlint/secretlint-rule-example": "^8.2.4",
     "@types/mocha": "^10.0.7",
     "@types/node": "^20.14.9",
-    "mocha": "^10.5.2",
+    "mocha": "^10.6.0",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
     "ts-node": "^10.9.2",
