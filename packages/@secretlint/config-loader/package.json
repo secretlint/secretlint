@@ -59,7 +59,7 @@
   "dependencies": {
     "@secretlint/profiler": "^8.2.4",
     "@secretlint/types": "^8.2.4",
-    "ajv": "^8.16.0",
+    "ajv": "^8.17.1",
     "debug": "^4.3.5",
     "rc-config-loader": "^4.1.3",
     "try-resolve": "^1.0.1"
