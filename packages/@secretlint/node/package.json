@@ -65,7 +65,7 @@
   "devDependencies": {
     "@secretlint/secretlint-rule-example": "^8.2.4",
     "@types/mocha": "^10.0.7",
-    "@types/node": "^20.14.10",
+    "@types/node": "^20.14.11",
     "mocha": "^10.6.0",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
