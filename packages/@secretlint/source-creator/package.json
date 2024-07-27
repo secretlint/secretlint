@@ -60,7 +60,7 @@
   "devDependencies": {
     "@types/mocha": "^10.0.7",
     "@types/node": "^20.14.11",
-    "mocha": "^10.6.1",
+    "mocha": "^10.7.0",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
     "ts-node": "^10.9.2",
