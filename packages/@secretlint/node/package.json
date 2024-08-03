@@ -59,7 +59,7 @@
     "@secretlint/profiler": "^8.2.4",
     "@secretlint/source-creator": "^8.2.4",
     "@secretlint/types": "^8.2.4",
-    "debug": "^4.3.5",
+    "debug": "^4.3.6",
     "p-map": "^4.0.0"
   },
   "devDependencies": {
