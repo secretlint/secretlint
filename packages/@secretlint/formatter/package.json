@@ -69,7 +69,7 @@
   },
   "devDependencies": {
     "@types/mocha": "^10.0.7",
-    "@types/node": "^20.14.12",
+    "@types/node": "^20.14.13",
     "@types/pluralize": "0.0.33",
     "escape-string-regexp": "^4.0.0",
     "mocha": "^10.7.0",
