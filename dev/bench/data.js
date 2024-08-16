@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1723259015587,
+  "lastUpdate": 1723822745691,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -31272,6 +31272,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.96,
             "range": "±0.85%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "distinct": true,
+          "id": "ca23c4bc422b2fc00b8294d2f2fb297e0e17f1b0",
+          "message": "chore(deps): update dependency mocha to ^10.7.3",
+          "timestamp": "2024-08-16T15:37:29Z",
+          "tree_id": "08442f250354eb4b38777c7ff842c2f777b79fc6",
+          "url": "https://github.com/secretlint/secretlint/commit/ca23c4bc422b2fc00b8294d2f2fb297e0e17f1b0"
+        },
+        "date": 1723822743867,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.6,
+            "range": "±0.48%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.97,
+            "range": "±0.72%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
