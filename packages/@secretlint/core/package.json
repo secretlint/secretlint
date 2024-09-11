@@ -60,7 +60,7 @@
   "devDependencies": {
     "@types/debug": "^4.1.12",
     "@types/mocha": "^10.0.7",
-    "@types/node": "^20.16.3",
+    "@types/node": "^20.16.4",
     "assert-json-equal": "^1.0.1",
     "mocha": "^10.7.3",
     "prettier": "^2.8.1",
