@@ -55,7 +55,7 @@
     "@secretlint/types": "^8.2.4"
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.7",
+    "@types/mocha": "^10.0.8",
     "@types/node": "^20.16.5",
     "mocha": "^10.7.3",
     "prettier": "^2.8.1",
