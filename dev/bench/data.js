@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1726932567969,
+  "lastUpdate": 1726958937280,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -31842,6 +31842,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.98,
             "range": "±1.38%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "distinct": true,
+          "id": "68f52f305f3b9ee07ea67cbb0af1210ecaebe0a8",
+          "message": "fix(deps): update dependency @types/bn.js to ^5.1.6",
+          "timestamp": "2024-09-21T22:47:18Z",
+          "tree_id": "50b3fd328f07efa91f3cccc1ef9eb643ae479829",
+          "url": "https://github.com/secretlint/secretlint/commit/68f52f305f3b9ee07ea67cbb0af1210ecaebe0a8"
+        },
+        "date": 1726958935814,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.51,
+            "range": "±0.84%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.94,
+            "range": "±1.04%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
