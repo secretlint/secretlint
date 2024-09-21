@@ -1377,7 +1377,7 @@ __metadata:
   dependencies:
     "@secretlint/tester": "npm:^8.2.4"
     "@secretlint/types": "npm:^8.2.4"
-    "@types/bn.js": "npm:^5.1.5"
+    "@types/bn.js": "npm:^5.1.6"
     "@types/node": "npm:^20.16.5"
     "@types/secp256k1": "npm:^4.0.6"
     bn.js: "npm:^5.2.1"
@@ -1674,12 +1674,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/bn.js@npm:^5.1.5":
-  version: 5.1.5
-  resolution: "@types/bn.js@npm:5.1.5"
+"@types/bn.js@npm:^5.1.6":
+  version: 5.1.6
+  resolution: "@types/bn.js@npm:5.1.6"
   dependencies:
     "@types/node": "npm:*"
-  checksum: 10c0/e9f375b43d8119ed82aed2090f83d4cda8afbb63ba13223afb02fa7550258ff90acd76d65cd7186838644048f085241cd98a3a512d8d187aa497c6039c746ac8
+  checksum: 10c0/073d383d87afea513a8183ce34af7bc0a7a798d057c7ae651982b7f30dd7d93f33247323bca3ba39f1f6af146b564aff547b15467bdf9fc922796c17e8426bf6
   languageName: node
   linkType: hard
 
