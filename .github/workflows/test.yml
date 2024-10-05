@@ -47,10 +47,10 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
-      - name: setup Node ${{ matrix.node-version }}
+      - name: setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 22
       # install and compile secretlint codes
       - name: Install
         run: yarn install
