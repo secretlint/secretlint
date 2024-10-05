@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1728108008838,
+  "lastUpdate": 1728133144161,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -32298,6 +32298,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.95,
             "range": "±1.15%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "60e3f822f8f600f02d06898e8f232022a54c80b5",
+          "message": " fix(binary-compiler): bundle built-in package into binary  (#899)\n\n* fix(binary-compiler): bundle built-in package into binary\r\n\r\n* Update publish/binary-compiler/build-binary.sh\r\n\r\n* remove unused\r\n\r\n* log\r\n\r\n* fix\r\n\r\n* fix\r\n\r\n* use tmp dir\r\n\r\n* cd\r\n\r\n* fixup\r\n\r\n* preload formatter\r\n\r\n* fix\r\n\r\n* fix filter\r\n\r\n* fix order\r\n\r\n* fix\r\n\r\n* add init\r\n\r\n* log",
+          "timestamp": "2024-10-05T21:57:22+09:00",
+          "tree_id": "e2694ca547e866af2ae5ff49193ff55f2bd609da",
+          "url": "https://github.com/secretlint/secretlint/commit/60e3f822f8f600f02d06898e8f232022a54c80b5"
+        },
+        "date": 1728133142918,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.46,
+            "range": "±0.73%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.9,
+            "range": "±1.99%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
