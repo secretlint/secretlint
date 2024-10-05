@@ -71,11 +71,6 @@ echo '{
 ./secretlint "**/*"
 ```
 
-## Built-in
-
-- Recommended Rules
-- @secretlint/secretlint-formatter-sarif
-
 ## Changelog
 
 See [Releases page](https://github.com/secretlint/secretlint/releases).
