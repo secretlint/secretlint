@@ -16,7 +16,7 @@ await plugin({
     name: "secretlint",
     setup(build: PluginBuilder): void | Promise<void> {
         // require.resolve hooks
-        build.onResolve({ filter: /secretlint/ }, (args) => {
+        build.onResolve({ filter: /@secretlint/ }, (args) => {
             // if match the path with mocks, return mock name
             const match = args.path.match(/(@secretlint\/[^/]*)/);
             if (match && mockNames.includes(match[1])) {
