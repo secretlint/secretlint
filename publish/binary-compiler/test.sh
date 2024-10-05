@@ -24,8 +24,10 @@ esac
 TMP_DIR=$(mktemp -d)
 # move binary to tmp
 cp ./dist/secretlint-${CURRENT_VERSION}-${OS}-${ARCH} ${TMP_DIR}/secretlint
+cd ${TMP_DIR}
 # Run the dist binary
-${TMP_DIR}/secretlint --version
-${TMP_DIR}/secretlint --help
+./secretlint --version
+./secretlint --help
 # run "**/*" test
-${TMP_DIR}/secretlint "**/*"
+./secretlint "**/*"
+cd -
