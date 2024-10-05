@@ -2,7 +2,6 @@
 import * as preset from "@secretlint/secretlint-rule-preset-recommend";
 import * as pattern from "@secretlint/secretlint-rule-pattern";
 import * as sarif from "@secretlint/secretlint-formatter-sarif";
-import { loadFormatter, getFormatterList } from "@secretlint/formatter";
 import { cli, run } from "secretlint/cli";
 import { plugin, type PluginBuilder } from "bun";
 import * as fs from "node:fs";
@@ -50,12 +49,6 @@ await plugin({
         });
     }
 });
-// preload formatter
-for (const formatter of getFormatterList()) {
-    await loadFormatter({
-        formatterName: formatter.name
-    });
-}
 // --init override
 if (cli.flags.init) {
     // write .secretlintrc.json
@@ -79,6 +72,8 @@ if (cli.flags.init) {
     console.log("Create .secretlintrc.json");
     process.exit(0);
 }
+// FIXME: wait to start for hook plugin
+await new Promise((resolve) => setTimeout(resolve, 100));
 // secretlint CLI wrapper
 // TODO: --version does not work because package.json is not bundled
 run(cli.input, cli.flags).then(
