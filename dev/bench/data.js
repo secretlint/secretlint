@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1728133257607,
+  "lastUpdate": 1728136725013,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -32374,6 +32374,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.92,
             "range": "±1.28%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c9fb5060156412c1d6224a1087d29b893cbd7d2c",
+          "message": "fix(deps): update to @textlint/linter-formatter@14.2.1 (#901)\n\n* fix(deps): update to @textlint/linter-formatter@14.2.1\r\n\r\n* fix(binary-compiler): no need load formatter at start\r\n\r\n* fix",
+          "timestamp": "2024-10-05T22:57:05+09:00",
+          "tree_id": "5b9b1114e9d8575dd1fccd530023bc9c971ef1fb",
+          "url": "https://github.com/secretlint/secretlint/commit/c9fb5060156412c1d6224a1087d29b893cbd7d2c"
+        },
+        "date": 1728136723764,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.25,
+            "range": "±0.47%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.88,
+            "range": "±1.07%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
