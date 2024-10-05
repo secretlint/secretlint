@@ -1,32 +1,101 @@
 # @secretlint/binary-compiler
 
-Single executable binary compiler for secretlint using [Deno](https://deno.land/).
+Single executable binary compiler for secretlint using [bun](https://bun.sh/)
+
+## Supported Platform
+
+[Releases page](https://github.com/secretlint/secretlint/releases) includes the following platform binaries:
+
+| Platform | Arch  | FileName                               | 
+|----------|-------|----------------------------------------|
+| Linux    | x64   | `secretlint-<version>-linux-x64`       |
+| Linux    | arm64 | `secretlint-<version>-linux-arm64`     |
+| Windows  | x64   | `secretlint-<version>-windows-x64.exe` |
+| macOS    | x64   | `secretlint-<version>-darwin-x64`      |
+| macOS    | arm64 | `secretlint-<version>-darwin-arm64`    |
+
+Checksum files are available as `secretlint-<version>-sha256sum.txt`
+
+## Built-in Rules
+
+This binary includes the following rules:
+
+- [@secretlint/secretlint-rule-preset-recommend](https://www.npmjs.com/package/@secretlint/secretlint-rule-preset-recommend)
+- [@secretlint/secretlint-rule-pattern](https://www.npmjs.com/package/@secretlint/secretlint-rule-pattern)
+- [@secretlint/secretlint-formatter-sarif](https://www.npmjs.com/package/@secretlint/secretlint-formatter-sarif)
 
 ## CURRENT PROBLEM
 
 - output binary does not be code-sign.
+- `--version` does not work because `package.json` is not included in the binary.
 
 ## Usage
 
-```
-npm run dist
-./dist/secretlint --help
-```
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+# Get current architecture
+SECRETLINT_VERSION="x.x.x"
+ARCH=$(uname -m)
+OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+# Map architecture to the expected format
+case "$ARCH" in
+    x86_64)
+        ARCH="x64"
+        ;;
+    aarch64)
+        ARCH="arm64"
+        ;;
+    arm64)
+        ARCH="arm64"
+        ;;
+    *)
+        echo "Unsupported architecture: $ARCH"
+        exit 1
+        ;;
+esac
 
-## Built-in
-
-- Recommended Rules
-- @secretlint/secretlint-formatter-sarif
+# Download the binary
+curl -sSL "https://github.com/secretlint/secretlint/releases/download/$(SECRETLINT_VERSION)/secretlint-$(SECRETLINT_VERSION)-$(OS)-$(ARCH)" -o secretlint
+chmod +x secretlint
+# init .secretlintrc.json
+echo '{
+  "rules": [
+    {
+      "id": "@secretlint/secretlint-rule-preset-recommend"
+    },
+    {
+      "id": "@secretlint/secretlint-rule-pattern"
+    }
+  ]
+}' > .secretlintrc.json
+# Run secretlint
+./secretlint "**/*"
+```
 
 ## Changelog
 
 See [Releases page](https://github.com/secretlint/secretlint/releases).
 
+## Development
+
+```bash
+# build secretlint using Node.js
+yarn install
+yarn run build
+# build binary using bun
+cd publish/binary-compiler
+bun run build-binary
+./dist/secretlint-<version>-<platform>-<arch> --help
+```
+
 ## Running tests
 
-Install devDependencies and Run `npm test`:
+Run --help and "**/*" check using current binary.
 
-    npm test
+```sh
+bun run test
+```
 
 ## Contributing
 

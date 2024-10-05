@@ -1,0 +1,23 @@
+{
+  "name": "binary-compiler",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "build-binary": "bash build-binary.sh",
+    "test": "bun run build-binary && bash test.sh"
+  },
+  "workspaces": [
+    "../../packages/*",
+    "../../packages/@secretlint/*"
+  ],
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@secretlint/secretlint-formatter-sarif": "workspace:*",
+    "@secretlint/secretlint-rule-pattern": "workspace:*",
+    "@secretlint/secretlint-rule-preset-recommend": "workspace:*",
+    "secretlint": "workspace:*"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

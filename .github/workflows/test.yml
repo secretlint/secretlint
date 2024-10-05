@@ -1,8 +1,9 @@
 name: test
 on:
   push:
-    branches-ignore:
-      - gh-pages
+    branches:
+      - main
+      - master
   pull_request:
 permissions:
   contents: read
@@ -12,6 +13,7 @@ env:
 jobs:
   hadolint:
     runs-on: macos-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
@@ -23,6 +25,7 @@ jobs:
   test:
     name: "Test on Node.js ${{ matrix.node-version }} OS: ${{matrix.os}}"
     runs-on: ${{matrix.os}}
+    timeout-minutes: 10
     strategy:
       matrix:
         os: [ macos-latest, windows-latest, ubuntu-latest ]
@@ -42,6 +45,31 @@ jobs:
         run: yarn install
       - name: Test
         run: yarn ci -v
+  binary-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # install and build source codes
+      - name: Install
+        run: yarn install
+      - name: Build Source Code
+        run: yarn run build
+      # build the binary
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: "./publish/binary-compiler/.bun-version"
+      - name: Install Binary Compiler
+        run: bun install
+        working-directory: ./publish/binary-compiler
+      - name: Test Binary
+        run: bun run test
+        working-directory: ./publish/binary-compiler
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
