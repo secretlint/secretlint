@@ -30,14 +30,6 @@ plugin({
         });
         // require/import/dynamic import hooks
         Object.entries(mocks).forEach(([name, mock]) => {
-            build.module("secretlint/package.json", () => {
-                return {
-                    exports: {
-                        version: "1.0.0"
-                    },
-                    loader: "object"
-                };
-            });
             // build.module will return mock object
             build.module(`${name}`, () => {
                 return {
