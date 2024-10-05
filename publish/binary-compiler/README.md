@@ -35,7 +35,7 @@ This binary includes the following rules:
 #!/usr/bin/env bash
 set -euo pipefail
 # Get current architecture
-SECRET_LINT_VERSION="x.x.x"
+SECRETLINT_VERSION="x.x.x"
 ARCH=$(uname -m)
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 # Map architecture to the expected format
@@ -56,7 +56,7 @@ case "$ARCH" in
 esac
 
 # Download the binary
-curl -sSL "https://github.com/secretlint/secretlint/releases/download/$(SECRET_LINT_VERSION)/secretlint-$(SECRET_LINT_VERSION)-$(OS)-$(ARCH)" -o secretlint
+curl -sSL "https://github.com/secretlint/secretlint/releases/download/$(SECRETLINT_VERSION)/secretlint-$(SECRETLINT_VERSION)-$(OS)-$(ARCH)" -o secretlint
 chmod +x secretlint
 # init .secretlintrc.json
 echo '{
