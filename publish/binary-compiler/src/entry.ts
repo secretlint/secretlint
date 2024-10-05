@@ -76,6 +76,7 @@ if (cli.flags.init) {
             4
         )
     );
+    console.log("Create .secretlintrc.json");
     process.exit(0);
 }
 // secretlint CLI wrapper
