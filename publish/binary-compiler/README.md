@@ -56,19 +56,11 @@ case "$ARCH" in
 esac
 
 # Download the binary
-curl -sSL "https://github.com/secretlint/secretlint/releases/download/$(SECRETLINT_VERSION)/secretlint-$(SECRETLINT_VERSION)-$(OS)-$(ARCH)" -o secretlint
+echo "Downloading https://github.com/secretlint/secretlint/releases/download/v${SECRETLINT_VERSION}/secretlint-${SECRETLINT_VERSION}-${OS}-${ARCH}"
+curl -sSL "https://github.com/secretlint/secretlint/releases/download/v${SECRETLINT_VERSION}/secretlint-${SECRETLINT_VERSION}-${OS}-${ARCH}" -o secretlint
 chmod +x secretlint
 # init .secretlintrc.json
-echo '{
-  "rules": [
-    {
-      "id": "@secretlint/secretlint-rule-preset-recommend"
-    },
-    {
-      "id": "@secretlint/secretlint-rule-pattern"
-    }
-  ]
-}' > .secretlintrc.json
+./secretlint --init
 # Run secretlint
 ./secretlint "**/*"
 ```
