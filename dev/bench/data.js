@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1728107245572,
+  "lastUpdate": 1728107329487,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -32184,6 +32184,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.95,
             "range": "±0.60%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "cca259a9a2ef8349f14e8f4bba22b0c5aeacb94b",
+          "message": "chore(deps): update peter-evans/create-pull-request action to v7 (#878)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2024-10-05T14:47:08+09:00",
+          "tree_id": "b31dda044e2c3f7a2d6f2813efb7da4cbcc68de1",
+          "url": "https://github.com/secretlint/secretlint/commit/cca259a9a2ef8349f14e8f4bba22b0c5aeacb94b"
+        },
+        "date": 1728107327216,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.58,
+            "range": "±0.75%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.95,
+            "range": "±1.00%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
