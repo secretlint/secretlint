@@ -51,15 +51,16 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-      # install and compile secretlint codes
+      # install and build source codes
       - name: Install
         run: yarn install
+      - name: Build Source Code
+        run: yarn run build
       # build the binary
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: "./publish/binary-compiler/.bun-version"
-      - name: Install
-        run: bun install
+      - name: Install Binary Compiler
         working-directory: ./publish/binary-compiler
       - name: Test Binary
         run: bun run test
