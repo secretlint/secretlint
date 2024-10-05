@@ -2,9 +2,16 @@
 import * as preset from "@secretlint/secretlint-rule-preset-recommend";
 import * as pattern from "@secretlint/secretlint-rule-pattern";
 import * as sarif from "@secretlint/secretlint-formatter-sarif";
+import { loadFormatter, getFormatterList } from "@secretlint/formatter";
 import { cli, run } from "secretlint/cli";
 import { plugin, type PluginBuilder } from "bun";
 
+// preload formatter
+for (const formatter of getFormatterList()) {
+    await loadFormatter({
+        formatterName: formatter.name
+    });
+}
 const mocks = {
     "@secretlint/secretlint-rule-preset-recommend": preset,
     "@secretlint/secretlint-rule-pattern": pattern,
@@ -16,7 +23,7 @@ plugin({
     name: "secretlint",
     setup(build: PluginBuilder): void | Promise<void> {
         // require.resolve hooks
-        build.onResolve({ filter: /secretlint/ }, (args) => {
+        build.onResolve({ filter: /@secretlint/ }, (args) => {
             console.log("onResolve", args);
             // if match the path with mocks, return mock name
             const match = args.path.match(/(@secretlint\/[^/]*)/);
