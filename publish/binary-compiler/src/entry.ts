@@ -6,19 +6,13 @@ import { loadFormatter, getFormatterList } from "@secretlint/formatter";
 import { cli, run } from "secretlint/cli";
 import { plugin, type PluginBuilder } from "bun";
 
-// preload formatter
-for (const formatter of getFormatterList()) {
-    await loadFormatter({
-        formatterName: formatter.name
-    });
-}
 const mocks = {
     "@secretlint/secretlint-rule-preset-recommend": preset,
     "@secretlint/secretlint-rule-pattern": pattern,
     "@secretlint/secretlint-formatter-sarif": sarif
 };
 const mockNames = Object.keys(mocks);
-plugin({
+await plugin({
     name: "secretlint",
     setup(build: PluginBuilder): void | Promise<void> {
         // require.resolve hooks
@@ -54,7 +48,12 @@ plugin({
         });
     }
 });
-
+// preload formatter
+for (const formatter of getFormatterList()) {
+    await loadFormatter({
+        formatterName: formatter.name
+    });
+}
 // secretlint CLI wrapper
 // TODO: --version does not work because package.json is not bundled
 run(cli.input, cli.flags).then(
