@@ -38,7 +38,6 @@ set -euo pipefail
 SECRET_LINT_VERSION="x.x.x"
 ARCH=$(uname -m)
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
-CURRENT_VERSION=$(jq -r .version ../../lerna.json)
 # Map architecture to the expected format
 case "$ARCH" in
     x86_64)
