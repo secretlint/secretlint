@@ -5,6 +5,8 @@ import * as sarif from "@secretlint/secretlint-formatter-sarif";
 import { loadFormatter, getFormatterList } from "@secretlint/formatter";
 import { cli, run } from "secretlint/cli";
 import { plugin, type PluginBuilder } from "bun";
+import * as fs from "node:fs";
+import * as path from "node:path";
 
 const mocks = {
     "@secretlint/secretlint-rule-preset-recommend": preset,
@@ -53,6 +55,28 @@ for (const formatter of getFormatterList()) {
     await loadFormatter({
         formatterName: formatter.name
     });
+}
+// --init override
+if (cli.flags.init) {
+    // write .secretlintrc.json
+    fs.writeFileSync(
+        path.join(process.cwd(), ".secretlintrc.json"),
+        JSON.stringify(
+            {
+                rules: [
+                    {
+                        id: "@secretlint/secretlint-rule-preset-recommend"
+                    },
+                    {
+                        id: "@secretlint/secretlint-rule-pattern"
+                    }
+                ]
+            },
+            null,
+            4
+        )
+    );
+    process.exit(0);
 }
 // secretlint CLI wrapper
 // TODO: --version does not work because package.json is not bundled

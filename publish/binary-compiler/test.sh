@@ -25,16 +25,8 @@ TMP_DIR=$(mktemp -d)
 # move binary to tmp
 cp ./dist/secretlint-${CURRENT_VERSION}-${OS}-${ARCH} ${TMP_DIR}/secretlint
 cd ${TMP_DIR}
-echo '{
-  "rules": [
-    {
-      "id": "@secretlint/secretlint-rule-preset-recommend"
-    },
-    {
-      "id": "@secretlint/secretlint-rule-pattern"
-    }
-  ]
-}' > .secretlintrc.json
+# init
+./secretlint --init
 # Run the dist binary
 ./secretlint --version
 ./secretlint --help
