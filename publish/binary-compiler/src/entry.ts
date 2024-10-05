@@ -1,5 +1,6 @@
 // preload for embedded binary
 import "@secretlint/secretlint-rule-preset-recommend";
+import "@secretlint/secretlint-rule-pattern";
 import "@secretlint/secretlint-formatter-sarif";
 import { cli, run } from "secretlint/cli";
 // secretlint CLI wrapper

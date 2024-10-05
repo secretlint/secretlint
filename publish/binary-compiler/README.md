@@ -16,6 +16,14 @@ Single executable binary compiler for secretlint using [bun](https://bun.sh/)
 
 Checksum files are available as `secretlint-<version>-sha256sum.txt`
 
+## Built-in Rules
+
+This binary includes the following rules:
+
+- [@secretlint/secretlint-rule-preset-recommend](https://www.npmjs.com/package/@secretlint/secretlint-rule-preset-recommend)
+- [@secretlint/secretlint-rule-pattern](https://www.npmjs.com/package/@secretlint/secretlint-rule-pattern)
+- [@secretlint/secretlint-formatter-sarif](https://www.npmjs.com/package/@secretlint/secretlint-formatter-sarif)
+
 ## CURRENT PROBLEM
 
 - output binary does not be code-sign.
