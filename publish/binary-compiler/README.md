@@ -31,14 +31,44 @@ This binary includes the following rules:
 
 ## Usage
 
-```
-# build secretlint using Node.js
-yarn install
-yarn run build
-# build binary using bun
-cd publish/binary-compiler
-bun run build-binary
-./dist/secretlint-<version>-<platform>-<arch> --help
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+# Get current architecture
+SECRET_LINT_VERSION="x.x.x"
+ARCH=$(uname -m)
+OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+CURRENT_VERSION=$(jq -r .version ../../lerna.json)
+# Map architecture to the expected format
+case "$ARCH" in
+    x86_64)
+        ARCH="x64"
+        ;;
+    aarch64)
+        ARCH="arm64"
+        ;;
+    arm64)
+        ARCH="arm64"
+        ;;
+    *)
+        echo "Unsupported architecture: $ARCH"
+        exit 1
+        ;;
+esac
+
+# Download the binary
+curl -sSL "https://github.com/secretlint/secretlint/releases/download/$(SECRET_LINT_VERSION)/secretlint-$(SECRET_LINT_VERSION)-$(OS)-$(ARCH)" -o secretlint
+chmod +x secretlint
+# init .secretlintrc.json
+echo '{
+  "rules": [
+    {
+      "id": "@secretlint/secretlint-rule-preset-recommend"
+    }
+  ]
+}' > .secretlintrc.json
+# Run secretlint
+./secretlint "**/*"
 ```
 
 ## Built-in
@@ -49,6 +79,18 @@ bun run build-binary
 ## Changelog
 
 See [Releases page](https://github.com/secretlint/secretlint/releases).
+
+## Development
+
+```bash
+# build secretlint using Node.js
+yarn install
+yarn run build
+# build binary using bun
+cd publish/binary-compiler
+bun run build-binary
+./dist/secretlint-<version>-<platform>-<arch> --help
+```
 
 ## Running tests
 
