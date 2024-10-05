@@ -85,6 +85,19 @@ npx secretlint "**/*"
 
 It is also possible to install Secretlint globally using `npm install --global`. But, We do not recommended it, some rules may be broken in globally.
 
+### Using Single-Executable Binary
+
+**Prerequisites:** None
+
+You can use `secretlint` command without Node.js by using a single-executable binary.
+
+1. Download the latest binary from [Releases page](https://github.com/secretlint/secretlint/releases) 
+2. Change the file permission to executable: `chmod +x ./secretlint`
+3. Run `./secretlint --init` to create a configuration file
+4. Run `./secretlint "**/*"` to lint your project
+
+For more details, please see [publish/binary-compiler](./publish/binary-compiler) README.
+
 ## Usage
 
 `secretlint --help` show Usage.
