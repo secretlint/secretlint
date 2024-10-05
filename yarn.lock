@@ -967,7 +967,6 @@ __metadata:
     chalk: "npm:^4.1.2"
     debug: "npm:^4.3.7"
     escape-string-regexp: "npm:^4.0.0"
-    is-file: "npm:^1.0.0"
     mocha: "npm:^10.7.3"
     pluralize: "npm:^8.0.0"
     prettier: "npm:^2.8.1"

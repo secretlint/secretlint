@@ -10,16 +10,17 @@ import { FormatterConfig } from "./types.js";
 import { moduleInterop } from "@textlint/module-interop";
 import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
-// @ts-expect-error: no @types
-import isFile from "is-file";
 // @ts-expect-error: no @types
 import tryResolve from "try-resolve";
 import debug0 from "debug";
 import url from "node:url";
 
+import jsonFormatter from "./formatters/json.js";
+import maskResultFormatter from "./formatters/mask-result.js";
+import tableFormatter from "./formatters/table.js";
+
+const BuiltInFormatters = ["json", "mask-result", "table"];
 const debug = debug0("@secretlint/formatter");
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export interface SecretLintFormatterConfig {
     /**
@@ -133,6 +134,28 @@ export async function loadFormatter(formatterConfig: SecretLintFormatterConfig) 
 export async function secretlintCreateFormatter(formatterConfig: FormatterConfig) {
     const formatterName = formatterConfig.formatterName;
     debug(`formatterName: ${formatterName}`);
+    if (BuiltInFormatters.includes(formatterName)) {
+        switch (formatterName) {
+            case "json":
+                return {
+                    format: function secretlintFormatterFormat(results: SecretLintCoreResult[]) {
+                        return jsonFormatter(results, formatterConfig);
+                    },
+                };
+            case "mask-result":
+                return {
+                    format: function secretlintFormatterFormat(results: SecretLintCoreResult[]) {
+                        return maskResultFormatter(results, formatterConfig);
+                    },
+                };
+            case "table":
+                return {
+                    format: function secretlintFormatterFormat(results: SecretLintCoreResult[]) {
+                        return tableFormatter(results, formatterConfig);
+                    },
+                };
+        }
+    }
     let formatter: (results: SecretLintCoreResult[], formatterConfig: FormatterConfig) => string;
     let formatterPath;
     if (fs.existsSync(formatterName)) {
@@ -140,15 +163,9 @@ export async function secretlintCreateFormatter(formatterConfig: FormatterConfig
     } else if (fs.existsSync(path.resolve(process.cwd(), formatterName))) {
         formatterPath = path.resolve(process.cwd(), formatterName);
     } else {
-        if (isFile(`${path.join(__dirname, "formatters", formatterName)}.js`)) {
-            formatterPath = `${path.join(__dirname, "formatters", formatterName)}.js`;
-        } else if (isFile(`${path.join(__dirname, "formatters", formatterName)}.ts`)) {
-            formatterPath = `${path.join(__dirname, "formatters", formatterName)}.ts`;
-        } else {
-            const pkgPath = tryResolve(formatterName) || tryResolve(`secretlint-formatter-${formatterName}`);
-            if (pkgPath) {
-                formatterPath = pkgPath;
-            }
+        const pkgPath = tryResolve(formatterName) || tryResolve(`secretlint-formatter-${formatterName}`);
+        if (pkgPath) {
+            formatterPath = pkgPath;
         }
     }
     try {
