@@ -21,8 +21,11 @@ case "$ARCH" in
         ;;
 esac
 
+TMP_DIR=$(mktemp -d)
+# move binary to tmp
+cp ./dist/secretlint-${CURRENT_VERSION}-${OS}-${ARCH} ${TMP_DIR}/secretlint
 # Run the dist binary
-./dist/secretlint-${CURRENT_VERSION}-${OS}-${ARCH} --version
-./dist/secretlint-${CURRENT_VERSION}-${OS}-${ARCH} --help
+${TMP_DIR}/secretlint --version
+${TMP_DIR}/secretlint --help
 # run "**/*" test
-./dist/secretlint-${CURRENT_VERSION}-${OS}-${ARCH} "*"
+${TMP_DIR}/secretlint "**/*"
