@@ -63,6 +63,9 @@ echo '{
   "rules": [
     {
       "id": "@secretlint/secretlint-rule-preset-recommend"
+    },
+    {
+      "id": "@secretlint/secretlint-rule-pattern"
     }
   ]
 }' > .secretlintrc.json
