@@ -72,6 +72,8 @@ if (cli.flags.init) {
     console.log("Create .secretlintrc.json");
     process.exit(0);
 }
+// FIXME: wait to start for hook plugin
+await new Promise((resolve) => setTimeout(resolve, 100));
 // secretlint CLI wrapper
 // TODO: --version does not work because package.json is not bundled
 run(cli.input, cli.flags).then(
