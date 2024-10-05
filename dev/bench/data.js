@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1728081675344,
+  "lastUpdate": 1728107245572,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -32146,6 +32146,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.94,
             "range": "±0.69%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "fa8ea87c5a33fcb7de1dd7908d28d5deab026a4b",
+          "message": " feat(binary-compiler): move to bun from deno  (#895)\n\n* feat(binary-compiler): move to bun from deno\r\n\r\n* CI: Add binary tests\r\n\r\n* CI: Add binary tests\r\n\r\n* CI: fix\r\n\r\n* add timeout\r\n\r\n* fix\r\n\r\n* add @secretlint/secretlint-rule-pattern\r\n\r\n* Update\r\n\r\n* Update\r\n\r\n* Update\r\n\r\n* Update\r\n\r\n* Update README\r\n\r\n* Update README",
+          "timestamp": "2024-10-05T14:45:42+09:00",
+          "tree_id": "71391550385535b387b3a88e4f818fe3c0bb84e6",
+          "url": "https://github.com/secretlint/secretlint/commit/fa8ea87c5a33fcb7de1dd7908d28d5deab026a4b"
+        },
+        "date": 1728107244335,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.55,
+            "range": "±0.60%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.95,
+            "range": "±0.60%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
