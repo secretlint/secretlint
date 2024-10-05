@@ -1,3 +1,4 @@
+*.bun-build
 dist/
 ### https://raw.github.com/github/gitignore/d2c1bb2b9c72ead618c9f6a48280ebc7a8e0dff6/Node.gitignore
 

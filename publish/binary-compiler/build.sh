@@ -1,15 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
-# cross compile using deno
-#       --target <target>
-#          Target OS architecture
-#
-#          [possible values: x86_64-unknown-linux-gnu, x86_64-pc-windows-msvc, x86_64-apple-darwin, aarch64-apple-darwin]
+# cross compile using bun
+# https://bun.sh/docs/bundler/executables
+# --target	Operating System	Architecture	Modern	Baseline
+#  #bun-linux-x64	Linux	x64	✅	✅
+#  #bun-linux-arm64	Linux	arm64	✅	N/A
+#  #bun-windows-x64	Windows	x64	✅	✅
+#  #bun-darwin-x64	macOS	x64	✅	✅
+#  #bun-darwin-arm64	macOS	arm64	✅	N/A
 
 distDir="dist"
 binaryName="secretlint"
 secretlintVersion=$(jq -r .version ../../lerna.json)
-platforms=("x86_64-unknown-linux-gnu" "x86_64-pc-windows-msvc" "x86_64-apple-darwin" "aarch64-apple-darwin")
+platforms=("linux-x64"  "linux-arm64" "windows-x64" "darwin-x64" "darwin-arm64")
 rm -rf $distDir
 # read lerna.json's version
 for ((i=0; i<${#platforms[@]}; ++i));
@@ -17,8 +20,12 @@ do
   echo "Building for ${platforms[$i]}"
   # secretlint-{version}-{platform}
   outputFilePath="${distDir}/${binaryName}-${secretlintVersion}-${platforms[$i]}"
-  deno compile --no-lock --allow-read --allow-sys --allow-env --allow-write --target "${platforms[$i]}" --output "$outputFilePath" src/entry.ts
+  bun build --compile --target "bun-${platforms[$i]}" --outfile "$outputFilePath" src/entry.ts
 done
+
+# clean up ".*.bun-build" file
+# https://github.com/oven-sh/bun/issues/14020
+find . -name "*.bun-build" -exec rm -f {} \;
 
 # generate sha1sum
 cd $distDir

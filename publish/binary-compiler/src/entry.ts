@@ -1,9 +1,9 @@
 // preload for embedded binary
-// TODO: use local file path instead of npm registry
-// https://github.com/denoland/deno/issues/18474
-import "npm:@secretlint/secretlint-rule-preset-recommend";
-import "npm:@secretlint/secretlint-formatter-sarif";
-import { cli, run } from "npm:secretlint/cli";
+import "@secretlint/secretlint-rule-preset-recommend";
+import "@secretlint/secretlint-formatter-sarif";
+import { cli, run } from "secretlint/cli";
+// secretlint CLI wrapper
+// TODO: --version does not work because package.json is not bundled
 run(cli.input, cli.flags).then(
     ({ exitStatus, stderr, stdout }) => {
         if (stdout) {
@@ -12,10 +12,10 @@ run(cli.input, cli.flags).then(
         if (stderr) {
             console.error(stderr);
         }
-        Deno.exit(exitStatus);
+        process.exit(exitStatus);
     },
     (error) => {
         console.error(error);
-        Deno.exit(1);
+        process.exit(1);
     }
 );

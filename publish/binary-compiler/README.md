@@ -1,16 +1,31 @@
 # @secretlint/binary-compiler
 
-Single executable binary compiler for secretlint using [Deno](https://deno.land/).
+Single executable binary compiler for secretlint using [bun](https://bun.sh/)
+
+## Supported Platform
+
+[Releases page](https://github.com/secretlint/secretlint/releases) includes the following platform binaries:
+
+| Platform | Arch  | FileName                               | 
+|----------|-------|----------------------------------------|
+| Linux    | x64   | `secretlint-<version>-linux-x64`       |
+| Linux    | arm64 | `secretlint-<version>-linux-arm64`     |
+| Windows  | x64   | `secretlint-<version>-windows-x64.exe` |
+| macOS    | x64   | `secretlint-<version>-darwin-x64`      |
+| macOS    | arm64 | `secretlint-<version>-darwin-arm64`    |
+
+Checksum files are available as `secretlint-<version>-sha256sum.txt`
 
 ## CURRENT PROBLEM
 
 - output binary does not be code-sign.
+- `--version` does not work because `package.json` is not included in the binary.
 
 ## Usage
 
 ```
-npm run dist
-./dist/secretlint --help
+bash build.sh
+./dist/secretlint-<version>-<platform>-<arch> --help
 ```
 
 ## Built-in
@@ -24,9 +39,12 @@ See [Releases page](https://github.com/secretlint/secretlint/releases).
 
 ## Running tests
 
-Install devDependencies and Run `npm test`:
+Run --help and "**/*" check using current binary.
 
-    npm test
+```sh
+./dist/secretlint-<version>-<platform>-<arch> --help
+./dist/secretlint-<version>-<platform>-<arch> "**/*"
+```
 
 ## Contributing
 
