@@ -11,22 +11,15 @@ permissions:
   contents: write
   packages: write
 jobs:
-  # TODO: deno depend on npm registry
-  # so, we need to wait for npm publish
-  # Single Executable binary
   publish-binary:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Use Deno
-        uses: denoland/setup-deno@v1
+      - uses: oven-sh/setup-bun@v2
         with:
-          deno-version: v1.x
-      - name: Test binary
-        run: deno task dev
-        working-directory: ./publish/binary-compiler
+          bun-version-file: "./publish/binary-compiler/.bun-version"
       - name: Build binary
-        run: bash build.sh
+        run: bun run build
         working-directory: ./publish/binary-compiler
       - name: Release
         uses: softprops/action-gh-release@v2

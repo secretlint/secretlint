@@ -24,7 +24,12 @@ Checksum files are available as `secretlint-<version>-sha256sum.txt`
 ## Usage
 
 ```
-bash build.sh
+# build secretlint using Node.js
+yarn install
+yarn run build
+# build binary using bun
+cd publish/binary-compiler
+bun run build-binary
 ./dist/secretlint-<version>-<platform>-<arch> --help
 ```
 
@@ -42,8 +47,7 @@ See [Releases page](https://github.com/secretlint/secretlint/releases).
 Run --help and "**/*" check using current binary.
 
 ```sh
-./dist/secretlint-<version>-<platform>-<arch> --help
-./dist/secretlint-<version>-<platform>-<arch> "**/*"
+bun run test
 ```
 
 ## Contributing

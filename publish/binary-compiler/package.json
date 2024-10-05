@@ -3,8 +3,8 @@
   "module": "index.ts",
   "type": "module",
   "scripts": {
-    "build": "bash build.sh",
-    "test": "bun run build && bash test.sh"
+    "build-binary": "bash build-binary.sh",
+    "test": "bun run build-binary && bash test.sh"
   },
   "workspaces": [
     "../../packages/*",
