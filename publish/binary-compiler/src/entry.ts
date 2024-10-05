@@ -18,13 +18,11 @@ const mocks = {
     "@secretlint/secretlint-formatter-sarif": sarif
 };
 const mockNames = Object.keys(mocks);
-console.log("setup plugin");
 plugin({
     name: "secretlint",
     setup(build: PluginBuilder): void | Promise<void> {
         // require.resolve hooks
-        build.onResolve({ filter: /@secretlint/ }, (args) => {
-            console.log("onResolve", args);
+        build.onResolve({ filter: /@secretlint\// }, (args) => {
             // if match the path with mocks, return mock name
             const match = args.path.match(/(@secretlint\/[^/]*)/);
             if (match && mockNames.includes(match[1])) {
@@ -41,7 +39,6 @@ plugin({
         Object.entries(mocks).forEach(([name, mock]) => {
             // build.module will return mock object
             build.module(`${name}`, () => {
-                console.log("module", name);
                 return {
                     exports: mock,
                     loader: "object"
@@ -49,7 +46,6 @@ plugin({
             });
             // build.onResolve will return `secretlint:${name}` instead of file path
             build.module(`secretlint:${name}`, () => {
-                console.log("module", name);
                 return {
                     exports: mock,
                     loader: "object"
