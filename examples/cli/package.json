@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/example-cli",
-    "version": "8.3.1",
+    "version": "8.3.2",
     "private": true,
     "description": "",
     "homepage": "https://github.com/secretlint/secretlint/tree/master/examples/cli/",
@@ -27,8 +27,8 @@
         "test": "secretlint \"**/*\" && exit 1 || exit 0"
     },
     "devDependencies": {
-        "@secretlint/secretlint-rule-preset-recommend": "^8.3.1",
-        "secretlint": "^8.3.1"
+        "@secretlint/secretlint-rule-preset-recommend": "^8.3.2",
+        "secretlint": "^8.3.2"
     },
     "publishConfig": {
         "access": "public"
