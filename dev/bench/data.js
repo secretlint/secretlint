@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1728206070704,
+  "lastUpdate": 1728206089823,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -32602,6 +32602,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.89,
             "range": "±1.35%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "66d4ade2be7bdbcf7e56e55251b016a03e304764",
+          "message": "chore(deps): update pkgdeps/git-tag-action action to v3 (#742)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2024-10-06T18:13:11+09:00",
+          "tree_id": "0a057d45b0af7bb0a284ffcd1923e6c80bf74d3e",
+          "url": "https://github.com/secretlint/secretlint/commit/66d4ade2be7bdbcf7e56e55251b016a03e304764"
+        },
+        "date": 1728206088535,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.24,
+            "range": "±0.27%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.88,
+            "range": "±1.04%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
