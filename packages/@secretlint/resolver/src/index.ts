@@ -115,3 +115,11 @@ export const dynamicImport = async (
         exports: await import(convertToFileUrl(specifier)),
     };
 };
+
+/**
+ * Clear all hooks
+ */
+export const clearHooks = () => {
+    resolveHooks.length = 0;
+    importHooks.length = 0;
+};
