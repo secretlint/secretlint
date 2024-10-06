@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/types",
-  "version": "8.3.3",
+  "version": "8.4.0",
   "description": "A typing package for @secretlint",
   "keywords": [
     "secretlint"

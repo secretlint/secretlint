@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/tester",
-  "version": "8.3.3",
+  "version": "8.4.0",
   "description": "A testing library for secretlint rule",
   "keywords": [
     "secretlint",
@@ -54,10 +54,10 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/config-loader": "^8.3.3",
-    "@secretlint/core": "^8.3.3",
-    "@secretlint/source-creator": "^8.3.3",
-    "@secretlint/types": "^8.3.3"
+    "@secretlint/config-loader": "^8.4.0",
+    "@secretlint/core": "^8.4.0",
+    "@secretlint/source-creator": "^8.4.0",
+    "@secretlint/types": "^8.4.0"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.8",
