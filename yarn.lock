@@ -1213,6 +1213,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@secretlint/secretlint-rule-linear@npm:^8.3.3, @secretlint/secretlint-rule-linear@workspace:packages/@secretlint/secretlint-rule-linear":
+  version: 0.0.0-use.local
+  resolution: "@secretlint/secretlint-rule-linear@workspace:packages/@secretlint/secretlint-rule-linear"
+  dependencies:
+    "@secretlint/tester": "npm:^8.3.3"
+    "@secretlint/types": "npm:^8.3.3"
+    "@types/node": "npm:^20.16.10"
+    prettier: "npm:^2.8.1"
+    ts-node: "npm:^10.9.2"
+    typescript: "npm:^5.1.6"
+  languageName: unknown
+  linkType: soft
+
 "@secretlint/secretlint-rule-no-dotenv@workspace:packages/@secretlint/secretlint-rule-no-dotenv":
   version: 0.0.0-use.local
   resolution: "@secretlint/secretlint-rule-no-dotenv@workspace:packages/@secretlint/secretlint-rule-no-dotenv"
@@ -1314,6 +1327,7 @@ __metadata:
     "@secretlint/secretlint-rule-filter-comments": "npm:^8.3.3"
     "@secretlint/secretlint-rule-gcp": "npm:^8.3.3"
     "@secretlint/secretlint-rule-github": "npm:^8.3.3"
+    "@secretlint/secretlint-rule-linear": "npm:^8.3.3"
     "@secretlint/secretlint-rule-npm": "npm:^8.3.3"
     "@secretlint/secretlint-rule-openai": "npm:^8.3.3"
     "@secretlint/secretlint-rule-privatekey": "npm:^8.3.3"

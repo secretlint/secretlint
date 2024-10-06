@@ -52,8 +52,60 @@
             "data": {
                 "KEY": "SG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313-L5528Kewhere"
             }
+        },
+        {
+            "message": "found Sendgrid api key: SG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313_L5528Ke",
+            "range": [
+                291,
+                361
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-sendgrid",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 4,
+                    "column": 0
+                },
+                "end": {
+                    "line": 4,
+                    "column": 70
+                }
+            },
+            "severity": "error",
+            "messageId": "SENDGRID_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-sendgrid/README.md#SENDGRID_KEY",
+            "data": {
+                "KEY": "SG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313_L5528Ke"
+            }
+        },
+        {
+            "message": "found Sendgrid api key: SG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313L5528Ke",
+            "range": [
+                362,
+                431
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-sendgrid",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 5,
+                    "column": 0
+                },
+                "end": {
+                    "line": 5,
+                    "column": 69
+                }
+            },
+            "severity": "error",
+            "messageId": "SENDGRID_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-sendgrid/README.md#SENDGRID_KEY",
+            "data": {
+                "KEY": "SG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313L5528Ke"
+            }
         }
     ],
-    "sourceContent": "Oh no I'm accidentally committing something that looks like a sendgrid api key\noops SG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313-L5528K\nsomSG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313-L5528Kewhere lost in staging files. This is not a real key by the way.\n",
+    "sourceContent": "Oh no I'm accidentally committing something that looks like a sendgrid api key\noops SG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313-L5528K\nsomSG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313-L5528Kewhere lost in staging files. This is not a real key by the way.\nSG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313_L5528Ke\nSG.APhb3zgjtx3hajdas1TjBB.H7Sgbba3afgKSDyB442aDK0kpGO3SD332313L5528Ke\n",
     "sourceContentType": "text"
 }
