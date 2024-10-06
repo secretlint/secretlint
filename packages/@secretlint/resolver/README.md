@@ -1,74 +1,17 @@
-# @secretlint/config-loader
+# @secretlint/resolver
 
-Config loader for secretlint.
+Resolver/Dynamic Import helper for SecretLint
 
 ## Install
 
 Install with [npm](https://www.npmjs.com/):
 
-    npm install @secretlint/config-loader
+    npm install @secretlint/resolver
 
-## Usage
+## Feature
 
-### API Interface
-
-```ts 
-import { SecretLintConfigDescriptor, SecretLintCoreDescriptor } from "@secretlint/types";
-export declare type SecretLintConfigLoaderOptions = {
-    cwd?: string;
-};
-export declare type SecretLintConfigLoaderResult = {
-    ok: true;
-    configFilePath: string;
-    config: SecretLintCoreDescriptor;
-} | {
-    ok: false;
-    configFilePath: null;
-    config: null;
-    errors: Error[];
-};
-export declare type SecretLintConfigLoaderRawResult = {
-    ok: true;
-    configFilePath: string;
-    config: SecretLintConfigDescriptor;
-} | {
-    ok: false;
-    errors: Error[];
-};
-/**
- * Load config file and return config object that is loaded rule instance. 
- * @param options
- */
-export declare const loadConfig: (options: SecretLintConfigLoaderOptions) => SecretLintConfigLoaderResult;
-export declare const loadConfigRaw: (options: SecretLintConfigLoaderOptions) => SecretLintConfigLoaderRawResult;
-```
-
-### Example
-
-```js 
-impor { loadConfig } from "@secretlint/config-loader";
-// Load <CurrentDir>/.secretlintrc.{json,yml,js}
-const { ok, config, configFilePath, errors } = loadConfig({ cwd: process.cwd() });
-if(ok) {
-  console.log("load from configFile:" + configFilePath);
-  console.log("config", config);
-} else{
-  console.error(errors);
-}
-```
-
-## Terminology
-
-- ConfigDescriptor: config file literal that is not loaded yet
-- Config: loaded object
-
-## Workflow
-
-- Validate `ConfigDescriptor`
-- Load `ConfigDescriptor` and create `Config` object - imports each rule modules
-- Validate Loaded `Config` with `ConfigDescriptor`
-    - Invalid option, Invalid allowMessageIds, Invalid id specify for a preset 
-- If all validation is passed, get a Config.
+- Try to resolve package name to file path
+- Resolver/Import Hooks
 
 ## Changelog
 
