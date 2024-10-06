@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/resolver",
-  "version": "8.3.1",
+  "version": "8.3.3",
   "description": "Module Resolver Utility for Secretlint",
   "keywords": [
     "secretlint",
