@@ -891,6 +891,7 @@ __metadata:
   resolution: "@secretlint/config-loader@workspace:packages/@secretlint/config-loader"
   dependencies:
     "@secretlint/profiler": "npm:^8.3.2"
+    "@secretlint/resolver": "npm:^8.3.1"
     "@secretlint/secretlint-rule-internal-test-cjs": "npm:^8.3.2"
     "@secretlint/secretlint-rule-internal-test-esm": "npm:^8.3.2"
     "@secretlint/types": "npm:^8.3.2"
@@ -950,6 +951,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@secretlint/formatter@workspace:packages/@secretlint/formatter"
   dependencies:
+    "@secretlint/resolver": "npm:^8.3.1"
     "@secretlint/types": "npm:^8.3.2"
     "@textlint/linter-formatter": "npm:^14.2.1"
     "@textlint/module-interop": "npm:^14.2.1"
@@ -1039,6 +1041,20 @@ __metadata:
     typescript: "npm:^5.1.6"
   bin:
     quick-start: ./bin/quick-start.js
+  languageName: unknown
+  linkType: soft
+
+"@secretlint/resolver@npm:^8.3.1, @secretlint/resolver@workspace:packages/@secretlint/resolver":
+  version: 0.0.0-use.local
+  resolution: "@secretlint/resolver@workspace:packages/@secretlint/resolver"
+  dependencies:
+    "@types/mocha": "npm:^10.0.8"
+    "@types/node": "npm:^20.16.10"
+    mocha: "npm:^10.7.3"
+    prettier: "npm:^2.8.1"
+    rimraf: "npm:^3.0.2"
+    ts-node: "npm:^10.9.2"
+    typescript: "npm:^5.1.6"
   languageName: unknown
   linkType: soft
 

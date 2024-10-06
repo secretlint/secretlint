@@ -1,34 +1,31 @@
 import { rcFile } from "rc-config-loader";
 import {
+    SecretLintConfigDescriptor,
+    SecretLintConfigDescriptorRulePreset,
     SecretLintCoreConfig,
     SecretLintCoreConfigUnionRule,
-    SecretLintConfigDescriptor,
-    SecretLintUnionRuleCreator,
     SecretLintRuleModule,
     SecretLintRulePresetCreator,
-    SecretLintConfigDescriptorRulePreset,
+    SecretLintUnionRuleCreator,
 } from "@secretlint/types";
 import { secretLintProfiler } from "@secretlint/profiler";
 import { SecretLintModuleResolver } from "./SecretLintModuleResolver.js";
-import { validateConfigWithDescriptor, validateConfigDescriptor } from "./validator.js";
-import * as url from "node:url";
+import { validateConfigDescriptor, validateConfigWithDescriptor } from "./validator.js";
 import { AggregationError } from "./AggregationError.js";
+import { dynamicImport } from "@secretlint/resolver";
 
-export function importSecretlintCreator(moduleExports?: SecretLintRuleModule): SecretLintUnionRuleCreator {
+export function importSecretlintCreator(
+    moduleExports?: SecretLintRuleModule | Record<string, unknown>
+): SecretLintUnionRuleCreator {
     if (!moduleExports) {
         throw new Error("Secretlint rule should export { creator }. module is undefined");
     }
     if (!("creator" in moduleExports)) {
         throw new Error("Secretlint rule should export { creator }. module does not export creator object.");
     }
-    return moduleExports.creator;
+    return moduleExports.creator as SecretLintUnionRuleCreator;
 }
 
-// Windows's path require to convert file://
-// https://github.com/secretlint/secretlint/issues/205
-const convertToFileUrl = (filePath: string) => {
-    return url.pathToFileURL(filePath).href;
-};
 export type SecretLintConfigLoaderOptions = {
     cwd?: string;
     configFilePath?: string;
@@ -132,7 +129,12 @@ export const loadPackagesFromConfigDescriptor = async (
             const ruleCreator: SecretLintUnionRuleCreator = replacedDefinition
                 ? replacedDefinition.rule
                 : importSecretlintCreator(
-                      await import(convertToFileUrl(moduleResolver.resolveRulePackageName(configDescriptorRule.id)))
+                      (
+                          await dynamicImport(moduleResolver.resolveRulePackageName(configDescriptorRule.id), {
+                              parentModule: "config-loader",
+                              parentImportMeta: import.meta,
+                          })
+                      ).exports
                   );
             if (isSecretLintCoreConfigRulePreset(ruleCreator)) {
                 const configDescriptorRulePreset = configDescriptorRule as SecretLintConfigDescriptorRulePreset;

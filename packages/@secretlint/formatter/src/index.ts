@@ -1,26 +1,29 @@
 // LICENSE : MIT
 import { TextlintResult } from "@textlint/types";
 import {
-    loadFormatter as textlintCreateFormatter,
     getFormatterList as textlintGetFormatterList,
+    loadFormatter as textlintCreateFormatter,
 } from "@textlint/linter-formatter";
 import { SecretLintCoreResult } from "@secretlint/types";
 import terminalLink from "terminal-link";
 import { FormatterConfig } from "./types.js";
-import { moduleInterop } from "@textlint/module-interop";
 import fs from "node:fs";
 import path from "node:path";
-// @ts-expect-error: no @types
-import tryResolve from "try-resolve";
 import debug0 from "debug";
-import url from "node:url";
-
+import { dynamicImport, tryResolve } from "@secretlint/resolver";
 import jsonFormatter from "./formatters/json.js";
 import maskResultFormatter from "./formatters/mask-result.js";
 import tableFormatter from "./formatters/table.js";
 
 const BuiltInFormatters = ["json", "mask-result", "table"];
 const debug = debug0("@secretlint/formatter");
+const tryResolveModule = (moduleName: string) => {
+    return tryResolve(moduleName, {
+        parentImportMeta: import.meta,
+        parentModule: "formatter",
+    });
+};
+type Formatter = (results: SecretLintCoreResult[], formatterConfig: FormatterConfig) => string;
 
 export interface SecretLintFormatterConfig {
     /**
@@ -156,22 +159,33 @@ export async function secretlintCreateFormatter(formatterConfig: FormatterConfig
                 };
         }
     }
-    let formatter: (results: SecretLintCoreResult[], formatterConfig: FormatterConfig) => string;
+    let formatter: Formatter;
     let formatterPath;
     if (fs.existsSync(formatterName)) {
         formatterPath = formatterName;
     } else if (fs.existsSync(path.resolve(process.cwd(), formatterName))) {
         formatterPath = path.resolve(process.cwd(), formatterName);
     } else {
-        const pkgPath = tryResolve(formatterName) || tryResolve(`secretlint-formatter-${formatterName}`);
+        const pkgPath = tryResolveModule(formatterName) || tryResolveModule(`secretlint-formatter-${formatterName}`);
         if (pkgPath) {
             formatterPath = pkgPath;
         }
     }
+    if (!formatterPath) {
+        throw new Error(`Could not find formatter ${formatterName}`);
+    }
     try {
         // dynamic import require file url
-        const fileUrl = url.pathToFileURL(formatterPath).href;
-        formatter = moduleInterop(await import(fileUrl)).default;
+        formatter = (
+            (
+                await dynamicImport(formatterPath, {
+                    parentImportMeta: import.meta,
+                    parentModule: "formatter",
+                })
+            ).exports as {
+                default: Formatter;
+            }
+        ).default;
     } catch (ex) {
         throw new Error(`Could not find formatter ${formatterName}
 ${ex}`);

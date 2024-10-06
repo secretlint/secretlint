@@ -3,6 +3,7 @@
   "module": "index.ts",
   "type": "module",
   "scripts": {
+    "i": "bun install",
     "build-binary": "bash build-binary.sh",
     "test": "bun run build-binary && bash test.sh"
   },
@@ -14,6 +15,7 @@
     "@types/bun": "latest",
     "@secretlint/formatter": "workspace:*",
     "@secretlint/secretlint-formatter-sarif": "workspace:*",
+    "@secretlint/resolver": "workspace:*",
     "@secretlint/secretlint-rule-pattern": "workspace:*",
     "@secretlint/secretlint-rule-preset-recommend": "workspace:*",
     "secretlint": "workspace:*"

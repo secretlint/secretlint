@@ -1,8 +1,14 @@
 {
-  "name": "@secretlint/formatter",
-  "version": "8.3.2",
-  "description": "A formatter collection for Secretlint.",
-  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/formatter/",
+  "name": "@secretlint/resolver",
+  "version": "8.3.1",
+  "description": "Module Resolver Utility for Secretlint",
+  "keywords": [
+    "secretlint",
+    "node",
+    "config",
+    "loader"
+  ],
+  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/resolver/",
   "bugs": {
     "url": "https://github.com/secretlint/secretlint/issues"
   },
@@ -21,10 +27,6 @@
       },
       "default": "./module/index.js"
     },
-    "./module/": {
-      "import": "./module/",
-      "types": "./module/"
-    },
     "./package.json": "./package.json"
   },
   "main": "./module/index.js",
@@ -41,6 +43,7 @@
   "scripts": {
     "build": "tsc --build",
     "clean": "tsc --build --clean",
+    "create-validation": "create-validator-ts src/descriptor-types.ts --additionalProperties",
     "prepublishOnly": "npm run clean && npm run build",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
@@ -53,34 +56,14 @@
     "singleQuote": false,
     "tabWidth": 4
   },
-  "dependencies": {
-    "@secretlint/resolver": "^8.3.1",
-    "@secretlint/types": "^8.3.2",
-    "@textlint/linter-formatter": "^14.2.1",
-    "@textlint/module-interop": "^14.2.1",
-    "@textlint/types": "^14.2.1",
-    "chalk": "^4.1.2",
-    "debug": "^4.3.7",
-    "pluralize": "^8.0.0",
-    "strip-ansi": "^6.0.1",
-    "table": "^6.8.2",
-    "terminal-link": "^2.1.1",
-    "try-resolve": "^1.0.1"
-  },
   "devDependencies": {
     "@types/mocha": "^10.0.8",
     "@types/node": "^20.16.10",
-    "@types/pluralize": "0.0.33",
-    "escape-string-regexp": "^4.0.0",
     "mocha": "^10.7.3",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.1.6"
-  },
-  "packageManager": "yarn@1.22.22",
-  "engines": {
-    "node": "^14.13.1 || >=16.0.0"
   },
   "publishConfig": {
     "access": "public"
