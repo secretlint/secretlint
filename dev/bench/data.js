@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1728206036169,
+  "lastUpdate": 1728206070704,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -32564,6 +32564,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.88,
             "range": "±0.72%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "980595627579a90307aa54b62db521831a6b059d",
+          "message": "chore(deps): update node.js to v20 (#707)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2024-10-06T18:12:49+09:00",
+          "tree_id": "593feec03f894d66494443bc8febdf975f81d2ec",
+          "url": "https://github.com/secretlint/secretlint/commit/980595627579a90307aa54b62db521831a6b059d"
+        },
+        "date": 1728206068872,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.25,
+            "range": "±0.46%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.89,
+            "range": "±1.35%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
