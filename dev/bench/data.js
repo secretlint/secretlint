@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1728136999176,
+  "lastUpdate": 1728183815383,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -32450,6 +32450,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.86,
             "range": "±1.14%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "cf23154fc5d0414d372a9b7be4772a405db67903",
+          "message": "fix(binary-compiler): improve binary-compiler and implement @secretlint/resolver (#904)\n\n* plugin\r\n\r\n* refactor(resolver): add @secretlint/resolver\r\n\r\n* Update yarn.lock\r\n\r\n* update readme\r\n\r\n* update readme\r\n\r\n* Update packages/@secretlint/resolver/package.json+1\r\n\r\n* test: add test",
+          "timestamp": "2024-10-06T12:01:52+09:00",
+          "tree_id": "47102e3533ddfde0c5a5d696ab2d3a8a0d0c3af8",
+          "url": "https://github.com/secretlint/secretlint/commit/cf23154fc5d0414d372a9b7be4772a405db67903"
+        },
+        "date": 1728183813313,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.25,
+            "range": "±0.75%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.89,
+            "range": "±0.97%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
