@@ -12,6 +12,7 @@ Install with [npm](https://www.npmjs.com/):
 
 - Try to resolve package name to file path
 - Resolver/Import Hooks
+  - Binary Compiler use this hooks to resolve dynamic import as statically
 
 ## Changelog
 
