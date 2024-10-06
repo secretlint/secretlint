@@ -1,14 +1,14 @@
 {
-  "name": "@secretlint/config-loader",
+  "name": "@secretlint/resolver",
   "version": "8.3.1",
-  "description": "Config loader for secretlint.",
+  "description": "Module Resolver Utility for Secretlint",
   "keywords": [
     "secretlint",
     "node",
     "config",
     "loader"
   ],
-  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/config-loader/",
+  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/resolver/",
   "bugs": {
     "url": "https://github.com/secretlint/secretlint/issues"
   },
@@ -56,18 +56,7 @@
     "singleQuote": false,
     "tabWidth": 4
   },
-  "dependencies": {
-    "@secretlint/profiler": "^8.3.1",
-    "@secretlint/resolver": "^8.3.1",
-    "@secretlint/types": "^8.3.1",
-    "ajv": "^8.17.1",
-    "debug": "^4.3.7",
-    "rc-config-loader": "^4.1.3",
-    "try-resolve": "^1.0.1"
-  },
   "devDependencies": {
-    "@secretlint/secretlint-rule-internal-test-cjs": "^8.3.1",
-    "@secretlint/secretlint-rule-internal-test-esm": "^8.3.1",
     "@types/mocha": "^10.0.8",
     "@types/node": "^20.16.10",
     "create-validator-ts": "^4.0.2",
@@ -76,10 +65,6 @@
     "rimraf": "^3.0.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.1.6"
-  },
-  "packageManager": "yarn@1.22.22",
-  "engines": {
-    "node": "^14.13.1 || >=16.0.0"
   },
   "publishConfig": {
     "access": "public"

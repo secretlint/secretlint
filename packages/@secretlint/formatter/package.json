@@ -54,6 +54,7 @@
     "tabWidth": 4
   },
   "dependencies": {
+    "@secretlint/resolver": "^8.3.1",
     "@secretlint/types": "^8.3.1",
     "@textlint/linter-formatter": "^14.2.1",
     "@textlint/module-interop": "^14.2.1",

@@ -1,10 +1,7 @@
-// setup plugin
-import "./secretlint-plugin.ts";
-// preload for embedded binary
+import "./secretlint-resolver-hooks.js"; // hooks for secretlint
 import { cli, run } from "secretlint/cli";
 import * as fs from "node:fs";
 import * as path from "node:path";
-
 // --init override
 if (cli.flags.init) {
     // write .secretlintrc.json

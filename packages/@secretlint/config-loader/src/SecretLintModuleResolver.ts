@@ -1,19 +1,20 @@
 // LICENSE : MIT
 import * as path from "node:path";
 import { createFullPackageName } from "./package-name-util.js";
-import { createRequire } from "node:module";
 import debug0 from "debug";
 
-const require = createRequire(import.meta.url);
 const debug = debug0("@secretlint/config-loader");
+import { tryResolve } from "@secretlint/resolver";
 
-const tryResolve = (packageName: string) => {
-    try {
-        // TODO: use import.meta.resolve to support exports fields
-        return require.resolve(packageName);
-    } catch {
-        return false;
-    }
+/**
+ * Try to resolve module or file path.
+ * @param modulePath
+ */
+const tryResolveModulePath = (modulePath: string): string | undefined => {
+    return tryResolve(modulePath, {
+        parentImportMeta: import.meta,
+        parentModule: "config-loader",
+    });
 };
 
 /**
@@ -50,7 +51,9 @@ export class SecretLintModuleResolver {
         const baseDir = this.baseDirectory;
         const fullPackageName = createFullPackageName("secretlint-rule-", packageName);
         // <rule-name> or secretlint-rule-<rule-name>
-        const pkgPath = tryResolve(path.join(baseDir, fullPackageName)) || tryResolve(path.join(baseDir, packageName));
+        const pkgPath =
+            tryResolveModulePath(path.join(baseDir, fullPackageName)) ||
+            tryResolveModulePath(path.join(baseDir, packageName));
         if (!pkgPath) {
             debug(`rule fullPackageName: ${fullPackageName}`);
             throw new ReferenceError(`Failed to load secretlint's rule module: "${packageName}" is not found.
@@ -71,7 +74,9 @@ baseDir: ${baseDir}
         const baseDir = this.baseDirectory;
         const fullPackageName = createFullPackageName("secretlint-filter-rule-", packageName);
         // <rule-name> or secretlint-filter-rule-<rule-name> or @scope/<rule-name>
-        const pkgPath = tryResolve(path.join(baseDir, fullPackageName)) || tryResolve(path.join(baseDir, packageName));
+        const pkgPath =
+            tryResolveModulePath(path.join(baseDir, fullPackageName)) ||
+            tryResolveModulePath(path.join(baseDir, packageName));
         if (!pkgPath) {
             debug(`filter rule fullPackageName: ${fullPackageName}`);
             throw new ReferenceError(`Failed to load secretlint's filter rule module: "${packageName}" is not found.
@@ -92,7 +97,9 @@ baseDir: ${baseDir}
         const baseDir = this.baseDirectory;
         const fullPackageName = createFullPackageName("secretlint-plugin-", packageName);
         // <plugin-name> or secretlint-plugin-<rule-name>
-        const pkgPath = tryResolve(path.join(baseDir, fullPackageName)) || tryResolve(path.join(baseDir, packageName));
+        const pkgPath =
+            tryResolveModulePath(path.join(baseDir, fullPackageName)) ||
+            tryResolveModulePath(path.join(baseDir, packageName));
         if (!pkgPath) {
             debug(`plugin fullPackageName: ${fullPackageName}`);
             throw new ReferenceError(`Failed to load secretlint's plugin module: "${packageName}" is not found.
@@ -136,13 +143,13 @@ baseDir: ${baseDir}
         const fullFullPackageName = `${PREFIX}${packageNameWithoutPreset}`;
         const pkgPath =
             // secretlint-rule-preset-<preset-name> or @scope/secretlint-rule-preset-<preset-name>
-            tryResolve(path.join(baseDir, fullFullPackageName)) ||
+            tryResolveModulePath(path.join(baseDir, fullFullPackageName)) ||
             // <preset-name>
-            tryResolve(path.join(baseDir, packageNameWithoutPreset)) ||
+            tryResolveModulePath(path.join(baseDir, packageNameWithoutPreset)) ||
             // <rule-name>
-            tryResolve(path.join(baseDir, fullPackageName)) ||
+            tryResolveModulePath(path.join(baseDir, fullPackageName)) ||
             // <package-name>
-            tryResolve(path.join(baseDir, packageName));
+            tryResolveModulePath(path.join(baseDir, packageName));
         if (!pkgPath) {
             debug(`preset fullPackageName: ${fullPackageName}`);
             debug(`preset fullFullPackageName: ${fullFullPackageName}`);
@@ -164,7 +171,9 @@ baseDir: ${baseDir}
         const baseDir = this.baseDirectory;
         const fullPackageName = createFullPackageName("secretlint-config-", packageName);
         // <plugin-name> or secretlint-config-<rule-name>
-        const pkgPath = tryResolve(path.join(baseDir, fullPackageName)) || tryResolve(path.join(baseDir, packageName));
+        const pkgPath =
+            tryResolveModulePath(path.join(baseDir, fullPackageName)) ||
+            tryResolveModulePath(path.join(baseDir, packageName));
         if (!pkgPath) {
             throw new ReferenceError(`Failed to load secretlint's config module: "${packageName}" is not found.
 
