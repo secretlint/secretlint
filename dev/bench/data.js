@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1728206089823,
+  "lastUpdate": 1728206131412,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -32640,6 +32640,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.88,
             "range": "±1.04%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "39ad7421c1dfd45a7f578b0f92fa8d53e09c58dc",
+          "message": "chore(deps): update peter-evans/repository-dispatch action to v3 (#744)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2024-10-06T18:13:48+09:00",
+          "tree_id": "a583961f3049e92550ce7259b57e3abdd87e22a7",
+          "url": "https://github.com/secretlint/secretlint/commit/39ad7421c1dfd45a7f578b0f92fa8d53e09c58dc"
+        },
+        "date": 1728206129979,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.21,
+            "range": "±0.21%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.86,
+            "range": "±1.71%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
