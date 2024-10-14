@@ -46,11 +46,11 @@ AWS's Access key is crendential data. It should be private.
 - `allows: string[]`
     - Allows a list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string)
 - `enableIDScanRule: boolean`
-    - Default: `true`
+    - Default: `false`
     - Enable ID scan rules
       - `AWSAccountID`
       - `AWSAccessKeyID`
-    - These rules may be false-positive. You can disable it by setting `false`.
+    - These rules may be false-positive. You can enable it by setting `true`.
 
 ## Examples
 
