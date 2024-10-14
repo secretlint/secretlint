@@ -4,6 +4,12 @@ import { SecretLintRuleMessageTranslate } from "@secretlint/types";
 
 export interface Options {
     allows?: string[];
+    /**
+     * Enable ID Scan Rule
+     * Default: true
+     * TODO: This will be false by default in secretlint v9
+     */
+    enableIDScanRule?: boolean;
 }
 
 /**
@@ -172,12 +178,16 @@ export const creator: SecretLintRuleCreator<Options> = {
     create(context, options) {
         const normalizedOptions: Required<Options> = {
             allows: options.allows || [],
+            // TODO: This will be false by default in secretlint v9
+            enableIDScanRule: options.enableIDScanRule ?? true,
         };
         const t = context.createTranslator(messages);
         return {
             file(source: SecretLintSourceCode) {
-                reportAWSAccessKey({ t, source: source, context: context, options: normalizedOptions });
-                reportAWSSecretAccessKey({ t, source: source, context: context, options: normalizedOptions });
+                if (normalizedOptions.enableIDScanRule) {
+                    reportAWSAccessKey({ t, source: source, context: context, options: normalizedOptions });
+                    reportAWSSecretAccessKey({ t, source: source, context: context, options: normalizedOptions });
+                }
                 reportAWSAccountID({ t, source: source, context: context, options: normalizedOptions });
             },
         };
