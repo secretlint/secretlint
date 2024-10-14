@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1728884045498,
+  "lastUpdate": 1728886272096,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -32792,6 +32792,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.84,
             "range": "±1.41%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "8f2d707d9b8099e357969652799285a358cd2235",
+          "message": "feat(aws): add `enableIDScanRule` option (#908)\n\n* fix typo\r\n\r\n* feat(aws): add `enableIDScanRule` option\r\n\r\nDefault: true\r\n\r\n* Update README",
+          "timestamp": "2024-10-14T15:09:30+09:00",
+          "tree_id": "845e43a473b5a26e3e120ff40e05e5765e3ccb5f",
+          "url": "https://github.com/secretlint/secretlint/commit/8f2d707d9b8099e357969652799285a358cd2235"
+        },
+        "date": 1728886270622,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.24,
+            "range": "±0.68%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.84,
+            "range": "±1.11%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
