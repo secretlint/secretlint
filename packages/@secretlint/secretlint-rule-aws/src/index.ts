@@ -184,9 +184,9 @@ export const creator: SecretLintRuleCreator<Options> = {
             file(source: SecretLintSourceCode) {
                 if (normalizedOptions.enableIDScanRule) {
                     reportAWSAccessKey({ t, source: source, context: context, options: normalizedOptions });
-                    reportAWSSecretAccessKey({ t, source: source, context: context, options: normalizedOptions });
+                    reportAWSAccountID({ t, source: source, context: context, options: normalizedOptions });
                 }
-                reportAWSAccountID({ t, source: source, context: context, options: normalizedOptions });
+                reportAWSSecretAccessKey({ t, source: source, context: context, options: normalizedOptions });
             },
         };
     },
