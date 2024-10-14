@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1728886531050,
+  "lastUpdate": 1728888136004,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -32868,6 +32868,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.84,
             "range": "±0.93%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ff7886616b921c71bdf2cde98b6132ff2d02e083",
+          "message": "v9: aws rule update && add 1password/linear to preset (#910)\n\n* fix!(aws): `enableIDScanRule: false` by default\r\n\r\n* fix!(aws): `enableIDScanRule: false` by default\r\n\r\n* fix!(aws): `enableIDScanRule: false` by default\r\n\r\n* feat!(recommend): add 1password/linear to preset\r\n\r\n* docs: update README",
+          "timestamp": "2024-10-14T15:40:35+09:00",
+          "tree_id": "f2d5b40f7300ff45ae67587a575103be9eaf6356",
+          "url": "https://github.com/secretlint/secretlint/commit/ff7886616b921c71bdf2cde98b6132ff2d02e083"
+        },
+        "date": 1728888134628,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.29,
+            "range": "±0.62%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.87,
+            "range": "±1.12%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
