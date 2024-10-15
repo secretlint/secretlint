@@ -60,8 +60,8 @@
     "@secretlint/types": "^9.0.0"
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.8",
-    "@types/node": "^20.16.10",
+    "@types/mocha": "^10.0.9",
+    "@types/node": "^20.16.11",
     "mocha": "^10.7.3",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
