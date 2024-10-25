@@ -1406,7 +1406,7 @@ __metadata:
     bn.js: "npm:^5.2.1"
     prettier: "npm:^2.8.1"
     rimraf: "npm:^3.0.2"
-    secp256k1: "npm:^5.0.0"
+    secp256k1: "npm:^5.0.1"
     ts-node: "npm:^10.9.2"
     typescript: "npm:^5.1.6"
   languageName: unknown
@@ -8353,7 +8353,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"secp256k1@npm:^5.0.0":
+"secp256k1@npm:^5.0.1":
   version: 5.0.1
   resolution: "secp256k1@npm:5.0.1"
   dependencies:
