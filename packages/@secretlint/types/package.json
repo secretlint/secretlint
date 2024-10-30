@@ -58,7 +58,7 @@
     "tabWidth": 4
   },
   "devDependencies": {
-    "@types/node": "^20.16.15",
+    "@types/node": "^20.17.0",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
     "ts-node": "^10.9.2",
