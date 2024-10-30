@@ -60,7 +60,7 @@
   },
   "devDependencies": {
     "@secretlint/tester": "^9.0.0",
-    "@types/node": "^20.16.14",
+    "@types/node": "^20.16.15",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
     "ts-node": "^10.9.2",
