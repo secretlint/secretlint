@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1731969694508,
+  "lastUpdate": 1732560152137,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -33742,6 +33742,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.86,
             "range": "±0.93%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "2a3afce795ac9941bb9a73edfbd11e4db835c5a5",
+          "message": "fix(deps): update dependency cross-spawn to ^7.0.6 (#938)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2024-11-25T18:40:40Z",
+          "tree_id": "cabfe67ea8e323158e5c6c8b0a8f848182253801",
+          "url": "https://github.com/secretlint/secretlint/commit/2a3afce795ac9941bb9a73edfbd11e4db835c5a5"
+        },
+        "date": 1732560150119,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.21,
+            "range": "±0.96%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.85,
+            "range": "±0.87%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
