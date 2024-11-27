@@ -68,7 +68,7 @@
     "try-resolve": "^1.0.1"
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.9",
+    "@types/mocha": "^10.0.10",
     "@types/node": "^20.17.6",
     "@types/pluralize": "0.0.33",
     "escape-string-regexp": "^4.0.0",
