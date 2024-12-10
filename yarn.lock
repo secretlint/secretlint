@@ -967,7 +967,7 @@ __metadata:
     prettier: "npm:^2.8.1"
     rimraf: "npm:^3.0.2"
     strip-ansi: "npm:^6.0.1"
-    table: "npm:^6.8.2"
+    table: "npm:^6.9.0"
     terminal-link: "npm:^2.1.1"
     try-resolve: "npm:^1.0.1"
     ts-node: "npm:^10.9.2"
@@ -9007,16 +9007,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"table@npm:^6.8.2":
-  version: 6.8.2
-  resolution: "table@npm:6.8.2"
+"table@npm:^6.9.0":
+  version: 6.9.0
+  resolution: "table@npm:6.9.0"
   dependencies:
     ajv: "npm:^8.0.1"
     lodash.truncate: "npm:^4.4.2"
     slice-ansi: "npm:^4.0.0"
     string-width: "npm:^4.2.3"
     strip-ansi: "npm:^6.0.1"
-  checksum: 10c0/f8b348af38ee34e419d8ce7306ba00671ce6f20e861ccff22555f491ba264e8416086063ce278a8d81abfa8d23b736ec2cca7ac4029b5472f63daa4b4688b803
+  checksum: 10c0/35646185712bb65985fbae5975dda46696325844b78735f95faefae83e86df0a265277819a3e67d189de6e858c509b54e66ca3958ffd51bde56ef1118d455bf4
   languageName: node
   linkType: hard
 
