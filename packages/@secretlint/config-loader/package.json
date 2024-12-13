@@ -61,7 +61,7 @@
     "@secretlint/resolver": "^9.0.0",
     "@secretlint/types": "^9.0.0",
     "ajv": "^8.17.1",
-    "debug": "^4.3.7",
+    "debug": "^4.4.0",
     "rc-config-loader": "^4.1.3",
     "try-resolve": "^1.0.1"
   },
