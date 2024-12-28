@@ -28,7 +28,7 @@ Via `.secretlintrc.json`(Recommended)
 ### FOUND_DOTENV_FILE
 > found .env file
 
-Disallow to use `.env` file, because dotenv document describe that
+Disallow to commit `.env` file, because dotenv document describe that
 
 > Should I commit my .env file?
 > 
