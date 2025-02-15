@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1739252648040,
+  "lastUpdate": 1739639837503,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -34540,6 +34540,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.86,
             "range": "±1.15%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e29ea33719e62f1a008ba2cd3b654d062a014e5a",
+          "message": "fix(deps): update dependency globby to ^14.1.0 (#960)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2025-02-15T17:15:26Z",
+          "tree_id": "267d9b34191be969f20c10c6f183a3a60b7bbdd0",
+          "url": "https://github.com/secretlint/secretlint/commit/e29ea33719e62f1a008ba2cd3b654d062a014e5a"
+        },
+        "date": 1739639835454,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.29,
+            "range": "±0.93%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.86,
+            "range": "±1.11%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
