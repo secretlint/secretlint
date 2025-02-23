@@ -102,50 +102,54 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
 
 `secretlint --help` show Usage.
 
-      Secretlint CLI that scan secret/credential data.
+    Secretlint CLI that scan secret/credential data.
     
-      Usage
-        $ secretlint [file|glob*]
+    Usage
+    $ secretlint [file|glob*]
     
-      Note
-        supported glob syntax is based on microglob
-        https://github.com/micromatch/micromatch#matching-features
+    Note
+    supported glob syntax is based on microglob
+    https://github.com/micromatch/micromatch#matching-features
     
-      Options
-        --init             setup config file. Create .secretlintrc.json file from your package.json
-        --format           [String] formatter name. Default: "stylish". Available Formatter: checkstyle, compact, jslint-xml, json, junit, pretty-error, stylish, table, tap, unix, mask-result
-        --output           [path:String] output file path that is written of reported result.
-        --no-color         disable ANSI-color of output.
-        --no-terminalLink  disable terminalLink of output.
-        --maskSecrets      enable masking of secret values. replace actual secrets with "***".
-        --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
-        --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
+    Options
+    --init             setup config file. Create .secretlintrc.json file from your package.json
+    --format           [String] formatter name. Default: "stylish". Available Formatter: checkstyle, compact, jslint-xml, junit, pretty-error, stylish, tap, unix, json, mask-result, table
+    --output           [path:String] output file path that is written of reported result.
+    --no-color         disable ANSI-color of output.
+    --no-terminalLink  disable terminalLink of output.
+    --maskSecrets      enable masking of secret values. replace actual secrets with "***".
+    --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
+    --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
+    --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
     
-      Options for Developer
-        --profile          Enable performance profile.
-        --secretlintrcJSON [String] a JSON string of .secretlintrc. use JSON string instead of rc file.
+    Options for Developer
+    --profile          Enable performance profile.
+    --secretlintrcJSON [String] a JSON string of .secretlintrc. use JSON string instead of rc file.
     
-      Experimental Options
-        --locale            [String] locale tag for translating message. Default: en
+    Experimental Options
+    --locale            [String] locale tag for translating message. Default: en
     
-      Examples
-        $ secretlint ./README.md
-        # glob pattern should be wrapped with double quote
-        $ secretlint "**/*"
-        $ secretlint "source/**/*.ini"
-        # found secrets and mask the secrets
-        $ secretlint .zsh_history --format=mask-result --output=.zsh_history
-
+    Examples
+    $ secretlint ./README.md
+    # glob pattern should be wrapped with double quote
+    $ secretlint "**/*"
+    $ secretlint "source/**/*.ini"
+    # found secrets and mask the secrets
+    $ secretlint .zsh_history --format=mask-result --output=.zsh_history
+    # lint STDIN content instead of file
+    $ echo "SECRET CONTENT" | secretlint --stdinFileName=secret.txt
+    
     Exit Status
-      Secretlint exits with the following values:
+    Secretlint exits with the following values:
     
-      - 0: 
-        - Linting succeeded, no errors found. 
-        - Found lint error but --output is specified.
-      - 1: 
-        - Linting failed, errors found.
-      - 2: 
-        - Unexpected error occurred, fatal error.
+        - 0:
+          - Linting succeeded, no errors found.
+          - Found lint error but --output is specified.
+        - 1:
+          - Linting failed, errors found.
+        - 2:
+          - Unexpected error occurred, fatal error.
+
 
 ## Configuration
 

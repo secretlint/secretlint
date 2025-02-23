@@ -13,6 +13,7 @@ import path from "node:path";
 import { secretLintProfiler } from "@secretlint/profiler";
 import pMap from "p-map";
 import debug0 from "debug";
+
 const debug = debug0("@secretlint/node");
 export type SecretLintEngineOptionsBase = {
     /**

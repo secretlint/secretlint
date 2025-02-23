@@ -947,6 +947,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@secretlint/example-stdin@workspace:examples/stdin":
+  version: 0.0.0-use.local
+  resolution: "@secretlint/example-stdin@workspace:examples/stdin"
+  dependencies:
+    "@secretlint/secretlint-rule-preset-recommend": "npm:^9.1.0"
+    secretlint: "npm:^9.1.0"
+  languageName: unknown
+  linkType: soft
+
 "@secretlint/formatter@npm:^9.1.0, @secretlint/formatter@workspace:packages/@secretlint/formatter":
   version: 0.0.0-use.local
   resolution: "@secretlint/formatter@workspace:packages/@secretlint/formatter"
