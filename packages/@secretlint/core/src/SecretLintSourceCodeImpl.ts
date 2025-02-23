@@ -14,6 +14,7 @@ export class SecretLintSourceCodeImpl implements SecretLintSourceCode {
     readonly hasBOM: boolean;
     readonly content: string;
     readonly filePath: string | undefined;
+    readonly physicalFilePath: string | undefined;
     readonly contentType: "binary" | "text" | "unknown";
     readonly ext: string;
     private structuredSource: StructuredSource;
@@ -22,11 +23,13 @@ export class SecretLintSourceCodeImpl implements SecretLintSourceCode {
         content = "",
         ext,
         filePath,
+        physicalFilePath,
         contentType,
     }: {
         content: string;
         ext: string;
         filePath: string;
+        physicalFilePath: string | undefined;
         contentType: "binary" | "text" | "unknown";
     }) {
         invariant(ext || filePath, "should be set either of fileExt or filePath.");
@@ -34,16 +37,33 @@ export class SecretLintSourceCodeImpl implements SecretLintSourceCode {
         this.content = this.hasBOM ? content.slice(1) : content;
         this.structuredSource = new StructuredSource(this.content);
         this.filePath = filePath;
+        this.physicalFilePath = physicalFilePath;
         this.contentType = contentType;
         this.ext = ext;
     }
 
     /**
-     * get filePath
+     * get file path
+     * This return `undefined` if the source code is created without file path.
+     * For example, use core API to create a source code directly.
+     *
+     * You can use this path to detect file type.
+     * However, if you want to read the file content, use `getPhysicalFilePath` instead.
      * @returns {string|undefined}
      */
-    getFilePath() {
+    getFilePath(): string | undefined {
         return this.filePath;
+    }
+
+    /**
+     * get physical file path
+     * This return `undefined` if the source code is not related to file.
+     * For example, the source code is given from the stdin.
+     *
+     * You can use this path to read the file content.
+     */
+    getPhysicalFilePath(): string | undefined {
+        return this.physicalFilePath;
     }
 
     /**
