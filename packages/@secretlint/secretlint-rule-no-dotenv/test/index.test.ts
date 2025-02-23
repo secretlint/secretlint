@@ -9,7 +9,9 @@ test("@secretlint/secretlint-rule-no-dotenv", async (t) => {
                 {
                     id: "@secretlint/secretlint-rule-no-dotenv",
                     rule,
-                    options: {},
+                    options: {
+                        allowFileNames: [".env.local"],
+                    },
                 },
             ],
         },
