@@ -47,11 +47,11 @@ const lintFileOrText = async ({
             filePath: cliOptions.stdinFileName,
         });
     }
-    console.debug("Unexpected cliOptions", cliOptions satisfies never);
-    return {
-        ok: false,
-        output: "",
-    };
+    throw new Error("Unexpected cliOptions", {
+        cause: {
+            cliOptions: cliOptions satisfies never,
+        },
+    });
 };
 export const runSecretLint = async ({
     cliOptions,
