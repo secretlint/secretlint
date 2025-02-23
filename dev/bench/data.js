@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1740286243331,
+  "lastUpdate": 1740316650541,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -34768,6 +34768,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.85,
             "range": "±1.35%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a1f01bd66541f037885fc539ed99a1b38faeda1e",
+          "message": "refactor(index): use fs/promises for async file reading in createRawSource (#967)\n\n* feat(rule): add allowFileNames option to no-dotenv rule\nAdd allowFileNames option to @secretlint/secretlint-rule-no-dotenv to allow ignoring specific .env files while maintaining compatibility with .secretlintignore.\nFixes #167\n\n* refactor(index): use fs/promises for async file reading in createRawSource\n\n* remove it",
+          "timestamp": "2025-02-23T22:15:33+09:00",
+          "tree_id": "aa1707a854c981f18cb0b2020f73311f6af64527",
+          "url": "https://github.com/secretlint/secretlint/commit/a1f01bd66541f037885fc539ed99a1b38faeda1e"
+        },
+        "date": 1740316649133,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.32,
+            "range": "±0.67%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.87,
+            "range": "±1.10%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
