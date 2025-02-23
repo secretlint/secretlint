@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1740229791794,
+  "lastUpdate": 1740286046886,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -34692,6 +34692,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.87,
             "range": "±1.06%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f35572ecda6afc2af3ed7b46667c9d92db05a67e",
+          "message": "feat(rule): add allowFileNames option to no-dotenv rule (#964)\n\nAdd allowFileNames option to @secretlint/secretlint-rule-no-dotenv to allow ignoring specific .env files while maintaining compatibility with .secretlintignore.\nFixes #167",
+          "timestamp": "2025-02-23T13:45:40+09:00",
+          "tree_id": "e0cf1a2518a5e5d0c22e79db4d5e305052a57ced",
+          "url": "https://github.com/secretlint/secretlint/commit/f35572ecda6afc2af3ed7b46667c9d92db05a67e"
+        },
+        "date": 1740286045286,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.29,
+            "range": "±0.98%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.86,
+            "range": "±1.23%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
