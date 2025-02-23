@@ -60,33 +60,25 @@ export const runSecretLint = async ({
     cliOptions: SecretLintOptions;
     engineOptions: SecretLintEngineOptions;
 }): Promise<{ exitStatus: number; stdout: string | null; stderr: Error | null }> => {
-    try {
-        const { ok, output } = await lintFileOrText({
-            cliOptions,
-            engineOptions,
-        });
-        // TODO: if has error, this should be stderr
-        const outputFilePath = cliOptions.outputFilePath;
-        if (outputFilePath !== undefined) {
-            fs.writeFileSync(outputFilePath, output, "utf-8");
-            // Return empty to console with exit code 0
-            // because output is success
-            return {
-                exitStatus: 0,
-                stdout: null,
-                stderr: null,
-            };
-        }
+    const { ok, output } = await lintFileOrText({
+        cliOptions,
+        engineOptions,
+    });
+    // TODO: if has error, this should be stderr
+    const outputFilePath = cliOptions.outputFilePath;
+    if (outputFilePath !== undefined) {
+        fs.writeFileSync(outputFilePath, output, "utf-8");
+        // Return empty to console with exit code 0
+        // because output is success
         return {
-            exitStatus: ok ? 0 : 1,
-            stdout: output,
+            exitStatus: 0,
+            stdout: null,
             stderr: null,
         };
-    } catch (error) {
-        return {
-            exitStatus: 1,
-            stdout: null,
-            stderr: error as Error,
-        };
     }
+    return {
+        exitStatus: ok ? 0 : 1,
+        stdout: output,
+        stderr: null,
+    };
 };
