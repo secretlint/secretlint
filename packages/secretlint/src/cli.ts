@@ -1,9 +1,10 @@
 import meow from "meow";
-import { runSecretLint } from "./index.js";
+import { runSecretLint, SecretLintOptions } from "./index.js";
 import { runConfigCreator } from "./create-secretlintrc.js";
 import { secretLintProfiler } from "@secretlint/profiler";
 import { getFormatterList } from "@secretlint/formatter";
 import debug0 from "debug";
+import { text } from "node:stream/consumers";
 
 const debug = debug0("secretlint");
 export const cli = meow(
@@ -26,6 +27,7 @@ export const cli = meow(
       --maskSecrets      enable masking of secret values. replace actual secrets with "***".
       --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
       --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
+      --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
 
     Options for Developer
       --profile          Enable performance profile. 
@@ -41,6 +43,8 @@ export const cli = meow(
       $ secretlint "source/**/*.ini"
       # found secrets and mask the secrets
       $ secretlint .zsh_history --format=mask-result --output=.zsh_history
+      # lint STDIN content instead of file
+      $ echo "SECRET CONTENT" | secretlint --stdinFileName=secret.txt
       
     Exit Status
       Secretlint exits with the following values:
@@ -74,6 +78,9 @@ export const cli = meow(
             secretlintignore: {
                 type: "string",
                 default: ".secretlintignore",
+            },
+            stdinFileName: {
+                type: "string",
             },
             /**
              * CLI enable ANSI-color of output by default
@@ -117,6 +124,29 @@ export const cli = meow(
     }
 );
 
+const getStdin = async () => {
+    return await text(process.stdin);
+};
+const readCliOptions = async ({ input = cli.input, flags = cli.flags }): Promise<SecretLintOptions> => {
+    // if specify stdinFileName, read from stdin
+    if (flags.stdinFileName) {
+        const stdinContent = await getStdin();
+        return {
+            stdinContent,
+            stdinFileName: flags.stdinFileName,
+            outputFilePath: flags.output,
+            ignoreFilePath: flags.secretlintignore,
+            cwd: flags.cwd,
+        };
+    } else {
+        return {
+            filePathOrGlobList: input,
+            outputFilePath: flags.output,
+            ignoreFilePath: flags.secretlintignore,
+            cwd: flags.cwd,
+        };
+    }
+};
 export const run = async (
     input = cli.input,
     flags = cli.flags
@@ -136,13 +166,13 @@ export const run = async (
             cwd,
         });
     }
+    const cliOptions = await readCliOptions({
+        input,
+        flags,
+    });
+    debug("cliOptions %O", cliOptions);
     return runSecretLint({
-        cliOptions: {
-            cwd,
-            filePathOrGlobList: input,
-            outputFilePath: flags.output,
-            ignoreFilePath: flags.secretlintignore,
-        },
+        cliOptions,
         engineOptions: flags.secretlintrcJSON
             ? {
                   // Parse config string as JSON

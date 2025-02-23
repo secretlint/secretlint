@@ -17,6 +17,7 @@ import { secretLintProfiler } from "@secretlint/profiler";
 import { createRulePresetContext } from "./RulePresetContext.js";
 import { cleanupMessages } from "./messages/index.js";
 import debug0 from "debug";
+
 const debug = debug0("@secretlint/core");
 export type SecretLintSourceOptions = {
     /**
@@ -39,6 +40,12 @@ export type SecretLintSourceOptions = {
          * config present secretlintrc object
          */
         config: SecretLintCoreConfig;
+        /**
+         * If pass the `source` come from non-physical file such as stdin, you can set `noPhysicFilePath` to true.
+         * This option affect to `context.getSourceFilePath()`.
+         * If pass `noPhysicFilePath: true`, `context.getSourceFilePath()` return `undefined`.
+         */
+        noPhysicFilePath?: boolean;
     };
 };
 export const lintSource = ({ source, options }: SecretLintSourceOptions): Promise<SecretLintCoreResult> => {
@@ -66,6 +73,7 @@ export const lintSource = ({ source, options }: SecretLintSourceOptions): Promis
     const sourceCode = new SecretLintSourceCodeImpl({
         content: source.content,
         filePath: source.filePath,
+        physicalFilePath: options.noPhysicFilePath ? undefined : source.filePath,
         ext: source.ext || "",
         contentType: source.contentType,
     });
