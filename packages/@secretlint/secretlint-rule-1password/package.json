@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-1password",
-  "version": "9.0.0",
+  "version": "9.1.0",
   "description": "A secretlint rule for 1password",
   "keywords": [
     "secretlint",
@@ -51,11 +51,11 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^9.0.0",
+    "@secretlint/types": "^9.1.0",
     "@textlint/regexp-string-matcher": "^2.0.2"
   },
   "devDependencies": {
-    "@secretlint/tester": "^9.0.0",
+    "@secretlint/tester": "^9.1.0",
     "@types/node": "^20.17.19",
     "prettier": "^2.8.1",
     "ts-node": "^10.9.2",
