@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1740316650541,
+  "lastUpdate": 1740321480909,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -34806,6 +34806,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.87,
             "range": "±1.10%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "aaad98d7e513d0ddad18a1ed1b61e433cd9cc837",
+          "message": " feat(cli): support --stdinFileName=dummy.txt for linting STDIN  (#968)\n\n* feat(core): add context.getPhysicalFilePath() API\n\n* feat(cli): support --stdinFileName=dummy.txt for linting STDIN\n\n* use throw\n\n* fix",
+          "timestamp": "2025-02-23T23:36:14+09:00",
+          "tree_id": "38f9269bae0e8723b6fbbf408e190a322c1f493c",
+          "url": "https://github.com/secretlint/secretlint/commit/aaad98d7e513d0ddad18a1ed1b61e433cd9cc837"
+        },
+        "date": 1740321479490,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.29,
+            "range": "±0.80%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.85,
+            "range": "±2.24%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
