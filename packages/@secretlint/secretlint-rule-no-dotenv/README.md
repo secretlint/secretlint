@@ -17,11 +17,16 @@ Via `.secretlintrc.json`(Recommended)
 {
     "rules": [
         {
-            "id": "@secretlint/secretlint-rule-no-dotenv"
+            "id": "@secretlint/secretlint-rule-no-dotenv",
+            "options": {
+                "allowFileNames": [".env.local", ".env.test"]
+            }
         }
     ]
 }
 ```
+
+The `allowFileNames` option allows you to specify certain .env files that should be allowed. This is useful for environment-specific configuration files that are safe to commit. Note that this option works alongside `.secretlintignore`, giving you flexibility in how you want to manage your environment files.
 
 ## MessageIDs
 
