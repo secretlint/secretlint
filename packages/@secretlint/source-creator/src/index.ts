@@ -24,4 +24,3 @@ export const createRawSource = async (filePath: string): Promise<SecretLintRawSo
         contentType,
     };
 };
-A;
