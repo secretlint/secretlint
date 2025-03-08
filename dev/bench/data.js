@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1741444013408,
+  "lastUpdate": 1741468356346,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -34996,6 +34996,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.87,
             "range": "±1.63%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "99db2b77b8fd0ac4977cd6c952ea865beaccefb9",
+          "message": "chore(deps): update yarn to v4.7.0 (#974)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2025-03-08T21:10:47Z",
+          "tree_id": "38991307fd12f82638f844ffafbade2fec6ecabe",
+          "url": "https://github.com/secretlint/secretlint/commit/99db2b77b8fd0ac4977cd6c952ea865beaccefb9"
+        },
+        "date": 1741468354148,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.33,
+            "range": "±0.85%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.86,
+            "range": "±1.82%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
