@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1742371800874,
+  "lastUpdate": 1742691019207,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -35300,6 +35300,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.87,
             "range": "±1.90%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a6678e341e622ac89c553c98fd947eb967730abc",
+          "message": "chore(deps): update tj-actions/changed-files action to v46.0.2 (#983)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2025-03-23T09:48:19+09:00",
+          "tree_id": "bc5c1090236eba33ff165e0826068d2d6daadb9b",
+          "url": "https://github.com/secretlint/secretlint/commit/a6678e341e622ac89c553c98fd947eb967730abc"
+        },
+        "date": 1742691017131,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.19,
+            "range": "±0.87%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.82,
+            "range": "±2.10%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
