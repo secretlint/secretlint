@@ -1,6 +1,10 @@
-import { SecretLintRuleContext, SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
+import {
+    SecretLintRuleContext,
+    SecretLintRuleCreator,
+    SecretLintSourceCode,
+    SecretLintRuleMessageTranslate,
+} from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
-import { SecretLintRuleMessageTranslate } from "@secretlint/types";
 
 // Sources:
 // - https://learn.microsoft.com/en-us/dotnet/api/azure.identity.environmentcredential

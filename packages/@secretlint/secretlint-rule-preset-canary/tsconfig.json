@@ -6,6 +6,7 @@
     "esModuleInterop": true,
     "noEmit": true,
     "newLine": "LF",
+    "rootDir": "src",
     "outDir": "./module/",
     "target": "ES2022",
     "sourceMap": true,
@@ -29,5 +30,49 @@
   "exclude": [
     ".git",
     "node_modules"
+  ],
+  "references": [
+    {
+      "path": "../types"
+    },
+    {
+      "path": "../secretlint-rule-aws"
+    },
+    {
+      "path": "../secretlint-rule-gcp"
+    },
+    {
+      "path": "../secretlint-rule-npm"
+    },
+    {
+      "path": "../secretlint-rule-slack"
+    },
+    {
+      "path": "../secretlint-rule-basicauth"
+    },
+    {
+      "path": "../secretlint-rule-openai"
+    },
+    {
+      "path": "../secretlint-rule-linear"
+    },
+    {
+      "path": "../secretlint-rule-privatekey"
+    },
+    {
+      "path": "../secretlint-rule-sendgrid"
+    },
+    {
+      "path": "../secretlint-rule-shopify"
+    },
+    {
+      "path": "../secretlint-rule-github"
+    },
+    {
+      "path": "../secretlint-rule-1password"
+    },
+    {
+      "path": "../secretlint-rule-filter-comments"
+    },
   ]
 }

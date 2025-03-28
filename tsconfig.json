@@ -1,37 +1,52 @@
 {
-  "compilerOptions": {
-    /* Basic Options */
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "esModuleInterop": true,
-    "newLine": "LF",
-    "noEmit": true,
-    "outDir": "./module/",
-    "target": "ES2022",
-    "sourceMap": true,
-    "declaration": true,
-    "jsx": "preserve",
-    "lib": [
-      "esnext",
-      "dom"
-    ],
-    /* Strict Type-Checking Options */
-    "strict": true,
-    /* Additional Checks */
-    /* Report errors on unused locals. */
-    "noUnusedLocals": true,
-    /* Report errors on unused parameters. */
-    "noUnusedParameters": true,
-    /* Report error when not all code paths in function return a value. */
-    "noImplicitReturns": true,
-    /* Report errors for fallthrough cases in switch statement. */
-    "noFallthroughCasesInSwitch": true
-  },
+  "extends": "./tsconfig.base.json",
   "include": [
     "**/*"
   ],
   "exclude": [
     ".git",
     "node_modules"
+  ],
+  "references": [
+    {
+      "path": "packages/secretlint"
+    },
+    { "path": "packages/@secretlint/config-creator" },
+    { "path": "packages/@secretlint/config-loader" },
+    { "path": "packages/@secretlint/core" },
+    { "path": "packages/@secretlint/formatter" },
+    { "path": "packages/@secretlint/messages-to-markdown" },
+    { "path": "packages/@secretlint/node" },
+    { "path": "packages/@secretlint/profiler" },
+    { "path": "packages/@secretlint/quick-start" },
+    { "path": "packages/@secretlint/resolver" },
+    { "path": "packages/@secretlint/secretlint-formatter-sarif" },
+    { "path": "packages/@secretlint/secretlint-rule-1password" },
+    { "path": "packages/@secretlint/secretlint-rule-aws" },
+    { "path": "packages/@secretlint/secretlint-rule-azure" },
+    { "path": "packages/@secretlint/secretlint-rule-basicauth" },
+    { "path": "packages/@secretlint/secretlint-rule-example" },
+    { "path": "packages/@secretlint/secretlint-rule-filter-comments" },
+    { "path": "packages/@secretlint/secretlint-rule-gcp" },
+    { "path": "packages/@secretlint/secretlint-rule-github" },
+    { "path": "packages/@secretlint/secretlint-rule-internal-test-cjs" },
+    { "path": "packages/@secretlint/secretlint-rule-internal-test-esm" },
+    { "path": "packages/@secretlint/secretlint-rule-linear" },
+    { "path": "packages/@secretlint/secretlint-rule-no-dotenv" },
+    { "path": "packages/@secretlint/secretlint-rule-no-homedir" },
+    { "path": "packages/@secretlint/secretlint-rule-no-k8s-kind-secret" },
+    { "path": "packages/@secretlint/secretlint-rule-npm" },
+    { "path": "packages/@secretlint/secretlint-rule-openai" },
+    { "path": "packages/@secretlint/secretlint-rule-pattern" },
+    { "path": "packages/@secretlint/secretlint-rule-preset-canary" },
+    { "path": "packages/@secretlint/secretlint-rule-preset-recommend" },
+    { "path": "packages/@secretlint/secretlint-rule-privatekey" },
+    { "path": "packages/@secretlint/secretlint-rule-secp256k1-privatekey" },
+    { "path": "packages/@secretlint/secretlint-rule-sendgrid" },
+    { "path": "packages/@secretlint/secretlint-rule-shopify" },
+    { "path": "packages/@secretlint/secretlint-rule-slack" },
+    { "path": "packages/@secretlint/source-creator" },
+    { "path": "packages/@secretlint/tester" },
+    { "path": "packages/@secretlint/types" }
   ]
 }

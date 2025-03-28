@@ -5,6 +5,7 @@
     "moduleResolution": "NodeNext",
     "esModuleInterop": true,
     "newLine": "LF",
+    "rootDir": "src",
     "outDir": "./module/",
     "target": "ES2022",
     "sourceMap": true,
@@ -28,5 +29,10 @@
   "exclude": [
     ".git",
     "node_modules"
+  ],
+  "references": [
+    {
+      "path": "../types"
+    },
   ]
 }

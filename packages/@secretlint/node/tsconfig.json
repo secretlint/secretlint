@@ -5,6 +5,7 @@
     "moduleResolution": "NodeNext",
     "esModuleInterop": true,
     "newLine": "LF",
+    "rootDir": "src",
     "outDir": "./module/",
     "target": "ES2022",
     "sourceMap": true,
@@ -20,7 +21,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "composite": true
   },
   "include": [
     "src/**/*"
@@ -28,5 +30,25 @@
   "exclude": [
     ".git",
     "node_modules"
+  ],
+  "references": [
+    {
+      "path": "../core"
+    },
+    {
+      "path": "../config-loader"
+    },
+    {
+      "path": "../source-creator"
+    },
+    {
+      "path": "../formatter"
+    },
+    {
+      "path": "../types"
+    },
+    {
+      "path": "../profiler"
+    },
   ]
 }
