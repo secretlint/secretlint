@@ -36,7 +36,7 @@ export const run = (input = cli.input, flags = cli.flags) => {
         }
         if (flags.version) {
             const require = createRequire(import.meta.url);
-            const { version } = require("./package.json");
+            const { version } = require("../package.json");
             console.log(version);
             process.exit(0);
         }
