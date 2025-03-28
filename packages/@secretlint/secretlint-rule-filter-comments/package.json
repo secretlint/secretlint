@@ -63,7 +63,7 @@
   "devDependencies": {
     "@secretlint/secretlint-rule-pattern": "^9.2.0",
     "@secretlint/tester": "^9.2.0",
-    "@types/node": "^20.17.24",
+    "@types/node": "^20.17.25",
     "prettier": "^2.8.1",
     "rimraf": "^3.0.2",
     "ts-node": "^10.9.2",
