@@ -53,8 +53,7 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^9.2.0",
-    "meow": "^12.1.1"
+    "@secretlint/types": "^9.2.0"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
