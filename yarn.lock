@@ -990,7 +990,7 @@ __metadata:
   dependencies:
     "@secretlint/types": "npm:^9.2.0"
     "@types/mocha": "npm:^10.0.10"
-    "@types/node": "npm:^20.17.24"
+    "@types/node": "npm:^20.17.25"
     mocha: "npm:^10.8.2"
     prettier: "npm:^2.8.1"
     rimraf: "npm:^3.0.2"
