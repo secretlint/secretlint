@@ -71,10 +71,19 @@ const options = {
     output: {
         type: OPTION_TYPE_STRING,
     },
-    secretlintrc: {
-        type: OPTION_TYPE_STRING,
+    "no-color": {
+        type: OPTION_TYPE_BOOLEAN,
+        default: false,
     },
-    secretlintrcJSON: {
+    "no-terminalLink": {
+        type: OPTION_TYPE_BOOLEAN,
+        default: false,
+    },
+    maskSecrets: {
+        type: OPTION_TYPE_BOOLEAN,
+        default: false,
+    },
+    secretlintrc: {
         type: OPTION_TYPE_STRING,
     },
     secretlintignore: {
@@ -82,6 +91,15 @@ const options = {
         default: ".secretlintignore",
     },
     stdinFileName: {
+        type: OPTION_TYPE_STRING,
+    },
+    profile: {
+        type: OPTION_TYPE_BOOLEAN,
+    },
+    secretlintrcJSON: {
+        type: OPTION_TYPE_STRING,
+    },
+    locale: {
         type: OPTION_TYPE_STRING,
     },
     /**
@@ -100,16 +118,6 @@ const options = {
         type: OPTION_TYPE_BOOLEAN,
         default: true,
     },
-    maskSecrets: {
-        type: OPTION_TYPE_BOOLEAN,
-        default: false,
-    },
-    profile: {
-        type: OPTION_TYPE_BOOLEAN,
-    },
-    locale: {
-        type: OPTION_TYPE_STRING,
-    },
     // DEBUG option
     cwd: {
         type: OPTION_TYPE_STRING,
@@ -121,6 +129,40 @@ const options = {
     },
     help: { type: OPTION_TYPE_BOOLEAN, default: false },
     version: { type: OPTION_TYPE_BOOLEAN, default: false },
+    "no-config": {
+        type: OPTION_TYPE_BOOLEAN,
+        default: false,
+    },
+    "no-package": {
+        type: OPTION_TYPE_BOOLEAN,
+        default: false,
+    },
+    $schema: {
+        type: OPTION_TYPE_BOOLEAN,
+        default: false,
+    },
+    extension: {
+        type: OPTION_TYPE_STRING,
+    },
+    reporter: {
+        type: OPTION_TYPE_STRING,
+    },
+    slow: {
+        type: OPTION_TYPE_STRING,
+    },
+    timeout: {
+        type: OPTION_TYPE_STRING,
+    },
+    ui: {
+        type: OPTION_TYPE_STRING,
+    },
+    "watch-ignore": {
+        type: OPTION_TYPE_STRING,
+    },
+    diff: {
+        type: OPTION_TYPE_BOOLEAN,
+        default: false,
+    },
 };
 const { values, positionals } = parseArgs({ options, allowPositionals: true });
 export const cli = {
