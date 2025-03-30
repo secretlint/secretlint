@@ -16,7 +16,7 @@ jobs:
           fetch-depth: 1000
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@26a38635fc1173cc5820336ce97be6188d0de9f5 # v46.0.2
+        uses: tj-actions/changed-files@823fcebdb31bb35fdf2229d9f769b400309430d0 # v46.0.3
       - name: setup Node ${{ matrix.node-version }}
         uses: actions/setup-node@cdca7365b2dadb8aad0a33bc7601856ffabcc48e # v4.3.0
         with:
