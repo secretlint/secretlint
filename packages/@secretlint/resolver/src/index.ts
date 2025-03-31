@@ -133,7 +133,6 @@ export const clearHooks = () => {
 export const getPackageJson = (startDir: string = process.cwd()) => {
     const packageJsonPath = findPackageJson(startDir);
     if (packageJsonPath) {
-        const require = createRequire(import.meta.url);
         return require(packageJsonPath);
     }
     return undefined;
