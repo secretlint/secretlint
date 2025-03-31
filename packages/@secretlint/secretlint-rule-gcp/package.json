@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-gcp",
-  "version": "9.2.0",
+  "version": "9.2.1",
   "description": "A secretlint rule for GCP.",
   "keywords": [
     "rule",
@@ -54,12 +54,12 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^9.2.0",
+    "@secretlint/types": "^9.2.1",
     "@textlint/regexp-string-matcher": "^2.0.2",
     "node-forge": "^1.3.1"
   },
   "devDependencies": {
-    "@secretlint/tester": "^9.2.0",
+    "@secretlint/tester": "^9.2.1",
     "@types/node": "^20.17.27",
     "@types/node-forge": "^1.3.11",
     "prettier": "^2.8.1",

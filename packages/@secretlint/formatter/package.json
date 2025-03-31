@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/formatter",
-  "version": "9.2.0",
+  "version": "9.2.1",
   "description": "A formatter collection for Secretlint.",
   "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/formatter/",
   "bugs": {
@@ -54,8 +54,8 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/resolver": "^9.2.0",
-    "@secretlint/types": "^9.2.0",
+    "@secretlint/resolver": "^9.2.1",
+    "@secretlint/types": "^9.2.1",
     "@textlint/linter-formatter": "^14.5.0",
     "@textlint/module-interop": "^14.5.0",
     "@textlint/types": "^14.5.0",
