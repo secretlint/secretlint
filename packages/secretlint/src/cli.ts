@@ -206,7 +206,7 @@ export const run = async (
     }
     if (flags.version) {
         const require = createRequire(import.meta.url);
-        const { version } = require("../../package.json");
+        const { version } = require("../../../package.json");
         return {
             exitStatus: 0,
             stdout: version,

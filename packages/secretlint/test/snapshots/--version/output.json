@@ -1,1 +1,5 @@
-"Error: Cannot find module '../../package.json'\nRequire stack:\n- /Users/yoshidakengo/project/oss/ts/secretlint/packages/secretlint/src/cli.ts"
+{
+    "exitStatus": 0,
+    "stdout": "1.0.0",
+    "stderr": null
+}
