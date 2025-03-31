@@ -62,7 +62,7 @@
   "devDependencies": {
     "@secretlint/types": "^9.2.0",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^20.17.25",
+    "@types/node": "^20.17.26",
     "escape-string-regexp": "^5.0.0",
     "mocha": "^10.8.2",
     "prettier": "^2.8.1",
