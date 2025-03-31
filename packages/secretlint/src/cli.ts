@@ -200,9 +200,7 @@ export const run = async (
     if (flags.help) {
         return {
             exitStatus: 0,
-            stdout: JSON.stringify({
-                message: helpMessage,
-            }),
+            stdout: helpMessage,
             stderr: null,
         };
     }
@@ -211,7 +209,7 @@ export const run = async (
         const { version } = require("../../package.json");
         return {
             exitStatus: 0,
-            stdout: JSON.stringify({ message: version }),
+            stdout: version,
             stderr: null,
         };
     }

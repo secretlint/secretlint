@@ -63,7 +63,7 @@ describe("cli snapshot testing", function () {
                 return `Error: ${error.message}`;
             });
             // json string to json
-            if (typeof actual === "object" && actual.stdout) {
+            if (typeof actual === "object" && actual.stdout && !actualOptions.version && !actualOptions.help) {
                 actual.stdout = JSON.parse(actual.stdout);
             }
             const normalizedActual = JSON.parse(JSON.stringify(actual, createSnapshotReplacer(), 4));
