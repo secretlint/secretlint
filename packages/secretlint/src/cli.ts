@@ -198,14 +198,22 @@ export const run = async (
     flags = cli.flags
 ): Promise<{ exitStatus: number; stdout: string | null; stderr: Error | null }> => {
     if (flags.help) {
-        console.log(helpMessage);
-        process.exit(0);
+        return {
+            exitStatus: 0,
+            stdout: JSON.stringify({
+                message: helpMessage,
+            }),
+            stderr: null,
+        };
     }
     if (flags.version) {
         const require = createRequire(import.meta.url);
-        const { version } = require("../package.json");
-        console.log(version);
-        process.exit(0);
+        const { version } = require("../../package.json");
+        return {
+            exitStatus: 0,
+            stdout: JSON.stringify({ message: version }),
+            stderr: null,
+        };
     }
     secretLintProfiler.mark({
         type: "secretlint>cli::start",
