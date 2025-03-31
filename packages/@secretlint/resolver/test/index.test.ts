@@ -6,6 +6,7 @@ import {
     ResolverContext,
     tryResolve,
     clearHooks,
+    getPackageJson,
 } from "../src/index.js";
 import { afterEach, beforeEach } from "mocha";
 
@@ -68,6 +69,16 @@ describe("@secretlint/resolver", () => {
                     parentModule: "formatter",
                 });
             });
+        });
+    });
+    describe("getPackageJson", () => {
+        it("should return package.json", () => {
+            const result = getPackageJson();
+            assert.ok(result);
+        });
+        it("should return undefined", () => {
+            const result = getPackageJson("/root");
+            assert.ok(!result);
         });
     });
 });

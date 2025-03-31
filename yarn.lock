@@ -991,7 +991,6 @@ __metadata:
     "@secretlint/types": "npm:^9.2.0"
     "@types/mocha": "npm:^10.0.10"
     "@types/node": "npm:^20.17.26"
-    meow: "npm:^12.1.1"
     mocha: "npm:^10.8.2"
     prettier: "npm:^2.8.1"
     rimraf: "npm:^3.0.2"
@@ -6066,7 +6065,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"meow@npm:^12.0.1, meow@npm:^12.1.1":
+"meow@npm:^12.0.1":
   version: 12.1.1
   resolution: "meow@npm:12.1.1"
   checksum: 10c0/a125ca99a32e2306e2f4cbe651a0d27f6eb67918d43a075f6e80b35e9bf372ebf0fc3a9fbc201cbbc9516444b6265fb3c9f80c5b7ebd32f548aa93eb7c28e088
@@ -8431,7 +8430,6 @@ __metadata:
     "@types/node": "npm:^20.17.26"
     debug: "npm:^4.4.0"
     globby: "npm:^14.1.0"
-    meow: "npm:^12.1.1"
     mocha: "npm:^10.8.2"
     prettier: "npm:^2.8.1"
     read-pkg: "npm:^8.1.0"

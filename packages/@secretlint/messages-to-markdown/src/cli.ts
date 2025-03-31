@@ -1,32 +1,44 @@
-import meow from "meow";
+import { parseArgs } from "node:util";
 import { messagesToMarkdown } from "./index.js";
 import path from "node:path";
+import { getPackageJson } from "@secretlint/resolver";
 
-export const cli = meow(
-    `
-    Usage
-      $ secretlint-rule-messages-to-markdown [index.js|index.ts]
- 
-    Options
- 
-    Examples
-      $ secretlint-rule-messages-to-markdown src/index.ts
-`,
-    {
-        flags: {
-            headerLevel: {
-                type: "number",
-                default: 3,
-            },
-        },
-        autoHelp: true,
-        autoVersion: true,
-        importMeta: import.meta,
-    }
-);
+const helpMessage = `
+Usage
+  $ secretlint-rule-messages-to-markdown [index.js|index.ts]
+
+Options
+
+Examples
+  $ secretlint-rule-messages-to-markdown src/index.ts
+`;
+const OPTION_TYPE_STRING = "string" as const;
+const OPTION_TYPE_BOOLEAN = "boolean" as const;
+const options = {
+    headerLevel: {
+        type: OPTION_TYPE_STRING,
+        default: "3",
+    },
+    help: { type: OPTION_TYPE_BOOLEAN, default: false },
+    version: { type: OPTION_TYPE_BOOLEAN, default: false },
+};
+const { values, positionals } = parseArgs({ options, allowPositionals: true });
+export const cli = {
+    input: positionals,
+    flags: values,
+};
 
 export const run = (input = cli.input, flags = cli.flags) => {
     try {
+        if (flags.help) {
+            console.log(helpMessage);
+            process.exit(0);
+        }
+        if (flags.version) {
+            const packageJson = getPackageJson();
+            console.log(packageJson?.version ?? "");
+            process.exit(0);
+        }
         const index = require(path.join(process.cwd(), input[0]));
         if (!("messages" in index)) {
             throw new Error("This rule does not export const messages = { ... }");
