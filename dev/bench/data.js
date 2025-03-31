@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1743417163074,
+  "lastUpdate": 1743425583355,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -35490,6 +35490,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.86,
             "range": "±2.03%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "44870505+ysknsid25@users.noreply.github.com",
+            "name": "Kanon",
+            "username": "ysknsid25"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "be0a6e089ec9d874045d6af0b906b19907946739",
+          "message": "refactor: Use utils.parseArgs instead of meow (#986)\n\n* feature: Use utils.parseArgs instead of meow\n\nSigned-off-by: ysknsid25 <kengo071225@gmail.com>\n\n* feature: Use utils.parseArgs instead of meow\n\nSigned-off-by: ysknsid25 <kengo071225@gmail.com>\n\n* feature: Use utils.parseArgs instead of meow\n\nSigned-off-by: ysknsid25 <kengo071225@gmail.com>\n\n* feature: Use utils.parseArgs instead of meow\n\nSigned-off-by: ysknsid25 <kengo071225@gmail.com>\n\n* feature: Use utils.parseArgs instead of meow\n\nSigned-off-by: ysknsid25 <kengo071225@gmail.com>\n\n* feature: Use utils.parseArgs instead of meow\n\nSigned-off-by: ysknsid25 <kengo071225@gmail.com>\n\n* feature: Use utils.parseArgs instead of meow\n\nSigned-off-by: ysknsid25 <kengo071225@gmail.com>\n\n* feature: Use utils.parseArgs instead of meow\n\nSigned-off-by: ysknsid25 <kengo071225@gmail.com>\n\n* feature: Use utils.parseArgs instead of meow\n\nSigned-off-by: ysknsid25 <kengo071225@gmail.com>\n\n* feature: Use utils.parseArgs instead of meow\n\nSigned-off-by: ysknsid25 <kengo071225@gmail.com>\n\n* feature: Use utils.parseArgs instead of meow\n\nSigned-off-by: ysknsid25 <kengo071225@gmail.com>\n\n* feature: Use utils.parseArgs instead of meow\n\nSigned-off-by: ysknsid25 <kengo071225@gmail.com>\n\n---------\n\nSigned-off-by: ysknsid25 <kengo071225@gmail.com>",
+          "timestamp": "2025-03-31T21:51:17+09:00",
+          "tree_id": "e89a55e1ccc9d1653ff96e1daa9332500775e161",
+          "url": "https://github.com/secretlint/secretlint/commit/be0a6e089ec9d874045d6af0b906b19907946739"
+        },
+        "date": 1743425581847,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.46,
+            "range": "±0.50%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.85,
+            "range": "±1.61%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
