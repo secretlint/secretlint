@@ -1,7 +1,7 @@
 import { parseArgs } from "node:util";
-import { createRequire } from "module";
 import { messagesToMarkdown } from "./index.js";
 import path from "node:path";
+import { getPackageJson } from "@secretlint/resolver";
 
 const helpMessage = `
 Usage
@@ -35,9 +35,8 @@ export const run = (input = cli.input, flags = cli.flags) => {
             process.exit(0);
         }
         if (flags.version) {
-            const require = createRequire(import.meta.url);
-            const { version } = require("../package.json");
-            console.log(version);
+            const packageJson = getPackageJson();
+            console.log(packageJson?.version ?? "");
             process.exit(0);
         }
         const index = require(path.join(process.cwd(), input[0]));

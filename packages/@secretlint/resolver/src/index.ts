@@ -1,6 +1,7 @@
 import { createRequire } from "node:module";
 import * as url from "node:url";
 import path from "node:path";
+import fs from "node:fs";
 
 const require = createRequire(import.meta.url);
 export type ResolverContext = {
@@ -122,4 +123,40 @@ export const dynamicImport = async (
 export const clearHooks = () => {
     resolveHooks.length = 0;
     importHooks.length = 0;
+};
+
+/**
+ * get package.json content from startDir
+ * @param startDir
+ * @returns package.json content
+ */
+export const getPackageJson = (startDir: string = process.cwd()) => {
+    const packageJsonPath = findPackageJson(startDir);
+    if (packageJsonPath) {
+        const require = createRequire(import.meta.url);
+        return require(packageJsonPath);
+    }
+    return undefined;
+};
+
+/**
+ * search package.json from startDir
+ * @param startDir
+ * @returns
+ */
+const findPackageJson = (startDir: string = process.cwd()): string => {
+    let currentDir = startDir;
+    while (true) {
+        const packageJsonPath = path.join(currentDir, "package.json");
+        if (fs.existsSync(packageJsonPath)) {
+            return packageJsonPath;
+        }
+
+        const parentDir = path.resolve(currentDir, "..");
+        if (parentDir === currentDir) {
+            return "";
+        }
+
+        currentDir = parentDir;
+    }
 };

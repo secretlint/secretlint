@@ -1,9 +1,9 @@
 import { parseArgs } from "node:util";
-import { createRequire } from "module";
 import { runSecretLint, SecretLintOptions } from "./index.js";
 import { runConfigCreator } from "./create-secretlintrc.js";
 import { secretLintProfiler } from "@secretlint/profiler";
 import { getFormatterList } from "@secretlint/formatter";
+import { getPackageJson } from "@secretlint/resolver";
 import debug0 from "debug";
 import { text } from "node:stream/consumers";
 
@@ -205,11 +205,10 @@ export const run = async (
         };
     }
     if (flags.version) {
-        const require = createRequire(import.meta.url);
-        const { version } = require("../../../package.json");
+        const packageJson = getPackageJson();
         return {
             exitStatus: 0,
-            stdout: version,
+            stdout: packageJson?.version ?? "",
             stderr: null,
         };
     }
