@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/example-stdin",
-    "version": "9.2.1",
+    "version": "9.3.0",
     "private": true,
     "description": "",
     "homepage": "https://github.com/secretlint/secretlint/tree/master/examples/stdin/",
@@ -27,8 +27,8 @@
         "test": "cat ./credential | secretlint --stdinFileName=secret.txt --format json && exit 1 || exit 0"
     },
     "devDependencies": {
-        "@secretlint/secretlint-rule-preset-recommend": "^9.2.1",
-        "secretlint": "^9.2.1"
+        "@secretlint/secretlint-rule-preset-recommend": "^9.3.0",
+        "secretlint": "^9.3.0"
     },
     "publishConfig": {
         "access": "public"
