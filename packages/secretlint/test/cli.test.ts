@@ -41,6 +41,18 @@ const createSnapshotReplacer = () => {
  *   - snapshot result
  */
 describe("cli snapshot testing", function () {
+    it("--version should return version", async function () {
+        const actual = await run([], {
+            ...cli.flags,
+            version: true,
+            cwd: process.cwd(),
+            // Less diff between env
+            color: false,
+            format: "json",
+        });
+        assert.ok(actual.stdout);
+        assert.match(actual.stdout, /^[\d.]+$/);
+    });
     fs.readdirSync(SNAPSHOT_DIR).map((caseName) => {
         it(`test ${caseName}`, async function () {
             const fixtureDir = path.join(SNAPSHOT_DIR, caseName);
