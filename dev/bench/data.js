@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1743494876371,
+  "lastUpdate": 1743495734887,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -35680,6 +35680,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.86,
             "range": "±1.36%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "melodydance.k.s+biz@gmail.com",
+            "name": "Suguru Kishimoto",
+            "username": "sgr-ksmt"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "11da01c29e70ee02758ad3990efd1fc8211e0111",
+          "message": "feat(openai-rules): change regex pattern of detecting Open AI API Key (#994)\n\n- Change regex pattern of detecting Open AI API Key to detect new API key patterns correctly.\n- Update test snapshots\n\nCo-authored-by: azu <azu@users.noreply.github.com>",
+          "timestamp": "2025-04-01T17:19:56+09:00",
+          "tree_id": "d69443011db9adc5698cad13ef578b8bd8d850ec",
+          "url": "https://github.com/secretlint/secretlint/commit/11da01c29e70ee02758ad3990efd1fc8211e0111"
+        },
+        "date": 1743495732513,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.55,
+            "range": "±0.89%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.87,
+            "range": "±0.83%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
