@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/config-loader",
-  "version": "9.2.1",
+  "version": "9.3.0",
   "description": "Config loader for secretlint.",
   "keywords": [
     "secretlint",
@@ -57,17 +57,17 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/profiler": "^9.2.1",
-    "@secretlint/resolver": "^9.2.1",
-    "@secretlint/types": "^9.2.1",
+    "@secretlint/profiler": "^9.3.0",
+    "@secretlint/resolver": "^9.3.0",
+    "@secretlint/types": "^9.3.0",
     "ajv": "^8.17.1",
     "debug": "^4.4.0",
     "rc-config-loader": "^4.1.3",
     "try-resolve": "^1.0.1"
   },
   "devDependencies": {
-    "@secretlint/secretlint-rule-internal-test-cjs": "^9.2.1",
-    "@secretlint/secretlint-rule-internal-test-esm": "^9.2.1",
+    "@secretlint/secretlint-rule-internal-test-cjs": "^9.3.0",
+    "@secretlint/secretlint-rule-internal-test-esm": "^9.3.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "^20.17.27",
     "create-validator-ts": "^4.0.2",
