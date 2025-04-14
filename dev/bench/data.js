@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1744626588728,
+  "lastUpdate": 1744642471189,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -36060,6 +36060,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.87,
             "range": "±1.75%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "44870505+ysknsid25@users.noreply.github.com",
+            "name": "Kanon",
+            "username": "ysknsid25"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "fa2a99cd8462ec7a8cb29f92de801b471f8c5e63",
+          "message": "hotfix: secretlint --version returning 1.0.0 (#1007)\n\n* hotfix: secretlint --version returning 1.0.0\n\nSigned-off-by: ysknsid25 <kengo071225@gmail.com>\n\n* hotfix: secretlint --version returning 1.0.0\n\nSigned-off-by: ysknsid25 <kengo071225@gmail.com>\n\n---------\n\nSigned-off-by: ysknsid25 <kengo071225@gmail.com>",
+          "timestamp": "2025-04-14T23:52:45+09:00",
+          "tree_id": "9ba558b44845f00827c736dd3115ed2b06ad3e64",
+          "url": "https://github.com/secretlint/secretlint/commit/fa2a99cd8462ec7a8cb29f92de801b471f8c5e63"
+        },
+        "date": 1744642469647,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.52,
+            "range": "±1.07%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.86,
+            "range": "±0.77%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
