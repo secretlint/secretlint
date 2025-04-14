@@ -73,7 +73,7 @@ describe("@secretlint/resolver", () => {
     });
     describe("getPackageJson", () => {
         it("should return package.json", () => {
-            const result = getPackageJson();
+            const result = getPackageJson(import.meta.url);
             assert.ok(result);
         });
         it("should return undefined", () => {
