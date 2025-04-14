@@ -127,15 +127,21 @@ export const clearHooks = () => {
 
 /**
  * get package.json content from startDir
- * @param startDir
+ * @param cwd
  * @returns package.json content
  */
-export const getPackageJson = (startDir: string = process.cwd()) => {
-    const packageJsonPath = findPackageJson(startDir);
-    if (packageJsonPath) {
-        return require(packageJsonPath);
+export const getPackageJson = (cwd: string) => {
+    try {
+        const startDir = path.dirname(url.fileURLToPath(cwd));
+        const packageJsonPath = findPackageJson(startDir);
+        if (packageJsonPath) {
+            return require(packageJsonPath);
+        }
+        return undefined;
+    } catch (error) {
+        // ignore error
+        return undefined;
     }
-    return undefined;
 };
 
 /**
@@ -143,7 +149,7 @@ export const getPackageJson = (startDir: string = process.cwd()) => {
  * @param startDir
  * @returns
  */
-const findPackageJson = (startDir: string = process.cwd()): string => {
+const findPackageJson = (startDir: string): string => {
     let currentDir = startDir;
     while (true) {
         const packageJsonPath = path.join(currentDir, "package.json");
