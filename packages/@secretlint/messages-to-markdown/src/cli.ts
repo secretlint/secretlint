@@ -35,7 +35,7 @@ export const run = (input = cli.input, flags = cli.flags) => {
             process.exit(0);
         }
         if (flags.version) {
-            const packageJson = getPackageJson();
+            const packageJson = getPackageJson(import.meta.url);
             console.log(packageJson?.version ?? "");
             process.exit(0);
         }
