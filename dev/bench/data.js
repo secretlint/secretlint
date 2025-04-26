@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1745248205072,
+  "lastUpdate": 1745704666819,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -36364,6 +36364,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.85,
             "range": "±1.81%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ddb144a3cef21cbb74784bae32cc051ab8355434",
+          "message": "chore(deps): update softprops/action-gh-release action to v2.2.2 (#1016)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2025-04-26T21:55:59Z",
+          "tree_id": "ed0f71996028a8ae81ec53d2c0fe4fb64ce45a5c",
+          "url": "https://github.com/secretlint/secretlint/commit/ddb144a3cef21cbb74784bae32cc051ab8355434"
+        },
+        "date": 1745704665026,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.51,
+            "range": "±0.62%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.85,
+            "range": "±0.93%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
