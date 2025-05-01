@@ -1,10 +1,11 @@
-import {
+import type {
     SecretLintRuleContext,
     SecretLintRuleCreator,
     SecretLintRuleMessageTranslate,
     SecretLintSourceCode,
 } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
+import { createTokenPattern, type TokenDefinition } from "@secretlint/token";
 
 export const messages = {
     GITHUB_TOKEN: {
@@ -22,21 +23,6 @@ export type Options = {
     allows?: string[];
 };
 
-type GITHUB_TOKEN_TYPE = "ghp" | "gho" | "ghu" | "ghs" | "ghr" | "github_pat";
-// ghp for GitHub personal access tokens
-// gho for OAuth access tokens
-// ghu for GitHub user-to-server tokens
-// ghs for GitHub server-to-server tokens
-// ghr for refresh tokens
-// github_pat for fine-grained personal access tokens
-const typeMap = new Map<GITHUB_TOKEN_TYPE, string>([
-    ["ghp", "GitHub personal access tokens"],
-    ["gho", "OAuth access tokens"],
-    ["ghs", "GitHub user-to-server tokens"],
-    ["ghr", "refresh tokens"],
-    ["github_pat", "fine-grained personal access tokens"],
-]);
-
 // FIXME: GitHub Token implement CRC-32 checksum
 // We need to check it
 // https://github.blog/2021-04-05-behind-githubs-new-authentication-token-formats/
@@ -44,27 +30,160 @@ const validChecksum = (_token: string): boolean => {
     return true;
 };
 
+// GitHub Personal Access Token (Classic)
+const ghpTokens = createTokenPattern({
+    name: "github_personal_access_token",
+    patterns: [
+        {
+            type: "PatternString",
+            value: "ghp",
+        },
+        {
+            type: "PatternString",
+            value: "_",
+        },
+        {
+            type: "PatternUnion",
+            value: "[A-Za-z0-9_]",
+            repeat: 36,
+        },
+    ],
+    options: {
+        base64: true,
+    },
+});
+
+// GitHub OAuth Token
+const ghoTokens = createTokenPattern({
+    name: "github_oauth_token",
+    patterns: [
+        {
+            type: "PatternString",
+            value: "gho",
+        },
+        {
+            type: "PatternString",
+            value: "_",
+        },
+        {
+            type: "PatternUnion",
+            value: "[A-Za-z0-9_]",
+            repeat: 36,
+        },
+    ],
+    options: {
+        base64: true,
+    },
+});
+
+// GitHub User-to-Server Token
+const ghuTokens = createTokenPattern({
+    name: "github_user_to_server_token",
+    patterns: [
+        {
+            type: "PatternString",
+            value: "ghu",
+        },
+        {
+            type: "PatternString",
+            value: "_",
+        },
+        {
+            type: "PatternUnion",
+            value: "[A-Za-z0-9_]",
+            repeat: 36,
+        },
+    ],
+    options: {
+        base64: true,
+    },
+});
+
+// GitHub Server-to-Server Token
+const ghsTokens = createTokenPattern({
+    name: "github_server_to_server_token",
+    patterns: [
+        {
+            type: "PatternString",
+            value: "ghs",
+        },
+        {
+            type: "PatternString",
+            value: "_",
+        },
+        {
+            type: "PatternUnion",
+            value: "[A-Za-z0-9_]",
+            repeat: 36,
+        },
+    ],
+    options: {
+        base64: true,
+    },
+});
+
+// GitHub Refresh Token
+const ghrTokens = createTokenPattern({
+    name: "github_refresh_token",
+    patterns: [
+        {
+            type: "PatternString",
+            value: "ghr",
+        },
+        {
+            type: "PatternString",
+            value: "_",
+        },
+        {
+            type: "PatternUnion",
+            value: "[A-Za-z0-9_]",
+            repeat: 36,
+        },
+    ],
+    options: {
+        base64: true,
+    },
+});
+
+// GitHub Fine-grained Personal Access Token
+const fineGrainedGitHubTokens = createTokenPattern({
+    name: "fine_grained_github_token",
+    patterns: [
+        {
+            type: "PatternString",
+            value: "github_pat",
+        },
+        {
+            type: "PatternString",
+            value: "_",
+        },
+        {
+            type: "PatternUnion",
+            value: "[A-Za-z0-9_]",
+            repeat: 82,
+        },
+    ],
+    options: {
+        base64: true,
+    },
+});
+
 function reportIfFoundKey({
-    pattern,
+    token,
     source,
     options,
     context,
     t,
 }: {
-    pattern: RegExp;
+    token: TokenDefinition;
     source: SecretLintSourceCode;
     options: Required<Options>;
     context: SecretLintRuleContext;
     t: SecretLintRuleMessageTranslate<typeof messages>;
 }) {
-    const results = source.content.matchAll(pattern);
+    const results = source.content.matchAll(token.regexp);
     for (const result of results) {
         const index = result.index || 0;
-        const type = result.groups?.type as GITHUB_TOKEN_TYPE;
-        const typeName = typeMap.get(type);
-        if (!typeName) {
-            throw new Error("Unknown type:" + typeName);
-        }
         const match = result[0] || "";
         if (!validChecksum(match)) {
             continue;
@@ -77,7 +196,7 @@ function reportIfFoundKey({
         context.report({
             message: t("GITHUB_TOKEN", {
                 KEY: match,
-                typeName,
+                typeName: token.name,
             }),
             range,
         });
@@ -96,21 +215,22 @@ export const creator: SecretLintRuleCreator<Options> = {
         },
     },
     create(context, options) {
-        // token length should be 40
-        // https://github.blog/2021-04-05-behind-githubs-new-authentication-token-formats/
-        const CLASSIC_GITHUB_TOKEN_PATTERN = /(?<type>ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9_]{36}/g;
-        // fine-grained personal access tokens. FIXME: Format of the token is unclear
-        // https://github.com/community/community/discussions/36441#discussioncomment-4014190
-        const FINE_GRAINED_GITHUB_TOKEN_PATTERN = /(?<type>github_pat)_[A-Za-z0-9_]{82}/g;
-        const patterns = [CLASSIC_GITHUB_TOKEN_PATTERN, FINE_GRAINED_GITHUB_TOKEN_PATTERN];
+        const tokens = [
+            ...ghpTokens,
+            ...ghoTokens,
+            ...ghuTokens,
+            ...ghsTokens,
+            ...ghrTokens,
+            ...fineGrainedGitHubTokens,
+        ];
         const t = context.createTranslator(messages);
         const normalizedOptions = {
             allows: options.allows || [],
         };
         return {
             file(source: SecretLintSourceCode) {
-                for (const pattern of patterns) {
-                    reportIfFoundKey({ pattern, source, options: normalizedOptions, context, t });
+                for (const token of tokens) {
+                    reportIfFoundKey({ token, source, options: normalizedOptions, context, t });
                 }
             },
         };
