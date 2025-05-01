@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-linear",
-  "version": "9.3.1",
+  "version": "9.3.2",
   "description": "A secretlint rule for linear",
   "keywords": [
     "secretlint",
@@ -51,10 +51,10 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^9.3.1"
+    "@secretlint/types": "^9.3.2"
   },
   "devDependencies": {
-    "@secretlint/tester": "^9.3.1",
+    "@secretlint/tester": "^9.3.2",
     "@types/node": "^20.17.30",
     "prettier": "^2.8.1",
     "ts-node": "^10.9.2",
