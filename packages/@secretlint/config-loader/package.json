@@ -62,8 +62,7 @@
     "@secretlint/types": "^9.3.1",
     "ajv": "^8.17.1",
     "debug": "^4.4.0",
-    "rc-config-loader": "^4.1.3",
-    "try-resolve": "^1.0.1"
+    "rc-config-loader": "^4.1.3"
   },
   "devDependencies": {
     "@secretlint/secretlint-rule-internal-test-cjs": "^9.3.1",
