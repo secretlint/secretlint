@@ -63,7 +63,7 @@
     "@secretlint/types": "^9.3.2",
     "@types/bn.js": "^5.1.6",
     "@types/secp256k1": "^4.0.6",
-    "bn.js": "^5.2.1",
+    "bn.js": "^5.2.2",
     "secp256k1": "^5.0.1"
   },
   "devDependencies": {
