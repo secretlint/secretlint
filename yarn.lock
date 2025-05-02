@@ -1409,7 +1409,7 @@ __metadata:
     "@types/bn.js": "npm:^5.1.6"
     "@types/node": "npm:^20.17.31"
     "@types/secp256k1": "npm:^4.0.6"
-    bn.js: "npm:^5.2.1"
+    bn.js: "npm:^5.2.2"
     prettier: "npm:^2.8.1"
     rimraf: "npm:^3.0.2"
     secp256k1: "npm:^5.0.1"
@@ -2379,10 +2379,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bn.js@npm:^5.2.1":
-  version: 5.2.1
-  resolution: "bn.js@npm:5.2.1"
-  checksum: 10c0/bed3d8bd34ec89dbcf9f20f88bd7d4a49c160fda3b561c7bb227501f974d3e435a48fb9b61bc3de304acab9215a3bda0803f7017ffb4d0016a0c3a740a283caa
+"bn.js@npm:^5.2.2":
+  version: 5.2.2
+  resolution: "bn.js@npm:5.2.2"
+  checksum: 10c0/cb97827d476aab1a0194df33cd84624952480d92da46e6b4a19c32964aa01553a4a613502396712704da2ec8f831cf98d02e74ca03398404bd78a037ba93f2ab
   languageName: node
   linkType: hard
 
