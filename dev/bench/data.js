@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1746193113647,
+  "lastUpdate": 1746224676631,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -36592,6 +36592,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.87,
             "range": "±1.83%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "6cecf29329c07c6b1af151a41fa4d81fc5002ef9",
+          "message": "fix(deps): update dependency bn.js to ^5.2.2 (#1022)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2025-05-02T22:22:50Z",
+          "tree_id": "203de80002a60c6db57b75618f6f51818d3eff98",
+          "url": "https://github.com/secretlint/secretlint/commit/6cecf29329c07c6b1af151a41fa4d81fc5002ef9"
+        },
+        "date": 1746224675171,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.55,
+            "range": "±0.67%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.86,
+            "range": "±1.43%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
