@@ -60,7 +60,6 @@
   "devDependencies": {
     "@types/node": "^20.17.31",
     "prettier": "^2.8.1",
-    "rimraf": "^3.0.2",
     "ts-node": "^10.9.2",
     "tsconfig-to-dual-package": "^1.2.0",
     "tsd": "^0.32.0",

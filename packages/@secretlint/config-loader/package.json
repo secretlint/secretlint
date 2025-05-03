@@ -72,7 +72,6 @@
     "create-validator-ts": "^4.0.2",
     "mocha": "^10.8.2",
     "prettier": "^2.8.1",
-    "rimraf": "^3.0.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.1.6"
   },
