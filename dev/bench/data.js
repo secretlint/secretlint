@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1746224676631,
+  "lastUpdate": 1746283829166,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -36630,6 +36630,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.86,
             "range": "±1.43%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "arukimedesu1166777@gmail.com",
+            "name": "Noritaka Kobayashi",
+            "username": "noritaka1166"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e3461f8e8ba0e725a294f7621d74cb3bee2bc1ea",
+          "message": "chore: remove rimraf dependency from multiple packages and update to rimraf v6. in specific packages (#1023)",
+          "timestamp": "2025-05-03T23:48:39+09:00",
+          "tree_id": "c4c3a9197703493f5e73ea59c9ec18a014c0b99b",
+          "url": "https://github.com/secretlint/secretlint/commit/e3461f8e8ba0e725a294f7621d74cb3bee2bc1ea"
+        },
+        "date": 1746283826961,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.55,
+            "range": "±0.38%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.88,
+            "range": "±1.38%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
