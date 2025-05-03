@@ -64,7 +64,6 @@
     "assert-json-equal": "^1.0.1",
     "mocha": "^10.8.2",
     "prettier": "^2.8.1",
-    "rimraf": "^3.0.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.1.6"
   },
