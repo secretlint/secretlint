@@ -60,7 +60,7 @@
   },
   "devDependencies": {
     "@secretlint/tester": "^9.3.2",
-    "@types/node": "^20.17.43",
+    "@types/node": "^20.17.44",
     "@types/node-forge": "^1.3.11",
     "prettier": "^2.8.1",
     "ts-node": "^10.9.2",
