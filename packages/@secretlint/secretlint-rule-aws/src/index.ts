@@ -1,6 +1,5 @@
-import { SecretLintRuleContext, SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
+import { SecretLintRuleContext, SecretLintRuleCreator, SecretLintSourceCode, SecretLintRuleMessageTranslate} from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
-import { SecretLintRuleMessageTranslate } from "@secretlint/types";
 
 export interface Options {
     allows?: string[];
