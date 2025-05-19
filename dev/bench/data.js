@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1747349469160,
+  "lastUpdate": 1747654962554,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -37010,6 +37010,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.87,
             "range": "±0.83%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "arukimedesu1166777@gmail.com",
+            "name": "Noritaka Kobayashi",
+            "username": "noritaka1166"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "18dbcf5d65879367924225c3a64010a0914a5acd",
+          "message": "chore: update lint-staged from v13 to v16 (#1034)",
+          "timestamp": "2025-05-19T20:40:52+09:00",
+          "tree_id": "43bf2d0ff47c7cef858fcf730011a8e12d9fa532",
+          "url": "https://github.com/secretlint/secretlint/commit/18dbcf5d65879367924225c3a64010a0914a5acd"
+        },
+        "date": 1747654960817,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.53,
+            "range": "±0.73%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.86,
+            "range": "±1.34%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
