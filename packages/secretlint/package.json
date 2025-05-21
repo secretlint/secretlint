@@ -66,7 +66,7 @@
     "@secretlint/formatter": "^9.3.2",
     "@secretlint/node": "^9.3.2",
     "@secretlint/profiler": "^9.3.2",
-    "debug": "^4.4.0",
+    "debug": "^4.4.1",
     "globby": "^14.1.0",
     "read-pkg": "^8.1.0"
   },
