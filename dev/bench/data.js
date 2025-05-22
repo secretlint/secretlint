@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1747832440263,
+  "lastUpdate": 1747957568644,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -37162,6 +37162,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.83,
             "range": "±1.07%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "44439583+benibenj@users.noreply.github.com",
+            "name": "Benjamin Christopher Simmonds",
+            "username": "benibenj"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e74c233ddf8292aad73d371c274043abbac012e4",
+          "message": "Add missing `ghu` to typeMap and fix description (#1038)",
+          "timestamp": "2025-05-23T08:44:11+09:00",
+          "tree_id": "0c2f0bd003a55f94546e52641df7f6ca8358499b",
+          "url": "https://github.com/secretlint/secretlint/commit/e74c233ddf8292aad73d371c274043abbac012e4"
+        },
+        "date": 1747957566718,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.55,
+            "range": "±0.61%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.88,
+            "range": "±1.63%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
