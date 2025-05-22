@@ -32,7 +32,8 @@ type GITHUB_TOKEN_TYPE = "ghp" | "gho" | "ghu" | "ghs" | "ghr" | "github_pat";
 const typeMap = new Map<GITHUB_TOKEN_TYPE, string>([
     ["ghp", "GitHub personal access tokens"],
     ["gho", "OAuth access tokens"],
-    ["ghs", "GitHub user-to-server tokens"],
+    ["ghu", "GitHub user-to-server tokens"],
+    ["ghs", "GitHub server-to-server tokens"],
     ["ghr", "refresh tokens"],
     ["github_pat", "fine-grained personal access tokens"],
 ]);
