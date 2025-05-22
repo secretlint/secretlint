@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/config-creator",
-  "version": "9.3.2",
+  "version": "9.3.3",
   "description": "Config file creator for secretlint.",
   "keywords": [
     "secretlint"
@@ -52,7 +52,7 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^9.3.2"
+    "@secretlint/types": "^9.3.3"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
