@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-no-dotenv",
-  "version": "9.3.2",
+  "version": "9.3.3",
   "description": "A secretlint rule for dotenv",
   "keywords": [
     "secretlint",
@@ -58,10 +58,10 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^9.3.2"
+    "@secretlint/types": "^9.3.3"
   },
   "devDependencies": {
-    "@secretlint/tester": "^9.3.2",
+    "@secretlint/tester": "^9.3.3",
     "@types/node": "^20.17.47",
     "prettier": "^2.8.1",
     "ts-node": "^10.9.2",

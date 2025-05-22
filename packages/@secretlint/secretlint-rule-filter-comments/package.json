@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-filter-comments",
-  "version": "9.3.2",
+  "version": "9.3.3",
   "description": "secretlint-disable comment directive.",
   "keywords": [
     "secretlint",
@@ -58,11 +58,11 @@
     "trailingComma": "none"
   },
   "dependencies": {
-    "@secretlint/types": "^9.3.2"
+    "@secretlint/types": "^9.3.3"
   },
   "devDependencies": {
-    "@secretlint/secretlint-rule-pattern": "^9.3.2",
-    "@secretlint/tester": "^9.3.2",
+    "@secretlint/secretlint-rule-pattern": "^9.3.3",
+    "@secretlint/tester": "^9.3.3",
     "@types/node": "^20.17.47",
     "prettier": "^2.8.1",
     "ts-node": "^10.9.2",
