@@ -1444,7 +1444,7 @@ __metadata:
     "@secretlint/types": "npm:^9.3.3"
     "@types/mocha": "npm:^10.0.10"
     "@types/node": "npm:^20.17.47"
-    istextorbinary: "npm:^6.0.0"
+    istextorbinary: "npm:^9.5.0"
     mocha: "npm:^10.8.2"
     prettier: "npm:^2.8.1"
     ts-node: "npm:^10.9.2"
@@ -2310,10 +2310,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"binaryextensions@npm:^4.18.0":
-  version: 4.18.0
-  resolution: "binaryextensions@npm:4.18.0"
-  checksum: 10c0/061dbef4a7d0c11545442563379b991a037c4c3b81683c9f2668dcde0c590e677ebedf923120c0c70c4aac23efb5e8c14a1bf36a23240ca9156260f89c3fdc3e
+"binaryextensions@npm:^6.11.0":
+  version: 6.11.0
+  resolution: "binaryextensions@npm:6.11.0"
+  dependencies:
+    editions: "npm:^6.21.0"
+  checksum: 10c0/7cd07215d2ba9722cc2c378de554e294e2577ee8b53e8e3715abf1f3e0f23db75851c9820dc34c117a3d44a778360cc28d4800e4802cdb9bc20774b71f3f5202
   languageName: node
   linkType: hard
 
@@ -3497,6 +3499,15 @@ __metadata:
   version: 0.2.0
   resolution: "eastasianwidth@npm:0.2.0"
   checksum: 10c0/26f364ebcdb6395f95124fda411f63137a4bfb5d3a06453f7f23dfe52502905bd84e0488172e0f9ec295fdc45f05c23d5d91baf16bd26f0fe9acd777a188dc39
+  languageName: node
+  linkType: hard
+
+"editions@npm:^6.21.0":
+  version: 6.21.0
+  resolution: "editions@npm:6.21.0"
+  dependencies:
+    version-range: "npm:^4.13.0"
+  checksum: 10c0/b5d3f44987b8a31ffd5cad12421de0d6fe5e57c6d85e5ea3601fbcfde4fc7d52bb76620c652fe74a303dfe54de8abc84733a230a2823512abb8006d78b0bfeba
   languageName: node
   linkType: hard
 
@@ -5293,13 +5304,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"istextorbinary@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "istextorbinary@npm:6.0.0"
+"istextorbinary@npm:^9.5.0":
+  version: 9.5.0
+  resolution: "istextorbinary@npm:9.5.0"
   dependencies:
-    binaryextensions: "npm:^4.18.0"
-    textextensions: "npm:^5.14.0"
-  checksum: 10c0/b7761bd34f1154e3bbe2f0ada85f35f614e61ff3b8f51ab168a0b5ee2116bfe2973520743447ab12b6d09ff4d945b4c8ec13573ee6fb21ca4bd14dbce052f4a8
+    binaryextensions: "npm:^6.11.0"
+    editions: "npm:^6.21.0"
+    textextensions: "npm:^6.11.0"
+  checksum: 10c0/76ed0355b48ceb351301ade26824f136be9436a1a31432b37191e591e868a081d6953fb7b5faa964681a24cad0435863635618354c5d440c79b65b75a9d788c5
   languageName: node
   linkType: hard
 
@@ -8965,10 +8977,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"textextensions@npm:^5.14.0":
-  version: 5.16.0
-  resolution: "textextensions@npm:5.16.0"
-  checksum: 10c0/bc90dc60272c3ffb76eeff86dc1decab9535ba8da6a00efe2a005763d0305cb445db9ac35970538c59b89bf41820c3d19394f46c6b7346d520b9ae16fe47be80
+"textextensions@npm:^6.11.0":
+  version: 6.11.0
+  resolution: "textextensions@npm:6.11.0"
+  dependencies:
+    editions: "npm:^6.21.0"
+  checksum: 10c0/6077ca91af65d8067007973635d9e22c712c08cc06004cf2fa91f221239f0a833ededa18bf977131b45649be4a34fe44a7d1cb7b3f6c6c49d5677a197a10b0e0
   languageName: node
   linkType: hard
 
@@ -9617,6 +9631,13 @@ __metadata:
   dependencies:
     builtins: "npm:^5.0.0"
   checksum: 10c0/36a9067650f5b90c573a0d394b89ddffb08fe58a60507d7938ad7c38f25055cc5c6bf4a10fbd604abe1f4a31062cbe0dfa8e7ccad37b249da32e7b71889c079e
+  languageName: node
+  linkType: hard
+
+"version-range@npm:^4.13.0":
+  version: 4.14.0
+  resolution: "version-range@npm:4.14.0"
+  checksum: 10c0/f9aab9c3b6e572dad1fb02df50cc8cf1a28be66ed2bc45e0d32d863d03d08d46cab154b6f9ed3eb7c404e12ae21a3b3231ba424798dbb339e9095a2d107ed50d
   languageName: node
   linkType: hard
 

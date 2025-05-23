@@ -2,7 +2,6 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { SecretLintRawSource } from "@secretlint/types";
 
-// @ts-expect-error invalid type?
 import { isBinary, isText } from "istextorbinary";
 
 const detectContentType = (filePath: string, content: Buffer): SecretLintRawSource["contentType"] => {

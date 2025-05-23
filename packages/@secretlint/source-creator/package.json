@@ -55,7 +55,7 @@
   },
   "dependencies": {
     "@secretlint/types": "^9.3.3",
-    "istextorbinary": "^6.0.0"
+    "istextorbinary": "^9.5.0"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
