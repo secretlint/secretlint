@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1747957704259,
+  "lastUpdate": 1747999052776,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -37238,6 +37238,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.87,
             "range": "±1.31%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "arukimedesu1166777@gmail.com",
+            "name": "Noritaka Kobayashi",
+            "username": "noritaka1166"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a294fb8386f2c12eeb1528b7c6734f23829640e1",
+          "message": "chore: update scaffdog from v3 to v4 (#1041)",
+          "timestamp": "2025-05-23T20:15:35+09:00",
+          "tree_id": "b72ebe23a9e1b088bccc1a6b242fe5d879944445",
+          "url": "https://github.com/secretlint/secretlint/commit/a294fb8386f2c12eeb1528b7c6734f23829640e1"
+        },
+        "date": 1747999051204,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.51,
+            "range": "±0.72%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.86,
+            "range": "±1.44%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
