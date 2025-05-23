@@ -51,7 +51,7 @@
     "@lerna-lite/version": "^2.7.2",
     "lint-staged": "^16.0.0",
     "prettier": "^2.8.1",
-    "scaffdog": "^3.0.0",
+    "scaffdog": "^4.1.0",
     "turbo": "^1.13.4"
   },
   "prettier": {
