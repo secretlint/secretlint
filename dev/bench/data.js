@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1747999052776,
+  "lastUpdate": 1747999069499,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -37276,6 +37276,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.86,
             "range": "±1.44%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "arukimedesu1166777@gmail.com",
+            "name": "Noritaka Kobayashi",
+            "username": "noritaka1166"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e9d1ad00c17b668ca287d555984640b20e866c97",
+          "message": "fix: correct typos in documentation files (#1040)",
+          "timestamp": "2025-05-23T20:15:50+09:00",
+          "tree_id": "1c272bd9fe5c02398897b779ddfddb845525b850",
+          "url": "https://github.com/secretlint/secretlint/commit/e9d1ad00c17b668ca287d555984640b20e866c97"
+        },
+        "date": 1747999067218,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.54,
+            "range": "±0.89%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.85,
+            "range": "±1.25%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
