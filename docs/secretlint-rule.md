@@ -22,10 +22,10 @@ Implementation:
   - `messages`: MessageIds
   - `meta`: meta information for the rule
     - `id`: `id` should be equal to `package.json`'s `name`
-    - `recommended`(optional): recommended to use 
+    - `recommended`(optional): recommended to use
     - `type`: `"scanner"`
     - `supportedContentTypes`: "text" or "binary" or "all"
-      - If specified `["text"]`, secretlint pass the content of text to the rule. 
+      - If specified `["text"]`, secretlint pass the content of text to the rule.
       - In other words, secretlint does not pass binary content
     - `docs`
       - `url`: document base url. secretlint show `{docs.url}#{MessageId}` in results.
@@ -65,7 +65,7 @@ export const creator: SecretLintRuleCreator = {
     },
     // Rule Logic
     create(context) {
-        // Create Traslate instance
+        // Create Translate instance
         const t = context.createTranslator(messages);
         return {
             // source has `content`, `filePath` etc...

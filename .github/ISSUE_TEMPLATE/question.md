@@ -13,7 +13,7 @@ labels: "Type: question"
 ### Environment (if relevant)
 
 <!--
-If you have install Node.js, please run follwing and paste it
+If you have install Node.js, please run following and paste it
 
   $ npx envinfo
 
