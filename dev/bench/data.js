@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1748007263787,
+  "lastUpdate": 1748007320535,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -37390,6 +37390,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.88,
             "range": "±1.33%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "arukimedesu1166777@gmail.com",
+            "name": "Noritaka Kobayashi",
+            "username": "noritaka1166"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "38a171bc57151ca4c9b59b97ea50aa806e58f521",
+          "message": "chore: update istextorbinary from v6 to v9 (#1043)",
+          "timestamp": "2025-05-23T22:33:32+09:00",
+          "tree_id": "8558630512b012b21a18e44c2226ffb654176254",
+          "url": "https://github.com/secretlint/secretlint/commit/38a171bc57151ca4c9b59b97ea50aa806e58f521"
+        },
+        "date": 1748007318859,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.54,
+            "range": "±0.52%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.86,
+            "range": "±1.19%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
