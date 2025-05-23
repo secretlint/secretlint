@@ -916,7 +916,7 @@ __metadata:
     "@types/debug": "npm:^4.1.12"
     "@types/mocha": "npm:^10.0.10"
     "@types/node": "npm:^20.17.47"
-    assert-json-equal: "npm:^1.0.1"
+    assert-json-equal: "npm:^2.0.0"
     debug: "npm:^4.4.1"
     mocha: "npm:^10.8.2"
     prettier: "npm:^2.8.1"
@@ -2172,10 +2172,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"assert-json-equal@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "assert-json-equal@npm:1.0.1"
-  checksum: 10c0/56d77af0e2f1a97b7abf989733d2e592b3924a61fe7a573a2ca1f7d202cca9eb09727e5ad882875ba6856411f1d7c0d317af333e47e1c203bcb3b96270c03206
+"assert-json-equal@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "assert-json-equal@npm:2.0.0"
+  checksum: 10c0/df424b4cfb0c471b10fde5a715f4615737af8712ed32a31f2dfb6a797a4ebb14578adadec99a38b4b2422ffd9321c22b847dc08fbcf792f2d1e15397420fa4a3
   languageName: node
   linkType: hard
 
