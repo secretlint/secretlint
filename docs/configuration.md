@@ -126,7 +126,7 @@ For example, If you want to ignore "AWSAccountID" and "AWSAccessKeyID" of "@secr
 
 ### `.secretlintignore`
 
-You can tell Secretlint to ignore specific files and directories by creating an `.secretlintignore` file in your project's root directory. 
+You can tell Secretlint to ignore specific files and directories by creating an `.secretlintignore` file in your project's root directory.
 
 The `.secretlintignore` file is a plain text file where each line is a glob pattern indicating which paths should be omitted from linting. For example, the following will omit all JavaScript files:
 
@@ -170,7 +170,7 @@ Currently, secretlint ignore following file by default:
 ### Using an Alternate Ignoring File
 
 You can use specif file as ignoring configuration.
-you can specify it on the command line using the `--secretlintignore` option. 
+you can specify it on the command line using the `--secretlintignore` option.
 
 For example, you can use `.gitignore` file because it has the same format:
 
