@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1747999272551,
+  "lastUpdate": 1748007263787,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -37352,6 +37352,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.87,
             "range": "±0.41%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "arukimedesu1166777@gmail.com",
+            "name": "Noritaka Kobayashi",
+            "username": "noritaka1166"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "03678857e84cef032d91a83d6a4ce937743bede1",
+          "message": "chore: update assert-json-equal from v1 to v2 (#1044)",
+          "timestamp": "2025-05-23T22:32:37+09:00",
+          "tree_id": "0b8631d25b6c04c8776caf015d8d8bbd97f850bb",
+          "url": "https://github.com/secretlint/secretlint/commit/03678857e84cef032d91a83d6a4ce937743bede1"
+        },
+        "date": 1748007262183,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.54,
+            "range": "±0.63%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.88,
+            "range": "±1.33%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
