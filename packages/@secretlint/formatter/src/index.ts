@@ -78,11 +78,11 @@ const convertSecretLintResultToTextlintResult = (
                 // {rule-id}
                 ruleId: message.ruleParentId ? `${message.ruleParentId} > ${message.ruleId}` : message.ruleId,
                 /**
-                 * @deprecated backword compatibility - use range or loc
+                 * @deprecated backward compatibility - use range or loc
                  */
                 index: message.range[0],
                 /**
-                 * @deprecated backword compatibility - use range or loc
+                 * @deprecated backward compatibility - use range or loc
                  */
                 line: message.loc.start.line,
                 /**
