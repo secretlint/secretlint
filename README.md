@@ -334,7 +334,7 @@ Secretlint rules has been implemented as separated modules.
 - [@secretlint/secretlint-rule-no-dotenv](./packages/%40secretlint/secretlint-rule-no-dotenv)
 
 
-Also, Secretlint provide rule preset that includes recommened rule set.
+Also, Secretlint provide rule preset that includes recommended rule set.
 
 - [@secretlint/secretlint-rule-preset-recommend](./packages/@secretlint/secretlint-rule-preset-recommend)
     - Recommended rule set

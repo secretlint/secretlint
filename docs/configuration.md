@@ -169,7 +169,7 @@ Currently, secretlint ignore following file by default:
 
 ### Using an Alternate Ignoring File
 
-You can use specif file as ignoring configuration.
+You can use specified file as ignoring configuration.
 you can specify it on the command line using the `--secretlintignore` option.
 
 For example, you can use `.gitignore` file because it has the same format:

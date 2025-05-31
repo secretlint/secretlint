@@ -34,7 +34,7 @@ describe("create-secretlintrc", function () {
         await fs.rm(tmpConfigDir, { recursive: true });
     });
 
-    context("when pacakge.json has @secretlint/* packages", function () {
+    context("when package.json has @secretlint/* packages", function () {
         it("Run secretlint --init", async () => {
             const actual = await runConfigCreator({ cwd: tmpConfigDir });
             if (actual.stdout === null) {

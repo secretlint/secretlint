@@ -32,7 +32,7 @@ Via `.secretlintrc.json`
 ### AWSSecretAccessKey
 > found AWS Secret Access Key: {{KEY}}
 
-AWS's Access key is crendential data. It should be private.
+AWS's Access key is credential data. It should be private.
 
 - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html 
 

@@ -2,7 +2,7 @@
 
 A formatter collection for Secretlint.
 
-These formatter come from textlint and create compatibel layer between Secretlint and textlint
+These formatter come from textlint and create compatible layer between Secretlint and textlint
 
 We will re-implement formatter for Secretlint.
 
