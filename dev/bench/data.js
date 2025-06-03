@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1748989698901,
+  "lastUpdate": 1748990896655,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -37694,6 +37694,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.86,
             "range": "±0.71%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+            "name": "devin-ai-integration[bot]",
+            "username": "devin-ai-integration[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "0346d4c9b2c01d4b5b6f9bc021840d6de6a202d9",
+          "message": "fix: prevent ReDoS vulnerability in private key regex pattern (#1054)\n\n- Replace vulnerable [\\s\\S][\\s\\S]*? pattern with length-constrained version\n- Set maximum private key content length to 10,000 characters\n- Prevents catastrophic backtracking while maintaining detection accuracy\n- Based on research showing RSA-4096 keys max at ~3,388 chars in tests\n- All existing test cases (RSA, RSA-4096, ECDSA-256) remain within limit\n\nCo-authored-by: Devin AI <158243242+devin-ai-integration[bot]@users.noreply.github.com>\nCo-authored-by: azu <azuciao@gmail.com>",
+          "timestamp": "2025-06-04T07:46:29+09:00",
+          "tree_id": "935249d186e321960f80510805154f4d1d5a38b2",
+          "url": "https://github.com/secretlint/secretlint/commit/0346d4c9b2c01d4b5b6f9bc021840d6de6a202d9"
+        },
+        "date": 1748990894272,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.57,
+            "range": "±0.78%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.87,
+            "range": "±1.16%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
