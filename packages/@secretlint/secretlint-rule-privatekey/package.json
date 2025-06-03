@@ -60,7 +60,7 @@
   "devDependencies": {
     "@secretlint/tester": "^9.3.3",
     "@secretlint/types": "^9.3.3",
-    "@types/node": "^20.17.50",
+    "@types/node": "^20.17.51",
     "prettier": "^2.8.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.1.6"
