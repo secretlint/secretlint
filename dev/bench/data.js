@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1748988676255,
+  "lastUpdate": 1748989698901,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -37656,6 +37656,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.86,
             "range": "±1.63%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "44439583+benibenj@users.noreply.github.com",
+            "name": "Benjamin Christopher Simmonds",
+            "username": "benibenj"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "36ce0f6549153889fdf62f978481519d6edf3873",
+          "message": "Private key rule should enforce correct end private key footer (#1049)\n\n* begin private key should match with corresponding end private key\n\n* update snapshots\n\n* improve speed",
+          "timestamp": "2025-06-04T07:26:24+09:00",
+          "tree_id": "2b6593168e5b86dc67fc4108b9196072f5859c8f",
+          "url": "https://github.com/secretlint/secretlint/commit/36ce0f6549153889fdf62f978481519d6edf3873"
+        },
+        "date": 1748989697223,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.52,
+            "range": "±0.65%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.86,
+            "range": "±0.71%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
