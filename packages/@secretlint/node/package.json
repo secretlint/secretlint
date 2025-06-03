@@ -65,7 +65,7 @@
   "devDependencies": {
     "@secretlint/secretlint-rule-example": "^9.3.3",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^20.17.50",
+    "@types/node": "^20.17.51",
     "mocha": "^10.8.2",
     "prettier": "^2.8.1",
     "ts-node": "^10.9.2",
