@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/messages-to-markdown",
-  "version": "9.3.3",
+  "version": "9.3.4",
   "description": "Create Markdown text from rule's messages(ids)",
   "keywords": [
     "secretlint"
@@ -53,7 +53,7 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^9.3.3"
+    "@secretlint/types": "^9.3.4"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",

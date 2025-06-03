@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-example",
-  "version": "9.3.3",
+  "version": "9.3.4",
   "description": "An example rule for secretlint. It it for testing.",
   "keywords": [
     "secretlint",
@@ -55,10 +55,10 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^9.3.3"
+    "@secretlint/types": "^9.3.4"
   },
   "devDependencies": {
-    "@secretlint/tester": "^9.3.3",
+    "@secretlint/tester": "^9.3.4",
     "@types/node": "^20.17.51",
     "prettier": "^2.8.1",
     "ts-node": "^10.9.2",
