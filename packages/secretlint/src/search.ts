@@ -49,7 +49,9 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
     debug("search patterns: %o", normalizedPatterns);
     debug("search DEFAULT_IGNORE_PATTERNS: %o", DEFAULT_IGNORE_PATTERNS);
     debug("search ignoreFilePath: %s", options.ignoreFilePath);
+    debug("search cwd: %s", options.cwd);
     const globPatterns = normalizedPatterns.map((pattern) => pattern.pattern);
+    debug("globPatterns for main search: %o", globPatterns);
     const searchResultItems = await globby(globPatterns, {
         cwd: options.cwd,
         ignore: DEFAULT_IGNORE_PATTERNS,
@@ -57,6 +59,7 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
         dot: true,
         absolute: true,
     });
+    debug("searchResultItems: %o", searchResultItems);
 
     // Fallback: If no results and there are dynamic patterns that exist as literal files,
     // try with escaped patterns. This handles files with multiple special characters
@@ -89,24 +92,27 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
     }
 
     if (searchResultItems.length > 0) {
+        debug("returning success with items: %o", searchResultItems);
         return {
             ok: true,
             items: searchResultItems,
         };
     }
+    debug("searchResultItems is empty, checking fallback and ignore logic");
     /**
      * If globby result with ignoring is empty and globby result is not empty, Secretlint suppress "not found target file" error.
      * It is valid case.
      * It aim to avoid error that is caused by ignore files and not found target file.
      * TODO: This is also performance issue. we need to more reasonable mechanism.
      */
-    const isEmptyResultIsHappenByIgnoring =
-        (
-            await globby(globPatterns, {
-                cwd: options.cwd,
-                dot: true,
-            })
-        ).length > 0;
+    const ignoreCheckResults = await globby(globPatterns, {
+        cwd: options.cwd,
+        dot: true,
+        ignore: [],
+    });
+    debug("ignoreCheckResults (without ignore patterns): %o", ignoreCheckResults);
+    const isEmptyResultIsHappenByIgnoring = ignoreCheckResults.length > 0;
+    debug("isEmptyResultIsHappenByIgnoring: %o", isEmptyResultIsHappenByIgnoring);
     return {
         ok: isEmptyResultIsHappenByIgnoring,
         items: [],
