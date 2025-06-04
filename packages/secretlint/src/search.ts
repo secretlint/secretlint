@@ -126,6 +126,7 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
                 dot: true,
             })
         ).length > 0;
+
     return {
         ok: isEmptyResultIsHappenByIgnoring,
         items: [],
