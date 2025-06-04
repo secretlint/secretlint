@@ -34,23 +34,23 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
         // If pattern includes glob pattern, just return `pattern`
         // Because user need to use `secretint "**/*"` in any platform(Windows, macOS, Linux)
         const isPatternGlobStyle = isDynamicPattern(normalizedPattern);
-
+        if (isPatternGlobStyle) {
+            return {
+                pattern: pattern,
+                isDynamic: true,
+            };
+        }
+        // static path should be escaped special characters
         return {
-            originalPattern: pattern,
-            normalizedPattern: normalizedPattern,
-            escapedPattern: convertPathToPattern(normalizedPattern),
-            isDynamic: isPatternGlobStyle,
+            pattern: convertPathToPattern(normalizedPattern),
+            isDynamic: false,
         };
     });
-
     debug("search patterns: %o", normalizedPatterns);
     debug("search DEFAULT_IGNORE_PATTERNS: %o", DEFAULT_IGNORE_PATTERNS);
     debug("search ignoreFilePath: %s", options.ignoreFilePath);
-
-    const originalGlobPatterns = normalizedPatterns.map((pattern) =>
-        pattern.isDynamic ? pattern.originalPattern : pattern.escapedPattern
-    );
-    const searchResultItems = await globby(originalGlobPatterns, {
+    const globPatterns = normalizedPatterns.map((pattern) => pattern.pattern);
+    const searchResultItems = await globby(globPatterns, {
         cwd: options.cwd,
         ignore: DEFAULT_IGNORE_PATTERNS,
         ignoreFiles: options.ignoreFilePath ? [options.ignoreFilePath] : undefined,
@@ -61,15 +61,18 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
     // Fallback: If no results and there are dynamic patterns that exist as literal files,
     // try with escaped patterns. This handles files with multiple special characters
     // Related to issue: https://github.com/secretlint/secretlint/issues/1057
+    // This is a workaround for fast-glob's convertPathToPattern limitation with combined special characters
     if (searchResultItems.length === 0) {
-        const literalFilePatterns = normalizedPatterns.filter((p) => {
-            if (!p.isDynamic) return false;
-            const fullPath = path.resolve(options.cwd, p.normalizedPattern);
+        const dynamicPatterns = normalizedPatterns.filter((p) => p.isDynamic);
+
+        const literalFilePatterns = dynamicPatterns.filter((p) => {
+            const fullPath = path.resolve(options.cwd, p.pattern);
             return fs.existsSync(fullPath);
         });
 
         if (literalFilePatterns.length > 0) {
-            const fallbackGlobPatterns = literalFilePatterns.map((pattern) => pattern.escapedPattern);
+            const fallbackGlobPatterns = literalFilePatterns.map((pattern) => convertPathToPattern(pattern.pattern));
+
             const fallbackResults = await globby(fallbackGlobPatterns, {
                 cwd: options.cwd,
                 ignore: DEFAULT_IGNORE_PATTERNS,
@@ -91,16 +94,12 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
             items: searchResultItems,
         };
     }
-
     /**
      * If globby result with ignoring is empty and globby result is not empty, Secretlint suppress "not found target file" error.
      * It is valid case.
      * It aim to avoid error that is caused by ignore files and not found target file.
      * TODO: This is also performance issue. we need to more reasonable mechanism.
      */
-    const globPatterns = normalizedPatterns.map((pattern) =>
-        pattern.isDynamic ? pattern.originalPattern : pattern.escapedPattern
-    );
     const isEmptyResultIsHappenByIgnoring =
         (
             await globby(globPatterns, {
@@ -108,7 +107,6 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
                 dot: true,
             })
         ).length > 0;
-
     return {
         ok: isEmptyResultIsHappenByIgnoring,
         items: [],
