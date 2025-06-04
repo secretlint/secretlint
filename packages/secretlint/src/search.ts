@@ -31,44 +31,67 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
         // If pattern includes glob pattern, just return `pattern`
         // Because user need to use `secretint "**/*"` in any platform(Windows, macOS, Linux)
         const isPatternGlobStyle = isDynamicPattern(normalizedPattern);
-        if (isPatternGlobStyle) {
-            return {
-                pattern: pattern,
-                isDynamic: true,
-            };
-        }
-        // static path should be escaped special characters
+
         return {
-            pattern: convertPathToPattern(normalizedPattern),
-            isDynamic: false,
+            originalPattern: pattern,
+            normalizedPattern: normalizedPattern,
+            escapedPattern: convertPathToPattern(normalizedPattern),
+            isDynamic: isPatternGlobStyle,
         };
     });
+
     debug("search patterns: %o", normalizedPatterns);
     debug("search DEFAULT_IGNORE_PATTERNS: %o", DEFAULT_IGNORE_PATTERNS);
     debug("search ignoreFilePath: %s", options.ignoreFilePath);
-    const globPatterns = normalizedPatterns.map((pattern) => pattern.pattern);
-    const searchResultItems = await globby(globPatterns, {
+
+    const originalGlobPatterns = normalizedPatterns.map((pattern) =>
+        pattern.isDynamic ? pattern.originalPattern : pattern.escapedPattern
+    );
+
+    let searchResultItems = await globby(originalGlobPatterns, {
         cwd: options.cwd,
         ignore: DEFAULT_IGNORE_PATTERNS,
         ignoreFiles: options.ignoreFilePath ? [options.ignoreFilePath] : undefined,
         dot: true,
         absolute: true,
     });
+
+    if (searchResultItems.length === 0) {
+        const hasFailedDynamicPatterns = normalizedPatterns.some((p) => p.isDynamic);
+        if (hasFailedDynamicPatterns) {
+            const fallbackGlobPatterns = normalizedPatterns.map((pattern) => pattern.escapedPattern);
+            const fallbackResults = await globby(fallbackGlobPatterns, {
+                cwd: options.cwd,
+                ignore: DEFAULT_IGNORE_PATTERNS,
+                ignoreFiles: options.ignoreFilePath ? [options.ignoreFilePath] : undefined,
+                dot: true,
+                absolute: true,
+            });
+
+            if (fallbackResults.length > 0) {
+                searchResultItems = fallbackResults;
+                debug("Used escaped patterns as fallback: %o", fallbackGlobPatterns);
+            }
+        }
+    }
+
     if (searchResultItems.length > 0) {
         return {
             ok: true,
             items: searchResultItems,
         };
     }
+
     /**
      * If globby result with ignoring is empty and globby result is not empty, Secretlint suppress "not found target file" error.
      * It is valid case.
      * It aim to avoid error that is caused by ignore files and not found target file.
      * TODO: This is also performance issue. we need to more reasonable mechanism.
      */
+    const finalGlobPatterns = normalizedPatterns.map((pattern) => pattern.escapedPattern);
     const isEmptyResultIsHappenByIgnoring =
         (
-            await globby(globPatterns, {
+            await globby(finalGlobPatterns, {
                 cwd: options.cwd,
                 dot: true,
             })
