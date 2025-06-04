@@ -12,62 +12,6 @@ const DEFAULT_IGNORE_PATTERNS = [
     "**/.secretlintignore*/**",
 ];
 
-/**
- * Search files using glob patterns with fallback for literal files containing special characters
- * This abstraction hides globby implementation details and makes it easier to replace in the future
- *
- * WORKAROUND: This implements a 2-pass approach to handle files with multiple special characters
- * like `(group).[test].md` that are incorrectly detected as dynamic patterns by isDynamicPattern
- * but are actually literal file paths that need escaping.
- * See: https://github.com/secretlint/secretlint/issues/1057
- */
-async function searchFilesWithGlob(
-    normalizedPatterns: Array<{
-        originalPattern: string;
-        normalizedPattern: string;
-        escapedPattern: string;
-        isDynamic: boolean;
-    }>,
-    options: { cwd: string; ignoreFilePath?: string }
-): Promise<string[]> {
-    const globOptions = {
-        cwd: options.cwd,
-        ignore: DEFAULT_IGNORE_PATTERNS,
-        ignoreFiles: options.ignoreFilePath ? [options.ignoreFilePath] : undefined,
-        dot: true,
-        absolute: true,
-    };
-
-    const originalGlobPatterns = normalizedPatterns.map((pattern) =>
-        pattern.isDynamic ? pattern.originalPattern : pattern.escapedPattern
-    );
-
-    let searchResultItems = await globby(originalGlobPatterns, globOptions);
-
-    if (searchResultItems.length === 0) {
-        // Fallback: Check if any "dynamic" patterns are actually literal files with special characters
-        // exists as a literal file on disk, and if so, treat it as a literal path that needs escaping.
-        // Related to issue: https://github.com/secretlint/secretlint/issues/1057
-        const literalFilePatterns = normalizedPatterns.filter((p) => {
-            if (!p.isDynamic) return false;
-
-            const fullPath = path.resolve(options.cwd, p.normalizedPattern);
-            return fs.existsSync(fullPath);
-        });
-
-        if (literalFilePatterns.length > 0) {
-            const fallbackGlobPatterns = literalFilePatterns.map((pattern) => pattern.escapedPattern);
-            const fallbackResults = await globby(fallbackGlobPatterns, globOptions);
-
-            if (fallbackResults.length > 0) {
-                searchResultItems = fallbackResults;
-                debug("Used escaped patterns as fallback for literal files: %o", fallbackGlobPatterns);
-            }
-        }
-    }
-
-    return searchResultItems;
-}
 export type SearchFilesOptions = {
     cwd: string;
     ignoreFilePath?: string;
@@ -103,7 +47,43 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
     debug("search DEFAULT_IGNORE_PATTERNS: %o", DEFAULT_IGNORE_PATTERNS);
     debug("search ignoreFilePath: %s", options.ignoreFilePath);
 
-    const searchResultItems = await searchFilesWithGlob(normalizedPatterns, options);
+    const originalGlobPatterns = normalizedPatterns.map((pattern) =>
+        pattern.isDynamic ? pattern.originalPattern : pattern.escapedPattern
+    );
+    const searchResultItems = await globby(originalGlobPatterns, {
+        cwd: options.cwd,
+        ignore: DEFAULT_IGNORE_PATTERNS,
+        ignoreFiles: options.ignoreFilePath ? [options.ignoreFilePath] : undefined,
+        dot: true,
+        absolute: true,
+    });
+
+    // Fallback: If no results and there are dynamic patterns that exist as literal files,
+    // try with escaped patterns. This handles files with multiple special characters
+    // Related to issue: https://github.com/secretlint/secretlint/issues/1057
+    if (searchResultItems.length === 0) {
+        const literalFilePatterns = normalizedPatterns.filter((p) => {
+            if (!p.isDynamic) return false;
+            const fullPath = path.resolve(options.cwd, p.normalizedPattern);
+            return fs.existsSync(fullPath);
+        });
+
+        if (literalFilePatterns.length > 0) {
+            const fallbackGlobPatterns = literalFilePatterns.map((pattern) => pattern.escapedPattern);
+            const fallbackResults = await globby(fallbackGlobPatterns, {
+                cwd: options.cwd,
+                ignore: DEFAULT_IGNORE_PATTERNS,
+                ignoreFiles: options.ignoreFilePath ? [options.ignoreFilePath] : undefined,
+                dot: true,
+                absolute: true,
+            });
+
+            if (fallbackResults.length > 0) {
+                searchResultItems.push(...fallbackResults);
+                debug("Used escaped patterns as fallback for literal files: %o", fallbackGlobPatterns);
+            }
+        }
+    }
 
     if (searchResultItems.length > 0) {
         return {
@@ -118,10 +98,12 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
      * It aim to avoid error that is caused by ignore files and not found target file.
      * TODO: This is also performance issue. we need to more reasonable mechanism.
      */
-    const finalGlobPatterns = normalizedPatterns.map((pattern) => pattern.escapedPattern);
+    const globPatterns = normalizedPatterns.map((pattern) =>
+        pattern.isDynamic ? pattern.originalPattern : pattern.escapedPattern
+    );
     const isEmptyResultIsHappenByIgnoring =
         (
-            await globby(finalGlobPatterns, {
+            await globby(globPatterns, {
                 cwd: options.cwd,
                 dot: true,
             })
