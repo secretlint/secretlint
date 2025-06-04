@@ -15,6 +15,11 @@ const DEFAULT_IGNORE_PATTERNS = [
 /**
  * Search files using glob patterns with fallback for literal files containing special characters
  * This abstraction hides globby implementation details and makes it easier to replace in the future
+ *
+ * WORKAROUND: This implements a 2-pass approach to handle files with multiple special characters
+ * like `(group).[test].md` that are incorrectly detected as dynamic patterns by isDynamicPattern
+ * but are actually literal file paths that need escaping.
+ * See: https://github.com/secretlint/secretlint/issues/1057
  */
 async function searchFilesWithGlob(
     normalizedPatterns: Array<{
@@ -40,6 +45,9 @@ async function searchFilesWithGlob(
     let searchResultItems = await globby(originalGlobPatterns, globOptions);
 
     if (searchResultItems.length === 0) {
+        // Fallback: Check if any "dynamic" patterns are actually literal files with special characters
+        // exists as a literal file on disk, and if so, treat it as a literal path that needs escaping.
+        // Related to issue: https://github.com/secretlint/secretlint/issues/1057
         const literalFilePatterns = normalizedPatterns.filter((p) => {
             if (!p.isDynamic) return false;
 
