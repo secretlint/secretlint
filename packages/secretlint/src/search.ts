@@ -1,5 +1,7 @@
 import { globby, isDynamicPattern, convertPathToPattern } from "globby";
 import debug0 from "debug";
+import fs from "fs";
+import path from "path";
 
 const debug = debug0("secretlint");
 const DEFAULT_IGNORE_PATTERNS = [
@@ -57,9 +59,15 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
     });
 
     if (searchResultItems.length === 0) {
-        const hasFailedDynamicPatterns = normalizedPatterns.some((p) => p.isDynamic);
-        if (hasFailedDynamicPatterns) {
-            const fallbackGlobPatterns = normalizedPatterns.map((pattern) => pattern.escapedPattern);
+        const literalFilePatterns = normalizedPatterns.filter((p) => {
+            if (!p.isDynamic) return false;
+
+            const fullPath = path.resolve(options.cwd, p.normalizedPattern);
+            return fs.existsSync(fullPath);
+        });
+
+        if (literalFilePatterns.length > 0) {
+            const fallbackGlobPatterns = literalFilePatterns.map((pattern) => pattern.escapedPattern);
             const fallbackResults = await globby(fallbackGlobPatterns, {
                 cwd: options.cwd,
                 ignore: DEFAULT_IGNORE_PATTERNS,
@@ -70,7 +78,7 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
 
             if (fallbackResults.length > 0) {
                 searchResultItems = fallbackResults;
-                debug("Used escaped patterns as fallback: %o", fallbackGlobPatterns);
+                debug("Used escaped patterns as fallback for literal files: %o", fallbackGlobPatterns);
             }
         }
     }
