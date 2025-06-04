@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1748991079125,
+  "lastUpdate": 1749025449919,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -37770,6 +37770,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.83,
             "range": "±1.61%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+            "name": "devin-ai-integration[bot]",
+            "username": "devin-ai-integration[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "9ce2b39c553245f089f966cbdaf6c8c3227e70b0",
+          "message": "Add test cases for bracket character escaping in file paths (#1056)\n\n* test: add test cases for bracket character escaping in file paths\n\nAdd snapshot tests for file paths containing '[' characters to verify\nglob escaping functionality works correctly. This follows the same\npattern as the existing parentheses character tests and addresses\nissue #816 for bracket character support.\n\nCo-Authored-By: azu <azuciao@gmail.com>\n\n* test: add directory path test case for bracket escaping\n\nAdd test case for ./[test]/input.txt pattern to verify how\nbracket characters in directory paths are handled by the\nglob escaping functionality.\n\nCo-Authored-By: azu <azuciao@gmail.com>\n\n* test: add combined special characters test case\n\nAdd test case for input-(group).[test].md pattern that combines\nboth ( and [ special characters. This test demonstrates the\nlimitation in glob escaping when multiple special characters\nare present in the same filename, resulting in 'Error: Not found target files'.\n\nCo-Authored-By: azu <azuciao@gmail.com>\n\n---------\n\nCo-authored-by: Devin AI <158243242+devin-ai-integration[bot]@users.noreply.github.com>\nCo-authored-by: azu <azuciao@gmail.com>",
+          "timestamp": "2025-06-04T17:22:08+09:00",
+          "tree_id": "36e0d50f3893e92f367c1e4b61dd30e211473fa3",
+          "url": "https://github.com/secretlint/secretlint/commit/9ce2b39c553245f089f966cbdaf6c8c3227e70b0"
+        },
+        "date": 1749025447447,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.53,
+            "range": "±0.67%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.86,
+            "range": "±1.91%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
