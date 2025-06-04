@@ -1,4 +1,5 @@
-import { globby, isDynamicPattern, convertPathToPattern } from "globby";
+import { globby, isDynamicPattern } from "globby";
+import fastGlob from "fast-glob";
 import debug0 from "debug";
 
 const debug = debug0("secretlint");
@@ -39,7 +40,7 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
         }
         // static path should be escaped special characters
         return {
-            pattern: convertPathToPattern(normalizedPattern),
+            pattern: fastGlob.escapePath(normalizedPattern),
             isDynamic: false,
         };
     });
