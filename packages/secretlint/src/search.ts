@@ -114,7 +114,7 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
     const isEmptyResultIsHappenByIgnoring = ignoreCheckResults.length > 0;
     debug("isEmptyResultIsHappenByIgnoring: %o", isEmptyResultIsHappenByIgnoring);
     return {
-        ok: isEmptyResultIsHappenByIgnoring,
+        ok: false,
         items: [],
     };
 };

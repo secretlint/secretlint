@@ -35,7 +35,7 @@ const lintFileOrText = async ({
             cwd: cliOptions.cwd,
             ignoreFilePath: cliOptions.ignoreFilePath,
         });
-        if (!ok || items.length === 0) {
+        if (!ok) {
             throw new Error("Not found target files");
         }
         return engine.executeOnFiles({
