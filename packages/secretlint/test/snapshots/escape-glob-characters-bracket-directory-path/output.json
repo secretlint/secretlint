@@ -1,0 +1,12 @@
+{
+    "exitStatus": 0,
+    "stdout": [
+        {
+            "filePath": "[SNAPSHOT]/escape-glob-characters-bracket-directory-path/[test]/input.txt",
+            "sourceContent": "Include glob special characters in directory path\n",
+            "sourceContentType": "text",
+            "messages": []
+        }
+    ],
+    "stderr": null
+}
