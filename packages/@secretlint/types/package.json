@@ -58,7 +58,7 @@
     "tabWidth": 4
   },
   "devDependencies": {
-    "@types/node": "^20.17.57",
+    "@types/node": "^20.17.58",
     "prettier": "^2.8.1",
     "ts-node": "^10.9.2",
     "tsconfig-to-dual-package": "^1.2.0",
