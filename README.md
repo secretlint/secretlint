@@ -117,7 +117,7 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
     --output           [path:String] output file path that is written of reported result.
     --no-color         disable ANSI-color of output.
     --no-terminalLink  disable terminalLink of output.
-    --maskSecrets      enable masking of secret values. replace actual secrets with "***".
+    --no-maskSecrets   disable masking of secret values; secrets are masked by default.
     --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
     --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
     --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
@@ -134,7 +134,7 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
     # glob pattern should be wrapped with double quote
     $ secretlint "**/*"
     $ secretlint "source/**/*.ini"
-    # found secrets and mask the secrets
+    # output masked result to file
     $ secretlint .zsh_history --format=mask-result --output=.zsh_history
     # lint STDIN content instead of file
     $ echo "SECRET CONTENT" | secretlint --stdinFileName=secret.txt
@@ -292,13 +292,19 @@ For more details, please see [Configuring Secretlint](./docs/configuration.md).
 
 ## Use Cases
 
-### Hide secrets in lint error message
+### Mask secrets in lint error message (Default behavior)
 
-Secretlint support `--maskSecrets` option that mask secrets in lint error message.
-It is useful that you want to hide secrets in CI logs.
+Secretlint masks secrets in lint error messages by default. This is useful to prevent accidental secret exposure in CI logs, terminal output, or when using AI agent tools.
 
 ```bash
-$ secretlint --maskSecrets "**/*"
+# Secrets are masked by default
+$ secretlint "**/*"
+```
+
+To show actual secret values in the output, use `--no-maskSecrets`:
+
+```bash
+$ secretlint --no-maskSecrets "**/*"
 ```
 
 ### Fix secrets

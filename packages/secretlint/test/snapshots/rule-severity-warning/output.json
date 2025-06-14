@@ -7,7 +7,7 @@
             "sourceContentType": "text",
             "messages": [
                 {
-                    "message": "found secret: SECRET",
+                    "message": "found secret: ******",
                     "range": [
                         8,
                         14
@@ -28,7 +28,7 @@
                     "messageId": "EXAMPLE_MESSAGE",
                     "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-example/README.md#EXAMPLE_MESSAGE",
                     "data": {
-                        "ID": "SECRET"
+                        "ID": "******"
                     }
                 }
             ]

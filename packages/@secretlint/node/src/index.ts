@@ -45,7 +45,7 @@ export type SecretLintEngineOptionsBase = {
      * If maskSecrets is true, mask secret values with "***".
      * If you want to hide actual secret values, set true
      * https://github.com/secretlint/secretlint/issues/176
-     * Default: false
+     * Default: true
      */
     maskSecrets?: boolean;
 };

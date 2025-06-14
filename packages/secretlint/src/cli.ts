@@ -25,7 +25,7 @@ Options
   --output           [path:String] output file path that is written of reported result.
   --no-color         disable ANSI-color of output.
   --no-terminalLink  disable terminalLink of output.
-  --maskSecrets      enable masking of secret values. replace actual secrets with "***".
+  --no-maskSecrets   disable masking of secret values; secrets are masked by default.
   --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
   --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
   --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
@@ -42,7 +42,7 @@ Examples
   # glob pattern should be wrapped with double quote
   $ secretlint "**/*"
   $ secretlint "source/**/*.ini"
-  # found secrets and mask the secrets
+  # output masked result to file
   $ secretlint .zsh_history --format=mask-result --output=.zsh_history
   # lint STDIN content instead of file
   $ echo "SECRET CONTENT" | secretlint --stdinFileName=secret.txt
@@ -71,17 +71,13 @@ const options = {
     output: {
         type: OPTION_TYPE_STRING,
     },
-    "no-color": {
-        type: OPTION_TYPE_BOOLEAN,
-        default: false,
-    },
-    "no-terminalLink": {
-        type: OPTION_TYPE_BOOLEAN,
-        default: false,
-    },
+    /**
+     * enable maskSecrets by default since secretlint v10+.
+     * If you want to disable masking of secret values, use --no-maskSecrets option.
+     */
     maskSecrets: {
         type: OPTION_TYPE_BOOLEAN,
-        default: false,
+        default: true,
     },
     secretlintrc: {
         type: OPTION_TYPE_STRING,
@@ -164,7 +160,7 @@ const options = {
         default: false,
     },
 };
-const { values, positionals } = parseArgs({ options, allowPositionals: true });
+const { values, positionals } = parseArgs({ options, allowPositionals: true, allowNegative: true });
 export const cli = {
     input: positionals,
     flags: values,
@@ -232,6 +228,7 @@ export const run = async (
         flags,
     });
     debug("cliOptions %O", cliOptions);
+
     return runSecretLint({
         cliOptions,
         engineOptions: flags.secretlintrcJSON

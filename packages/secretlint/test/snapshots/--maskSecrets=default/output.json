@@ -2,12 +2,12 @@
     "exitStatus": 1,
     "stdout": [
         {
-            "filePath": "[SNAPSHOT]/--locale=ja/input.txt",
+            "filePath": "[SNAPSHOT]/--maskSecrets=default/input.txt",
             "sourceContent": "THIS IS SECRET DATA!!\n",
             "sourceContentType": "text",
             "messages": [
                 {
-                    "message": "secret: ****** がみつかりました",
+                    "message": "found secret: ******",
                     "range": [
                         8,
                         14
