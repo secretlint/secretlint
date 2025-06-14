@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1749911131917,
+  "lastUpdate": 1749940842408,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -38226,6 +38226,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.65,
             "range": "±1.22%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "5284f5bd1d49f98bc5eb382e44235cf760ea674f",
+          "message": "feat: add @secretlint/secretlint-rule-anthropic for detecting Anthropic Claude API keys (#1072)\n\n* feat: add @secretlint/secretlint-rule-anthropic for detecting Anthropic Claude API keys\n\n* Update yarn.lock\n\n* Update yarn.lock\n\n* fix: update comments for clarity and examples in Anthropic API key detection\n\n* feat: add anthropic rule to canary preset\n\n- Add @secretlint/secretlint-rule-anthropic to devDependencies\n- Import and include anthropic rule in canary preset\n- Update test snapshots to include anthropic rule tests\n- All 56 tests pass successfully\n\n* Delete test-anthropic.js\n\n* Update packages/@secretlint/secretlint-rule-preset-canary/test/snapshots/secretlint-rule-openai/ng.secret/input.txt+3\n\n* Delete .secretlintrc-test.json\n\n* Update packages/@secretlint/secretlint-rule-anthropic/package.json+1",
+          "timestamp": "2025-06-15T07:38:51+09:00",
+          "tree_id": "5d1b42b92e0a31640d4dc5fc304c0ad11eb10a4c",
+          "url": "https://github.com/secretlint/secretlint/commit/5284f5bd1d49f98bc5eb382e44235cf760ea674f"
+        },
+        "date": 1749940840814,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.66,
+            "range": "±0.60%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.61,
+            "range": "±2.12%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
