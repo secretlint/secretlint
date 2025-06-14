@@ -117,8 +117,7 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
     --output           [path:String] output file path that is written of reported result.
     --no-color         disable ANSI-color of output.
     --no-terminalLink  disable terminalLink of output.
-    --maskSecrets      enable masking of secret values. replace actual secrets with "***". Default: true
-    --no-maskSecrets   disable masking of secret values. show actual secrets in output.
+    --no-maskSecrets   disable masking of secret values. show actual secrets in output. secretlint will not output actual secret values by default.
     --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
     --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
     --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
