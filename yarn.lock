@@ -1126,7 +1126,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@secretlint/secretlint-rule-anthropic@workspace:packages/@secretlint/secretlint-rule-anthropic":
+"@secretlint/secretlint-rule-anthropic@npm:^10.0.0, @secretlint/secretlint-rule-anthropic@workspace:packages/@secretlint/secretlint-rule-anthropic":
   version: 0.0.0-use.local
   resolution: "@secretlint/secretlint-rule-anthropic@workspace:packages/@secretlint/secretlint-rule-anthropic"
   dependencies:
@@ -1360,6 +1360,7 @@ __metadata:
     "@rollup/plugin-commonjs": "npm:^25.0.8"
     "@rollup/plugin-typescript": "npm:^11.1.6"
     "@secretlint/secretlint-rule-1password": "npm:^10.0.0"
+    "@secretlint/secretlint-rule-anthropic": "npm:^10.0.0"
     "@secretlint/secretlint-rule-aws": "npm:^10.0.0"
     "@secretlint/secretlint-rule-basicauth": "npm:^10.0.0"
     "@secretlint/secretlint-rule-filter-comments": "npm:^10.0.0"

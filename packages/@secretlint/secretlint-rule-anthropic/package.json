@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-anthropic",
-  "version": "9.3.4",
+  "version": "10.0.0",
   "description": "A secretlint rule for detecting Anthropic Claude API keys",
   "keywords": [
     "secretlint",
