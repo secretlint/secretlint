@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/resolver",
-  "version": "10.0.0",
+  "version": "10.1.0",
   "description": "Module Resolver Utility for Secretlint",
   "keywords": [
     "secretlint",
