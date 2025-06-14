@@ -1,0 +1,72 @@
+{
+  "name": "@secretlint/secretlint-rule-anthropic",
+  "version": "10.0.0",
+  "description": "A secretlint rule for detecting Anthropic Claude API keys",
+  "keywords": [
+    "secretlint",
+    "rule",
+    "anthropic",
+    "claude",
+    "api-key",
+    "security"
+  ],
+  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-anthropic/",
+  "bugs": {
+    "url": "https://github.com/secretlint/secretlint/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/secretlint/secretlint.git"
+  },
+  "license": "MIT",
+  "author": "azu",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./module/index.d.ts",
+        "default": "./module/index.js"
+      },
+      "default": "./module/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./module/index.js",
+  "types": "./module/index.d.ts",
+  "files": [
+    "bin/",
+    "module/",
+    "src/"
+  ],
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "tsc --build --clean",
+    "prepublishOnly": "npm run clean && npm run build",
+    "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
+    "prepublish": "npm run --if-present build",
+    "test": "node --loader ts-node/esm --test test/index.test.ts",
+    "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
+    "watch": "tsc --build --watch"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "singleQuote": false,
+    "tabWidth": 4
+  },
+  "dependencies": {
+    "@secretlint/types": "^9.3.4"
+  },
+  "devDependencies": {
+    "@secretlint/tester": "^9.3.4",
+    "@types/node": "^20.19.0",
+    "prettier": "^2.8.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.1.6"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
