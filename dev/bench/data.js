@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1749905741227,
+  "lastUpdate": 1749910018416,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -38074,6 +38074,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.85,
             "range": "±1.06%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "158243242+devin-ai-integration[bot]@users.noreply.github.com",
+            "name": "devin-ai-integration[bot]",
+            "username": "devin-ai-integration[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "3647e05c8922404c3b2dd3f26b2887135d02b77e",
+          "message": "fix: use replaceAll instead of split().join() in maskWithValues (#1066)\n\n- Replace split().join() pattern with modern replaceAll method\n- Resolves TODO comment on lines 46-48\n- Maintains identical functionality with cleaner implementation\n\nCo-authored-by: Devin AI <158243242+devin-ai-integration[bot]@users.noreply.github.com>\nCo-authored-by: azu <azuciao@gmail.com>",
+          "timestamp": "2025-06-14T23:04:57+09:00",
+          "tree_id": "c814500b949a32793805a0541d422fc71522bcdd",
+          "url": "https://github.com/secretlint/secretlint/commit/3647e05c8922404c3b2dd3f26b2887135d02b77e"
+        },
+        "date": 1749910016105,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.52,
+            "range": "±1.12%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.87,
+            "range": "±1.68%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
