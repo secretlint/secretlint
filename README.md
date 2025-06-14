@@ -297,7 +297,7 @@ For more details, please see [Configuring Secretlint](./docs/configuration.md).
 Secretlint masks secrets in lint error messages by default. This is useful to prevent accidental secret exposure in CI logs, terminal output, or when using AI agent tools.
 
 ```bash
-# Secrets are masked by default (new default behavior)
+# Secrets are masked by default
 $ secretlint "**/*"
 ```
 
