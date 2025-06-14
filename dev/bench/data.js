@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1749910018416,
+  "lastUpdate": 1749910116824,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -38112,6 +38112,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.87,
             "range": "±1.68%",
+            "unit": "ops/sec",
+            "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "2aef1984493564bec159eb698f7a49568dc6b76b",
+          "message": "BREAKING CHANGE: Make --maskSecrets the default behavior and add `--no-maskSecrets` flag (#1068)\n\n* BREAKING CHANGE: --maskSecrets  by default\n\n- Change default behavior of --maskSecrets to true, masking secret values in output.\n- Introduce --no-maskSecrets option to disable masking and show actual secret values.\n- Update README.md to reflect new default behavior and usage examples.\n- Modify SecretLintEngineOptionsBase to set maskSecrets default to true.\n- Adjust CLI implementation to handle new masking logic.\n- Add tests for both default masking and no-masking scenarios with appropriate snapshots.\n\n* feat: enable maskSecrets by default and update output to mask sensitive data\n\n* update image\n\n* docs: update README and CLI options to clarify default masking behavior for secrets\n\n* docs: clarify default behavior of secret masking in README\n\n* Update packages/secretlint/test/snapshots/--help/output.json",
+          "timestamp": "2025-06-14T23:06:45+09:00",
+          "tree_id": "97af431bcda800b20e9602cfb0db268b1cdd5644",
+          "url": "https://github.com/secretlint/secretlint/commit/2aef1984493564bec159eb698f7a49568dc6b76b"
+        },
+        "date": 1749910115179,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.55,
+            "range": "±0.88%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.85,
+            "range": "±0.71%",
             "unit": "ops/sec",
             "extra": "7 samples"
           }
