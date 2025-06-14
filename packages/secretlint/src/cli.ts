@@ -25,7 +25,7 @@ Options
   --output           [path:String] output file path that is written of reported result.
   --no-color         disable ANSI-color of output.
   --no-terminalLink  disable terminalLink of output.
-  --maskSecrets      enable masking of secret values. replace actual secrets with "***".
+  --no-maskSecrets   disable masking of secret values. show actual secrets in output. secretlint will not output actual secret values by default.
   --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
   --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
   --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
@@ -79,7 +79,7 @@ const options = {
         type: OPTION_TYPE_BOOLEAN,
         default: false,
     },
-    maskSecrets: {
+    "no-maskSecrets": {
         type: OPTION_TYPE_BOOLEAN,
         default: false,
     },
@@ -232,6 +232,10 @@ export const run = async (
         flags,
     });
     debug("cliOptions %O", cliOptions);
+
+    // if not pass --no-maskSecrets, maskSecrets is true by default
+    const maskSecrets = flags["no-maskSecrets"] ?? true;
+
     return runSecretLint({
         cliOptions,
         engineOptions: flags.secretlintrcJSON
@@ -243,7 +247,7 @@ export const run = async (
                   color: flags.color,
                   terminalLink: flags.terminalLink,
                   locale: flags.locale,
-                  maskSecrets: flags.maskSecrets,
+                  maskSecrets: maskSecrets,
               }
             : {
                   configFilePath: flags.secretlintrc,
@@ -252,7 +256,7 @@ export const run = async (
                   color: flags.color,
                   terminalLink: flags.terminalLink,
                   locale: flags.locale,
-                  maskSecrets: flags.maskSecrets,
+                  maskSecrets: maskSecrets,
               },
     }).finally(async () => {
         secretLintProfiler.mark({
