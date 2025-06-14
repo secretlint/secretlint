@@ -71,17 +71,13 @@ const options = {
     output: {
         type: OPTION_TYPE_STRING,
     },
-    "no-color": {
+    /**
+     * enable maskSecrets by default since secretlint v10+.
+     * If you want to disable masking of secret values, use --no-maskSecrets option.
+     */
+    maskSecrets: {
         type: OPTION_TYPE_BOOLEAN,
-        default: false,
-    },
-    "no-terminalLink": {
-        type: OPTION_TYPE_BOOLEAN,
-        default: false,
-    },
-    "no-maskSecrets": {
-        type: OPTION_TYPE_BOOLEAN,
-        default: false,
+        default: true,
     },
     secretlintrc: {
         type: OPTION_TYPE_STRING,
@@ -164,7 +160,7 @@ const options = {
         default: false,
     },
 };
-const { values, positionals } = parseArgs({ options, allowPositionals: true });
+const { values, positionals } = parseArgs({ options, allowPositionals: true, allowNegative: true });
 export const cli = {
     input: positionals,
     flags: values,
@@ -233,9 +229,6 @@ export const run = async (
     });
     debug("cliOptions %O", cliOptions);
 
-    // if not pass --no-maskSecrets, maskSecrets is true by default
-    const maskSecrets = flags["no-maskSecrets"] ?? true;
-
     return runSecretLint({
         cliOptions,
         engineOptions: flags.secretlintrcJSON
@@ -247,7 +240,7 @@ export const run = async (
                   color: flags.color,
                   terminalLink: flags.terminalLink,
                   locale: flags.locale,
-                  maskSecrets: maskSecrets,
+                  maskSecrets: flags.maskSecrets,
               }
             : {
                   configFilePath: flags.secretlintrc,
@@ -256,7 +249,7 @@ export const run = async (
                   color: flags.color,
                   terminalLink: flags.terminalLink,
                   locale: flags.locale,
-                  maskSecrets: maskSecrets,
+                  maskSecrets: flags.maskSecrets,
               },
     }).finally(async () => {
         secretLintProfiler.mark({
