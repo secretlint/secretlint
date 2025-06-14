@@ -117,7 +117,7 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
     --output           [path:String] output file path that is written of reported result.
     --no-color         disable ANSI-color of output.
     --no-terminalLink  disable terminalLink of output.
-    --no-maskSecrets   disable masking of secret values. show actual secrets in output. secretlint will not output actual secret values by default.
+    --no-maskSecrets   disable masking of secret values; secrets are masked by default.
     --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
     --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
     --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
@@ -134,7 +134,7 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
     # glob pattern should be wrapped with double quote
     $ secretlint "**/*"
     $ secretlint "source/**/*.ini"
-    # found secrets and mask the secrets
+    # output masked result to file
     $ secretlint .zsh_history --format=mask-result --output=.zsh_history
     # lint STDIN content instead of file
     $ echo "SECRET CONTENT" | secretlint --stdinFileName=secret.txt
