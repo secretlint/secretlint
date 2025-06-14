@@ -1,12 +1,12 @@
-FROM node:20-alpine
+FROM node:22-alpine
 
 LABEL maintainer="azu <azuciao@gmail.com>"
 LABEL description="Docker Container for secretlint"
 
 ARG SECRETLINT_VERSION
-ENV SECRETLINT_VERSION ${SECRETLINT_VERSION:-4.0.0}
+ENV SECRETLINT_VERSION=${SECRETLINT_VERSION:-4.0.0}
 
-ENV SECRETLINTRC /.secretlintrc.json
+ENV SECRETLINTRC=/.secretlintrc.json
 COPY .secretlintrc.json $SECRETLINTRC
 RUN npm install -g secretlint@${SECRETLINT_VERSION} \
             @secretlint/secretlint-rule-preset-recommend@${SECRETLINT_VERSION} \
