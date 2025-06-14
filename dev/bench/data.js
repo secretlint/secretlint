@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1749910116824,
+  "lastUpdate": 1749910883879,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -38152,6 +38152,44 @@ window.BENCHMARK_DATA = {
             "range": "±0.71%",
             "unit": "ops/sec",
             "extra": "7 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a402f7a96f0ca9709b56c1c7f9d65b4d46ff6b91",
+          "message": "fix: update Node.js version requirements to 20+ across workflows and package.json files (#1070)",
+          "timestamp": "2025-06-14T23:19:36+09:00",
+          "tree_id": "8ad93dcff995147ca7f0088f9a9884f0b5b6ad41",
+          "url": "https://github.com/secretlint/secretlint/commit/a402f7a96f0ca9709b56c1c7f9d65b4d46ff6b91"
+        },
+        "date": 1749910882375,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.69,
+            "range": "±0.68%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.66,
+            "range": "±1.29%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
           }
         ]
       }
