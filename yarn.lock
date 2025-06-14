@@ -1086,7 +1086,24 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+<<<<<<< Updated upstream
 "@secretlint/secretlint-rule-aws@npm:^10.0.0, @secretlint/secretlint-rule-aws@workspace:packages/@secretlint/secretlint-rule-aws":
+=======
+"@secretlint/secretlint-rule-anthropic@workspace:packages/@secretlint/secretlint-rule-anthropic":
+  version: 0.0.0-use.local
+  resolution: "@secretlint/secretlint-rule-anthropic@workspace:packages/@secretlint/secretlint-rule-anthropic"
+  dependencies:
+    "@secretlint/tester": "npm:^9.3.4"
+    "@secretlint/types": "npm:^9.3.4"
+    "@types/node": "npm:^20.19.0"
+    prettier: "npm:^2.8.1"
+    ts-node: "npm:^10.9.2"
+    typescript: "npm:^5.1.6"
+  languageName: unknown
+  linkType: soft
+
+"@secretlint/secretlint-rule-aws@npm:^9.3.4, @secretlint/secretlint-rule-aws@workspace:packages/@secretlint/secretlint-rule-aws":
+>>>>>>> Stashed changes
   version: 0.0.0-use.local
   resolution: "@secretlint/secretlint-rule-aws@workspace:packages/@secretlint/secretlint-rule-aws"
   dependencies:
