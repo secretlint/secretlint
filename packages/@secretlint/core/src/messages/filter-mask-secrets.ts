@@ -43,8 +43,7 @@ const createMaskValue = (value: string): string => {
 const maskWithValues = (str: string, maskedValues: string[]): string => {
     let result = str;
     for (const maskValue of maskedValues) {
-        // TODO: use replaceAll in the future
-        result = result.split(maskValue).join("*".repeat(maskValue.length));
+        result = result.replaceAll(maskValue, "*".repeat(maskValue.length));
     }
     return result;
 };
