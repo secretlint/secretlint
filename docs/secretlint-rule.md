@@ -98,9 +98,9 @@ Secretlint testing is based on Snapshot testing like [Jest](https://jestjs.io/do
 Secretlint provide `@secretlint/tester` for testing.
 It will help you to write snapshot testing for your rule.
 
-`@secretlint/tester` supports Node.js's [Test runner](https://nodejs.org/dist/latest-v18.x/docs/api/test.html#test-reporters) for testing as test runner.
+`@secretlint/tester` supports Node.js's [Test runner](https://nodejs.org/dist/latest-v20.x/docs/api/test.html#test-reporters) for testing as test runner.
 
-- Requires Node.js 18+
+- Requires Node.js 20+
 
 There are a template for testing.
 
