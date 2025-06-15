@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1749941083885,
+  "lastUpdate": 1749953451137,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -38302,6 +38302,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.61,
             "range": "±1.44%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "arukimedesu1166777@gmail.com",
+            "name": "Noritaka Kobayashi",
+            "username": "noritaka1166"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f0b5e19e083b7e51ecd7e645ba5ac2e6b2ea5e72",
+          "message": "chore: update p-map from v4 to v7 (#1075)",
+          "timestamp": "2025-06-15T11:08:50+09:00",
+          "tree_id": "5453187629b6b366ff8fa9cfc3eeb294fd0e5d31",
+          "url": "https://github.com/secretlint/secretlint/commit/f0b5e19e083b7e51ecd7e645ba5ac2e6b2ea5e72"
+        },
+        "date": 1749953449480,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.66,
+            "range": "±0.67%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.61,
+            "range": "±0.67%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
