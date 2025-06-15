@@ -1035,7 +1035,7 @@ __metadata:
     "@types/node": "npm:^20.19.0"
     debug: "npm:^4.4.1"
     mocha: "npm:^10.8.2"
-    p-map: "npm:^4.0.0"
+    p-map: "npm:^7.0.3"
     prettier: "npm:^2.8.1"
     ts-node: "npm:^10.9.2"
     typescript: "npm:^5.1.6"
@@ -7261,6 +7261,13 @@ __metadata:
   version: 6.0.0
   resolution: "p-map@npm:6.0.0"
   checksum: 10c0/3fcfccf464d0f4a9a8c8a2d48f3f0933bdbdb0628158c1fb3c240dc0bbf20c0cf8115dea57300aa82baefff7b9bd1b9daf13a11a6578f15a629fc5bda78d780d
+  languageName: node
+  linkType: hard
+
+"p-map@npm:^7.0.3":
+  version: 7.0.3
+  resolution: "p-map@npm:7.0.3"
+  checksum: 10c0/46091610da2b38ce47bcd1d8b4835a6fa4e832848a6682cf1652bc93915770f4617afc844c10a77d1b3e56d2472bb2d5622353fa3ead01a7f42b04fc8e744a5c
   languageName: node
   linkType: hard
 
