@@ -60,7 +60,7 @@
     "@secretlint/source-creator": "^10.1.0",
     "@secretlint/types": "^10.1.0",
     "debug": "^4.4.1",
-    "p-map": "^4.0.0"
+    "p-map": "^7.0.3"
   },
   "devDependencies": {
     "@secretlint/secretlint-rule-example": "^10.1.0",
