@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1750300988256,
+  "lastUpdate": 1750344155655,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -38492,6 +38492,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.62,
             "range": "±1.47%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "44439583+benibenj@users.noreply.github.com",
+            "name": "Benjamin Christopher Simmonds",
+            "username": "benibenj"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "46e0af330cb5a4b67771164ee0faf08a55751365",
+          "message": "Improve SendGrid regex pattern (#1078)\n\n* improve send grid regex\n\n* update snapshots",
+          "timestamp": "2025-06-19T23:40:45+09:00",
+          "tree_id": "c41a7e152d151db4ffa65876184b214b069714f9",
+          "url": "https://github.com/secretlint/secretlint/commit/46e0af330cb5a4b67771164ee0faf08a55751365"
+        },
+        "date": 1750344153268,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.69,
+            "range": "±1.18%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.61,
+            "range": "±2.02%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
