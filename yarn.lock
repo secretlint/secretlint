@@ -5673,9 +5673,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:^16.1.0":
-  version: 16.1.0
-  resolution: "lint-staged@npm:16.1.0"
+"lint-staged@npm:^16.1.1":
+  version: 16.1.2
+  resolution: "lint-staged@npm:16.1.2"
   dependencies:
     chalk: "npm:^5.4.1"
     commander: "npm:^14.0.0"
@@ -5689,7 +5689,7 @@ __metadata:
     yaml: "npm:^2.8.0"
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: 10c0/5cc33d61ec2c682e488eb3fcea5c153ce486623b80314f2c56af438ad78d73c7fcd3e7c911d273ac740bd34f1e030d35d4fb92d8e476984150c0c59724ac7fa4
+  checksum: 10c0/2a299fc0d56e0a64ed0af8caf937e00eac47cb270df2917e2d4b939074eaa63ecd7f16d3b70b7e5e57bff75ffbbbf8aae5768dedf3dfd45e3ca1b9caaf7740cc
   languageName: node
   linkType: hard
 
@@ -8211,7 +8211,7 @@ __metadata:
     "@lerna-lite/cli": "npm:^2.7.2"
     "@lerna-lite/publish": "npm:^2.7.2"
     "@lerna-lite/version": "npm:^2.7.2"
-    lint-staged: "npm:^16.1.0"
+    lint-staged: "npm:^16.1.1"
     prettier: "npm:^2.8.1"
     scaffdog: "npm:^4.1.0"
     turbo: "npm:^1.13.4"
