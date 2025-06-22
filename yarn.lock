@@ -984,9 +984,9 @@ __metadata:
   dependencies:
     "@secretlint/resolver": "npm:^10.1.0"
     "@secretlint/types": "npm:^10.1.0"
-    "@textlint/linter-formatter": "npm:^14.8.1"
-    "@textlint/module-interop": "npm:^14.8.1"
-    "@textlint/types": "npm:^14.8.1"
+    "@textlint/linter-formatter": "npm:^14.8.4"
+    "@textlint/module-interop": "npm:^14.8.4"
+    "@textlint/types": "npm:^14.8.4"
     "@types/mocha": "npm:^10.0.10"
     "@types/node": "npm:^20.19.0"
     "@types/pluralize": "npm:0.0.33"
@@ -1630,7 +1630,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@textlint/linter-formatter@npm:^14.8.1":
+"@textlint/linter-formatter@npm:^14.8.4":
   version: 14.8.4
   resolution: "@textlint/linter-formatter@npm:14.8.4"
   dependencies:
@@ -1652,7 +1652,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@textlint/module-interop@npm:14.8.4, @textlint/module-interop@npm:^14.8.1":
+"@textlint/module-interop@npm:14.8.4, @textlint/module-interop@npm:^14.8.4":
   version: 14.8.4
   resolution: "@textlint/module-interop@npm:14.8.4"
   checksum: 10c0/ae1084f198972170511d873d99e67adaca28118a0638ba04b68ae4fc64fc879d7b5af144977cd074d4f5540f4c90fcd6dcfb3a1381e2cd4efffc74bdee47fdea
@@ -1678,7 +1678,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@textlint/types@npm:14.8.4, @textlint/types@npm:^14.8.1":
+"@textlint/types@npm:14.8.4, @textlint/types@npm:^14.8.4":
   version: 14.8.4
   resolution: "@textlint/types@npm:14.8.4"
   dependencies:
