@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1750879536834,
+  "lastUpdate": 1751294615769,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -38872,6 +38872,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.6,
             "range": "±1.07%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "arukimedesu1166777@gmail.com",
+            "name": "Noritaka Kobayashi",
+            "username": "noritaka1166"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "5706ac4942f098b845570541903472641d4ae914",
+          "message": "chore: update read-pkg from v8 to v9 (#1094)",
+          "timestamp": "2025-06-30T23:41:39+09:00",
+          "tree_id": "822c943aa988aa86e8b4b07d445e29880721e745",
+          "url": "https://github.com/secretlint/secretlint/commit/5706ac4942f098b845570541903472641d4ae914"
+        },
+        "date": 1751294613503,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.64,
+            "range": "±0.70%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.6,
+            "range": "±2.02%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
