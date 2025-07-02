@@ -68,12 +68,12 @@
     "@secretlint/secretlint-rule-internal-test-cjs": "^10.1.1",
     "@secretlint/secretlint-rule-internal-test-esm": "^10.1.1",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^20.19.1",
-    "create-validator-ts": "^4.0.2",
-    "mocha": "^10.8.2",
-    "prettier": "^2.8.1",
+    "@types/node": "^24.0.10",
+    "create-validator-ts": "^6.0.0",
+    "mocha": "^11.7.1",
+    "prettier": "^2.8.8",
     "ts-node": "^10.9.2",
-    "typescript": "^5.1.6"
+    "typescript": "^5.8.3"
   },
   "packageManager": "yarn@1.22.22",
   "engines": {

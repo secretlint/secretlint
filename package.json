@@ -46,13 +46,13 @@
     "gen:rule": "scaffdog generate new-rule --output packages/ --answer \"owner:$(git config user.name)\" --answer \"version:$(node -e 'console.log(require(\"./lerna.json\").version)')\""
   },
   "devDependencies": {
-    "@lerna-lite/cli": "^2.7.2",
-    "@lerna-lite/publish": "^2.7.2",
-    "@lerna-lite/version": "^2.7.2",
+    "@lerna-lite/cli": "^4.5.1",
+    "@lerna-lite/publish": "^4.5.1",
+    "@lerna-lite/version": "^4.5.1",
     "lint-staged": "^16.1.2",
-    "prettier": "^2.8.1",
+    "prettier": "^2.8.8",
     "scaffdog": "^4.1.0",
-    "turbo": "^1.13.4"
+    "turbo": "^2.5.4"
   },
   "prettier": {
     "singleQuote": false,
