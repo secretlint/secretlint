@@ -34,7 +34,7 @@ describe("createEngine", function () {
 [TEST_DIR]/fixtures/SECRET.txt
   1:8  error  [EXAMPLE_MESSAGE] found secret: SECRET  @secretlint/secretlint-rule-example
 
-✖ 1 problem (1 error, 0 warnings)
+✖ 1 problem (1 error, 0 warnings, 0 infos)
 `
         );
     });
@@ -58,7 +58,7 @@ describe("createEngine", function () {
 [TEST_DIR]/fixtures/SECRET.txt
   1:8  error  [EXAMPLE_MESSAGE] found secret: SECRET  @secretlint/secretlint-rule-example
 
-✖ 1 problem (1 error, 0 warnings)
+✖ 1 problem (1 error, 0 warnings, 0 infos)
 `
         );
     });
@@ -83,7 +83,7 @@ describe("createEngine", function () {
 [TEST_DIR]/fixtures/SECRET.txt
   1:8  error  [EXAMPLE_MESSAGE] found secret: ******  @secretlint/secretlint-rule-example
 
-✖ 1 problem (1 error, 0 warnings)
+✖ 1 problem (1 error, 0 warnings, 0 infos)
 `
         );
     });
