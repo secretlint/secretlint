@@ -117,14 +117,14 @@ function reportMongoDBConnectionString({
     // Captures: mongodb://[username:password@]host[:port][/database][?options]
     // Using possessive quantifiers to prevent ReDoS
     const MONGODB_PATTERN =
-        /mongodb(?:\+srv)?:\/\/(?:([^:\/\s]{1,100}):([^@\/\s]{1,200})@)?([^\/\s?]{1,100})(?:\/([^?\s]{0,100}))?(?:\?([^\s]{0,500}))?/gi;
+        /mongodb(?:\+srv)?:\/\/(?:(?<username>[^:\/\s]{1,100}):(?<password>[^@\/\s]{1,200})@)?(?<host>[^\/\s?]{1,100})(?:\/(?<database>[^?\s]{0,100}))?(?:\?(?<options>[^\s]{0,500}))?/gi;
 
     const results = source.content.matchAll(MONGODB_PATTERN);
     for (const result of results) {
         const index = result.index || 0;
         const match = result[0] || "";
-        const username = result[1];
-        const password = result[2];
+        const username = result.groups?.username;
+        const password = result.groups?.password;
 
         // Skip if no credentials found
         if (!username || !password) continue;
@@ -161,14 +161,14 @@ function reportMySQLConnectionString({
     // MySQL URI patterns: jdbc:mysql://, mysql://, mysqlx://
     // Using possessive quantifiers to prevent ReDoS
     const MYSQL_URI_PATTERN =
-        /(?:jdbc:)?mysql(?:x)?:\/\/(?:([^:\/\s]{1,100}):([^@\/\s]{1,200})@)?([^\/\s?]{1,100})(?:\/([^?\s]{0,100}))?(?:\?([^\s]{0,500}))?/gi;
+        /(?:jdbc:)?mysql(?:x)?:\/\/(?:(?<username>[^:\/\s]{1,100}):(?<password>[^@\/\s]{1,200})@)?(?<host>[^\/\s?]{1,100})(?:\/(?<database>[^?\s]{0,100}))?(?:\?(?<options>[^\s]{0,500}))?/gi;
 
     const results = source.content.matchAll(MYSQL_URI_PATTERN);
     for (const result of results) {
         const index = result.index || 0;
         const match = result[0] || "";
-        const username = result[1];
-        const password = result[2];
+        const username = result.groups?.username;
+        const password = result.groups?.password;
 
         // Skip if no credentials found
         if (!username || !password) continue;
@@ -205,14 +205,14 @@ function reportPostgreSQLConnectionString({
     // PostgreSQL URI patterns: postgresql://, postgres://
     // Using possessive quantifiers to prevent ReDoS
     const POSTGRESQL_URI_PATTERN =
-        /postgres(?:ql)?:\/\/(?:([^:\/\s]{1,100}):([^@\/\s]{1,200})@)?([^\/\s?]{1,100})(?:\/([^?\s]{0,100}))?(?:\?([^\s]{0,500}))?/gi;
+        /postgres(?:ql)?:\/\/(?:(?<username>[^:\/\s]{1,100}):(?<password>[^@\/\s]{1,200})@)?(?<host>[^\/\s?]{1,100})(?:\/(?<database>[^?\s]{0,100}))?(?:\?(?<options>[^\s]{0,500}))?/gi;
 
     const results = source.content.matchAll(POSTGRESQL_URI_PATTERN);
     for (const result of results) {
         const index = result.index || 0;
         const match = result[0] || "";
-        const username = result[1];
-        const password = result[2];
+        const username = result.groups?.username;
+        const password = result.groups?.password;
 
         // Skip if no credentials found
         if (!username || !password) continue;
