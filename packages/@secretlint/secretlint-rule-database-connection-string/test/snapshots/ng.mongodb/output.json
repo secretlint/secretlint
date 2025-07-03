@@ -4,8 +4,8 @@
         {
             "message": "found MongoDB connection string: mongodb://realuser:s3cr3tP4ss@db1.example.net:27017/production\";",
             "range": [
-                86,
-                150
+                107,
+                171
             ],
             "type": "message",
             "ruleId": "@secretlint/secretlint-rule-database-connection-string",
@@ -29,8 +29,8 @@
         {
             "message": "found MongoDB connection string: mongodb+srv://appuser:myR3alP@ssw0rd@cluster0.mongodb.net/mydb?retryWrites=true\";",
             "range": [
-                189,
-                270
+                219,
+                300
             ],
             "type": "message",
             "ruleId": "@secretlint/secretlint-rule-database-connection-string",
@@ -54,8 +54,8 @@
         {
             "message": "found MongoDB connection string: mongodb://root:m42ploz2wd@google.com:5434/thegift\"",
             "range": [
-                319,
-                384
+                349,
+                399
             ],
             "type": "message",
             "ruleId": "@secretlint/secretlint-rule-database-connection-string",
@@ -66,7 +66,7 @@
                 },
                 "end": {
                     "line": 10,
-                    "column": 80
+                    "column": 65
                 }
             },
             "severity": "error",
@@ -79,8 +79,8 @@
         {
             "message": "found MongoDB connection string: mongodb+srv://testuser:hub24aoeu@gg-is-awesome-xm273.mongodb.net/test?retryWrites=true&w=majority",
             "range": [
-                385,
-                485
+                400,
+                497
             ],
             "type": "message",
             "ruleId": "@secretlint/secretlint-rule-database-connection-string",
@@ -91,7 +91,7 @@
                 },
                 "end": {
                     "line": 11,
-                    "column": 100
+                    "column": 97
                 }
             },
             "severity": "error",
