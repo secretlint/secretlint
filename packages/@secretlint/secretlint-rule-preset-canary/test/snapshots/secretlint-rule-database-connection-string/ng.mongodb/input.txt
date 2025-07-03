@@ -1,0 +1,11 @@
+# Valid MongoDB connection strings with real credentials
+
+# MongoDB standard connection
+const MONGO_URI = "mongodb://realuser:s3cr3tP4ss@db1.example.net:27017/production";
+
+# MongoDB SRV connection  
+const MONGO_SRV = "mongodb+srv://appuser:myR3alP@ssw0rd@cluster0.mongodb.net/mydb?retryWrites=true";
+
+# MongoDB from additional cases
+CONECTION_URI="mongodb://root:m42ploz2wd@google.com:5434/thegift"
+mongodb+srv://testuser:hub24aoeu@gg-is-awesome-xm273.mongodb.net/test?retryWrites=true&w=majority
