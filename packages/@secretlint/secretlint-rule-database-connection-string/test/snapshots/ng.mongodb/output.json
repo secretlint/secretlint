@@ -1,0 +1,107 @@
+{
+    "filePath": "[SNAPSHOT]/ng.mongodb/input.txt",
+    "messages": [
+        {
+            "message": "found MongoDB connection string: mongodb://realuser:s3cr3tP4ss@db1.example.net:27017/production\";",
+            "range": [
+                86,
+                150
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "loc": {
+                "start": {
+                    "line": 4,
+                    "column": 19
+                },
+                "end": {
+                    "line": 4,
+                    "column": 83
+                }
+            },
+            "severity": "error",
+            "messageId": "MongoDBConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#MongoDBConnection",
+            "data": {
+                "URI": "mongodb://realuser:s3cr3tP4ss@db1.example.net:27017/production\";"
+            }
+        },
+        {
+            "message": "found MongoDB connection string: mongodb+srv://appuser:myR3alP@ssw0rd@cluster0.mongodb.net/mydb?retryWrites=true\";",
+            "range": [
+                189,
+                270
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "loc": {
+                "start": {
+                    "line": 7,
+                    "column": 19
+                },
+                "end": {
+                    "line": 7,
+                    "column": 100
+                }
+            },
+            "severity": "error",
+            "messageId": "MongoDBConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#MongoDBConnection",
+            "data": {
+                "URI": "mongodb+srv://appuser:myR3alP@ssw0rd@cluster0.mongodb.net/mydb?retryWrites=true\";"
+            }
+        },
+        {
+            "message": "found MongoDB connection string: mongodb://root:m42ploz2wd@google.com:5434/thegift\"",
+            "range": [
+                319,
+                384
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "loc": {
+                "start": {
+                    "line": 10,
+                    "column": 15
+                },
+                "end": {
+                    "line": 10,
+                    "column": 80
+                }
+            },
+            "severity": "error",
+            "messageId": "MongoDBConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#MongoDBConnection",
+            "data": {
+                "URI": "mongodb://root:m42ploz2wd@google.com:5434/thegift\""
+            }
+        },
+        {
+            "message": "found MongoDB connection string: mongodb+srv://testuser:hub24aoeu@gg-is-awesome-xm273.mongodb.net/test?retryWrites=true&w=majority",
+            "range": [
+                385,
+                485
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "loc": {
+                "start": {
+                    "line": 11,
+                    "column": 0
+                },
+                "end": {
+                    "line": 11,
+                    "column": 100
+                }
+            },
+            "severity": "error",
+            "messageId": "MongoDBConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#MongoDBConnection",
+            "data": {
+                "URI": "mongodb+srv://testuser:hub24aoeu@gg-is-awesome-xm273.mongodb.net/test?retryWrites=true&w=majority"
+            }
+        }
+    ],
+    "sourceContent": "# Valid MongoDB connection strings with real credentials\n\n# MongoDB standard connection\nconst MONGO_URI = \"mongodb://realuser:s3cr3tP4ss@db1.example.net:27017/production\";\n\n# MongoDB SRV connection  \nconst MONGO_SRV = \"mongodb+srv://appuser:myR3alP@ssw0rd@cluster0.mongodb.net/mydb?retryWrites=true\";\n\n# MongoDB from additional cases\nCONECTION_URI=\"mongodb://root:m42ploz2wd@google.com:5434/thegift\"\nmongodb+srv://testuser:hub24aoeu@gg-is-awesome-xm273.mongodb.net/test?retryWrites=true&w=majority",
+    "sourceContentType": "text"
+}

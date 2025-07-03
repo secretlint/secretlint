@@ -1,0 +1,182 @@
+{
+    "filePath": "[SNAPSHOT]/ng.mysql/input.txt",
+    "messages": [
+        {
+            "message": "found MySQL connection string: mysql://dbuser:compl3xPwd@mysql.server.com:3306/database\";",
+            "range": [
+                80,
+                138
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "loc": {
+                "start": {
+                    "line": 4,
+                    "column": 19
+                },
+                "end": {
+                    "line": 4,
+                    "column": 77
+                }
+            },
+            "severity": "error",
+            "messageId": "MySQLConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#MySQLConnection",
+            "data": {
+                "URI": "mysql://dbuser:compl3xPwd@mysql.server.com:3306/database\";"
+            }
+        },
+        {
+            "message": "found MySQL connection string: jdbc:mysql://admin:str0ngP4ss@db.company.com:3306/app_db\";",
+            "range": [
+                168,
+                226
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "loc": {
+                "start": {
+                    "line": 7,
+                    "column": 20
+                },
+                "end": {
+                    "line": 7,
+                    "column": 78
+                }
+            },
+            "severity": "error",
+            "messageId": "MySQLConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#MySQLConnection",
+            "data": {
+                "URI": "jdbc:mysql://admin:str0ngP4ss@db.company.com:3306/app_db\";"
+            }
+        },
+        {
+            "message": "found MySQL connection string: mysql://root:m42ploz2wd@google.com:5434/thegift\"",
+            "range": [
+                272,
+                335
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "loc": {
+                "start": {
+                    "line": 10,
+                    "column": 16
+                },
+                "end": {
+                    "line": 10,
+                    "column": 79
+                }
+            },
+            "severity": "error",
+            "messageId": "MySQLConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#MySQLConnection",
+            "data": {
+                "URI": "mysql://root:m42ploz2wd@google.com:5434/thegift\""
+            }
+        },
+        {
+            "message": "found MySQL connection string: mysql --user=doadmin --password=strongp@55! --host=db-mysql-ams3-23775-do-user-7772205-0.a.db.ondigitalocean.com",
+            "range": [
+                336,
+                450
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "loc": {
+                "start": {
+                    "line": 11,
+                    "column": 0
+                },
+                "end": {
+                    "line": 11,
+                    "column": 114
+                }
+            },
+            "severity": "error",
+            "messageId": "MySQLConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#MySQLConnection",
+            "data": {
+                "URI": "mysql --user=doadmin --password=strongp@55! --host=db-mysql-ams3-23775-do-user-7772205-0.a.db.ondigitalocean.com"
+            }
+        },
+        {
+            "message": "found MySQL connection string: jdbc:mysql://sandy:secret@[myhost1:1111,myhost2:2222]/db",
+            "range": [
+                451,
+                508
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "loc": {
+                "start": {
+                    "line": 12,
+                    "column": 0
+                },
+                "end": {
+                    "line": 12,
+                    "column": 57
+                }
+            },
+            "severity": "error",
+            "messageId": "MySQLConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#MySQLConnection",
+            "data": {
+                "URI": "jdbc:mysql://sandy:secret@[myhost1:1111,myhost2:2222]/db"
+            }
+        },
+        {
+            "message": "found MySQL connection string: jdbc:mysql://[(host=myhost1,port=1111,user=sandy,password=secret),(host=myhost2,port=2222,user=finn,password=secret)]/db",
+            "range": [
+                509,
+                632
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "loc": {
+                "start": {
+                    "line": 13,
+                    "column": 0
+                },
+                "end": {
+                    "line": 13,
+                    "column": 123
+                }
+            },
+            "severity": "error",
+            "messageId": "MySQLConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#MySQLConnection",
+            "data": {
+                "URI": "jdbc:mysql://[(host=myhost1,port=1111,user=sandy,password=secret),(host=myhost2,port=2222,user=finn,password=secret)]/db"
+            }
+        },
+        {
+            "message": "found MySQL connection string: Server=myServerAddress;Database=myDataBase;Uid=myUsername;Pwd=myPassword;",
+            "range": [
+                633,
+                706
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "loc": {
+                "start": {
+                    "line": 14,
+                    "column": 0
+                },
+                "end": {
+                    "line": 14,
+                    "column": 73
+                }
+            },
+            "severity": "error",
+            "messageId": "MySQLConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#MySQLConnection",
+            "data": {
+                "URI": "Server=myServerAddress;Database=myDataBase;Uid=myUsername;Pwd=myPassword;"
+            }
+        }
+    ],
+    "sourceContent": "# Valid MySQL connection strings with real credentials\n\n# MySQL standard connection\nconst MYSQL_URI = \"mysql://dbuser:compl3xPwd@mysql.server.com:3306/database\";\n\n# MySQL JDBC connection\nconst MYSQL_JDBC = \"jdbc:mysql://admin:str0ngP4ss@db.company.com:3306/app_db\";\n\n# MySQL from additional cases\nCONNECTION_URI=\"mysql://root:m42ploz2wd@google.com:5434/thegift\"\nmysql --user=doadmin --password=strongp@55! --host=db-mysql-ams3-23775-do-user-7772205-0.a.db.ondigitalocean.com\njdbc:mysql://sandy:secret@[myhost1:1111,myhost2:2222]/db\njdbc:mysql://[(host=myhost1,port=1111,user=sandy,password=secret),(host=myhost2,port=2222,user=finn,password=secret)]/db\nServer=myServerAddress;Database=myDataBase;Uid=myUsername;Pwd=myPassword;",
+    "sourceContentType": "text"
+}

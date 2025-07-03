@@ -1,0 +1,182 @@
+{
+    "filePath": "[SNAPSHOT]/ng.postgresql/input.txt",
+    "messages": [
+        {
+            "message": "found PostgreSQL connection string: postgresql://pguser:secur3Pass@postgres.example.com:5432/production_db\";",
+            "range": [
+                105,
+                174
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "loc": {
+                "start": {
+                    "line": 4,
+                    "column": 16
+                },
+                "end": {
+                    "line": 4,
+                    "column": 85
+                }
+            },
+            "severity": "error",
+            "messageId": "PostgreSQLConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#PostgreSQLConnection",
+            "data": {
+                "URI": "postgresql://pguser:secur3Pass@postgres.example.com:5432/production_db\";"
+            }
+        },
+        {
+            "message": "found PostgreSQL connection string: postgres://api_user:myC0mpl3xPwd@db.internal.com:5432/api_db\";",
+            "range": [
+                226,
+                288
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "loc": {
+                "start": {
+                    "line": 7,
+                    "column": 22
+                },
+                "end": {
+                    "line": 7,
+                    "column": 84
+                }
+            },
+            "severity": "error",
+            "messageId": "PostgreSQLConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#PostgreSQLConnection",
+            "data": {
+                "URI": "postgres://api_user:myC0mpl3xPwd@db.internal.com:5432/api_db\";"
+            }
+        },
+        {
+            "message": "found PostgreSQL connection string: postgres://postgres:m42p! o@2wd@google.com:5434/thegift\"",
+            "range": [
+                335,
+                407
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "loc": {
+                "start": {
+                    "line": 10,
+                    "column": 16
+                },
+                "end": {
+                    "line": 10,
+                    "column": 88
+                }
+            },
+            "severity": "error",
+            "messageId": "PostgreSQLConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#PostgreSQLConnection",
+            "data": {
+                "URI": "postgres://postgres:m42p! o@2wd@google.com:5434/thegift\""
+            }
+        },
+        {
+            "message": "found PostgreSQL connection string: PG_USERNAME=root. PG_PASSWORD=m42ploz2wd",
+            "range": [
+                408,
+                448
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "loc": {
+                "start": {
+                    "line": 11,
+                    "column": 0
+                },
+                "end": {
+                    "line": 11,
+                    "column": 40
+                }
+            },
+            "severity": "error",
+            "messageId": "PostgreSQLConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#PostgreSQLConnection",
+            "data": {
+                "URI": "PG_USERNAME=root. PG_PASSWORD=m42ploz2wd"
+            }
+        },
+        {
+            "message": "found PostgreSQL connection string: PGPASSWORD=strongp@ss psql -hdb-postgresql-ams3-58486-do-user-7772205-0.b.db.ondigitalocean.com -Udoadmin -p 25060",
+            "range": [
+                449,
+                565
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "loc": {
+                "start": {
+                    "line": 12,
+                    "column": 0
+                },
+                "end": {
+                    "line": 12,
+                    "column": 116
+                }
+            },
+            "severity": "error",
+            "messageId": "PostgreSQLConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#PostgreSQLConnection",
+            "data": {
+                "URI": "PGPASSWORD=strongp@ss psql -hdb-postgresql-ams3-58486-do-user-7772205-0.b.db.ondigitalocean.com -Udoadmin -p 25060"
+            }
+        },
+        {
+            "message": "found PostgreSQL connection string: postgresql://postgres:m42ploz2wd@google.com:5432/mydb')",
+            "range": [
+                581,
+                637
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "loc": {
+                "start": {
+                    "line": 13,
+                    "column": 15
+                },
+                "end": {
+                    "line": 13,
+                    "column": 71
+                }
+            },
+            "severity": "error",
+            "messageId": "PostgreSQLConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#PostgreSQLConnection",
+            "data": {
+                "URI": "postgresql://postgres:m42ploz2wd@google.com:5432/mydb')"
+            }
+        },
+        {
+            "message": "found PostgreSQL connection string: Host=your_host; Port=5432; Database=your_database; Username=your_username; Password=your_password;",
+            "range": [
+                638,
+                736
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "loc": {
+                "start": {
+                    "line": 14,
+                    "column": 0
+                },
+                "end": {
+                    "line": 14,
+                    "column": 98
+                }
+            },
+            "severity": "error",
+            "messageId": "PostgreSQLConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#PostgreSQLConnection",
+            "data": {
+                "URI": "Host=your_host; Port=5432; Database=your_database; Username=your_username; Password=your_password;"
+            }
+        }
+    ],
+    "sourceContent": "# Valid PostgreSQL connection strings with real credentials\n\n# PostgreSQL standard connection (postgresql protocol)\nconst PG_URI = \"postgresql://pguser:secur3Pass@postgres.example.com:5432/production_db\";\n\n# PostgreSQL standard connection (postgres protocol)\nconst POSTGRES_URI = \"postgres://api_user:myC0mpl3xPwd@db.internal.com:5432/api_db\";\n\n# PostgreSQL from additional cases\nCONNECTION_URI=\"postgres://postgres:m42p! o@2wd@google.com:5434/thegift\"\nPG_USERNAME=root. PG_PASSWORD=m42ploz2wd\nPGPASSWORD=strongp@ss psql -hdb-postgresql-ams3-58486-do-user-7772205-0.b.db.ondigitalocean.com -Udoadmin -p 25060\ncreate_engine('postgresql://postgres:m42ploz2wd@google.com:5432/mydb')\nHost=your_host; Port=5432; Database=your_database; Username=your_username; Password=your_password;",
+    "sourceContentType": "text"
+}
