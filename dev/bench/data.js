@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1751545295994,
+  "lastUpdate": 1751586871010,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -39024,6 +39024,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.61,
             "range": "±0.96%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "10672f84ab06af5bd1e9e63d13ba80335e31a34a",
+          "message": "feat: add database connection string detection rule (#1099)\n\n* feat: add database connection string detection rule\n\n- Detects hardcoded credentials in MongoDB connection strings (mongodb://, mongodb+srv://)\n- Detects hardcoded credentials in MySQL connection strings (mysql://, jdbc:mysql://, mysqlx://)\n- Detects hardcoded credentials in PostgreSQL connection strings (postgresql://, postgres://)\n- Includes false positive prevention mechanisms:\n  - Variable pattern detection (${password}, {password}, etc.)\n  - Common placeholder filtering (password, username, YOUR_PASSWORD, etc.)\n  - Entropy analysis to distinguish real passwords from simple text\n  - Minimum password length requirement (4+ characters)\n- Comprehensive test coverage with real-world examples\n- Full documentation with usage examples\n\nCloses #670\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* Update .secretlintignore+3\n\n* Delete .secretlintrc-test.json+2\n\n* chore: split tests\n\n* fix\n\n* refactor: use named capture groups in regex patterns\n\n- Replace numeric capture groups with named capture groups for better readability\n- Update MongoDB, MySQL, and PostgreSQL patterns to use (?<name>...) syntax\n- Access captured values via result.groups?.username instead of result[1]\n- Reorganize test snapshots by messageId (ng.mongodb, ng.mysql, ng.postgresql)\n\n* Update packages/@secretlint/secretlint-rule-database-connection-string/test/snapshots/ng.mongodb/output.json+2\n\n* add preset\n\n* Update packages/@secretlint/secretlint-rule-preset-canary/test/snapshots/secretlint-rule-database-connection-string/ng.mongodb/output.json+3\n\n* Update yarn.lock\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2025-07-03T23:52:49Z",
+          "tree_id": "2580c7adb49426e3aa87f1ed2690cd9350e170a7",
+          "url": "https://github.com/secretlint/secretlint/commit/10672f84ab06af5bd1e9e63d13ba80335e31a34a"
+        },
+        "date": 1751586869093,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.61,
+            "range": "±0.72%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±1.00%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
