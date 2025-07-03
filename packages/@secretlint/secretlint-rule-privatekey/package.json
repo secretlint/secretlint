@@ -60,10 +60,10 @@
   "devDependencies": {
     "@secretlint/tester": "^10.1.1",
     "@secretlint/types": "^10.1.1",
-    "@types/node": "^20.19.1",
-    "prettier": "^2.8.1",
+    "@types/node": "^24.0.10",
+    "prettier": "^2.8.8",
     "ts-node": "^10.9.2",
-    "typescript": "^5.1.6"
+    "typescript": "^5.8.3"
   },
   "packageManager": "yarn@1.22.22",
   "engines": {

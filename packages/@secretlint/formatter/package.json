@@ -56,25 +56,25 @@
   "dependencies": {
     "@secretlint/resolver": "^10.1.1",
     "@secretlint/types": "^10.1.1",
-    "@textlint/linter-formatter": "^14.8.4",
-    "@textlint/module-interop": "^14.8.4",
-    "@textlint/types": "^14.8.4",
-    "chalk": "^4.1.2",
+    "@textlint/linter-formatter": "^15.1.0",
+    "@textlint/module-interop": "^15.1.0",
+    "@textlint/types": "^15.1.0",
+    "chalk": "^5.4.1",
     "debug": "^4.4.1",
     "pluralize": "^8.0.0",
-    "strip-ansi": "^6.0.1",
+    "strip-ansi": "^7.1.0",
     "table": "^6.9.0",
-    "terminal-link": "^2.1.1"
+    "terminal-link": "^4.0.0"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
-    "@types/node": "^20.19.1",
+    "@types/node": "^24.0.10",
     "@types/pluralize": "0.0.33",
-    "escape-string-regexp": "^4.0.0",
-    "mocha": "^10.8.2",
-    "prettier": "^2.8.1",
+    "escape-string-regexp": "^5.0.0",
+    "mocha": "^11.7.1",
+    "prettier": "^2.8.8",
     "ts-node": "^10.9.2",
-    "typescript": "^5.1.6"
+    "typescript": "^5.8.3"
   },
   "packageManager": "yarn@1.22.22",
   "engines": {
