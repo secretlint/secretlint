@@ -1,0 +1,19 @@
+# Valid database connection strings that should NOT be detected (false positives)
+
+# Template/placeholder patterns
+const MONGO_TEMPLATE = "mongodb://username:password@localhost:27017/database";
+const MYSQL_TEMPLATE = "mysql://user:${PASSWORD}@example.com:3306/db";
+const PG_TEMPLATE = "postgresql://{username}:{password}@{{host}}:5432/{database}";
+
+# Connection strings without credentials
+const MONGO_NO_AUTH = "mongodb://localhost:27017/database";
+const MYSQL_NO_AUTH = "mysql://db.example.com:3306/app";
+const PG_NO_AUTH = "postgresql://db.server.com:5432/production";
+
+# Connection strings with obvious placeholders
+const CONFIG_EXAMPLE = "mongodb://YOUR_USERNAME:YOUR_PASSWORD@cluster.mongodb.net/test";
+const DOC_EXAMPLE = "mysql://admin:REPLACE_WITH_PASSWORD@mysql.server.com:3306/database";
+
+# Key-value with placeholders
+Server=localhost;Database=test;Uid={user};Pwd={password};
+Host=example.com;Port=5432;Username=$DB_USER;Password=$DB_PASSWORD;
