@@ -25,7 +25,7 @@ Detects:
 ```
 const uri = "mongodb://localhost:27017/mydb";
 const uri = "mongodb://username:${PASSWORD}@host:27017/mydb";
-const uri = "mongodb://username:password@localhost:27017/mydb";  // placeholder
+const uri = "mongodb://username:REPLACE_WITH_PASSWORD@localhost:27017/mydb";  // placeholder
 const uri = "mongodb+srv://user:{password}@cluster.mongodb.net/test";
 ```
 
@@ -49,7 +49,7 @@ Detects:
 ```
 const uri = "mysql://localhost:3306/mydb";
 const uri = "mysql://user:${PASSWORD}@host:3306/mydb";
-const uri = "mysql://user:password@localhost:3306/mydb";  // placeholder
+const uri = "mysql://user:REPLACE_WITH_PASSWORD@localhost:3306/mydb";  // placeholder
 ```
 
 **Bad:**
@@ -70,7 +70,7 @@ Detects:
 ```
 const uri = "postgresql://localhost:5432/mydb";
 const uri = "postgres://user:${PASSWORD}@host:5432/mydb";
-const uri = "postgres://user:password@localhost:5432/mydb";  // placeholder
+const uri = "postgres://user:REPLACE_WITH_PASSWORD@localhost:5432/mydb";  // placeholder
 ```
 
 **Bad:**
