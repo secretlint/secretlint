@@ -1,0 +1,107 @@
+{
+    "filePath": "[SNAPSHOT]/additional.cases/input.txt",
+    "messages": [
+        {
+            "message": "found MongoDB connection string: mongodb://root:m42ploz2wd@google.com:5434/thegift\"",
+            "range": [
+                114,
+                164
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "loc": {
+                "start": {
+                    "line": 4,
+                    "column": 15
+                },
+                "end": {
+                    "line": 4,
+                    "column": 65
+                }
+            },
+            "severity": "error",
+            "messageId": "MongoDBConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#MongoDBConnection",
+            "data": {
+                "URI": "mongodb://root:m42ploz2wd@google.com:5434/thegift\""
+            }
+        },
+        {
+            "message": "found MongoDB connection string: mongodb+srv://testuser:hub24aoeu@gg-is-awesome-xm273.mongodb.net/test?retryWrites=true&w=majority",
+            "range": [
+                165,
+                262
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "loc": {
+                "start": {
+                    "line": 5,
+                    "column": 0
+                },
+                "end": {
+                    "line": 5,
+                    "column": 97
+                }
+            },
+            "severity": "error",
+            "messageId": "MongoDBConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#MongoDBConnection",
+            "data": {
+                "URI": "mongodb+srv://testuser:hub24aoeu@gg-is-awesome-xm273.mongodb.net/test?retryWrites=true&w=majority"
+            }
+        },
+        {
+            "message": "found MySQL connection string: mysql://root:m42ploz2wd@google.com:5434/thegift\"",
+            "range": [
+                315,
+                363
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "loc": {
+                "start": {
+                    "line": 8,
+                    "column": 16
+                },
+                "end": {
+                    "line": 8,
+                    "column": 64
+                }
+            },
+            "severity": "error",
+            "messageId": "MySQLConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#MySQLConnection",
+            "data": {
+                "URI": "mysql://root:m42ploz2wd@google.com:5434/thegift\""
+            }
+        },
+        {
+            "message": "found PostgreSQL connection string: postgresql://postgres:m42ploz2wd@google.com:5432/mydb')",
+            "range": [
+                993,
+                1048
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "loc": {
+                "start": {
+                    "line": 18,
+                    "column": 15
+                },
+                "end": {
+                    "line": 18,
+                    "column": 70
+                }
+            },
+            "severity": "error",
+            "messageId": "PostgreSQLConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#PostgreSQLConnection",
+            "data": {
+                "URI": "postgresql://postgres:m42ploz2wd@google.com:5432/mydb')"
+            }
+        }
+    ],
+    "sourceContent": "# Additional test cases from the investigation document\n\n# MongoDB cases from GitGuardian examples\nCONECTION_URI=\"mongodb://root:m42ploz2wd@google.com:5434/thegift\"\nmongodb+srv://testuser:hub24aoeu@gg-is-awesome-xm273.mongodb.net/test?retryWrites=true&w=majority\n\n# MySQL cases with various formats\nCONNECTION_URI=\"mysql://root:m42ploz2wd@google.com:5434/thegift\"\nmysql --user=doadmin --password=strongp@55! --host=db-mysql-ams3-23775-do-user-7772205-0.a.db.ondigitalocean.com\njdbc:mysql://sandy:secret@[myhost1:1111,myhost2:2222]/db\njdbc:mysql://[(host=myhost1,port=1111,user=sandy,password=secret),(host=myhost2,port=2222,user=finn,password=secret)]/db\nServer=myServerAddress;Database=myDataBase;Uid=myUsername;Pwd=myPassword;\n\n# PostgreSQL cases\nCONNECTION_URI=\"postgres://postgres:m42p! o@2wd@google.com:5434/thegift\"\nPG_USERNAME=root. PG_PASSWORD=m42ploz2wd\nPGPASSWORD=strongp@ss psql -hdb-postgresql-ams3-58486-do-user-7772205-0.b.db.ondigitalocean.com -Udoadmin -p 25060\ncreate_engine('postgresql://postgres:m42ploz2wd@google.com:5432/mydb')\nHost=your_host; Port=5432; Database=your_database; Username=your_username; Password=your_password;",
+    "sourceContentType": "text"
+}

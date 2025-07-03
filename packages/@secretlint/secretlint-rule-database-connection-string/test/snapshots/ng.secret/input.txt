@@ -1,0 +1,13 @@
+# Valid database connection strings with real credentials
+
+# MongoDB
+const MONGO_URI = "mongodb://realuser:s3cr3tP4ss@db1.example.net:27017/production";
+const MONGO_SRV = "mongodb+srv://appuser:myR3alP@ssw0rd@cluster0.mongodb.net/mydb?retryWrites=true";
+
+# MySQL
+const MYSQL_URI = "mysql://dbuser:compl3xPwd@mysql.server.com:3306/database";
+const MYSQL_JDBC = "jdbc:mysql://admin:str0ngP4ss@db.company.com:3306/app_db";
+
+# PostgreSQL
+const PG_URI = "postgresql://pguser:secur3Pass@postgres.example.com:5432/production_db";
+const POSTGRES_URI = "postgres://api_user:myC0mpl3xPwd@db.internal.com:5432/api_db";

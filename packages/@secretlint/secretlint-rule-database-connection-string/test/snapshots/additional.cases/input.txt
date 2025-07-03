@@ -1,0 +1,19 @@
+# Additional test cases from the investigation document
+
+# MongoDB cases from GitGuardian examples
+CONECTION_URI="mongodb://root:m42ploz2wd@google.com:5434/thegift"
+mongodb+srv://testuser:hub24aoeu@gg-is-awesome-xm273.mongodb.net/test?retryWrites=true&w=majority
+
+# MySQL cases with various formats
+CONNECTION_URI="mysql://root:m42ploz2wd@google.com:5434/thegift"
+mysql --user=doadmin --password=strongp@55! --host=db-mysql-ams3-23775-do-user-7772205-0.a.db.ondigitalocean.com
+jdbc:mysql://sandy:secret@[myhost1:1111,myhost2:2222]/db
+jdbc:mysql://[(host=myhost1,port=1111,user=sandy,password=secret),(host=myhost2,port=2222,user=finn,password=secret)]/db
+Server=myServerAddress;Database=myDataBase;Uid=myUsername;Pwd=myPassword;
+
+# PostgreSQL cases
+CONNECTION_URI="postgres://postgres:m42p! o@2wd@google.com:5434/thegift"
+PG_USERNAME=root. PG_PASSWORD=m42ploz2wd
+PGPASSWORD=strongp@ss psql -hdb-postgresql-ams3-58486-do-user-7772205-0.b.db.ondigitalocean.com -Udoadmin -p 25060
+create_engine('postgresql://postgres:m42ploz2wd@google.com:5432/mydb')
+Host=your_host; Port=5432; Database=your_database; Username=your_username; Password=your_password;
