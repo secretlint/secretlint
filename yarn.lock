@@ -1447,7 +1447,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@secretlint/secretlint-rule-database-connection-string@workspace:packages/@secretlint/secretlint-rule-database-connection-string":
+"@secretlint/secretlint-rule-database-connection-string@npm:^10.1.1, @secretlint/secretlint-rule-database-connection-string@workspace:packages/@secretlint/secretlint-rule-database-connection-string":
   version: 0.0.0-use.local
   resolution: "@secretlint/secretlint-rule-database-connection-string@workspace:packages/@secretlint/secretlint-rule-database-connection-string"
   dependencies:
@@ -1642,6 +1642,7 @@ __metadata:
     "@secretlint/secretlint-rule-anthropic": "npm:^10.1.1"
     "@secretlint/secretlint-rule-aws": "npm:^10.1.1"
     "@secretlint/secretlint-rule-basicauth": "npm:^10.1.1"
+    "@secretlint/secretlint-rule-database-connection-string": "npm:^10.1.1"
     "@secretlint/secretlint-rule-filter-comments": "npm:^10.1.1"
     "@secretlint/secretlint-rule-gcp": "npm:^10.1.1"
     "@secretlint/secretlint-rule-github": "npm:^10.1.1"
