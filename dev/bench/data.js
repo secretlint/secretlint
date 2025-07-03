@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1751544836986,
+  "lastUpdate": 1751545295994,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -38986,6 +38986,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.61,
             "range": "±1.65%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "5635e8e2c0220916066854ef533a8bf359f5d5b2",
+          "message": "feat(ci): merge-gatekeeperワークフローを追加 (#1097)\n\n- PRマージ品質向上のためのmerge-gatekeeperを導入\n- upsidr/merge-gatekeeper@v1.2.1を使用\n- mainとmasterブランチへのPRに対して実行\n- 適切な権限設定（checks: read, statuses: read）を追加\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2025-07-03T21:19:52+09:00",
+          "tree_id": "f22f5e526b61fd0c19146b0dba94e90a650e2626",
+          "url": "https://github.com/secretlint/secretlint/commit/5635e8e2c0220916066854ef533a8bf359f5d5b2"
+        },
+        "date": 1751545294497,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.64,
+            "range": "±0.69%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.61,
+            "range": "±0.96%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
