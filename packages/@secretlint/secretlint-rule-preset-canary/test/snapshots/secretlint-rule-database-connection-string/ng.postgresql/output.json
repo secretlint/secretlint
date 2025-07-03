@@ -2,6 +2,58 @@
     "filePath": "[SNAPSHOT]/ng.postgresql/input.txt",
     "messages": [
         {
+            "message": "found basic auth credential: postgresql://pguser:secur3Pass@postgres.example.com",
+            "range": [
+                132,
+                183
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-basicauth",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 4,
+                    "column": 16
+                },
+                "end": {
+                    "line": 4,
+                    "column": 67
+                }
+            },
+            "severity": "error",
+            "messageId": "BasicAuth",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-basicauth/README.md#BasicAuth",
+            "data": {
+                "CREDENTIAL": "postgresql://pguser:secur3Pass@postgres.example.com"
+            }
+        },
+        {
+            "message": "found basic auth credential: postgres://api_user:myC0mpl3xPwd@db.internal.com",
+            "range": [
+                281,
+                329
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-basicauth",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 7,
+                    "column": 22
+                },
+                "end": {
+                    "line": 7,
+                    "column": 70
+                }
+            },
+            "severity": "error",
+            "messageId": "BasicAuth",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-basicauth/README.md#BasicAuth",
+            "data": {
+                "CREDENTIAL": "postgres://api_user:myC0mpl3xPwd@db.internal.com"
+            }
+        },
+        {
             "message": "found PostgreSQL connection string: postgres://api_user:myC0mpl3xPwd@db.internal.com:5432/api_db\";",
             "range": [
                 281,
@@ -9,6 +61,7 @@
             ],
             "type": "message",
             "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
             "loc": {
                 "start": {
                     "line": 7,
@@ -27,6 +80,32 @@
             }
         },
         {
+            "message": "found basic auth credential: postgresql://postgres:m42ploz2wd@google.com",
+            "range": [
+                624,
+                667
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-basicauth",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 13,
+                    "column": 15
+                },
+                "end": {
+                    "line": 13,
+                    "column": 58
+                }
+            },
+            "severity": "error",
+            "messageId": "BasicAuth",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-basicauth/README.md#BasicAuth",
+            "data": {
+                "CREDENTIAL": "postgresql://postgres:m42ploz2wd@google.com"
+            }
+        },
+        {
             "message": "found PostgreSQL connection string: postgresql://postgres:m42ploz2wd@google.com:5432/mydb')",
             "range": [
                 624,
@@ -34,6 +113,7 @@
             ],
             "type": "message",
             "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
             "loc": {
                 "start": {
                     "line": 13,
