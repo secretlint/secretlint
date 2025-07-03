@@ -1,5 +1,0 @@
-Secretlint Configuration Error
-
-----
-
-Can not set "allowMessageIds" option to preset(preset-rule) 

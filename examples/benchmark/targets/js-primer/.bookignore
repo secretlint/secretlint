@@ -1,9 +1,0 @@
-node_modules
-package.json
-theme
-
-# project
-meetings
-OUTLINE.md
-.travis
-.bookignore

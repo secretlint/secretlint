@@ -1,6 +1,6 @@
 # @secretlint/secretlint-rule-database-connection-string
 
-An example rule for secretlint.
+A secretlint rule for detecting hardcoded credentials in database connection strings.
 
 ## Install
 
@@ -10,9 +10,50 @@ Install with [npm](https://www.npmjs.com/):
 
 ## MessageIDs
 
-### EXAMPLE_MESSAGE
+### MongoDBConnection
 
-An example error message.
+Report when hardcoded credentials are found in MongoDB connection strings.
+
+**Good:**
+```
+const uri = "mongodb://localhost:27017/mydb";
+const uri = "mongodb://username:${PASSWORD}@host:27017/mydb";
+```
+
+**Bad:**
+```
+const uri = "mongodb://user:realpassword123@cluster.mongodb.net/mydb";
+```
+
+### MySQLConnection
+
+Report when hardcoded credentials are found in MySQL connection strings.
+
+**Good:**
+```
+const uri = "mysql://localhost:3306/mydb";
+const uri = "mysql://user:${PASSWORD}@host:3306/mydb";
+```
+
+**Bad:**
+```
+const uri = "mysql://admin:secretpassword@db.example.com:3306/mydb";
+```
+
+### PostgreSQLConnection
+
+Report when hardcoded credentials are found in PostgreSQL connection strings.
+
+**Good:**
+```
+const uri = "postgresql://localhost:5432/mydb";
+const uri = "postgres://user:${PASSWORD}@host:5432/mydb";
+```
+
+**Bad:**
+```
+const uri = "postgresql://user:mypassword123@db.example.com:5432/mydb";
+```
 
 ## Options
 

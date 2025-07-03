@@ -1,2 +1,0 @@
-THIS IS SECRET A // secretlint-disable-line
-THIS IS SECRET B

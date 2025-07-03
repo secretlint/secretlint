@@ -1,6 +1,0 @@
-{
-    "filePath": "[SNAPSHOT]/ok.valid/input.txt",
-    "messages": [],
-    "sourceContent": "# Valid database connection strings that should NOT be detected (false positives)\n\n# Template/placeholder patterns\nconst MONGO_TEMPLATE = \"mongodb://username:password@localhost:27017/database\";\nconst MYSQL_TEMPLATE = \"mysql://user:${PASSWORD}@example.com:3306/db\";\nconst PG_TEMPLATE = \"postgresql://{username}:{password}@{{host}}:5432/{database}\";\n\n# Connection strings without credentials\nconst MONGO_NO_AUTH = \"mongodb://localhost:27017/database\";\nconst MYSQL_NO_AUTH = \"mysql://db.example.com:3306/app\";\nconst PG_NO_AUTH = \"postgresql://db.server.com:5432/production\";\n\n# Connection strings with obvious placeholders\nconst CONFIG_EXAMPLE = \"mongodb://YOUR_USERNAME:YOUR_PASSWORD@cluster.mongodb.net/test\";\nconst DOC_EXAMPLE = \"mysql://admin:REPLACE_WITH_PASSWORD@mysql.server.com:3306/database\";\n\n# Key-value with placeholders\nServer=localhost;Database=test;Uid={user};Pwd={password};\nHost=example.com;Port=5432;Username=$DB_USER;Password=$DB_PASSWORD;",
-    "sourceContentType": "text"
-}

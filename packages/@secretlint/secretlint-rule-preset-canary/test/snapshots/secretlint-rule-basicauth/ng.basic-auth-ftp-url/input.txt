@@ -1,1 +1,0 @@
-This FTP: ftp://user:pass@example.com includes credential.

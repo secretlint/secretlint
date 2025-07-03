@@ -62,11 +62,11 @@ const BUILTIN_IGNORED_PATTERNS = [
 function isVariableLikeString(str: string): boolean {
     // Check for common variable patterns
     const variablePatterns = [
-        /\$\{[^}]+\}/, // ${var}
-        /\{\{[^}]+\}\}/, // {{var}}
-        /\{[^}]+\}/, // {var}
-        /%[A-Z_]+%/, // %VAR%
-        /\$[A-Z_]+/, // $VAR
+        /\$\{[^}]{1,50}\}/, // ${var}
+        /\{\{[^}]{1,50}\}\}/, // {{var}}
+        /\{[^}]{1,50}\}/, // {var}
+        /%[A-Z_]{1,50}%/, // %VAR%
+        /\$[A-Z_]{1,50}/, // $VAR
     ];
 
     return variablePatterns.some((pattern) => pattern.test(str));
@@ -116,7 +116,7 @@ function reportMongoDBConnectionString({
     // MongoDB URI patterns: mongodb:// and mongodb+srv://
     // Captures: mongodb://[username:password@]host[:port][/database][?options]
     const MONGODB_PATTERN =
-        /mongodb(?:\+srv)?:\/\/(?:([^:\/\s]+):([^@\/\s]+)@)?([^\/\s?]+)(?:\/([^?\s]*))?(?:\?([^\s]*))?/gi;
+        /mongodb(?:\+srv)?:\/\/(?:([^:\/\s]{1,100}):([^@\/\s]{1,200})@)?([^\/\s?]{1,100})(?:\/([^?\s]{0,100}))?(?:\?([^\s]{0,500}))?/gi;
 
     const results = source.content.matchAll(MONGODB_PATTERN);
     for (const result of results) {
@@ -159,7 +159,7 @@ function reportMySQLConnectionString({
 }) {
     // MySQL URI patterns: jdbc:mysql://, mysql://, mysqlx://
     const MYSQL_URI_PATTERN =
-        /(?:jdbc:)?mysql(?:x)?:\/\/(?:([^:\/\s]+):([^@\/\s]+)@)?([^\/\s?]+)(?:\/([^?\s]*))?(?:\?([^\s]*))?/gi;
+        /(?:jdbc:)?mysql(?:x)?:\/\/(?:([^:\/\s]{1,100}):([^@\/\s]{1,200})@)?([^\/\s?]{1,100})(?:\/([^?\s]{0,100}))?(?:\?([^\s]{0,500}))?/gi;
 
     const results = source.content.matchAll(MYSQL_URI_PATTERN);
     for (const result of results) {
@@ -170,32 +170,6 @@ function reportMySQLConnectionString({
 
         // Skip if no credentials found
         if (!username || !password) continue;
-
-        // Skip if password doesn't look real
-        if (!isLikelyRealPassword(password)) continue;
-
-        const range = [index, index + match.length] as const;
-        const allowedResults = matchPatterns(match, options.allows);
-        if (allowedResults.length > 0) {
-            continue;
-        }
-
-        context.report({
-            message: t("MySQLConnection", {
-                URI: match,
-            }),
-            range,
-        });
-    }
-
-    // MySQL key-value patterns: find patterns with Uid/Username followed by Pwd/Password
-    const MYSQL_KEYVALUE_PATTERN = /\b(?:Uid|Username)\s*=\s*([^;\s]+)[^;]*;[^;]*\b(?:Pwd|Password)\s*=\s*([^;\s]+)/gi;
-
-    const kvResults = source.content.matchAll(MYSQL_KEYVALUE_PATTERN);
-    for (const result of kvResults) {
-        const index = result.index || 0;
-        const match = result[0] || "";
-        const password = result[2];
 
         // Skip if password doesn't look real
         if (!isLikelyRealPassword(password)) continue;
@@ -228,7 +202,7 @@ function reportPostgreSQLConnectionString({
 }) {
     // PostgreSQL URI patterns: postgresql://, postgres://
     const POSTGRESQL_URI_PATTERN =
-        /postgres(?:ql)?:\/\/(?:([^:\/\s]+):([^@\/\s]+)@)?([^\/\s?]+)(?:\/([^?\s]*))?(?:\?([^\s]*))?/gi;
+        /postgres(?:ql)?:\/\/(?:([^:\/\s]{1,100}):([^@\/\s]{1,200})@)?([^\/\s?]{1,100})(?:\/([^?\s]{0,100}))?(?:\?([^\s]{0,500}))?/gi;
 
     const results = source.content.matchAll(POSTGRESQL_URI_PATTERN);
     for (const result of results) {
@@ -239,33 +213,6 @@ function reportPostgreSQLConnectionString({
 
         // Skip if no credentials found
         if (!username || !password) continue;
-
-        // Skip if password doesn't look real
-        if (!isLikelyRealPassword(password)) continue;
-
-        const range = [index, index + match.length] as const;
-        const allowedResults = matchPatterns(match, options.allows);
-        if (allowedResults.length > 0) {
-            continue;
-        }
-
-        context.report({
-            message: t("PostgreSQLConnection", {
-                URI: match,
-            }),
-            range,
-        });
-    }
-
-    // PostgreSQL key-value patterns: find patterns with Username followed by Password
-    const POSTGRESQL_KEYVALUE_PATTERN =
-        /\b(?:Username|User)\s*=\s*([^;\s]+)[^;]*;[^;]*\b(?:Password|Pwd)\s*=\s*([^;\s]+)/gi;
-
-    const kvResults = source.content.matchAll(POSTGRESQL_KEYVALUE_PATTERN);
-    for (const result of kvResults) {
-        const index = result.index || 0;
-        const match = result[0] || "";
-        const password = result[2];
 
         // Skip if password doesn't look real
         if (!isLikelyRealPassword(password)) continue;

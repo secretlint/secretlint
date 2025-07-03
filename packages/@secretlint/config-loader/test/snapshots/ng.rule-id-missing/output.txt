@@ -1,9 +1,0 @@
-Secretlint Configuration Error
-
-----
-
-Invalid secretlintrc: secretlintrc/rules/0 must have required property 'id', secretlintrc/rules/0 must have required property 'id', secretlintrc/rules/0 must match a schema in anyOf
-
-----
-
-Invalid undefined: undefined must have required property 'id'

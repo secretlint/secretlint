@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<testsuites>
-<testsuite package="org.eslint" time="0" tests="3" errors="3" name="[SNAPSHOT]/input.txt">
-<testcase time="0" name="org.eslint.example"><failure message="[message-id] warning found secret: SECRET"><![CDATA[line 1, col 8, Warning - [message-id] warning found secret: SECRET (example)]]></failure></testcase>
-<testcase time="0" name="org.eslint.example"><failure message="[message-id] error found secret: SECRET"><![CDATA[line 1, col 8, Error - [message-id] error found secret: SECRET (example)]]></failure></testcase>
-<testcase time="0" name="org.eslint.parent > example"><failure message="[message-id] error found secret: SECRET"><![CDATA[line 1, col 8, Error - [message-id] error found secret: SECRET (parent > example)]]></failure></testcase>
-</testsuite>
-</testsuites>

@@ -1,6 +1,0 @@
-{
-    "filePath": "[SNAPSHOT]/ok.ignore-in-markdown/input.md",
-    "messages": [],
-    "sourceContent": "<!-- secretlint-disable -->\n\nTHIS IS SECRET A\nTHIS IS SECRET B\nTHIS IS SECRET C\n\n<!-- secretlint-enable -->\n",
-    "sourceContentType": "text"
-}
