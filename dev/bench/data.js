@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1751495523928,
+  "lastUpdate": 1751544836986,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -38948,6 +38948,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.59,
             "range": "±1.34%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c6ce8fc1891c992496452d1a856838219602f736",
+          "message": " chore(deps): update dependencies  (#1095)\n\n* chore(deps): update dependencies\n\n* Update package.json\n\n* fix: turbo.json の pipeline を tasks に変更\n\nTurbo v2.5.4 で pipeline フィールドが tasks にリネームされたため対応\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* test: update SARIF formatter snapshot for node-sarif-builder schema URL change\n\nThe node-sarif-builder library updated the SARIF schema URL from\n'sarif-2.1.0-rtm.5.json' to 'sarif-2.1.0.json'. This commit updates\nthe test snapshot to match the new output.\n\n* fix(test): @secretlint/nodeのテスト期待値を更新\n\nフォーマッター出力に \"infos\" カウントが追加されたため、\nテストの期待値を \"✖ 1 problem (1 error, 0 warnings)\" から\n\"✖ 1 problem (1 error, 0 warnings, 0 infos)\" に更新\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2025-07-03T21:12:04+09:00",
+          "tree_id": "d4a7a886566c1d02547b34d4b1043af175dec6fa",
+          "url": "https://github.com/secretlint/secretlint/commit/c6ce8fc1891c992496452d1a856838219602f736"
+        },
+        "date": 1751544834589,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.57,
+            "range": "±0.62%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.61,
+            "range": "±1.65%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
