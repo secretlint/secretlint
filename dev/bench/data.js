@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1751586871010,
+  "lastUpdate": 1751592435342,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -39062,6 +39062,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±1.00%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "59d068243663f4b0f6bb8a3fbb5452a0cbe72fdd",
+          "message": "fix(basicauth): limit protocol detection to HTTP/HTTPS/FTP to avoid overlap with database rules (#1101)\n\n* fix(basicauth): limit protocol detection to HTTP/HTTPS/FTP to avoid overlap with database rules\n\n- Restrict basic-auth rule regex to only detect HTTP/HTTPS/FTP protocols\n- Prevent duplicate detection of database connection strings\n- Database URLs are now exclusively handled by database-connection-string rule\n- Add comprehensive test cases for protocol separation\n- Maintain backward compatibility for HTTP/HTTPS/FTP detection\n\nFixes #1100\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* feat(basicauth): enhance rule with advanced false positive prevention\n\n- Add comprehensive placeholder pattern detection (variables, placeholders)\n- Implement smart credential validation (username/password quality checks)\n- Replace complex entropy calculation with simple repetitive pattern detection\n- Add extensive test coverage for false positive prevention\n- Maintain backward compatibility for legitimate HTTP/HTTPS/FTP detection\n\nAlso improve database-connection-string rule:\n- Replace calculateEntropy with simpler repetitive pattern detection\n- Consistent validation logic across both rules\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* fix(tests): update preset-canary snapshots after basic-auth improvements\n\n- Update snapshots to reflect the removal of duplicate detections\n- Basic-auth rule no longer detects database connection strings\n- Database connection strings are now exclusively handled by database-connection-string rule\n- All tests pass: improved rule separation working correctly\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2025-07-04T10:25:27+09:00",
+          "tree_id": "414f3608719820cc8077dd0d00c561f885b7eb10",
+          "url": "https://github.com/secretlint/secretlint/commit/59d068243663f4b0f6bb8a3fbb5452a0cbe72fdd"
+        },
+        "date": 1751592433868,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.7,
+            "range": "±0.90%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±1.19%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
