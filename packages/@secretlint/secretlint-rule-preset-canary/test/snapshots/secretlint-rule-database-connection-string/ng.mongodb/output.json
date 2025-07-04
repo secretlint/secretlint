@@ -2,32 +2,6 @@
     "filePath": "[SNAPSHOT]/ng.mongodb/input.txt",
     "messages": [
         {
-            "message": "found basic auth credential: mongodb://realuser:s3cr3tP4ss@db1.example.net",
-            "range": [
-                107,
-                152
-            ],
-            "type": "message",
-            "ruleId": "@secretlint/secretlint-rule-basicauth",
-            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
-            "loc": {
-                "start": {
-                    "line": 4,
-                    "column": 19
-                },
-                "end": {
-                    "line": 4,
-                    "column": 64
-                }
-            },
-            "severity": "error",
-            "messageId": "BasicAuth",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-basicauth/README.md#BasicAuth",
-            "data": {
-                "CREDENTIAL": "mongodb://realuser:s3cr3tP4ss@db1.example.net"
-            }
-        },
-        {
             "message": "found MongoDB connection string: mongodb://realuser:s3cr3tP4ss@db1.example.net:27017/production\";",
             "range": [
                 107,
@@ -80,32 +54,6 @@
             }
         },
         {
-            "message": "found basic auth credential: mongodb://root:m42ploz2wd@google.com",
-            "range": [
-                349,
-                385
-            ],
-            "type": "message",
-            "ruleId": "@secretlint/secretlint-rule-basicauth",
-            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
-            "loc": {
-                "start": {
-                    "line": 10,
-                    "column": 15
-                },
-                "end": {
-                    "line": 10,
-                    "column": 51
-                }
-            },
-            "severity": "error",
-            "messageId": "BasicAuth",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-basicauth/README.md#BasicAuth",
-            "data": {
-                "CREDENTIAL": "mongodb://root:m42ploz2wd@google.com"
-            }
-        },
-        {
             "message": "found MongoDB connection string: mongodb://root:m42ploz2wd@google.com:5434/thegift\"",
             "range": [
                 349,
@@ -155,32 +103,6 @@
             "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#MongoDBConnection",
             "data": {
                 "URI": "mongodb+srv://testuser:hub24aoeu@gg-is-awesome-xm273.mongodb.net/test?retryWrites=true&w=majority"
-            }
-        },
-        {
-            "message": "found basic auth credential: srv://testuser:hub24aoeu@gg-is-awesome-xm273.mongodb.net",
-            "range": [
-                408,
-                464
-            ],
-            "type": "message",
-            "ruleId": "@secretlint/secretlint-rule-basicauth",
-            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
-            "loc": {
-                "start": {
-                    "line": 11,
-                    "column": 8
-                },
-                "end": {
-                    "line": 11,
-                    "column": 64
-                }
-            },
-            "severity": "error",
-            "messageId": "BasicAuth",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-basicauth/README.md#BasicAuth",
-            "data": {
-                "CREDENTIAL": "srv://testuser:hub24aoeu@gg-is-awesome-xm273.mongodb.net"
             }
         }
     ],

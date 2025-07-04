@@ -73,14 +73,6 @@ function isVariableLikeString(str: string): boolean {
 }
 
 /**
- * Calculate simple entropy to detect random-looking passwords
- */
-function calculateEntropy(str: string): number {
-    const chars = Array.from(new Set(str.split("")));
-    return chars.length / str.length;
-}
-
-/**
  * Check if the password part looks like a real credential
  */
 function isLikelyRealPassword(password: string): boolean {
@@ -95,9 +87,8 @@ function isLikelyRealPassword(password: string): boolean {
         return false;
     }
 
-    // Require reasonable entropy (mixed characters)
-    const entropy = calculateEntropy(password);
-    if (entropy < 0.3) return false; // Too repetitive
+    // Skip passwords that are too repetitive (same character repeated)
+    if (/^(.)\1{3,}$/.test(password)) return false; // e.g., "aaaa", "1111", "xxxx"
 
     return true;
 }

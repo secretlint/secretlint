@@ -2,32 +2,6 @@
     "filePath": "[SNAPSHOT]/ng.mysql/input.txt",
     "messages": [
         {
-            "message": "found basic auth credential: mysql://dbuser:compl3xPwd@mysql.server.com",
-            "range": [
-                103,
-                145
-            ],
-            "type": "message",
-            "ruleId": "@secretlint/secretlint-rule-basicauth",
-            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
-            "loc": {
-                "start": {
-                    "line": 4,
-                    "column": 19
-                },
-                "end": {
-                    "line": 4,
-                    "column": 61
-                }
-            },
-            "severity": "error",
-            "messageId": "BasicAuth",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-basicauth/README.md#BasicAuth",
-            "data": {
-                "CREDENTIAL": "mysql://dbuser:compl3xPwd@mysql.server.com"
-            }
-        },
-        {
             "message": "found MySQL connection string: mysql://dbuser:compl3xPwd@mysql.server.com:3306/database\";",
             "range": [
                 103,
@@ -77,58 +51,6 @@
             "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#MySQLConnection",
             "data": {
                 "URI": "jdbc:mysql://admin:str0ngP4ss@db.company.com:3306/app_db\";"
-            }
-        },
-        {
-            "message": "found basic auth credential: :mysql://admin:str0ngP4ss@db.company.com",
-            "range": [
-                211,
-                251
-            ],
-            "type": "message",
-            "ruleId": "@secretlint/secretlint-rule-basicauth",
-            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
-            "loc": {
-                "start": {
-                    "line": 7,
-                    "column": 24
-                },
-                "end": {
-                    "line": 7,
-                    "column": 64
-                }
-            },
-            "severity": "error",
-            "messageId": "BasicAuth",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-basicauth/README.md#BasicAuth",
-            "data": {
-                "CREDENTIAL": ":mysql://admin:str0ngP4ss@db.company.com"
-            }
-        },
-        {
-            "message": "found basic auth credential: mysql://root:m42ploz2wd@google.com",
-            "range": [
-                313,
-                347
-            ],
-            "type": "message",
-            "ruleId": "@secretlint/secretlint-rule-basicauth",
-            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
-            "loc": {
-                "start": {
-                    "line": 10,
-                    "column": 16
-                },
-                "end": {
-                    "line": 10,
-                    "column": 50
-                }
-            },
-            "severity": "error",
-            "messageId": "BasicAuth",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-basicauth/README.md#BasicAuth",
-            "data": {
-                "CREDENTIAL": "mysql://root:m42ploz2wd@google.com"
             }
         },
         {

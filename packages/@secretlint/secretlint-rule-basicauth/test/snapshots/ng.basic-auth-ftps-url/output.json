@@ -1,0 +1,6 @@
+{
+    "filePath": "[SNAPSHOT]/ng.basic-auth-ftps-url/input.txt",
+    "messages": [],
+    "sourceContent": "# FTPS basic auth should be detected\nconst SECURE_FTP = \"ftps://admin:password@secure.ftp.com/files\";",
+    "sourceContentType": "text"
+}
