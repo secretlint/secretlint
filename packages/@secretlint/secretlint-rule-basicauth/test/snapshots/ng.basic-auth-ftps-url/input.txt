@@ -1,0 +1,2 @@
+# FTPS basic auth should be detected
+const SECURE_FTP = "ftps://admin:password@secure.ftp.com/files";

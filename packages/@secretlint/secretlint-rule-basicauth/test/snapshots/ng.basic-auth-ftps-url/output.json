@@ -1,0 +1,32 @@
+{
+    "filePath": "[SNAPSHOT]/ng.basic-auth-ftps-url/input.txt",
+    "messages": [
+        {
+            "message": "found basic auth credential: ftps://admin:password@secure.ftp.com",
+            "range": [
+                57,
+                93
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-basicauth",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 20
+                },
+                "end": {
+                    "line": 2,
+                    "column": 56
+                }
+            },
+            "severity": "error",
+            "messageId": "BasicAuth",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-basicauth/README.md#BasicAuth",
+            "data": {
+                "CREDENTIAL": "ftps://admin:password@secure.ftp.com"
+            }
+        }
+    ],
+    "sourceContent": "# FTPS basic auth should be detected\nconst SECURE_FTP = \"ftps://admin:password@secure.ftp.com/files\";",
+    "sourceContentType": "text"
+}
