@@ -1453,7 +1453,7 @@ __metadata:
   dependencies:
     "@secretlint/tester": "npm:^10.1.1"
     "@secretlint/types": "npm:^10.1.1"
-    "@types/node": "npm:^20.19.1"
+    "@types/node": "npm:^20.19.2"
     prettier: "npm:^2.8.1"
     ts-node: "npm:^10.9.2"
     typescript: "npm:^5.1.6"
@@ -2157,7 +2157,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.19.1":
+"@types/node@npm:^20.19.2":
   version: 20.19.4
   resolution: "@types/node@npm:20.19.4"
   dependencies:
