@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-database-connection-string",
-  "version": "10.1.1",
+  "version": "10.2.0",
   "description": "A secretlint rule for database-connection-string",
   "keywords": [
     "secretlint",
@@ -51,10 +51,10 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^10.1.1"
+    "@secretlint/types": "^10.2.0"
   },
   "devDependencies": {
-    "@secretlint/tester": "^10.1.1",
+    "@secretlint/tester": "^10.2.0",
     "@types/node": "^20.19.2",
     "prettier": "^2.8.1",
     "ts-node": "^10.9.2",
