@@ -1453,7 +1453,7 @@ __metadata:
   dependencies:
     "@secretlint/tester": "npm:^10.2.0"
     "@secretlint/types": "npm:^10.2.0"
-    "@types/node": "npm:^20.19.2"
+    "@types/node": "npm:^20.19.4"
     prettier: "npm:^2.8.1"
     ts-node: "npm:^10.9.2"
     typescript: "npm:^5.1.6"
@@ -2157,12 +2157,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.19.2":
-  version: 20.19.4
-  resolution: "@types/node@npm:20.19.4"
+"@types/node@npm:^20.19.4":
+  version: 20.19.6
+  resolution: "@types/node@npm:20.19.6"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10c0/53f40c963d1804d2e87ad942636fee4be0e1ca88f2173b2a52b198797747bfb55d9ba6613cd918a0c5083a03b87d58688497c7ea58a8f3108fc86a5d627528e1
+  checksum: 10c0/207272e83b0397959d434c901b71539d7e8316ddc2b27fe51f977e3210dc2b504796b29e46d389010f04767cf9b384f19ae5991ea87102c07c74d368c58e2f0b
   languageName: node
   linkType: hard
 
