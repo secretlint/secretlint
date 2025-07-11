@@ -1203,7 +1203,7 @@ __metadata:
     "@types/mocha": "npm:^10.0.10"
     "@types/node": "npm:^24.0.10"
     ajv: "npm:^8.17.1"
-    create-validator-ts: "npm:^6.0.0"
+    create-validator-ts: "npm:^6.0.1"
     debug: "npm:^4.4.1"
     mocha: "npm:^11.7.1"
     prettier: "npm:^2.8.8"
@@ -3231,19 +3231,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"create-validator-ts@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "create-validator-ts@npm:6.0.0"
+"create-validator-ts@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "create-validator-ts@npm:6.0.1"
   dependencies:
     "@file-cache/core": "npm:^2.0.0"
     "@file-cache/npm": "npm:^2.0.0"
     glob-watcher: "npm:^6.0.0"
-    globby: "npm:^14.0.1"
+    globby: "npm:^14.1.0"
     meow: "npm:^13.2.0"
-    ts-json-schema-generator: "npm:^2.0.0"
+    ts-json-schema-generator: "npm:^2.3.0"
   bin:
     create-validator-ts: bin/cmd.js
-  checksum: 10c0/7a9459dd6cbdaee180f2112c5b7b381eee08b1f6c45e3cc8b112d734ef1470a782790f8ffb6aea78c772f2eb66479cdecd870ef982f14fdbca8279685094d1d1
+  checksum: 10c0/640eeb3847c49994ba8e22741bf6dd8ecb651ec6f72e0f23e72cd0d438a5f2f4b5d62b893832517a437a029f6f6c5ab0ab3df3e952a56cac912c27401eac9d67
   languageName: node
   linkType: hard
 
@@ -4176,7 +4176,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globby@npm:^14.0.0, globby@npm:^14.0.1, globby@npm:^14.1.0":
+"globby@npm:^14.0.0, globby@npm:^14.1.0":
   version: 14.1.0
   resolution: "globby@npm:14.1.0"
   dependencies:
@@ -8023,7 +8023,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-json-schema-generator@npm:^2.0.0":
+"ts-json-schema-generator@npm:^2.3.0":
   version: 2.4.0
   resolution: "ts-json-schema-generator@npm:2.4.0"
   dependencies:
