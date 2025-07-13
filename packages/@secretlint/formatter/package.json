@@ -56,9 +56,9 @@
   "dependencies": {
     "@secretlint/resolver": "^10.2.0",
     "@secretlint/types": "^10.2.0",
-    "@textlint/linter-formatter": "^15.1.1",
-    "@textlint/module-interop": "^15.1.1",
-    "@textlint/types": "^15.1.1",
+    "@textlint/linter-formatter": "^15.2.0",
+    "@textlint/module-interop": "^15.2.0",
+    "@textlint/types": "^15.2.0",
     "chalk": "^5.4.1",
     "debug": "^4.4.1",
     "pluralize": "^8.0.0",
