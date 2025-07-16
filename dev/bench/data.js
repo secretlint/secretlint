@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1752668479163,
+  "lastUpdate": 1752671968963,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -39708,6 +39708,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±0.89%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "917424821595ee8984873714132b63b0787993fe",
+          "message": "fix(turbo): fix turbo.json configuration to match actual file structure (#1123)\n\n- Update updateSnapshot task outputs from \"snapshots/**\" to \"test/snapshots/**\" to match actual file structure\n- Add empty outputs array for secretlint task to suppress warnings\n- Fix Turborepo warnings about missing output files for tasks\n\nfix #1119\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2025-07-16T22:17:50+09:00",
+          "tree_id": "c8c7939528393753fe8d265be9fd368cd58a23d6",
+          "url": "https://github.com/secretlint/secretlint/commit/917424821595ee8984873714132b63b0787993fe"
+        },
+        "date": 1752671967284,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.71,
+            "range": "±0.50%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±1.36%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
