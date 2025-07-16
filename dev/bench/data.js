@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1752667883379,
+  "lastUpdate": 1752668003883,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -39632,6 +39632,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±0.96%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "04061bae71c9ebd0398024636f8fedb721d33172",
+          "message": "fix(database-connection-string): improve password detection to avoid false negatives (#1118)\n\n* fix(database-connection-string): improve password detection to avoid false negatives\n\nFixed the isLikelyRealPassword function to check for exact matches of placeholder patterns instead of substring matches. This prevents real passwords like \"secur3Pass\" from being rejected just because they contain common words like \"pass\" as substrings.\n\nAlso updated .secretlintignore to exclude test snapshot JSON files which contain example credentials for testing purposes.\n\nFixes #1117\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* test: add comprehensive test cases for MySQL and MongoDB password patterns\n\nAdded test cases to verify that passwords containing common words as substrings\nare properly detected after the isLikelyRealPassword fix. This includes:\n\nMySQL:\n- secretKey123 (contains 'secret' as substring)\n- passW0rd\\! (contains 'pass' as substring)\n- mySecret2024 (contains 'secret' as substring)\n\nMongoDB:\n- secretKey456 (contains 'secret' as substring)\n- passW0rd123 (contains 'pass' as substring)\n- mySecret789 (contains 'secret' as substring)\n\nAll these passwords are now correctly detected as they are not exact matches\nto the placeholder patterns in BUILTIN_IGNORED_PATTERNS.\n\nUpdated test snapshots to reflect the improved detection capabilities.\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* fix: revert .secretlintignore changes to prevent test interference\n\nThe additional exclusion for test snapshots was causing issues with other\ntests in the repository. Reverted .secretlintignore to its original state\nand updated all test snapshots accordingly.\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* fix: restore packages/secretlint/test/snapshots to master state\n\nThe changes in packages/secretlint/test/snapshots were unintended side effects\nthat occurred due to git worktree usage. These have been restored to their\noriginal state from the master branch.\n\nThe core fix for the database connection string password detection issue\nremains intact and functional.\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2025-07-16T12:11:41Z",
+          "tree_id": "fa8fb991b122da5130760614e01da7109ac6681d",
+          "url": "https://github.com/secretlint/secretlint/commit/04061bae71c9ebd0398024636f8fedb721d33172"
+        },
+        "date": 1752668001979,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.6,
+            "range": "±0.51%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.56,
+            "range": "±0.79%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
