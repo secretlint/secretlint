@@ -82,8 +82,9 @@ function isLikelyRealPassword(password: string): boolean {
     // Skip if it contains variable patterns
     if (isVariableLikeString(password)) return false;
 
-    // Skip if it's a common placeholder
-    if (BUILTIN_IGNORED_PATTERNS.some((pattern) => password.toLowerCase().includes(pattern.toLowerCase()))) {
+    // Skip if it's exactly a common placeholder (not just contains it)
+    const passwordLower = password.toLowerCase();
+    if (BUILTIN_IGNORED_PATTERNS.some((pattern) => passwordLower === pattern.toLowerCase())) {
         return false;
     }
 
