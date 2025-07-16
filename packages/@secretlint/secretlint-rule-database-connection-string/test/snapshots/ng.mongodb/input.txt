@@ -9,3 +9,8 @@ const MONGO_SRV = "mongodb+srv://appuser:myR3alP@ssw0rd@cluster0.mongodb.net/myd
 # MongoDB from additional cases
 CONECTION_URI="mongodb://root:m42ploz2wd@google.com:5434/thegift"
 mongodb+srv://testuser:hub24aoeu@gg-is-awesome-xm273.mongodb.net/test?retryWrites=true&w=majority
+
+# Additional test cases for password patterns that should be detected
+mongodb://admin:secretKey456@cluster.mongodb.net:27017/admin
+mongodb+srv://user:passW0rd123@prod-cluster.mongodb.net/production?retryWrites=true
+mongodb://devuser:mySecret789@dev.mongodb.com:27017/dev_db

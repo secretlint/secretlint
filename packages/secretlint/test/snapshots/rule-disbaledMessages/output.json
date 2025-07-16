@@ -1,12 +1,5 @@
 {
     "exitStatus": 0,
-    "stdout": [
-        {
-            "filePath": "[SNAPSHOT]/rule-disbaledMessages/input.txt",
-            "sourceContent": "THIS IS SECRET DATA! BUT IT IS DISABLED\n",
-            "sourceContentType": "text",
-            "messages": []
-        }
-    ],
+    "stdout": [],
     "stderr": null
 }
