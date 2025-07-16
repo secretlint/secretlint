@@ -12,3 +12,8 @@ mysql --user=doadmin --password=strongp@55! --host=db-mysql-ams3-23775-do-user-7
 jdbc:mysql://sandy:secret@[myhost1:1111,myhost2:2222]/db
 jdbc:mysql://[(host=myhost1,port=1111,user=sandy,password=secret),(host=myhost2,port=2222,user=finn,password=secret)]/db
 Server=myServerAddress;Database=myDataBase;Uid=myUsername;Pwd=myPassword;
+
+# Additional test cases for password patterns that should be detected
+mysql://testuser:secretKey123@db.example.com:3306/testdb
+mysql://apiuser:passW0rd!@internal.db.com:3306/api
+mysql://devuser:mySecret2024@localhost:3306/dev_db
