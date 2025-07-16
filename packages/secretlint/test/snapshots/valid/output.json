@@ -1,5 +1,12 @@
 {
     "exitStatus": 0,
-    "stdout": [],
+    "stdout": [
+        {
+            "filePath": "[SNAPSHOT]/valid/input.txt",
+            "sourceContent": "THIS IS PUBLIC DATA ONLY!\n",
+            "sourceContentType": "text",
+            "messages": []
+        }
+    ],
     "stderr": null
 }
