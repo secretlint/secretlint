@@ -280,7 +280,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lerna-lite/cli@npm:4.6.1, @lerna-lite/cli@npm:^4.6.0":
+"@lerna-lite/cli@npm:4.6.1, @lerna-lite/cli@npm:^4.6.1":
   version: 4.6.1
   resolution: "@lerna-lite/cli@npm:4.6.1"
   dependencies:
@@ -376,7 +376,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lerna-lite/publish@npm:^4.6.0":
+"@lerna-lite/publish@npm:^4.6.1":
   version: 4.6.1
   resolution: "@lerna-lite/publish@npm:4.6.1"
   dependencies:
@@ -408,7 +408,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@lerna-lite/version@npm:4.6.1, @lerna-lite/version@npm:^4.6.0":
+"@lerna-lite/version@npm:4.6.1, @lerna-lite/version@npm:^4.6.1":
   version: 4.6.1
   resolution: "@lerna-lite/version@npm:4.6.1"
   dependencies:
@@ -7180,9 +7180,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "root@workspace:."
   dependencies:
-    "@lerna-lite/cli": "npm:^4.6.0"
-    "@lerna-lite/publish": "npm:^4.6.0"
-    "@lerna-lite/version": "npm:^4.6.0"
+    "@lerna-lite/cli": "npm:^4.6.1"
+    "@lerna-lite/publish": "npm:^4.6.1"
+    "@lerna-lite/version": "npm:^4.6.1"
     lint-staged: "npm:^16.1.2"
     prettier: "npm:^2.8.8"
     scaffdog: "npm:^4.1.0"
