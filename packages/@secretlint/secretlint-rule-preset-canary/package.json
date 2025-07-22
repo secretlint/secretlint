@@ -76,10 +76,10 @@
     "@secretlint/secretlint-rule-slack": "^10.2.1",
     "@secretlint/tester": "^10.2.1",
     "@secretlint/types": "^10.2.1",
-    "@types/node": "^24.0.13",
+    "@types/node": "^24.0.14",
     "prettier": "^2.8.8",
     "rimraf": "^6.0.1",
-    "rollup": "^4.45.0",
+    "rollup": "^4.45.1",
     "rollup-plugin-polyfill-node": "^0.13.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
