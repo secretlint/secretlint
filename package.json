@@ -52,7 +52,7 @@
     "lint-staged": "^16.1.2",
     "prettier": "^2.8.8",
     "scaffdog": "^4.1.0",
-    "turbo": "^2.5.4"
+    "turbo": "^2.5.5"
   },
   "prettier": {
     "singleQuote": false,
