@@ -68,7 +68,7 @@
     "@secretlint/secretlint-rule-internal-test-cjs": "^10.2.1",
     "@secretlint/secretlint-rule-internal-test-esm": "^10.2.1",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^24.0.14",
+    "@types/node": "^24.0.15",
     "create-validator-ts": "^6.0.1",
     "mocha": "^11.7.1",
     "prettier": "^2.8.8",

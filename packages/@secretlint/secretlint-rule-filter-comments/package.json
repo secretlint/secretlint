@@ -63,7 +63,7 @@
   "devDependencies": {
     "@secretlint/secretlint-rule-pattern": "^10.2.1",
     "@secretlint/tester": "^10.2.1",
-    "@types/node": "^24.0.14",
+    "@types/node": "^24.0.15",
     "prettier": "^2.8.8",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
