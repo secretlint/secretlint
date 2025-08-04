@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1753504980636,
+  "lastUpdate": 1754320477794,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -40012,6 +40012,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±1.57%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "44439583+benibenj@users.noreply.github.com",
+            "name": "Benjamin Christopher Simmonds",
+            "username": "benibenj"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "84e74d8862932a10499e12b372b48176b28731a2",
+          "message": "sendgrid tokens are 69 characters long (#1133)",
+          "timestamp": "2025-08-05T00:12:59+09:00",
+          "tree_id": "f8d6fef024e79a7785c085a213361e47ba02b81a",
+          "url": "https://github.com/secretlint/secretlint/commit/84e74d8862932a10499e12b372b48176b28731a2"
+        },
+        "date": 1754320475839,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.71,
+            "range": "±0.75%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±1.46%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
