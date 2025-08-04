@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-azure",
-  "version": "10.2.1",
+  "version": "10.2.2",
   "description": "A secretlint rule for Azure.",
   "keywords": [
     "secretlint",
@@ -55,11 +55,11 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^10.2.1",
+    "@secretlint/types": "^10.2.2",
     "@textlint/regexp-string-matcher": "^2.0.2"
   },
   "devDependencies": {
-    "@secretlint/tester": "^10.2.1",
+    "@secretlint/tester": "^10.2.2",
     "@types/node": "^24.0.15",
     "prettier": "^2.8.8",
     "ts-node": "^10.9.2",
