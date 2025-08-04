@@ -37,6 +37,10 @@ function reportIfFoundKey({
     for (const result of results) {
         const index = result.index || 0;
         const match = result[0] || "";
+        if (match.length !== 69) {
+            // send grid api key is 69 characters long
+            continue;
+        }
         const range = [index, index + match.length] as const;
         const allowedResults = matchPatterns(match, options.allows);
         if (allowedResults.length > 0) {
