@@ -1657,7 +1657,7 @@ __metadata:
     "@types/node": "npm:^24.1.0"
     prettier: "npm:^2.8.8"
     rimraf: "npm:^6.0.1"
-    rollup: "npm:^4.46.1"
+    rollup: "npm:^4.46.2"
     rollup-plugin-polyfill-node: "npm:^0.13.0"
     ts-node: "npm:^10.9.2"
     typescript: "npm:^5.8.3"
@@ -1690,7 +1690,7 @@ __metadata:
     "@types/node": "npm:^24.1.0"
     prettier: "npm:^2.8.8"
     rimraf: "npm:^6.0.1"
-    rollup: "npm:^4.46.1"
+    rollup: "npm:^4.46.2"
     rollup-plugin-polyfill-node: "npm:^0.13.0"
     ts-node: "npm:^10.9.2"
     typescript: "npm:^5.8.3"
@@ -7147,7 +7147,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup@npm:^4.46.1":
+"rollup@npm:^4.46.2":
   version: 4.46.2
   resolution: "rollup@npm:4.46.2"
   dependencies:
