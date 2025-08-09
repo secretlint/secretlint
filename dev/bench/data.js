@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1754744712307,
+  "lastUpdate": 1754745621662,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -40506,6 +40506,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±1.36%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "06b3dafc6c331b371388b1cf6dc4e4aea7a33691",
+          "message": "chore(deps): update dependency tsx to ^4.20.3 (#1149)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2025-08-09T13:18:28Z",
+          "tree_id": "782c6c955ce34e66aecd41bcfb3efe18749d5b20",
+          "url": "https://github.com/secretlint/secretlint/commit/06b3dafc6c331b371388b1cf6dc4e4aea7a33691"
+        },
+        "date": 1754745619819,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.79,
+            "range": "±0.70%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.59,
+            "range": "±1.48%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
