@@ -66,6 +66,7 @@
     "@secretlint/formatter": "workspace:*",
     "@secretlint/node": "workspace:*",
     "@secretlint/profiler": "workspace:*",
+    "@secretlint/resolver": "workspace:*",
     "debug": "^4.4.1",
     "globby": "^14.1.0",
     "read-pkg": "^9.0.1"

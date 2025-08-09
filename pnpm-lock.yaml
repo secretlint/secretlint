@@ -1257,6 +1257,9 @@ importers:
       '@secretlint/profiler':
         specifier: workspace:*
         version: link:../@secretlint/profiler
+      '@secretlint/resolver':
+        specifier: workspace:*
+        version: link:../@secretlint/resolver
       debug:
         specifier: ^4.4.1
         version: 4.4.1(supports-color@8.1.1)
