@@ -43,7 +43,7 @@
     "prepublishOnly": "npm run clean && npm run build",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
-    "test": "mocha",
+    "test": "node --import tsx --test test/**/*.test.ts",
     "watch": "tsc --build --watch"
   },
   "prettier": {
