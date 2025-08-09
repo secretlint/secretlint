@@ -60,7 +60,7 @@
     "@types/node": "^24.1.0",
     "mocha": "^11.7.1",
     "prettier": "^2.8.8",
-    "tsx": "^4.7.3",
+    "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   },
   "packageManager": "yarn@1.22.22",
