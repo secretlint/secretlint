@@ -1,6 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/mocharc",
-  "loader": "ts-node/esm",
+  "node-option": ["import=tsx/esm"],
   "spec": [
     "test/**/*.ts"
   ],
