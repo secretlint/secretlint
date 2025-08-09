@@ -546,6 +546,9 @@ importers:
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
+      '@textlint/regexp-string-matcher':
+        specifier: ^2.0.2
+        version: 2.0.2
     devDependencies:
       '@secretlint/tester':
         specifier: workspace:*
