@@ -55,11 +55,11 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^10.2.2",
+    "@secretlint/types": "workspace:*",
     "@textlint/regexp-string-matcher": "^2.0.2"
   },
   "devDependencies": {
-    "@secretlint/tester": "^10.2.2",
+    "@secretlint/tester": "workspace:*",
     "@types/node": "^24.1.0",
     "prettier": "^2.8.8",
     "ts-node": "^10.9.2",

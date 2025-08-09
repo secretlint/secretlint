@@ -58,11 +58,11 @@
     "trailingComma": "none"
   },
   "dependencies": {
-    "@secretlint/types": "^10.2.2"
+    "@secretlint/types": "workspace:*"
   },
   "devDependencies": {
-    "@secretlint/secretlint-rule-pattern": "^10.2.2",
-    "@secretlint/tester": "^10.2.2",
+    "@secretlint/secretlint-rule-pattern": "workspace:*",
+    "@secretlint/tester": "workspace:*",
     "@types/node": "^24.1.0",
     "prettier": "^2.8.8",
     "tsx": "^4.20.3",

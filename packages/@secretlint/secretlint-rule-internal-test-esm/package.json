@@ -54,7 +54,7 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^10.2.2"
+    "@secretlint/types": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.8.3"

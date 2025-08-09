@@ -2,5 +2,6 @@
   "$schema": "https://json.schemastore.org/mocharc",
   "spec": [
     "test/**/*.ts"
-  ]
+  ],
+  "node-option": ["import=tsx", "no-warnings"]
 }

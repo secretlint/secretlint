@@ -54,8 +54,8 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/resolver": "^10.2.2",
-    "@secretlint/types": "^10.2.2",
+    "@secretlint/resolver": "workspace:*",
+    "@secretlint/types": "workspace:*",
     "@textlint/linter-formatter": "^15.2.1",
     "@textlint/module-interop": "^15.2.1",
     "@textlint/types": "^15.2.1",
@@ -67,6 +67,7 @@
     "terminal-link": "^4.0.0"
   },
   "devDependencies": {
+    "@types/debug": "^4.1.12",
     "@types/mocha": "^10.0.10",
     "@types/node": "^24.1.0",
     "@types/pluralize": "0.0.33",
