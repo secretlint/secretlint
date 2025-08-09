@@ -69,8 +69,8 @@ importers:
   packages/@secretlint/config-creator:
     dependencies:
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
     devDependencies:
       '@types/mocha':
         specifier: ^10.0.10
@@ -94,14 +94,14 @@ importers:
   packages/@secretlint/config-loader:
     dependencies:
       '@secretlint/profiler':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../profiler
       '@secretlint/resolver':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../resolver
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
       ajv:
         specifier: ^8.17.1
         version: 8.17.1
@@ -118,6 +118,9 @@ importers:
       '@secretlint/secretlint-rule-internal-test-esm':
         specifier: workspace:*
         version: link:../secretlint-rule-internal-test-esm
+      '@types/debug':
+        specifier: ^4.1.12
+        version: 4.1.12
       '@types/mocha':
         specifier: ^10.0.10
         version: 10.0.10
@@ -143,11 +146,11 @@ importers:
   packages/@secretlint/core:
     dependencies:
       '@secretlint/profiler':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../profiler
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
       debug:
         specifier: ^4.4.1
         version: 4.4.1(supports-color@8.1.1)
@@ -183,11 +186,11 @@ importers:
   packages/@secretlint/formatter:
     dependencies:
       '@secretlint/resolver':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../resolver
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
       '@textlint/linter-formatter':
         specifier: ^15.2.1
         version: 15.2.1
@@ -216,6 +219,9 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
     devDependencies:
+      '@types/debug':
+        specifier: ^4.1.12
+        version: 4.1.12
       '@types/mocha':
         specifier: ^10.0.10
         version: 10.0.10
@@ -244,8 +250,8 @@ importers:
   packages/@secretlint/messages-to-markdown:
     dependencies:
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
     devDependencies:
       '@types/mocha':
         specifier: ^10.0.10
@@ -269,23 +275,23 @@ importers:
   packages/@secretlint/node:
     dependencies:
       '@secretlint/config-loader':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../config-loader
       '@secretlint/core':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/formatter':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../formatter
       '@secretlint/profiler':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../profiler
       '@secretlint/source-creator':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../source-creator
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
       debug:
         specifier: ^4.4.1
         version: 4.4.1(supports-color@8.1.1)
@@ -294,8 +300,11 @@ importers:
         version: 7.0.3
     devDependencies:
       '@secretlint/secretlint-rule-example':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-example
+      '@types/debug':
+        specifier: ^4.1.12
+        version: 4.1.12
       '@types/mocha':
         specifier: ^10.0.10
         version: 10.0.10
@@ -339,8 +348,8 @@ importers:
   packages/@secretlint/quick-start:
     dependencies:
       '@secretlint/secretlint-rule-preset-recommend':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-preset-recommend
       secretlint:
         specifier: ^10.2.2
         version: 10.2.2
@@ -383,8 +392,8 @@ importers:
         version: 3.2.0
     devDependencies:
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
       '@types/mocha':
         specifier: ^10.0.10
         version: 10.0.10
@@ -410,15 +419,15 @@ importers:
   packages/@secretlint/secretlint-rule-1password:
     dependencies:
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
       '@textlint/regexp-string-matcher':
         specifier: ^2.0.2
         version: 2.0.2
     devDependencies:
       '@secretlint/tester':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../tester
       '@types/node':
         specifier: ^24.1.0
         version: 24.2.1
@@ -435,12 +444,12 @@ importers:
   packages/@secretlint/secretlint-rule-anthropic:
     dependencies:
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
     devDependencies:
       '@secretlint/tester':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../tester
       '@types/node':
         specifier: ^24.1.0
         version: 24.2.1
@@ -457,15 +466,15 @@ importers:
   packages/@secretlint/secretlint-rule-aws:
     dependencies:
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
       '@textlint/regexp-string-matcher':
         specifier: ^2.0.2
         version: 2.0.2
     devDependencies:
       '@secretlint/tester':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../tester
       '@types/node':
         specifier: ^24.1.0
         version: 24.2.1
@@ -482,15 +491,15 @@ importers:
   packages/@secretlint/secretlint-rule-azure:
     dependencies:
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
       '@textlint/regexp-string-matcher':
         specifier: ^2.0.2
         version: 2.0.2
     devDependencies:
       '@secretlint/tester':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../tester
       '@types/node':
         specifier: ^24.1.0
         version: 24.2.1
@@ -507,15 +516,15 @@ importers:
   packages/@secretlint/secretlint-rule-basicauth:
     dependencies:
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
       '@textlint/regexp-string-matcher':
         specifier: ^2.0.2
         version: 2.0.2
     devDependencies:
       '@secretlint/tester':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../tester
       '@types/node':
         specifier: ^24.1.0
         version: 24.2.1
@@ -532,12 +541,12 @@ importers:
   packages/@secretlint/secretlint-rule-database-connection-string:
     dependencies:
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
     devDependencies:
       '@secretlint/tester':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../tester
       '@types/node':
         specifier: ^20.19.9
         version: 20.19.10
@@ -554,12 +563,12 @@ importers:
   packages/@secretlint/secretlint-rule-example:
     dependencies:
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
     devDependencies:
       '@secretlint/tester':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../tester
       '@types/node':
         specifier: ^24.1.0
         version: 24.2.1
@@ -576,15 +585,15 @@ importers:
   packages/@secretlint/secretlint-rule-filter-comments:
     dependencies:
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
     devDependencies:
       '@secretlint/secretlint-rule-pattern':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-pattern
       '@secretlint/tester':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../tester
       '@types/node':
         specifier: ^24.1.0
         version: 24.2.1
@@ -601,8 +610,8 @@ importers:
   packages/@secretlint/secretlint-rule-gcp:
     dependencies:
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
       '@textlint/regexp-string-matcher':
         specifier: ^2.0.2
         version: 2.0.2
@@ -611,8 +620,8 @@ importers:
         version: 1.3.1
     devDependencies:
       '@secretlint/tester':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../tester
       '@types/node':
         specifier: ^24.1.0
         version: 24.2.1
@@ -632,15 +641,15 @@ importers:
   packages/@secretlint/secretlint-rule-github:
     dependencies:
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
       '@textlint/regexp-string-matcher':
         specifier: ^2.0.2
         version: 2.0.2
     devDependencies:
       '@secretlint/tester':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../tester
       '@types/node':
         specifier: ^24.1.0
         version: 24.2.1
@@ -657,8 +666,8 @@ importers:
   packages/@secretlint/secretlint-rule-internal-test-cjs:
     dependencies:
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
     devDependencies:
       typescript:
         specifier: ^5.8.3
@@ -667,8 +676,8 @@ importers:
   packages/@secretlint/secretlint-rule-internal-test-esm:
     dependencies:
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
     devDependencies:
       typescript:
         specifier: ^5.8.3
@@ -677,12 +686,12 @@ importers:
   packages/@secretlint/secretlint-rule-linear:
     dependencies:
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
     devDependencies:
       '@secretlint/tester':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../tester
       '@types/node':
         specifier: ^24.1.0
         version: 24.2.1
@@ -699,12 +708,12 @@ importers:
   packages/@secretlint/secretlint-rule-no-dotenv:
     dependencies:
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
     devDependencies:
       '@secretlint/tester':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../tester
       '@types/node':
         specifier: ^24.1.0
         version: 24.2.1
@@ -721,8 +730,8 @@ importers:
   packages/@secretlint/secretlint-rule-no-homedir:
     dependencies:
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
       '@textlint/regexp-string-matcher':
         specifier: ^2.0.2
         version: 2.0.2
@@ -731,8 +740,8 @@ importers:
         version: 5.0.0
     devDependencies:
       '@secretlint/tester':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../tester
       '@types/node':
         specifier: ^24.1.0
         version: 24.2.1
@@ -749,15 +758,15 @@ importers:
   packages/@secretlint/secretlint-rule-no-k8s-kind-secret:
     dependencies:
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
       js-yaml:
         specifier: ^4.1.0
         version: 4.1.0
     devDependencies:
       '@secretlint/tester':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../tester
       '@types/js-yaml':
         specifier: ^4.0.9
         version: 4.0.9
@@ -777,15 +786,15 @@ importers:
   packages/@secretlint/secretlint-rule-npm:
     dependencies:
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
       '@textlint/regexp-string-matcher':
         specifier: ^2.0.2
         version: 2.0.2
     devDependencies:
       '@secretlint/tester':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../tester
       '@types/node':
         specifier: ^24.1.0
         version: 24.2.1
@@ -802,12 +811,12 @@ importers:
   packages/@secretlint/secretlint-rule-openai:
     dependencies:
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
     devDependencies:
       '@secretlint/tester':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../tester
       '@types/node':
         specifier: ^24.1.0
         version: 24.2.1
@@ -824,11 +833,11 @@ importers:
   packages/@secretlint/secretlint-rule-pattern:
     dependencies:
       '@secretlint/tester':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../tester
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
       '@textlint/regexp-string-matcher':
         specifier: ^2.0.2
         version: 2.0.2
@@ -855,56 +864,56 @@ importers:
         specifier: ^12.1.4
         version: 12.1.4(rollup@4.46.2)(tslib@2.8.1)(typescript@5.9.2)
       '@secretlint/secretlint-rule-1password':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-1password
       '@secretlint/secretlint-rule-anthropic':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-anthropic
       '@secretlint/secretlint-rule-aws':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-aws
       '@secretlint/secretlint-rule-basicauth':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-basicauth
       '@secretlint/secretlint-rule-database-connection-string':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-database-connection-string
       '@secretlint/secretlint-rule-filter-comments':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-filter-comments
       '@secretlint/secretlint-rule-gcp':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-gcp
       '@secretlint/secretlint-rule-github':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-github
       '@secretlint/secretlint-rule-linear':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-linear
       '@secretlint/secretlint-rule-npm':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-npm
       '@secretlint/secretlint-rule-openai':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-openai
       '@secretlint/secretlint-rule-privatekey':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-privatekey
       '@secretlint/secretlint-rule-sendgrid':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-sendgrid
       '@secretlint/secretlint-rule-shopify':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-shopify
       '@secretlint/secretlint-rule-slack':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-slack
       '@secretlint/tester':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../tester
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
       '@types/node':
         specifier: ^24.1.0
         version: 24.2.1
@@ -939,53 +948,53 @@ importers:
         specifier: ^12.1.4
         version: 12.1.4(rollup@4.46.2)(tslib@2.8.1)(typescript@5.9.2)
       '@secretlint/secretlint-rule-1password':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-1password
       '@secretlint/secretlint-rule-aws':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-aws
       '@secretlint/secretlint-rule-azure':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-azure
       '@secretlint/secretlint-rule-basicauth':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-basicauth
       '@secretlint/secretlint-rule-filter-comments':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-filter-comments
       '@secretlint/secretlint-rule-gcp':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-gcp
       '@secretlint/secretlint-rule-github':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-github
       '@secretlint/secretlint-rule-linear':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-linear
       '@secretlint/secretlint-rule-npm':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-npm
       '@secretlint/secretlint-rule-openai':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-openai
       '@secretlint/secretlint-rule-privatekey':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-privatekey
       '@secretlint/secretlint-rule-sendgrid':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-sendgrid
       '@secretlint/secretlint-rule-shopify':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-shopify
       '@secretlint/secretlint-rule-slack':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../secretlint-rule-slack
       '@secretlint/tester':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../tester
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
       '@types/node':
         specifier: ^24.1.0
         version: 24.2.1
@@ -1015,11 +1024,11 @@ importers:
         version: 2.0.2
     devDependencies:
       '@secretlint/tester':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../tester
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
       '@types/node':
         specifier: ^24.1.0
         version: 24.2.1
@@ -1036,8 +1045,8 @@ importers:
   packages/@secretlint/secretlint-rule-secp256k1-privatekey:
     dependencies:
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
       '@types/bn.js':
         specifier: ^5.2.0
         version: 5.2.0
@@ -1052,8 +1061,8 @@ importers:
         version: 5.0.1
     devDependencies:
       '@secretlint/tester':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../tester
       '@types/node':
         specifier: ^24.1.0
         version: 24.2.1
@@ -1070,15 +1079,15 @@ importers:
   packages/@secretlint/secretlint-rule-sendgrid:
     dependencies:
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
       '@textlint/regexp-string-matcher':
         specifier: ^2.0.2
         version: 2.0.2
     devDependencies:
       '@secretlint/tester':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../tester
       '@types/node':
         specifier: ^24.1.0
         version: 24.2.1
@@ -1095,15 +1104,15 @@ importers:
   packages/@secretlint/secretlint-rule-shopify:
     dependencies:
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
       '@textlint/regexp-string-matcher':
         specifier: ^2.0.2
         version: 2.0.2
     devDependencies:
       '@secretlint/tester':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../tester
       '@types/node':
         specifier: ^24.1.0
         version: 24.2.1
@@ -1120,15 +1129,15 @@ importers:
   packages/@secretlint/secretlint-rule-slack:
     dependencies:
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
       '@textlint/regexp-string-matcher':
         specifier: ^2.0.2
         version: 2.0.2
     devDependencies:
       '@secretlint/tester':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../tester
       '@types/node':
         specifier: ^24.1.0
         version: 24.2.1
@@ -1145,8 +1154,8 @@ importers:
   packages/@secretlint/source-creator:
     dependencies:
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
       istextorbinary:
         specifier: ^9.5.0
         version: 9.5.0
@@ -1173,17 +1182,17 @@ importers:
   packages/@secretlint/tester:
     dependencies:
       '@secretlint/config-loader':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../config-loader
       '@secretlint/core':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/source-creator':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../source-creator
       '@secretlint/types':
-        specifier: ^10.2.2
-        version: 10.2.2
+        specifier: workspace:*
+        version: link:../types
     devDependencies:
       '@types/mocha':
         specifier: ^10.0.10
@@ -1258,6 +1267,9 @@ importers:
       '@secretlint/types':
         specifier: workspace:*
         version: link:../@secretlint/types
+      '@types/debug':
+        specifier: ^4.1.12
+        version: 4.1.12
       '@types/mocha':
         specifier: ^10.0.10
         version: 10.0.10
@@ -1939,62 +1951,6 @@ packages:
   '@secretlint/resolver@10.2.2':
     resolution: {integrity: sha512-3md0cp12e+Ae5V+crPQYGd6aaO7ahw95s28OlULGyclyyUtf861UoRGS2prnUrKh7MZb23kdDOyGCYb9br5e4w==}
 
-  '@secretlint/secretlint-rule-1password@10.2.2':
-    resolution: {integrity: sha512-t4XqJOAOdcfEV3CvPGMyigrA+U8X6cnQcjYMQPN9yjHFwMInDL5a5nsuL3xy9jsis+kAcvtO1QQHnUa+rMtE7A==}
-    engines: {node: '>=18.0.0'}
-
-  '@secretlint/secretlint-rule-anthropic@10.2.2':
-    resolution: {integrity: sha512-yUdXtWNawny2xj42fGDFIWJqF86tfvuVUYuagrRpHYpml1FPL41oeAwU9C9azp3e1sGLHAC9uA5xl/qauI1QNQ==}
-    engines: {node: '>=18.0.0'}
-
-  '@secretlint/secretlint-rule-aws@10.2.2':
-    resolution: {integrity: sha512-60tgysVHveuaPLboonV8b0PDWW/5zw4jcayZF3HF7gNRLgy1RophRKU9vb9KVv+VCTGOPW12GHdbw0nNSWiWZA==}
-    engines: {node: '>=20.0.0'}
-
-  '@secretlint/secretlint-rule-azure@10.2.2':
-    resolution: {integrity: sha512-ZSXSR7+9A47iDC0kkVkGQ8jHRE7cUO4CUsdzpBA6fqoLDGBMVET0cUUCzimbyS1A27kLs0hJD3illDz9uyn7Mg==}
-    engines: {node: '>=20.0.0'}
-
-  '@secretlint/secretlint-rule-basicauth@10.2.2':
-    resolution: {integrity: sha512-uQxnawLGt+Jm6adAo0jR56Ns5YVQjZvbL66AD9mQbYo519EzjU1p3Rx8Kjl7b879hgsMibRsgfC1w78F4r6Njg==}
-    engines: {node: '>=20.0.0'}
-
-  '@secretlint/secretlint-rule-database-connection-string@10.2.2':
-    resolution: {integrity: sha512-Rx0vKYod+jQXcljeUlZDcEUqZcMIBCo385gcUe5NVGBET32WRCv/h+4Val5lVC4jmk3CKrJ7SUMeLmdgGihizA==}
-    engines: {node: '>=18.0.0'}
-
-  '@secretlint/secretlint-rule-example@10.2.2':
-    resolution: {integrity: sha512-qXYm6efqeG8s/7AUHxQMA46ycGw7xRh3VP0sFzCuu4r0otsnVfOEKzWyJxxoBJmAMtMUKXgsBMGmC+7Gh2Cv1Q==}
-    engines: {node: '>=20.0.0'}
-
-  '@secretlint/secretlint-rule-filter-comments@10.2.2':
-    resolution: {integrity: sha512-Rl9jnb+yyuCaLXGTES86yP7WvF7djDaLH6AJ4CZ0iWN3WaHIBpdj2qEDHVajNcxQlWgxpU4w8Evi+/t6ApXy5Q==}
-    engines: {node: '>=20.0.0'}
-
-  '@secretlint/secretlint-rule-gcp@10.2.2':
-    resolution: {integrity: sha512-N9Tu8C8authbjDIZ3Lrn26ZLt7YpAOzJiqvOd1sxWJtfpjxmg8bq+YqPwn/hs8rXbQ51SVeCA7RCsAb0GW8w9A==}
-    engines: {node: '>=20.0.0'}
-
-  '@secretlint/secretlint-rule-github@10.2.2':
-    resolution: {integrity: sha512-aXgUyoTtbHVF9+hMimr4wjO7ATiZmsj0cdKKYX2CI12Kkhx6YS/9uHmfz4TTbF1xuBIkABeF6lpKIL5nHcws/g==}
-    engines: {node: '>=20.0.0'}
-
-  '@secretlint/secretlint-rule-linear@10.2.2':
-    resolution: {integrity: sha512-fpWD2GKFOHLhz4HlCEh5CxEsO05dn5trHz54RqmKvWdD1Is1FKaljhztIcKkwqeqJVTJzUaTZs1uyb08kiLrlQ==}
-    engines: {node: '>=18.0.0'}
-
-  '@secretlint/secretlint-rule-npm@10.2.2':
-    resolution: {integrity: sha512-ebvqyTWidoaIICCuWHIdrPiBooJmh4kVpXSY3xDMjBsapcXg78SKEGTV3/eJqscYqIPdCRjycaltHAIvEmq+BA==}
-    engines: {node: '>=20.0.0'}
-
-  '@secretlint/secretlint-rule-openai@10.2.2':
-    resolution: {integrity: sha512-mYadBB17pQN+9DYxuFTikm2FcPXQdp7hL8ree9B55LI9v++Yfhw5CdOUiMEshWUYdl5xW2GhglcO3F1RnF4bIw==}
-    engines: {node: '>=18.0.0'}
-
-  '@secretlint/secretlint-rule-pattern@10.2.2':
-    resolution: {integrity: sha512-Pf2W7UufXoDyaWBpD4RssngN34/MwYWIWyuKtffo//H1B2dt0PIQjrXrqG4PhnYatMEExO/FgASCQ7SlWS7Hnw==}
-    engines: {node: '>=20.0.0'}
-
   '@secretlint/secretlint-rule-preset-canary@10.2.2':
     resolution: {integrity: sha512-/gJbm3Jj9iV6FpP430HTxHee1DQ0UPEIEZQZ37tGNIgckQYxn6lcxwY0DTtrkzVJ/dgXSY7pckB45B3Sf9x+iA==}
     engines: {node: '>=20.0.0'}
@@ -2003,27 +1959,8 @@ packages:
     resolution: {integrity: sha512-K3jPqjva8bQndDKJqctnGfwuAxU2n9XNCPtbXVI5JvC7FnQiNg/yWlQPbMUlBXtBoBGFYp08A94m6fvtc9v+zA==}
     engines: {node: '>=20.0.0'}
 
-  '@secretlint/secretlint-rule-privatekey@10.2.2':
-    resolution: {integrity: sha512-BXTEDw4KtBOyVN6QsKdmXgGkvLzaE+oHPj0BBiYquqefSq5lQpEdz5JERA2cLntgPK6UMK9odbvBs3TxdGHcpw==}
-    engines: {node: '>=20.0.0'}
-
-  '@secretlint/secretlint-rule-sendgrid@10.2.2':
-    resolution: {integrity: sha512-cObrbsQIn3byBk2/XYmWUuNmEqG2+9XKupNlKUD0TvGxODpqkYnRDo7+5urAe6kMrvAQHEGf7Qugt/qo4NtIzA==}
-    engines: {node: '>=20.0.0'}
-
-  '@secretlint/secretlint-rule-shopify@10.2.2':
-    resolution: {integrity: sha512-JQuLMvjlf0URLZsl9EkBon8oT//lxi4IR/qx5xWRDxKtR9uCouTciIkJNTQ0y/DcBabN2qypMg6C6wr0SPFCYg==}
-
-  '@secretlint/secretlint-rule-slack@10.2.2':
-    resolution: {integrity: sha512-Rfk4pC3xYIiOPDc61ce5vRqSInRuHJKXgYdYw2pwR1zFftdTVs2AN5yydfNDXpcFBg+G86/4kE+LdN2xh0rQ1Q==}
-    engines: {node: '>=20.0.0'}
-
   '@secretlint/source-creator@10.2.2':
     resolution: {integrity: sha512-h6I87xJfwfUTgQ7irWq7UTdq/Bm1RuQ/fYhA3dtTIAop5BwSFmZyrchph4WcoEvbN460BWKmk4RYSvPElIIvxw==}
-    engines: {node: '>=20.0.0'}
-
-  '@secretlint/tester@10.2.2':
-    resolution: {integrity: sha512-PQTsS0mCZuTTCymj7lLenAyyb5+UpOaWaC23/8unam5RZJSurPM2Mvcn6B4CPXYawUq8z6iTfoO190p1ZP/w1Q==}
     engines: {node: '>=20.0.0'}
 
   '@secretlint/types@10.2.2':
@@ -5384,110 +5321,14 @@ snapshots:
 
   '@secretlint/resolver@10.2.2': {}
 
-  '@secretlint/secretlint-rule-1password@10.2.2':
-    dependencies:
-      '@secretlint/types': 10.2.2
-      '@textlint/regexp-string-matcher': 2.0.2
-
-  '@secretlint/secretlint-rule-anthropic@10.2.2':
-    dependencies:
-      '@secretlint/types': 10.2.2
-
-  '@secretlint/secretlint-rule-aws@10.2.2':
-    dependencies:
-      '@secretlint/types': 10.2.2
-      '@textlint/regexp-string-matcher': 2.0.2
-
-  '@secretlint/secretlint-rule-azure@10.2.2':
-    dependencies:
-      '@secretlint/types': 10.2.2
-      '@textlint/regexp-string-matcher': 2.0.2
-
-  '@secretlint/secretlint-rule-basicauth@10.2.2':
-    dependencies:
-      '@secretlint/types': 10.2.2
-      '@textlint/regexp-string-matcher': 2.0.2
-
-  '@secretlint/secretlint-rule-database-connection-string@10.2.2':
-    dependencies:
-      '@secretlint/types': 10.2.2
-
-  '@secretlint/secretlint-rule-example@10.2.2':
-    dependencies:
-      '@secretlint/types': 10.2.2
-
-  '@secretlint/secretlint-rule-filter-comments@10.2.2':
-    dependencies:
-      '@secretlint/types': 10.2.2
-
-  '@secretlint/secretlint-rule-gcp@10.2.2':
-    dependencies:
-      '@secretlint/types': 10.2.2
-      '@textlint/regexp-string-matcher': 2.0.2
-      node-forge: 1.3.1
-
-  '@secretlint/secretlint-rule-github@10.2.2':
-    dependencies:
-      '@secretlint/types': 10.2.2
-      '@textlint/regexp-string-matcher': 2.0.2
-
-  '@secretlint/secretlint-rule-linear@10.2.2':
-    dependencies:
-      '@secretlint/types': 10.2.2
-
-  '@secretlint/secretlint-rule-npm@10.2.2':
-    dependencies:
-      '@secretlint/types': 10.2.2
-      '@textlint/regexp-string-matcher': 2.0.2
-
-  '@secretlint/secretlint-rule-openai@10.2.2':
-    dependencies:
-      '@secretlint/types': 10.2.2
-
-  '@secretlint/secretlint-rule-pattern@10.2.2':
-    dependencies:
-      '@secretlint/tester': 10.2.2
-      '@secretlint/types': 10.2.2
-      '@textlint/regexp-string-matcher': 2.0.2
-    transitivePeerDependencies:
-      - supports-color
-
   '@secretlint/secretlint-rule-preset-canary@10.2.2': {}
 
   '@secretlint/secretlint-rule-preset-recommend@10.2.2': {}
-
-  '@secretlint/secretlint-rule-privatekey@10.2.2':
-    dependencies:
-      '@textlint/regexp-string-matcher': 2.0.2
-
-  '@secretlint/secretlint-rule-sendgrid@10.2.2':
-    dependencies:
-      '@secretlint/types': 10.2.2
-      '@textlint/regexp-string-matcher': 2.0.2
-
-  '@secretlint/secretlint-rule-shopify@10.2.2':
-    dependencies:
-      '@secretlint/types': 10.2.2
-      '@textlint/regexp-string-matcher': 2.0.2
-
-  '@secretlint/secretlint-rule-slack@10.2.2':
-    dependencies:
-      '@secretlint/types': 10.2.2
-      '@textlint/regexp-string-matcher': 2.0.2
 
   '@secretlint/source-creator@10.2.2':
     dependencies:
       '@secretlint/types': 10.2.2
       istextorbinary: 9.5.0
-
-  '@secretlint/tester@10.2.2':
-    dependencies:
-      '@secretlint/config-loader': 10.2.2
-      '@secretlint/core': 10.2.2
-      '@secretlint/source-creator': 10.2.2
-      '@secretlint/types': 10.2.2
-    transitivePeerDependencies:
-      - supports-color
 
   '@secretlint/types@10.2.2': {}
 

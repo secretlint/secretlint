@@ -57,14 +57,15 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/profiler": "^10.2.2",
-    "@secretlint/resolver": "^10.2.2",
-    "@secretlint/types": "^10.2.2",
+    "@secretlint/profiler": "workspace:*",
+    "@secretlint/resolver": "workspace:*",
+    "@secretlint/types": "workspace:*",
     "ajv": "^8.17.1",
     "debug": "^4.4.1",
     "rc-config-loader": "^4.1.3"
   },
   "devDependencies": {
+    "@types/debug": "^4.1.12",
     "@secretlint/secretlint-rule-internal-test-cjs": "workspace:*",
     "@secretlint/secretlint-rule-internal-test-esm": "workspace:*",
     "@types/mocha": "^10.0.10",

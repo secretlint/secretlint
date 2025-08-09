@@ -51,10 +51,10 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^10.2.2"
+    "@secretlint/types": "workspace:*"
   },
   "devDependencies": {
-    "@secretlint/tester": "^10.2.2",
+    "@secretlint/tester": "workspace:*",
     "@types/node": "^20.19.9",
     "prettier": "^2.8.1",
     "tsx": "^4.20.3",
