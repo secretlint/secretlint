@@ -45,7 +45,7 @@
     "prepublishOnly": "npm run clean && npm run build",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
-    "test": "node --loader ts-node/esm --test test/index.test.ts",
+    "test": "node --import tsx --test test/index.test.ts",
     "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
     "watch": "tsc --build --watch"
   },
@@ -61,7 +61,7 @@
     "@secretlint/tester": "^10.2.2",
     "@types/node": "^24.1.0",
     "prettier": "^2.8.8",
-    "ts-node": "^10.9.2",
+    "tsx": "^4.7.0",
     "typescript": "^5.8.3"
   },
   "packageManager": "yarn@1.22.22",

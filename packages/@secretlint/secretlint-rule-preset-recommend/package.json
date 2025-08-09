@@ -48,7 +48,7 @@
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
     "import-test": "node import-tests.js && npm run build && npm run updateSnapshot",
-    "test": "node --loader ts-node/esm --test test/index.test.ts",
+    "test": "node --import tsx --test test/index.test.ts",
     "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
     "watch": "tsc --build --watch"
   },
@@ -82,7 +82,7 @@
     "rimraf": "^6.0.1",
     "rollup": "^4.46.2",
     "rollup-plugin-polyfill-node": "^0.13.0",
-    "ts-node": "^10.9.2",
+    "tsx": "^4.7.0",
     "typescript": "^5.8.3"
   },
   "packageManager": "yarn@1.22.22",

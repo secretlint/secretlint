@@ -60,9 +60,9 @@
   "devDependencies": {
     "@types/node": "^24.1.0",
     "prettier": "^2.8.8",
-    "ts-node": "^10.9.2",
     "tsconfig-to-dual-package": "^1.2.0",
     "tsd": "^0.32.0",
+    "tsx": "^4.7.0",
     "typescript": "^5.8.3"
   },
   "packageManager": "yarn@1.22.22",

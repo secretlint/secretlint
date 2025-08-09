@@ -94,6 +94,188 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/aix-ppc64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/aix-ppc64@npm:0.25.8"
+  conditions: os=aix & cpu=ppc64
+  languageName: node
+  linkType: hard
+
+"@esbuild/android-arm64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/android-arm64@npm:0.25.8"
+  conditions: os=android & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@esbuild/android-arm@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/android-arm@npm:0.25.8"
+  conditions: os=android & cpu=arm
+  languageName: node
+  linkType: hard
+
+"@esbuild/android-x64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/android-x64@npm:0.25.8"
+  conditions: os=android & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@esbuild/darwin-arm64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/darwin-arm64@npm:0.25.8"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@esbuild/darwin-x64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/darwin-x64@npm:0.25.8"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@esbuild/freebsd-arm64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/freebsd-arm64@npm:0.25.8"
+  conditions: os=freebsd & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@esbuild/freebsd-x64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/freebsd-x64@npm:0.25.8"
+  conditions: os=freebsd & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-arm64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/linux-arm64@npm:0.25.8"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-arm@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/linux-arm@npm:0.25.8"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-ia32@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/linux-ia32@npm:0.25.8"
+  conditions: os=linux & cpu=ia32
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-loong64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/linux-loong64@npm:0.25.8"
+  conditions: os=linux & cpu=loong64
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-mips64el@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/linux-mips64el@npm:0.25.8"
+  conditions: os=linux & cpu=mips64el
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-ppc64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/linux-ppc64@npm:0.25.8"
+  conditions: os=linux & cpu=ppc64
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-riscv64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/linux-riscv64@npm:0.25.8"
+  conditions: os=linux & cpu=riscv64
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-s390x@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/linux-s390x@npm:0.25.8"
+  conditions: os=linux & cpu=s390x
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-x64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/linux-x64@npm:0.25.8"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@esbuild/netbsd-arm64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/netbsd-arm64@npm:0.25.8"
+  conditions: os=netbsd & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@esbuild/netbsd-x64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/netbsd-x64@npm:0.25.8"
+  conditions: os=netbsd & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@esbuild/openbsd-arm64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/openbsd-arm64@npm:0.25.8"
+  conditions: os=openbsd & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@esbuild/openbsd-x64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/openbsd-x64@npm:0.25.8"
+  conditions: os=openbsd & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@esbuild/openharmony-arm64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/openharmony-arm64@npm:0.25.8"
+  conditions: os=openharmony & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@esbuild/sunos-x64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/sunos-x64@npm:0.25.8"
+  conditions: os=sunos & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@esbuild/win32-arm64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/win32-arm64@npm:0.25.8"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@esbuild/win32-ia32@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/win32-ia32@npm:0.25.8"
+  conditions: os=win32 & cpu=ia32
+  languageName: node
+  linkType: hard
+
+"@esbuild/win32-x64@npm:0.25.8":
+  version: 0.25.8
+  resolution: "@esbuild/win32-x64@npm:0.25.8"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
 "@file-cache/core@npm:^2.0.0":
   version: 2.0.0
   resolution: "@file-cache/core@npm:2.0.0"
@@ -1185,7 +1367,7 @@ __metadata:
     "@types/node": "npm:^24.1.0"
     mocha: "npm:^11.7.1"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1207,7 +1389,7 @@ __metadata:
     mocha: "npm:^11.7.1"
     prettier: "npm:^2.8.8"
     rc-config-loader: "npm:^4.1.3"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1226,7 +1408,7 @@ __metadata:
     mocha: "npm:^11.7.1"
     prettier: "npm:^2.8.8"
     structured-source: "npm:^4.0.0"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1278,7 +1460,7 @@ __metadata:
     strip-ansi: "npm:^7.1.0"
     table: "npm:^6.9.0"
     terminal-link: "npm:^4.0.0"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1292,7 +1474,7 @@ __metadata:
     "@types/node": "npm:^24.1.0"
     mocha: "npm:^11.7.1"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   bin:
     messages-to-markdown: ./bin/cmd.js
@@ -1316,7 +1498,7 @@ __metadata:
     mocha: "npm:^11.7.1"
     p-map: "npm:^7.0.3"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1329,7 +1511,7 @@ __metadata:
     "@types/node": "npm:^24.1.0"
     mocha: "npm:^11.7.1"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1356,7 +1538,7 @@ __metadata:
     "@types/node": "npm:^24.1.0"
     mocha: "npm:^11.7.1"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1372,7 +1554,7 @@ __metadata:
     mocha: "npm:^11.7.1"
     node-sarif-builder: "npm:^3.2.0"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1386,7 +1568,7 @@ __metadata:
     "@textlint/regexp-string-matcher": "npm:^2.0.2"
     "@types/node": "npm:^24.1.0"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1399,7 +1581,7 @@ __metadata:
     "@secretlint/types": "npm:^10.2.2"
     "@types/node": "npm:^24.1.0"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1413,7 +1595,7 @@ __metadata:
     "@textlint/regexp-string-matcher": "npm:^2.0.2"
     "@types/node": "npm:^24.1.0"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1427,7 +1609,7 @@ __metadata:
     "@textlint/regexp-string-matcher": "npm:^2.0.2"
     "@types/node": "npm:^24.1.0"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1441,7 +1623,7 @@ __metadata:
     "@textlint/regexp-string-matcher": "npm:^2.0.2"
     "@types/node": "npm:^24.1.0"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1454,7 +1636,7 @@ __metadata:
     "@secretlint/types": "npm:^10.2.2"
     "@types/node": "npm:^20.19.9"
     prettier: "npm:^2.8.1"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.1.6"
   languageName: unknown
   linkType: soft
@@ -1467,7 +1649,7 @@ __metadata:
     "@secretlint/types": "npm:^10.2.2"
     "@types/node": "npm:^24.1.0"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1481,7 +1663,7 @@ __metadata:
     "@secretlint/types": "npm:^10.2.2"
     "@types/node": "npm:^24.1.0"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1497,7 +1679,7 @@ __metadata:
     "@types/node-forge": "npm:^1.3.13"
     node-forge: "npm:^1.3.1"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1542,7 +1724,7 @@ __metadata:
     "@secretlint/types": "npm:^10.2.2"
     "@types/node": "npm:^24.1.0"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1555,7 +1737,7 @@ __metadata:
     "@secretlint/types": "npm:^10.2.2"
     "@types/node": "npm:^24.1.0"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1570,7 +1752,7 @@ __metadata:
     "@types/node": "npm:^24.1.0"
     escape-string-regexp: "npm:^5.0.0"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1585,7 +1767,7 @@ __metadata:
     "@types/node": "npm:^24.1.0"
     js-yaml: "npm:^4.1.0"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1599,7 +1781,7 @@ __metadata:
     "@textlint/regexp-string-matcher": "npm:^2.0.2"
     "@types/node": "npm:^24.1.0"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1612,7 +1794,7 @@ __metadata:
     "@secretlint/types": "npm:^10.2.2"
     "@types/node": "npm:^24.1.0"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1626,7 +1808,7 @@ __metadata:
     "@textlint/regexp-string-matcher": "npm:^2.0.2"
     "@types/node": "npm:^24.1.0"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1659,7 +1841,7 @@ __metadata:
     rimraf: "npm:^6.0.1"
     rollup: "npm:^4.46.2"
     rollup-plugin-polyfill-node: "npm:^0.13.0"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1692,7 +1874,7 @@ __metadata:
     rimraf: "npm:^6.0.1"
     rollup: "npm:^4.46.2"
     rollup-plugin-polyfill-node: "npm:^0.13.0"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1706,7 +1888,7 @@ __metadata:
     "@textlint/regexp-string-matcher": "npm:^2.0.2"
     "@types/node": "npm:^24.1.0"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1723,7 +1905,7 @@ __metadata:
     bn.js: "npm:^5.2.2"
     prettier: "npm:^2.8.8"
     secp256k1: "npm:^5.0.1"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1737,7 +1919,7 @@ __metadata:
     "@textlint/regexp-string-matcher": "npm:^2.0.2"
     "@types/node": "npm:^24.1.0"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1751,7 +1933,7 @@ __metadata:
     "@textlint/regexp-string-matcher": "npm:^2.0.2"
     "@types/node": "npm:^24.1.0"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1765,7 +1947,7 @@ __metadata:
     "@textlint/regexp-string-matcher": "npm:^2.0.2"
     "@types/node": "npm:^24.1.0"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1780,7 +1962,7 @@ __metadata:
     istextorbinary: "npm:^9.5.0"
     mocha: "npm:^11.7.1"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1797,7 +1979,7 @@ __metadata:
     "@types/node": "npm:^24.1.0"
     mocha: "npm:^11.7.1"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -1808,9 +1990,9 @@ __metadata:
   dependencies:
     "@types/node": "npm:^24.1.0"
     prettier: "npm:^2.8.8"
-    ts-node: "npm:^10.9.2"
     tsconfig-to-dual-package: "npm:^1.2.0"
     tsd: "npm:^0.32.0"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   languageName: unknown
   linkType: soft
@@ -3555,6 +3737,95 @@ __metadata:
   languageName: node
   linkType: hard
 
+"esbuild@npm:~0.25.0":
+  version: 0.25.8
+  resolution: "esbuild@npm:0.25.8"
+  dependencies:
+    "@esbuild/aix-ppc64": "npm:0.25.8"
+    "@esbuild/android-arm": "npm:0.25.8"
+    "@esbuild/android-arm64": "npm:0.25.8"
+    "@esbuild/android-x64": "npm:0.25.8"
+    "@esbuild/darwin-arm64": "npm:0.25.8"
+    "@esbuild/darwin-x64": "npm:0.25.8"
+    "@esbuild/freebsd-arm64": "npm:0.25.8"
+    "@esbuild/freebsd-x64": "npm:0.25.8"
+    "@esbuild/linux-arm": "npm:0.25.8"
+    "@esbuild/linux-arm64": "npm:0.25.8"
+    "@esbuild/linux-ia32": "npm:0.25.8"
+    "@esbuild/linux-loong64": "npm:0.25.8"
+    "@esbuild/linux-mips64el": "npm:0.25.8"
+    "@esbuild/linux-ppc64": "npm:0.25.8"
+    "@esbuild/linux-riscv64": "npm:0.25.8"
+    "@esbuild/linux-s390x": "npm:0.25.8"
+    "@esbuild/linux-x64": "npm:0.25.8"
+    "@esbuild/netbsd-arm64": "npm:0.25.8"
+    "@esbuild/netbsd-x64": "npm:0.25.8"
+    "@esbuild/openbsd-arm64": "npm:0.25.8"
+    "@esbuild/openbsd-x64": "npm:0.25.8"
+    "@esbuild/openharmony-arm64": "npm:0.25.8"
+    "@esbuild/sunos-x64": "npm:0.25.8"
+    "@esbuild/win32-arm64": "npm:0.25.8"
+    "@esbuild/win32-ia32": "npm:0.25.8"
+    "@esbuild/win32-x64": "npm:0.25.8"
+  dependenciesMeta:
+    "@esbuild/aix-ppc64":
+      optional: true
+    "@esbuild/android-arm":
+      optional: true
+    "@esbuild/android-arm64":
+      optional: true
+    "@esbuild/android-x64":
+      optional: true
+    "@esbuild/darwin-arm64":
+      optional: true
+    "@esbuild/darwin-x64":
+      optional: true
+    "@esbuild/freebsd-arm64":
+      optional: true
+    "@esbuild/freebsd-x64":
+      optional: true
+    "@esbuild/linux-arm":
+      optional: true
+    "@esbuild/linux-arm64":
+      optional: true
+    "@esbuild/linux-ia32":
+      optional: true
+    "@esbuild/linux-loong64":
+      optional: true
+    "@esbuild/linux-mips64el":
+      optional: true
+    "@esbuild/linux-ppc64":
+      optional: true
+    "@esbuild/linux-riscv64":
+      optional: true
+    "@esbuild/linux-s390x":
+      optional: true
+    "@esbuild/linux-x64":
+      optional: true
+    "@esbuild/netbsd-arm64":
+      optional: true
+    "@esbuild/netbsd-x64":
+      optional: true
+    "@esbuild/openbsd-arm64":
+      optional: true
+    "@esbuild/openbsd-x64":
+      optional: true
+    "@esbuild/openharmony-arm64":
+      optional: true
+    "@esbuild/sunos-x64":
+      optional: true
+    "@esbuild/win32-arm64":
+      optional: true
+    "@esbuild/win32-ia32":
+      optional: true
+    "@esbuild/win32-x64":
+      optional: true
+  bin:
+    esbuild: bin/esbuild
+  checksum: 10c0/43747a25e120d5dd9ce75c82f57306580d715647c8db4f4a0a84e73b04cf16c27572d3937d3cfb95d5ac3266a4d1bbd3913e3d76ae719693516289fc86f8a5fd
+  languageName: node
+  linkType: hard
+
 "escalade@npm:^3.1.1":
   version: 3.1.1
   resolution: "escalade@npm:3.1.1"
@@ -3922,9 +4193,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"fsevents@npm:~2.3.3":
+  version: 2.3.3
+  resolution: "fsevents@npm:2.3.3"
+  dependencies:
+    node-gyp: "npm:latest"
+  checksum: 10c0/a1f0c44595123ed717febbc478aa952e47adfc28e2092be66b8ab1635147254ca6cfe1df792a8997f22716d4cbafc73309899ff7bfac2ac3ad8cf2e4ecc3ec60
+  conditions: os=darwin
+  languageName: node
+  linkType: hard
+
 "fsevents@patch:fsevents@npm%3A~2.3.2#optional!builtin<compat/fsevents>":
   version: 2.3.2
   resolution: "fsevents@patch:fsevents@npm%3A2.3.2#optional!builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"
+  dependencies:
+    node-gyp: "npm:latest"
+  conditions: os=darwin
+  languageName: node
+  linkType: hard
+
+"fsevents@patch:fsevents@npm%3A~2.3.3#optional!builtin<compat/fsevents>":
+  version: 2.3.3
+  resolution: "fsevents@patch:fsevents@npm%3A2.3.3#optional!builtin<compat/fsevents>::version=2.3.3&hash=df0bf1"
   dependencies:
     node-gyp: "npm:latest"
   conditions: os=darwin
@@ -3985,6 +4275,15 @@ __metadata:
     "@sec-ant/readable-stream": "npm:^0.4.1"
     is-stream: "npm:^4.0.1"
   checksum: 10c0/d70e73857f2eea1826ac570c3a912757dcfbe8a718a033fa0c23e12ac8e7d633195b01710e0559af574cbb5af101009b42df7b6f6b29ceec8dbdf7291931b948
+  languageName: node
+  linkType: hard
+
+"get-tsconfig@npm:^4.7.5":
+  version: 4.10.1
+  resolution: "get-tsconfig@npm:4.10.1"
+  dependencies:
+    resolve-pkg-maps: "npm:^1.0.0"
+  checksum: 10c0/7f8e3dabc6a49b747920a800fb88e1952fef871cdf51b79e98db48275a5de6cdaf499c55ee67df5fa6fe7ce65f0063e26de0f2e53049b408c585aa74d39ffa21
   languageName: node
   linkType: hard
 
@@ -7048,6 +7347,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"resolve-pkg-maps@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "resolve-pkg-maps@npm:1.0.0"
+  checksum: 10c0/fb8f7bbe2ca281a73b7ef423a1cbc786fb244bd7a95cbe5c3fba25b27d327150beca8ba02f622baea65919a57e061eb5005204daa5f93ed590d9b77463a567ab
+  languageName: node
+  linkType: hard
+
 "resolve-tsconfig@npm:^1.3.0":
   version: 1.3.0
   resolution: "resolve-tsconfig@npm:1.3.0"
@@ -7367,7 +7673,7 @@ __metadata:
     mocha: "npm:^11.7.1"
     prettier: "npm:^2.8.8"
     read-pkg: "npm:^9.0.1"
-    ts-node: "npm:^10.9.2"
+    tsx: "npm:^4.7.0"
     typescript: "npm:^5.8.3"
   bin:
     secretlint: ./bin/secretlint.js
@@ -8086,6 +8392,22 @@ __metadata:
   version: 2.8.1
   resolution: "tslib@npm:2.8.1"
   checksum: 10c0/9c4759110a19c53f992d9aae23aac5ced636e99887b51b9e61def52611732872ff7668757d4e4c61f19691e36f4da981cd9485e869b4a7408d689f6bf1f14e62
+  languageName: node
+  linkType: hard
+
+"tsx@npm:^4.7.0":
+  version: 4.20.3
+  resolution: "tsx@npm:4.20.3"
+  dependencies:
+    esbuild: "npm:~0.25.0"
+    fsevents: "npm:~2.3.3"
+    get-tsconfig: "npm:^4.7.5"
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  bin:
+    tsx: dist/cli.mjs
+  checksum: 10c0/6ff0d91ed046ec743fac7ed60a07f3c025e5b71a5aaf58f3d2a6b45e4db114c83e59ebbb078c8e079e48d3730b944a02bc0de87695088aef4ec8bbc705dc791b
   languageName: node
   linkType: hard
 
