@@ -10,7 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4 # v4.2.2
         with:
           # fetch history to get all changed files on push or pull_request event
           fetch-depth: 1000
@@ -21,15 +24,15 @@ jobs:
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
-          cache: 'yarn'
+          cache: 'pnpm'
       - name: Show changed files
         run: echo "${{ steps.changed-files.outputs.all_changed_files }}"
       - name: Install
         if: steps.changed-files.outputs.any_changed == 'true'
-        run: yarn install
+        run: pnpm install
       - name: Build
         if: steps.changed-files.outputs.any_changed == 'true'
-        run: yarn run build
+        run: pnpm run build
       - name: Run secretlint
         if: steps.changed-files.outputs.any_changed == 'true'
         run: ./node_modules/.bin/secretlint ${{ steps.changed-files.outputs.all_changed_files }}
