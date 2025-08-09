@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1754616981961,
+  "lastUpdate": 1754740785753,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -40392,6 +40392,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±2.18%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "02da4ae0a6d3379a890eb3e2f0a6f8739653710f",
+          "message": "chore: update Node.js to v22 and maintain dependencies (#1144)\n\n* CI: update Node.js version\n\n* CI: pin GitHub Action version\n\n* Revert \"CI: pin GitHub Action version\"\n\nThis reverts commit 128585a1702040eedcc76596c0208ee8dcc4069a.\n\n* chore: update Node.js engine requirement to >=22.0.0\n\n* CI: update GitHub Actions setup-node to v4.4.0\n\n* chore: replace ts-node with tsx for better performance\n\n- Replace ts-node with tsx across all packages\n- Update test scripts to use --import tsx instead of --loader ts-node/esm\n- tsx provides faster TypeScript execution with esbuild\n\n* fix: replace mocha with node test runner for remaining packages\n\n- Update packages still using mocha to use node --test\n- Use tsx loader consistently across all packages\n\n* fix: properly configure mocha with tsx loader\n\n- Keep mocha for packages using describe/it test style\n- Update .mocharc.json files to use tsx with node-option\n- Use --import=tsx/esm instead of deprecated --loader flag\n\n* fix: use NODE_OPTIONS for mocha with tsx\n\n- Use NODE_OPTIONS=\"--import tsx/esm\" in package.json scripts\n- Remove node-option from .mocharc.json files\n- This avoids module resolution conflicts in CI\n\n* fix: use tsx/cjs with mocha require hook\n\n- Use require: [\"tsx/cjs\"] in .mocharc.json for mocha packages\n- Remove NODE_OPTIONS approach which causes issues in CI\n- This approach is more stable for mocha + TypeScript integration\n\n* fix: use node-option with import=tsx/esm for secretlint package\n\nThe secretlint package uses ESM modules with .js extensions in imports,\nwhich requires special handling with tsx. Using node-option with\nimport=tsx/esm allows tsx to properly resolve TypeScript files when\nimported with .js extensions.\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* fix: use NODE_OPTIONS in package.json for secretlint ESM support\n\nThe secretlint package uses ESM modules with NodeNext module resolution,\nwhich requires .js extensions in imports. Using NODE_OPTIONS in the test\nscript ensures tsx is loaded properly to handle TypeScript resolution.\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* fix: run mocha through tsx for ESM support\n\nUse tsx to run mocha directly to handle ESM modules with .js extensions.\nThis avoids the ERR_INTERNAL_ASSERTION error in Node.js 22+.\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* fix: use correct path to mocha in monorepo\n\nMocha is hoisted to root node_modules in the monorepo structure.\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* fix: use direct mocha.js path for Windows compatibility\n\nUse mocha.js directly instead of .bin/mocha to avoid shell script\nissues on Windows.\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* fix: update Node.js engine requirement to >=20.0.0 across all packages\n\n* ci: test with Node.js 20, 22, and 24\n\nAdd Node.js 20 back to the test matrix to ensure compatibility.\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2025-08-09T20:57:50+09:00",
+          "tree_id": "f885365f6b3ee3fa600551b00e9ac8b9c1717803",
+          "url": "https://github.com/secretlint/secretlint/commit/02da4ae0a6d3379a890eb3e2f0a6f8739653710f"
+        },
+        "date": 1754740783975,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.75,
+            "range": "±0.71%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±1.02%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
