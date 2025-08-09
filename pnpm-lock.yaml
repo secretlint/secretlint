@@ -249,6 +249,9 @@ importers:
 
   packages/@secretlint/messages-to-markdown:
     dependencies:
+      '@secretlint/resolver':
+        specifier: workspace:*
+        version: link:../resolver
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types

@@ -7,10 +7,6 @@
     "build-binary": "bash build-binary.sh",
     "test": "bun run build-binary && bash test.sh"
   },
-  "workspaces": [
-    "../../packages/*",
-    "../../packages/@secretlint/*"
-  ],
   "devDependencies": {
     "@types/bun": "latest",
     "@secretlint/formatter": "workspace:*",
