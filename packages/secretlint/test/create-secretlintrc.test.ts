@@ -3,7 +3,7 @@ import assert from "node:assert";
 import path from "node:path";
 import fs from "node:fs/promises";
 import os from "node:os";
-import { runConfigCreator } from "../module/create-secretlintrc.js";
+import { runConfigCreator } from "../src/create-secretlintrc.js";
 
 /**
  *

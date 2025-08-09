@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import assert from "node:assert";
-import { cli, run } from "../module/cli.js";
+import { cli, run } from "../src/cli.js";
 import { fileURLToPath } from "url";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
