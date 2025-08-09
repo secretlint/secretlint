@@ -703,4 +703,3 @@ Benchmark workflow is run on every commit.
 ## License
 
 MIT © azu
-# Test trigger
