@@ -81,7 +81,7 @@
     "rimraf": "^6.0.1",
     "rollup": "^4.46.2",
     "rollup-plugin-polyfill-node": "^0.13.0",
-    "tsx": "^4.7.0",
+    "tsx": "^4.7.3",
     "typescript": "^5.8.3"
   },
   "packageManager": "yarn@1.22.22",

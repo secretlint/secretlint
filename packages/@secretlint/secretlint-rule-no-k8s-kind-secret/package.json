@@ -62,7 +62,7 @@
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^24.1.0",
     "prettier": "^2.8.8",
-    "tsx": "^4.7.0",
+    "tsx": "^4.7.3",
     "typescript": "^5.8.3"
   },
   "packageManager": "yarn@1.22.22",
