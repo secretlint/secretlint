@@ -6,7 +6,6 @@ export default {
     input: "src/index.ts",
     // gcp rule is broken by moduleSideEffects option
     // treeshake: "smallest",
-    external: [/^@secretlint\//],
     output: [
         {
             dir: "module/",

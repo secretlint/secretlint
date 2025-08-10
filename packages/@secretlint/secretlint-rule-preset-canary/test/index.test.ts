@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
 // Test target is bundled file
-import { creator as rule } from "../module/index.js";
+import { creator as rule, rules } from "../module/index.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 test("@secretlint/secretlint-rule-preset-canary", async (t) => {
@@ -15,6 +15,11 @@ test("@secretlint/secretlint-rule-preset-canary", async (t) => {
         .filter((dirent) => dirent.isDirectory());
     for (const ruleDir of eachRulesDir) {
         const ruleDirPath = path.join(__dirname, "snapshots", ruleDir.name);
+        // Create testDefinitions from bundled rules
+        const testDefinitions = rules.map((ruleCreator) => ({
+            id: ruleCreator.meta.id,
+            rule: ruleCreator,
+        }));
         await snapshot({
             defaultConfig: {
                 rules: [
@@ -26,6 +31,7 @@ test("@secretlint/secretlint-rule-preset-canary", async (t) => {
                     },
                 ],
             },
+            testDefinitions,
             updateSnapshot: !!process.env.UPDATE_SNAPSHOT,
             snapshotDirectory: ruleDirPath,
         }).forEach((name, test) => {
