@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1754806457912,
+  "lastUpdate": 1754806831610,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -40658,6 +40658,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±0.62%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "911e3a3fdf5f4b119584f04570d92f5271d52fce",
+          "message": "chore(deps): update actions/checkout digest to 8edcb1b (#1150)\n\n* chore(deps): update actions/checkout digest to 8edcb1b\n\n* chore: add version comments to checkout actions\n\nUpdate all actions/checkout to v4.2.2 with proper version comments\n\n---------\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>\nCo-authored-by: azu <azuciao@gmail.com>",
+          "timestamp": "2025-08-10T06:19:02Z",
+          "tree_id": "9ba674ae6c0ba3cec22b4c609ec042d2a6f39002",
+          "url": "https://github.com/secretlint/secretlint/commit/911e3a3fdf5f4b119584f04570d92f5271d52fce"
+        },
+        "date": 1754806829923,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.59,
+            "range": "±0.59%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±1.10%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
