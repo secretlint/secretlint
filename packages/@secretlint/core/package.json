@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/core",
-  "version": "10.2.2",
+  "version": "11.0.0",
   "description": "Core library for @secretlint.",
   "keywords": [
     "secretlint"

@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/benchmark",
-    "version": "10.2.2",
+    "version": "11.0.0",
     "private": true,
     "description": "Internal benchmark for Secretlint",
     "keywords": [
@@ -29,9 +29,9 @@
         "benchmark": "node index.js"
     },
     "dependencies": {
-        "@secretlint/secretlint-rule-preset-canary": "^10.2.2",
+        "@secretlint/secretlint-rule-preset-canary": "^11.0.0",
         "benchmark": "^2.1.4",
-        "secretlint": "^10.2.2"
+        "secretlint": "^11.0.0"
     },
     "publishConfig": {
         "access": "public"
