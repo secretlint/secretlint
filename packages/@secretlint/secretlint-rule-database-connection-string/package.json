@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-database-connection-string",
-  "version": "10.2.1",
+  "version": "10.2.2",
   "description": "A secretlint rule for database-connection-string",
   "keywords": [
     "secretlint",
@@ -41,7 +41,7 @@
     "prepublishOnly": "npm run clean && npm run build",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
-    "test": "node --loader ts-node/esm --test test/index.test.ts",
+    "test": "node --import tsx --test test/index.test.ts",
     "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
     "watch": "tsc --build --watch"
   },
@@ -51,17 +51,18 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^10.2.1"
+    "@secretlint/types": "workspace:*",
+    "@textlint/regexp-string-matcher": "^2.0.2"
   },
   "devDependencies": {
-    "@secretlint/tester": "^10.2.1",
+    "@secretlint/tester": "workspace:*",
     "@types/node": "^20.19.9",
     "prettier": "^2.8.1",
-    "ts-node": "^10.9.2",
+    "tsx": "^4.20.3",
     "typescript": "^5.1.6"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   },
   "publishConfig": {
     "access": "public"

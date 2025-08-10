@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/tester",
-  "version": "10.2.1",
+  "version": "10.2.2",
   "description": "A testing library for secretlint rule",
   "keywords": [
     "secretlint",
@@ -44,7 +44,7 @@
     "prepublishOnly": "npm run clean && npm run build",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
-    "test": "node --loader ts-node/esm --test test/index.test.ts",
+    "test": "node --import tsx --test test/index.test.ts",
     "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
     "watch": "tsc --build --watch"
   },
@@ -54,20 +54,19 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/config-loader": "^10.2.1",
-    "@secretlint/core": "^10.2.1",
-    "@secretlint/source-creator": "^10.2.1",
-    "@secretlint/types": "^10.2.1"
+    "@secretlint/config-loader": "workspace:*",
+    "@secretlint/core": "workspace:*",
+    "@secretlint/source-creator": "workspace:*",
+    "@secretlint/types": "workspace:*"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
-    "@types/node": "^24.0.15",
+    "@types/node": "^24.1.0",
     "mocha": "^11.7.1",
     "prettier": "^2.8.8",
-    "ts-node": "^10.9.2",
+    "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   },
-  "packageManager": "yarn@1.22.22",
   "engines": {
     "node": ">=20.0.0"
   },

@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/types",
-  "version": "10.2.1",
+  "version": "10.2.2",
   "description": "A typing package for @secretlint",
   "keywords": [
     "secretlint"
@@ -58,14 +58,13 @@
     "tabWidth": 4
   },
   "devDependencies": {
-    "@types/node": "^24.0.15",
+    "@types/node": "^24.1.0",
     "prettier": "^2.8.8",
-    "ts-node": "^10.9.2",
     "tsconfig-to-dual-package": "^1.2.0",
     "tsd": "^0.32.0",
+    "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   },
-  "packageManager": "yarn@1.22.22",
   "engines": {
     "node": ">=20.0.0"
   },

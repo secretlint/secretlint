@@ -9,6 +9,7 @@
             ],
             "type": "message",
             "ruleId": "@secretlint/secretlint-rule-aws",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
             "loc": {
                 "start": {
                     "line": 1,

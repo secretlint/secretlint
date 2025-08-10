@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/quick-start",
-  "version": "10.2.1",
+  "version": "10.2.2",
   "description": "Quick Stater CLI for secretlint.",
   "keywords": [
     "secretlint",
@@ -56,15 +56,14 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/secretlint-rule-preset-recommend": "^10.2.1",
-    "secretlint": "^10.2.1"
+    "@secretlint/secretlint-rule-preset-recommend": "workspace:*",
+    "secretlint": "^10.2.2"
   },
   "devDependencies": {
-    "@types/node": "^24.0.15",
+    "@types/node": "^24.1.0",
     "prettier": "^2.8.8",
     "typescript": "^5.8.3"
   },
-  "packageManager": "yarn@1.22.22",
   "engines": {
     "node": ">=20.0.0"
   },

@@ -1,0 +1,20 @@
+# Test false positive prevention for basic auth rule
+
+# Variable patterns should NOT be detected
+const API_URL = "https://${username}:${password}@api.example.com/v1";
+const CONFIG_URL = "https://{{user}}:{{pass}}@config.example.com";
+const TEMPLATE_URL = "https://{USER}:{PASS}@template.example.com";
+
+# Common placeholders should NOT be detected
+const TEMPLATE_URL2 = "https://username:password@example.com/api";
+const GUIDE_URL = "https://username:mypassword@test.com/endpoint";
+const LOCAL_URL = "https://dbuser:password@127.0.0.1:3000/";
+
+# Placeholder documentation URLs should NOT be detected
+const DOC_URL = "https://YOUR_USERNAME:YOUR_PASSWORD@api.service.com";
+const GUIDE_URL2 = "https://username:REPLACE_WITH_PASSWORD@example.org";
+
+# Short or low-entropy passwords should NOT be detected
+const SHORT_URL = "https://user:abc@api.com/v1";
+const REPETITIVE_URL = "https://user:1111@service.com/api";
+const SIMPLE_URL = "https://testuser:xxxx@demo.com";

@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-formatter-sarif",
-  "version": "10.2.1",
+  "version": "10.2.2",
   "description": "A secretlint formatter for SARIF format",
   "keywords": [
     "sarif",
@@ -46,7 +46,7 @@
     "clean": "tsc --build --clean",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublishOnly": "npm run clean && npm run build",
-    "test": "node --loader ts-node/esm --test test/index.test.ts",
+    "test": "node --import tsx --test test/index.test.ts",
     "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
     "watch": "tsc --build --watch"
   },
@@ -60,16 +60,15 @@
     "node-sarif-builder": "^3.2.0"
   },
   "devDependencies": {
-    "@secretlint/types": "^10.2.1",
+    "@secretlint/types": "workspace:*",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^24.0.15",
+    "@types/node": "^24.1.0",
     "escape-string-regexp": "^5.0.0",
     "mocha": "^11.7.1",
     "prettier": "^2.8.8",
-    "ts-node": "^10.9.2",
+    "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   },
-  "packageManager": "yarn@1.22.22",
   "publishConfig": {
     "access": "public"
   }

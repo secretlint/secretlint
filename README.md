@@ -654,7 +654,7 @@ Also, Welcome to Contribution about secretlint documentation!
 
 - Package Manager
 	- Require package manager to realize flexible pluggable system
-	- Node.js has npm and yarn as package manager
+	- Node.js has npm and pnpm as package manager
 	- Package manager help to install custom plugin/rule by user
 - Exist Reference Implementation
 	- Node.js already has pluggable linting tools like ESLint, textlint, stylelint etc

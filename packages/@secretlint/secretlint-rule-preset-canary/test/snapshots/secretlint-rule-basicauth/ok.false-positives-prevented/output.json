@@ -1,0 +1,6 @@
+{
+    "filePath": "[SNAPSHOT]/ok.false-positives-prevented/input.txt",
+    "messages": [],
+    "sourceContent": "# Test false positive prevention for basic auth rule\n\n# Variable patterns should NOT be detected\nconst API_URL = \"https://${username}:${password}@api.example.com/v1\";\nconst CONFIG_URL = \"https://{{user}}:{{pass}}@config.example.com\";\nconst TEMPLATE_URL = \"https://{USER}:{PASS}@template.example.com\";\n\n# Common placeholders should NOT be detected\nconst TEMPLATE_URL2 = \"https://username:password@example.com/api\";\nconst GUIDE_URL = \"https://username:mypassword@test.com/endpoint\";\nconst LOCAL_URL = \"https://dbuser:password@127.0.0.1:3000/\";\n\n# Placeholder documentation URLs should NOT be detected\nconst DOC_URL = \"https://YOUR_USERNAME:YOUR_PASSWORD@api.service.com\";\nconst GUIDE_URL2 = \"https://username:REPLACE_WITH_PASSWORD@example.org\";\n\n# Short or low-entropy passwords should NOT be detected\nconst SHORT_URL = \"https://user:abc@api.com/v1\";\nconst REPETITIVE_URL = \"https://user:1111@service.com/api\";\nconst SIMPLE_URL = \"https://testuser:xxxx@demo.com\";",
+    "sourceContentType": "text"
+}

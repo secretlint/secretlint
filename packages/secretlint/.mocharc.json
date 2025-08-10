@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/mocharc",
-  "loader": "ts-node/esm",
   "spec": [
     "test/**/*.ts"
-  ]
+  ],
+  "node-option": ["import=tsx", "no-warnings"]
 }

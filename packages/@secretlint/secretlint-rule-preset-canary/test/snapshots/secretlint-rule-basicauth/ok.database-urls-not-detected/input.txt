@@ -1,0 +1,15 @@
+# Database connection strings should NOT be detected by basic-auth rule
+
+# MongoDB connections
+const MONGO_URI = "mongodb://user:password@db.example.com:27017/mydb";
+const MONGO_SRV = "mongodb+srv://user:password@cluster.mongodb.net/db";
+
+# MySQL connections  
+const MYSQL_URI = "mysql://dbuser:secret@mysql.server.com:3306/database";
+const JDBC_MYSQL = "jdbc:mysql://admin:pass@localhost:3306/mydb";
+
+# PostgreSQL connections
+const POSTGRES_URI = "postgresql://user:password@postgres.example.com:5432/db";
+const POSTGRES_SHORT = "postgres://user:password@localhost/mydb";
+
+# These should be properly handled by database-connection-string rule instead

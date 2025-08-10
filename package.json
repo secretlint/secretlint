@@ -33,7 +33,7 @@
     "ci:versionup:major": "lerna version major --no-push --no-git-tag-version --yes && npm run commit-version",
     "commit-version": "git add . && git commit -m \"chore(release): v`node -p 'require(\"./lerna.json\").version'`\"",
     "release": "lerna publish from-package",
-    "ci:release": "yarn run build && lerna publish from-package --yes --no-verify-access",
+    "ci:release": "pnpm run build && lerna publish from-package --yes --no-verify-access",
     "build": "turbo run build",
     "build:withoutrule": "turbo run build --ignore=\"packages/@secretlint/*-rule-*\"",
     "updateSnapshot": "turbo run updateSnapshot",
@@ -46,9 +46,9 @@
     "gen:rule": "scaffdog generate new-rule --output packages/ --answer \"owner:$(git config user.name)\" --answer \"version:$(node -e 'console.log(require(\"./lerna.json\").version)')\""
   },
   "devDependencies": {
-    "@lerna-lite/cli": "^4.6.1",
-    "@lerna-lite/publish": "^4.6.1",
-    "@lerna-lite/version": "^4.6.1",
+    "@lerna-lite/cli": "^4.6.2",
+    "@lerna-lite/publish": "^4.6.2",
+    "@lerna-lite/version": "^4.6.2",
     "lint-staged": "^16.1.2",
     "prettier": "^2.8.8",
     "scaffdog": "^4.1.0",
@@ -65,5 +65,5 @@
       "prettier --write"
     ]
   },
-  "packageManager": "yarn@4.9.2+sha512.1fc009bc09d13cfd0e19efa44cbfc2b9cf6ca61482725eb35bbc5e257e093ebf4130db6dfe15d604ff4b79efd8e1e8e99b25fa7d0a6197c9f9826358d4d65c3c"
+  "packageManager": "pnpm@10.14.0+sha512.ad27a79641b49c3e481a16a805baa71817a04bbe06a38d17e60e2eaee83f6a146c6a688125f5792e48dd5ba30e7da52a5cda4c3992b9ccf333f9ce223af84748"
 }

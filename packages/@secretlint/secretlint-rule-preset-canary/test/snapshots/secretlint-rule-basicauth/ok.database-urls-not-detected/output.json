@@ -1,0 +1,6 @@
+{
+    "filePath": "[SNAPSHOT]/ok.database-urls-not-detected/input.txt",
+    "messages": [],
+    "sourceContent": "# Database connection strings should NOT be detected by basic-auth rule\n\n# MongoDB connections\nconst MONGO_URI = \"mongodb://user:password@db.example.com:27017/mydb\";\nconst MONGO_SRV = \"mongodb+srv://user:password@cluster.mongodb.net/db\";\n\n# MySQL connections  \nconst MYSQL_URI = \"mysql://dbuser:secret@mysql.server.com:3306/database\";\nconst JDBC_MYSQL = \"jdbc:mysql://admin:pass@localhost:3306/mydb\";\n\n# PostgreSQL connections\nconst POSTGRES_URI = \"postgresql://user:password@postgres.example.com:5432/db\";\nconst POSTGRES_SHORT = \"postgres://user:password@localhost/mydb\";\n\n# These should be properly handled by database-connection-string rule instead",
+    "sourceContentType": "text"
+}

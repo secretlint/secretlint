@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/messages-to-markdown",
-  "version": "10.2.1",
+  "version": "10.2.2",
   "description": "Create Markdown text from rule's messages(ids)",
   "keywords": [
     "secretlint"
@@ -53,17 +53,17 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^10.2.1"
+    "@secretlint/resolver": "workspace:*",
+    "@secretlint/types": "workspace:*"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
-    "@types/node": "^24.0.15",
+    "@types/node": "^24.1.0",
     "mocha": "^11.7.1",
     "prettier": "^2.8.8",
-    "ts-node": "^10.9.2",
+    "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   },
-  "packageManager": "yarn@1.22.22",
   "engines": {
     "node": ">=20.0.0"
   },

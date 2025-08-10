@@ -1,2 +1,0 @@
-Homedir: /Users/exampleuser
-Windows: ¥Users¥exampleuser
