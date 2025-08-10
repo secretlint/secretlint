@@ -70,8 +70,12 @@ async function removeIllegalMochaImports() {
         content = content.replace(/beforeEach\s*\(\s*function\s*\(\)/g, "beforeEach(() =>");
         content = content.replace(/afterEach\s*\(\s*function\s*\(\)/g, "afterEach(() =>");
 
-        // Convert this.skip() to it.skip()
-        content = content.replace(/this\.skip\(\)/g, "it.skip()");
+        // Convert this.skip() to t.skip() (Vitest test context)
+        // First ensure test functions have the context parameter
+        content = content.replace(/it\(([^,]+),\s*async\s*\(\)\s*=>/g, "it($1, async (t) =>");
+        content = content.replace(/it\(([^,]+),\s*\(\)\s*=>/g, "it($1, (t) =>");
+        // Then replace this.skip() with t.skip()
+        content = content.replace(/this\.skip\(\)/g, "t.skip()");
 
         // Fix template literals in test names
         content = content.replace(/it\(["']([^"']*\$\{[^}]+\}[^"']*)["']/g, "it(`$1`");

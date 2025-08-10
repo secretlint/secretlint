@@ -48,7 +48,7 @@
     "prepublish": "npm run --if-present build",
     "import-test": "node import-tests.js && npm run build && npm run updateSnapshot",
     "test": "node --import tsx --test test/index.test.ts",
-    "updateSnapshot": "UPDATE_SNAPSHOT=1 vitest run",
+    "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
     "watch": "tsc --build --watch"
   },
   "prettier": {

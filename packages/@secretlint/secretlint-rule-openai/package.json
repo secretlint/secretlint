@@ -42,7 +42,7 @@
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
     "test": "node --import tsx --test test/index.test.ts",
-    "updateSnapshot": "UPDATE_SNAPSHOT=1 vitest run",
+    "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
     "watch": "tsc --build --watch"
   },
   "prettier": {

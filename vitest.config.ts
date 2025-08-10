@@ -22,6 +22,7 @@ export default defineConfig({
         globals: true,
         environment: "node",
         testTimeout: 30000,
-        hookTimeout: 30000
+        hookTimeout: 30000,
+        projects: ["packages/*/vitest.config.ts", "packages/@secretlint/*/vitest.config.ts"]
     }
 });
