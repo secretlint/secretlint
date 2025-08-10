@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1754805811058,
+  "lastUpdate": 1754806006120,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -40582,6 +40582,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±1.30%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "731367342cd04f0d33b3e3808a90ba48651c9c75",
+          "message": "docs: fix typos in README.md (#1143)\n\n- Fix grammar and spelling errors throughout the documentation\n- Improve sentence structure for better clarity\n- Correct article usage (a/an/the)\n- Fix verb tense consistency\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2025-08-10T06:05:19Z",
+          "tree_id": "842314f86f44ee17b5adc9068ea7ea0fdb4263a2",
+          "url": "https://github.com/secretlint/secretlint/commit/731367342cd04f0d33b3e3808a90ba48651c9c75"
+        },
+        "date": 1754806004201,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.63,
+            "range": "±0.44%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±2.08%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
