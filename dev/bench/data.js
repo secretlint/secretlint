@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1754837401324,
+  "lastUpdate": 1754837938554,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -40810,6 +40810,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±0.82%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "1d2a5eec4f73f40a1f02694f938904712125e3aa",
+          "message": "fix: add Node.js setup and dependencies installation to release workflow (#1155)\n\n* fix: add Node.js setup and dependencies installation to release workflow\n\n- Add Node.js setup step before running pnpm commands\n- Add pnpm install step to install dependencies\n- Remove redundant --yes flag from ci:versionup script call (already included in package.json script)\n\nFixes the 'Process completed with exit code 1' error in the Create Release PR workflow\n\n* fix: use Node.js 22 to match other workflows",
+          "timestamp": "2025-08-10T14:57:35Z",
+          "tree_id": "6e84225c83d79654ae9c6b31a57cdb56cba180ae",
+          "url": "https://github.com/secretlint/secretlint/commit/1d2a5eec4f73f40a1f02694f938904712125e3aa"
+        },
+        "date": 1754837936897,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.66,
+            "range": "±0.86%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.59,
+            "range": "±1.39%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
