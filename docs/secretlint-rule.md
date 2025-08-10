@@ -182,7 +182,6 @@ Creating test case
 ```
 test/
 ├── index.test.ts
-├── mocha.opts
 ├── snapshots
 │   ├── ng.secret
 │   │   ├── input.txt
