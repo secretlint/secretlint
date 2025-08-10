@@ -1,3 +1,8 @@
+# Bun workspace configuration for binary compiler
+# This maps package scopes to local directories so Bun can resolve workspace dependencies
+# when building the standalone binary from the monorepo structure
 [install.scopes]
+# Map @secretlint/* packages to the local workspace packages
 "@secretlint" = { path = "../../packages/@secretlint" }
+# Map secretlint package to the local workspace package
 "secretlint" = { path = "../../packages/secretlint" }
