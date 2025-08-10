@@ -22,12 +22,12 @@ const formatResult = (result: validateConfigResult) => {
               // \r\n -> \n
               .replace(/\r\n/g, "\n");
 };
-describe("validateConfig", function () {
+describe("validateConfig", () => {
     fs.readdirSync(snapshotDir, { withFileTypes: true })
         .filter((dirent) => dirent.isDirectory())
         .map((dirent) => {
             const normalizedTestName = dirent.name;
-            it(`test ${normalizedTestName}`, async function () {
+            it(`test ${normalizedTestName}`, async () => {
                 const fixtureDir = path.join(snapshotDir, normalizedTestName);
                 const secretlintrcFileName = fs.readdirSync(fixtureDir).find((filePath) => {
                     return filePath.startsWith(".secretlintrc");

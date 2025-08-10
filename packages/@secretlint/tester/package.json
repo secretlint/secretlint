@@ -45,7 +45,7 @@
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
     "test": "node --import tsx --test test/index.test.ts",
-    "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
+    "updateSnapshot": "UPDATE_SNAPSHOT=1 vitest run",
     "watch": "tsc --build --watch"
   },
   "prettier": {
@@ -60,9 +60,7 @@
     "@secretlint/types": "workspace:*"
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.10",
     "@types/node": "^24.1.0",
-    "mocha": "^11.7.1",
     "prettier": "^2.8.8",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"

@@ -40,8 +40,8 @@ const createSnapshotReplacer = () => {
  * - output.json
  *   - snapshot result
  */
-describe("cli snapshot testing", function () {
-    it("--version should return version", async function () {
+describe("cli snapshot testing", () => {
+    it("--version should return version", async () => {
         const actual = await run([], {
             ...cli.flags,
             version: true,
@@ -54,7 +54,7 @@ describe("cli snapshot testing", function () {
         assert.match(actual.stdout, /^[\d.]+$/);
     });
     fs.readdirSync(SNAPSHOT_DIR).map((caseName) => {
-        it(`test ${caseName}`, async function () {
+        it("test ${caseName}", async () => {
             // Skip node_modules test in CI due to module resolution issues with pnpm
             if (process.env.CI && caseName === "node_modules-is-ignored-by-default") {
                 this.skip();

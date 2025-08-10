@@ -44,8 +44,8 @@
     "prepublishOnly": "npm run clean && npm run build",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
-    "test": "mocha",
-    "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
+    "test": "vitest run",
+    "updateSnapshot": "UPDATE_SNAPSHOT=1 vitest run",
     "watch": "tsc --build --watch"
   },
   "prettier": {
@@ -68,11 +68,9 @@
   },
   "devDependencies": {
     "@types/debug": "^4.1.12",
-    "@types/mocha": "^10.0.10",
     "@types/node": "^24.1.0",
     "@types/pluralize": "0.0.33",
     "escape-string-regexp": "^5.0.0",
-    "mocha": "^11.7.1",
     "prettier": "^2.8.8",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"

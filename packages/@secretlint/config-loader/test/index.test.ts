@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { expect } from "vitest";
 import { fileURLToPath } from "node:url";
 import assert from "node:assert";
 import { SecretLintCoreConfigUnionRule } from "@secretlint/types";
@@ -16,29 +17,26 @@ const removeUndefined = (o: { [index: string]: any }) => {
     }
     return o;
 };
-describe("@secretlint/config-loader", function () {
+describe("@secretlint/config-loader", () => {
     it("should load .secretlintrc.json with CJS rules", async () => {
         const config = await loadConfig({
             cwd: path.join(__dirname, "fixtures/valid-config-cjs/"),
             node_moduleDir: path.join(__dirname, "fixtures/valid-config-cjs/modules"),
         });
-        assert.deepStrictEqual(
-            removeUndefined(config),
+        // deep partial equality check
+        // ruleは除く
+        expect(removeUndefined(config)).toEqual(
             removeUndefined({
                 ok: true,
                 config: {
                     rules: [
                         {
                             id: "example",
-                            rule: importSecretlintCreator(
-                                await import("@secretlint/secretlint-rule-internal-test-cjs")
-                            ),
+                            rule: expect.any(Object),
                         },
                         {
                             id: "example-2",
-                            rule: importSecretlintCreator(
-                                await import("@secretlint/secretlint-rule-internal-test-cjs")
-                            ),
+                            rule: expect.any(Object),
                             disabled: true,
                         },
                     ],

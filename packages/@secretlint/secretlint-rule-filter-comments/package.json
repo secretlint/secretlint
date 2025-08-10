@@ -48,7 +48,7 @@
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublishOnly": "npm run clean && npm run build",
     "test": "node --import tsx --test test/index.test.ts test/parseComment.test.ts",
-    "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
+    "updateSnapshot": "UPDATE_SNAPSHOT=1 vitest run",
     "watch": "tsc --build --watch"
   },
   "prettier": {

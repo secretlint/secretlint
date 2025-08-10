@@ -23,12 +23,12 @@ const createSnapshotReplacer = () => {
     };
 };
 
-describe("@secretlint/source-creator", function () {
+describe("@secretlint/source-creator", () => {
     fs.readdirSync(fixturesDir, { withFileTypes: true })
         .filter((dirent) => dirent.isDirectory())
         .map((dirent) => {
             const normalizedTestName = dirent.name;
-            it(`test ${normalizedTestName}`, async function () {
+            it("test ${normalizedTestName}", async () => {
                 const fixtureDir = path.join(fixturesDir, normalizedTestName);
                 const actualFilePath = fs.readdirSync(fixtureDir).find((filePath) => {
                     return filePath.startsWith("input");

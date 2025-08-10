@@ -1,8 +1,8 @@
 import assert from "assert";
 import perf_hooks from "node:perf_hooks";
 import { SecretLintProfiler } from "../src/node.js";
-describe("profile", function () {
-    it("should profile", async function () {
+describe("profile", () => {
+    it("should profile", async () => {
         const profiler = new SecretLintProfiler({
             perf: perf_hooks.performance,
             PerformanceObserver: perf_hooks.PerformanceObserver,

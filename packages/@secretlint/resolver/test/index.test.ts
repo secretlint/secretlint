@@ -8,7 +8,6 @@ import {
     clearHooks,
     getPackageJson,
 } from "../src/index.js";
-import { afterEach, beforeEach } from "mocha";
 
 describe("@secretlint/resolver", () => {
     const myModuleURL = "file:///path/to/my-module.js";
