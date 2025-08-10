@@ -43,7 +43,7 @@ jobs:
       - name: Install
         run: pnpm install
       - name: Test
-        run: pnpm ci -v
+        run: pnpm run ci
   binary-test:
     runs-on: ubuntu-latest
     timeout-minutes: 10
