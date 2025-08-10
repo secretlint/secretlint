@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1754825892510,
+  "lastUpdate": 1754826219330,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -40734,6 +40734,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±1.72%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "cc8f7cf45823124591157541fbd7542608086857",
+          "message": "fix: correct YAML indentation in CodeQL workflow (#1153)\n\nFixed incorrect indentation for the \"Install pnpm\" step that was causing\na YAML syntax error on line 41.\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2025-08-10T11:42:11Z",
+          "tree_id": "d179fa81f470727a9215b27a25379adc3ef54c64",
+          "url": "https://github.com/secretlint/secretlint/commit/cc8f7cf45823124591157541fbd7542608086857"
+        },
+        "date": 1754826217321,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.68,
+            "range": "±0.90%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±3.14%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
