@@ -2,7 +2,12 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
     test: {
-        include: ["packages/**/test/**/*.{test,spec}.{js,ts}"],
+        include: [
+            "packages/**/test/**/*.{test,spec}.{js,ts}",
+            "packages/**/test/**/*{-test,-spec}.{js,ts}",
+            "packages/**/test/**/test-*.{js,ts}",
+            "packages/**/test/**/spec-*.{js,ts}"
+        ],
         exclude: [
             "**/node_modules/**",
             "**/dist/**",
@@ -10,7 +15,9 @@ export default defineConfig({
             "**/module/**",
             "**/lib/**",
             "**/fixtures/**",
-            "**/snapshots/**"
+            "**/snapshots/**",
+            "**/*.type-test.ts", // Exclude type tests (using tsd)
+            "**/test-formatter.ts" // Exclude test helper files
         ],
         globals: true,
         environment: "node",

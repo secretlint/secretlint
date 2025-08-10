@@ -1,4 +1,8 @@
-import { defineConfig } from "vitest/config";
+#!/usr/bin/env node
+import fs from "node:fs";
+import { globby } from "globby";
+
+const updatedConfig = `import { defineConfig } from "vitest/config";
 
 export default defineConfig({
     test: {
@@ -6,7 +10,7 @@ export default defineConfig({
             "test/**/*.{test,spec}.{js,ts}",
             "test/**/*{-test,-spec}.{js,ts}",
             "test/**/test-*.{js,ts}",
-            "test/**/spec-*.{js,ts}",
+            "test/**/spec-*.{js,ts}"
         ],
         exclude: [
             "**/node_modules/**",
@@ -17,7 +21,7 @@ export default defineConfig({
             "**/fixtures/**",
             "**/snapshots/**",
             "**/*.type-test.ts", // Exclude type tests (using tsd)
-            "**/test-formatter.ts", // Exclude test helper files
+            "**/test-formatter.ts" // Exclude test helper files
         ],
         globals: true,
         environment: "node",
@@ -25,3 +29,17 @@ export default defineConfig({
         hookTimeout: 30000,
     },
 });
+`;
+
+async function updateConfigs() {
+    const configFiles = await globby("packages/**/vitest.config.ts", {
+        ignore: ["**/node_modules/**"]
+    });
+
+    for (const file of configFiles) {
+        fs.writeFileSync(file, updatedConfig);
+        console.log(`✅ Updated ${file}`);
+    }
+}
+
+updateConfigs().catch(console.error);
