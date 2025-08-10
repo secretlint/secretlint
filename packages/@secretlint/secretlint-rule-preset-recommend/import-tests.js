@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, "package.json"), "utf-8"));
-const PRESET_ID = "@secretlint/secretlint-rule-preset-canary";
+const PRESET_ID = "@secretlint/secretlint-rule-preset-recommend";
 
 const ruleDependencies = Object.keys(pkg.devDependencies).filter((name) => {
     return name.startsWith("@secretlint/secretlint-rule-");
@@ -37,7 +37,7 @@ const ruleDirs = fs
  * Transformed format for preset:
  * {
  *   "rules": [{
- *     "id": "@secretlint/secretlint-rule-preset-canary",
+ *     "id": "@secretlint/secretlint-rule-preset-recommend",
  *     "rules": [{
  *       "id": "@secretlint/secretlint-rule-aws",
  *       "options": { ... }

@@ -1,0 +1,85 @@
+{
+    "filePath": "[SNAPSHOT]/ng.real-credentials/input.txt",
+    "messages": [
+        {
+            "message": "found basic auth credential: https://apiuser:r3alP4ssw0rd@api.production.com",
+            "range": [
+                100,
+                147
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-basicauth",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 4,
+                    "column": 18
+                },
+                "end": {
+                    "line": 4,
+                    "column": 65
+                }
+            },
+            "severity": "error",
+            "messageId": "BasicAuth",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-basicauth/README.md#BasicAuth",
+            "data": {
+                "CREDENTIAL": "https://apiuser:r3alP4ssw0rd@api.production.com"
+            }
+        },
+        {
+            "message": "found basic auth credential: ftps://deployment:s3cur3K3y2024@files.company.com",
+            "range": [
+                250,
+                299
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-basicauth",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 6,
+                    "column": 20
+                },
+                "end": {
+                    "line": 6,
+                    "column": 69
+                }
+            },
+            "severity": "error",
+            "messageId": "BasicAuth",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-basicauth/README.md#BasicAuth",
+            "data": {
+                "CREDENTIAL": "ftps://deployment:s3cur3K3y2024@files.company.com"
+            }
+        },
+        {
+            "message": "found basic auth credential: https://backup-user:BackupK3y987@backup.example.com",
+            "range": [
+                366,
+                417
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-basicauth",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 9,
+                    "column": 19
+                },
+                "end": {
+                    "line": 9,
+                    "column": 70
+                }
+            },
+            "severity": "error",
+            "messageId": "BasicAuth",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-basicauth/README.md#BasicAuth",
+            "data": {
+                "CREDENTIAL": "https://backup-user:BackupK3y987@backup.example.com"
+            }
+        }
+    ],
+    "sourceContent": "# Real credentials that SHOULD be detected\n\n# Complex passwords with good entropy\nconst PROD_API = \"https://apiuser:r3alP4ssw0rd@api.production.com/v2\";\nconst SERVICE_URL = \"https://svcaccount:myC0mpl3xP@ss@service.internal.com\";\nconst SECURE_FTP = \"ftps://deployment:s3cur3K3y2024@files.company.com/uploads\";\n\n# Realistic usernames and passwords\nconst DB_BACKUP = \"https://backup-user:BackupK3y987@backup.example.com\";\nconst MONITORING = \"https://monitor:m0n1t0r!ng@metrics.company.com/api\";",
+    "sourceContentType": "text"
+}

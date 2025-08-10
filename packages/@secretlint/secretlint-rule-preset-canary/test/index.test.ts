@@ -16,10 +16,17 @@ test("@secretlint/secretlint-rule-preset-canary", async (t) => {
     for (const ruleDir of eachRulesDir) {
         const ruleDirPath = path.join(__dirname, "snapshots", ruleDir.name);
         // Create testDefinitions from bundled rules
-        const testDefinitions = rules.map((ruleCreator) => ({
-            id: ruleCreator.meta.id,
-            rule: ruleCreator,
-        }));
+        // Include the preset itself for .secretlintrc.json test cases
+        const testDefinitions = [
+            {
+                id: "@secretlint/secretlint-rule-preset-canary",
+                rule: rule,
+            },
+            ...rules.map((ruleCreator) => ({
+                id: ruleCreator.meta.id,
+                rule: ruleCreator,
+            })),
+        ];
         await snapshot({
             defaultConfig: {
                 rules: [
