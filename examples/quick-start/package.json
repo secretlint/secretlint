@@ -27,7 +27,7 @@
         "test": "npx @secretlint/quick-start \"**/*\" && exit 1 || exit 0"
     },
     "devDependencies": {
-        "@secretlint/quick-start": "^11.0.0"
+        "@secretlint/quick-start": "workspace:*"
     },
     "publishConfig": {
         "access": "public"

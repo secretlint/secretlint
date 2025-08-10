@@ -29,9 +29,9 @@
         "benchmark": "node index.js"
     },
     "dependencies": {
-        "@secretlint/secretlint-rule-preset-canary": "^11.0.0",
+        "@secretlint/secretlint-rule-preset-canary": "workspace:*",
         "benchmark": "^2.1.4",
-        "secretlint": "^11.0.0"
+        "secretlint": "workspace:*"
     },
     "publishConfig": {
         "access": "public"
