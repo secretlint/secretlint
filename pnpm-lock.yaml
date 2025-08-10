@@ -867,7 +867,7 @@ importers:
         specifier: ^28.0.6
         version: 28.0.6(rollup@4.46.2)
       '@rollup/plugin-node-resolve':
-        specifier: ^15.3.0
+        specifier: ^15.3.1
         version: 15.3.1(rollup@4.46.2)
       '@rollup/plugin-typescript':
         specifier: ^12.1.4

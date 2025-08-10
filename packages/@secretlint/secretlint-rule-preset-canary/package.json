@@ -58,7 +58,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.6",
-    "@rollup/plugin-node-resolve": "^15.3.0",
+    "@rollup/plugin-node-resolve": "^15.3.1",
     "@rollup/plugin-typescript": "^12.1.4",
     "@secretlint/secretlint-rule-1password": "workspace:*",
     "@secretlint/secretlint-rule-anthropic": "workspace:*",
