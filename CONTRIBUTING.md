@@ -283,13 +283,13 @@ New rules follow a two-stage deployment process:
 
 First, add your rule to [secretlint-rule-preset-canary](./packages/@secretlint/secretlint-rule-preset-canary):
 
-1. Add the rule package to devDependencies:
+1. Add the rule package to devDependencies (from project root):
    ```sh
-   cd packages/@secretlint/secretlint-rule-preset-canary
-   pnpm add -D @secretlint/secretlint-rule-your-rule
+   # From any directory in the project
+   pnpm --filter "@secretlint/secretlint-rule-preset-canary" add -D @secretlint/secretlint-rule-your-rule
    ```
 
-2. Import and add the rule to `src/index.ts`:
+2. Import and add the rule to `packages/@secretlint/secretlint-rule-preset-canary/src/index.ts`:
    ```typescript
    import { creator as ruleYourRule } from "@secretlint/secretlint-rule-your-rule";
    
@@ -299,40 +299,55 @@ First, add your rule to [secretlint-rule-preset-canary](./packages/@secretlint/s
    ];
    ```
 
-3. Import test snapshots and run tests:
+3. Import test snapshots and run tests (from project root):
    ```sh
-   pnpm run import-test
-   pnpm test
+   # From any directory in the project
+   pnpm run -r --filter "@secretlint/secretlint-rule-preset-canary" import-test
+   pnpm run -r --filter "@secretlint/secretlint-rule-preset-canary" test
    ```
 
 ### Step 2: Sync to recommended preset (for major releases)
 
 After the rule has been tested in canary, sync it to [secretlint-rule-preset-recommend](./packages/@secretlint/secretlint-rule-preset-recommend):
 
-1. Navigate to the recommended preset:
+1. Run the sync script (from project root):
    ```sh
-   cd packages/@secretlint/secretlint-rule-preset-recommend
+   # From any directory in the project
+   pnpm run -r --filter "@secretlint/secretlint-rule-preset-recommend" sync-canary
    ```
 
-2. Run the sync script (this copies rules, tests, and dependencies from canary):
-   ```sh
-   pnpm run sync-canary
-   ```
-
-3. Verify the sync:
-   - Check that `src/index.ts` includes your new rule
+2. Verify the sync:
+   - Check that `packages/@secretlint/secretlint-rule-preset-recommend/src/index.ts` includes your new rule
    - Check that test snapshots were copied
    - Check that devDependencies were added
 
-4. Fix any version downgrades:
+3. Fix any version downgrades:
    - The sync script may downgrade some dependencies
    - Manually update `package.json` if needed (e.g., `@rollup/plugin-node-resolve`)
    - Run `pnpm install` to update the lock file
 
-5. Run tests to ensure everything works:
+4. Run tests to ensure everything works:
    ```sh
-   pnpm test
+   # From any directory in the project
+   pnpm run -r --filter "@secretlint/secretlint-rule-preset-recommend" test
    ```
+
+### Alternative: Direct navigation approach
+
+If you prefer to work directly in the package directories:
+
+```sh
+# For canary preset
+cd packages/@secretlint/secretlint-rule-preset-canary
+pnpm add -D @secretlint/secretlint-rule-your-rule
+pnpm run import-test
+pnpm test
+
+# For recommended preset
+cd packages/@secretlint/secretlint-rule-preset-recommend
+pnpm run sync-canary
+pnpm test
+```
 
 ### Important Notes
 
