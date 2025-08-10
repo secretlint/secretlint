@@ -2,11 +2,11 @@
 
 ![Secretlint is that Pluggable linting tool to prevent committing credentials.](./docs/assets/SecretLintLP.png)
 
-> Secretlint is that Pluggable linting tool to prevent committing credentials.
+> Secretlint is a Pluggable linting tool to prevent committing credentials.
 
 ## Features
 
-- **Scanner**: Found credentials in a project and report these
+- **Scanner**: Find credentials in a project and report these
 - **Project** Friendly: Easy to set up your project and integrate CI services
 - **Pre-Commit Hook**: Prevent committing credential files
 - **Pluggable**: Allow creating custom rule and flexible configuration
@@ -42,7 +42,7 @@ You want to get continuous security, Please see following installation guide and
 
 **Prerequisites:** Require [Docker](https://docs.docker.com/install/)
 
-Use our [Docker container](https://hub.docker.com/r/secretlint/secretlint) to get an environment with Node.js and secretlint and running as fast as you can download them.
+Use our [Docker container](https://hub.docker.com/r/secretlint/secretlint) to get an environment with Node.js and secretlint running as fast as you can download them.
 
 You can check all files under the current directory with secretlint by following command: 
 
@@ -81,9 +81,9 @@ Finally, you can run Secretlint on any file or directory like this:
 npx secretlint "**/*"
 ```
 
-:memo: Secretlint support [glob pattern](https://github.com/mrmlnc/fast-glob#basic-syntax) and glob pattern should be wrapped by a double quote.
+:memo: Secretlint supports [glob pattern](https://github.com/mrmlnc/fast-glob#basic-syntax) and glob pattern should be wrapped by a double quote.
 
-It is also possible to install Secretlint globally using `npm install --global`. But, We do not recommended it, some rules may be broken in globally.
+It is also possible to install Secretlint globally using `npm install --global`. But, We do not recommend it, some rules may be broken globally.
 
 ### Using Single-Executable Binary
 
@@ -100,7 +100,7 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
 
 ## Usage
 
-`secretlint --help` show Usage.
+`secretlint --help` shows Usage.
 
     Secretlint CLI that scan secret/credential data.
     
@@ -340,7 +340,7 @@ Secretlint rules has been implemented as separated modules.
 - [@secretlint/secretlint-rule-no-dotenv](./packages/%40secretlint/secretlint-rule-no-dotenv)
 
 
-Also, Secretlint provide rule preset that includes recommended rule set.
+Also, Secretlint provides rule preset that includes recommended rule set.
 
 - [@secretlint/secretlint-rule-preset-recommend](./packages/@secretlint/secretlint-rule-preset-recommend)
     - Recommended rule set
@@ -349,7 +349,7 @@ Also, Secretlint provide rule preset that includes recommended rule set.
 
 You can create own secretlint rule.
 
-You want to get a secretlint rule for suitable your project and you can create it!
+You want to get a secretlint rule suitable for your project and you can create it!
 A secretlint rule is a just npm package.
 
 If you want to know creating secretlint rule, please see [docs/secretlint-rule.md](docs/secretlint-rule.md).
@@ -446,7 +446,7 @@ fi
 [Git 2.9+](https://github.blog/2016-06-13-git-2-9-has-been-released/) supports [`core.hooksPath`](https://git-scm.com/docs/githooks).
 It allow to integrate secretlint globally.
 
-We have created example git hooks project using secretlint + Docker.
+We have created an example git hooks project using secretlint + Docker.
 
 - [secretlint/git-hooks](https://github.com/secretlint/git-hooks)
     - Requirement: Docker
@@ -465,8 +465,8 @@ After setup of `core.hooksPath`, secretlint check any file before you commit it.
 
 For more details, see [secretlint/git-hooks](https://github.com/secretlint/git-hooks) project.
 
-Node.js version also can be used for global git hook.
-If you interesting in it, please see [@azu/git-hooks](https://github.com/azu/git-hooks).
+Node.js version can also be used for global git hook.
+If you are interested in it, please see [@azu/git-hooks](https://github.com/azu/git-hooks).
 
 ### CI
 
@@ -498,7 +498,7 @@ jobs:
         run: npx secretlint "**/*"
 ```
 
-This configuration also integrate Pull Request review comment via [actions/setup-node](https://github.com/actions/setup-node).
+This configuration also integrates Pull Request review comment via [actions/setup-node](https://github.com/actions/setup-node).
 
 ![github-actions.png](./docs/assets/github-actions.png)
 
@@ -560,12 +560,12 @@ npx mega-linter-runner --install
 - Firefox: <https://addons.mozilla.org/ja/firefox/addon/secretlint/>
 - Chrome: <https://chrome.google.com/webstore/detail/secretlint/hidpojbnemkajlnibhmeilpgoddkjjkf>
 
-This web extension aim to founds credentials that are included in your request/response.
+This web extension aims to find credentials that are included in your request/response.
 
 ![Secretlint WebExtension](https://raw.githubusercontent.com/secretlint/webextension/main/docs/screenshot.png)
 
-Secretlint WebExtension integrate to DevTools in Chrome/Firefox.
-This extension help web developer to notice exposed credential.
+Secretlint WebExtension integrates to DevTools in Chrome/Firefox.
+This extension helps web developers to notice exposed credentials.
 
 ### Others
 
@@ -580,7 +580,7 @@ secretlint --format @secretlint/secretlint-formatter-sarif "**/*"
 
 ## Semantic Versioning Policy
 
-Secretlint project follow [Semantic Versioning](https://semver.org/ "Semantic Versioning")([secretlint-rule-preset-canary](packages/@secretlint/secretlint-rule-preset-canary) is exception).
+Secretlint project follows [Semantic Versioning](https://semver.org/ "Semantic Versioning")([secretlint-rule-preset-canary](packages/@secretlint/secretlint-rule-preset-canary) is an exception).
 
 - Patch release (intended to not break your lint build)
     - A bug fix to the CLI or core (including formatters).
@@ -603,10 +603,10 @@ Secretlint project follow [Semantic Versioning](https://semver.org/ "Semantic Ve
 ## Motivation
 
 - [git-secrets](https://github.com/awslabs/git-secrets) is useful, but it is hard to setup per project.
-	- It main use-case is globally installation
-	- Secretlint want to install for a project and customize setting per project.
+	- Its main use-case is global installation
+	- Secretlint wants to install for a project and customize setting per project.
 - [repo-security-scanner](https://github.com/UKHomeOffice/repo-security-scanner), [Gitleaks](https://github.com/zricethezav/gitleaks) and [truffleHog](https://github.com/dxa4481/truffleHog) is good scan tools
-	- Secretlint need to flexible customize that include ignoring definitions, custom rules.
+	- Secretlint needs flexible customization that includes ignoring definitions, custom rules.
 - [detect-secrets](https://github.com/Yelp/detect-secrets) is similar tools, but it adopts opt-out approach
     - Secretlint adopts opt-in approach  
     - We also need to custom rules by user
@@ -624,8 +624,8 @@ Secretlint project follow [Semantic Versioning](https://semver.org/ "Semantic Ve
 
 Secretlint adopt opt-in approach.
 
-In our experience, linting tools that report various errors by default is difficult to use.
-Opt-in approach help to introduce Secretlint increasing.
+In our experience, linting tools that report various errors by default are difficult to use.
+Opt-in approach helps to introduce Secretlint incrementally.
 
 It will help to reduce false-positive by configuration.
 
@@ -635,7 +635,7 @@ We think a rule as a documentation.
 So, Each rule should have reasonable documentation.
 
 We need to describe why this file is error.
-A rule that has not documentation, It is just a opinionated.
+A rule that has no documentation is just opinionated.
 
 Describe the reason of error and then it will lead to reduce false-positive error.
 
@@ -658,11 +658,11 @@ Also, Welcome to Contribution about secretlint documentation!
 	- Package manager help to install custom plugin/rule by user
 - Exist Reference Implementation
 	- Node.js already has pluggable linting tools like ESLint, textlint, stylelint etc
-	- So Node.js user familiar with pluggable linting tools
-	- Previously, I created textlint as same approach, so I familiar with Node.js
+	- So Node.js users are familiar with pluggable linting tools
+	- Previously, I created textlint with the same approach, so I am familiar with Node.js
 - Users
-    - JavaScript is Popular language
-    - It means that empower Users to Contribute
+    - JavaScript is a popular language
+    - It empowers users to contribute
     - Users can create own rule by own hand
 
 Of course, secretlint also support [Docker](https://hub.docker.com/r/secretlint/secretlint).
