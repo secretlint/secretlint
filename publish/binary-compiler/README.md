@@ -73,8 +73,8 @@ See [Releases page](https://github.com/secretlint/secretlint/releases).
 
 ```bash
 # build secretlint using Node.js
-yarn install
-yarn run build
+pnpm install
+pnpm run build
 # build binary using bun
 cd publish/binary-compiler
 bun run build-binary

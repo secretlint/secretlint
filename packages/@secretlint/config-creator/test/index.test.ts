@@ -14,7 +14,7 @@ const readPkg = (filePath: string) => {
 /**
  *
  * Run config-creator
- * - yarn test -g "@secretlint/config-creator"
+ * - pnpm test -g "@secretlint/config-creator"
  *
  * File Overview
  *

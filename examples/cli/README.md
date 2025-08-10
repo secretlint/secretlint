@@ -4,12 +4,12 @@ An example for secretlint cli.
 
 ## Install
 
-    yarn install
+    pnpm install
     
 ## Usage
 
 ```
-$ yarn secretlint "**/*"
+$ pnpm secretlint "**/*"
 ```
 
 ## Changelog

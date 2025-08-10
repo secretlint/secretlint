@@ -27,7 +27,7 @@ const createSnapshotReplacer = () => {
 /**
  *
  * Update Snapshots
- * - yarn run updateSnapshot
+ * - pnpm run updateSnapshot
  *
  * File Overview
  *
