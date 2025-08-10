@@ -1,4 +1,8 @@
 packages:
-  - 'packages/*'
-  - 'packages/@secretlint/*'
-  - 'examples/*'
+  - packages/*
+  - packages/@secretlint/*
+  - examples/*
+
+onlyBuiltDependencies:
+  - esbuild
+  - secp256k1
