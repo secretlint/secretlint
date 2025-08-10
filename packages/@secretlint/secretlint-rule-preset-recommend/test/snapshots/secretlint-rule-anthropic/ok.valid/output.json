@@ -1,0 +1,6 @@
+{
+    "filePath": "[SNAPSHOT]/ok.valid/input.txt",
+    "messages": [],
+    "sourceContent": "# These should NOT be detected as API keys\nexport const EXAMPLE_URL = \"https://api.anthropic.com\";\nexport const EXAMPLE_MODEL = \"claude-3-opus-20240229\";\n\n# Fat-fingered secret (should not be detected due to double 's')\nssk-ant-api04-NotARealKeyButLooksLikeOne\n\n# OpenAI key (different format)\nsk-openai-123456\n\n# Incomplete Anthropic key\nsk-ant-api02-notarealkey\n\n# Wrong API version\nsk-ant-api05-alsonotreal\n",
+    "sourceContentType": "text"
+}

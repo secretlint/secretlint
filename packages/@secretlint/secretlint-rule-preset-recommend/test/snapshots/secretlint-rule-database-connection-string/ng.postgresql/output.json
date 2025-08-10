@@ -1,0 +1,85 @@
+{
+    "filePath": "[SNAPSHOT]/ng.postgresql/input.txt",
+    "messages": [
+        {
+            "message": "found PostgreSQL connection string: postgresql://pguser:secur3Pass@postgres.example.com:5432/production_db\";",
+            "range": [
+                132,
+                204
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 4,
+                    "column": 16
+                },
+                "end": {
+                    "line": 4,
+                    "column": 88
+                }
+            },
+            "severity": "error",
+            "messageId": "PostgreSQLConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#PostgreSQLConnection",
+            "data": {
+                "URI": "postgresql://pguser:secur3Pass@postgres.example.com:5432/production_db\";"
+            }
+        },
+        {
+            "message": "found PostgreSQL connection string: postgres://api_user:myC0mpl3xPwd@db.internal.com:5432/api_db\";",
+            "range": [
+                281,
+                343
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 7,
+                    "column": 22
+                },
+                "end": {
+                    "line": 7,
+                    "column": 84
+                }
+            },
+            "severity": "error",
+            "messageId": "PostgreSQLConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#PostgreSQLConnection",
+            "data": {
+                "URI": "postgres://api_user:myC0mpl3xPwd@db.internal.com:5432/api_db\";"
+            }
+        },
+        {
+            "message": "found PostgreSQL connection string: postgresql://postgres:m42ploz2wd@google.com:5432/mydb')",
+            "range": [
+                624,
+                679
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-database-connection-string",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 13,
+                    "column": 15
+                },
+                "end": {
+                    "line": 13,
+                    "column": 70
+                }
+            },
+            "severity": "error",
+            "messageId": "PostgreSQLConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#PostgreSQLConnection",
+            "data": {
+                "URI": "postgresql://postgres:m42ploz2wd@google.com:5432/mydb')"
+            }
+        }
+    ],
+    "sourceContent": "# Valid PostgreSQL connection strings with real credentials\n\n# PostgreSQL standard connection (postgresql protocol)\nconst PG_URI = \"postgresql://pguser:secur3Pass@postgres.example.com:5432/production_db\";\n\n# PostgreSQL standard connection (postgres protocol)\nconst POSTGRES_URI = \"postgres://api_user:myC0mpl3xPwd@db.internal.com:5432/api_db\";\n\n# PostgreSQL from additional cases\nCONNECTION_URI=\"postgres://postgres:m42p! o@2wd@google.com:5434/thegift\"\nPG_USERNAME=root. PG_PASSWORD=m42ploz2wd\nPGPASSWORD=strongp@ss psql -hdb-postgresql-ams3-58486-do-user-7772205-0.b.db.ondigitalocean.com -Udoadmin -p 25060\ncreate_engine('postgresql://postgres:m42ploz2wd@google.com:5432/mydb')\nHost=your_host; Port=5432; Database=your_database; Username=your_username; Password=your_password;",
+    "sourceContentType": "text"
+}

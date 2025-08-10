@@ -908,6 +908,9 @@ importers:
       '@secretlint/secretlint-rule-1password':
         specifier: workspace:*
         version: link:../secretlint-rule-1password
+      '@secretlint/secretlint-rule-anthropic':
+        specifier: workspace:*
+        version: link:../secretlint-rule-anthropic
       '@secretlint/secretlint-rule-aws':
         specifier: workspace:*
         version: link:../secretlint-rule-aws
@@ -917,6 +920,9 @@ importers:
       '@secretlint/secretlint-rule-basicauth':
         specifier: workspace:*
         version: link:../secretlint-rule-basicauth
+      '@secretlint/secretlint-rule-database-connection-string':
+        specifier: workspace:*
+        version: link:../secretlint-rule-database-connection-string
       '@secretlint/secretlint-rule-filter-comments':
         specifier: workspace:*
         version: link:../secretlint-rule-filter-comments
