@@ -35,4 +35,12 @@ jobs:
         run: pnpm run build
       - name: Run secretlint
         if: steps.changed-files.outputs.any_changed == 'true'
-        run: node packages/secretlint/bin/secretlint.js ${{ steps.changed-files.outputs.all_changed_files }}
+        working-directory: packages/secretlint
+        run: |
+          FILES="${{ steps.changed-files.outputs.all_changed_files }}"
+          # Convert relative paths from repo root to paths from packages/secretlint
+          ADJUSTED_FILES=""
+          for FILE in $FILES; do
+            ADJUSTED_FILES="$ADJUSTED_FILES ../../$FILE"
+          done
+          node bin/secretlint.js $ADJUSTED_FILES
