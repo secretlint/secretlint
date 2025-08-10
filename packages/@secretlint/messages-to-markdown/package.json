@@ -53,7 +53,8 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^10.2.2"
+    "@secretlint/resolver": "workspace:*",
+    "@secretlint/types": "workspace:*"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
@@ -63,7 +64,6 @@
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   },
-  "packageManager": "yarn@1.22.22",
   "engines": {
     "node": ">=20.0.0"
   },

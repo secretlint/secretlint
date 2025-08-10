@@ -5,6 +5,6 @@
     "examples/*"
   ],
   "version": "10.2.2",
-  "npmClient": "yarn",
+  "npmClient": "pnpm",
   "includeMergedTags": true
 }

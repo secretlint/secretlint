@@ -54,10 +54,10 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/config-loader": "^10.2.2",
-    "@secretlint/core": "^10.2.2",
-    "@secretlint/source-creator": "^10.2.2",
-    "@secretlint/types": "^10.2.2"
+    "@secretlint/config-loader": "workspace:*",
+    "@secretlint/core": "workspace:*",
+    "@secretlint/source-creator": "workspace:*",
+    "@secretlint/types": "workspace:*"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
@@ -67,7 +67,6 @@
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   },
-  "packageManager": "yarn@1.22.22",
   "engines": {
     "node": ">=20.0.0"
   },

@@ -52,8 +52,8 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/profiler": "^10.2.2",
-    "@secretlint/types": "^10.2.2",
+    "@secretlint/profiler": "workspace:*",
+    "@secretlint/types": "workspace:*",
     "debug": "^4.4.1",
     "structured-source": "^4.0.0"
   },
@@ -67,7 +67,6 @@
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   },
-  "packageManager": "yarn@1.22.22",
   "engines": {
     "node": ">=20.0.0"
   },

@@ -40,12 +40,11 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^10.2.2"
+    "@secretlint/types": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.8.3"
   },
-  "packageManager": "yarn@1.22.22",
   "engines": {
     "node": ">=20.0.0"
   },

@@ -60,7 +60,7 @@
     "node-sarif-builder": "^3.2.0"
   },
   "devDependencies": {
-    "@secretlint/types": "^10.2.2",
+    "@secretlint/types": "workspace:*",
     "@types/mocha": "^10.0.10",
     "@types/node": "^24.1.0",
     "escape-string-regexp": "^5.0.0",
@@ -69,7 +69,6 @@
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   },
-  "packageManager": "yarn@1.22.22",
   "publishConfig": {
     "access": "public"
   }

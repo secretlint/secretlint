@@ -55,8 +55,8 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/tester": "^10.2.2",
-    "@secretlint/types": "^10.2.2",
+    "@secretlint/tester": "workspace:*",
+    "@secretlint/types": "workspace:*",
     "@textlint/regexp-string-matcher": "^2.0.2"
   },
   "devDependencies": {
@@ -65,7 +65,6 @@
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   },
-  "packageManager": "yarn@1.22.22",
   "engines": {
     "node": ">=20.0.0"
   },

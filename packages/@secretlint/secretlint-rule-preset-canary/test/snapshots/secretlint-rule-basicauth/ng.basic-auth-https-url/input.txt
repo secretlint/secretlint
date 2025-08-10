@@ -1,0 +1,2 @@
+# HTTPS basic auth should still be detected
+const API_URL = "https://user:secret123@api.example.com/endpoint";

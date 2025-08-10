@@ -36,7 +36,7 @@ Please install following development prerequisites. You also need a [GitHub](htt
 
 - [Git](https://git-scm.com/)
 - [Node.js](https://nodejs.org/en/)
-- [Yarn](https://classic.yarnpkg.com/en/)
+- [pnpm](https://pnpm.io/)
 - Text editor
 - Terminal emulator
 
@@ -67,13 +67,13 @@ After getting your clone, you can start playing with secretlint.
 2. Install dependencies and build packages:
 
     ```sh
-    $ yarn install
+    $ pnpm install
     ```
 
 3. Run build:
 
     ```sh
-    $ yarn run build
+    $ pnpm run build
     ```
 
 Under the hood, secretlint uses Turbopack to manage multiple packages:
@@ -84,7 +84,7 @@ Under the hood, secretlint uses Turbopack to manage multiple packages:
 
 If you are new to Lerna, it seems to add another layer of complexity but it's simpler than you think; you can edit codes, run tests, commit changes, etc. as usual in most cases.
 
-Note that `yarn install` also builds a codebase, you can manually build by running `yarn run build`.
+Note that `pnpm install` also builds a codebase, you can manually build by running `pnpm run build`.
 
 ### Creating a Branch for Your Work
 
@@ -116,7 +116,7 @@ This repository uses [Prettier](https://prettier.io/) for code formatter. We use
 - Run Prettier to reformat code:
 
     ```sh
-    $ yarn prettier
+    $ pnpm prettier
     ```
 
 ##### Commit Message Format
@@ -208,14 +208,14 @@ All tests should be run at the top directory of your fork.
 Run tests for all packages:
 
 ```sh
-$ yarn test
+$ pnpm test
 ```
 
 While developing, it would be good to run package level unit test since it will run faster:
 
 ```sh
 $ cd packages/PACKAGE
-$ yarn test
+$ pnpm test
 ```
 
 #### Snapshot Test
@@ -227,10 +227,10 @@ You can update snapshot's output via following command:
 
 ```sh
 # Root(all)
-$ yarn run updateSnapshot
+$ pnpm run updateSnapshot
 # Package
 $ cd packages/PACKAGE
-$ yarn run updateSnapshot
+$ pnpm run updateSnapshot
 ```
 
 ### Pushing the Commit and Opening a Pull Request
@@ -256,7 +256,7 @@ After all participants on pull request are satisfied to the changes, we will mer
 This project has a template for creating a new rule.
 
 ```sh
-yarn run gen:rule
+pnpm run gen:rule
 ```
 
 1. Enter rule name
@@ -276,15 +276,15 @@ At first, you need to add a rule to [secretlint-rule-preset-canary](./packages/@
 
 1. Add rule to `packages/@secretlint/secretlint-rule-preset-canary/package.json`'s `devDependencies`
 2. Add rule to `packages/@secretlint/secretlint-rule-preset-canary/src/index.ts`
-3. `yarn run import-test`
-4. `yarn test`
+3. `pnpm run import-test`
+4. `pnpm test`
 
 After testing on canary, you can sync to [secretlint-rule-preset-recommend](./packages/@secretlint/secretlint-rule-preset-recommend).
 
 ```sh
 cd packages/@secretlint/secretlint-rule-preset-recommend
-yarn run sync-canary
-yarn test
+pnpm run sync-canary
+pnpm test
 ```
 
 ## Benchmark

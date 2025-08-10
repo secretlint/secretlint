@@ -53,17 +53,18 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/config-loader": "^10.2.2",
-    "@secretlint/core": "^10.2.2",
-    "@secretlint/formatter": "^10.2.2",
-    "@secretlint/profiler": "^10.2.2",
-    "@secretlint/source-creator": "^10.2.2",
-    "@secretlint/types": "^10.2.2",
+    "@secretlint/config-loader": "workspace:*",
+    "@secretlint/core": "workspace:*",
+    "@secretlint/formatter": "workspace:*",
+    "@secretlint/profiler": "workspace:*",
+    "@secretlint/source-creator": "workspace:*",
+    "@secretlint/types": "workspace:*",
     "debug": "^4.4.1",
     "p-map": "^7.0.3"
   },
   "devDependencies": {
-    "@secretlint/secretlint-rule-example": "^10.2.2",
+    "@secretlint/secretlint-rule-example": "workspace:*",
+    "@types/debug": "^4.1.12",
     "@types/mocha": "^10.0.10",
     "@types/node": "^24.1.0",
     "mocha": "^11.7.1",
@@ -71,7 +72,6 @@
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   },
-  "packageManager": "yarn@1.22.22",
   "engines": {
     "node": ">=20.0.0"
   },

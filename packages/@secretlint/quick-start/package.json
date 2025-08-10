@@ -56,7 +56,7 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/secretlint-rule-preset-recommend": "^10.2.2",
+    "@secretlint/secretlint-rule-preset-recommend": "workspace:*",
     "secretlint": "^10.2.2"
   },
   "devDependencies": {
@@ -64,7 +64,6 @@
     "prettier": "^2.8.8",
     "typescript": "^5.8.3"
   },
-  "packageManager": "yarn@1.22.22",
   "engines": {
     "node": ">=20.0.0"
   },
