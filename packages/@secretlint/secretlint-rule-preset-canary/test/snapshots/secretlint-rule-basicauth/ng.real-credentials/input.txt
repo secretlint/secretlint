@@ -1,0 +1,10 @@
+# Real credentials that SHOULD be detected
+
+# Complex passwords with good entropy
+const PROD_API = "https://apiuser:r3alP4ssw0rd@api.production.com/v2";
+const SERVICE_URL = "https://svcaccount:myC0mpl3xP@ss@service.internal.com";
+const SECURE_FTP = "ftps://deployment:s3cur3K3y2024@files.company.com/uploads";
+
+# Realistic usernames and passwords
+const DB_BACKUP = "https://backup-user:BackupK3y987@backup.example.com";
+const MONITORING = "https://monitor:m0n1t0r!ng@metrics.company.com/api";

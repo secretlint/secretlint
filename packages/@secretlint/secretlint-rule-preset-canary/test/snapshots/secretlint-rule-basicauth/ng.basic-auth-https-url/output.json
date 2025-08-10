@@ -1,0 +1,33 @@
+{
+    "filePath": "[SNAPSHOT]/ng.basic-auth-https-url/input.txt",
+    "messages": [
+        {
+            "message": "found basic auth credential: https://user:secret123@api.example.com",
+            "range": [
+                61,
+                99
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-basicauth",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 17
+                },
+                "end": {
+                    "line": 2,
+                    "column": 55
+                }
+            },
+            "severity": "error",
+            "messageId": "BasicAuth",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-basicauth/README.md#BasicAuth",
+            "data": {
+                "CREDENTIAL": "https://user:secret123@api.example.com"
+            }
+        }
+    ],
+    "sourceContent": "# HTTPS basic auth should still be detected\nconst API_URL = \"https://user:secret123@api.example.com/endpoint\";",
+    "sourceContentType": "text"
+}
