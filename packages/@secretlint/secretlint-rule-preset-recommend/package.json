@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-preset-recommend",
-  "version": "10.2.2",
+  "version": "11.0.0",
   "description": "Recommended rule preset of secretlint.",
   "keywords": [
     "secretlint",
@@ -62,9 +62,11 @@
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-typescript": "^12.1.4",
     "@secretlint/secretlint-rule-1password": "workspace:*",
+    "@secretlint/secretlint-rule-anthropic": "workspace:*",
     "@secretlint/secretlint-rule-aws": "workspace:*",
     "@secretlint/secretlint-rule-azure": "workspace:*",
     "@secretlint/secretlint-rule-basicauth": "workspace:*",
+    "@secretlint/secretlint-rule-database-connection-string": "workspace:*",
     "@secretlint/secretlint-rule-filter-comments": "workspace:*",
     "@secretlint/secretlint-rule-gcp": "workspace:*",
     "@secretlint/secretlint-rule-github": "workspace:*",
@@ -83,9 +85,7 @@
     "rollup": "^4.46.2",
     "rollup-plugin-polyfill-node": "^0.13.0",
     "tsx": "^4.20.3",
-    "typescript": "^5.8.3",
-    "@secretlint/secretlint-rule-anthropic": "workspace:*",
-    "@secretlint/secretlint-rule-database-connection-string": "workspace:*"
+    "typescript": "^5.8.3"
   },
   "engines": {
     "node": ">=20.0.0"
