@@ -57,7 +57,7 @@
   },
   "dependencies": {
     "@secretlint/secretlint-rule-preset-recommend": "workspace:*",
-    "secretlint": "^11.0.0"
+    "secretlint": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^24.1.0",
