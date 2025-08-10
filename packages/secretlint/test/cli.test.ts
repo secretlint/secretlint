@@ -54,7 +54,7 @@ describe("cli snapshot testing", () => {
         assert.match(actual.stdout, /^[\d.]+$/);
     });
     fs.readdirSync(SNAPSHOT_DIR).map((caseName) => {
-        it(`test ${caseName}`, async () => {
+        it(`test ${caseName}`, async (t) => {
             const fixtureDir = path.join(SNAPSHOT_DIR, caseName);
             // url join input.txt
             const actualFilePath = path.join(fixtureDir, "input.txt");
@@ -91,7 +91,7 @@ describe("cli snapshot testing", () => {
                     JSON.stringify(normalizedActual, createSnapshotReplacer(), 4),
                     "utf-8"
                 );
-                this.skip(); // skip when updating snapshots
+                t.skip(); // skip when updating snapshots
                 return;
             }
             // compare input and output

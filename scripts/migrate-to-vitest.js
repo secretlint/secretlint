@@ -74,7 +74,8 @@ async function removeIllegalMochaImports() {
         content = content.replace(/this\.skip\(\)/g, "it.skip()");
 
         // Fix template literals in test names
-        content = content.replace(/it\("test \$\{caseName\}"/g, "it(`test ${caseName}`");
+        content = content.replace(/it\(["']([^"']*\$\{[^}]+\}[^"']*)["']/g, "it(`$1`");
+        content = content.replace(/describe\(["']([^"']*\$\{[^}]+\}[^"']*)["']/g, "describe(`$1`");
 
         if (content !== originalContent) {
             fs.writeFileSync(fullPath, content);
