@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1754837938554,
+  "lastUpdate": 1754838523546,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -40848,6 +40848,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.59,
             "range": "±1.39%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e2c92d311c4da1afc41e19bde232a8ec73262f5d",
+          "message": "fix: use workspace:* references for internal dependencies in examples (#1157)\n\nUpdate all example packages and @secretlint/quick-start to use workspace:*\nreferences instead of version numbers for internal dependencies. This ensures\nproper dependency resolution during CI/CD workflows.\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2025-08-10T15:07:19Z",
+          "tree_id": "743027e8ebb8b90cfb4a1359f8992c442faf0797",
+          "url": "https://github.com/secretlint/secretlint/commit/e2c92d311c4da1afc41e19bde232a8ec73262f5d"
+        },
+        "date": 1754838521851,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.66,
+            "range": "±0.88%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±0.41%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
