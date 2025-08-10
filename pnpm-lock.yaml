@@ -18,7 +18,7 @@ importers:
         specifier: ^4.6.2
         version: 4.7.0(@lerna-lite/publish@4.7.0(@types/node@24.2.1)(conventional-commits-filter@5.0.0))(@types/node@24.2.1)(conventional-commits-filter@5.0.0)
       lint-staged:
-        specifier: ^16.1.2
+        specifier: ^16.1.4
         version: 16.1.5
       prettier:
         specifier: ^2.8.8
