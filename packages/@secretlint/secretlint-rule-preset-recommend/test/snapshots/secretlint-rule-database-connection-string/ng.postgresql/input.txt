@@ -1,0 +1,14 @@
+# Valid PostgreSQL connection strings with real credentials
+
+# PostgreSQL standard connection (postgresql protocol)
+const PG_URI = "postgresql://pguser:secur3Pass@postgres.example.com:5432/production_db";
+
+# PostgreSQL standard connection (postgres protocol)
+const POSTGRES_URI = "postgres://api_user:myC0mpl3xPwd@db.internal.com:5432/api_db";
+
+# PostgreSQL from additional cases
+CONNECTION_URI="postgres://postgres:m42p! o@2wd@google.com:5434/thegift"
+PG_USERNAME=root. PG_PASSWORD=m42ploz2wd
+PGPASSWORD=strongp@ss psql -hdb-postgresql-ams3-58486-do-user-7772205-0.b.db.ondigitalocean.com -Udoadmin -p 25060
+create_engine('postgresql://postgres:m42ploz2wd@google.com:5432/mydb')
+Host=your_host; Port=5432; Database=your_database; Username=your_username; Password=your_password;
