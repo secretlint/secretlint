@@ -24,7 +24,6 @@ const createSnapshotReplacer = () => {
         return value;
     };
 };
-const IS_GITHUB_ACTIONS = process.env.GITHUB_ACTIONS === "true";
 /**
  *
  * Update Snapshots
@@ -70,9 +69,6 @@ describe("cli snapshot testing", function () {
             const actualInputs = options.inputs;
             // Logging Group
             console.group(`Snapshot Fixture: ${fixtureDir}`);
-            if (IS_GITHUB_ACTIONS) {
-                console.log(`::group::Fixture: ${fixtureDir}`);
-            }
             const actual = await run(actualInputs ? actualInputs : [actualFilePath], {
                 ...cli.flags,
                 ...actualOptions,
@@ -86,9 +82,6 @@ describe("cli snapshot testing", function () {
                 return `Error: ${error.message}`;
             });
             console.groupEnd();
-            if (IS_GITHUB_ACTIONS) {
-                console.log(`::endgroup::`);
-            }
             // json string to json
             if (typeof actual === "object" && actual.stdout && !actualOptions.version && !actualOptions.help) {
                 actual.stdout = JSON.parse(actual.stdout);
