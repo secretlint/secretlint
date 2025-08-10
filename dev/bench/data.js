@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1754826219330,
+  "lastUpdate": 1754837401324,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -40772,6 +40772,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±3.14%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ff8ba7a8b649545ec7d1f1dc05234818e3d9ef63",
+          "message": "feat: add Anthropic and Database Connection String rules to recommended preset (#1154)\n\n* feat: add Anthropic and Database Connection String rules to recommended preset\n\n- Add @secretlint/secretlint-rule-anthropic to detect Claude API keys\n- Add @secretlint/secretlint-rule-database-connection-string to detect DB credentials\n- Update test snapshots for the recommended preset\n- This is a breaking change as it may introduce new secret detections\n\nFixes #1073\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* fix: restore @rollup/plugin-node-resolve to latest version\n\nThe sync-canary script downgraded the version. This commit restores it to ^16.0.1\n\n* docs: add detailed preset update process documentation\n\n- Document the two-stage deployment process (canary → recommended)\n- Add step-by-step instructions for adding rules to presets\n- Include notes about version downgrades and breaking changes\n- Clarify when to sync to recommended preset (major versions)\n\n* docs: improve preset update commands with pnpm filter usage\n\n- Add pnpm --filter commands that work from any directory\n- Keep alternative direct navigation approach for flexibility\n- Make commands more convenient for contributors\n\n* docs: fix preset update instructions to use manual package.json editing\n\n- Change from pnpm add command to manual package.json editing\n- Specify workspace:* protocol requirement for local packages\n- More accurate representation of actual workflow\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2025-08-10T23:48:34+09:00",
+          "tree_id": "d1ddb1efe09a59c244c8f76251ea68f895f49383",
+          "url": "https://github.com/secretlint/secretlint/commit/ff8ba7a8b649545ec7d1f1dc05234818e3d9ef63"
+        },
+        "date": 1754837399285,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.58,
+            "range": "±0.81%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±0.82%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
