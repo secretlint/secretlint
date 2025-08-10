@@ -2,15 +2,15 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { globby } from "globby";
+import { glob } from "node:fs/promises";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, "..");
 
 async function updatePackageJsonScripts() {
-    const packagePaths = await globby("packages/**/package.json", {
+    const packagePaths = await glob("packages/**/package.json", {
         cwd: rootDir,
-        ignore: ["**/node_modules/**", "**/test/**"]
+        exclude: ["**/node_modules/**", "**/test/**"]
     });
 
     for (const packagePath of packagePaths) {
@@ -28,8 +28,8 @@ async function updatePackageJsonScripts() {
             }
 
             // Update updateSnapshot script if it exists
-            if (content.scripts.updateSnapshot === "UPDATE_SNAPSHOT=1 npm test") {
-                content.scripts.updateSnapshot = "vitest run --update";
+            if (content.scripts.updateSnapshot && content.scripts.updateSnapshot.includes("UPDATE_SNAPSHOT=1")) {
+                content.scripts.updateSnapshot = "UPDATE_SNAPSHOT=1 vitest run";
                 modified = true;
                 console.log(`✅ Updated updateSnapshot script in ${packagePath}`);
             }
@@ -42,9 +42,9 @@ async function updatePackageJsonScripts() {
 }
 
 async function removeIllegalMochaImports() {
-    const testFiles = await globby("packages/**/*.{test,spec}.{js,ts}", {
+    const testFiles = await glob("packages/**/*.{test,spec}.{js,ts}", {
         cwd: rootDir,
-        ignore: ["**/node_modules/**"]
+        exclude: ["**/node_modules/**"]
     });
 
     for (const testFile of testFiles) {
@@ -70,6 +70,12 @@ async function removeIllegalMochaImports() {
         content = content.replace(/beforeEach\s*\(\s*function\s*\(\)/g, "beforeEach(() =>");
         content = content.replace(/afterEach\s*\(\s*function\s*\(\)/g, "afterEach(() =>");
 
+        // Convert this.skip() to it.skip()
+        content = content.replace(/this\.skip\(\)/g, "it.skip()");
+
+        // Fix template literals in test names
+        content = content.replace(/it\("test \$\{caseName\}"/g, "it(`test ${caseName}`");
+
         if (content !== originalContent) {
             fs.writeFileSync(fullPath, content);
             console.log(`✅ Updated test file: ${testFile}`);
@@ -78,7 +84,7 @@ async function removeIllegalMochaImports() {
 }
 
 async function removeMochaConfigs() {
-    const mochaConfigs = await globby("packages/**/.mocharc.{json,js,yaml,yml}", {
+    const mochaConfigs = await glob("packages/**/.mocharc.{json,js,yaml,yml}", {
         cwd: rootDir
     });
 

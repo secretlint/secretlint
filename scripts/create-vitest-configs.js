@@ -2,7 +2,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { globby } from "globby";
+import { glob } from "node:fs/promises";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.join(__dirname, "..");
@@ -11,8 +11,23 @@ const vitestConfig = `import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   test: {
-    include: ['test/**/*.{test,spec}.{js,ts}'],
-    exclude: ['**/node_modules/**', '**/dist/**', '**/build/**', '**/module/**', '**/lib/**', '**/fixtures/**', '**/snapshots/**'],
+    include: [
+      'test/**/*.{test,spec}.{js,ts}',
+      'test/**/*{-test,-spec}.{js,ts}',
+      'test/**/test-*.{js,ts}',
+      'test/**/spec-*.{js,ts}'
+    ],
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/build/**',
+      '**/module/**',
+      '**/lib/**',
+      '**/fixtures/**',
+      '**/snapshots/**',
+      '**/*.type-test.ts',
+      '**/test-formatter.ts'
+    ],
     globals: true,
     environment: 'node',
     testTimeout: 30000,
@@ -21,9 +36,9 @@ export default defineConfig({
 })`;
 
 async function createVitestConfigs() {
-    const packagePaths = await globby("packages/**/package.json", {
+    const packagePaths = await glob("packages/**/package.json", {
         cwd: rootDir,
-        ignore: ["**/node_modules/**", "**/test/**"]
+        exclude: ["**/node_modules/**", "**/test/**"]
     });
 
     for (const packagePath of packagePaths) {
