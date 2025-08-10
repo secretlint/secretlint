@@ -7,14 +7,18 @@
     "build-binary": "bash build-binary.sh",
     "test": "bun run build-binary && bash test.sh"
   },
+  "workspaces": [
+    "../../packages/*",
+    "../../packages/@secretlint/*"
+  ],
   "devDependencies": {
     "@types/bun": "latest",
-    "@secretlint/formatter": "file:../../packages/@secretlint/formatter",
-    "@secretlint/secretlint-formatter-sarif": "file:../../packages/@secretlint/secretlint-formatter-sarif",
-    "@secretlint/resolver": "file:../../packages/@secretlint/resolver",
-    "@secretlint/secretlint-rule-pattern": "file:../../packages/@secretlint/secretlint-rule-pattern",
-    "@secretlint/secretlint-rule-preset-recommend": "file:../../packages/@secretlint/secretlint-rule-preset-recommend",
-    "secretlint": "file:../../packages/secretlint"
+    "@secretlint/formatter": "workspace:*",
+    "@secretlint/secretlint-formatter-sarif": "workspace:*",
+    "@secretlint/resolver": "workspace:*",
+    "@secretlint/secretlint-rule-pattern": "workspace:*",
+    "@secretlint/secretlint-rule-preset-recommend": "workspace:*",
+    "secretlint": "workspace:*"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"

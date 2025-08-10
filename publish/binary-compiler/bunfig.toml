@@ -1,0 +1,3 @@
+[install.scopes]
+"@secretlint" = { path = "../../packages/@secretlint" }
+"secretlint" = { path = "../../packages/secretlint" }
