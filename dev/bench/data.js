@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1754745621662,
+  "lastUpdate": 1754805811058,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -40544,6 +40544,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.59,
             "range": "±1.48%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7d209f76da6a9b656f3c4e6dd93672071ea881df",
+          "message": "chore: migrate from Yarn Berry to pnpm (#1146)\n\n* chore: migrate from Yarn Berry to pnpm\n\n- Remove Yarn Berry configuration files\n- Add pnpm configuration with lockfile\n- Update GitHub Actions workflows to use pnpm\n- Update package.json scripts to use pnpm\n- Fix tsx test runner configuration\n\n* CI: pin GitHub Action version\n\n* chore: update GitHub Actions versions\n\n- Fix actions/setup-node version to v4.4.0\n- Update pnpm/action-setup to v4.2.2\n\n* chore: add .node-version file with Node.js 22 LTS\n\n* chore: update GitHub Actions pins with pinact\n\n* chore: fix test configuration for pnpm\n\n- Add pnpm-workspace.yaml\n- Update test imports to use module directory\n- Configure mocha to use tsx for TypeScript support\n\n* fix: revert test imports to use src directory\n\nTest files should import from src directory to allow running tests without build step\n\n* chore: update workspace references for internal packages\n\n- Use workspace:* for all @secretlint package dependencies\n- Fix config-loader internal test dependencies\n\n* fix: add missing pnpm/action-setup in test workflow\n\n- Add pnpm installation step before Node.js setup in test job\n- Add pnpm installation step in binary-test job\n\n* fix: CI configuration and workspace dependencies\n\n- Add @types/debug to packages using debug module\n- Fix fetch-depth configuration in test-diff workflow\n- Update all internal @secretlint dependencies to workspace:*\n- Remove invalid fetch-depth from pnpm/action-setup\n\n* fix: add missing @secretlint/resolver dependency to messages-to-markdown\n\n* chore: remove bun temp files\n\n* chore: add bun temp files to gitignore\n\n* fix: add missing @textlint/regexp-string-matcher dependency\n\n* chore: trigger CI rebuild\n\n* chore: trigger CI test workflow\n\n* Revert \"chore: trigger CI test workflow\"\n\nThis reverts commit cd47b5e084256e664df53b3c5b8efc771d8d4c77.\n\n* fix: add missing @rollup/plugin-node-resolve to preset-canary\n\n* chore: trigger CI\n\n* fix: add missing rollup plugin dependency for preset-canary\n\n* fix: configure rollup to treat secretlint rules as external dependencies\n\nThis fixes the module resolution issues in preset-canary and preset-recommend\n\n* fix: update pnpm-lock.yaml for tsx version consistency\n\n* fix: add missing @secretlint/resolver dependency to secretlint package\n\n* fix: use pnpm exec instead of direct node_modules path in test-diff workflow\n\n* fix: use file: protocol for binary-compiler bun workspace dependencies\n\n* fix: add bun workspaces config and use direct node execution for secretlint in CI\n\n* fix: run secretlint from its package directory in test-diff workflow\n\nChanged working directory to packages/secretlint and adjusted file paths\nto fix module resolution issues\n\n* fix: use NODE_PATH for module resolution in test-diff workflow\n\nInstead of using shamefully-hoist, set NODE_PATH to pnpm's node_modules\nstructure to help secretlint resolve modules correctly\n\n* chore: update Node.js version to 22.18.0\n\nSpecify exact Node.js version 22.18.0 in .node-version\n\n* Update .github/workflows/test.yml\n\n* docs: add comments to bunfig.toml explaining workspace scope mapping\n\nClarify that this configuration helps Bun resolve workspace dependencies\nwhen building the standalone binary from the monorepo structure\n\n* fix: update sync-canary script to use pnpm instead of yarn\n\nThe sync-canary script in preset-recommend package now uses pnpm install\ninstead of yarn install to be consistent with the package manager migration\n\n* chore: clean up all remaining yarn references\n\n- Update test comments to reference pnpm instead of yarn\n- Update example READMEs to use pnpm commands\n- Remove yarn.lock file\n- Update publish/binary-compiler/README.md development instructions\n- Update lerna.json npmClient to pnpm\n- Remove packageManager field from all package.json files (except root)\n- Update sync-canary script in preset-recommend to use pnpm\n\n* fix: remove external config from rollup to bundle all rules for I/O optimization\n\n- Remove external: [/^@secretlint\\//] from rollup configs to bundle all rule dependencies\n- Add testDefinitions to test configurations to properly resolve bundled rules\n- Remove no-homedir test snapshots from preset-recommend (not part of the preset)\n- This change achieves the original purpose of presets: reducing I/O by bundling all rules together\n- Bundle size increases from 16KB to ~2.8MB but eliminates multiple module reads at runtime\n\n* fix: clean up test snapshots for both presets\n\n- Run import-tests.js in preset-canary to sync test snapshots with actual dependencies\n- Remove unused test snapshots from preset-recommend (azure, example, no-dotenv, no-k8s-kind-secret, pattern, secp256k1-privatekey)\n- Update test snapshots after rebuilding with bundled rules\n- Both presets now have correct test coverage matching their actual rule imports\n\n* fix: プリセットテストで.secretlintrc.json設定ファイルの自動変換を実装\n\n個別ルールから持ってきたテストケースの.secretlintrc.json設定ファイルを\nプリセット形式に自動変換する機能を追加。\n\n- import-tests.jsにtransformSecretlintConfig関数を追加\n  - 個別ルールID（例：@secretlint/secretlint-rule-aws）を\n    プリセットID配下のネストされたルール設定に変換\n- テストコードのtestDefinitionsにプリセット自身を含めるよう修正\n  - .secretlintrc.jsonを使用するテストケースが正しく動作するように\n- 両プリセット（canary/recommend）のスナップショットを更新\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* fix: pnpmでnode_modulesをホイストするように設定\n\nCIでワークスペースパッケージが正しく解決されない問題を修正。\n.npmrcにhoist-pattern[]=*を追加してnode_modulesをホイストする。\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* remove: remove .npmrc\n\n* add console.group\n\n* add logs\n\n* fix: node_modules-is-ignored-by-defaultテストの修正\n\nテストケース内のnode_modulesディレクトリがモジュール解決に影響を与える問題を修正。\n--no-configオプションを追加してテスト用の設定ファイルを無視するようにした。\n\nまた、cli.test.tsの構文エラー（slowプロパティの値が欠落）も修正。\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* fix: node_modules-is-ignored-by-defaultテストにモックモジュールを追加\n\nテストケース内のnode_modulesディレクトリにモック版の\n@secretlint/secretlint-rule-exampleを配置することで、\nモジュール解決の問題を解決。\n\nこれにより、CIでもテストが正常に動作するようになる。\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* fix remove\n\n* fix log\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2025-08-10T15:02:06+09:00",
+          "tree_id": "59be890c4515fee23f555a5f82459e479f86ea92",
+          "url": "https://github.com/secretlint/secretlint/commit/7d209f76da6a9b656f3c4e6dd93672071ea881df"
+        },
+        "date": 1754805809337,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.61,
+            "range": "±2.04%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±1.30%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
