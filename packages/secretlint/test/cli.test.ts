@@ -62,6 +62,7 @@ describe("cli snapshot testing", function () {
             const options = await import(fileURL.href);
             const actualOptions = options.options;
             const actualInputs = options.inputs;
+            console.group(`Fixture: ${fixtureDir}`);
             const actual = await run(actualInputs ? actualInputs : [actualFilePath], {
                 ...cli.flags,
                 ...actualOptions,
@@ -74,6 +75,7 @@ describe("cli snapshot testing", function () {
                 // if throw an error, save it
                 return `Error: ${error.message}`;
             });
+            console.groupEnd();
             // json string to json
             if (typeof actual === "object" && actual.stdout && !actualOptions.version && !actualOptions.help) {
                 actual.stdout = JSON.parse(actual.stdout);
