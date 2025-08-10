@@ -22,12 +22,12 @@ const formatResult = (result: validateConfigResult) => {
               // \r\n -> \n
               .replace(/\r\n/g, "\n");
 };
-describe("validateConfig", function () {
+describe("validateConfig", () => {
     fs.readdirSync(snapshotDir, { withFileTypes: true })
         .filter((dirent) => dirent.isDirectory())
         .map((dirent) => {
             const normalizedTestName = dirent.name;
-            it(`test ${normalizedTestName}`, async function () {
+            it(`test ${normalizedTestName}`, async (t) => {
                 const fixtureDir = path.join(snapshotDir, normalizedTestName);
                 const secretlintrcFileName = fs.readdirSync(fixtureDir).find((filePath) => {
                     return filePath.startsWith(".secretlintrc");
@@ -46,7 +46,7 @@ describe("validateConfig", function () {
                 // UPDATE_SNAPSHOT=1 npm test
                 if (!fs.existsSync(expectedFilePath) || process.env.UPDATE_SNAPSHOT) {
                     fs.writeFileSync(expectedFilePath, formatResult(actual));
-                    this.skip(); // skip when updating snapshots
+                    t.skip(); // skip when updating snapshots
                     return;
                 }
                 // compare input and output

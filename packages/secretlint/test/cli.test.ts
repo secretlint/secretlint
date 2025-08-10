@@ -40,8 +40,8 @@ const createSnapshotReplacer = () => {
  * - output.json
  *   - snapshot result
  */
-describe("cli snapshot testing", function () {
-    it("--version should return version", async function () {
+describe("cli snapshot testing", () => {
+    it("--version should return version", async () => {
         const actual = await run([], {
             ...cli.flags,
             version: true,
@@ -54,12 +54,7 @@ describe("cli snapshot testing", function () {
         assert.match(actual.stdout, /^[\d.]+$/);
     });
     fs.readdirSync(SNAPSHOT_DIR).map((caseName) => {
-        it(`test ${caseName}`, async function () {
-            // Skip node_modules test in CI due to module resolution issues with pnpm
-            if (process.env.CI && caseName === "node_modules-is-ignored-by-default") {
-                this.skip();
-                return;
-            }
+        it(`test ${caseName}`, async (t) => {
             const fixtureDir = path.join(SNAPSHOT_DIR, caseName);
             // url join input.txt
             const actualFilePath = path.join(fixtureDir, "input.txt");
@@ -96,7 +91,7 @@ describe("cli snapshot testing", function () {
                     JSON.stringify(normalizedActual, createSnapshotReplacer(), 4),
                     "utf-8"
                 );
-                this.skip(); // skip when updating snapshots
+                t.skip(); // skip when updating snapshots
                 return;
             }
             // compare input and output

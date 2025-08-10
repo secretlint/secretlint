@@ -21,7 +21,7 @@ import { runConfigCreator } from "../src/create-secretlintrc.js";
  * - expectedConfigFilePath
  *   - A path of .secretlintrc.json to create by this test
  */
-describe("create-secretlintrc", function () {
+describe("create-secretlintrc", () => {
     let tmpConfigDir: string;
 
     beforeEach(async () => {
@@ -34,7 +34,7 @@ describe("create-secretlintrc", function () {
         await fs.rm(tmpConfigDir, { recursive: true });
     });
 
-    context("when package.json has @secretlint/* packages", function () {
+    describe("when package.json has @secretlint/* packages", () => {
         it("Run secretlint --init", async () => {
             const actual = await runConfigCreator({ cwd: tmpConfigDir });
             if (actual.stdout === null) {
@@ -45,7 +45,7 @@ describe("create-secretlintrc", function () {
         });
     });
 
-    context("when .secretlintrc.json is already existed", function () {
+    describe("when .secretlintrc.json is already existed", () => {
         it("should be an error", async () => {
             const actual = await runConfigCreator({ cwd: tmpConfigDir });
             assert.strictEqual(actual.exitStatus, 0);

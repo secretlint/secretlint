@@ -27,7 +27,7 @@ const readPkg = (filePath: string) => {
  * - expectedConfigFilePath
  *   - A path of .secretlintrc.json to create by this test
  */
-describe("@secretlint/config-creator", function () {
+describe("@secretlint/config-creator", () => {
     let tmpConfigDir: string;
 
     beforeEach(async () => {
@@ -40,7 +40,7 @@ describe("@secretlint/config-creator", function () {
         await fs.rm(tmpConfigDir, { recursive: true });
     });
 
-    context("When config-creator is called", function () {
+    describe("When config-creator is called", () => {
         it("Run config-creator successfully", async () => {
             const pkg = await readPkg(path.join(tmpConfigDir, "package.json"));
             const actual = createConfig({ packageJSON: pkg });

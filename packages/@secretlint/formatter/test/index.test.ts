@@ -23,13 +23,13 @@ const snapshotReplace = (value: string) => {
     );
 };
 
-describe("@secretlint/formatter", function () {
+describe("@secretlint/formatter", () => {
     const formatters = getFormatterList();
     for (const formatter of formatters) {
         const formatterName = formatter.name;
         // TODO: skip json and table test if windows
         const it = process.platform === "win32" && formatterName === "json" ? globalThis.it.skip : globalThis.it;
-        it(`test ${formatterName}`, async function () {
+        it(`test ${formatterName}`, async (t) => {
             const fixtureDir = snapshotsDir;
             const formatter = await loadFormatter({
                 color: false,
@@ -41,7 +41,7 @@ describe("@secretlint/formatter", function () {
             // UPDATE_SNAPSHOT=1 npm test
             if (!fs.existsSync(expectedFilePath) || process.env.UPDATE_SNAPSHOT) {
                 fs.writeFileSync(expectedFilePath, actual);
-                this.skip(); // skip when updating snapshots
+                t.skip(); // skip when updating snapshots
                 return;
             }
             // compare input and output

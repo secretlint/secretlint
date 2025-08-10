@@ -15,6 +15,7 @@
       "esnext",
       "dom"
     ],
+    "types": ["vitest/globals"],
     /* Strict Type-Checking Options */
     "strict": true,
     /* Additional Checks */

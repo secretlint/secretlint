@@ -23,12 +23,12 @@ const createSnapshotReplacer = () => {
     };
 };
 
-describe("@secretlint/source-creator", function () {
+describe("@secretlint/source-creator", () => {
     fs.readdirSync(fixturesDir, { withFileTypes: true })
         .filter((dirent) => dirent.isDirectory())
         .map((dirent) => {
             const normalizedTestName = dirent.name;
-            it(`test ${normalizedTestName}`, async function () {
+            it(`test ${normalizedTestName}`, async (t) => {
                 const fixtureDir = path.join(fixturesDir, normalizedTestName);
                 const actualFilePath = fs.readdirSync(fixtureDir).find((filePath) => {
                     return filePath.startsWith("input");
@@ -42,7 +42,7 @@ describe("@secretlint/source-creator", function () {
                 // UPDATE_SNAPSHOT=1 npm test
                 if (!fs.existsSync(expectedFilePath) || process.env.UPDATE_SNAPSHOT) {
                     fs.writeFileSync(expectedFilePath, JSON.stringify(actual, createSnapshotReplacer(), 4));
-                    this.skip(); // skip when updating snapshots
+                    t.skip(); // skip when updating snapshots
                     return;
                 }
                 // compare input and output

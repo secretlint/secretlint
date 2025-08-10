@@ -47,7 +47,7 @@
     "prepublishOnly": "npm run clean && npm run build",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
-    "test": "mocha",
+    "test": "vitest run",
     "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
     "watch": "tsc --build --watch"
   },
@@ -65,13 +65,11 @@
     "rc-config-loader": "^4.1.3"
   },
   "devDependencies": {
-    "@types/debug": "^4.1.12",
     "@secretlint/secretlint-rule-internal-test-cjs": "workspace:*",
     "@secretlint/secretlint-rule-internal-test-esm": "workspace:*",
-    "@types/mocha": "^10.0.10",
+    "@types/debug": "^4.1.12",
     "@types/node": "^24.1.0",
     "create-validator-ts": "^6.0.1",
-    "mocha": "^11.7.1",
     "prettier": "^2.8.8",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"

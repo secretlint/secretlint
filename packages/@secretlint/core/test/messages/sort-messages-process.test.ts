@@ -3,28 +3,28 @@ import * as assert from "node:assert";
 import { sortMessagesByLocation } from "../../src/messages/sort-messages-process.js";
 import { createMessageFromRange } from "./create-messages-utils.js";
 
-describe("sort-message", function () {
-    context("when empty array", function () {
-        it("should return empty array", function () {
+describe("sort-message", () => {
+    describe("when empty array", function () {
+        it("should return empty array", () => {
             assert.strictEqual(sortMessagesByLocation([]).length, 0);
         });
     });
-    context("when reverse line", function () {
-        it("should sort by range", function () {
+    describe("when reverse line", function () {
+        it("should sort by range", () => {
             const message = [createMessageFromRange({ range: [0, 1] }), createMessageFromRange({ range: [2, 3] })];
             const expected = [createMessageFromRange({ range: [0, 1] }), createMessageFromRange({ range: [2, 3] })];
             assert.deepStrictEqual(sortMessagesByLocation(message), expected);
         });
     });
-    context("when reverse column", function () {
-        it("should sort by range", function () {
+    describe("when reverse column", function () {
+        it("should sort by range", () => {
             const message = [createMessageFromRange({ range: [2, 3] }), createMessageFromRange({ range: [0, 1] })];
             const expected = [createMessageFromRange({ range: [0, 1] }), createMessageFromRange({ range: [2, 3] })];
             assert.deepStrictEqual(sortMessagesByLocation(message), expected);
         });
     });
-    context("when reverse both", function () {
-        it("should sort by range", function () {
+    describe("when reverse both", function () {
+        it("should sort by range", () => {
             const message = [
                 createMessageFromRange({ range: [3, 4] }),
                 createMessageFromRange({ range: [0, 1] }),
@@ -38,8 +38,8 @@ describe("sort-message", function () {
             assert.deepStrictEqual(sortMessagesByLocation(message), expected);
         });
     });
-    context("when same start index", function () {
-        it("should sort by end index", function () {
+    describe("when same start index", function () {
+        it("should sort by end index", () => {
             const message = [
                 createMessageFromRange({ range: [0, 4] }),
                 createMessageFromRange({ range: [0, 1] }),

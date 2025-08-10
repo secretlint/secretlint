@@ -3,9 +3,9 @@ import { filterIgnoredMessages } from "../../src/messages/filter-ignored-process
 import * as assert from "node:assert";
 import { createIgnoredMessageFromRange, createMessageFromRange } from "./create-messages-utils.js";
 
-describe("message-filter", function () {
-    context("when pass empty messages", function () {
-        it("should return empty messages", function () {
+describe("message-filter", () => {
+    describe("when pass empty messages", function () {
+        it("should return empty messages", () => {
             assert.equal(
                 filterIgnoredMessages({
                     ignoredMessages: [],
@@ -15,8 +15,8 @@ describe("message-filter", function () {
             );
         });
     });
-    context("when only lint messages", function () {
-        it("should not change messages", function () {
+    describe("when only lint messages", function () {
+        it("should not change messages", () => {
             const messages = [createMessageFromRange({ range: [0, 1] })];
             const actual = {
                 reportedMessages: messages,
@@ -25,7 +25,7 @@ describe("message-filter", function () {
             assert.deepStrictEqual(filterIgnoredMessages(actual), messages);
         });
     });
-    context("when contain ignore messages", function () {
+    describe("when contain ignore messages", function () {
         it("should not filtered, if index < ignore's range start ", function () {
             const reportedMessages = [createMessageFromRange({ range: [10, 15] })];
             const ignoredMessaged = [createIgnoredMessageFromRange([0, 1])];
@@ -37,7 +37,7 @@ describe("message-filter", function () {
                 1
             );
         });
-        it("should filtered, if start <= index <= end ", function () {
+        it("should filtered, if start <= index <= end ", () => {
             const reportedMessages = [
                 createMessageFromRange({ range: [0, 1] }),
                 createMessageFromRange({ range: [1, 2] }),
@@ -53,7 +53,7 @@ describe("message-filter", function () {
                 [createMessageFromRange({ range: [2, 3] }), createMessageFromRange({ range: [3, 4] })]
             );
         });
-        it("should remove ignore message it-self", function () {
+        it("should remove ignore message it-self", () => {
             const reportedMessages = [
                 createMessageFromRange({ range: [0, 1] }),
                 createMessageFromRange({ range: [1, 100] }),
@@ -68,8 +68,8 @@ describe("message-filter", function () {
             );
         });
     });
-    context("when the message has targetRuleId", function () {
-        it("should only filter messages that are matched the ruleId", function () {
+    describe("when the message has targetRuleId", function () {
+        it("should only filter messages that are matched the ruleId", () => {
             const reportedMessages = [
                 createMessageFromRange({ range: [1, 10], ruleId: "a" }),
                 createMessageFromRange({ range: [1, 10], ruleId: "b" }),

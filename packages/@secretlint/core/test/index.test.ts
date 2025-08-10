@@ -4,7 +4,7 @@ import { SecretLintRawSource, SecretLintRuleCreator, SecretLintSourceCode } from
 import { creator as example } from "./fixtures/secretlint-rule-example.js";
 import { assertJsonEqual } from "assert-json-equal";
 
-describe("lintSource", function () {
+describe("lintSource", () => {
     it("should lint source with rules", async () => {
         const source: SecretLintRawSource = {
             content: "THIS IS SECRET SOURCE",
