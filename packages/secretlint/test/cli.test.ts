@@ -54,11 +54,7 @@ describe("cli snapshot testing", () => {
         assert.match(actual.stdout, /^[\d.]+$/);
     });
     fs.readdirSync(SNAPSHOT_DIR).map((caseName) => {
-        // Skip node_modules test in CI due to module resolution issues with pnpm
-        const shouldSkip = process.env.CI && caseName === "node_modules-is-ignored-by-default";
-        const testFn = shouldSkip ? it.skip : it;
-
-        testFn(`test ${caseName}`, async () => {
+        it(`test ${caseName}`, async () => {
             const fixtureDir = path.join(SNAPSHOT_DIR, caseName);
             // url join input.txt
             const actualFilePath = path.join(fixtureDir, "input.txt");
