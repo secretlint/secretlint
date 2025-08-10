@@ -283,11 +283,14 @@ New rules follow a two-stage deployment process:
 
 First, add your rule to [secretlint-rule-preset-canary](./packages/@secretlint/secretlint-rule-preset-canary):
 
-1. Add the rule package to devDependencies (from project root):
-   ```sh
-   # From any directory in the project
-   pnpm --filter "@secretlint/secretlint-rule-preset-canary" add -D @secretlint/secretlint-rule-your-rule
+1. Add the rule package to devDependencies in `packages/@secretlint/secretlint-rule-preset-canary/package.json`:
+   ```json
+   "devDependencies": {
+     // ... existing dependencies
+     "@secretlint/secretlint-rule-your-rule": "workspace:*"
+   }
    ```
+   Then run `pnpm install` to update dependencies.
 
 2. Import and add the rule to `packages/@secretlint/secretlint-rule-preset-canary/src/index.ts`:
    ```typescript
