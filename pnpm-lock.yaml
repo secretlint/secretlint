@@ -17,9 +17,6 @@ importers:
       '@lerna-lite/version':
         specifier: ^4.6.2
         version: 4.7.0(@lerna-lite/publish@4.7.0(@types/node@24.2.1)(conventional-commits-filter@5.0.0))(@types/node@24.2.1)(conventional-commits-filter@5.0.0)
-      globby:
-        specifier: ^14.1.0
-        version: 14.1.0
       lint-staged:
         specifier: ^16.1.2
         version: 16.1.5
