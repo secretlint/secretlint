@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-1password",
-  "version": "11.0.0",
+  "version": "11.0.1",
   "description": "A secretlint rule for 1password",
   "keywords": [
     "secretlint",

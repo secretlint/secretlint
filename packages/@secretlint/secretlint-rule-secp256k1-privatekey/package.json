@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-secp256k1-privatekey",
-  "version": "11.0.0",
+  "version": "11.0.1",
   "description": "A secretlint rule that checks for secp256k1 private keys.",
   "keywords": [
     "secretlint",
