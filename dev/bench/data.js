@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1754806831610,
+  "lastUpdate": 1754825892510,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -40696,6 +40696,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±1.10%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "65bd57172eff88737872561de762c05dece88b88",
+          "message": "chore: migrate from Mocha to Vitest (#1152)\n\n* chore: migrate from Mocha to Vitest\n\nThis PR migrates the test runner from Mocha + ts-node to Vitest for better performance and ESM support.\n\n## Changes\n\n- Add Vitest as dev dependency at root level\n- Create vitest.config.ts for root and individual packages\n- Update all package.json test scripts from `mocha` to `vitest run`\n- Fix updateSnapshot scripts to use `UPDATE_SNAPSHOT=1 vitest run` instead of `vitest run --update`\n- Remove mocha, @types/mocha dependencies from all packages\n- Remove all .mocharc.json configuration files\n- Migrate test files:\n  - Remove mocha imports (using Vitest globals)\n  - Convert `function()` to arrow functions `() =>`\n  - Replace `context()` with `describe()`\n  - Fix template literals in test names\n\n## Benefits\n\n- Faster test execution\n- Better ESM support without ts-node\n- Built-in TypeScript support\n- Improved watch mode\n- Better snapshot testing\n\n## Test Status\n\nMost packages pass all tests. There is one existing test failure in @secretlint/config-loader that is unrelated to this migration (reference equality issue).\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* fix: use Vitest's it.skip instead of this.skip()\n\n- Replace this.skip() with conditional it.skip for CI environment\n- Fix template literal in test name\n- Remove unnecessary return statement after skip\n\n* remove\n\n* fix: expand vitest include patterns to catch more test file naming conventions\n\n- Add support for *-test.ts, *-spec.ts, test-*.ts, spec-*.ts patterns\n- Exclude type test files (*.type-test.ts) that use tsd\n- Exclude test helper files like test-formatter.ts\n- Ensure no test files are missed due to naming conventions\n\n* fix\n\n* Update scripts/create-vitest-configs.js+1\n\n* Update package.json+1\n\n* fix test\n\n* fix: update migration scripts and fix this.skip() usage\n\n- Replace globby with native node:fs/promises glob API\n- Fix this.skip() to t.skip() with proper test context parameter\n- Add template literal conversion for test names\n- Remove deprecated vitest.workspace.ts in favor of test.projects\n- Update tsconfig with vitest/globals types\n- Fix updateSnapshot script detection pattern\n\n* fix\n\n* update\n\n* add targt\n\n* update snapshot\n\n* fix\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2025-08-10T11:36:46Z",
+          "tree_id": "a4bc86429657c82c88a6172370356f1b3c8141be",
+          "url": "https://github.com/secretlint/secretlint/commit/65bd57172eff88737872561de762c05dece88b88"
+        },
+        "date": 1754825890619,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.57,
+            "range": "±1.77%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±1.72%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
