@@ -3,7 +3,7 @@ import { runSecretLint, SecretLintOptions } from "./index.js";
 import { runConfigCreator } from "./create-secretlintrc.js";
 import { secretLintProfiler } from "@secretlint/profiler";
 import { getFormatterList } from "@secretlint/formatter";
-import { getPackageJson } from "@secretlint/resolver";
+import { getVersion } from "./version.js";
 import debug0 from "debug";
 import { text } from "node:stream/consumers";
 
@@ -201,10 +201,10 @@ export const run = async (
         };
     }
     if (flags.version) {
-        const packageJson = getPackageJson(import.meta.url);
+        const version = getVersion();
         return {
             exitStatus: 0,
-            stdout: packageJson?.version ?? "",
+            stdout: version ?? "",
             stderr: null,
         };
     }
