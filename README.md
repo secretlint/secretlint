@@ -332,12 +332,16 @@ Secretlint rules has been implemented as separated modules.
 - [@secretlint/secretlint-rule-sendgrid](./packages/%40secretlint/secretlint-rule-sendgrid)
 - [@secretlint/secretlint-rule-shopify](./packages/%40secretlint/secretlint-rule-shopify)
 - [@secretlint/secretlint-rule-openai](./packages/%40secretlint/secretlint-rule-openai)
+- [@secretlint/secretlint-rule-anthropic](./packages/%40secretlint/secretlint-rule-anthropic)
 - [@secretlint/secretlint-rule-linear](./packages/%40secretlint/secretlint-rule-linear)
+- [@secretlint/secretlint-rule-1password](./packages/%40secretlint/secretlint-rule-1password)
+- [@secretlint/secretlint-rule-database-connection-string](./packages/%40secretlint/secretlint-rule-database-connection-string)
 - [@secretlint/secretlint-rule-secp256k1-privatekey](./packages/@secretlint/secretlint-rule-secp256k1-privatekey)
 - [@secretlint/secretlint-rule-no-k8s-kind-secret](./packages/@secretlint/secretlint-rule-no-k8s-kind-secret)
 - [@secretlint/secretlint-rule-pattern](./packages/@secretlint/secretlint-rule-pattern)
 - [@secretlint/secretlint-rule-no-homedir](./packages/@secretlint/secretlint-rule-no-homedir)
 - [@secretlint/secretlint-rule-no-dotenv](./packages/%40secretlint/secretlint-rule-no-dotenv)
+- [@secretlint/secretlint-rule-filter-comments](./packages/%40secretlint/secretlint-rule-filter-comments)
 
 
 Also, Secretlint provides rule preset that includes recommended rule set.
