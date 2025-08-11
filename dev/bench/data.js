@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1754888343013,
+  "lastUpdate": 1754888678443,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -41038,6 +41038,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±0.67%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7c3a8cc42817bc378eeaa86d4fc44f3b785ef878",
+          "message": "docs(contributing): add pre-release documentation checklist (#1162)\n\nAdd a pre-release checklist to ensure documentation is updated when releasing new packages, especially for preset packages. This helps maintainers remember to update relevant documentation files before creating releases.\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2025-08-11T05:03:12Z",
+          "tree_id": "f2e11b90db12d17e6b14c9b632952f685fe1a319",
+          "url": "https://github.com/secretlint/secretlint/commit/7c3a8cc42817bc378eeaa86d4fc44f3b785ef878"
+        },
+        "date": 1754888676581,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.68,
+            "range": "±1.04%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±0.65%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
