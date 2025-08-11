@@ -26,8 +26,7 @@ This binary includes the following rules:
 
 ## CURRENT PROBLEM
 
-- output binary does not be code-sign.
-- `--version` does not work because `package.json` is not included in the binary.
+- Output binaries are not code-signed.
 
 ## Usage
 
