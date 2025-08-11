@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1754888678443,
+  "lastUpdate": 1754889262465,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -41076,6 +41076,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±0.65%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b69d46e5ec5e3c7b94dc70726c12495e7c174f55",
+          "message": "docs(readme): add missing rules from preset-recommend (#1163)\n\n* docs(readme): add missing rules from preset-recommend\n\nAdd documentation for rules that are included in @secretlint/secretlint-rule-preset-recommend but were missing from the README:\n- @secretlint/secretlint-rule-anthropic: Detects Anthropic/Claude API keys\n- @secretlint/secretlint-rule-database-connection-string: Detects database credentials in connection strings\n- @secretlint/secretlint-rule-1password: Detects 1Password secrets\n- @secretlint/secretlint-rule-filter-comments: Supports ignoring secrets with comments\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* docs(preset-recommend): update README with complete list of included rules\n\nAdd missing rules to the preset-recommend README:\n- @secretlint/secretlint-rule-openai\n- @secretlint/secretlint-rule-anthropic\n- @secretlint/secretlint-rule-database-connection-string\n\nAlso reordered the list to match the actual order in src/index.ts for consistency.\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2025-08-11T14:12:54+09:00",
+          "tree_id": "e28209cbf58b88a7e8520154ff429c7c3ba24539",
+          "url": "https://github.com/secretlint/secretlint/commit/b69d46e5ec5e3c7b94dc70726c12495e7c174f55"
+        },
+        "date": 1754889260301,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.64,
+            "range": "±0.66%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±1.80%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
