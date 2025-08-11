@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1754857739700,
+  "lastUpdate": 1754880413635,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -40962,6 +40962,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±0.25%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "d8f76eeda04ee4e8f3c7064b139f197b3510add2",
+          "message": "test: update valid test snapshots for database connection string rule (#1160)\n\n* test: update valid test snapshots for database connection string rule\n\n- Update input.txt test file with additional test cases\n- Update corresponding output.json snapshot file\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* test: add comment explaining bash default value pattern\n\nAdd explanatory comment for the bash parameter expansion pattern\nusing ${VAR:-default} syntax in test cases\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* test: update snapshot with bash comment\n\nUpdate output.json snapshot to include the bash default value pattern comment\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2025-08-11T02:45:19Z",
+          "tree_id": "5185ebcb4fa8248d0e5aa6f9913c807c3759c39d",
+          "url": "https://github.com/secretlint/secretlint/commit/d8f76eeda04ee4e8f3c7064b139f197b3510add2"
+        },
+        "date": 1754880411325,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.53,
+            "range": "±0.56%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.56,
+            "range": "±1.07%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
