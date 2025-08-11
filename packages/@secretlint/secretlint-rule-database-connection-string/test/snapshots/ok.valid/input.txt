@@ -13,3 +13,6 @@ const PG_NO_AUTH = "postgresql://db.server.com:5432/production";
 # Connection strings with obvious placeholders
 const CONFIG_EXAMPLE = "mongodb://YOUR_USERNAME:YOUR_PASSWORD@cluster.mongodb.net/test";
 const DOC_EXAMPLE = "mysql://admin:REPLACE_WITH_PASSWORD@mysql.server.com:3306/database";
+
+# Bash default value pattern (${VAR:-default})
+postgres="postgres://postgres@${POSTGRES_HOST:-localhost}:${POSTGRES_PORT:-5432}/$dbname?sslmode=disable"
