@@ -1,6 +1,5 @@
 import "./secretlint-resolver-hooks.js"; // hooks for secretlint
 import { cli, run } from "secretlint/cli";
-import { getVersion } from "secretlint/version";
 import * as fs from "node:fs";
 import * as path from "node:path";
 // --init override
@@ -28,8 +27,9 @@ if (cli.flags.init) {
 }
 // Handle --version flag specifically for binary
 if (cli.flags.version) {
-    const version = getVersion();
-    console.log(version || "unknown");
+    // Version is set via environment variable during build
+    const version = process.env.SECRETLINT_VERSION || "unknown";
+    console.log(version);
     process.exit(0);
 }
 // secretlint CLI wrapper

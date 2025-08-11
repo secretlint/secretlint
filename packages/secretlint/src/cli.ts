@@ -3,7 +3,7 @@ import { runSecretLint, SecretLintOptions } from "./index.js";
 import { runConfigCreator } from "./create-secretlintrc.js";
 import { secretLintProfiler } from "@secretlint/profiler";
 import { getFormatterList } from "@secretlint/formatter";
-import { getVersion } from "./version.js";
+import { getPackageJson } from "@secretlint/resolver";
 import debug0 from "debug";
 import { text } from "node:stream/consumers";
 
@@ -201,10 +201,11 @@ export const run = async (
         };
     }
     if (flags.version) {
-        const version = getVersion();
+        // For binary builds, version is set via environment variable
+        const version = process.env.SECRETLINT_VERSION || getPackageJson(import.meta.url)?.version;
         return {
             exitStatus: 0,
-            stdout: version ?? "",
+            stdout: version ?? "unknown",
             stderr: null,
         };
     }

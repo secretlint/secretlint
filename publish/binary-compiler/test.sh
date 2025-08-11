@@ -29,6 +29,14 @@ cd ${TMP_DIR}
 ./secretlint --init
 # Run the dist binary
 ./secretlint --version
+# Test that version matches expected version
+VERSION_OUTPUT=$(./secretlint --version)
+if [ "$VERSION_OUTPUT" = "$CURRENT_VERSION" ]; then
+    echo "✅ Version check passed: $VERSION_OUTPUT"
+else
+    echo "❌ Version mismatch - expected: $CURRENT_VERSION, got: $VERSION_OUTPUT"
+    exit 1
+fi
 ./secretlint --help
 # run "**/*" test
 ./secretlint "**/*"
