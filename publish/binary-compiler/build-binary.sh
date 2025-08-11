@@ -14,13 +14,15 @@ binaryName="secretlint"
 secretlintVersion=$(jq -r .version ../../lerna.json)
 platforms=("linux-x64"  "linux-arm64" "windows-x64" "darwin-x64" "darwin-arm64")
 rm -rf $distDir
+
 # read lerna.json's version
 for ((i=0; i<${#platforms[@]}; ++i));
 do
   echo "Building for ${platforms[$i]}"
   # secretlint-{version}-{platform}
   outputFilePath="${distDir}/${binaryName}-${secretlintVersion}-${platforms[$i]}"
-  bun build --compile --target "bun-${platforms[$i]}" --outfile "$outputFilePath" src/entry.ts
+  # Use --env=inline to inline all environment variables at compile time
+  SECRETLINT_VERSION="$secretlintVersion" bun build --compile --target "bun-${platforms[$i]}" --env=inline --outfile "$outputFilePath" src/entry.ts
 done
 
 # clean up ".*.bun-build" file
