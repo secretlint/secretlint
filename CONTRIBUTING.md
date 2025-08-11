@@ -369,6 +369,22 @@ Secretlint has a continuous benchmark:
 
 A Maintainer release new version of secretlint by following way.
 
+### Pre-Release Checklist
+
+Before creating a release, ensure documentation is up-to-date:
+
+1. **For new packages/rules**: Check that they are documented in:
+   - Main README.md (if it's a standalone rule or important package)
+   - docs/configuration.md (if it affects configuration)
+   - CONTRIBUTING.md (if it's a preset that affects the rule addition flow)
+
+2. **For preset packages** (`@secretlint/secretlint-rule-preset-*`):
+   - Ensure the preset is listed in README.md
+   - Update configuration examples if needed
+   - Document any breaking changes in the preset
+
+### Release Process
+
 1. Create Release PR via GitHub Actions: <https://github.com/secretlint/secretlint/actions/workflows/create-release-pr.yml>
    - Run workflow with `version` input
       - You can select new version with semver(patch,minor,major)
@@ -378,6 +394,7 @@ A Maintainer release new version of secretlint by following way.
    - e.g. https://github.com/azu/monorepo-github-releases/pull/18
 3. Review the Release PR
    - You can modify PR body for changelog
+   - Verify that documentation mentions all new packages/features
 4. Merge the Release PR
 5. [CI] Publish new version to npm and GitHub Release
    - The release note content is same to PR body
