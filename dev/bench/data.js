@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1754889262465,
+  "lastUpdate": 1754893351799,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -41114,6 +41114,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±1.80%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "60d17d315af98438194d53266a86b604eddd63fe",
+          "message": "fix(binary): resolve --version issue in Bun compiled binaries (#1164)\n\n* fix: resolve --version issue in Bun compiled binaries\n\nThe --version command was not working in Bun compiled binaries because\npackage.json was not included in the bundle. This fix implements multiple\nstrategies to retrieve the version:\n\n1. Environment variable (SECRETLINT_VERSION) - highest priority for testing\n2. Embedded package.json via import - for Bun compiled binaries\n3. Direct file read from known locations\n4. Original package resolver as fallback\n\nAdded:\n- New version.ts module with multi-strategy version resolution\n- Build script for creating Bun binaries with proper version handling\n- Tests for version retrieval functionality\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* feat: integrate version fix with binary-compiler\n\n- Added version module to package.json exports\n- Updated binary-compiler entry.ts to use getVersion()\n- Modified build-binary.sh to set SECRETLINT_VERSION environment variable\n- Removed TODO comment as --version now works with binaries\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* refactor: simplify version handling based on review feedback\n\n- Removed unnecessary version.ts and related files\n- Use environment variable directly in binary-compiler\n- Added version verification to test.sh\n- Simplified cli.ts to use env var or fallback to getPackageJson\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* fix: embed version at build time for binary compilation\n\n- Generate embedded-version.ts with actual version at build time\n- Import and use EMBEDDED_VERSION in binary entry point\n- Add embedded-version.ts to .gitignore as it's generated\n\nThis ensures the version is correctly embedded in the compiled binary.\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* refactor: use Bun macro for version embedding in binary\n\n- Remove complex embedded-version.ts generation\n- Use Bun.macro() to read version at compile time from lerna.json\n- Revert cli.ts changes as version handling is now only in binary-compiler\n- Simplify build process by removing file generation step\n\nThis approach is cleaner and uses Bun's built-in macro feature to embed\nthe version directly at compile time.\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* fix(binary-compiler): use --env=inline to embed version in binaries\n\n- Remove macro-based version embedding approach\n- Use Bun's --env=inline flag to inline SECRETLINT_VERSION at compile time\n- Simplify build process by removing version-macro.ts generation\n- Add version verification in test.sh\n\nThis fixes the --version command in compiled binaries by properly embedding\nthe version at compile time instead of relying on runtime package.json access.\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* docs(binary-compiler): update README after fixing --version issue\n\n- Remove fixed --version problem from CURRENT PROBLEM section\n- Fix grammar for code-signing issue description\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2025-08-11T15:21:03+09:00",
+          "tree_id": "e38a9928aea20e2938bb298b5ac86e28492a6f5c",
+          "url": "https://github.com/secretlint/secretlint/commit/60d17d315af98438194d53266a86b604eddd63fe"
+        },
+        "date": 1754893349851,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.53,
+            "range": "±1.72%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±0.98%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
