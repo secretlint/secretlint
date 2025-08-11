@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/formatter",
-  "version": "11.0.1",
+  "version": "11.0.2",
   "description": "A formatter collection for Secretlint.",
   "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/formatter/",
   "bugs": {
