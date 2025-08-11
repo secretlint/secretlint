@@ -2,6 +2,7 @@ import "./secretlint-resolver-hooks.js"; // hooks for secretlint
 import { cli, run } from "secretlint/cli";
 import * as fs from "node:fs";
 import * as path from "node:path";
+
 // --init override
 if (cli.flags.init) {
     // write .secretlintrc.json
@@ -25,8 +26,13 @@ if (cli.flags.init) {
     console.log("Create .secretlintrc.json");
     process.exit(0);
 }
+// Handle --version flag specifically for binary
+if (cli.flags.version) {
+    // Version is embedded at compile time via environment variable inlining
+    console.log(process.env.SECRETLINT_VERSION || "unknown");
+    process.exit(0);
+}
 // secretlint CLI wrapper
-// TODO: --version does not work because package.json is not bundled
 run(cli.input, cli.flags).then(
     ({ exitStatus, stderr, stdout }) => {
         if (stdout) {
