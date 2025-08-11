@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/example-quick-start",
-    "version": "11.0.1",
+    "version": "11.0.2",
     "private": true,
     "description": "",
     "homepage": "https://github.com/secretlint/secretlint/tree/master/examples/quick-start/",
