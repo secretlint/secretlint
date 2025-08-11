@@ -201,11 +201,10 @@ export const run = async (
         };
     }
     if (flags.version) {
-        // For binary builds, version is set via environment variable
-        const version = process.env.SECRETLINT_VERSION || getPackageJson(import.meta.url)?.version;
+        const packageJson = getPackageJson(import.meta.url);
         return {
             exitStatus: 0,
-            stdout: version ?? "unknown",
+            stdout: packageJson?.version ?? "",
             stderr: null,
         };
     }

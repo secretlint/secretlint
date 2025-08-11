@@ -14,11 +14,6 @@ binaryName="secretlint"
 secretlintVersion=$(jq -r .version ../../lerna.json)
 platforms=("linux-x64"  "linux-arm64" "windows-x64" "darwin-x64" "darwin-arm64")
 rm -rf $distDir
-
-# Generate embedded-version.ts with actual version
-echo "// This file is generated at build time" > src/embedded-version.ts
-echo "export const EMBEDDED_VERSION = \"$secretlintVersion\";" >> src/embedded-version.ts
-
 # read lerna.json's version
 for ((i=0; i<${#platforms[@]}; ++i));
 do
