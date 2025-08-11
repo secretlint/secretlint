@@ -64,17 +64,20 @@ If you want to ignore `"AWSAccountID"` and `"AWSAccessKeyID"` of `"@secretlint/s
 
 ## Rules
 
-- [@secretlint/secretlint-rule-npm](https://www.npmjs.com/package/@secretlint/secretlint-rule-npm)
 - [@secretlint/secretlint-rule-aws](https://www.npmjs.com/package/@secretlint/secretlint-rule-aws)
 - [@secretlint/secretlint-rule-gcp](https://www.npmjs.com/package/@secretlint/secretlint-rule-gcp)
 - [@secretlint/secretlint-rule-privatekey](https://www.npmjs.com/package/@secretlint/secretlint-rule-privatekey)
+- [@secretlint/secretlint-rule-npm](https://www.npmjs.com/package/@secretlint/secretlint-rule-npm)
 - [@secretlint/secretlint-rule-basicauth](https://www.npmjs.com/package/@secretlint/secretlint-rule-basicauth)
 - [@secretlint/secretlint-rule-slack](https://www.npmjs.com/package/@secretlint/secretlint-rule-slack)
 - [@secretlint/secretlint-rule-sendgrid](https://www.npmjs.com/package/@secretlint/secretlint-rule-sendgrid)
 - [@secretlint/secretlint-rule-shopify](https://www.npmjs.com/package/@secretlint/secretlint-rule-shopify)
 - [@secretlint/secretlint-rule-github](https://www.npmjs.com/package/@secretlint/secretlint-rule-github)
-- [@secretlint/secretlint-rule-1password](https://www.npmjs.com/package/@secretlint/secretlint-rule-1password)
+- [@secretlint/secretlint-rule-openai](https://www.npmjs.com/package/@secretlint/secretlint-rule-openai)
+- [@secretlint/secretlint-rule-anthropic](https://www.npmjs.com/package/@secretlint/secretlint-rule-anthropic)
 - [@secretlint/secretlint-rule-linear](https://www.npmjs.com/package/@secretlint/secretlint-rule-linear)
+- [@secretlint/secretlint-rule-1password](https://www.npmjs.com/package/@secretlint/secretlint-rule-1password)
+- [@secretlint/secretlint-rule-database-connection-string](https://www.npmjs.com/package/@secretlint/secretlint-rule-database-connection-string)
 - [@secretlint/secretlint-rule-filter-comments](https://www.npmjs.com/package/@secretlint/secretlint-rule-filter-comments)
   - `secretlint-disable` directives. For more details, see <https://github.com/secretlint/secretlint/blob/master/docs/configuration.md#ignoring-error-by-comments>
 
