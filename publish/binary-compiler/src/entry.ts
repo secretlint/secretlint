@@ -1,5 +1,6 @@
 import "./secretlint-resolver-hooks.js"; // hooks for secretlint
 import { cli, run } from "secretlint/cli";
+import { EMBEDDED_VERSION } from "./embedded-version.js";
 import * as fs from "node:fs";
 import * as path from "node:path";
 // --init override
@@ -27,9 +28,8 @@ if (cli.flags.init) {
 }
 // Handle --version flag specifically for binary
 if (cli.flags.version) {
-    // Version is set via environment variable during build
-    const version = process.env.SECRETLINT_VERSION || "unknown";
-    console.log(version);
+    // Version is embedded at build time
+    console.log(EMBEDDED_VERSION);
     process.exit(0);
 }
 // secretlint CLI wrapper
