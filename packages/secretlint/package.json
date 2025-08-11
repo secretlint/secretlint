@@ -32,6 +32,13 @@
       },
       "default": "./module/cli.js"
     },
+    "./version": {
+      "import": {
+        "types": "./module/version.d.ts",
+        "default": "./module/version.js"
+      },
+      "default": "./module/version.js"
+    },
     "./package.json": "./package.json"
   },
   "main": "./module/index.js",
