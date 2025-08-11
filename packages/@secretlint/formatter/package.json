@@ -59,7 +59,7 @@
     "@textlint/linter-formatter": "^15.2.1",
     "@textlint/module-interop": "^15.2.1",
     "@textlint/types": "^15.2.1",
-    "chalk": "^5.4.1",
+    "chalk": "^5.5.0",
     "debug": "^4.4.1",
     "pluralize": "^8.0.0",
     "strip-ansi": "^7.1.0",

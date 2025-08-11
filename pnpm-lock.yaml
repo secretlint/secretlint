@@ -186,7 +186,7 @@ importers:
         specifier: ^15.2.1
         version: 15.2.1
       chalk:
-        specifier: ^5.4.1
+        specifier: ^5.5.0
         version: 5.5.0
       debug:
         specifier: ^4.4.1
