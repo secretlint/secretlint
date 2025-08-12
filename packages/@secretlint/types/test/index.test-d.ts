@@ -1,4 +1,4 @@
-import { expectType } from "tsd";
+import { expectTypeOf } from "vitest";
 import type { SecretLintRuleContext, SecretLintRuleCreator, SecretLintSourceCode } from "../src/index.js";
 import type { SecretLintCreateRuleMessageTranslator } from "../src/SecretLintRuleTranslator.js";
 
@@ -7,7 +7,7 @@ declare var context: SecretLintRuleContext;
 declare var source: SecretLintSourceCode;
 const rule = creator.create(context, {});
 if (rule.file) {
-    expectType<void | Promise<void>>(rule.file(source));
+    expectTypeOf(rule.file(source)).toEqualTypeOf<void | Promise<void>>();
 }
 
 // translate

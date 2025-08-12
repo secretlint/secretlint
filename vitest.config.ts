@@ -16,7 +16,6 @@ export default defineConfig({
             "**/lib/**",
             "**/fixtures/**",
             "**/snapshots/**",
-            "**/*.type-test.ts", // Exclude type tests (using tsd)
             "**/test-formatter.ts" // Exclude test helper files
         ],
         globals: true,
