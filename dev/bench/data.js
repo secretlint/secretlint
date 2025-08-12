@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1755025831218,
+  "lastUpdate": 1755039338707,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -41266,6 +41266,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±1.41%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "19812c7c455737c122a654b99929f8ce6a542091",
+          "message": "refactor(types): migrate from tsd to vitest for type testing (#1169)\n\nReplace tsd with vitest for type checking to reduce tooling complexity.\n- Update type test file to use vitest's expectTypeOf API\n- Rename test file from .type-test.ts to .test-d.ts (vitest convention)\n- Add vitest.config.ts for @secretlint/types package\n- Remove exclusion of type tests from root vitest config\n- Update package.json to use vitest instead of tsd\n\nFixes #1168\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2025-08-13T07:54:10+09:00",
+          "tree_id": "91aba39d6e8c93fcaff1427b489ed5433f0f667a",
+          "url": "https://github.com/secretlint/secretlint/commit/19812c7c455737c122a654b99929f8ce6a542091"
+        },
+        "date": 1755039336309,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.85,
+            "range": "±0.92%",
+            "unit": "ops/sec",
+            "extra": "12 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.61,
+            "range": "±1.48%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
