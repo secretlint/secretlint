@@ -50,7 +50,7 @@
     "prepublishOnly": "npm run clean && npm run build",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "prepublish": "npm run --if-present build",
-    "test": "tsc -p ./tsconfig.test.json"
+    "test": "vitest run --typecheck"
   },
   "prettier": {
     "printWidth": 120,
@@ -61,7 +61,7 @@
     "@types/node": "^24.2.0",
     "prettier": "^2.8.8",
     "tsconfig-to-dual-package": "^1.2.0",
-    "tsd": "^0.33.0",
+    "vitest": "^2.1.8",
     "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   },
