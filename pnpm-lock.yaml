@@ -1183,7 +1183,7 @@ importers:
         specifier: ^5.8.3
         version: 5.9.2
       vitest:
-        specifier: ^2.1.8
+        specifier: ^2.1.9
         version: 2.1.9(@types/node@24.2.1)
 
   packages/secretlint:
