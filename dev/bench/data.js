@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1755039338707,
+  "lastUpdate": 1755057690084,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -41304,6 +41304,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.61,
             "range": "±1.48%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "8ec9dbdcc9b3cfe53d2f033f1d7604e54b65e0e9",
+          "message": "chore(deps): update dependency vitest to ^2.1.9 (#1170)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2025-08-13T04:00:01Z",
+          "tree_id": "b7c80007fe988bd5c54f006c898c618a17b2b91b",
+          "url": "https://github.com/secretlint/secretlint/commit/8ec9dbdcc9b3cfe53d2f033f1d7604e54b65e0e9"
+        },
+        "date": 1755057688103,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.63,
+            "range": "±0.97%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.56,
+            "range": "±2.31%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
