@@ -9,13 +9,13 @@ importers:
   .:
     devDependencies:
       '@lerna-lite/cli':
-        specifier: ^4.6.2
+        specifier: ^4.7.0
         version: 4.7.0(@lerna-lite/publish@4.7.0(@types/node@24.2.1)(conventional-commits-filter@5.0.0))(@lerna-lite/version@4.7.0(@lerna-lite/publish@4.7.0(@types/node@24.2.1)(conventional-commits-filter@5.0.0))(@types/node@24.2.1)(conventional-commits-filter@5.0.0))(@types/node@24.2.1)
       '@lerna-lite/publish':
-        specifier: ^4.6.2
+        specifier: ^4.7.0
         version: 4.7.0(@types/node@24.2.1)(conventional-commits-filter@5.0.0)
       '@lerna-lite/version':
-        specifier: ^4.6.2
+        specifier: ^4.7.0
         version: 4.7.0(@lerna-lite/publish@4.7.0(@types/node@24.2.1)(conventional-commits-filter@5.0.0))(@types/node@24.2.1)(conventional-commits-filter@5.0.0)
       lint-staged:
         specifier: ^16.1.4
