@@ -28,8 +28,8 @@ describe("@secretlint/formatter", () => {
     for (const formatter of formatters) {
         const formatterName = formatter.name;
         // TODO: skip json and table test if windows
-        const it = process.platform === "win32" && formatterName === "json" ? globalThis.it.skip : globalThis.it;
-        it(`test ${formatterName}`, async (t) => {
+        const it_ = process.platform === "win32" && formatterName === "json" ? it.skip : it;
+        it_(`test ${formatterName}`, async (t) => {
             const fixtureDir = snapshotsDir;
             const formatter = await loadFormatter({
                 color: false,

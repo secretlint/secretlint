@@ -53,7 +53,7 @@ export type SecretLintRuleCreator<Options = SecretLintRuleCreatorOptions> = {
 };
 export type SecretLintRuleReportHandler = {
     // TODO: pre-all
-    file?(source: SecretLintSourceCode): void | Promise<any>;
-    identifier?(node: SecretLintSourceIdentifierNode, source: SecretLintSourceCode): void | Promise<any>;
+    file?(source: SecretLintSourceCode): void | Promise<void>;
+    identifier?(node: SecretLintSourceIdentifierNode, source: SecretLintSourceCode): void | Promise<void>;
     // TODO: post-all
 };
