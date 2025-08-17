@@ -4,7 +4,7 @@ import { expect } from "vitest";
 import { fileURLToPath } from "node:url";
 import assert from "node:assert";
 import { SecretLintCoreConfigUnionRule } from "@secretlint/types";
-import { importSecretlintCreator, loadConfig } from "../src/index.js";
+import { loadConfig } from "../src/index.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const removeUndefined = (o: { [index: string]: any }) => {
