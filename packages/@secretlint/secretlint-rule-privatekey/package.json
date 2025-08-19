@@ -62,7 +62,7 @@
     "@secretlint/types": "workspace:*",
     "@types/node": "^24.2.1",
     "prettier": "^2.8.8",
-    "tsx": "^4.20.3",
+    "tsx": "^4.20.4",
     "typescript": "^5.8.3"
   },
   "engines": {
