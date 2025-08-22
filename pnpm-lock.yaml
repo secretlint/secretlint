@@ -10,13 +10,13 @@ importers:
     devDependencies:
       '@lerna-lite/cli':
         specifier: ^4.7.1
-        version: 4.7.2(@lerna-lite/publish@4.7.2(@types/node@24.2.1)(conventional-commits-filter@5.0.0))(@lerna-lite/version@4.7.2(@lerna-lite/publish@4.7.2(@types/node@24.2.1)(conventional-commits-filter@5.0.0))(@types/node@24.2.1)(conventional-commits-filter@5.0.0))(@types/node@24.2.1)
+        version: 4.7.2(@lerna-lite/publish@4.7.2(@types/node@24.3.0)(conventional-commits-filter@5.0.0))(@lerna-lite/version@4.7.2(@lerna-lite/publish@4.7.2(@types/node@24.3.0)(conventional-commits-filter@5.0.0))(@types/node@24.3.0)(conventional-commits-filter@5.0.0))(@types/node@24.3.0)
       '@lerna-lite/publish':
         specifier: ^4.7.1
-        version: 4.7.2(@types/node@24.2.1)(conventional-commits-filter@5.0.0)
+        version: 4.7.2(@types/node@24.3.0)(conventional-commits-filter@5.0.0)
       '@lerna-lite/version':
         specifier: ^4.7.1
-        version: 4.7.2(@lerna-lite/publish@4.7.2(@types/node@24.2.1)(conventional-commits-filter@5.0.0))(@types/node@24.2.1)(conventional-commits-filter@5.0.0)
+        version: 4.7.2(@lerna-lite/publish@4.7.2(@types/node@24.3.0)(conventional-commits-filter@5.0.0))(@types/node@24.3.0)(conventional-commits-filter@5.0.0)
       lint-staged:
         specifier: ^16.1.5
         version: 16.1.5
@@ -31,7 +31,7 @@ importers:
         version: 2.5.5
       vitest:
         specifier: ^3.2.4
-        version: 3.2.4(@types/debug@4.1.12)(@types/node@24.2.1)(jiti@1.21.7)(tsx@4.20.4)(yaml@2.8.1)
+        version: 3.2.4(@types/debug@4.1.12)(@types/node@24.3.0)(jiti@1.21.7)(tsx@4.20.4)(yaml@2.8.1)
 
   examples/benchmark:
     dependencies:
@@ -76,8 +76,8 @@ importers:
         version: link:../types
     devDependencies:
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -119,8 +119,8 @@ importers:
         specifier: ^4.1.12
         version: 4.1.12
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       create-validator-ts:
         specifier: ^6.0.1
         version: 6.0.1
@@ -153,8 +153,8 @@ importers:
         specifier: ^4.1.12
         version: 4.1.12
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       assert-json-equal:
         specifier: ^2.0.0
         version: 2.0.0
@@ -208,8 +208,8 @@ importers:
         specifier: ^4.1.12
         version: 4.1.12
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       '@types/pluralize':
         specifier: 0.0.33
         version: 0.0.33
@@ -236,8 +236,8 @@ importers:
         version: link:../types
     devDependencies:
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -282,8 +282,8 @@ importers:
         specifier: ^4.1.12
         version: 4.1.12
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -297,8 +297,8 @@ importers:
   packages/@secretlint/profiler:
     devDependencies:
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -319,8 +319,8 @@ importers:
         version: link:../../secretlint
     devDependencies:
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -331,8 +331,8 @@ importers:
   packages/@secretlint/resolver:
     devDependencies:
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -353,8 +353,8 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       escape-string-regexp:
         specifier: ^5.0.0
         version: 5.0.0
@@ -381,8 +381,8 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -403,8 +403,8 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -428,8 +428,8 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -453,8 +453,8 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -478,8 +478,8 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -525,8 +525,8 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -550,8 +550,8 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -578,8 +578,8 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       '@types/node-forge':
         specifier: ^1.3.13
         version: 1.3.13
@@ -606,14 +606,14 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
       ts-node:
         specifier: ^10.9.2
-        version: 10.9.2(@types/node@24.2.1)(typescript@5.9.2)
+        version: 10.9.2(@types/node@24.3.0)(typescript@5.9.2)
       typescript:
         specifier: ^5.8.3
         version: 5.9.2
@@ -648,8 +648,8 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -670,8 +670,8 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -698,8 +698,8 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -726,8 +726,8 @@ importers:
         specifier: ^4.0.9
         version: 4.0.9
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -751,8 +751,8 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -773,8 +773,8 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -798,8 +798,8 @@ importers:
         version: 2.0.2
     devDependencies:
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -873,8 +873,8 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -960,8 +960,8 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -994,8 +994,8 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -1028,8 +1028,8 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -1053,8 +1053,8 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -1078,8 +1078,8 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -1103,8 +1103,8 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -1125,8 +1125,8 @@ importers:
         version: 9.5.0
     devDependencies:
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -1153,8 +1153,8 @@ importers:
         version: link:../types
     devDependencies:
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -1168,8 +1168,8 @@ importers:
   packages/@secretlint/types:
     devDependencies:
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -1184,7 +1184,7 @@ importers:
         version: 5.9.2
       vitest:
         specifier: ^2.1.9
-        version: 2.1.9(@types/node@24.2.1)
+        version: 2.1.9(@types/node@24.3.0)
 
   packages/secretlint:
     dependencies:
@@ -1226,8 +1226,8 @@ importers:
         specifier: ^4.1.12
         version: 4.1.12
       '@types/node':
-        specifier: ^24.2.1
-        version: 24.2.1
+        specifier: ^24.3.0
+        version: 24.3.0
       prettier:
         specifier: ^2.8.8
         version: 2.8.8
@@ -2133,8 +2133,8 @@ packages:
   '@types/node@22.17.1':
     resolution: {integrity: sha512-y3tBaz+rjspDTylNjAX37jEC3TETEFGNJL6uQDxwF9/8GLLIjW1rvVHlynyuUKMnMr1Roq8jOv3vkopBjC4/VA==}
 
-  '@types/node@24.2.1':
-    resolution: {integrity: sha512-DRh5K+ka5eJic8CjH7td8QpYEV6Zo10gfRkjHCO3weqZHWDtAaSTFtl4+VMqOJ4N5jcuhZ9/l+yy8rVgw7BQeQ==}
+  '@types/node@24.3.0':
+    resolution: {integrity: sha512-aPTXCrfwnDLj4VvXrm+UUCQjNEvJgNA8s5F1cvwQU+3KNltTOkBm1j30uNLyqqPNe7gE3KFzImYoZEfLhp4Yow==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -4768,10 +4768,10 @@ snapshots:
     dependencies:
       resolve: 1.22.10
 
-  '@inquirer/core@10.1.15(@types/node@24.2.1)':
+  '@inquirer/core@10.1.15(@types/node@24.3.0)':
     dependencies:
       '@inquirer/figures': 1.0.13
-      '@inquirer/type': 3.0.8(@types/node@24.2.1)
+      '@inquirer/type': 3.0.8(@types/node@24.3.0)
       ansi-escapes: 4.3.2
       cli-width: 4.1.0
       mute-stream: 2.0.0
@@ -4779,38 +4779,38 @@ snapshots:
       wrap-ansi: 6.2.0
       yoctocolors-cjs: 2.1.2
     optionalDependencies:
-      '@types/node': 24.2.1
+      '@types/node': 24.3.0
 
-  '@inquirer/expand@4.0.17(@types/node@24.2.1)':
+  '@inquirer/expand@4.0.17(@types/node@24.3.0)':
     dependencies:
-      '@inquirer/core': 10.1.15(@types/node@24.2.1)
-      '@inquirer/type': 3.0.8(@types/node@24.2.1)
+      '@inquirer/core': 10.1.15(@types/node@24.3.0)
+      '@inquirer/type': 3.0.8(@types/node@24.3.0)
       yoctocolors-cjs: 2.1.2
     optionalDependencies:
-      '@types/node': 24.2.1
+      '@types/node': 24.3.0
 
   '@inquirer/figures@1.0.13': {}
 
-  '@inquirer/input@4.2.1(@types/node@24.2.1)':
+  '@inquirer/input@4.2.1(@types/node@24.3.0)':
     dependencies:
-      '@inquirer/core': 10.1.15(@types/node@24.2.1)
-      '@inquirer/type': 3.0.8(@types/node@24.2.1)
+      '@inquirer/core': 10.1.15(@types/node@24.3.0)
+      '@inquirer/type': 3.0.8(@types/node@24.3.0)
     optionalDependencies:
-      '@types/node': 24.2.1
+      '@types/node': 24.3.0
 
-  '@inquirer/select@4.3.1(@types/node@24.2.1)':
+  '@inquirer/select@4.3.1(@types/node@24.3.0)':
     dependencies:
-      '@inquirer/core': 10.1.15(@types/node@24.2.1)
+      '@inquirer/core': 10.1.15(@types/node@24.3.0)
       '@inquirer/figures': 1.0.13
-      '@inquirer/type': 3.0.8(@types/node@24.2.1)
+      '@inquirer/type': 3.0.8(@types/node@24.3.0)
       ansi-escapes: 4.3.2
       yoctocolors-cjs: 2.1.2
     optionalDependencies:
-      '@types/node': 24.2.1
+      '@types/node': 24.3.0
 
-  '@inquirer/type@3.0.8(@types/node@24.2.1)':
+  '@inquirer/type@3.0.8(@types/node@24.3.0)':
     optionalDependencies:
-      '@types/node': 24.2.1
+      '@types/node': 24.3.0
 
   '@isaacs/balanced-match@4.0.1': {}
 
@@ -4842,10 +4842,10 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.4
 
-  '@lerna-lite/cli@4.7.2(@lerna-lite/publish@4.7.2(@types/node@24.2.1)(conventional-commits-filter@5.0.0))(@lerna-lite/version@4.7.2(@lerna-lite/publish@4.7.2(@types/node@24.2.1)(conventional-commits-filter@5.0.0))(@types/node@24.2.1)(conventional-commits-filter@5.0.0))(@types/node@24.2.1)':
+  '@lerna-lite/cli@4.7.2(@lerna-lite/publish@4.7.2(@types/node@24.3.0)(conventional-commits-filter@5.0.0))(@lerna-lite/version@4.7.2(@lerna-lite/publish@4.7.2(@types/node@24.3.0)(conventional-commits-filter@5.0.0))(@types/node@24.3.0)(conventional-commits-filter@5.0.0))(@types/node@24.3.0)':
     dependencies:
-      '@lerna-lite/core': 4.7.2(@types/node@24.2.1)
-      '@lerna-lite/init': 4.7.2(@types/node@24.2.1)
+      '@lerna-lite/core': 4.7.2(@types/node@24.3.0)
+      '@lerna-lite/init': 4.7.2(@types/node@24.3.0)
       '@lerna-lite/npmlog': 4.7.1
       dedent: 1.6.0
       dotenv: 17.2.1
@@ -4853,18 +4853,18 @@ snapshots:
       load-json-file: 7.0.1
       yargs: 18.0.0
     optionalDependencies:
-      '@lerna-lite/publish': 4.7.2(@types/node@24.2.1)(conventional-commits-filter@5.0.0)
-      '@lerna-lite/version': 4.7.2(@lerna-lite/publish@4.7.2(@types/node@24.2.1)(conventional-commits-filter@5.0.0))(@types/node@24.2.1)(conventional-commits-filter@5.0.0)
+      '@lerna-lite/publish': 4.7.2(@types/node@24.3.0)(conventional-commits-filter@5.0.0)
+      '@lerna-lite/version': 4.7.2(@lerna-lite/publish@4.7.2(@types/node@24.3.0)(conventional-commits-filter@5.0.0))(@types/node@24.3.0)(conventional-commits-filter@5.0.0)
     transitivePeerDependencies:
       - '@types/node'
       - babel-plugin-macros
       - supports-color
 
-  '@lerna-lite/core@4.7.2(@types/node@24.2.1)':
+  '@lerna-lite/core@4.7.2(@types/node@24.3.0)':
     dependencies:
-      '@inquirer/expand': 4.0.17(@types/node@24.2.1)
-      '@inquirer/input': 4.2.1(@types/node@24.2.1)
-      '@inquirer/select': 4.3.1(@types/node@24.2.1)
+      '@inquirer/expand': 4.0.17(@types/node@24.3.0)
+      '@inquirer/input': 4.2.1(@types/node@24.3.0)
+      '@inquirer/select': 4.3.1(@types/node@24.3.0)
       '@lerna-lite/npmlog': 4.7.1
       '@npmcli/run-script': 9.1.0
       ci-info: 4.3.0
@@ -4895,9 +4895,9 @@ snapshots:
       - babel-plugin-macros
       - supports-color
 
-  '@lerna-lite/init@4.7.2(@types/node@24.2.1)':
+  '@lerna-lite/init@4.7.2(@types/node@24.3.0)':
     dependencies:
-      '@lerna-lite/core': 4.7.2(@types/node@24.2.1)
+      '@lerna-lite/core': 4.7.2(@types/node@24.3.0)
       fs-extra: 11.3.1
       p-map: 7.0.3
       write-json-file: 6.0.0
@@ -4917,12 +4917,12 @@ snapshots:
       signal-exit: 4.1.0
       wide-align: 1.1.5
 
-  '@lerna-lite/publish@4.7.2(@types/node@24.2.1)(conventional-commits-filter@5.0.0)':
+  '@lerna-lite/publish@4.7.2(@types/node@24.3.0)(conventional-commits-filter@5.0.0)':
     dependencies:
-      '@lerna-lite/cli': 4.7.2(@lerna-lite/publish@4.7.2(@types/node@24.2.1)(conventional-commits-filter@5.0.0))(@lerna-lite/version@4.7.2(@lerna-lite/publish@4.7.2(@types/node@24.2.1)(conventional-commits-filter@5.0.0))(@types/node@24.2.1)(conventional-commits-filter@5.0.0))(@types/node@24.2.1)
-      '@lerna-lite/core': 4.7.2(@types/node@24.2.1)
+      '@lerna-lite/cli': 4.7.2(@lerna-lite/publish@4.7.2(@types/node@24.3.0)(conventional-commits-filter@5.0.0))(@lerna-lite/version@4.7.2(@lerna-lite/publish@4.7.2(@types/node@24.3.0)(conventional-commits-filter@5.0.0))(@types/node@24.3.0)(conventional-commits-filter@5.0.0))(@types/node@24.3.0)
+      '@lerna-lite/core': 4.7.2(@types/node@24.3.0)
       '@lerna-lite/npmlog': 4.7.1
-      '@lerna-lite/version': 4.7.2(@lerna-lite/publish@4.7.2(@types/node@24.2.1)(conventional-commits-filter@5.0.0))(@types/node@24.2.1)(conventional-commits-filter@5.0.0)
+      '@lerna-lite/version': 4.7.2(@lerna-lite/publish@4.7.2(@types/node@24.3.0)(conventional-commits-filter@5.0.0))(@types/node@24.3.0)(conventional-commits-filter@5.0.0)
       '@npmcli/arborist': 9.1.3
       '@npmcli/package-json': 6.2.0
       byte-size: 9.0.1
@@ -4954,11 +4954,11 @@ snapshots:
       - conventional-commits-filter
       - supports-color
 
-  '@lerna-lite/version@4.7.2(@lerna-lite/publish@4.7.2(@types/node@24.2.1)(conventional-commits-filter@5.0.0))(@types/node@24.2.1)(conventional-commits-filter@5.0.0)':
+  '@lerna-lite/version@4.7.2(@lerna-lite/publish@4.7.2(@types/node@24.3.0)(conventional-commits-filter@5.0.0))(@types/node@24.3.0)(conventional-commits-filter@5.0.0)':
     dependencies:
       '@conventional-changelog/git-client': 2.5.1(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.2.0)
-      '@lerna-lite/cli': 4.7.2(@lerna-lite/publish@4.7.2(@types/node@24.2.1)(conventional-commits-filter@5.0.0))(@lerna-lite/version@4.7.2(@lerna-lite/publish@4.7.2(@types/node@24.2.1)(conventional-commits-filter@5.0.0))(@types/node@24.2.1)(conventional-commits-filter@5.0.0))(@types/node@24.2.1)
-      '@lerna-lite/core': 4.7.2(@types/node@24.2.1)
+      '@lerna-lite/cli': 4.7.2(@lerna-lite/publish@4.7.2(@types/node@24.3.0)(conventional-commits-filter@5.0.0))(@lerna-lite/version@4.7.2(@lerna-lite/publish@4.7.2(@types/node@24.3.0)(conventional-commits-filter@5.0.0))(@types/node@24.3.0)(conventional-commits-filter@5.0.0))(@types/node@24.3.0)
+      '@lerna-lite/core': 4.7.2(@types/node@24.3.0)
       '@lerna-lite/npmlog': 4.7.1
       '@octokit/plugin-enterprise-rest': 6.0.1
       '@octokit/rest': 22.0.0
@@ -5464,7 +5464,7 @@ snapshots:
 
   '@types/bn.js@5.2.0':
     dependencies:
-      '@types/node': 24.2.1
+      '@types/node': 24.3.0
 
   '@types/chai@5.2.2':
     dependencies:
@@ -5494,7 +5494,7 @@ snapshots:
 
   '@types/node-forge@1.3.13':
     dependencies:
-      '@types/node': 24.2.1
+      '@types/node': 24.3.0
 
   '@types/node@20.19.10':
     dependencies:
@@ -5504,7 +5504,7 @@ snapshots:
     dependencies:
       undici-types: 6.21.0
 
-  '@types/node@24.2.1':
+  '@types/node@24.3.0':
     dependencies:
       undici-types: 7.10.0
 
@@ -5522,7 +5522,7 @@ snapshots:
 
   '@types/secp256k1@4.0.6':
     dependencies:
-      '@types/node': 24.2.1
+      '@types/node': 24.3.0
 
   '@types/unist@2.0.11': {}
 
@@ -5543,21 +5543,21 @@ snapshots:
       chai: 5.2.1
       tinyrainbow: 2.0.0
 
-  '@vitest/mocker@2.1.9(vite@5.4.19(@types/node@24.2.1))':
+  '@vitest/mocker@2.1.9(vite@5.4.19(@types/node@24.3.0))':
     dependencies:
       '@vitest/spy': 2.1.9
       estree-walker: 3.0.3
       magic-string: 0.30.17
     optionalDependencies:
-      vite: 5.4.19(@types/node@24.2.1)
+      vite: 5.4.19(@types/node@24.3.0)
 
-  '@vitest/mocker@3.2.4(vite@7.1.1(@types/node@24.2.1)(jiti@1.21.7)(tsx@4.20.4)(yaml@2.8.1))':
+  '@vitest/mocker@3.2.4(vite@7.1.1(@types/node@24.3.0)(jiti@1.21.7)(tsx@4.20.4)(yaml@2.8.1))':
     dependencies:
       '@vitest/spy': 3.2.4
       estree-walker: 3.0.3
       magic-string: 0.30.17
     optionalDependencies:
-      vite: 7.1.1(@types/node@24.2.1)(jiti@1.21.7)(tsx@4.20.4)(yaml@2.8.1)
+      vite: 7.1.1(@types/node@24.3.0)(jiti@1.21.7)(tsx@4.20.4)(yaml@2.8.1)
 
   '@vitest/pretty-format@2.1.9':
     dependencies:
@@ -7708,14 +7708,14 @@ snapshots:
       tslib: 2.8.1
       typescript: 5.9.2
 
-  ts-node@10.9.2(@types/node@24.2.1)(typescript@5.9.2):
+  ts-node@10.9.2(@types/node@24.3.0)(typescript@5.9.2):
     dependencies:
       '@cspotcode/source-map-support': 0.8.1
       '@tsconfig/node10': 1.0.11
       '@tsconfig/node12': 1.0.11
       '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.4
-      '@types/node': 24.2.1
+      '@types/node': 24.3.0
       acorn: 8.15.0
       acorn-walk: 8.3.4
       arg: 4.1.3
@@ -7884,13 +7884,13 @@ snapshots:
       unist-util-stringify-position: 3.0.3
       vfile-message: 3.1.4
 
-  vite-node@2.1.9(@types/node@24.2.1):
+  vite-node@2.1.9(@types/node@24.3.0):
     dependencies:
       cac: 6.7.14
       debug: 4.4.1
       es-module-lexer: 1.7.0
       pathe: 1.1.2
-      vite: 5.4.19(@types/node@24.2.1)
+      vite: 5.4.19(@types/node@24.3.0)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -7902,13 +7902,13 @@ snapshots:
       - supports-color
       - terser
 
-  vite-node@3.2.4(@types/node@24.2.1)(jiti@1.21.7)(tsx@4.20.4)(yaml@2.8.1):
+  vite-node@3.2.4(@types/node@24.3.0)(jiti@1.21.7)(tsx@4.20.4)(yaml@2.8.1):
     dependencies:
       cac: 6.7.14
       debug: 4.4.1
       es-module-lexer: 1.7.0
       pathe: 2.0.3
-      vite: 7.1.1(@types/node@24.2.1)(jiti@1.21.7)(tsx@4.20.4)(yaml@2.8.1)
+      vite: 7.1.1(@types/node@24.3.0)(jiti@1.21.7)(tsx@4.20.4)(yaml@2.8.1)
     transitivePeerDependencies:
       - '@types/node'
       - jiti
@@ -7923,16 +7923,16 @@ snapshots:
       - tsx
       - yaml
 
-  vite@5.4.19(@types/node@24.2.1):
+  vite@5.4.19(@types/node@24.3.0):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.5.6
       rollup: 4.46.2
     optionalDependencies:
-      '@types/node': 24.2.1
+      '@types/node': 24.3.0
       fsevents: 2.3.3
 
-  vite@7.1.1(@types/node@24.2.1)(jiti@1.21.7)(tsx@4.20.4)(yaml@2.8.1):
+  vite@7.1.1(@types/node@24.3.0)(jiti@1.21.7)(tsx@4.20.4)(yaml@2.8.1):
     dependencies:
       esbuild: 0.25.8
       fdir: 6.4.6(picomatch@4.0.3)
@@ -7941,16 +7941,16 @@ snapshots:
       rollup: 4.46.2
       tinyglobby: 0.2.14
     optionalDependencies:
-      '@types/node': 24.2.1
+      '@types/node': 24.3.0
       fsevents: 2.3.3
       jiti: 1.21.7
       tsx: 4.20.4
       yaml: 2.8.1
 
-  vitest@2.1.9(@types/node@24.2.1):
+  vitest@2.1.9(@types/node@24.3.0):
     dependencies:
       '@vitest/expect': 2.1.9
-      '@vitest/mocker': 2.1.9(vite@5.4.19(@types/node@24.2.1))
+      '@vitest/mocker': 2.1.9(vite@5.4.19(@types/node@24.3.0))
       '@vitest/pretty-format': 2.1.9
       '@vitest/runner': 2.1.9
       '@vitest/snapshot': 2.1.9
@@ -7966,11 +7966,11 @@ snapshots:
       tinyexec: 0.3.2
       tinypool: 1.1.1
       tinyrainbow: 1.2.0
-      vite: 5.4.19(@types/node@24.2.1)
-      vite-node: 2.1.9(@types/node@24.2.1)
+      vite: 5.4.19(@types/node@24.3.0)
+      vite-node: 2.1.9(@types/node@24.3.0)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@types/node': 24.2.1
+      '@types/node': 24.3.0
     transitivePeerDependencies:
       - less
       - lightningcss
@@ -7982,11 +7982,11 @@ snapshots:
       - supports-color
       - terser
 
-  vitest@3.2.4(@types/debug@4.1.12)(@types/node@24.2.1)(jiti@1.21.7)(tsx@4.20.4)(yaml@2.8.1):
+  vitest@3.2.4(@types/debug@4.1.12)(@types/node@24.3.0)(jiti@1.21.7)(tsx@4.20.4)(yaml@2.8.1):
     dependencies:
       '@types/chai': 5.2.2
       '@vitest/expect': 3.2.4
-      '@vitest/mocker': 3.2.4(vite@7.1.1(@types/node@24.2.1)(jiti@1.21.7)(tsx@4.20.4)(yaml@2.8.1))
+      '@vitest/mocker': 3.2.4(vite@7.1.1(@types/node@24.3.0)(jiti@1.21.7)(tsx@4.20.4)(yaml@2.8.1))
       '@vitest/pretty-format': 3.2.4
       '@vitest/runner': 3.2.4
       '@vitest/snapshot': 3.2.4
@@ -8004,12 +8004,12 @@ snapshots:
       tinyglobby: 0.2.14
       tinypool: 1.1.1
       tinyrainbow: 2.0.0
-      vite: 7.1.1(@types/node@24.2.1)(jiti@1.21.7)(tsx@4.20.4)(yaml@2.8.1)
-      vite-node: 3.2.4(@types/node@24.2.1)(jiti@1.21.7)(tsx@4.20.4)(yaml@2.8.1)
+      vite: 7.1.1(@types/node@24.3.0)(jiti@1.21.7)(tsx@4.20.4)(yaml@2.8.1)
+      vite-node: 3.2.4(@types/node@24.3.0)(jiti@1.21.7)(tsx@4.20.4)(yaml@2.8.1)
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/debug': 4.1.12
-      '@types/node': 24.2.1
+      '@types/node': 24.3.0
     transitivePeerDependencies:
       - jiti
       - less
