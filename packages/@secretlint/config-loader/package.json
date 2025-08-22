@@ -68,7 +68,7 @@
     "@secretlint/secretlint-rule-internal-test-cjs": "workspace:*",
     "@secretlint/secretlint-rule-internal-test-esm": "workspace:*",
     "@types/debug": "^4.1.12",
-    "@types/node": "^24.2.1",
+    "@types/node": "^24.3.0",
     "create-validator-ts": "^6.0.1",
     "prettier": "^2.8.8",
     "tsx": "^4.20.4",
