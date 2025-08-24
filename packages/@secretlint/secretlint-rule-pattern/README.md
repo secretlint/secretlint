@@ -20,6 +20,33 @@ Via `.secretlintrc.json`(Recommended)
       "options": {
         "patterns": [
           {
+            "name": "credentials",
+            "patterns": [
+              "/password\\s*=\\s*(?<password>[\\w\\d!@#$%^&(){}\\[\\]:\";'<>,.?\/~`_+-=|]{1,256})\\b.*/",
+              "/apikey\\s*=\\s*(?<apikey>[\\w\\d]{8,})\\b.*/",
+              "/token\\s*=\\s*(?<token>[\\w\\d]{16,})\\b.*/"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
+
+```
+
+### Deprecated options
+
+The `pattern` field (singular) is still supported but deprecated. Use `patterns` array instead:
+
+```json
+{
+  "rules": [
+    {
+      "id": "@secretlint/secretlint-rule-pattern",
+      "options": {
+        "patterns": [
+          {
             "name": "password",
             "pattern": "/password\\s*=\\s*(?<password>[\\w\\d!@#$%^&(){}\\[\\]:\";'<>,.?\/~`_+-=|]{1,256})\\b.*/"
           }
@@ -28,7 +55,6 @@ Via `.secretlintrc.json`(Recommended)
     }
   ]
 }
-
 ```
 
 ### Using filePathGlobs
@@ -49,12 +75,17 @@ You can use `filePathGlobs` to match against file paths using glob patterns:
           {
             "name": "AWS credentials in env files",
             "filePathGlobs": ["**/.env*"],
-            "pattern": "/aws_access_key_id|aws_secret_access_key/i"
+            "patterns": [
+              "/aws_access_key_id\\s*=\\s*\\S+/i",
+              "/aws_secret_access_key\\s*=\\s*\\S+/i"
+            ]
           },
           {
             "name": "private keys",
             "filePathGlobs": ["**/*.pem", "**/*.key"],
-            "pattern": "/BEGIN (RSA |EC )?PRIVATE KEY/"
+            "patterns": [
+              "/BEGIN (RSA |EC )?PRIVATE KEY/"
+            ]
           }
         ]
       }
@@ -64,8 +95,8 @@ You can use `filePathGlobs` to match against file paths using glob patterns:
 ```
 
 - When only `filePathGlobs` is specified, the rule reports if the file path matches any of the glob patterns
-- When only `pattern` is specified, the rule reports if the file content matches the regex pattern
-- When both are specified, the rule reports only if both the file path matches the glob AND the content matches the pattern
+- When only `patterns` is specified, the rule reports if the file content matches any of the regex patterns
+- When both are specified, the rule reports only if both the file path matches the glob AND the content matches any of the patterns
 
 ## MessageIDs
 
@@ -82,7 +113,8 @@ Disallow to use specified RegEx patterns from SecretLint config.
     - Array of pattern configurations
     - Each pattern can have:
         - `name: string` - Name of the pattern (required)
-        - `pattern?: string` - RegExp-like string to match against file content
+        - `patterns?: string[]` - Array of RegExp-like strings to match against file content
+        - `pattern?: string` - Single RegExp-like string to match against file content (deprecated, use `patterns` instead)
         - `filePathGlobs?: string[]` - Array of glob patterns to match against file paths
 
 ## Changelog
