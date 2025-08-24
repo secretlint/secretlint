@@ -35,28 +35,6 @@ Via `.secretlintrc.json`(Recommended)
 
 ```
 
-### Deprecated options
-
-The `pattern` field (singular) is still supported but deprecated. Use `patterns` array instead:
-
-```json
-{
-  "rules": [
-    {
-      "id": "@secretlint/secretlint-rule-pattern",
-      "options": {
-        "patterns": [
-          {
-            "name": "password",
-            "pattern": "/password\\s*=\\s*(?<password>[\\w\\d!@#$%^&(){}\\[\\]:\";'<>,.?\/~`_+-=|]{1,256})\\b.*/"
-          }
-        ]
-      }
-    }
-  ]
-}
-```
-
 ### Using filePathGlobs
 
 You can use `filePathGlobs` to match against file paths using glob patterns:
@@ -116,6 +94,28 @@ Disallow to use specified RegEx patterns from SecretLint config.
         - `patterns?: string[]` - Array of RegExp-like strings to match against file content
         - `pattern?: string` - Single RegExp-like string to match against file content (deprecated, use `patterns` instead)
         - `filePathGlobs?: string[]` - Array of glob patterns to match against file paths
+
+### Deprecated options
+
+The `pattern` field (singular) is still supported but deprecated. Use `patterns` array instead:
+
+```json
+{
+  "rules": [
+    {
+      "id": "@secretlint/secretlint-rule-pattern",
+      "options": {
+        "patterns": [
+          {
+            "name": "password",
+            "pattern": "/password\\s*=\\s*(?<password>[\\w\\d!@#$%^&(){}\\[\\]:\";'<>,.?\/~`_+-=|]{1,256})\\b.*/"
+          }
+        ]
+      }
+    }
+  ]
+}
+```
 
 ## Changelog
 
