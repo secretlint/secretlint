@@ -4,7 +4,7 @@
     "packages/@secretlint/*",
     "examples/*"
   ],
-  "version": "11.0.2",
+  "version": "11.1.0",
   "npmClient": "pnpm",
   "includeMergedTags": true
 }

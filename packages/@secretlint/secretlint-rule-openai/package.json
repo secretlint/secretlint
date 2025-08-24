@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-openai",
-  "version": "11.0.2",
+  "version": "11.1.0",
   "description": "An example rule for secretlint.",
   "keywords": [
     "secretlint",

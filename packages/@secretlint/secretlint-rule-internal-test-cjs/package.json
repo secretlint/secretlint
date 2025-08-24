@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@secretlint/secretlint-rule-internal-test-cjs",
-  "version": "11.0.2",
+  "version": "11.1.0",
   "description": "An example CJS rule for secretlint. It it for testing.",
   "keywords": [
     "secretlint",
