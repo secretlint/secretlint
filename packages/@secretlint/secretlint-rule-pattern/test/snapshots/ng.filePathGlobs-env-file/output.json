@@ -1,0 +1,32 @@
+{
+  "filePath": "[SNAPSHOT]/ng.filePathGlobs-env-file/input.env",
+  "sourceContent": "DATABASE_URL=postgres://user:pass@localhost/db\nAPI_KEY=secret123",
+  "sourceContentType": "text",
+  "messages": [
+    {
+      "data": {
+        "PATTERN_NAME": "env files",
+        "CREDENTIAL": "input.env"
+      },
+      "type": "message",
+      "message": "found matching env files: input.env",
+      "messageId": "PATTERN",
+      "range": [
+        0,
+        64
+      ],
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 2,
+          "column": 17
+        }
+      },
+      "severity": "error",
+      "ruleId": "@secretlint/secretlint-rule-pattern"
+    }
+  ]
+}

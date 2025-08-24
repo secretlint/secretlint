@@ -31,6 +31,42 @@ Via `.secretlintrc.json`(Recommended)
 
 ```
 
+### Using filePathGlobs
+
+You can use `filePathGlobs` to match against file paths using glob patterns:
+
+```json
+{
+  "rules": [
+    {
+      "id": "@secretlint/secretlint-rule-pattern",
+      "options": {
+        "patterns": [
+          {
+            "name": "env files",
+            "filePathGlobs": ["**/.env", "**/.env.*"]
+          },
+          {
+            "name": "AWS credentials in env files",
+            "filePathGlobs": ["**/.env*"],
+            "pattern": "/aws_access_key_id|aws_secret_access_key/i"
+          },
+          {
+            "name": "private keys",
+            "filePathGlobs": ["**/*.pem", "**/*.key"],
+            "pattern": "/BEGIN (RSA |EC )?PRIVATE KEY/"
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
+- When only `filePathGlobs` is specified, the rule reports if the file path matches any of the glob patterns
+- When only `pattern` is specified, the rule reports if the file content matches the regex pattern
+- When both are specified, the rule reports only if both the file path matches the glob AND the content matches the pattern
+
 ## MessageIDs
 
 ### Pattern
@@ -42,6 +78,12 @@ Disallow to use specified RegEx patterns from SecretLint config.
 
 - `allows: string[]`
     - Allows a list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string)
+- `patterns: PatternType[]`
+    - Array of pattern configurations
+    - Each pattern can have:
+        - `name: string` - Name of the pattern (required)
+        - `pattern?: string` - RegExp-like string to match against file content
+        - `filePathGlobs?: string[]` - Array of glob patterns to match against file paths
 
 ## Changelog
 
