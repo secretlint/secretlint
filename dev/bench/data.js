@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1755988556897,
+  "lastUpdate": 1756010587281,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -41798,6 +41798,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.59,
             "range": "±0.77%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "734a29ceb0c295a4827d34fc894f6b5ff5fecd6c",
+          "message": "feat: Add filePathGlobs option to @secretlint/secretlint-rule-pattern (#1184)\n\n- Add filePathGlobs option to PatternType interface for glob pattern matching\n- Use Node.js path.matchesGlob API for efficient pattern matching\n- Add validation to ensure either pattern or filePathGlobs is specified\n- Report entire file range when only filePathGlobs is specified\n- Add comprehensive test cases and documentation\n\nThis allows rules to be applied only to specific file patterns,\nenabling more precise security scanning for files like .env, *.key, etc.",
+          "timestamp": "2025-08-24T13:41:39+09:00",
+          "tree_id": "41a81dddbfb99f0e04351ee5dc4fbccf238febb5",
+          "url": "https://github.com/secretlint/secretlint/commit/734a29ceb0c295a4827d34fc894f6b5ff5fecd6c"
+        },
+        "date": 1756010585035,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.59,
+            "range": "±1.09%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±3.43%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
