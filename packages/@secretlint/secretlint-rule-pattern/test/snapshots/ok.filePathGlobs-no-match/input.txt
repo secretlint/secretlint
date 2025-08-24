@@ -1,0 +1,2 @@
+aws_access_key_id=AKIAIOSFODNN7EXAMPLE
+This file won't match because it's not an .env file
