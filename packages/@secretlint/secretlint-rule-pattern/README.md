@@ -92,7 +92,7 @@ Disallow to use specified RegEx patterns from SecretLint config.
     - Each pattern can have:
         - `name: string` - Name of the pattern (required)
         - `patterns?: string[]` - Array of RegExp-like strings to match against file content
-        - `pattern?: string` - Single RegExp-like string to match against file content (deprecated, use `patterns` instead)
+        - `pattern?: string` - **[DEPRECATED]** Single RegExp-like string to match against file content (use `patterns` instead)
         - `filePathGlobs?: string[]` - Array of glob patterns to match against file paths
 
 ### Deprecated options
