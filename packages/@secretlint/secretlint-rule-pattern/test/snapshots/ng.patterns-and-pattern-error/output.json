@@ -1,0 +1,6 @@
+{
+    "filePath": "[SNAPSHOT]/ng.patterns-and-pattern-error/input.txt",
+    "messages": [],
+    "sourceContent": "This test should not run because patterns and pattern are both specified",
+    "sourceContentType": "text"
+}

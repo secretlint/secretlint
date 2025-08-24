@@ -1,0 +1,82 @@
+{
+    "filePath": "[SNAPSHOT]/ng.multiple-patterns/input.txt",
+    "messages": [
+        {
+            "message": "found matching credentials: password = MySecretPass123!",
+            "range": [
+                0,
+                27
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-pattern",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 27
+                }
+            },
+            "severity": "error",
+            "messageId": "PATTERN",
+            "data": {
+                "PATTERN_NAME": "credentials",
+                "CREDENTIAL": "password = MySecretPass123!"
+            }
+        },
+        {
+            "message": "found matching credentials: apikey = sk_test_abcd1234efgh5678",
+            "range": [
+                28,
+                61
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-pattern",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 0
+                },
+                "end": {
+                    "line": 2,
+                    "column": 33
+                }
+            },
+            "severity": "error",
+            "messageId": "PATTERN",
+            "data": {
+                "PATTERN_NAME": "credentials",
+                "CREDENTIAL": "apikey = sk_test_abcd1234efgh5678"
+            }
+        },
+        {
+            "message": "found matching credentials: token = ghp_1234567890abcdefghij1234567890abcdef",
+            "range": [
+                62,
+                110
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-pattern",
+            "loc": {
+                "start": {
+                    "line": 3,
+                    "column": 0
+                },
+                "end": {
+                    "line": 3,
+                    "column": 48
+                }
+            },
+            "severity": "error",
+            "messageId": "PATTERN",
+            "data": {
+                "PATTERN_NAME": "credentials",
+                "CREDENTIAL": "token = ghp_1234567890abcdefghij1234567890abcdef"
+            }
+        }
+    ],
+    "sourceContent": "password = MySecretPass123!\napikey = sk_test_abcd1234efgh5678\ntoken = ghp_1234567890abcdefghij1234567890abcdef",
+    "sourceContentType": "text"
+}

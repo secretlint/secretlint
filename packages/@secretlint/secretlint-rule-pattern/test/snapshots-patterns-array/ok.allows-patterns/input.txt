@@ -1,0 +1,3 @@
+password = foo-bar
+apikey = foo-bar
+token = foo-bar

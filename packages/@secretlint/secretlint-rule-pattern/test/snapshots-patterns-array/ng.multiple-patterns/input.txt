@@ -1,0 +1,3 @@
+password = MySecretPass123!
+apikey = sk_test_abcd1234efgh5678
+token = ghp_1234567890abcdefghij1234567890abcdef

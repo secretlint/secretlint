@@ -1,0 +1,1 @@
+This test should not run because patterns and pattern are both specified
