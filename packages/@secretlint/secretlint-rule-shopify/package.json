@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-shopify",
-  "version": "11.0.2",
+  "version": "11.1.0",
   "description": "A secretlint rule for shopify",
   "keywords": [
     "secretlint",

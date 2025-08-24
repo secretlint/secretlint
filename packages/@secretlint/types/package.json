@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/types",
-  "version": "11.0.2",
+  "version": "11.1.0",
   "description": "A typing package for @secretlint",
   "keywords": [
     "secretlint"
@@ -61,9 +61,9 @@
     "@types/node": "^24.3.0",
     "prettier": "^2.8.8",
     "tsconfig-to-dual-package": "^1.2.0",
-    "vitest": "^2.1.9",
     "tsx": "^4.20.4",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "^2.1.9"
   },
   "engines": {
     "node": ">=20.0.0"
