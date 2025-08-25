@@ -9,16 +9,6 @@ test("@secretlint/secretlint-rule-pattern", async (t) => {
                 {
                     id: "@secretlint/secretlint-rule-pattern",
                     rule,
-                    options: {
-                        patterns: [
-                            {
-                                name: "password=",
-                                pattern:
-                                    "/password\\s*=\\s*(?<password>[\\w\\d!@#$%^&(){}\\[\\]:\";'<>,.?/~`_+-=|]{1,256})\\b.*/gi",
-                            },
-                        ],
-                        allows: ["foo-bar"],
-                    },
                 },
             ],
         },
