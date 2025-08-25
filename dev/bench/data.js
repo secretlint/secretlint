@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1756039681228,
+  "lastUpdate": 1756082314183,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -41912,6 +41912,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±0.94%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "1b7fc21e8a6c98380b2586805719e41d2b25b939",
+          "message": "feat: Add patterns array support to @secretlint/secretlint-rule-pattern (#1186)\n\n* feat: Add patterns array support to @secretlint/secretlint-rule-pattern\n\n- Add new patterns field (array) to PatternType interface\n- Deprecate existing pattern field (singular) with soft deprecation\n- Implement collectPatterns() function for pattern collection logic\n- Add validation to prevent simultaneous use of patterns and pattern\n- Update documentation to explain new patterns array usage\n- Maintain backward compatibility with deprecated pattern field\n\nBREAKING CHANGE: Using both patterns and pattern fields together now throws an error\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* docs: Move deprecated options section to Options section\n\n* docs: Add [DEPRECATED] label to pattern field\n\n* test: Add snapshot tests for patterns array feature\n\n- Add tests for multiple patterns in single rule\n- Add tests for allows functionality with patterns array\n- Verify all patterns are correctly detected\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2025-08-25T09:37:05+09:00",
+          "tree_id": "3efed7432c292f4c8836c79821691fd1a0e0f70b",
+          "url": "https://github.com/secretlint/secretlint/commit/1b7fc21e8a6c98380b2586805719e41d2b25b939"
+        },
+        "date": 1756082312157,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.67,
+            "range": "±0.76%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±1.00%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
