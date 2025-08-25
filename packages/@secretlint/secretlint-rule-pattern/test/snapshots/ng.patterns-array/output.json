@@ -1,11 +1,11 @@
 {
-    "filePath": "[SNAPSHOT]/ng.filePathGlobs-env-file/input.env",
+    "filePath": "[SNAPSHOT]/ng.patterns-array/input.txt",
     "messages": [
         {
-            "message": "found matching env files: input.env",
+            "message": "found matching password=: password = MySecretPass123!",
             "range": [
                 0,
-                64
+                27
             ],
             "type": "message",
             "ruleId": "@secretlint/secretlint-rule-pattern",
@@ -15,18 +15,18 @@
                     "column": 0
                 },
                 "end": {
-                    "line": 2,
-                    "column": 17
+                    "line": 1,
+                    "column": 27
                 }
             },
             "severity": "error",
             "messageId": "PATTERN",
             "data": {
-                "PATTERN_NAME": "env files",
-                "CREDENTIAL": "input.env"
+                "PATTERN_NAME": "password=",
+                "CREDENTIAL": "password = MySecretPass123!"
             }
         }
     ],
-    "sourceContent": "DATABASE_URL=postgres://user:pass@localhost/db\nAPI_KEY=secret123",
+    "sourceContent": "password = MySecretPass123!\napikey = sk_test_abcd1234efgh5678\ntoken = ghp_1234567890abcdefghij1234567890abcdef",
     "sourceContentType": "text"
 }

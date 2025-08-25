@@ -1,6 +1,6 @@
 {
-  "filePath": "[SNAPSHOT]/ok.filePathGlobs-no-match/input.txt",
-  "sourceContent": "aws_access_key_id=AKIAIOSFODNN7EXAMPLE\nThis file won't match because it's not an .env file",
-  "sourceContentType": "text",
-  "messages": []
+    "filePath": "[SNAPSHOT]/ok.filePathGlobs-no-match/input.txt",
+    "messages": [],
+    "sourceContent": "aws_access_key_id=AKIAIOSFODNN7EXAMPLE\nThis file won't match because it's not an .env file",
+    "sourceContentType": "text"
 }

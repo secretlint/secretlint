@@ -1,57 +1,57 @@
 {
-  "filePath": "[SNAPSHOT]/ng.filePathGlobs-aws-in-env/input.env",
-  "sourceContent": "aws_access_key_id=AKIAIOSFODNN7EXAMPLE\naws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\nDATABASE_URL=postgres://user:pass@localhost/db",
-  "sourceContentType": "text",
-  "messages": [
-    {
-      "data": {
-        "PATTERN_NAME": "AWS credentials in env files",
-        "CREDENTIAL": "aws_access_key_id"
-      },
-      "type": "message",
-      "message": "found matching AWS credentials in env files: aws_access_key_id",
-      "messageId": "PATTERN",
-      "range": [
-        0,
-        17
-      ],
-      "loc": {
-        "start": {
-          "line": 1,
-          "column": 0
+    "filePath": "[SNAPSHOT]/ng.filePathGlobs-aws-in-env/input.env",
+    "messages": [
+        {
+            "message": "found matching AWS credentials in env files: aws_access_key_id",
+            "range": [
+                0,
+                17
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-pattern",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 17
+                }
+            },
+            "severity": "error",
+            "messageId": "PATTERN",
+            "data": {
+                "PATTERN_NAME": "AWS credentials in env files",
+                "CREDENTIAL": "aws_access_key_id"
+            }
         },
-        "end": {
-          "line": 1,
-          "column": 17
+        {
+            "message": "found matching AWS credentials in env files: aws_secret_access_key",
+            "range": [
+                39,
+                60
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-pattern",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 0
+                },
+                "end": {
+                    "line": 2,
+                    "column": 21
+                }
+            },
+            "severity": "error",
+            "messageId": "PATTERN",
+            "data": {
+                "PATTERN_NAME": "AWS credentials in env files",
+                "CREDENTIAL": "aws_secret_access_key"
+            }
         }
-      },
-      "severity": "error",
-      "ruleId": "@secretlint/secretlint-rule-pattern"
-    },
-    {
-      "data": {
-        "PATTERN_NAME": "AWS credentials in env files",
-        "CREDENTIAL": "aws_secret_access_key"
-      },
-      "type": "message",
-      "message": "found matching AWS credentials in env files: aws_secret_access_key",
-      "messageId": "PATTERN",
-      "range": [
-        39,
-        60
-      ],
-      "loc": {
-        "start": {
-          "line": 2,
-          "column": 0
-        },
-        "end": {
-          "line": 2,
-          "column": 21
-        }
-      },
-      "severity": "error",
-      "ruleId": "@secretlint/secretlint-rule-pattern"
-    }
-  ]
+    ],
+    "sourceContent": "aws_access_key_id=AKIAIOSFODNN7EXAMPLE\naws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY\nDATABASE_URL=postgres://user:pass@localhost/db",
+    "sourceContentType": "text"
 }

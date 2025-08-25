@@ -18,6 +18,10 @@ export const messages = {
 
 export type PatternType = {
     name: string;
+    patterns?: string[];
+    /**
+     * @deprecated Use patterns instead
+     */
     pattern?: string;
     filePathGlobs?: string[];
 };
@@ -26,6 +30,27 @@ export type Options = {
     allows?: string[];
     patterns?: PatternType[];
 };
+
+function collectPatterns(patternConfig: PatternType): string[] {
+    // Error if both patterns and pattern are specified
+    if (patternConfig.patterns && patternConfig.patterns.length > 0 && patternConfig.pattern) {
+        throw new Error(
+            `Pattern "${patternConfig.name}" cannot have both "patterns" and "pattern" specified. Use "patterns" array instead.`
+        );
+    }
+
+    // Prefer patterns array
+    if (patternConfig.patterns && patternConfig.patterns.length > 0) {
+        return patternConfig.patterns;
+    }
+
+    // Fallback to deprecated pattern field
+    if (patternConfig.pattern) {
+        return [patternConfig.pattern];
+    }
+
+    return [];
+}
 
 function reportIfFoundPattern({
     source,
@@ -47,9 +72,11 @@ function reportIfFoundPattern({
             }
         }
 
-        // Check pattern if specified
-        if (p.pattern) {
-            const results = matchPatterns(source.content, [p.pattern]);
+        const allPatterns = collectPatterns(p);
+
+        // Check patterns if specified
+        if (allPatterns.length > 0) {
+            const results = matchPatterns(source.content, allPatterns);
             for (const result of results) {
                 const index = result.startIndex || 0;
                 const match = result.match || "";
@@ -67,7 +94,7 @@ function reportIfFoundPattern({
                 });
             }
         } else if (p.filePathGlobs && p.filePathGlobs.length > 0) {
-            // If only filePathGlobs is specified (no pattern), report the file itself
+            // If only filePathGlobs is specified (no patterns), report the file itself
             context.report({
                 message: t("PATTERN", {
                     PATTERN_NAME: p.name,
@@ -96,8 +123,19 @@ export const creator: SecretLintRuleCreator<Options> = {
 
         // Validate patterns
         for (const p of normalizedOptions.patterns) {
-            if (!p.pattern && (!p.filePathGlobs || p.filePathGlobs.length === 0)) {
-                throw new Error(`Pattern "${p.name}" must have either "pattern" or "filePathGlobs" specified`);
+            // Validate that patterns and pattern are not both specified
+            if (p.patterns && p.patterns.length > 0 && p.pattern) {
+                throw new Error(
+                    `Pattern "${p.name}" cannot have both "patterns" and "pattern" specified. Use "patterns" array instead.`
+                );
+            }
+
+            const hasPatterns = (p.patterns && p.patterns.length > 0) || p.pattern;
+            const hasFilePathGlobs = p.filePathGlobs && p.filePathGlobs.length > 0;
+            if (!hasPatterns && !hasFilePathGlobs) {
+                throw new Error(
+                    `Pattern "${p.name}" must have either "patterns", "pattern" (deprecated), or "filePathGlobs" specified`
+                );
             }
         }
 
