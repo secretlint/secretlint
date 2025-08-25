@@ -67,6 +67,7 @@ function isVariableLikeString(str: string): boolean {
         /\{[^}]{1,50}\}/, // {var}
         /%[A-Z_]{1,30}%/, // %VAR%
         /\$[A-Z_]{1,30}/, // $VAR
+        /\$\([^)]{1,50}\)/, // $(var)
     ];
 
     return variablePatterns.some((pattern) => pattern.test(str));
