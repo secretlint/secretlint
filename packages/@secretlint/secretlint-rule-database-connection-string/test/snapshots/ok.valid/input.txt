@@ -16,3 +16,8 @@ const DOC_EXAMPLE = "mysql://admin:REPLACE_WITH_PASSWORD@mysql.server.com:3306/d
 
 # Bash default value pattern (${VAR:-default})
 postgres="postgres://postgres@${POSTGRES_HOST:-localhost}:${POSTGRES_PORT:-5432}/$dbname?sslmode=disable"
+
+# Makefile variable patterns ($(VAR))
+DB_URL = postgres://$(PGUSER):$(PGPASSWORD)@$(PGHOST)/$(PGDATABASE)
+MYSQL_URL = mysql://$(DB_USER):$(DB_PASS)@$(DB_HOST):$(DB_PORT)/$(DB_NAME)
+MONGO_URI = mongodb://$(MONGO_USER):$(MONGO_PASSWORD)@$(MONGO_HOST):$(MONGO_PORT)/$(MONGO_DB)
