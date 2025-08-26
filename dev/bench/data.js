@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1756145731292,
+  "lastUpdate": 1756186868049,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -42064,6 +42064,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±1.02%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e94e9807c39e50d72f4b8363701c741f7330e0e9",
+          "message": "refactor: Consolidate snapshot tests and move rule configs to test directories (#1188)\n\n- Merged patterns-array.test.ts into index.test.ts\n- Moved test configurations from inline defaultConfig to .secretlintrc.json files\n- Simplified test code by removing redundant configuration options\n- Moved snapshot test cases from snapshots-patterns-array to main snapshots directory",
+          "timestamp": "2025-08-26T14:39:39+09:00",
+          "tree_id": "953d66403dce19a18f826c6eec10f77bfc278608",
+          "url": "https://github.com/secretlint/secretlint/commit/e94e9807c39e50d72f4b8363701c741f7330e0e9"
+        },
+        "date": 1756186865624,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.66,
+            "range": "±0.70%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±0.98%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
