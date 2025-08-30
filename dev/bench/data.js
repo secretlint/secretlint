@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1756522304295,
+  "lastUpdate": 1756522557152,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -42292,6 +42292,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±0.49%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b5155c339b9db2e9a45602fe0b849f3d275cdf56",
+          "message": "CI: fix GitHub Workflows (#1200)\n\n* fix: GitHub Workflowsのセキュリティ問題を修正\n\n- persist-credentials: falseをすべてのcheckoutアクションに追加\n- テンプレートインジェクション脆弱性を環境変数経由に修正\n- 権限を最小限に調整（ジョブレベルで必要な権限のみ設定）\n- zizmorツールで検出されたセキュリティ問題を修正\n\n* ignore",
+          "timestamp": "2025-08-30T02:54:31Z",
+          "tree_id": "71e43390cc598a2c2bac71ed4196afecbb0d1563",
+          "url": "https://github.com/secretlint/secretlint/commit/b5155c339b9db2e9a45602fe0b849f3d275cdf56"
+        },
+        "date": 1756522555321,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.65,
+            "range": "±0.62%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±0.67%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
