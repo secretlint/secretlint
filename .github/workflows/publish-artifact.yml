@@ -7,14 +7,15 @@ env:
   DOCKER_BASE_NAME: ghcr.io/${{ github.repository }}
   DOCKER_HUB_BASE_NAME: secretlint/secretlint
 
-permissions:
-  contents: write
-  packages: write
 jobs:
   publish-binary:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+        with:
+          persist-credentials: false
 
       - name: Install pnpm
         uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
@@ -28,7 +29,9 @@ jobs:
       - name: Build Source Code
         run: pnpm run build
       # build the binary
-      - uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2.0.2
+      - name: Setup Bun
+        # 
+        uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2.0.2
         with:
           bun-version-file: "./publish/binary-compiler/.bun-version"
       - name: Install Binary Compiler
@@ -47,12 +50,18 @@ jobs:
   # Docker
   publish-docker:
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
     steps:
       - uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+        with:
+          persist-credentials: false
       - name: "Set TAG_NAME=tags"
         run: |
-          echo "TAG_NAME=v${{ github.event.client_payload.version }}" >> $GITHUB_ENV
-          echo "SECRETLINT_VERSION=${{ github.event.client_payload.version }}" >> $GITHUB_ENV
+          echo "TAG_NAME=v${GITHUB_EVENT_CLIENT_PAYLOAD_VERSION}" >> $GITHUB_ENV
+          echo "SECRETLINT_VERSION=${GITHUB_EVENT_CLIENT_PAYLOAD_VERSION}" >> $GITHUB_ENV
+        env:
+          GITHUB_EVENT_CLIENT_PAYLOAD_VERSION: ${{ github.event.client_payload.version }}
       - name: Set HUB_TAG
         run: |
           echo "PKG_TAG=${DOCKER_BASE_NAME}:${TAG_NAME}" >> $GITHUB_ENV

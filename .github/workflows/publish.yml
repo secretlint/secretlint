@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
+        with:
+          persist-credentials: false
 
       - name: Install pnpm
         uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
@@ -90,11 +92,13 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
+            const repository = process.env.GITHUB_REPOSITORY;
+            const version = process.env.CURRENT_VERSION;
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '🎉 Release https://github.com/${{ github.repository }}/releases/tag/v${{ env.CURRENT_VERSION }}'
+              body: `🎉 Release https://github.com/${repository}/releases/tag/v${version}`
             })
       - name: Generate token
         id: generate_token
