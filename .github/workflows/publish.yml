@@ -87,7 +87,7 @@ jobs:
             ${{ github.event.pull_request.body }}
           draft: false
           prerelease: false
-      - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+      - uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         if: steps.tag_check.outputs.exists_tag == 'false' && github.event.pull_request.merged == true
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
