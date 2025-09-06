@@ -369,6 +369,34 @@ Secretlint has a continuous benchmark:
 
 A Maintainer release new version of secretlint by following way.
 
+**Prerequisites:**
+- Maintainer should have **commit right**
+- Each npm package must be configured with **OIDC trusted publisher** (no npm tokens needed)
+- Check provenance status: `node --experimental-strip-types scripts/check-provenance.ts`
+
+### Initial Package Release (First-time publish)
+
+For new packages that have never been published:
+
+1. **Setup OIDC and initial publish:**
+   ```bash
+   npx setup-npm-trusted-publish @secretlint/your-package-name
+   ```
+   
+   This command will:
+   - Reserve the package name on npm
+   - Configure OIDC trusted publishing automatically
+   - Set up the following configuration:
+     - Repository: `secretlint/secretlint`
+     - Workflow: `.github/workflows/publish.yml`
+
+2. **Verify OIDC setup:**
+   ```bash
+   node --experimental-strip-types scripts/check-provenance.ts
+   ```
+
+After initial setup, all future releases will use OIDC automatically through CI without npm tokens.
+
 ### Pre-Release Checklist
 
 Before creating a release, ensure documentation is up-to-date:
@@ -389,7 +417,7 @@ Before creating a release, ensure documentation is up-to-date:
    - Run workflow with `version` input
       - You can select new version with semver(patch,minor,major)
 2. [CI] Create Release PR
-   - Update `lerna.json`'s `version` and `packages/*/package.json`'s `version`
+   - Update `packages/*/package.json`'s `version` and root `package.json`'s `version`
    - Fill the Pull Request body with [Automatically generated release notes](https://docs.github.com/en/repositories/releasing-projects-on-github/automatically-generated-release-notes)
    - e.g. https://github.com/azu/monorepo-github-releases/pull/18
 3. Review the Release PR
@@ -397,6 +425,8 @@ Before creating a release, ensure documentation is up-to-date:
    - Verify that documentation mentions all new packages/features
 4. Merge the Release PR
 5. [CI] Publish new version to npm and GitHub Release
+   - Uses OIDC trusted publishing (no npm tokens required)
+   - Packages are published with provenance attestations
    - The release note content is same to PR body
    - CI copy to release note from PR body when merge the PR
    - e.g. https://github.com/azu/monorepo-github-releases/releases/tag/v1.6.3

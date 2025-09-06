@@ -11,6 +11,7 @@ permissions:
   contents: write
   issues: write
   pull-requests: write
+  id-token: write  # Required for OIDC
 
 jobs:
   publish:
@@ -28,6 +29,7 @@ jobs:
         uses: actions/setup-node@3235b876344d2a9aa001b8d1453c930bba69e610 # v3.9.1
         with:
           node-version: 22
+          registry-url: 'https://registry.npmjs.org'
       - name: Git Identity
         run: |
           git config --global user.name 'github-actions[bot]'
@@ -40,7 +42,7 @@ jobs:
       # Define ${CURRENT_VERSION}
       - name: Set Current Version
         run: |
-          CURRENT_VERSION=$(node -p 'require("./lerna.json").version')
+          CURRENT_VERSION=$(node -p 'require("./package.json").version')
           echo "CURRENT_VERSION=${CURRENT_VERSION}" >> $GITHUB_ENV
       - name: Tag Check
         id: tag_check
@@ -55,15 +57,13 @@ jobs:
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Publish
+      - name: Publish with OIDC
         if: steps.tag_check.outputs.exists_tag == 'false'
         run: |
-          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
           pnpm run ci:release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
       - name: Create Git Tag
         if: steps.tag_check.outputs.exists_tag == 'false'
         uses: pkgdeps/git-tag-action@ef111413f44ebe5cc05994e7f5b5b9edaaada08d # v3.0.0

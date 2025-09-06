@@ -1,0 +1,112 @@
+name: Check NPM Provenance
+
+on:
+  pull_request:
+    paths:
+      - 'packages/*/package.json'
+      - 'packages/@secretlint/*/package.json'
+      - '.github/workflows/check-provenance.yml'
+      - 'scripts/check-provenance.ts'
+  push:
+    branches:
+      - master
+      - main
+    paths:
+      - 'packages/*/package.json'
+      - 'packages/@secretlint/*/package.json'
+  workflow_dispatch:
+
+jobs:
+  check-provenance:
+    name: Check Package Provenance
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Check npm provenance
+        run: |
+          chmod +x scripts/check-provenance.ts
+          node --experimental-strip-types scripts/check-provenance.ts
+
+      - name: Report Status
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const { context } = require('@actions/github');
+            
+            // Only comment on PRs
+            if (context.eventName !== 'pull_request') {
+              return;
+            }
+            
+            const workflowUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            
+            let comment;
+            if (process.env.JOB_STATUS === 'success') {
+              comment = `✅ **NPM Provenance Check Passed**\n\nAll published packages have OIDC/provenance configured.\n\n[View workflow run](${workflowUrl})`;
+            } else {
+              comment = `⚠️ **NPM Provenance Check Failed**\n\nSome packages are missing OIDC/provenance configuration. Please check the workflow logs for details.\n\n[View workflow run](${workflowUrl})`;
+            }
+            
+            // Find existing comment
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            const botComment = comments.find(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('NPM Provenance Check')
+            );
+            
+            if (botComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment
+              });
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment
+              });
+            }
+        env:
+          JOB_STATUS: ${{ job.status }}
+
+  # This job will show as pending/required check until all packages have provenance
+  provenance-gate:
+    name: Provenance Gate
+    runs-on: ubuntu-latest
+    needs: check-provenance
+    if: always()
+    steps:
+      - name: Provenance Status
+        run: |
+          if [ "${{ needs.check-provenance.result }}" == "success" ]; then
+            echo "✅ All packages have provenance configured"
+            exit 0
+          else
+            echo "❌ Some packages need OIDC configuration"
+            echo "Please configure trusted publishing at: https://www.npmjs.com/settings"
+            exit 1
+          fi
