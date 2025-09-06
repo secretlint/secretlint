@@ -37,6 +37,7 @@ jobs:
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Install
         run: pnpm install
       # Define ${CURRENT_VERSION}
@@ -57,6 +58,12 @@ jobs:
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install latest npm
+        if: steps.tag-check.outputs.exists == 'false'
+        run: |
+          echo "Current npm version: $(npm -v)"
+          npm install -g npm@latest
+          echo "Updated npm version: $(npm -v)"
       - name: Publish with OIDC
         if: steps.tag_check.outputs.exists_tag == 'false'
         run: |
