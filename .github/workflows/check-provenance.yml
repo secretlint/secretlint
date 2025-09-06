@@ -3,16 +3,14 @@ name: Check NPM Provenance
 on:
   pull_request:
     paths:
-      - 'packages/*/package.json'
-      - 'packages/@secretlint/*/package.json'
+      - '**/package.json'
       - '.github/workflows/check-provenance.yml'
   push:
     branches:
       - master
       - main
     paths:
-      - 'packages/*/package.json'
-      - 'packages/@secretlint/*/package.json'
+      - '**/package.json'
   workflow_dispatch:
 
 permissions:
