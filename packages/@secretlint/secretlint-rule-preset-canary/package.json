@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-preset-canary",
-  "version": "11.2.0",
+  "version": "11.2.1",
   "description": "Canary rule preset of secretlint.",
   "keywords": [
     "secretlint",
