@@ -431,5 +431,5 @@ Before creating a release, ensure documentation is up-to-date:
 
 > **Warning**
 > If the publishing(Step 5) is failed, you can re-run the workflow.  
-> Or, Open <https://github.com/textlint/secretlint/actions/workflows/publish.yml> and do "Run workflow".
+> Or, Open <https://github.com/secretlint/secretlint/actions/workflows/release.yml> and do "Run workflow".
 
