@@ -40,21 +40,3 @@ jobs:
         run: |
           chmod +x scripts/check-provenance.ts
           node --experimental-strip-types scripts/check-provenance.ts
-
-  # This job will show as pending/required check until all packages have provenance
-  provenance-gate:
-    name: Provenance Gate
-    runs-on: ubuntu-latest
-    needs: check-provenance
-    if: always()
-    steps:
-      - name: Provenance Status
-        run: |
-          if [ "${{ needs.check-provenance.result }}" == "success" ]; then
-            echo "✅ All packages have provenance configured"
-            exit 0
-          else
-            echo "❌ Some packages need OIDC configuration"
-            echo "Please configure trusted publishing at: https://www.npmjs.com/settings"
-            exit 1
-          fi
