@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/quick-start",
-  "version": "11.2.0",
+  "version": "11.2.1",
   "description": "Quick Stater CLI for secretlint.",
   "keywords": [
     "secretlint",
