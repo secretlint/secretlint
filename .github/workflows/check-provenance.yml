@@ -163,7 +163,7 @@ jobs:
               comment += '### New Packages (Not Published Yet)\n\n';
               comment += 'Run the following commands to set up OIDC and publish:\n\n';
               results.notPublished.forEach(pkg => {
-                comment += `\`\`\`bash\nnpx setup-npm-trusted-publish ${pkg}\n\`\`\`\n`;
+                comment += `- [ ] \`npx setup-npm-trusted-publish ${pkg}\`\n`;
               });
               comment += '\n';
             }
