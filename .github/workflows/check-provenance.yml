@@ -218,10 +218,3 @@ jobs:
                 body: comment
               });
             }
-
-      - name: Set workflow status
-        run: |
-          # Always exit with success to not block merge
-          # Details are provided in PR comment
-          echo "✅ Provenance check completed. See PR comment for details if any packages need attention."
-          exit 0
