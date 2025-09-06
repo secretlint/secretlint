@@ -18,6 +18,8 @@ on:
 
 permissions:
   contents: read
+  pull-requests: write
+  statuses: write
 
 jobs:
   check-provenance:
@@ -37,6 +39,7 @@ jobs:
           cache: 'pnpm'
 
       - name: Check npm provenance
+        id: check
         run: |
           chmod +x scripts/check-provenance.ts
           node --experimental-strip-types scripts/check-provenance.ts > provenance-result.txt 2>&1 || true
@@ -50,32 +53,100 @@ jobs:
           else
             echo "HAS_MISSING_PROVENANCE=false" >> $GITHUB_ENV
           fi
-
-      - name: Add Job Summary
-        if: env.HAS_MISSING_PROVENANCE == 'true'
-        run: |
-          echo "## ⚠️ Packages Missing OIDC Configuration" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "The following packages need OIDC/provenance configuration:" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          while IFS= read -r package; do
-            echo "- [ ] [$package](https://www.npmjs.com/package/$package/access)" >> $GITHUB_STEP_SUMMARY
-          done < missing-packages.txt
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Setup Instructions" >> $GITHUB_STEP_SUMMARY
-          echo "1. Click each package link above" >> $GITHUB_STEP_SUMMARY
-          echo "2. Click 'Add trusted publisher'" >> $GITHUB_STEP_SUMMARY
-          echo "3. Configure with:" >> $GITHUB_STEP_SUMMARY
-          echo "   - Repository: \`secretlint/secretlint\`" >> $GITHUB_STEP_SUMMARY
-          echo "   - Workflow: \`.github/workflows/publish.yml\`" >> $GITHUB_STEP_SUMMARY
-          echo "   - Environment: (leave empty)" >> $GITHUB_STEP_SUMMARY
-
-      - name: Set workflow status
-        run: |
-          if [ "${{ env.HAS_MISSING_PROVENANCE }}" == "true" ]; then
-            echo "::notice::Some packages are missing OIDC configuration. Check the job summary for details."
-            # Don't fail, just show as notice
-            exit 0
+          
+          # Check for unpublished packages
+          if grep -q "📦 For new packages that haven't been published yet:" provenance-result.txt; then
+            echo "HAS_UNPUBLISHED=true" >> $GITHUB_ENV
+            sed -n '/For new packages that haven.t been published yet:/,/This will:/p' provenance-result.txt | grep "npx setup-npm-trusted-publish" | sed 's/^  //' > unpublished-packages.txt
           else
-            echo "✅ All packages have proper provenance configuration"
+            echo "HAS_UNPUBLISHED=false" >> $GITHUB_ENV
           fi
+
+      - name: Comment on PR
+        if: (env.HAS_MISSING_PROVENANCE == 'true' || env.HAS_UNPUBLISHED == 'true') && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            let comment = '## 📦 NPM Package Status\n\n';
+            
+            if (process.env.HAS_UNPUBLISHED === 'true' && fs.existsSync('unpublished-packages.txt')) {
+              comment += '### New Packages (Not Published Yet)\n\n';
+              const unpublished = fs.readFileSync('unpublished-packages.txt', 'utf8').trim().split('\n');
+              unpublished.forEach(cmd => {
+                comment += `\\`\\`\\`bash\n${cmd}\n\\`\\`\\`\n`;
+              });
+              comment += '\n';
+            }
+            
+            if (process.env.HAS_MISSING_PROVENANCE === 'true' && fs.existsSync('missing-packages.txt')) {
+              comment += '### Published Packages Missing OIDC Configuration\n\n';
+              const packages = fs.readFileSync('missing-packages.txt', 'utf8').trim().split('\n');
+              packages.forEach(pkg => {
+                comment += `- [ ] [${pkg}](https://www.npmjs.com/package/${pkg}/access)\n`;
+              });
+              comment += '\n**Setup Instructions:**\n';
+              comment += '1. Click each package link above\n';
+              comment += '2. Click "Add trusted publisher"\n';
+              comment += '3. Configure with:\n';
+              comment += '   - Repository: `secretlint/secretlint`\n';
+              comment += '   - Workflow: `.github/workflows/publish.yml`\n';
+              comment += '   - Environment: (leave empty)\n';
+            }
+            
+            // Find existing comment
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            const botComment = comments.find(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('NPM Package Status')
+            );
+            
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment
+              });
+            }
+
+      - name: Set commit status
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const hasMissing = process.env.HAS_MISSING_PROVENANCE === 'true';
+            const hasUnpublished = process.env.HAS_UNPUBLISHED === 'true';
+            
+            let state, description;
+            
+            if (hasMissing || hasUnpublished) {
+              state = 'pending';
+              description = 'Some packages need OIDC configuration or initial publishing';
+            } else {
+              state = 'success';
+              description = 'All packages have proper provenance configuration';
+            }
+            
+            await github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.payload.pull_request.head.sha,
+              state: state,
+              description: description,
+              context: 'npm-provenance'
+            });
