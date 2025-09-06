@@ -11,11 +11,11 @@ set -euo pipefail
 
 distDir="dist"
 binaryName="secretlint"
-secretlintVersion=$(jq -r .version ../../lerna.json)
+secretlintVersion=$(jq -r .version ../../package.json)
 platforms=("linux-x64"  "linux-arm64" "windows-x64" "darwin-x64" "darwin-arm64")
 rm -rf $distDir
 
-# read lerna.json's version
+# read package.json's version
 for ((i=0; i<${#platforms[@]}; ++i));
 do
   echo "Building for ${platforms[$i]}"
