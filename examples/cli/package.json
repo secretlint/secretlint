@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/example-cli",
-    "version": "11.2.1",
+    "version": "11.2.2",
     "private": true,
     "description": "",
     "homepage": "https://github.com/secretlint/secretlint/tree/master/examples/cli/",
