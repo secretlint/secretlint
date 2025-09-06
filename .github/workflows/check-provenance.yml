@@ -16,6 +16,11 @@ on:
       - 'packages/@secretlint/*/package.json'
   workflow_dispatch:
 
+env:
+  # Set to 'true' to enforce provenance check (after migration is complete)
+  # Set to 'false' to allow missing provenance during migration period
+  ENFORCE_PROVENANCE: 'false'
+
 permissions:
   contents: read
 
@@ -40,3 +45,21 @@ jobs:
         run: |
           chmod +x scripts/check-provenance.ts
           node --experimental-strip-types scripts/check-provenance.ts
+        continue-on-error: true
+        id: provenance_check
+
+      - name: Evaluate provenance check result
+        run: |
+          if [ "${{ steps.provenance_check.outcome }}" == "failure" ]; then
+            if [ "${{ env.ENFORCE_PROVENANCE }}" == "true" ]; then
+              echo "❌ Provenance check failed and enforcement is enabled"
+              exit 1
+            else
+              echo "⚠️ Warning: Some packages lack OIDC configuration"
+              echo "This check is currently non-blocking during migration period"
+              echo "Set ENFORCE_PROVENANCE=true in workflow to enforce"
+              exit 0
+            fi
+          else
+            echo "✅ All packages have proper provenance configuration"
+          fi
