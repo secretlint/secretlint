@@ -6,7 +6,6 @@ on:
       - 'packages/*/package.json'
       - 'packages/@secretlint/*/package.json'
       - '.github/workflows/check-provenance.yml'
-      - 'scripts/check-provenance.ts'
   push:
     branches:
       - master
@@ -27,63 +26,128 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@08eba0b27e820071cde6df949e0beb9ba4906955 # v4.3.0
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@a7487c7e89a18df4991f7f222e4898a00d66ddda # v4.1.0
-
-      - name: Setup Node.js
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
-        with:
-          node-version: 22
-          cache: 'pnpm'
+        uses: actions/checkout@v4
 
       - name: Check npm provenance
         id: check
-        run: |
-          chmod +x scripts/check-provenance.ts
-          node --experimental-strip-types scripts/check-provenance.ts > provenance-result.txt 2>&1 || true
-          cat provenance-result.txt
-          
-          # Extract packages without provenance
-          if grep -q "⚠️  The following published packages need OIDC/provenance configuration:" provenance-result.txt; then
-            echo "HAS_MISSING_PROVENANCE=true" >> $GITHUB_ENV
-            # Extract package list for summary
-            sed -n '/The following published packages need OIDC/provenance configuration:/,/To configure OIDC/p' provenance-result.txt | grep "^  - " | sed 's/^  - //' > missing-packages.txt
-          else
-            echo "HAS_MISSING_PROVENANCE=false" >> $GITHUB_ENV
-          fi
-          
-          # Check for unpublished packages
-          if grep -q "📦 For new packages that haven't been published yet:" provenance-result.txt; then
-            echo "HAS_UNPUBLISHED=true" >> $GITHUB_ENV
-            sed -n '/For new packages that haven.t been published yet:/,/This will:/p' provenance-result.txt | grep "npx setup-npm-trusted-publish" | sed 's/^  //' > unpublished-packages.txt
-          else
-            echo "HAS_UNPUBLISHED=false" >> $GITHUB_ENV
-          fi
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            const { execSync } = require('child_process');
+            
+            // Get workspace packages
+            function getWorkspacePackages() {
+              const packages = [];
+              const workspacePaths = ['packages/*', 'packages/@secretlint/*'];
+              
+              for (const pattern of workspacePaths) {
+                const basePath = pattern.replace('/*', '');
+                if (!fs.existsSync(basePath)) continue;
+                
+                const dirs = fs.readdirSync(basePath);
+                for (const dir of dirs) {
+                  const packagePath = path.join(basePath, dir, 'package.json');
+                  if (fs.existsSync(packagePath)) {
+                    const packageJson = JSON.parse(fs.readFileSync(packagePath, 'utf-8'));
+                    packages.push(packageJson);
+                  }
+                }
+              }
+              return packages;
+            }
+            
+            // Check if package has provenance
+            function checkPackageProvenance(packageName) {
+              try {
+                const output = execSync(`npm view ${packageName} dist.attestations --json`, {
+                  encoding: 'utf-8',
+                  stdio: ['pipe', 'pipe', 'pipe']
+                });
+                return output && output.trim() !== 'null' && output.trim() !== '';
+              } catch (error) {
+                return false;
+              }
+            }
+            
+            // Check if package is published
+            function isPackagePublished(packageName) {
+              try {
+                const output = execSync(`npm view ${packageName} version`, {
+                  encoding: 'utf-8',
+                  stdio: ['pipe', 'pipe', 'pipe']
+                }).trim();
+                return !!output;
+              } catch (error) {
+                return false;
+              }
+            }
+            
+            console.log('🔍 Checking npm provenance for public packages...\n');
+            
+            const packages = getWorkspacePackages();
+            const publicPackages = packages.filter(pkg => !pkg.private);
+            
+            const results = {
+              withProvenance: [],
+              withoutProvenance: [],
+              notPublished: []
+            };
+            
+            for (const pkg of publicPackages) {
+              if (!isPackagePublished(pkg.name)) {
+                results.notPublished.push(pkg.name);
+                console.log(`⏭️  ${pkg.name}: Not published yet`);
+              } else if (checkPackageProvenance(pkg.name)) {
+                results.withProvenance.push(pkg.name);
+                console.log(`✅ ${pkg.name}: Has provenance`);
+              } else {
+                results.withoutProvenance.push(pkg.name);
+                console.log(`❌ ${pkg.name}: Missing provenance`);
+              }
+            }
+            
+            // Summary
+            console.log('\n📊 Summary:');
+            console.log(`  Total public packages: ${publicPackages.length}`);
+            console.log(`  With provenance: ${results.withProvenance.length}`);
+            console.log(`  Without provenance: ${results.withoutProvenance.length}`);
+            console.log(`  Not published: ${results.notPublished.length}`);
+            
+            // Save results for next steps
+            fs.writeFileSync('provenance-results.json', JSON.stringify(results, null, 2));
+            
+            // Set outputs
+            core.setOutput('has_missing', results.withoutProvenance.length > 0);
+            core.setOutput('has_unpublished', results.notPublished.length > 0);
+            core.setOutput('missing_packages', results.withoutProvenance);
+            core.setOutput('unpublished_packages', results.notPublished);
 
       - name: Comment on PR
-        if: (env.HAS_MISSING_PROVENANCE == 'true' || env.HAS_UNPUBLISHED == 'true') && github.event_name == 'pull_request'
+        if: (steps.check.outputs.has_missing == 'true' || steps.check.outputs.has_unpublished == 'true') && github.event_name == 'pull_request'
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
+            const results = JSON.parse(fs.readFileSync('provenance-results.json', 'utf8'));
+            
             let comment = '## 📦 NPM Package Status\n\n';
             
-            if (process.env.HAS_UNPUBLISHED === 'true' && fs.existsSync('unpublished-packages.txt')) {
+            if (results.notPublished.length > 0) {
               comment += '### New Packages (Not Published Yet)\n\n';
-              const unpublished = fs.readFileSync('unpublished-packages.txt', 'utf8').trim().split('\n');
-              unpublished.forEach(cmd => {
-                comment += `\\`\\`\\`bash\n${cmd}\n\\`\\`\\`\n`;
+              comment += 'Run the following commands to set up OIDC and publish:\n\n';
+              results.notPublished.forEach(pkg => {
+                comment += `\`\`\`bash\nnpx setup-npm-trusted-publish ${pkg}\n\`\`\`\n`;
               });
               comment += '\n';
             }
             
-            if (process.env.HAS_MISSING_PROVENANCE === 'true' && fs.existsSync('missing-packages.txt')) {
+            if (results.withoutProvenance.length > 0) {
               comment += '### Published Packages Missing OIDC Configuration\n\n';
-              const packages = fs.readFileSync('missing-packages.txt', 'utf8').trim().split('\n');
-              packages.forEach(pkg => {
+              comment += 'Configure OIDC for these packages:\n\n';
+              results.withoutProvenance.forEach(pkg => {
                 comment += `- [ ] [${pkg}](https://www.npmjs.com/package/${pkg}/access)\n`;
               });
               comment += '\n**Setup Instructions:**\n';
@@ -129,8 +193,11 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const hasMissing = process.env.HAS_MISSING_PROVENANCE === 'true';
-            const hasUnpublished = process.env.HAS_UNPUBLISHED === 'true';
+            const fs = require('fs');
+            const results = JSON.parse(fs.readFileSync('provenance-results.json', 'utf8'));
+            
+            const hasMissing = results.withoutProvenance.length > 0;
+            const hasUnpublished = results.notPublished.length > 0;
             
             let state, description;
             

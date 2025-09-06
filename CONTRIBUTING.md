@@ -372,7 +372,7 @@ A Maintainer release new version of secretlint by following way.
 **Prerequisites:**
 - Maintainer should have **commit right**
 - Each npm package must be configured with **OIDC trusted publisher** (no npm tokens needed)
-- Check provenance status: `node --experimental-strip-types scripts/check-provenance.ts`
+- Check provenance status: GitHub Actions workflow `.github/workflows/check-provenance.yml` runs automatically
 
 ### Initial Package Release (First-time publish)
 
@@ -391,9 +391,7 @@ For new packages that have never been published:
      - Workflow: `.github/workflows/publish.yml`
 
 2. **Verify OIDC setup:**
-   ```bash
-   node --experimental-strip-types scripts/check-provenance.ts
-   ```
+   The `.github/workflows/check-provenance.yml` workflow will automatically verify the configuration on your next PR.
 
 After initial setup, all future releases will use OIDC automatically through CI without npm tokens.
 
