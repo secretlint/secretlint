@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/benchmark",
-    "version": "11.2.2",
+    "version": "11.2.3",
     "private": true,
     "description": "Internal benchmark for Secretlint",
     "keywords": [
