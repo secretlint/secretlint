@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1757019471196,
+  "lastUpdate": 1757134631787,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -42520,6 +42520,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±2.00%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "cc8a2ce73bd247cfc16dc5c716955bad7fa355e2",
+          "message": "chore(deps): update lerna-lite monorepo to ^4.7.3 (#1208)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2025-09-06T04:55:42Z",
+          "tree_id": "549a09a6f3e095c08d5b89b9d944af0adb1fd233",
+          "url": "https://github.com/secretlint/secretlint/commit/cc8a2ce73bd247cfc16dc5c716955bad7fa355e2"
+        },
+        "date": 1757134629938,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.74,
+            "range": "±0.66%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±0.33%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
