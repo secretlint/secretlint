@@ -16,6 +16,11 @@ on:
       - 'packages/@secretlint/*/package.json'
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
 jobs:
   check-provenance:
     name: Check Package Provenance
