@@ -28,6 +28,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Check npm provenance
         id: check
         uses: actions/github-script@v7
@@ -37,25 +40,48 @@ jobs:
             const path = require('path');
             const { execSync } = require('child_process');
             
-            // Get workspace packages
+            // Get workspace packages using pnpm
             function getWorkspacePackages() {
-              const packages = [];
-              const workspacePaths = ['packages/*', 'packages/@secretlint/*'];
-              
-              for (const pattern of workspacePaths) {
-                const basePath = pattern.replace('/*', '');
-                if (!fs.existsSync(basePath)) continue;
+              try {
+                // Use pnpm to list all workspace packages
+                const output = execSync('pnpm list -r --json --depth -1', {
+                  encoding: 'utf-8',
+                  stdio: ['pipe', 'pipe', 'pipe']
+                });
                 
-                const dirs = fs.readdirSync(basePath);
-                for (const dir of dirs) {
-                  const packagePath = path.join(basePath, dir, 'package.json');
-                  if (fs.existsSync(packagePath)) {
-                    const packageJson = JSON.parse(fs.readFileSync(packagePath, 'utf-8'));
-                    packages.push(packageJson);
+                const packages = JSON.parse(output);
+                // Filter out private packages and return package info
+                return packages
+                  .filter(pkg => !pkg.private)
+                  .map(pkg => ({
+                    name: pkg.name,
+                    version: pkg.version,
+                    private: pkg.private || false
+                  }));
+              } catch (error) {
+                console.error('Error getting workspace packages:', error);
+                // Fallback to reading root package.json workspaces field
+                const rootPkg = JSON.parse(fs.readFileSync('package.json', 'utf-8'));
+                const workspaces = rootPkg.workspaces || [];
+                const packages = [];
+                
+                for (const pattern of workspaces) {
+                  const basePath = pattern.replace('/*', '');
+                  if (!fs.existsSync(basePath)) continue;
+                  
+                  const dirs = fs.readdirSync(basePath);
+                  for (const dir of dirs) {
+                    const packagePath = path.join(basePath, dir, 'package.json');
+                    if (fs.existsSync(packagePath)) {
+                      const packageJson = JSON.parse(fs.readFileSync(packagePath, 'utf-8'));
+                      if (!packageJson.private) {
+                        packages.push(packageJson);
+                      }
+                    }
                   }
                 }
+                return packages;
               }
-              return packages;
             }
             
             // Check if package has provenance
@@ -86,8 +112,8 @@ jobs:
             
             console.log('🔍 Checking npm provenance for public packages...\n');
             
-            const packages = getWorkspacePackages();
-            const publicPackages = packages.filter(pkg => !pkg.private);
+            // Get all public packages from workspace
+            const publicPackages = getWorkspacePackages();
             
             const results = {
               withProvenance: [],
