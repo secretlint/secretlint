@@ -3,7 +3,7 @@ set -euo pipefail
 # Get current architecture
 ARCH=$(uname -m)
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
-CURRENT_VERSION=$(jq -r .version ../../lerna.json)
+CURRENT_VERSION=$(jq -r .version ../../package.json)
 # Map architecture to the expected format
 case "$ARCH" in
     x86_64)
