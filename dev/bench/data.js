@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1757134631787,
+  "lastUpdate": 1757140107727,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -42558,6 +42558,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±0.33%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b9db8b7a1642c61b36796bdafa701099afcd49bc",
+          "message": "feat: migrate from lerna-lite to pnpm with OIDC trusted publishing (#1207) (#1209)\n\n* feat: migrate from lerna-lite to pnpm native commands with OIDC support\n\n- Replace lerna-lite with pnpm native commands for versioning and publishing\n- Add OIDC/provenance verification script and CI workflow\n- Update publish workflow to use OIDC trusted publishing\n- Add instructions for initial package setup with npx setup-npm-trusted-publish\n- Configure provenance check to run on package.json changes\n- Update documentation with OIDC setup requirements\n\n* fix: only report provenance check failure in PR comments\n\n* fix: add permissions for PR comments in provenance check workflow\n\n* Update .github/workflows/check-provenance.yml\n\n* chore: remove PR comment feature from provenance check\n\nThe workflow status itself is sufficient for feedback\n\n* chore: remove redundant provenance-gate job\n\nThe check-provenance job already handles success/failure status\n\n* feat: add migration period support for provenance check\n\n- Add ENFORCE_PROVENANCE environment variable (default: false)\n- During migration, provenance check warns but doesn't fail\n- After migration complete, set ENFORCE_PROVENANCE=true to enforce\n\n* feat: use job summary instead of failing for missing provenance\n\n- Remove ENFORCE_PROVENANCE variable (no longer needed)\n- Add GitHub job summary with clickable links to npm settings\n- Show notice instead of error for missing provenance\n- Better UX during migration period\n\n* feat: use pending status and PR comments for package provenance check\n\n- Set commit status to 'pending' when packages need configuration\n- Add PR comment with detailed list of packages needing attention\n- Separate handling for unpublished vs published packages\n- Only set 'success' when all packages are properly configured\n\n* refactor: integrate provenance check script into workflow\n\n- Remove standalone scripts/check-provenance.ts\n- Embed all logic directly in GitHub Actions workflow\n- Makes workflow portable to other monorepo projects\n- Single file solution for easier maintenance and sharing\n\n* feat: use pnpm to dynamically get workspace packages\n\n- Use 'pnpm list -r --json' to get all workspace packages\n- Automatically filter out private packages\n- Works with any monorepo structure without hardcoding paths\n- Fallback to reading package.json workspaces field if pnpm command fails\n\n* chore: simplify workflow path triggers\n\nUse **/package.json to catch all package.json changes in any directory structure\n\n* fix: always return success status to work with merge-gatekeeper\n\n- Remove pending status that blocks merge-gatekeeper\n- Always return success, use PR comments for details\n- This allows gradual OIDC migration without blocking development\n\n* chore: use checkboxes for unpublished packages list\n\nConsistent UI with checkbox format for both unpublished and published packages\n\n* chore: remove lerna.json and all lerna dependencies\n\n- Remove @lerna-lite dependencies from package.json\n- Update all scripts to use package.json version instead of lerna.json\n- Update binary build scripts to read from package.json\n- Update GitHub workflows to use package.json\n- Complete migration from lerna to pnpm native commands\n\n* Update .github/workflows/check-provenance.yml\n\n* Update .github/workflows/check-provenance.yml\n\n* fix: add missing Node.js setup in provenance check workflow\n\n* chore: remove unnecessary workflow status step\n\nThe workflow always succeeds by design, so explicit status step is redundant\n\n* chore: use Node.js LTS version in workflow\n\n* fix: remove pnpm cache from provenance workflow\n\nNo dependencies are installed, so caching is unnecessary\n\n* fix: update OIDC workflow reference to release.yml\n\nNPM OIDC was configured with release.yml, so update all references\n\n* refactor: rename publish.yml to release.yml\n\nAlign workflow filename with NPM OIDC configuration",
+          "timestamp": "2025-09-06T15:26:56+09:00",
+          "tree_id": "66ded25730063b70a9dfd7415cb80b8fe289ef12",
+          "url": "https://github.com/secretlint/secretlint/commit/b9db8b7a1642c61b36796bdafa701099afcd49bc"
+        },
+        "date": 1757140105311,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.68,
+            "range": "±0.54%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±1.64%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
