@@ -39,27 +39,14 @@ jobs:
           node --experimental-strip-types scripts/check-provenance.ts
 
       - name: Report Status
-        if: always()
+        if: failure() && github.event_name == 'pull_request'
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const fs = require('fs');
-            const { context } = require('@actions/github');
-            
-            // Only comment on PRs
-            if (context.eventName !== 'pull_request') {
-              return;
-            }
-            
             const workflowUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
             
-            let comment;
-            if (process.env.JOB_STATUS === 'success') {
-              comment = `✅ **NPM Provenance Check Passed**\n\nAll published packages have OIDC/provenance configured.\n\n[View workflow run](${workflowUrl})`;
-            } else {
-              comment = `⚠️ **NPM Provenance Check Failed**\n\nSome packages are missing OIDC/provenance configuration. Please check the workflow logs for details.\n\n[View workflow run](${workflowUrl})`;
-            }
+            const comment = `⚠️ **NPM Provenance Check Failed**\n\nSome packages are missing OIDC/provenance configuration. Please check the workflow logs for details.\n\n[View workflow run](${workflowUrl})`;
             
             // Find existing comment
             const { data: comments } = await github.rest.issues.listComments({
@@ -90,8 +77,6 @@ jobs:
                 body: comment
               });
             }
-        env:
-          JOB_STATUS: ${{ job.status }}
 
   # This job will show as pending/required check until all packages have provenance
   provenance-gate:
