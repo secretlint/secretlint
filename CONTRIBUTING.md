@@ -388,7 +388,7 @@ For new packages that have never been published:
    - Configure OIDC trusted publishing automatically
    - Set up the following configuration:
      - Repository: `secretlint/secretlint`
-     - Workflow: `.github/workflows/publish.yml`
+     - Workflow: `.github/workflows/release.yml`
 
 2. **Verify OIDC setup:**
    The `.github/workflows/check-provenance.yml` workflow will automatically verify the configuration on your next PR.

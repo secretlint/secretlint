@@ -186,7 +186,7 @@ jobs:
               comment += '2. Click "Add trusted publisher"\n';
               comment += '3. Configure with:\n';
               comment += '   - Repository: `secretlint/secretlint`\n';
-              comment += '   - Workflow: `.github/workflows/publish.yml`\n';
+              comment += '   - Workflow: `.github/workflows/release.yml`\n';
               comment += '   - Environment: (leave empty)\n';
             }
             
