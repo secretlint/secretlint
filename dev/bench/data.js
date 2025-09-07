@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1757221977874,
+  "lastUpdate": 1757248574785,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -42938,6 +42938,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±1.89%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f30c82d1feda43ffe14d0389b7b958132c4a15d3",
+          "message": "chore(deps): update dependency rollup to ^4.50.0 (#1220)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2025-09-07T12:34:44Z",
+          "tree_id": "99631e5f674ba32182a5b0c8117d2ccbf6a8105f",
+          "url": "https://github.com/secretlint/secretlint/commit/f30c82d1feda43ffe14d0389b7b958132c4a15d3"
+        },
+        "date": 1757248572253,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.69,
+            "range": "±0.64%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±0.48%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
