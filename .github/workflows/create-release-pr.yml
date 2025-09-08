@@ -36,7 +36,20 @@ jobs:
         run: |
           git config --global user.email "${GIT_AUTHOR_EMAIL}"
           git config --global user.name "${GIT_AUTHOR_NAME}"
-          pnpm run ci:versionup:${SEMVER}
+          
+          # Use pnpm to bump version in root package.json
+          pnpm version ${SEMVER} --no-git-tag-version
+          
+          # Get the new version from root package.json
+          NEW_VERSION=$(jq -r '.version' package.json)
+          echo "New version: $NEW_VERSION"
+          
+          # Update all workspace package.json files to match
+          pnpm --recursive exec pnpm pkg set version="$NEW_VERSION"
+          
+          # Commit the version changes
+          git add .
+          git commit -m "chore(release): v$NEW_VERSION"
         env:
           SEMVER: ${{ github.event.inputs.semver }}
           GIT_AUTHOR_NAME: ${{ github.actor }}
