@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-example",
-  "version": "11.2.3",
+  "version": "11.2.4",
   "description": "An example rule for secretlint. It it for testing.",
   "keywords": [
     "secretlint",
