@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1757338613595,
+  "lastUpdate": 1757338777599,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -43014,6 +43014,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.56,
             "range": "±0.98%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "6ed7a71d607b579eef1c944356f70c041931f469",
+          "message": "chore: update release workflow to use pnpm recursive publish directly (#1222)\n\nRemove intermediate ci:release script and use pnpm -r publish --no-git-checks\ndirectly in the GitHub Actions workflow for clearer release process.\n\n🤖 Generated with [Claude Code](https://claude.ai/code)\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2025-09-08T22:38:07+09:00",
+          "tree_id": "426a6801e3621601e4de0f4bfbaee556b05594c9",
+          "url": "https://github.com/secretlint/secretlint/commit/6ed7a71d607b579eef1c944356f70c041931f469"
+        },
+        "date": 1757338775840,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.65,
+            "range": "±0.66%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±3.58%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
