@@ -33,7 +33,6 @@
     "ci:versionup:minor": "pnpm version minor --no-git-tag-version && pnpm --recursive exec pnpm pkg set version=\"`node -p \"JSON.parse(fs.readFileSync('package.json', 'utf8')).version\"`\" && npm run commit-version",
     "ci:versionup:major": "pnpm version major --no-git-tag-version && pnpm --recursive exec pnpm pkg set version=\"`node -p \"JSON.parse(fs.readFileSync('package.json', 'utf8')).version\"`\" && npm run commit-version",
     "commit-version": "git add . && git commit -m \"chore(release): v`node -p 'require(\"./package.json\").version'`\"",
-    "ci:release": "pnpm run build && pnpm -r publish --no-git-checks",
     "build": "turbo run build",
     "build:withoutrule": "turbo run build --ignore=\"packages/@secretlint/*-rule-*\"",
     "updateSnapshot": "turbo run updateSnapshot",

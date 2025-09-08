@@ -69,7 +69,7 @@ jobs:
       - name: Publish with OIDC
         if: steps.tag_check.outputs.exists_tag == 'false'
         run: |
-          pnpm run ci:release
+          pnpm -r publish --no-git-checks
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
