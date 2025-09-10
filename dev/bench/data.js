@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1757366347763,
+  "lastUpdate": 1757470753278,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -43204,6 +43204,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±1.02%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "0ca4aff9d707c8a3a2dc58218a86e840703b78b3",
+          "message": "chore(deps): update rhysd/github-action-benchmark action to v1.20.5 (#1227)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2025-09-10T02:17:49Z",
+          "tree_id": "69963916e1602d5bc7edc1571f413d47ee9980e9",
+          "url": "https://github.com/secretlint/secretlint/commit/0ca4aff9d707c8a3a2dc58218a86e840703b78b3"
+        },
+        "date": 1757470751384,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.68,
+            "range": "±2.07%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±1.29%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
