@@ -39,7 +39,7 @@ jobs:
           app_id: ${{ secrets.APP_ID }}
           private_key: ${{ secrets.PRIVATE_KEY }}
       - name: Store benchmark result
-        uses: rhysd/github-action-benchmark@4e0b38bc48375986542b13c0d8976b7b80c60c00 # v1.20.5
+        uses: rhysd/github-action-benchmark@4bdcce38c94cec68da58d012ac24b7b1155efe8b # v1.20.7
         with:
           name: Secretlint benchmark
           tool: 'benchmarkjs'
