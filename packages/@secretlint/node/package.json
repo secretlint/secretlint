@@ -59,7 +59,7 @@
     "@secretlint/profiler": "workspace:*",
     "@secretlint/source-creator": "workspace:*",
     "@secretlint/types": "workspace:*",
-    "debug": "^4.4.1",
+    "debug": "^4.4.3",
     "p-map": "^7.0.3"
   },
   "devDependencies": {
