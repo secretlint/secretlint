@@ -41,7 +41,7 @@
     "gen:rule": "scaffdog generate new-rule --output packages/ --answer \"owner:$(git config user.name)\" --answer \"version:$(node -e 'console.log(require(\"./package.json\").version)')\""
   },
   "devDependencies": {
-    "lint-staged": "^16.1.6",
+    "lint-staged": "^16.2.0",
     "prettier": "^2.8.8",
     "scaffdog": "^4.1.0",
     "turbo": "^2.5.6",
