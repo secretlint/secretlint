@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1759139196035,
+  "lastUpdate": 1759164351449,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -44002,6 +44002,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±1.53%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "41f791ff6a4c43c78a8b8a09b1548caa52a4a9d6",
+          "message": "chore(deps): update pnpm to v10.17.1 (#1250)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2025-09-29T16:44:21Z",
+          "tree_id": "d2f3063649e6bdcb8cac9d29396e3c323badd258",
+          "url": "https://github.com/secretlint/secretlint/commit/41f791ff6a4c43c78a8b8a09b1548caa52a4a9d6"
+        },
+        "date": 1759164349334,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.59,
+            "range": "±2.55%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±1.32%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
