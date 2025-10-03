@@ -61,7 +61,7 @@
     "@types/node": "^24.5.2",
     "prettier": "^2.8.8",
     "tsconfig-to-dual-package": "^1.2.0",
-    "tsx": "^4.20.5",
+    "tsx": "^4.20.6",
     "typescript": "^5.8.3",
     "vitest": "^2.1.9"
   },
