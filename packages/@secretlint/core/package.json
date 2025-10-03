@@ -62,7 +62,7 @@
     "@types/node": "^24.5.2",
     "assert-json-equal": "^2.0.0",
     "prettier": "^2.8.8",
-    "tsx": "^4.20.5",
+    "tsx": "^4.20.6",
     "typescript": "^5.8.3"
   },
   "engines": {
