@@ -62,7 +62,7 @@
   "dependencies": {
     "@secretlint/types": "workspace:*",
     "@types/bn.js": "^5.2.0",
-    "@types/secp256k1": "^4.0.6",
+    "@types/secp256k1": "^4.0.7",
     "bn.js": "^5.2.2",
     "secp256k1": "^5.0.1"
   },
