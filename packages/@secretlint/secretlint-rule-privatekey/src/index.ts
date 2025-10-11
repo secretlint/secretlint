@@ -29,9 +29,14 @@ export type Options = {
  * Length constraint {100,10000} (heuristic):
  * - Minimum 100: Heuristically excludes short placeholders (smallest real key ECDSA-256 ≈ 288 chars)
  * - Maximum 10000: Heuristically prevents catastrophic backtracking and extremely large inputs
+ *
+ * Character class [A-Za-z0-9+/=\s\\]:
+ * - Restricts to Base64 characters, whitespace, and backslash to prevent ReDoS attacks
+ * - Backslash included to handle JSON escape sequences (\n, \r, \t)
+ * - Fails fast on invalid characters, reducing backtracking complexity
  */
 const PEM_CONTENT_PATTERN =
-    /-----BEGIN\s?(?:(?:DSA|RSA|EC|PGP|OPENSSH|[A-Z]{2,16})?\s?PRIVATE KEY(?:\sBLOCK)?)-----\n?([\s\S]{100,10000}?)\n?-----END\s?(?:(?:DSA|RSA|EC|PGP|OPENSSH|[A-Z]{2,16})?\s?PRIVATE KEY(?:\sBLOCK)?)-----/gm;
+    /-----BEGIN\s?(?:(?:DSA|RSA|EC|PGP|OPENSSH|[A-Z]{2,16})?\s?PRIVATE KEY(?:\sBLOCK)?)-----\n?([A-Za-z0-9+/=\s\\]{100,10000}?)\n?-----END\s?(?:(?:DSA|RSA|EC|PGP|OPENSSH|[A-Z]{2,16})?\s?PRIVATE KEY(?:\sBLOCK)?)-----/gm;
 
 /**
  * Validate if the Base64 content is a real private key or a placeholder
