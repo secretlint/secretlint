@@ -1,1 +1,6 @@
-[]
+{
+    "filePath": "[SNAPSHOT]/placeholder-short-base64/input",
+    "messages": [],
+    "sourceContent": "-----BEGIN PRIVATE KEY-----\nYWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXo=\n-----END PRIVATE KEY-----\n",
+    "sourceContentType": "text"
+}

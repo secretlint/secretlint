@@ -1,1 +1,6 @@
-[]
+{
+    "filePath": "[SNAPSHOT]/placeholder-xxx/input",
+    "messages": [],
+    "sourceContent": "-----BEGIN PRIVATE KEY-----\nxxx\n-----END PRIVATE KEY-----\n",
+    "sourceContentType": "text"
+}

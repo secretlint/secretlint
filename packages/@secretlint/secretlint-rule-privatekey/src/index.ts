@@ -21,6 +21,57 @@ export type Options = {
     allows?: string[];
 };
 
+/**
+ * Validate if the PEM content is a real private key or a placeholder
+ * Based on Base64 validation approach without decoding
+ * @param pemContent - The full PEM content including headers
+ * @returns true if it's likely a real private key, false if it's a placeholder
+ */
+function validatePrivateKey(pemContent: string): boolean {
+    // 1. PEM header/footer confirmation and Base64 extraction
+    // Match the same pattern as PRIVATE_KEY_PATTERN
+    const pemMatch = pemContent.match(
+        /-----BEGIN\s?((?:DSA|RSA|EC|PGP|OPENSSH|[A-Z]{2,16})?\s?PRIVATE KEY(?:\sBLOCK)?)-----[\s\S]*?-----END\s?\1-----/
+    );
+
+    if (!pemMatch) {
+        return false;
+    }
+
+    // Extract content between headers
+    const contentMatch = pemContent.match(
+        /-----BEGIN\s?(?:(?:DSA|RSA|EC|PGP|OPENSSH|[A-Z]{2,16})?\s?PRIVATE KEY(?:\sBLOCK)?)-----\n?([\s\S]+?)\n?-----END\s?(?:(?:DSA|RSA|EC|PGP|OPENSSH|[A-Z]{2,16})?\s?PRIVATE KEY(?:\sBLOCK)?)-----/
+    );
+
+    if (!contentMatch || !contentMatch[1]) {
+        return false;
+    }
+
+    // Remove whitespace and escaped newlines (from JSON strings)
+    const base64Content = contentMatch[1].replace(/\s|\\n/g, "");
+
+    // 2. Base64 format validation
+    if (!/^[A-Za-z0-9+/]+=*$/.test(base64Content)) {
+        return false;
+    }
+
+    // 3. Minimum length check (Base64 100 chars = ~75 bytes decoded)
+    if (base64Content.length < 100) {
+        return false;
+    }
+
+    // 4. Magic byte check (in Base64)
+    // ASN.1 format: 0x30 → "MI*" (SEQUENCE tag)
+    // OpenSSH format: "openssh-key-v1\0" → "b3BlbnNzaC1rZXktdjE"
+    const validMagicBytes = /^(MI|b3BlbnNzaC1rZXktdjE)/;
+
+    if (!validMagicBytes.test(base64Content)) {
+        return false;
+    }
+
+    return true;
+}
+
 function reportIfFoundRawPrivateKey({
     source,
     options,
@@ -42,6 +93,10 @@ function reportIfFoundRawPrivateKey({
         const range = [index, index + match.length] as const;
         const allowedResults = matchPatterns(match, options.allows);
         if (allowedResults.length > 0) {
+            continue;
+        }
+        // Validate if the matched content is a real private key
+        if (!validatePrivateKey(match)) {
             continue;
         }
         context.report({
