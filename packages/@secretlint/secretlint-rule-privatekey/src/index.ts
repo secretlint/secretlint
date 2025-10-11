@@ -34,9 +34,14 @@ export type Options = {
  * - Restricts to Base64 characters, whitespace, and backslash to prevent ReDoS attacks
  * - Backslash included to handle JSON escape sequences (\n, \r, \t)
  * - Fails fast on invalid characters, reducing backtracking complexity
+ *
+ * ReDoS mitigation:
+ * - Uses greedy quantifier (no ?) to reduce backtracking ambiguity
+ * - Simplified optional parts to minimize exponential complexity
+ * - Length limit ensures bounded execution time
  */
 const PEM_CONTENT_PATTERN =
-    /-----BEGIN\s?(?:(?:DSA|RSA|EC|PGP|OPENSSH|[A-Z]{2,16})?\s?PRIVATE KEY(?:\sBLOCK)?)-----\n?([A-Za-z0-9+/=\s\\]{100,10000}?)\n?-----END\s?(?:(?:DSA|RSA|EC|PGP|OPENSSH|[A-Z]{2,16})?\s?PRIVATE KEY(?:\sBLOCK)?)-----/gm;
+    /-----BEGIN[ ]?(?:(?:RSA|DSA|EC|OPENSSH|PGP) )?PRIVATE KEY(?: BLOCK)?-----\n?([A-Za-z0-9+/=\s\\]{100,10000})\n?-----END[ ]?(?:(?:RSA|DSA|EC|OPENSSH|PGP) )?PRIVATE KEY(?: BLOCK)?-----/gm;
 
 /**
  * Validate if the Base64 content is a real private key or a placeholder
