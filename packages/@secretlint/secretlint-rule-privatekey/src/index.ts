@@ -25,6 +25,10 @@ export type Options = {
  * Regular expression to detect private keys and extract Base64 content in one pass
  * Based on https://docs.cribl.io/docs/regexesyml
  * Captures the Base64 content (group 1) between BEGIN and END markers
+ *
+ * Length constraint {100,10000} (heuristic):
+ * - Minimum 100: Heuristically excludes short placeholders (smallest real key ECDSA-256 ≈ 288 chars)
+ * - Maximum 10000: Heuristically prevents catastrophic backtracking and extremely large inputs
  */
 const PEM_CONTENT_PATTERN =
     /-----BEGIN\s?(?:(?:DSA|RSA|EC|PGP|OPENSSH|[A-Z]{2,16})?\s?PRIVATE KEY(?:\sBLOCK)?)-----\n?([\s\S]{100,10000}?)\n?-----END\s?(?:(?:DSA|RSA|EC|PGP|OPENSSH|[A-Z]{2,16})?\s?PRIVATE KEY(?:\sBLOCK)?)-----/gm;
