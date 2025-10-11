@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1760174479482,
+  "lastUpdate": 1760175010811,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -44724,6 +44724,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±3.18%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "72fd8a2806af59bbc7af4208ff443aaa448a48e3",
+          "message": "fix: mitigate ReDoS by simplifying regex pattern (#1270)\n\n- Remove lazy quantifier (? suffix) to use greedy matching\n- Replace [A-Z]{2,16}? with explicit key type list (RSA|DSA|EC|OPENSSH|PGP)\n- Change \\s? to [ ]? to match only single space character\n- Simplify nested optional groups to reduce exponential complexity\n- Addresses CodeQL security alert CWE-1333 (ReDoS)",
+          "timestamp": "2025-10-11T18:28:39+09:00",
+          "tree_id": "86a2dac9802d163ec182c80ef730d3ac7f78fbbc",
+          "url": "https://github.com/secretlint/secretlint/commit/72fd8a2806af59bbc7af4208ff443aaa448a48e3"
+        },
+        "date": 1760175008335,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.59,
+            "range": "±0.83%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±0.53%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
