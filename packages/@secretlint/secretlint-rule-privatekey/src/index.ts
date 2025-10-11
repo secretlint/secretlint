@@ -22,6 +22,20 @@ export type Options = {
 };
 
 /**
+ * Regular expression patterns for private key detection
+ * Based on https://docs.cribl.io/docs/regexesyml
+ */
+const PRIVATE_KEY_PATTERN =
+    /-----BEGIN\s?((?:DSA|RSA|EC|PGP|OPENSSH|[A-Z]{2,16})?\s?PRIVATE KEY(?:\sBLOCK)?)-----[\s\S]{1,10000}?-----END\s?\1-----/gm;
+
+/**
+ * Regular expression to extract Base64 content from PEM format
+ * Captures the content between BEGIN and END markers
+ */
+const PEM_CONTENT_PATTERN =
+    /-----BEGIN\s?(?:(?:DSA|RSA|EC|PGP|OPENSSH|[A-Z]{2,16})?\s?PRIVATE KEY(?:\sBLOCK)?)-----\n?([\s\S]+?)\n?-----END\s?(?:(?:DSA|RSA|EC|PGP|OPENSSH|[A-Z]{2,16})?\s?PRIVATE KEY(?:\sBLOCK)?)-----/;
+
+/**
  * Validate if the PEM content is a real private key or a placeholder
  * Based on Base64 validation approach without decoding
  *
@@ -44,19 +58,7 @@ export type Options = {
  */
 function validatePrivateKey(pemContent: string): boolean {
     // 1. PEM header/footer confirmation and Base64 extraction
-    // Match the same pattern as PRIVATE_KEY_PATTERN
-    const pemMatch = pemContent.match(
-        /-----BEGIN\s?((?:DSA|RSA|EC|PGP|OPENSSH|[A-Z]{2,16})?\s?PRIVATE KEY(?:\sBLOCK)?)-----[\s\S]*?-----END\s?\1-----/
-    );
-
-    if (!pemMatch) {
-        return false;
-    }
-
-    // Extract content between headers
-    const contentMatch = pemContent.match(
-        /-----BEGIN\s?(?:(?:DSA|RSA|EC|PGP|OPENSSH|[A-Z]{2,16})?\s?PRIVATE KEY(?:\sBLOCK)?)-----\n?([\s\S]+?)\n?-----END\s?(?:(?:DSA|RSA|EC|PGP|OPENSSH|[A-Z]{2,16})?\s?PRIVATE KEY(?:\sBLOCK)?)-----/
-    );
+    const contentMatch = pemContent.match(PEM_CONTENT_PATTERN);
 
     if (!contentMatch || !contentMatch[1]) {
         return false;
@@ -100,9 +102,6 @@ function reportIfFoundRawPrivateKey({
     context: SecretLintRuleContext;
     t: SecretLintRuleMessageTranslate<typeof messages>;
 }) {
-    // Based on https://docs.cribl.io/docs/regexesyml
-    const PRIVATE_KEY_PATTERN =
-        /-----BEGIN\s?((?:DSA|RSA|EC|PGP|OPENSSH|[A-Z]{2,16})?\s?PRIVATE KEY(\sBLOCK)?)-----[\s\S]{1,10000}?-----END\s?\1-----/gm;
     const results = source.content.matchAll(PRIVATE_KEY_PATTERN);
     for (const result of results) {
         const index = result.index || 0;
