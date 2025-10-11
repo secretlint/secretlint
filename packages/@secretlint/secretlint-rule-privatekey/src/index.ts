@@ -24,6 +24,21 @@ export type Options = {
 /**
  * Validate if the PEM content is a real private key or a placeholder
  * Based on Base64 validation approach without decoding
+ *
+ * References:
+ * - RFC 7468: Textual Encodings of PKIX, PKCS, and CMS Structures
+ *   https://tools.ietf.org/html/rfc7468
+ * - RFC 4648: The Base16, Base32, and Base64 Data Encodings
+ *   https://datatracker.ietf.org/doc/html/rfc4648
+ * - RFC 5208: PKCS #8: Private-Key Information Syntax v1.2
+ *   https://datatracker.ietf.org/doc/html/rfc5208
+ * - RFC 5958: Asymmetric Key Packages
+ *   https://datatracker.ietf.org/doc/html/rfc5958
+ * - RFC 3447: PKCS #1: RSA Cryptography Specifications v2.1
+ *   https://datatracker.ietf.org/doc/html/rfc3447
+ * - OpenSSH PROTOCOL.key
+ *   https://github.com/openssh/openssh-portable/blob/master/PROTOCOL.key
+ *
  * @param pemContent - The full PEM content including headers
  * @returns true if it's likely a real private key, false if it's a placeholder
  */
@@ -50,18 +65,20 @@ function validatePrivateKey(pemContent: string): boolean {
     // Remove whitespace and escaped newlines (from JSON strings)
     const base64Content = contentMatch[1].replace(/\s|\\n/g, "");
 
-    // 2. Base64 format validation
+    // 2. Base64 format validation (RFC 4648)
+    // Reject non-Base64 characters like "...", "***", "xxx"
     if (!/^[A-Za-z0-9+/]+=*$/.test(base64Content)) {
         return false;
     }
 
     // 3. Minimum length check (Base64 100 chars = ~75 bytes decoded)
+    // Real keys are much longer: RSA-1024 ≈ 800 chars, EC-256 ≈ 120 chars
     if (base64Content.length < 100) {
         return false;
     }
 
     // 4. Magic byte check (in Base64)
-    // ASN.1 format: 0x30 → "MI*" (SEQUENCE tag)
+    // ASN.1 format (PKCS#1, PKCS#8, SEC1): 0x30 (SEQUENCE) → "MI*"
     // OpenSSH format: "openssh-key-v1\0" → "b3BlbnNzaC1rZXktdjE"
     const validMagicBytes = /^(MI|b3BlbnNzaC1rZXktdjE)/;
 
