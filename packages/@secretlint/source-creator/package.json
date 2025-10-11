@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/source-creator",
-  "version": "11.2.4",
+  "version": "11.2.5",
   "description": "Create SecretLintRawSource from content.",
   "keywords": [
     "secretlint",

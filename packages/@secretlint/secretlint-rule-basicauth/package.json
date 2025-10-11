@@ -1,6 +1,6 @@
 {
   "name": "@secretlint/secretlint-rule-basicauth",
-  "version": "11.2.4",
+  "version": "11.2.5",
   "description": "A secretlint rule that check Basic Authentication.",
   "keywords": [
     "secretlint",
