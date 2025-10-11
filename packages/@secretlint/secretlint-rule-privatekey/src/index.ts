@@ -27,7 +27,7 @@ export type Options = {
  * Captures the Base64 content (group 1) between BEGIN and END markers
  */
 const PEM_CONTENT_PATTERN =
-    /-----BEGIN\s?(?:(?:DSA|RSA|EC|PGP|OPENSSH|[A-Z]{2,16})?\s?PRIVATE KEY(?:\sBLOCK)?)-----\n?([\s\S]+?)\n?-----END\s?(?:(?:DSA|RSA|EC|PGP|OPENSSH|[A-Z]{2,16})?\s?PRIVATE KEY(?:\sBLOCK)?)-----/;
+    /-----BEGIN\s?(?:(?:DSA|RSA|EC|PGP|OPENSSH|[A-Z]{2,16})?\s?PRIVATE KEY(?:\sBLOCK)?)-----\n?([\s\S]+?)\n?-----END\s?(?:(?:DSA|RSA|EC|PGP|OPENSSH|[A-Z]{2,16})?\s?PRIVATE KEY(?:\sBLOCK)?)-----/gm;
 
 /**
  * Validate if the Base64 content is a real private key or a placeholder
@@ -87,8 +87,7 @@ function reportIfFoundRawPrivateKey({
     t: SecretLintRuleMessageTranslate<typeof messages>;
 }) {
     // Use PEM_CONTENT_PATTERN to extract both full match and Base64 content in one pass
-    const pattern = new RegExp(PEM_CONTENT_PATTERN, "g");
-    const results = source.content.matchAll(pattern);
+    const results = source.content.matchAll(PEM_CONTENT_PATTERN);
     for (const result of results) {
         const index = result.index || 0;
         const match = result[0] || "";
