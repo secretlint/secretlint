@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1760143045738,
+  "lastUpdate": 1760174479482,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -44686,6 +44686,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±0.57%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "26cd2fa19e7effab5a8164d50b1d42e76ac3308f",
+          "message": "fix(private-key): reduce false positives for placeholder private keys (#1269)\n\n* test: add failing test cases for placeholder private keys\n\nAdd test cases for issue #1235 to detect false positives:\n- placeholder-dots: \"...\" placeholder\n- placeholder-xxx: \"xxx\" placeholder\n- placeholder-stars: \"***\" placeholder\n- placeholder-short-base64: short base64 string that's too short for real key\n\nThese tests currently fail and will be fixed in the next commit.\n\nRelated: #1235\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* feat: reduce false positives for placeholder private keys\n\nImplement validatePrivateKey function to filter out placeholder keys:\n\n1. Base64 format validation - reject non-Base64 characters (e.g., \"...\", \"***\", \"xxx\")\n2. Minimum length check - reject keys shorter than 100 Base64 chars (~75 bytes)\n3. Magic byte validation - require valid ASN.1 (MI*) or OpenSSH format markers\n\nThis fixes issue #1235 where placeholder keys like:\n- \"-----BEGIN PRIVATE KEY-----\\n...\\n-----END PRIVATE KEY-----\"\n- \"-----BEGIN PRIVATE KEY-----\\nxxx\\n-----END PRIVATE KEY-----\"\n\nwere incorrectly flagged as real private keys.\n\nReal private keys are still detected correctly, including:\n- RSA, EC, DSA, OpenSSH formats\n- Keys embedded in JSON strings (with escaped \\n)\n- All existing test cases pass\n\nFixes #1235\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* docs: add specification references to validatePrivateKey\n\nAdd RFC and specification links to validatePrivateKey function comments:\n- RFC 7468: PEM format\n- RFC 4648: Base64 encoding\n- RFC 5208, 5958, 3447: PKCS#8, PKCS#1 key formats\n- OpenSSH PROTOCOL.key\n\nAlso enhance inline comments with more context about validation steps.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* refactor: extract duplicate regex patterns to constants\n\nExtract duplicate regular expression patterns to module-level constants:\n- PRIVATE_KEY_PATTERN: Main pattern for detecting private keys\n- PEM_CONTENT_PATTERN: Pattern for extracting Base64 content\n\nThis reduces code duplication and improves maintainability:\n- Single source of truth for regex patterns\n- Easier to update patterns consistently\n- Better code readability\n\nAll tests pass, no functional changes.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* perf: optimize regex evaluation to single pass\n\nOptimize private key detection to evaluate regex only once per key:\n\nBefore:\n- First pass: PRIVATE_KEY_PATTERN matches full PEM\n- Second pass: PEM_CONTENT_PATTERN extracts Base64 content\n- Function call overhead for validatePrivateKey\n\nAfter:\n- Single pass: PEM_CONTENT_PATTERN matches and captures in one go\n- Direct inline validation without function call overhead\n- Capture group [1] provides Base64 content immediately\n\nPerformance improvements:\n- Reduced regex evaluations from 2 to 1 per key\n- Eliminated function call overhead\n- More efficient memory usage\n\nRenamed function:\n- validatePrivateKey → validateBase64KeyContent\n  (reflects that it now receives pre-extracted Base64)\n\nAll tests pass, no functional changes.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\n\n* refactor: remove unnecessary RegExp constructor\n\n- Use gm flags directly in pattern definition\n- Eliminate redundant RegExp instantiation\n- matchAll() preserves match.index correctly with shared pattern\n\n* perf: add length constraint to regex pattern\n\n- Add {100,10000} to prevent matching very short placeholders at regex level\n- Reduces unnecessary validation calls for obviously invalid keys\n- validateBase64KeyContent length check still needed for whitespace-stripped validation\n\n* docs: clarify heuristic nature of length constraints\n\n- Add (heuristic) label to length constraint comment\n- Emphasize empirical basis of 100 and 10000 values\n\n* fix: prevent ReDoS by restricting character class\n\n- Change [\\s\\S] to [A-Za-z0-9+/=\\s\\] to limit matched characters\n- Include backslash for JSON escape sequences (\\n, \\r, \\t)\n- Fails fast on invalid characters, reducing backtracking\n- Addresses CodeQL security alert for polynomial regex\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2025-10-11T18:19:50+09:00",
+          "tree_id": "40da68fadaf8f210fcdfba28c86eba847c26e5c5",
+          "url": "https://github.com/secretlint/secretlint/commit/26cd2fa19e7effab5a8164d50b1d42e76ac3308f"
+        },
+        "date": 1760174476959,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.69,
+            "range": "±0.60%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±3.18%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
