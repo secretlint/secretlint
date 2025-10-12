@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1760216207004,
+  "lastUpdate": 1760230782112,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -44914,6 +44914,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±0.81%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b11ea8f7969d68de1b4f4b2032127c30cdc86d65",
+          "message": "CI: improve check-provenance.yml workflow (#1273)",
+          "timestamp": "2025-10-12T00:58:12Z",
+          "tree_id": "77b319b18ea17ff6517e3aa3f839c828c7626a09",
+          "url": "https://github.com/secretlint/secretlint/commit/b11ea8f7969d68de1b4f4b2032127c30cdc86d65"
+        },
+        "date": 1760230780161,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.63,
+            "range": "±2.93%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±1.30%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
