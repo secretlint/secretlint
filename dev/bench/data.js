@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1760230782112,
+  "lastUpdate": 1760382365032,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -44952,6 +44952,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±1.30%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b063164ee4724c24aa9921a39f76a91dde5316fb",
+          "message": "chore(deps): update patch updates (#1274)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2025-10-13T19:04:37Z",
+          "tree_id": "b59b718e929760e590b9fed49ff52c4eeaa57a13",
+          "url": "https://github.com/secretlint/secretlint/commit/b063164ee4724c24aa9921a39f76a91dde5316fb"
+        },
+        "date": 1760382362347,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.61,
+            "range": "±1.48%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±1.82%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
