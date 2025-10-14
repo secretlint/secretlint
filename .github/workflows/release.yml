@@ -85,7 +85,7 @@ jobs:
       - name: Create Release
         id: create_release
         if: steps.tag_check.outputs.exists_tag == 'false' && github.event.pull_request.merged == true
-        uses: softprops/action-gh-release@62c96d0c4e8a889135c1f3a25910db8dbe0e85f7 # v2.3.4
+        uses: softprops/action-gh-release@aec2ec56f94eb8180ceec724245f64ef008b89f5 # v2.4.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
