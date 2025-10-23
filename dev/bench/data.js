@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1761105967484,
+  "lastUpdate": 1761198668619,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -45408,6 +45408,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.56,
             "range": "±2.15%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c198ad15a4492d1980cac3ef7e94a16a8b102344",
+          "message": "chore(deps): update dependency @rollup/plugin-commonjs to ^28.0.8 (#1287)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2025-10-23T05:49:34Z",
+          "tree_id": "b65d043ef5b116929c0e6e705ae0b75116f592c5",
+          "url": "https://github.com/secretlint/secretlint/commit/c198ad15a4492d1980cac3ef7e94a16a8b102344"
+        },
+        "date": 1761198666428,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.69,
+            "range": "±0.56%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±1.63%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
