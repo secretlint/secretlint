@@ -61,7 +61,7 @@
   },
   "devDependencies": {
     "@secretlint/types": "workspace:*",
-    "@types/node": "^24.8.0",
+    "@types/node": "^24.8.1",
     "escape-string-regexp": "^5.0.0",
     "prettier": "^2.8.8",
     "tsx": "^4.20.6",
