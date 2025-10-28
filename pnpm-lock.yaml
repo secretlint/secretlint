@@ -67,7 +67,7 @@ importers:
         version: link:../types
     devDependencies:
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -110,7 +110,7 @@ importers:
         specifier: ^4.1.12
         version: 4.1.12
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       create-validator-ts:
         specifier: ^6.0.1
@@ -144,7 +144,7 @@ importers:
         specifier: ^4.1.12
         version: 4.1.12
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       assert-json-equal:
         specifier: ^2.0.0
@@ -199,7 +199,7 @@ importers:
         specifier: ^4.1.12
         version: 4.1.12
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       '@types/pluralize':
         specifier: 0.0.33
@@ -227,7 +227,7 @@ importers:
         version: link:../types
     devDependencies:
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -273,7 +273,7 @@ importers:
         specifier: ^4.1.12
         version: 4.1.12
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -288,7 +288,7 @@ importers:
   packages/@secretlint/profiler:
     devDependencies:
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -310,7 +310,7 @@ importers:
         version: link:../../secretlint
     devDependencies:
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -322,7 +322,7 @@ importers:
   packages/@secretlint/resolver:
     devDependencies:
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -344,7 +344,7 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       escape-string-regexp:
         specifier: ^5.0.0
@@ -372,7 +372,7 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -394,7 +394,7 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -419,7 +419,7 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -444,7 +444,7 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -469,7 +469,7 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -494,7 +494,7 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^20.19.22
+        specifier: ^20.19.23
         version: 20.19.23
       prettier:
         specifier: ^2.8.1
@@ -516,7 +516,7 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -541,7 +541,7 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -569,7 +569,7 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       '@types/node-forge':
         specifier: ^1.3.14
@@ -597,7 +597,7 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -639,7 +639,7 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -661,7 +661,7 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -689,7 +689,7 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -717,7 +717,7 @@ importers:
         specifier: ^4.0.9
         version: 4.0.9
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -742,7 +742,7 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -764,7 +764,7 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -789,7 +789,7 @@ importers:
         version: 2.0.2
     devDependencies:
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -864,7 +864,7 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -951,7 +951,7 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -985,7 +985,7 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -1019,7 +1019,7 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -1044,7 +1044,7 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -1069,7 +1069,7 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -1094,7 +1094,7 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -1116,7 +1116,7 @@ importers:
         version: 9.5.0
     devDependencies:
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -1144,7 +1144,7 @@ importers:
         version: link:../types
     devDependencies:
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -1159,7 +1159,7 @@ importers:
   packages/@secretlint/types:
     devDependencies:
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
@@ -1217,7 +1217,7 @@ importers:
         specifier: ^4.1.12
         version: 4.1.12
       '@types/node':
-        specifier: ^24.9.0
+        specifier: ^24.9.1
         version: 24.9.1
       prettier:
         specifier: ^2.8.8
