@@ -810,8 +810,8 @@ importers:
         specifier: ^15.3.1
         version: 15.3.1(rollup@4.52.5)
       '@rollup/plugin-typescript':
-        specifier: ^12.1.4
-        version: 12.1.4(rollup@4.52.5)(tslib@2.8.1)(typescript@5.9.2)
+        specifier: ^12.2.0
+        version: 12.3.0(rollup@4.52.5)(tslib@2.8.1)(typescript@5.9.2)
       '@secretlint/secretlint-rule-1password':
         specifier: workspace:*
         version: link:../secretlint-rule-1password
@@ -894,8 +894,8 @@ importers:
         specifier: ^16.0.3
         version: 16.0.3(rollup@4.52.5)
       '@rollup/plugin-typescript':
-        specifier: ^12.1.4
-        version: 12.1.4(rollup@4.52.5)(tslib@2.8.1)(typescript@5.9.2)
+        specifier: ^12.2.0
+        version: 12.3.0(rollup@4.52.5)(tslib@2.8.1)(typescript@5.9.2)
       '@secretlint/secretlint-rule-1password':
         specifier: workspace:*
         version: link:../secretlint-rule-1password
@@ -1637,8 +1637,8 @@ packages:
       rollup:
         optional: true
 
-  '@rollup/plugin-typescript@12.1.4':
-    resolution: {integrity: sha512-s5Hx+EtN60LMlDBvl5f04bEiFZmAepk27Q+mr85L/00zPDn1jtzlTV6FWn81MaIwqfWzKxmOJrBWHU6vtQyedQ==}
+  '@rollup/plugin-typescript@12.3.0':
+    resolution: {integrity: sha512-7DP0/p7y3t67+NabT9f8oTBFE6gGkto4SA6Np2oudYmZE/m1dt8RB0SjL1msMxFpLo631qjRCcBlAbq1ml/Big==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       rollup: ^2.14.0||^3.0.0||^4.0.0
@@ -3898,7 +3898,7 @@ snapshots:
     optionalDependencies:
       rollup: 4.52.5
 
-  '@rollup/plugin-typescript@12.1.4(rollup@4.52.5)(tslib@2.8.1)(typescript@5.9.2)':
+  '@rollup/plugin-typescript@12.3.0(rollup@4.52.5)(tslib@2.8.1)(typescript@5.9.2)':
     dependencies:
       '@rollup/pluginutils': 5.2.0(rollup@4.52.5)
       resolve: 1.22.10
