@@ -810,7 +810,7 @@ importers:
         specifier: ^15.3.1
         version: 15.3.1(rollup@4.52.5)
       '@rollup/plugin-typescript':
-        specifier: ^12.2.0
+        specifier: ^12.3.0
         version: 12.3.0(rollup@4.52.5)(tslib@2.8.1)(typescript@5.9.2)
       '@secretlint/secretlint-rule-1password':
         specifier: workspace:*
@@ -894,7 +894,7 @@ importers:
         specifier: ^16.0.3
         version: 16.0.3(rollup@4.52.5)
       '@rollup/plugin-typescript':
-        specifier: ^12.2.0
+        specifier: ^12.3.0
         version: 12.3.0(rollup@4.52.5)(tslib@2.8.1)(typescript@5.9.2)
       '@secretlint/secretlint-rule-1password':
         specifier: workspace:*

@@ -60,7 +60,7 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.8",
     "@rollup/plugin-node-resolve": "^16.0.3",
-    "@rollup/plugin-typescript": "^12.2.0",
+    "@rollup/plugin-typescript": "^12.3.0",
     "@secretlint/secretlint-rule-1password": "workspace:*",
     "@secretlint/secretlint-rule-anthropic": "workspace:*",
     "@secretlint/secretlint-rule-aws": "workspace:*",
