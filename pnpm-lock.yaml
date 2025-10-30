@@ -9,7 +9,7 @@ importers:
   .:
     devDependencies:
       lint-staged:
-        specifier: ^16.2.5
+        specifier: ^16.2.6
         version: 16.2.6
       prettier:
         specifier: ^2.8.8
