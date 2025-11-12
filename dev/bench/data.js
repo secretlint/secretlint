@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1762750159828,
+  "lastUpdate": 1762981244736,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -46130,6 +46130,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±1.09%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ef8be38030c070c31a9585e3409d77b600d9193b",
+          "message": "chore(deps): update docker/setup-qemu-action action to v3.7.0 (#1308)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2025-11-12T20:59:14Z",
+          "tree_id": "4de4d59e0acef454a10e490f3e22f20e3d0f8af7",
+          "url": "https://github.com/secretlint/secretlint/commit/ef8be38030c070c31a9585e3409d77b600d9193b"
+        },
+        "date": 1762981242605,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.58,
+            "range": "±0.64%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.56,
+            "range": "±0.51%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
