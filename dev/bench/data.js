@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1762981244736,
+  "lastUpdate": 1763171609509,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -46168,6 +46168,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.56,
             "range": "±0.51%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "90f7c90e381bdbc1807ad9fefcfdc56c2efdeed6",
+          "message": "chore(deps): update dependency js-yaml to v4.1.1 [security] (#1310)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2025-11-15T01:51:59Z",
+          "tree_id": "a7fa1f9e04e52f85fbe61e41c8f747817d41835d",
+          "url": "https://github.com/secretlint/secretlint/commit/90f7c90e381bdbc1807ad9fefcfdc56c2efdeed6"
+        },
+        "date": 1763171606655,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.82,
+            "range": "±2.82%",
+            "unit": "ops/sec",
+            "extra": "12 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±1.18%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
