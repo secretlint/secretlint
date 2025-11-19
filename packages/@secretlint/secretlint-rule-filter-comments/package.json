@@ -63,7 +63,7 @@
   "devDependencies": {
     "@secretlint/secretlint-rule-pattern": "workspace:*",
     "@secretlint/tester": "workspace:*",
-    "@types/node": "^24.10.0",
+    "@types/node": "^24.10.1",
     "prettier": "^2.8.8",
     "tsx": "^4.20.6",
     "typescript": "^5.8.3"

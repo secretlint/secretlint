@@ -60,7 +60,7 @@
   "devDependencies": {
     "@secretlint/tester": "workspace:*",
     "@types/js-yaml": "^4.0.9",
-    "@types/node": "^24.10.0",
+    "@types/node": "^24.10.1",
     "prettier": "^2.8.8",
     "tsx": "^4.20.6",
     "typescript": "^5.8.3"
