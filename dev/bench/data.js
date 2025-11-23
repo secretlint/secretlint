@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1763703343454,
+  "lastUpdate": 1763919958476,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -46586,6 +46586,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±1.44%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "9c16bd9f4848f1c24aebc396186dcd9bf13487b8",
+          "message": "fix(deps): update dependency node-sarif-builder to ^3.3.0 (#1321)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2025-11-23T17:44:25Z",
+          "tree_id": "e7922cda474a92e7aa320bb80a0fe9511d60f966",
+          "url": "https://github.com/secretlint/secretlint/commit/9c16bd9f4848f1c24aebc396186dcd9bf13487b8"
+        },
+        "date": 1763919956464,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.6,
+            "range": "±0.74%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±1.00%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
