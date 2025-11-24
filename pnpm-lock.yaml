@@ -168,13 +168,13 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@textlint/linter-formatter':
-        specifier: ^15.3.0
+        specifier: ^15.4.0
         version: 15.4.0
       '@textlint/module-interop':
-        specifier: ^15.3.0
+        specifier: ^15.4.0
         version: 15.4.0
       '@textlint/types':
-        specifier: ^15.3.0
+        specifier: ^15.4.0
         version: 15.4.0
       chalk:
         specifier: ^5.6.2
