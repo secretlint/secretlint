@@ -80,7 +80,7 @@
     "@types/node": "^24.10.1",
     "prettier": "^2.8.8",
     "rimraf": "^6.1.0",
-    "rollup": "^4.53.2",
+    "rollup": "^4.53.3",
     "rollup-plugin-polyfill-node": "^0.13.0",
     "tsx": "^4.20.6",
     "typescript": "^5.8.3"
