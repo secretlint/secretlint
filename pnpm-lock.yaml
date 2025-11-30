@@ -337,7 +337,7 @@ importers:
   packages/@secretlint/secretlint-formatter-sarif:
     dependencies:
       node-sarif-builder:
-        specifier: ^3.3.0
+        specifier: ^3.3.1
         version: 3.3.1
     devDependencies:
       '@secretlint/types':
