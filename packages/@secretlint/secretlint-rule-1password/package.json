@@ -58,7 +58,7 @@
     "@secretlint/tester": "workspace:*",
     "@types/node": "^24.10.1",
     "prettier": "^2.8.8",
-    "tsx": "^4.20.6",
+    "tsx": "^4.21.0",
     "typescript": "^5.8.3"
   },
   "engines": {
