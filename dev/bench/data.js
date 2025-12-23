@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1766493223561,
+  "lastUpdate": 1766522071940,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -47726,6 +47726,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±1.25%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "59b9ac6ca27dae0558f8f4e88ed1abe00770681d",
+          "message": "chore(deps): update docker/setup-buildx-action action to v3.12.0 (#1353)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2025-12-23T20:33:06Z",
+          "tree_id": "b6d4752c6fef48b10ae8c5cef383d4d599b97288",
+          "url": "https://github.com/secretlint/secretlint/commit/59b9ac6ca27dae0558f8f4e88ed1abe00770681d"
+        },
+        "date": 1766522069891,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.76,
+            "range": "±0.78%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±1.67%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
