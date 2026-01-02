@@ -57,7 +57,7 @@
     "trailingComma": "none"
   },
   "dependencies": {
-    "node-sarif-builder": "^3.3.1"
+    "node-sarif-builder": "^3.4.0"
   },
   "devDependencies": {
     "@secretlint/types": "workspace:*",
