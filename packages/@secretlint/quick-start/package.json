@@ -60,7 +60,7 @@
         "secretlint": "workspace:*"
     },
     "devDependencies": {
-        "@types/node": "^24.10.6",
+        "@types/node": "^24.10.7",
         "prettier": "^2.8.8",
         "typescript": "^5.8.3"
     },
