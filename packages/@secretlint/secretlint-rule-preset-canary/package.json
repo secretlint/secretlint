@@ -1,94 +1,94 @@
 {
-  "name": "@secretlint/secretlint-rule-preset-canary",
-  "version": "11.2.5",
-  "description": "Canary rule preset of secretlint.",
-  "keywords": [
-    "secretlint",
-    "rule",
-    "rule-preset"
-  ],
-  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-preset-canary/",
-  "bugs": {
-    "url": "https://github.com/secretlint/secretlint/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/secretlint/secretlint.git"
-  },
-  "license": "MIT",
-  "author": "azu",
-  "type": "module",
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./module/index.d.ts",
-        "default": "./module/index.js"
-      },
-      "default": "./module/index.js"
+    "name": "@secretlint/secretlint-rule-preset-canary",
+    "version": "11.3.0",
+    "description": "Canary rule preset of secretlint.",
+    "keywords": [
+        "secretlint",
+        "rule",
+        "rule-preset"
+    ],
+    "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-preset-canary/",
+    "bugs": {
+        "url": "https://github.com/secretlint/secretlint/issues"
     },
-    "./package.json": "./package.json"
-  },
-  "main": "./module/index.js",
-  "types": "./module/index.d.ts",
-  "directories": {
-    "lib": "lib",
-    "test": "test"
-  },
-  "files": [
-    "bin/",
-    "module/",
-    "src/"
-  ],
-  "scripts": {
-    "build": "rollup --config",
-    "build:tsc": "tsc -p . --noEmit",
-    "clean": "rimraf module/",
-    "prepublishOnly": "npm run clean && npm run build",
-    "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
-    "prepublish": "npm run --if-present build",
-    "import-test": "node import-tests.js && npm run build && npm run updateSnapshot",
-    "test": "node --import tsx --test test/index.test.ts",
-    "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
-    "watch": "tsc --build --watch"
-  },
-  "prettier": {
-    "printWidth": 120,
-    "singleQuote": false,
-    "tabWidth": 4
-  },
-  "devDependencies": {
-    "@rollup/plugin-commonjs": "^28.0.9",
-    "@rollup/plugin-node-resolve": "^15.3.1",
-    "@rollup/plugin-typescript": "^12.3.0",
-    "@secretlint/secretlint-rule-1password": "workspace:*",
-    "@secretlint/secretlint-rule-anthropic": "workspace:*",
-    "@secretlint/secretlint-rule-aws": "workspace:*",
-    "@secretlint/secretlint-rule-basicauth": "workspace:*",
-    "@secretlint/secretlint-rule-database-connection-string": "workspace:*",
-    "@secretlint/secretlint-rule-filter-comments": "workspace:*",
-    "@secretlint/secretlint-rule-gcp": "workspace:*",
-    "@secretlint/secretlint-rule-github": "workspace:*",
-    "@secretlint/secretlint-rule-linear": "workspace:*",
-    "@secretlint/secretlint-rule-npm": "workspace:*",
-    "@secretlint/secretlint-rule-openai": "workspace:*",
-    "@secretlint/secretlint-rule-privatekey": "workspace:*",
-    "@secretlint/secretlint-rule-sendgrid": "workspace:*",
-    "@secretlint/secretlint-rule-shopify": "workspace:*",
-    "@secretlint/secretlint-rule-slack": "workspace:*",
-    "@secretlint/tester": "workspace:*",
-    "@secretlint/types": "workspace:*",
-    "@types/node": "^24.10.6",
-    "prettier": "^2.8.8",
-    "rimraf": "^6.1.2",
-    "rollup": "^4.55.1",
-    "rollup-plugin-polyfill-node": "^0.13.0",
-    "tsx": "^4.21.0",
-    "typescript": "^5.8.3"
-  },
-  "engines": {
-    "node": ">=20.0.0"
-  },
-  "publishConfig": {
-    "access": "public"
-  }
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/secretlint/secretlint.git"
+    },
+    "license": "MIT",
+    "author": "azu",
+    "type": "module",
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./module/index.d.ts",
+                "default": "./module/index.js"
+            },
+            "default": "./module/index.js"
+        },
+        "./package.json": "./package.json"
+    },
+    "main": "./module/index.js",
+    "types": "./module/index.d.ts",
+    "directories": {
+        "lib": "lib",
+        "test": "test"
+    },
+    "files": [
+        "bin/",
+        "module/",
+        "src/"
+    ],
+    "scripts": {
+        "build": "rollup --config",
+        "build:tsc": "tsc -p . --noEmit",
+        "clean": "rimraf module/",
+        "prepublishOnly": "npm run clean && npm run build",
+        "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
+        "prepublish": "npm run --if-present build",
+        "import-test": "node import-tests.js && npm run build && npm run updateSnapshot",
+        "test": "node --import tsx --test test/index.test.ts",
+        "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
+        "watch": "tsc --build --watch"
+    },
+    "prettier": {
+        "printWidth": 120,
+        "singleQuote": false,
+        "tabWidth": 4
+    },
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "^28.0.9",
+        "@rollup/plugin-node-resolve": "^15.3.1",
+        "@rollup/plugin-typescript": "^12.3.0",
+        "@secretlint/secretlint-rule-1password": "workspace:*",
+        "@secretlint/secretlint-rule-anthropic": "workspace:*",
+        "@secretlint/secretlint-rule-aws": "workspace:*",
+        "@secretlint/secretlint-rule-basicauth": "workspace:*",
+        "@secretlint/secretlint-rule-database-connection-string": "workspace:*",
+        "@secretlint/secretlint-rule-filter-comments": "workspace:*",
+        "@secretlint/secretlint-rule-gcp": "workspace:*",
+        "@secretlint/secretlint-rule-github": "workspace:*",
+        "@secretlint/secretlint-rule-linear": "workspace:*",
+        "@secretlint/secretlint-rule-npm": "workspace:*",
+        "@secretlint/secretlint-rule-openai": "workspace:*",
+        "@secretlint/secretlint-rule-privatekey": "workspace:*",
+        "@secretlint/secretlint-rule-sendgrid": "workspace:*",
+        "@secretlint/secretlint-rule-shopify": "workspace:*",
+        "@secretlint/secretlint-rule-slack": "workspace:*",
+        "@secretlint/tester": "workspace:*",
+        "@secretlint/types": "workspace:*",
+        "@types/node": "^24.10.6",
+        "prettier": "^2.8.8",
+        "rimraf": "^6.1.2",
+        "rollup": "^4.55.1",
+        "rollup-plugin-polyfill-node": "^0.13.0",
+        "tsx": "^4.21.0",
+        "typescript": "^5.8.3"
+    },
+    "engines": {
+        "node": ">=20.0.0"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
 }

@@ -1,87 +1,87 @@
 {
-  "name": "secretlint",
-  "version": "11.2.5",
-  "description": "Secretlint CLI that scan secret/credential data.",
-  "keywords": [
-    "secretlint",
-    "cli"
-  ],
-  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/secretlint/",
-  "bugs": {
-    "url": "https://github.com/secretlint/secretlint/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/secretlint/secretlint.git"
-  },
-  "license": "MIT",
-  "author": "azu",
-  "type": "module",
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./module/index.d.ts",
-        "default": "./module/index.js"
-      },
-      "default": "./module/index.js"
+    "name": "secretlint",
+    "version": "11.3.0",
+    "description": "Secretlint CLI that scan secret/credential data.",
+    "keywords": [
+        "secretlint",
+        "cli"
+    ],
+    "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/secretlint/",
+    "bugs": {
+        "url": "https://github.com/secretlint/secretlint/issues"
     },
-    "./cli": {
-      "import": {
-        "types": "./module/cli.d.ts",
-        "default": "./module/cli.js"
-      },
-      "default": "./module/cli.js"
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/secretlint/secretlint.git"
     },
-    "./package.json": "./package.json"
-  },
-  "main": "./module/index.js",
-  "types": "./module/index.d.ts",
-  "bin": "./bin/secretlint.js",
-  "directories": {
-    "lib": "lib",
-    "test": "test"
-  },
-  "files": [
-    "bin/",
-    "module/",
-    "src/"
-  ],
-  "scripts": {
-    "build": "tsc --build",
-    "clean": "tsc --build --clean",
-    "prepublishOnly": "npm run clean && npm run build",
-    "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
-    "prepublish": "npm run --if-present build",
-    "test": "vitest run",
-    "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
-    "watch": "tsc --build --watch"
-  },
-  "prettier": {
-    "printWidth": 120,
-    "singleQuote": false,
-    "tabWidth": 4
-  },
-  "dependencies": {
-    "@secretlint/config-creator": "workspace:*",
-    "@secretlint/formatter": "workspace:*",
-    "@secretlint/node": "workspace:*",
-    "@secretlint/profiler": "workspace:*",
-    "@secretlint/resolver": "workspace:*",
-    "debug": "^4.4.3",
-    "globby": "^14.1.0",
-    "read-pkg": "^9.0.1"
-  },
-  "devDependencies": {
-    "@secretlint/secretlint-rule-example": "workspace:*",
-    "@secretlint/secretlint-rule-preset-recommend": "workspace:*",
-    "@secretlint/types": "workspace:*",
-    "@types/debug": "^4.1.12",
-    "@types/node": "^24.10.6",
-    "prettier": "^2.8.8",
-    "tsx": "^4.21.0",
-    "typescript": "^5.8.3"
-  },
-  "engines": {
-    "node": ">=20.0.0"
-  }
+    "license": "MIT",
+    "author": "azu",
+    "type": "module",
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./module/index.d.ts",
+                "default": "./module/index.js"
+            },
+            "default": "./module/index.js"
+        },
+        "./cli": {
+            "import": {
+                "types": "./module/cli.d.ts",
+                "default": "./module/cli.js"
+            },
+            "default": "./module/cli.js"
+        },
+        "./package.json": "./package.json"
+    },
+    "main": "./module/index.js",
+    "types": "./module/index.d.ts",
+    "bin": "./bin/secretlint.js",
+    "directories": {
+        "lib": "lib",
+        "test": "test"
+    },
+    "files": [
+        "bin/",
+        "module/",
+        "src/"
+    ],
+    "scripts": {
+        "build": "tsc --build",
+        "clean": "tsc --build --clean",
+        "prepublishOnly": "npm run clean && npm run build",
+        "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
+        "prepublish": "npm run --if-present build",
+        "test": "vitest run",
+        "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
+        "watch": "tsc --build --watch"
+    },
+    "prettier": {
+        "printWidth": 120,
+        "singleQuote": false,
+        "tabWidth": 4
+    },
+    "dependencies": {
+        "@secretlint/config-creator": "workspace:*",
+        "@secretlint/formatter": "workspace:*",
+        "@secretlint/node": "workspace:*",
+        "@secretlint/profiler": "workspace:*",
+        "@secretlint/resolver": "workspace:*",
+        "debug": "^4.4.3",
+        "globby": "^14.1.0",
+        "read-pkg": "^9.0.1"
+    },
+    "devDependencies": {
+        "@secretlint/secretlint-rule-example": "workspace:*",
+        "@secretlint/secretlint-rule-preset-recommend": "workspace:*",
+        "@secretlint/types": "workspace:*",
+        "@types/debug": "^4.1.12",
+        "@types/node": "^24.10.6",
+        "prettier": "^2.8.8",
+        "tsx": "^4.21.0",
+        "typescript": "^5.8.3"
+    },
+    "engines": {
+        "node": ">=20.0.0"
+    }
 }
