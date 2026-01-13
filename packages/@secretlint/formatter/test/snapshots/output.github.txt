@@ -1,0 +1,3 @@
+::warning file=[SNAPSHOT]/input.txt,line=1,endLine=1,col=8,endColumn=14,title=TextLint->example::[message-id] warning found secret: SECRET
+::error file=[SNAPSHOT]/input.txt,line=1,endLine=1,col=8,endColumn=14,title=TextLint->example::[message-id] error found secret: SECRET
+::error file=[SNAPSHOT]/input.txt,line=1,endLine=1,col=8,endColumn=14,title=TextLint->parent > example::[message-id] error found secret: SECRET
