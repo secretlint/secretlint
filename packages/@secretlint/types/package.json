@@ -1,74 +1,74 @@
 {
-  "name": "@secretlint/types",
-  "version": "11.2.5",
-  "description": "A typing package for @secretlint",
-  "keywords": [
-    "secretlint"
-  ],
-  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/types/",
-  "bugs": {
-    "url": "https://github.com/secretlint/secretlint/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/secretlint/secretlint.git"
-  },
-  "license": "MIT",
-  "author": "azu",
-  "sideEffects": false,
-  "type": "module",
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./module/index.d.ts",
-        "default": "./module/index.js"
-      },
-      "require": {
-        "types": "./lib/index.d.ts",
-        "default": "./lib/index.js"
-      },
-      "default": "./lib/index.js"
+    "name": "@secretlint/types",
+    "version": "11.3.0",
+    "description": "A typing package for @secretlint",
+    "keywords": [
+        "secretlint"
+    ],
+    "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/types/",
+    "bugs": {
+        "url": "https://github.com/secretlint/secretlint/issues"
     },
-    "./package.json": "./package.json"
-  },
-  "main": "./lib/index.js",
-  "module": "./module/index.js",
-  "types": "./lib/index.d.ts",
-  "directories": {
-    "lib": "lib",
-    "test": "test"
-  },
-  "files": [
-    "bin/",
-    "lib/",
-    "module/",
-    "src/"
-  ],
-  "scripts": {
-    "build": "tsc --build . && tsc --build ./tsconfig.cjs.json && tsconfig-to-dual-package",
-    "clean": "tsc --build --clean && tsc --build --clean ./tsconfig.cjs.json",
-    "prepublishOnly": "npm run clean && npm run build",
-    "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
-    "prepublish": "npm run --if-present build",
-    "test": "vitest run --typecheck"
-  },
-  "prettier": {
-    "printWidth": 120,
-    "singleQuote": false,
-    "tabWidth": 4
-  },
-  "devDependencies": {
-    "@types/node": "^24.10.6",
-    "prettier": "^2.8.8",
-    "tsconfig-to-dual-package": "^1.2.0",
-    "tsx": "^4.21.0",
-    "typescript": "^5.8.3",
-    "vitest": "^2.1.9"
-  },
-  "engines": {
-    "node": ">=20.0.0"
-  },
-  "publishConfig": {
-    "access": "public"
-  }
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/secretlint/secretlint.git"
+    },
+    "license": "MIT",
+    "author": "azu",
+    "sideEffects": false,
+    "type": "module",
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./module/index.d.ts",
+                "default": "./module/index.js"
+            },
+            "require": {
+                "types": "./lib/index.d.ts",
+                "default": "./lib/index.js"
+            },
+            "default": "./lib/index.js"
+        },
+        "./package.json": "./package.json"
+    },
+    "main": "./lib/index.js",
+    "module": "./module/index.js",
+    "types": "./lib/index.d.ts",
+    "directories": {
+        "lib": "lib",
+        "test": "test"
+    },
+    "files": [
+        "bin/",
+        "lib/",
+        "module/",
+        "src/"
+    ],
+    "scripts": {
+        "build": "tsc --build . && tsc --build ./tsconfig.cjs.json && tsconfig-to-dual-package",
+        "clean": "tsc --build --clean && tsc --build --clean ./tsconfig.cjs.json",
+        "prepublishOnly": "npm run clean && npm run build",
+        "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
+        "prepublish": "npm run --if-present build",
+        "test": "vitest run --typecheck"
+    },
+    "prettier": {
+        "printWidth": 120,
+        "singleQuote": false,
+        "tabWidth": 4
+    },
+    "devDependencies": {
+        "@types/node": "^24.10.6",
+        "prettier": "^2.8.8",
+        "tsconfig-to-dual-package": "^1.2.0",
+        "tsx": "^4.21.0",
+        "typescript": "^5.8.3",
+        "vitest": "^2.1.9"
+    },
+    "engines": {
+        "node": ">=20.0.0"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
 }

@@ -1,74 +1,74 @@
 {
-  "name": "@secretlint/tester",
-  "version": "11.2.5",
-  "description": "A testing library for secretlint rule",
-  "keywords": [
-    "secretlint",
-    "testing"
-  ],
-  "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/tester/",
-  "bugs": {
-    "url": "https://github.com/secretlint/secretlint/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/secretlint/secretlint.git"
-  },
-  "license": "MIT",
-  "author": "azu",
-  "type": "module",
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./module/index.d.ts",
-        "default": "./module/index.js"
-      },
-      "default": "./module/index.js"
+    "name": "@secretlint/tester",
+    "version": "11.3.0",
+    "description": "A testing library for secretlint rule",
+    "keywords": [
+        "secretlint",
+        "testing"
+    ],
+    "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/tester/",
+    "bugs": {
+        "url": "https://github.com/secretlint/secretlint/issues"
     },
-    "./package.json": "./package.json"
-  },
-  "main": "./module/index.js",
-  "types": "./module/index.d.ts",
-  "directories": {
-    "lib": "lib",
-    "test": "test"
-  },
-  "files": [
-    "bin/",
-    "module/",
-    "src/"
-  ],
-  "scripts": {
-    "build": "tsc --build",
-    "clean": "tsc --build --clean",
-    "prepublishOnly": "npm run clean && npm run build",
-    "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
-    "prepublish": "npm run --if-present build",
-    "test": "node --import tsx --test test/index.test.ts",
-    "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
-    "watch": "tsc --build --watch"
-  },
-  "prettier": {
-    "printWidth": 120,
-    "singleQuote": false,
-    "tabWidth": 4
-  },
-  "dependencies": {
-    "@secretlint/config-loader": "workspace:*",
-    "@secretlint/core": "workspace:*",
-    "@secretlint/source-creator": "workspace:*",
-    "@secretlint/types": "workspace:*"
-  },
-  "devDependencies": {
-    "@types/node": "^24.10.6",
-    "prettier": "^2.8.8",
-    "tsx": "^4.21.0",
-    "typescript": "^5.8.3"
-  },
-  "engines": {
-    "node": ">=20.0.0"
-  },
-  "publishConfig": {
-    "access": "public"
-  }
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/secretlint/secretlint.git"
+    },
+    "license": "MIT",
+    "author": "azu",
+    "type": "module",
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./module/index.d.ts",
+                "default": "./module/index.js"
+            },
+            "default": "./module/index.js"
+        },
+        "./package.json": "./package.json"
+    },
+    "main": "./module/index.js",
+    "types": "./module/index.d.ts",
+    "directories": {
+        "lib": "lib",
+        "test": "test"
+    },
+    "files": [
+        "bin/",
+        "module/",
+        "src/"
+    ],
+    "scripts": {
+        "build": "tsc --build",
+        "clean": "tsc --build --clean",
+        "prepublishOnly": "npm run clean && npm run build",
+        "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
+        "prepublish": "npm run --if-present build",
+        "test": "node --import tsx --test test/index.test.ts",
+        "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
+        "watch": "tsc --build --watch"
+    },
+    "prettier": {
+        "printWidth": 120,
+        "singleQuote": false,
+        "tabWidth": 4
+    },
+    "dependencies": {
+        "@secretlint/config-loader": "workspace:*",
+        "@secretlint/core": "workspace:*",
+        "@secretlint/source-creator": "workspace:*",
+        "@secretlint/types": "workspace:*"
+    },
+    "devDependencies": {
+        "@types/node": "^24.10.6",
+        "prettier": "^2.8.8",
+        "tsx": "^4.21.0",
+        "typescript": "^5.8.3"
+    },
+    "engines": {
+        "node": ">=20.0.0"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
 }
