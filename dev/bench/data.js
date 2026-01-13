@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1768306298025,
+  "lastUpdate": 1768308154828,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -48258,6 +48258,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.59,
             "range": "±1.11%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "5803e37c3376506ce31bc1db0c01df18dab53a49",
+          "message": "fix(ci): replace pnpm pkg set with node script for version updates (#1367)\n\nThe `pnpm pkg set` command internally delegates to `npm pkg`, which can\nfail with \"Unexpected end of JSON input while parsing empty string\"\nerror in certain CI environments due to npm configuration or cache\nissues.\n\nThis change replaces the `pnpm pkg set version` command with a direct\nNode.js script that reads, updates, and writes the package.json files.\nThis approach is more reliable and doesn't depend on npm's pkg command.\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-01-13T12:41:07Z",
+          "tree_id": "facd0561f4bd7b16e3ac7a4248365c9382a0dfab",
+          "url": "https://github.com/secretlint/secretlint/commit/5803e37c3376506ce31bc1db0c01df18dab53a49"
+        },
+        "date": 1768308152646,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.69,
+            "range": "±1.61%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±1.31%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
