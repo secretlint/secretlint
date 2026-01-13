@@ -39,13 +39,19 @@ jobs:
           
           # Use pnpm to bump version in root package.json
           pnpm version ${SEMVER} --no-git-tag-version
-          
+
           # Get the new version from root package.json
           NEW_VERSION=$(jq -r '.version' package.json)
           echo "New version: $NEW_VERSION"
-          
+
           # Update all workspace package.json files to match
-          pnpm --recursive exec pnpm pkg set version="$NEW_VERSION"
+          # Using node instead of 'pnpm pkg set' to avoid npm compatibility issues
+          pnpm --recursive exec node -e "
+            const fs = require('fs');
+            const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+            pkg.version = '${NEW_VERSION}';
+            fs.writeFileSync('package.json', JSON.stringify(pkg, null, 4) + '\n');
+          "
           
           # Commit the version changes
           git add .
