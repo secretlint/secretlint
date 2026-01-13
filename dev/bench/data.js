@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1768305161121,
+  "lastUpdate": 1768306298025,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -48220,6 +48220,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±1.38%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "6af3bc4bd2e63e4304d3a13ce6a5febc4be26c97",
+          "message": "docs(readme): add --format github option for GitHub Actions annotations (#1366)\n\nAdd documentation for the new --format github formatter that outputs\nGitHub Actions workflow commands to display lint errors as annotations\non Pull Request files. This feature was added via textlint v15.5.0.\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-01-13T12:10:12Z",
+          "tree_id": "1b32f7d5219455b5a286027776567e4a88e58dac",
+          "url": "https://github.com/secretlint/secretlint/commit/6af3bc4bd2e63e4304d3a13ce6a5febc4be26c97"
+        },
+        "date": 1768306295733,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.74,
+            "range": "±0.53%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.59,
+            "range": "±1.11%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
