@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1768284071535,
+  "lastUpdate": 1768305129490,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -48144,6 +48144,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±0.80%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "be25783492a9e2ae8bc1588c1998700d247a615a",
+          "message": "fix(deps): update textlint to ^15.5.0 (minor) (#1338)\n\n* fix(deps): update textlint to ^15.5.0\n\n* fix: add github formatter snapshot for textlint v15.5.0 (#1364)\n\n* fix: add github formatter snapshot for textlint v15.5.0\n\nAdd missing snapshot file for the new github formatter that was\nintroduced in @textlint/linter-formatter v15.5.0.\n\n* fix: update CLI help snapshot and disable debug logging in tests\n\n- Add github formatter to --help output snapshot\n- Remove debug: true from CLI tests to reduce noise in CI output\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>\nCo-authored-by: azu <azu@users.noreply.github.com>\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-01-13T11:50:39Z",
+          "tree_id": "378e2a4d771efcf379b9705c0b800a42b86022ae",
+          "url": "https://github.com/secretlint/secretlint/commit/be25783492a9e2ae8bc1588c1998700d247a615a"
+        },
+        "date": 1768305126914,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.75,
+            "range": "±1.53%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±0.49%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
