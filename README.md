@@ -113,7 +113,7 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
     
     Options
     --init             setup config file. Create .secretlintrc.json file from your package.json
-    --format           [String] formatter name. Default: "stylish". Available Formatter: checkstyle, compact, jslint-xml, junit, pretty-error, stylish, tap, unix, json, mask-result, table
+    --format           [String] formatter name. Default: "stylish". Available Formatter: checkstyle, compact, github, jslint-xml, junit, pretty-error, stylish, tap, unix, json, mask-result, table
     --output           [path:String] output file path that is written of reported result.
     --no-color         disable ANSI-color of output.
     --no-terminalLink  disable terminalLink of output.
@@ -502,7 +502,17 @@ jobs:
         run: npx secretlint "**/*"
 ```
 
-This configuration also integrates Pull Request review comment via [actions/setup-node](https://github.com/actions/setup-node).
+##### `--format github` for Pull Request annotations
+
+You can use `--format github` to show lint errors as annotations on Pull Request files.
+This formatter outputs [GitHub Actions workflow commands](https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions) that display error annotations directly on the changed files in your Pull Request.
+
+```yaml
+      - name: Lint with Secretlint
+        run: npx secretlint --format github "**/*"
+```
+
+This configuration integrates Pull Request review annotations.
 
 ![github-actions.png](./docs/assets/github-actions.png)
 
