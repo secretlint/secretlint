@@ -79,7 +79,7 @@
         "@secretlint/secretlint-rule-slack": "workspace:*",
         "@secretlint/tester": "workspace:*",
         "@secretlint/types": "workspace:*",
-        "@types/node": "^24.10.8",
+        "@types/node": "^24.10.9",
         "prettier": "^2.8.8",
         "rimraf": "^6.1.2",
         "rollup": "^4.55.1",
