@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1768793026145,
+  "lastUpdate": 1768859386665,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -48486,6 +48486,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±0.70%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a7062f8ac79a738f6afacc73bacbee4e26830e19",
+          "message": "chore(deps): update github/codeql-action action to v3.31.10 (#1373)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2026-01-19T21:48:18Z",
+          "tree_id": "5ed3b8d357323b3107f275e23ee92e2490d93815",
+          "url": "https://github.com/secretlint/secretlint/commit/a7062f8ac79a738f6afacc73bacbee4e26830e19"
+        },
+        "date": 1768859384506,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.7,
+            "range": "±0.87%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±0.95%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
