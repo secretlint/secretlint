@@ -6,6 +6,7 @@ import {
 } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 import path from "node:path";
+import micromatch from "micromatch";
 
 export const messages = {
     PATTERN: {
@@ -65,9 +66,10 @@ function reportIfFoundPattern({
 }) {
     for (const p of options.patterns) {
         // Check filePathGlobs if specified
+        // Use micromatch() to support negation patterns (e.g., "!**/excluded/**")
         if (p.filePathGlobs && p.filePathGlobs.length > 0 && source.filePath) {
-            const matchesPath = p.filePathGlobs.some((glob) => path.matchesGlob(source.filePath!, glob));
-            if (!matchesPath) {
+            const matchedPaths = micromatch([source.filePath], p.filePathGlobs);
+            if (matchedPaths.length === 0) {
                 continue; // Skip if file path doesn't match any glob pattern
             }
         }
