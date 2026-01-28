@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1769561755450,
+  "lastUpdate": 1769581730423,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -48828,6 +48828,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±1.10%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7ed780c118b8fc9c4e069004bc099a108e92ecad",
+          "message": "feat(secretlint-rule-pattern): support negation patterns in filePathGlobs (#1382)\n\nAdd support for negation patterns (e.g., \"!**/excluded/**\") in\nfilePathGlobs option by using micromatch library instead of\nNode.js path.matchesGlob().\n\nCo-authored-by: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2026-01-28T15:27:22+09:00",
+          "tree_id": "a8115f2fd3861a764448e25e2f1dcc61001f10cd",
+          "url": "https://github.com/secretlint/secretlint/commit/7ed780c118b8fc9c4e069004bc099a108e92ecad"
+        },
+        "date": 1769581728148,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.66,
+            "range": "±0.97%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±0.98%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
