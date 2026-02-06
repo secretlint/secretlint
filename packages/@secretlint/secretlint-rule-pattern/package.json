@@ -62,7 +62,7 @@
     },
     "devDependencies": {
         "@types/micromatch": "^4.0.10",
-        "@types/node": "^24.10.9",
+        "@types/node": "^24.10.10",
         "prettier": "^2.8.8",
         "tsx": "^4.21.0",
         "typescript": "^5.8.3"
