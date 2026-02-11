@@ -56,7 +56,7 @@
     },
     "devDependencies": {
         "@secretlint/tester": "workspace:*",
-        "@types/node": "^20.19.32",
+        "@types/node": "^20.19.33",
         "prettier": "^2.8.1",
         "tsx": "^4.21.0",
         "typescript": "^5.1.6"
