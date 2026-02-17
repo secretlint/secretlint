@@ -104,7 +104,7 @@ const options = {
      * If you want to disable glob pattern interpretation (treat all inputs as literal file paths),
      * use --no-glob option.
      * This is useful when file paths contain glob special characters
-     * like SvelteKit's (group) and [param] routing patterns.
+     * like SvelteKit/Next.js's (group) and [param] routing patterns.
      * https://github.com/secretlint/secretlint/issues/1057
      */
     glob: {

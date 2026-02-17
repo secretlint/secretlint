@@ -396,7 +396,7 @@ Edit `package.json`:
 }
 ```
 
-> **Note:** The `--no-glob` flag is required because lint-staged passes literal file paths that may contain glob special characters (e.g., SvelteKit's `(group)` or `[param]` routing patterns).
+> **Note:** The `--no-glob` flag is required because lint-staged passes literal file paths that may contain glob special characters (e.g., `(group)` or `[param]` routing patterns used by Next.js, SvelteKit, etc.).
 
 This means that check each staged file by Secretlint before commit. 
 
