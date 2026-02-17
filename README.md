@@ -390,11 +390,13 @@ Edit `package.json`:
   // add "lint-staged" field
   "lint-staged": {
     "*": [
-      "secretlint"
+      "secretlint --no-glob"
     ]
   }
 }
 ```
+
+> **Note:** The `--no-glob` flag is required because lint-staged passes literal file paths that may contain glob special characters (e.g., SvelteKit's `(group)` or `[param]` routing patterns).
 
 This means that check each staged file by Secretlint before commit. 
 
@@ -432,7 +434,7 @@ FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g')
 [ -z "$FILES" ] && exit 0
 
 # Secretlint all selected files
-echo "$FILES" | xargs ./node_modules/.bin/secretlint
+echo "$FILES" | xargs ./node_modules/.bin/secretlint --no-glob
 # If you using docker
 # echo "$FILES" | xargs docker run -v `pwd`:`pwd` -w `pwd` --rm secretlint/secretlint secretlint
 RET=$?
@@ -552,7 +554,7 @@ jobs:
         run: npm ci
       - name: Run secretlint
         if: steps.changed-files.outputs.any_changed == 'true'
-        run: npx secretlint ${{ steps.changed-files.outputs.all_changed_files }}
+        run: npx secretlint --no-glob ${{ steps.changed-files.outputs.all_changed_files }}
 ```
 
 #### Mega-Linter
