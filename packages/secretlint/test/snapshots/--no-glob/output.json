@@ -2,7 +2,7 @@
     "exitStatus": 0,
     "stdout": [
         {
-            "filePath": "[SNAPSHOT]/escape-glob-characters-combined-path/input-(group).[test].md",
+            "filePath": "[SNAPSHOT]/--no-glob/input-(group).[test].md",
             "sourceContent": "Include glob special characters in combined path\n",
             "sourceContentType": "text",
             "messages": []
