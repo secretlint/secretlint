@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1771306467634,
+  "lastUpdate": 1771371613750,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -49778,6 +49778,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±4.90%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "1f4a96967cd5655f4c88f4df9f77121fe69fb271",
+          "message": "fix(deps): update dependency ajv to ^8.18.0 (#1408)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2026-02-17T23:38:40Z",
+          "tree_id": "c95afd6395e0c8987d9128438698b6496748c8ef",
+          "url": "https://github.com/secretlint/secretlint/commit/1f4a96967cd5655f4c88f4df9f77121fe69fb271"
+        },
+        "date": 1771371610694,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.67,
+            "range": "±0.74%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±0.85%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
