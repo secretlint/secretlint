@@ -26,6 +26,7 @@ Options
   --no-color         disable ANSI-color of output.
   --no-terminalLink  disable terminalLink of output.
   --no-maskSecrets   disable masking of secret values; secrets are masked by default.
+  --no-glob          disable glob pattern interpretation; treat all inputs as literal file paths.
   --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
   --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
   --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
@@ -97,6 +98,18 @@ const options = {
     },
     locale: {
         type: OPTION_TYPE_STRING,
+    },
+    /**
+     * CLI enables glob pattern matching by default.
+     * If you want to disable glob pattern interpretation (treat all inputs as literal file paths),
+     * use --no-glob option.
+     * This is useful when file paths contain glob special characters
+     * like SvelteKit/Next.js's (group) and [param] routing patterns.
+     * https://github.com/secretlint/secretlint/issues/1057
+     */
+    glob: {
+        type: OPTION_TYPE_BOOLEAN,
+        default: true,
     },
     /**
      * CLI enable ANSI-color of output by default
@@ -185,6 +198,7 @@ const readCliOptions = async ({ input = cli.input, flags = cli.flags }): Promise
             filePathOrGlobList: input,
             outputFilePath: flags.output,
             ignoreFilePath: flags.secretlintignore,
+            noGlob: flags.glob === false,
             cwd: flags.cwd,
         };
     }

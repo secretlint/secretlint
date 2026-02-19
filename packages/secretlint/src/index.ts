@@ -10,6 +10,7 @@ export type SecretLintFileOptions = {
     filePathOrGlobList: string[];
     outputFilePath?: string;
     ignoreFilePath?: string;
+    noGlob?: boolean;
 };
 /**
  * Lint text from stdin
@@ -34,6 +35,7 @@ const lintFileOrText = async ({
         const { ok, items } = await searchFiles(cliOptions.filePathOrGlobList, {
             cwd: cliOptions.cwd,
             ignoreFilePath: cliOptions.ignoreFilePath,
+            noGlob: cliOptions.noGlob,
         });
         if (!ok) {
             throw new Error("Not found target files");
