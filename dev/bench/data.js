@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1774058366432,
+  "lastUpdate": 1774058383704,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -50006,6 +50006,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±1.03%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b25b6300121e4875ab6a9d4b301cf380e2910c67",
+          "message": "feat: add --no-glob option to treat inputs as literal file paths (#1407)\n\n* feat: add --no-glob option to treat inputs as literal file paths\n\nWhen file paths contain glob special characters like SvelteKit's\n(group) and [param] routing patterns, isDynamicPattern() misidentifies\nthem as glob patterns, causing \"Not found target files\" errors.\n\nThe --no-glob flag disables glob pattern interpretation so all inputs\nare treated as literal file paths. This is useful for lint-staged\nintegration where paths are always literal.\n\nCloses #1057\n\nhttps://claude.ai/code/session_015YzGeQM652KKPzdUsneYHN\n\n* docs: add --no-glob to README examples that pass literal file paths\n\nUpdate lint-staged, bash pre-commit hook, and GitHub Actions diff\nworkflow examples to use --no-glob, since these tools pass literal\nfile paths that may contain glob special characters.\n\nhttps://claude.ai/code/session_015YzGeQM652KKPzdUsneYHN\n\n* docs: mention Next.js alongside SvelteKit for glob special characters\n\nBoth Next.js and SvelteKit use (group) and [param] routing patterns\nthat conflict with glob interpretation.\n\nhttps://claude.ai/code/session_015YzGeQM652KKPzdUsneYHN\n\n* test: add credential detection to --no-glob snapshot test\n\nThe --no-glob test previously only verified that files with glob special\ncharacters could be read, but didn't test that secrets are actually\ndetected. Change input to contain \"SECRET\" so the test validates\nend-to-end detection through glob-special-character paths.\n\nhttps://claude.ai/code/session_015YzGeQM652KKPzdUsneYHN\n\n* test: add --no-glob snapshot test for no-secret-found case\n\nhttps://claude.ai/code/session_015YzGeQM652KKPzdUsneYHN\n\n* fix: restore escape-glob-characters-combined-path test to original behavior\n\nThe test should document that glob-enabled mode fails with special characters,\nnot be overwritten to use --no-glob.\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-03-21T01:58:02Z",
+          "tree_id": "9e00a7378a22f5910adbf273bfb42570252f566b",
+          "url": "https://github.com/secretlint/secretlint/commit/b25b6300121e4875ab6a9d4b301cf380e2910c67"
+        },
+        "date": 1774058381503,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.69,
+            "range": "±0.63%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±1.29%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
