@@ -12,6 +12,7 @@ const DEFAULT_IGNORE_PATTERNS = [
 export type SearchFilesOptions = {
     cwd: string;
     ignoreFilePath?: string;
+    noGlob?: boolean;
 };
 
 /**
@@ -26,6 +27,16 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
         // So, replace path separator to POSIX style
         // https://github.com/secretlint/secretlint/issues/816
         const normalizedPattern = process.platform === "win32" ? pattern.replace(/\\/g, "/") : pattern;
+        // When noGlob is set, treat all inputs as literal file paths
+        // This is useful when file paths contain glob special characters
+        // like SvelteKit's (group) and [param] routing patterns
+        // https://github.com/secretlint/secretlint/issues/1057
+        if (options.noGlob) {
+            return {
+                pattern: convertPathToPattern(normalizedPattern),
+                isDynamic: false,
+            };
+        }
         // isDynamicPattern arguments should be posix path
         // isDynamicPattern("C:\\path\\to\\file") => true
         // If pattern includes glob pattern, just return `pattern`

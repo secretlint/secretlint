@@ -63,12 +63,12 @@
         "@secretlint/types": "workspace:*",
         "@types/bn.js": "^5.2.0",
         "@types/secp256k1": "^4.0.7",
-        "bn.js": "^5.2.2",
+        "bn.js": "^5.2.3",
         "secp256k1": "^5.0.1"
     },
     "devDependencies": {
         "@secretlint/tester": "workspace:*",
-        "@types/node": "^24.10.13",
+        "@types/node": "^24.12.0",
         "prettier": "^2.8.8",
         "tsx": "^4.21.0",
         "typescript": "^5.8.3"
