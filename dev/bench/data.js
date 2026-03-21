@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1774057244515,
+  "lastUpdate": 1774057704906,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -49930,6 +49930,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.56,
             "range": "±0.69%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "0f488da2d3063c8b7e6959356a7087f7290cad90",
+          "message": "chore: update .node-version from 22.20.0 to v24.12.0 (#1420)\n\nCo-authored-by: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+          "timestamp": "2026-03-21T01:43:09Z",
+          "tree_id": "36b26f71a5028f95e79050af49606a7663c05bbf",
+          "url": "https://github.com/secretlint/secretlint/commit/0f488da2d3063c8b7e6959356a7087f7290cad90"
+        },
+        "date": 1774057702517,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.58,
+            "range": "±1.33%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±1.11%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
