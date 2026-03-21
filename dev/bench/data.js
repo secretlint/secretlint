@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1771475350781,
+  "lastUpdate": 1774057244515,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -49892,6 +49892,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.55,
             "range": "±1.36%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "382f821ee645d9e99d73fc70b99e48dce49bd3f3",
+          "message": "chore(deps): update dependency rollup to v4.59.0 [security] (#1419)\n\n* chore(deps): update dependency rollup to v4.59.0 [security]\n\n* ci: retrigger CI\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>\n\n* fix(secretlint-rule-github): migrate from ts-node to tsx for Node.js 24 compatibility\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>\nCo-authored-by: azu <azuciao@gmail.com>\nCo-authored-by: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+          "timestamp": "2026-03-21T01:39:13Z",
+          "tree_id": "90cfa3d8ec1f0fd118593dfe45ecaf4010ef791f",
+          "url": "https://github.com/secretlint/secretlint/commit/382f821ee645d9e99d73fc70b99e48dce49bd3f3"
+        },
+        "date": 1774057241564,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.63,
+            "range": "±0.96%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.56,
+            "range": "±0.69%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
