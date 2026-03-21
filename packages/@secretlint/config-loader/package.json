@@ -62,13 +62,13 @@
         "@secretlint/types": "workspace:*",
         "ajv": "^8.18.0",
         "debug": "^4.4.3",
-        "rc-config-loader": "^4.1.3"
+        "rc-config-loader": "^4.1.4"
     },
     "devDependencies": {
         "@secretlint/secretlint-rule-internal-test-cjs": "workspace:*",
         "@secretlint/secretlint-rule-internal-test-esm": "workspace:*",
         "@types/debug": "^4.1.12",
-        "@types/node": "^24.10.13",
+        "@types/node": "^24.10.15",
         "create-validator-ts": "^6.0.1",
         "prettier": "^2.8.8",
         "tsx": "^4.21.0",
