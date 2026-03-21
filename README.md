@@ -543,6 +543,8 @@ jobs:
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v44
+        with:
+          quotepath: "false"
       - name: setup Node ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
