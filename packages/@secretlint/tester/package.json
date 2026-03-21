@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/tester",
-    "version": "11.3.1",
+    "version": "11.4.0",
     "description": "A testing library for secretlint rule",
     "keywords": [
         "secretlint",
