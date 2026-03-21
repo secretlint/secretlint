@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1774061291614,
+  "lastUpdate": 1774062385955,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -50310,6 +50310,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.56,
             "range": "±2.18%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "4dafa69146ed158784bafa2749ad95c0e7caafc1",
+          "message": "chore(deps): update dependency bun to v1.3.10 (#1343)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>\nCo-authored-by: azu <azu@users.noreply.github.com>",
+          "timestamp": "2026-03-21T12:04:56+09:00",
+          "tree_id": "2b519974f245a4c3c8e08efe54277cd8e70ab81f",
+          "url": "https://github.com/secretlint/secretlint/commit/4dafa69146ed158784bafa2749ad95c0e7caafc1"
+        },
+        "date": 1774062383614,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.63,
+            "range": "±0.47%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±0.75%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
