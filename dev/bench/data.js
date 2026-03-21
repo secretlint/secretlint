@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1774059659014,
+  "lastUpdate": 1774061291614,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -50272,6 +50272,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±0.80%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "5e62904d3cdbb40a9f6c34498459e645e35467e4",
+          "message": "fix: add quotepath option to changed-files action for non-ASCII path support (#1423)\n\nThe tj-actions/changed-files action wraps non-ASCII file paths in quotes\nby default (git's core.quotePath behavior), which causes secretlint to\nfail when scanning files with multibyte characters in their paths.\nSetting quotepath: \"false\" ensures paths are returned as-is.\n\nFixes #1057\n\nCo-authored-by: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+          "timestamp": "2026-03-21T02:46:41Z",
+          "tree_id": "1029765fdae5065573fd6abffcb8c7d8353680da",
+          "url": "https://github.com/secretlint/secretlint/commit/5e62904d3cdbb40a9f6c34498459e645e35467e4"
+        },
+        "date": 1774061289199,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.6,
+            "range": "±2.40%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.56,
+            "range": "±2.18%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
