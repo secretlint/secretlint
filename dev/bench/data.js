@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1774064506250,
+  "lastUpdate": 1774113302077,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -50386,6 +50386,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±1.70%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "219d42e9fa5aef6cc710d76137779e9c5f3bc729",
+          "message": "chore(deps): update oven-sh/setup-bun action to v2.2.0 (#1425)\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2026-03-21T17:13:33Z",
+          "tree_id": "dbf40a0905cb6cfda4b04155dcd20759e777b609",
+          "url": "https://github.com/secretlint/secretlint/commit/219d42e9fa5aef6cc710d76137779e9c5f3bc729"
+        },
+        "date": 1774113299548,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.69,
+            "range": "±0.62%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±0.81%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
