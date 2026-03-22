@@ -40,7 +40,7 @@ jobs:
         run: bun run build-binary
         working-directory: ./publish/binary-compiler
       - name: Release
-        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
+        uses: softprops/action-gh-release@1853d73993c8ca1b2c9c1a7fede39682d0ab5c2a # v2.5.3
         with:
           tag_name: v${{ github.event.client_payload.version }}
           files: "./publish/binary-compiler/dist/**"
