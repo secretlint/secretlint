@@ -75,7 +75,7 @@ jobs:
           NPM_CONFIG_PROVENANCE: true
       - name: Create Git Tag
         if: steps.tag_check.outputs.exists_tag == 'false'
-        uses: pkgdeps/git-tag-action@ef111413f44ebe5cc05994e7f5b5b9edaaada08d # v3.0.0
+        uses: pkgdeps/git-tag-action@a5a161774bace8b4e1969dd850c67a7421f1b710 # v3.0.1
         with:
           version: ${{ env.CURRENT_VERSION }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
