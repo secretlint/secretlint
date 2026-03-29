@@ -198,7 +198,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v${{ needs.publish.outputs.version }}
-          release_name: ${{ github.event.pull_request.title }}
+          name: ${{ github.event.pull_request.title }}
           body: |
             ${{ github.event.pull_request.body }}
           draft: false
