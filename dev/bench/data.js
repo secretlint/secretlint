@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1774657903186,
+  "lastUpdate": 1774778218660,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -50804,6 +50804,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.58,
             "range": "±0.52%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "5a6562de458e21272f9541661b21078ef7d75c3d",
+          "message": "refactor: consolidate release workflow into single file (#1437)\n\n* refactor: consolidate release workflow by merging publish-artifact into release.yml\n\nMerge the separate comment-publish-artifact and publish-artifact workflows into\nthe main release.yml workflow. Binary publishing and Docker image publishing now\nrun as dependent jobs after npm publish, and the GitHub Release includes binary\nartifacts directly instead of using repository_dispatch.\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>\n\n* refactor: split workflow permissions per job for least privilege\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>\n\n* chore: update node-version from 22 to 24 in release workflow\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>\n\n* chore: add explicit empty permissions to publish-binary job\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+          "timestamp": "2026-03-29T18:55:30+09:00",
+          "tree_id": "24e64f2408436287ab54fe815dce90528c539a45",
+          "url": "https://github.com/secretlint/secretlint/commit/5a6562de458e21272f9541661b21078ef7d75c3d"
+        },
+        "date": 1774778215731,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 3.06,
+            "range": "±0.57%",
+            "unit": "ops/sec",
+            "extra": "12 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.59,
+            "range": "±0.87%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
