@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1774779708333,
+  "lastUpdate": 1774789143314,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -50918,6 +50918,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±1.09%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "512d0617f1ccc6fce2510e6ecfa42f7c8daddfe7",
+          "message": "chore(deps): update node.js to v24.14.0 (#1421)\n\nThis PR contains the following updates:\n\n| Package | Update | Change | Pending |\n|---|---|---|---|\n| [node](https://nodejs.org)\n([source](https://redirect.github.com/nodejs/node)) | minor | `v24.12.0`\n→ `24.14.0` | `v24.14.1` |\n\n---\n\n### Release Notes\n\n<details>\n<summary>nodejs/node (node)</summary>\n\n###\n[`v24.14.0`](https://redirect.github.com/nodejs/node/compare/v24.13.1...v24.14.0)\n\n[Compare\nSource](https://redirect.github.com/nodejs/node/compare/v24.13.1...v24.14.0)\n\n###\n[`v24.13.1`](https://redirect.github.com/nodejs/node/compare/v24.13.0...v24.13.1)\n\n[Compare\nSource](https://redirect.github.com/nodejs/node/compare/v24.13.0...v24.13.1)\n\n###\n[`v24.13.0`](https://redirect.github.com/nodejs/node/releases/tag/v24.13.0):\n2026-01-13, Version 24.13.0 &#x27;Krypton&#x27; (LTS),\n@&#8203;marco-ippolito\n\n[Compare\nSource](https://redirect.github.com/nodejs/node/compare/v24.12.0...v24.13.0)\n\nThis is a security release.\n\n##### Notable Changes\n\nlib:\n\n- (CVE-2025-59465) add TLSSocket default error handler (RafaelGSS)\n[nodejs-private/node-private#797](https://redirect.github.com/nodejs-private/node-private/pull/797)\n- (CVE-2025-55132) disable futimes when permission model is enabled\n(RafaelGSS)\n[nodejs-private/node-private#748](https://redirect.github.com/nodejs-private/node-private/pull/748)\n  lib,permission:\n- (CVE-2025-55130) require full read and write to symlink APIs\n(RafaelGSS)\n[nodejs-private/node-private#760](https://redirect.github.com/nodejs-private/node-private/pull/760)\n  src:\n- (CVE-2025-59466) rethrow stack overflow exceptions in async\\_hooks\n(Matteo Collina)\n[nodejs-private/node-private#773](https://redirect.github.com/nodejs-private/node-private/pull/773)\n  src,lib:\n- (CVE-2025-55131) refactor unsafe buffer creation to remove zero-fill\ntoggle (Сковорода Никита Андреевич)\n[nodejs-private/node-private#759](https://redirect.github.com/nodejs-private/node-private/pull/759)\n  tls:\n- (CVE-2026-21637) route callback exceptions through error handlers\n(Matteo Collina)\n[nodejs-private/node-private#796](https://redirect.github.com/nodejs-private/node-private/pull/796)\n\n##### Commits\n\n-\n\\[[`2092785d01`](https://redirect.github.com/nodejs/node/commit/2092785d01)]\n- **deps**: update c-ares to v1.34.6 (Node.js GitHub Bot)\n[#&#8203;60997](https://redirect.github.com/nodejs/node/pull/60997)\n-\n\\[[`3e58b7f2af`](https://redirect.github.com/nodejs/node/commit/3e58b7f2af)]\n- **deps**: update undici to 7.18.2 (Node.js GitHub Bot)\n[#&#8203;61283](https://redirect.github.com/nodejs/node/pull/61283)\n-\n\\[[`4ba536a5a6`](https://redirect.github.com/nodejs/node/commit/4ba536a5a6)]\n- **(CVE-2025-59465)** **lib**: add TLSSocket default error handler\n(RafaelGSS)\n[nodejs-private/node-private#797](https://redirect.github.com/nodejs-private/node-private/pull/797)\n-\n\\[[`89adaa21fd`](https://redirect.github.com/nodejs/node/commit/89adaa21fd)]\n- **(CVE-2025-55132)** **lib**: disable futimes when permission model is\nenabled (RafaelGSS)\n[nodejs-private/node-private#748](https://redirect.github.com/nodejs-private/node-private/pull/748)\n-\n\\[[`7302b4dae1`](https://redirect.github.com/nodejs/node/commit/7302b4dae1)]\n- **(CVE-2025-55130)** **lib,permission**: require full read and write\nto symlink APIs (RafaelGSS)\n[nodejs-private/node-private#760](https://redirect.github.com/nodejs-private/node-private/pull/760)\n-\n\\[[`ac030753c4`](https://redirect.github.com/nodejs/node/commit/ac030753c4)]\n- **(CVE-2025-59466)** **src**: rethrow stack overflow exceptions in\nasync\\_hooks (Matteo Collina)\n[nodejs-private/node-private#773](https://redirect.github.com/nodejs-private/node-private/pull/773)\n-\n\\[[`20075692fe`](https://redirect.github.com/nodejs/node/commit/20075692fe)]\n- **(CVE-2025-55131)** **src,lib**: refactor unsafe buffer creation to\nremove zero-fill toggle (Сковорода Никита Андреевич)\n[nodejs-private/node-private#759](https://redirect.github.com/nodejs-private/node-private/pull/759)\n-\n\\[[`20591b0618`](https://redirect.github.com/nodejs/node/commit/20591b0618)]\n- **(CVE-2026-21637)** **tls**: route callback exceptions through error\nhandlers (Matteo Collina)\n[nodejs-private/node-private#796](https://redirect.github.com/nodejs-private/node-private/pull/796)\n\n</details>\n\n---\n\n### Configuration\n\n📅 **Schedule**: Branch creation - At any time (no schedule defined),\nAutomerge - At any time (no schedule defined).\n\n🚦 **Automerge**: Disabled by config. Please merge this manually once you\nare satisfied.\n\n♻ **Rebasing**: Whenever PR becomes conflicted, or you tick the\nrebase/retry checkbox.\n\n🔕 **Ignore**: Close this PR and you won't be reminded about this update\nagain.\n\n---\n\n- [ ] <!-- rebase-check -->If you want to rebase/retry this PR, check\nthis box\n\n---\n\nThis PR was generated by [Mend Renovate](https://mend.io/renovate/).\nView the [repository job\nlog](https://developer.mend.io/github/secretlint/secretlint).\n\n<!--renovate-debug:eyJjcmVhdGVkSW5WZXIiOiI0My42Ni40IiwidXBkYXRlZEluVmVyIjoiNDMuNjYuNCIsInRhcmdldEJyYW5jaCI6Im1hc3RlciIsImxhYmVscyI6W119-->\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2026-03-29T21:57:32+09:00",
+          "tree_id": "852fb70638c0313615d382ebe1ad813b1c5b139c",
+          "url": "https://github.com/secretlint/secretlint/commit/512d0617f1ccc6fce2510e6ecfa42f7c8daddfe7"
+        },
+        "date": 1774789140804,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.71,
+            "range": "±0.60%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.58,
+            "range": "±1.11%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
