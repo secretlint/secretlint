@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1774778357554,
+  "lastUpdate": 1774779708333,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -50880,6 +50880,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.55,
             "range": "±0.83%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "76617cb4e78edd8a44613579d73831b8e6c094a4",
+          "message": "fix: use correct input name for softprops/action-gh-release (#1440)\n\n* fix: use correct input name for softprops/action-gh-release\n\n`release_name` is not a valid input for v2.6.1, the correct name is `name`.\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>\n\n* chore: update action pins via pinact\n\nCo-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>\n\n---------\n\nCo-authored-by: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+          "timestamp": "2026-03-29T10:20:13Z",
+          "tree_id": "95ada17df89eb95e58a686aa6027cb7f228405f2",
+          "url": "https://github.com/secretlint/secretlint/commit/76617cb4e78edd8a44613579d73831b8e6c094a4"
+        },
+        "date": 1774779704980,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.66,
+            "range": "±0.86%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.57,
+            "range": "±1.09%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
