@@ -7,13 +7,6 @@ on:
       - master
     types: [closed]
 
-permissions:
-  contents: write
-  issues: write
-  pull-requests: write
-  packages: write
-  id-token: write  # Required for OIDC
-
 env:
   DOCKER_BASE_NAME: ghcr.io/${{ github.repository }}
   DOCKER_HUB_BASE_NAME: secretlint/secretlint
@@ -24,6 +17,9 @@ jobs:
       github.event.pull_request.merged == true &&
       contains(github.event.pull_request.labels.*.name, 'Type: Release')
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write  # Required for OIDC
     outputs:
       exists_tag: ${{ steps.tag_check.outputs.exists_tag }}
       version: ${{ env.CURRENT_VERSION }}
@@ -131,6 +127,8 @@ jobs:
     needs: [publish]
     if: needs.publish.outputs.exists_tag == 'false'
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
         with:
@@ -183,6 +181,10 @@ jobs:
     needs: [publish, publish-binary]
     if: needs.publish.outputs.exists_tag == 'false'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
     steps:
       - name: Download binary artifacts
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
