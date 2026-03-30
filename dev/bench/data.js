@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1774789173795,
+  "lastUpdate": 1774873020424,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -51032,6 +51032,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.57,
             "range": "±0.84%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "90dd86cf441924ae640c420da7de15ad11ab7be3",
+          "message": "Add Vercel secretlint rule for detecting token leaks (#1451)\n\n## Summary\nThis PR adds a new secretlint rule for detecting Vercel tokens and API\nkeys that may have been accidentally committed to version control.\n\n## Key Changes\n- **New rule package**: `@secretlint/secretlint-rule-vercel` that\ndetects five types of Vercel secrets:\n  - Personal access tokens (`vcp_`)\n  - Integration tokens (`vci_`)\n  - App access tokens (`vca_`)\n  - App refresh tokens (`vcr_`)\n  - AI Gateway API keys (`vck_`)\n\n- **Pattern matching**: Uses a regex pattern to identify tokens with the\nappropriate prefix followed by 20-60 alphanumeric characters, with word\nboundary checking to avoid false positives\n\n- **Internationalization**: Provides error messages in both English and\nJapanese for each token type\n\n- **Test coverage**: Includes snapshot tests with both positive cases\n(valid tokens that should be detected) and negative cases (short\nprefixes that should not trigger)\n\n- **Integration**: Added the new rule to the canary preset package for\nbroader availability\n\n## Implementation Details\n- The rule uses Unicode-aware regex with negative lookbehind\n(`(?<!\\p{L})`) to ensure tokens aren't part of longer identifiers\n- Each token type maps to a specific message ID for granular error\nreporting\n- The rule is marked as recommended and supports text content types\n- Comprehensive documentation included with message descriptions and\nusage examples\n\nhttps://claude.ai/code/session_01PAEfEgWTP3oKBAwrCd2AhP\n<!-- devin-review-badge-begin -->\n\n---\n\n<a href=\"https://app.devin.ai/review/secretlint/secretlint/pull/1451\"\ntarget=\"_blank\">\n  <picture>\n<source media=\"(prefers-color-scheme: dark)\"\nsrcset=\"https://static.devin.ai/assets/gh-open-in-devin-review-dark.svg?v=1\">\n<img\nsrc=\"https://static.devin.ai/assets/gh-open-in-devin-review-light.svg?v=1\"\nalt=\"Open with Devin\">\n  </picture>\n</a>\n<!-- devin-review-badge-end -->\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-03-30T21:15:28+09:00",
+          "tree_id": "9362470ddccedad7001dbbb35c1309cd3fb950b0",
+          "url": "https://github.com/secretlint/secretlint/commit/90dd86cf441924ae640c420da7de15ad11ab7be3"
+        },
+        "date": 1774873018132,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.63,
+            "range": "±0.90%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.53,
+            "range": "±0.97%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
