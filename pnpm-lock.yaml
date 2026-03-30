@@ -4,24 +4,174 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    '@rollup/plugin-commonjs':
+      specifier: ^28.0.9
+      version: 28.0.9
+    '@rollup/plugin-node-resolve':
+      specifier: ^16.0.3
+      version: 16.0.3
+    '@rollup/plugin-typescript':
+      specifier: ^12.3.0
+      version: 12.3.0
+    '@textlint/linter-formatter':
+      specifier: ^15.5.2
+      version: 15.5.2
+    '@textlint/module-interop':
+      specifier: ^15.5.2
+      version: 15.5.2
+    '@textlint/regexp-string-matcher':
+      specifier: ^2.0.2
+      version: 2.0.2
+    '@textlint/types':
+      specifier: ^15.5.2
+      version: 15.5.2
+    '@types/bn.js':
+      specifier: ^5.2.0
+      version: 5.2.0
+    '@types/debug':
+      specifier: ^4.1.13
+      version: 4.1.13
+    '@types/js-yaml':
+      specifier: ^4.0.9
+      version: 4.0.9
+    '@types/micromatch':
+      specifier: ^4.0.10
+      version: 4.0.10
+    '@types/node':
+      specifier: ^24.12.0
+      version: 24.12.0
+    '@types/node-forge':
+      specifier: ^1.3.14
+      version: 1.3.14
+    '@types/pluralize':
+      specifier: 0.0.33
+      version: 0.0.33
+    '@types/secp256k1':
+      specifier: ^4.0.7
+      version: 4.0.7
+    ajv:
+      specifier: ^8.18.0
+      version: 8.18.0
+    assert-json-equal:
+      specifier: ^2.0.0
+      version: 2.0.0
+    benchmark:
+      specifier: ^2.1.4
+      version: 2.1.4
+    bn.js:
+      specifier: ^5.2.3
+      version: 5.2.3
+    chalk:
+      specifier: ^5.6.2
+      version: 5.6.2
+    create-validator-ts:
+      specifier: ^6.0.1
+      version: 6.0.1
+    debug:
+      specifier: ^4.4.3
+      version: 4.4.3
+    escape-string-regexp:
+      specifier: ^5.0.0
+      version: 5.0.0
+    globby:
+      specifier: ^14.1.0
+      version: 14.1.0
+    istextorbinary:
+      specifier: ^9.5.0
+      version: 9.5.0
+    js-yaml:
+      specifier: ^4.1.1
+      version: 4.1.1
+    lint-staged:
+      specifier: ^16.4.0
+      version: 16.4.0
+    micromatch:
+      specifier: ^4.0.8
+      version: 4.0.8
+    node-forge:
+      specifier: ^1.4.0
+      version: 1.4.0
+    node-sarif-builder:
+      specifier: ^3.4.0
+      version: 3.4.0
+    p-map:
+      specifier: ^7.0.4
+      version: 7.0.4
+    pluralize:
+      specifier: ^8.0.0
+      version: 8.0.0
+    prettier:
+      specifier: ^2.8.8
+      version: 2.8.8
+    rc-config-loader:
+      specifier: ^4.1.4
+      version: 4.1.4
+    read-pkg:
+      specifier: ^9.0.1
+      version: 9.0.1
+    rimraf:
+      specifier: ^6.1.3
+      version: 6.1.3
+    rollup:
+      specifier: ^4.60.1
+      version: 4.60.1
+    rollup-plugin-polyfill-node:
+      specifier: ^0.13.0
+      version: 0.13.0
+    scaffdog:
+      specifier: ^4.1.0
+      version: 4.1.0
+    secp256k1:
+      specifier: ^5.0.1
+      version: 5.0.1
+    strip-ansi:
+      specifier: ^7.2.0
+      version: 7.2.0
+    structured-source:
+      specifier: ^4.0.0
+      version: 4.0.0
+    table:
+      specifier: ^6.9.0
+      version: 6.9.0
+    terminal-link:
+      specifier: ^4.0.0
+      version: 4.0.0
+    tsconfig-to-dual-package:
+      specifier: ^1.2.0
+      version: 1.2.0
+    tsx:
+      specifier: ^4.21.0
+      version: 4.21.0
+    turbo:
+      specifier: ^2.8.21
+      version: 2.9.1
+    typescript:
+      specifier: ^5.8.3
+      version: 5.9.2
+    vitest:
+      specifier: ^3.2.4
+      version: 3.2.4
+
 importers:
 
   .:
     devDependencies:
       lint-staged:
-        specifier: ^16.4.0
+        specifier: 'catalog:'
         version: 16.4.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       scaffdog:
-        specifier: ^4.1.0
+        specifier: 'catalog:'
         version: 4.1.0
       turbo:
-        specifier: ^2.8.21
+        specifier: 'catalog:'
         version: 2.9.1
       vitest:
-        specifier: ^3.2.4
+        specifier: 'catalog:'
         version: 3.2.4(@types/debug@4.1.13)(@types/node@24.12.0)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.2)
 
   examples/benchmark:
@@ -30,7 +180,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/@secretlint/secretlint-rule-preset-canary
       benchmark:
-        specifier: ^2.1.4
+        specifier: 'catalog:'
         version: 2.1.4
       secretlint:
         specifier: workspace:*
@@ -67,16 +217,16 @@ importers:
         version: link:../types
     devDependencies:
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/config-loader:
@@ -91,13 +241,13 @@ importers:
         specifier: workspace:*
         version: link:../types
       ajv:
-        specifier: ^8.18.0
+        specifier: 'catalog:'
         version: 8.18.0
       debug:
-        specifier: ^4.4.3
+        specifier: 'catalog:'
         version: 4.4.3
       rc-config-loader:
-        specifier: ^4.1.4
+        specifier: 'catalog:'
         version: 4.1.4
     devDependencies:
       '@secretlint/secretlint-rule-internal-test-cjs':
@@ -107,22 +257,22 @@ importers:
         specifier: workspace:*
         version: link:../secretlint-rule-internal-test-esm
       '@types/debug':
-        specifier: ^4.1.13
+        specifier: 'catalog:'
         version: 4.1.13
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       create-validator-ts:
-        specifier: ^6.0.1
+        specifier: 'catalog:'
         version: 6.0.1
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/core:
@@ -134,29 +284,29 @@ importers:
         specifier: workspace:*
         version: link:../types
       debug:
-        specifier: ^4.4.3
+        specifier: 'catalog:'
         version: 4.4.3
       structured-source:
-        specifier: ^4.0.0
+        specifier: 'catalog:'
         version: 4.0.0
     devDependencies:
       '@types/debug':
-        specifier: ^4.1.13
+        specifier: 'catalog:'
         version: 4.1.13
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       assert-json-equal:
-        specifier: ^2.0.0
+        specifier: 'catalog:'
         version: 2.0.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/formatter:
@@ -168,53 +318,53 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@textlint/linter-formatter':
-        specifier: ^15.5.2
+        specifier: 'catalog:'
         version: 15.5.2
       '@textlint/module-interop':
-        specifier: ^15.5.2
+        specifier: 'catalog:'
         version: 15.5.2
       '@textlint/types':
-        specifier: ^15.5.2
+        specifier: 'catalog:'
         version: 15.5.2
       chalk:
-        specifier: ^5.6.2
+        specifier: 'catalog:'
         version: 5.6.2
       debug:
-        specifier: ^4.4.3
+        specifier: 'catalog:'
         version: 4.4.3
       pluralize:
-        specifier: ^8.0.0
+        specifier: 'catalog:'
         version: 8.0.0
       strip-ansi:
-        specifier: ^7.2.0
+        specifier: 'catalog:'
         version: 7.2.0
       table:
-        specifier: ^6.9.0
+        specifier: 'catalog:'
         version: 6.9.0
       terminal-link:
-        specifier: ^4.0.0
+        specifier: 'catalog:'
         version: 4.0.0
     devDependencies:
       '@types/debug':
-        specifier: ^4.1.13
+        specifier: 'catalog:'
         version: 4.1.13
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       '@types/pluralize':
-        specifier: 0.0.33
+        specifier: 'catalog:'
         version: 0.0.33
       escape-string-regexp:
-        specifier: ^5.0.0
+        specifier: 'catalog:'
         version: 5.0.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/messages-to-markdown:
@@ -227,16 +377,16 @@ importers:
         version: link:../types
     devDependencies:
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/node:
@@ -260,44 +410,44 @@ importers:
         specifier: workspace:*
         version: link:../types
       debug:
-        specifier: ^4.4.3
+        specifier: 'catalog:'
         version: 4.4.3
       p-map:
-        specifier: ^7.0.4
+        specifier: 'catalog:'
         version: 7.0.4
     devDependencies:
       '@secretlint/secretlint-rule-example':
         specifier: workspace:*
         version: link:../secretlint-rule-example
       '@types/debug':
-        specifier: ^4.1.13
+        specifier: 'catalog:'
         version: 4.1.13
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/profiler:
     devDependencies:
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/quick-start:
@@ -310,53 +460,53 @@ importers:
         version: link:../../secretlint
     devDependencies:
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/resolver:
     devDependencies:
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-formatter-sarif:
     dependencies:
       node-sarif-builder:
-        specifier: ^3.4.0
+        specifier: 'catalog:'
         version: 3.4.0
     devDependencies:
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       escape-string-regexp:
-        specifier: ^5.0.0
+        specifier: 'catalog:'
         version: 5.0.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-1password:
@@ -365,23 +515,23 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@textlint/regexp-string-matcher':
-        specifier: ^2.0.2
+        specifier: 'catalog:'
         version: 2.0.2
     devDependencies:
       '@secretlint/tester':
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-anthropic:
@@ -394,16 +544,16 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-aws:
@@ -412,23 +562,23 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@textlint/regexp-string-matcher':
-        specifier: ^2.0.2
+        specifier: 'catalog:'
         version: 2.0.2
     devDependencies:
       '@secretlint/tester':
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-azure:
@@ -437,23 +587,23 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@textlint/regexp-string-matcher':
-        specifier: ^2.0.2
+        specifier: 'catalog:'
         version: 2.0.2
     devDependencies:
       '@secretlint/tester':
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-basicauth:
@@ -462,23 +612,23 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@textlint/regexp-string-matcher':
-        specifier: ^2.0.2
+        specifier: 'catalog:'
         version: 2.0.2
     devDependencies:
       '@secretlint/tester':
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-database-connection-string:
@@ -487,23 +637,23 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@textlint/regexp-string-matcher':
-        specifier: ^2.0.2
+        specifier: 'catalog:'
         version: 2.0.2
     devDependencies:
       '@secretlint/tester':
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^20.19.37
-        version: 20.19.37
+        specifier: 'catalog:'
+        version: 24.12.0
       prettier:
-        specifier: ^2.8.1
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.1.6
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-example:
@@ -516,16 +666,16 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-filter-comments:
@@ -541,16 +691,16 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-gcp:
@@ -559,29 +709,29 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@textlint/regexp-string-matcher':
-        specifier: ^2.0.2
+        specifier: 'catalog:'
         version: 2.0.2
       node-forge:
-        specifier: ^1.4.0
+        specifier: 'catalog:'
         version: 1.4.0
     devDependencies:
       '@secretlint/tester':
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       '@types/node-forge':
-        specifier: ^1.3.14
+        specifier: 'catalog:'
         version: 1.3.14
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-github:
@@ -590,23 +740,23 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@textlint/regexp-string-matcher':
-        specifier: ^2.0.2
+        specifier: 'catalog:'
         version: 2.0.2
     devDependencies:
       '@secretlint/tester':
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-internal-test-cjs:
@@ -616,7 +766,7 @@ importers:
         version: link:../types
     devDependencies:
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-internal-test-esm:
@@ -626,7 +776,7 @@ importers:
         version: link:../types
     devDependencies:
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-linear:
@@ -639,16 +789,16 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-no-dotenv:
@@ -661,16 +811,16 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-no-homedir:
@@ -679,26 +829,26 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@textlint/regexp-string-matcher':
-        specifier: ^2.0.2
+        specifier: 'catalog:'
         version: 2.0.2
       escape-string-regexp:
-        specifier: ^5.0.0
+        specifier: 'catalog:'
         version: 5.0.0
     devDependencies:
       '@secretlint/tester':
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-no-k8s-kind-secret:
@@ -707,26 +857,26 @@ importers:
         specifier: workspace:*
         version: link:../types
       js-yaml:
-        specifier: ^4.1.1
+        specifier: 'catalog:'
         version: 4.1.1
     devDependencies:
       '@secretlint/tester':
         specifier: workspace:*
         version: link:../tester
       '@types/js-yaml':
-        specifier: ^4.0.9
+        specifier: 'catalog:'
         version: 4.0.9
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-npm:
@@ -735,23 +885,23 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@textlint/regexp-string-matcher':
-        specifier: ^2.0.2
+        specifier: 'catalog:'
         version: 2.0.2
     devDependencies:
       '@secretlint/tester':
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-openai:
@@ -764,16 +914,16 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-pattern:
@@ -785,38 +935,38 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@textlint/regexp-string-matcher':
-        specifier: ^2.0.2
+        specifier: 'catalog:'
         version: 2.0.2
       micromatch:
-        specifier: ^4.0.8
+        specifier: 'catalog:'
         version: 4.0.8
     devDependencies:
       '@types/micromatch':
-        specifier: ^4.0.10
+        specifier: 'catalog:'
         version: 4.0.10
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-preset-canary:
     devDependencies:
       '@rollup/plugin-commonjs':
-        specifier: ^28.0.9
+        specifier: 'catalog:'
         version: 28.0.9(rollup@4.60.1)
       '@rollup/plugin-node-resolve':
-        specifier: ^15.3.1
-        version: 15.3.1(rollup@4.60.1)
+        specifier: 'catalog:'
+        version: 16.0.3(rollup@4.60.1)
       '@rollup/plugin-typescript':
-        specifier: ^12.3.0
+        specifier: 'catalog:'
         version: 12.3.0(rollup@4.60.1)(tslib@2.8.1)(typescript@5.9.2)
       '@secretlint/secretlint-rule-1password':
         specifier: workspace:*
@@ -873,37 +1023,37 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       rimraf:
-        specifier: ^6.1.3
+        specifier: 'catalog:'
         version: 6.1.3
       rollup:
-        specifier: ^4.60.1
+        specifier: 'catalog:'
         version: 4.60.1
       rollup-plugin-polyfill-node:
-        specifier: ^0.13.0
+        specifier: 'catalog:'
         version: 0.13.0(rollup@4.60.1)
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-preset-recommend:
     devDependencies:
       '@rollup/plugin-commonjs':
-        specifier: ^28.0.9
+        specifier: 'catalog:'
         version: 28.0.9(rollup@4.60.1)
       '@rollup/plugin-node-resolve':
-        specifier: ^16.0.3
+        specifier: 'catalog:'
         version: 16.0.3(rollup@4.60.1)
       '@rollup/plugin-typescript':
-        specifier: ^12.3.0
+        specifier: 'catalog:'
         version: 12.3.0(rollup@4.60.1)(tslib@2.8.1)(typescript@5.9.2)
       '@secretlint/secretlint-rule-1password':
         specifier: workspace:*
@@ -960,31 +1110,31 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       rimraf:
-        specifier: ^6.1.3
+        specifier: 'catalog:'
         version: 6.1.3
       rollup:
-        specifier: ^4.60.1
+        specifier: 'catalog:'
         version: 4.60.1
       rollup-plugin-polyfill-node:
-        specifier: ^0.13.0
+        specifier: 'catalog:'
         version: 0.13.0(rollup@4.60.1)
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-privatekey:
     dependencies:
       '@textlint/regexp-string-matcher':
-        specifier: ^2.0.2
+        specifier: 'catalog:'
         version: 2.0.2
     devDependencies:
       '@secretlint/tester':
@@ -994,16 +1144,16 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-secp256k1-privatekey:
@@ -1012,32 +1162,32 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@types/bn.js':
-        specifier: ^5.2.0
+        specifier: 'catalog:'
         version: 5.2.0
       '@types/secp256k1':
-        specifier: ^4.0.7
+        specifier: 'catalog:'
         version: 4.0.7
       bn.js:
-        specifier: ^5.2.3
+        specifier: 'catalog:'
         version: 5.2.3
       secp256k1:
-        specifier: ^5.0.1
+        specifier: 'catalog:'
         version: 5.0.1
     devDependencies:
       '@secretlint/tester':
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-sendgrid:
@@ -1046,23 +1196,23 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@textlint/regexp-string-matcher':
-        specifier: ^2.0.2
+        specifier: 'catalog:'
         version: 2.0.2
     devDependencies:
       '@secretlint/tester':
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-shopify:
@@ -1071,23 +1221,23 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@textlint/regexp-string-matcher':
-        specifier: ^2.0.2
+        specifier: 'catalog:'
         version: 2.0.2
     devDependencies:
       '@secretlint/tester':
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-slack:
@@ -1096,23 +1246,23 @@ importers:
         specifier: workspace:*
         version: link:../types
       '@textlint/regexp-string-matcher':
-        specifier: ^2.0.2
+        specifier: 'catalog:'
         version: 2.0.2
     devDependencies:
       '@secretlint/tester':
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/secretlint-rule-vercel:
@@ -1125,16 +1275,16 @@ importers:
         specifier: workspace:*
         version: link:../tester
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/source-creator:
@@ -1143,20 +1293,20 @@ importers:
         specifier: workspace:*
         version: link:../types
       istextorbinary:
-        specifier: ^9.5.0
+        specifier: 'catalog:'
         version: 9.5.0
     devDependencies:
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/tester:
@@ -1175,38 +1325,38 @@ importers:
         version: link:../types
     devDependencies:
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
   packages/@secretlint/types:
     devDependencies:
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsconfig-to-dual-package:
-        specifier: ^1.2.0
+        specifier: 'catalog:'
         version: 1.2.0(typescript@5.9.2)
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
       vitest:
-        specifier: ^2.1.9
-        version: 2.1.9(@types/node@24.12.0)
+        specifier: 'catalog:'
+        version: 3.2.4(@types/debug@4.1.13)(@types/node@24.12.0)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.2)
 
   packages/secretlint:
     dependencies:
@@ -1226,13 +1376,13 @@ importers:
         specifier: workspace:*
         version: link:../@secretlint/resolver
       debug:
-        specifier: ^4.4.3
+        specifier: 'catalog:'
         version: 4.4.3
       globby:
-        specifier: ^14.1.0
+        specifier: 'catalog:'
         version: 14.1.0
       read-pkg:
-        specifier: ^9.0.1
+        specifier: 'catalog:'
         version: 9.0.1
     devDependencies:
       '@secretlint/secretlint-rule-example':
@@ -1245,19 +1395,19 @@ importers:
         specifier: workspace:*
         version: link:../@secretlint/types
       '@types/debug':
-        specifier: ^4.1.13
+        specifier: 'catalog:'
         version: 4.1.13
       '@types/node':
-        specifier: ^24.12.0
+        specifier: 'catalog:'
         version: 24.12.0
       prettier:
-        specifier: ^2.8.8
+        specifier: 'catalog:'
         version: 2.8.8
       tsx:
-        specifier: ^4.21.0
+        specifier: 'catalog:'
         version: 4.21.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.9.2
 
 packages:
@@ -1276,12 +1426,6 @@ packages:
     resolution: {integrity: sha512-D2hP9eA+Sqx1kBZgzxZh0y1trbuU+JoDkiEwqhQ36nodYqJwyEIhPSdMNd7lOm/4io72luTPWH20Yda0xOuUow==}
     engines: {node: '>=6.9.0'}
 
-  '@esbuild/aix-ppc64@0.21.5':
-    resolution: {integrity: sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ==}
-    engines: {node: '>=12'}
-    cpu: [ppc64]
-    os: [aix]
-
   '@esbuild/aix-ppc64@0.25.8':
     resolution: {integrity: sha512-urAvrUedIqEiFR3FYSLTWQgLu5tb+m0qZw0NBEasUeo6wuqatkMDaRT+1uABiGXEu5vqgPd7FGE1BhsAIy9QVA==}
     engines: {node: '>=18'}
@@ -1294,12 +1438,6 @@ packages:
     cpu: [ppc64]
     os: [aix]
 
-  '@esbuild/android-arm64@0.21.5':
-    resolution: {integrity: sha512-c0uX9VAUBQ7dTDCjq+wdyGLowMdtR/GoC2U5IYk/7D1H1JYC0qseD7+11iMP2mRLN9RcCMRcjC4YMclCzGwS/A==}
-    engines: {node: '>=12'}
-    cpu: [arm64]
-    os: [android]
-
   '@esbuild/android-arm64@0.25.8':
     resolution: {integrity: sha512-OD3p7LYzWpLhZEyATcTSJ67qB5D+20vbtr6vHlHWSQYhKtzUYrETuWThmzFpZtFsBIxRvhO07+UgVA9m0i/O1w==}
     engines: {node: '>=18'}
@@ -1310,12 +1448,6 @@ packages:
     resolution: {integrity: sha512-CC3vt4+1xZrs97/PKDkl0yN7w8edvU2vZvAFGD16n9F0Cvniy5qvzRXjfO1l94efczkkQE6g1x0i73Qf5uthOQ==}
     engines: {node: '>=18'}
     cpu: [arm64]
-    os: [android]
-
-  '@esbuild/android-arm@0.21.5':
-    resolution: {integrity: sha512-vCPvzSjpPHEi1siZdlvAlsPxXl7WbOVUBBAowWug4rJHb68Ox8KualB+1ocNvT5fjv6wpkX6o/iEpbDrf68zcg==}
-    engines: {node: '>=12'}
-    cpu: [arm]
     os: [android]
 
   '@esbuild/android-arm@0.25.8':
@@ -1330,12 +1462,6 @@ packages:
     cpu: [arm]
     os: [android]
 
-  '@esbuild/android-x64@0.21.5':
-    resolution: {integrity: sha512-D7aPRUUNHRBwHxzxRvp856rjUHRFW1SdQATKXH2hqA0kAZb1hKmi02OpYRacl0TxIGz/ZmXWlbZgjwWYaCakTA==}
-    engines: {node: '>=12'}
-    cpu: [x64]
-    os: [android]
-
   '@esbuild/android-x64@0.25.8':
     resolution: {integrity: sha512-yJAVPklM5+4+9dTeKwHOaA+LQkmrKFX96BM0A/2zQrbS6ENCmxc4OVoBs5dPkCCak2roAD+jKCdnmOqKszPkjA==}
     engines: {node: '>=18'}
@@ -1348,12 +1474,6 @@ packages:
     cpu: [x64]
     os: [android]
 
-  '@esbuild/darwin-arm64@0.21.5':
-    resolution: {integrity: sha512-DwqXqZyuk5AiWWf3UfLiRDJ5EDd49zg6O9wclZ7kUMv2WRFr4HKjXp/5t8JZ11QbQfUS6/cRCKGwYhtNAY88kQ==}
-    engines: {node: '>=12'}
-    cpu: [arm64]
-    os: [darwin]
-
   '@esbuild/darwin-arm64@0.25.8':
     resolution: {integrity: sha512-Jw0mxgIaYX6R8ODrdkLLPwBqHTtYHJSmzzd+QeytSugzQ0Vg4c5rDky5VgkoowbZQahCbsv1rT1KW72MPIkevw==}
     engines: {node: '>=18'}
@@ -1364,12 +1484,6 @@ packages:
     resolution: {integrity: sha512-uJOQKYCcHhg07DL7i8MzjvS2LaP7W7Pn/7uA0B5S1EnqAirJtbyw4yC5jQ5qcFjHK9l6o/MX9QisBg12kNkdHg==}
     engines: {node: '>=18'}
     cpu: [arm64]
-    os: [darwin]
-
-  '@esbuild/darwin-x64@0.21.5':
-    resolution: {integrity: sha512-se/JjF8NlmKVG4kNIuyWMV/22ZaerB+qaSi5MdrXtd6R08kvs2qCN4C09miupktDitvh8jRFflwGFBQcxZRjbw==}
-    engines: {node: '>=12'}
-    cpu: [x64]
     os: [darwin]
 
   '@esbuild/darwin-x64@0.25.8':
@@ -1384,12 +1498,6 @@ packages:
     cpu: [x64]
     os: [darwin]
 
-  '@esbuild/freebsd-arm64@0.21.5':
-    resolution: {integrity: sha512-5JcRxxRDUJLX8JXp/wcBCy3pENnCgBR9bN6JsY4OmhfUtIHe3ZW0mawA7+RDAcMLrMIZaf03NlQiX9DGyB8h4g==}
-    engines: {node: '>=12'}
-    cpu: [arm64]
-    os: [freebsd]
-
   '@esbuild/freebsd-arm64@0.25.8':
     resolution: {integrity: sha512-YPJ7hDQ9DnNe5vxOm6jaie9QsTwcKedPvizTVlqWG9GBSq+BuyWEDazlGaDTC5NGU4QJd666V0yqCBL2oWKPfA==}
     engines: {node: '>=18'}
@@ -1400,12 +1508,6 @@ packages:
     resolution: {integrity: sha512-9FHtyO988CwNMMOE3YIeci+UV+x5Zy8fI2qHNpsEtSF83YPBmE8UWmfYAQg6Ux7Gsmd4FejZqnEUZCMGaNQHQw==}
     engines: {node: '>=18'}
     cpu: [arm64]
-    os: [freebsd]
-
-  '@esbuild/freebsd-x64@0.21.5':
-    resolution: {integrity: sha512-J95kNBj1zkbMXtHVH29bBriQygMXqoVQOQYA+ISs0/2l3T9/kj42ow2mpqerRBxDJnmkUDCaQT/dfNXWX/ZZCQ==}
-    engines: {node: '>=12'}
-    cpu: [x64]
     os: [freebsd]
 
   '@esbuild/freebsd-x64@0.25.8':
@@ -1420,12 +1522,6 @@ packages:
     cpu: [x64]
     os: [freebsd]
 
-  '@esbuild/linux-arm64@0.21.5':
-    resolution: {integrity: sha512-ibKvmyYzKsBeX8d8I7MH/TMfWDXBF3db4qM6sy+7re0YXya+K1cem3on9XgdT2EQGMu4hQyZhan7TeQ8XkGp4Q==}
-    engines: {node: '>=12'}
-    cpu: [arm64]
-    os: [linux]
-
   '@esbuild/linux-arm64@0.25.8':
     resolution: {integrity: sha512-WIgg00ARWv/uYLU7lsuDK00d/hHSfES5BzdWAdAig1ioV5kaFNrtK8EqGcUBJhYqotlUByUKz5Qo6u8tt7iD/w==}
     engines: {node: '>=18'}
@@ -1436,12 +1532,6 @@ packages:
     resolution: {integrity: sha512-AS18v0V+vZiLJyi/4LphvBE+OIX682Pu7ZYNsdUHyUKSoRwdnOsMf6FDekwoAFKej14WAkOef3zAORJgAtXnlQ==}
     engines: {node: '>=18'}
     cpu: [arm64]
-    os: [linux]
-
-  '@esbuild/linux-arm@0.21.5':
-    resolution: {integrity: sha512-bPb5AHZtbeNGjCKVZ9UGqGwo8EUu4cLq68E95A53KlxAPRmUyYv2D6F0uUI65XisGOL1hBP5mTronbgo+0bFcA==}
-    engines: {node: '>=12'}
-    cpu: [arm]
     os: [linux]
 
   '@esbuild/linux-arm@0.25.8':
@@ -1456,12 +1546,6 @@ packages:
     cpu: [arm]
     os: [linux]
 
-  '@esbuild/linux-ia32@0.21.5':
-    resolution: {integrity: sha512-YvjXDqLRqPDl2dvRODYmmhz4rPeVKYvppfGYKSNGdyZkA01046pLWyRKKI3ax8fbJoK5QbxblURkwK/MWY18Tg==}
-    engines: {node: '>=12'}
-    cpu: [ia32]
-    os: [linux]
-
   '@esbuild/linux-ia32@0.25.8':
     resolution: {integrity: sha512-A1D9YzRX1i+1AJZuFFUMP1E9fMaYY+GnSQil9Tlw05utlE86EKTUA7RjwHDkEitmLYiFsRd9HwKBPEftNdBfjg==}
     engines: {node: '>=18'}
@@ -1472,12 +1556,6 @@ packages:
     resolution: {integrity: sha512-Mz1jxqm/kfgKkc/KLHC5qIujMvnnarD9ra1cEcrs7qshTUSksPihGrWHVG5+osAIQ68577Zpww7SGapmzSt4Nw==}
     engines: {node: '>=18'}
     cpu: [ia32]
-    os: [linux]
-
-  '@esbuild/linux-loong64@0.21.5':
-    resolution: {integrity: sha512-uHf1BmMG8qEvzdrzAqg2SIG/02+4/DHB6a9Kbya0XDvwDEKCoC8ZRWI5JJvNdUjtciBGFQ5PuBlpEOXQj+JQSg==}
-    engines: {node: '>=12'}
-    cpu: [loong64]
     os: [linux]
 
   '@esbuild/linux-loong64@0.25.8':
@@ -1492,12 +1570,6 @@ packages:
     cpu: [loong64]
     os: [linux]
 
-  '@esbuild/linux-mips64el@0.21.5':
-    resolution: {integrity: sha512-IajOmO+KJK23bj52dFSNCMsz1QP1DqM6cwLUv3W1QwyxkyIWecfafnI555fvSGqEKwjMXVLokcV5ygHW5b3Jbg==}
-    engines: {node: '>=12'}
-    cpu: [mips64el]
-    os: [linux]
-
   '@esbuild/linux-mips64el@0.25.8':
     resolution: {integrity: sha512-uv+dqfRazte3BzfMp8PAQXmdGHQt2oC/y2ovwpTteqrMx2lwaksiFZ/bdkXJC19ttTvNXBuWH53zy/aTj1FgGw==}
     engines: {node: '>=18'}
@@ -1508,12 +1580,6 @@ packages:
     resolution: {integrity: sha512-sJz3zRNe4tO2wxvDpH/HYJilb6+2YJxo/ZNbVdtFiKDufzWq4JmKAiHy9iGoLjAV7r/W32VgaHGkk35cUXlNOg==}
     engines: {node: '>=18'}
     cpu: [mips64el]
-    os: [linux]
-
-  '@esbuild/linux-ppc64@0.21.5':
-    resolution: {integrity: sha512-1hHV/Z4OEfMwpLO8rp7CvlhBDnjsC3CttJXIhBi+5Aj5r+MBvy4egg7wCbe//hSsT+RvDAG7s81tAvpL2XAE4w==}
-    engines: {node: '>=12'}
-    cpu: [ppc64]
     os: [linux]
 
   '@esbuild/linux-ppc64@0.25.8':
@@ -1528,12 +1594,6 @@ packages:
     cpu: [ppc64]
     os: [linux]
 
-  '@esbuild/linux-riscv64@0.21.5':
-    resolution: {integrity: sha512-2HdXDMd9GMgTGrPWnJzP2ALSokE/0O5HhTUvWIbD3YdjME8JwvSCnNGBnTThKGEB91OZhzrJ4qIIxk/SBmyDDA==}
-    engines: {node: '>=12'}
-    cpu: [riscv64]
-    os: [linux]
-
   '@esbuild/linux-riscv64@0.25.8':
     resolution: {integrity: sha512-rAqDYFv3yzMrq7GIcen3XP7TUEG/4LK86LUPMIz6RT8A6pRIDn0sDcvjudVZBiiTcZCY9y2SgYX2lgK3AF+1eg==}
     engines: {node: '>=18'}
@@ -1546,12 +1606,6 @@ packages:
     cpu: [riscv64]
     os: [linux]
 
-  '@esbuild/linux-s390x@0.21.5':
-    resolution: {integrity: sha512-zus5sxzqBJD3eXxwvjN1yQkRepANgxE9lgOW2qLnmr8ikMTphkjgXu1HR01K4FJg8h1kEEDAqDcZQtbrRnB41A==}
-    engines: {node: '>=12'}
-    cpu: [s390x]
-    os: [linux]
-
   '@esbuild/linux-s390x@0.25.8':
     resolution: {integrity: sha512-Xutvh6VjlbcHpsIIbwY8GVRbwoviWT19tFhgdA7DlenLGC/mbc3lBoVb7jxj9Z+eyGqvcnSyIltYUrkKzWqSvg==}
     engines: {node: '>=18'}
@@ -1562,12 +1616,6 @@ packages:
     resolution: {integrity: sha512-hPlRWR4eIDDEci953RI1BLZitgi5uqcsjKMxwYfmi4LcwyWo2IcRP+lThVnKjNtk90pLS8nKdroXYOqW+QQH+w==}
     engines: {node: '>=18'}
     cpu: [s390x]
-    os: [linux]
-
-  '@esbuild/linux-x64@0.21.5':
-    resolution: {integrity: sha512-1rYdTpyv03iycF1+BhzrzQJCdOuAOtaqHTWJZCWvijKD2N5Xu0TtVC8/+1faWqcP9iBCWOmjmhoH94dH82BxPQ==}
-    engines: {node: '>=12'}
-    cpu: [x64]
     os: [linux]
 
   '@esbuild/linux-x64@0.25.8':
@@ -1594,12 +1642,6 @@ packages:
     cpu: [arm64]
     os: [netbsd]
 
-  '@esbuild/netbsd-x64@0.21.5':
-    resolution: {integrity: sha512-Woi2MXzXjMULccIwMnLciyZH4nCIMpWQAs049KEeMvOcNADVxo0UBIQPfSmxB3CWKedngg7sWZdLvLczpe0tLg==}
-    engines: {node: '>=12'}
-    cpu: [x64]
-    os: [netbsd]
-
   '@esbuild/netbsd-x64@0.25.8':
     resolution: {integrity: sha512-nVDCkrvx2ua+XQNyfrujIG38+YGyuy2Ru9kKVNyh5jAys6n+l44tTtToqHjino2My8VAY6Lw9H7RI73XFi66Cg==}
     engines: {node: '>=18'}
@@ -1622,12 +1664,6 @@ packages:
     resolution: {integrity: sha512-fWgqR8uNbCQ/GGv0yhzttj6sU/9Z5/Sv/VGU3F5OuXK6J6SlriONKrQ7tNlwBrJZXRYk5jUhuWvF7GYzGguBZQ==}
     engines: {node: '>=18'}
     cpu: [arm64]
-    os: [openbsd]
-
-  '@esbuild/openbsd-x64@0.21.5':
-    resolution: {integrity: sha512-HLNNw99xsvx12lFBUwoT8EVCsSvRNDVxNpjZ7bPn947b8gJPzeHWyNVhFsaerc0n3TsbOINvRP2byTZ5LKezow==}
-    engines: {node: '>=12'}
-    cpu: [x64]
     os: [openbsd]
 
   '@esbuild/openbsd-x64@0.25.8':
@@ -1654,12 +1690,6 @@ packages:
     cpu: [arm64]
     os: [openharmony]
 
-  '@esbuild/sunos-x64@0.21.5':
-    resolution: {integrity: sha512-6+gjmFpfy0BHU5Tpptkuh8+uw3mnrvgs+dSPQXQOv3ekbordwnzTVEb4qnIvQcYXq6gzkyTnoZ9dZG+D4garKg==}
-    engines: {node: '>=12'}
-    cpu: [x64]
-    os: [sunos]
-
   '@esbuild/sunos-x64@0.25.8':
     resolution: {integrity: sha512-zUlaP2S12YhQ2UzUfcCuMDHQFJyKABkAjvO5YSndMiIkMimPmxA+BYSBikWgsRpvyxuRnow4nS5NPnf9fpv41w==}
     engines: {node: '>=18'}
@@ -1671,12 +1701,6 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [sunos]
-
-  '@esbuild/win32-arm64@0.21.5':
-    resolution: {integrity: sha512-Z0gOTd75VvXqyq7nsl93zwahcTROgqvuAcYDUr+vOv8uHhNSKROyU961kgtCD1e95IqPKSQKH7tBTslnS3tA8A==}
-    engines: {node: '>=12'}
-    cpu: [arm64]
-    os: [win32]
 
   '@esbuild/win32-arm64@0.25.8':
     resolution: {integrity: sha512-YEGFFWESlPva8hGL+zvj2z/SaK+pH0SwOM0Nc/d+rVnW7GSTFlLBGzZkuSU9kFIGIo8q9X3ucpZhu8PDN5A2sQ==}
@@ -1690,12 +1714,6 @@ packages:
     cpu: [arm64]
     os: [win32]
 
-  '@esbuild/win32-ia32@0.21.5':
-    resolution: {integrity: sha512-SWXFF1CL2RVNMaVs+BBClwtfZSvDgtL//G/smwAc5oVK/UPu2Gu9tIaRgFmYFFKrmg3SyAjSrElf0TiJ1v8fYA==}
-    engines: {node: '>=12'}
-    cpu: [ia32]
-    os: [win32]
-
   '@esbuild/win32-ia32@0.25.8':
     resolution: {integrity: sha512-hiGgGC6KZ5LZz58OL/+qVVoZiuZlUYlYHNAmczOm7bs2oE1XriPFi5ZHHrS8ACpV5EjySrnoCKmcbQMN+ojnHg==}
     engines: {node: '>=18'}
@@ -1706,12 +1724,6 @@ packages:
     resolution: {integrity: sha512-30z1aKL9h22kQhilnYkORFYt+3wp7yZsHWus+wSKAJR8JtdfI76LJ4SBdMsCopTR3z/ORqVu5L1vtnHZWVj4cQ==}
     engines: {node: '>=18'}
     cpu: [ia32]
-    os: [win32]
-
-  '@esbuild/win32-x64@0.21.5':
-    resolution: {integrity: sha512-tQd/1efJuzPC6rCFwEvLtci/xNFcTZknmXs98FYDfGE4wP9ClFV98nyKrzJKVPMhdDnjzLhdUyMX4PsQAPjwIw==}
-    engines: {node: '>=12'}
-    cpu: [x64]
     os: [win32]
 
   '@esbuild/win32-x64@0.25.8':
@@ -1737,14 +1749,6 @@ packages:
   '@inquirer/figures@1.0.13':
     resolution: {integrity: sha512-lGPVU3yO9ZNqA7vTYz26jny41lE7yoQansmqdMLBEfqaGsmdg7V3W9mK9Pvb5IL4EVZ9GnSDGMO/cJXud5dMaw==}
     engines: {node: '>=18'}
-
-  '@isaacs/balanced-match@4.0.1':
-    resolution: {integrity: sha512-yzMTt9lEb8Gv7zRioUilSglI0c0smZ9k5D65677DLWLtWJaXIS3CqcGyUFByYKlnUj6TkjLVs54fBl6+TiGQDQ==}
-    engines: {node: 20 || >=22}
-
-  '@isaacs/brace-expansion@5.0.0':
-    resolution: {integrity: sha512-ZT55BDLV0yv0RBm2czMiZ+SqCGO7AvmOM3G/w2xhVPH+te0aKgFjmBvGlL1dH+ql2tgGO3MVrbb3jCKyvpgnxA==}
-    engines: {node: 20 || >=22}
 
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
@@ -1791,15 +1795,6 @@ packages:
     engines: {node: '>=14.0.0'}
     peerDependencies:
       rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
-    peerDependenciesMeta:
-      rollup:
-        optional: true
-
-  '@rollup/plugin-node-resolve@15.3.1':
-    resolution: {integrity: sha512-tgg6b91pAybXHJQMAAwW9VuWBO6Thi+q7BCNARLwSqlmsHz0XYURtGvh/AuwSADXSI4h/2uHbs7s4FzlZDGSGA==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      rollup: ^2.78.0||^3.0.0||^4.0.0
     peerDependenciesMeta:
       rollup:
         optional: true
@@ -2083,9 +2078,6 @@ packages:
   '@types/node-forge@1.3.14':
     resolution: {integrity: sha512-mhVF2BnD4BO+jtOp7z1CdzaK4mbuK0LLQYAvdOLqHTavxFNq4zA1EmYkpnFjP8HOUzedfQkRnp0E2ulSAYSzAw==}
 
-  '@types/node@20.19.37':
-    resolution: {integrity: sha512-8kzdPJ3FsNsVIurqBs7oodNnCEVbni9yUEkaHbgptDACOPW04jimGagZ51E6+lXUwJjgnBw+hyko/lkFWCldqw==}
-
   '@types/node@24.12.0':
     resolution: {integrity: sha512-GYDxsZi3ChgmckRT9HPU0WEhKLP08ev/Yfcq2AstjrDASOYCSXeyjDsHg4v5t4jOj7cyDX3vmprafKlWIG9MXQ==}
 
@@ -2110,22 +2102,8 @@ packages:
   '@types/unist@3.0.3':
     resolution: {integrity: sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q==}
 
-  '@vitest/expect@2.1.9':
-    resolution: {integrity: sha512-UJCIkTBenHeKT1TTlKMJWy1laZewsRIzYighyYiJKZreqtdxSos/S1t+ktRMQWu2CKqaarrkeszJx1cgC5tGZw==}
-
   '@vitest/expect@3.2.4':
     resolution: {integrity: sha512-Io0yyORnB6sikFlt8QW5K7slY4OjqNX9jmJQ02QDda8lyM6B5oNgVWoSoKPac8/kgnCUzuHQKrSLtu/uOqqrig==}
-
-  '@vitest/mocker@2.1.9':
-    resolution: {integrity: sha512-tVL6uJgoUdi6icpxmdrn5YNo3g3Dxv+IHJBr0GXHaEdTcw3F+cPKnsXFhli6nO+f/6SDKPHEK1UN+k+TQv0Ehg==}
-    peerDependencies:
-      msw: ^2.4.9
-      vite: ^5.0.0
-    peerDependenciesMeta:
-      msw:
-        optional: true
-      vite:
-        optional: true
 
   '@vitest/mocker@3.2.4':
     resolution: {integrity: sha512-46ryTE9RZO/rfDd7pEqFl7etuyzekzEhUbTW3BvmeO/BcCMEgq59BKhek3dXDWgAj4oMK6OZi+vRr1wPW6qjEQ==}
@@ -2138,32 +2116,17 @@ packages:
       vite:
         optional: true
 
-  '@vitest/pretty-format@2.1.9':
-    resolution: {integrity: sha512-KhRIdGV2U9HOUzxfiHmY8IFHTdqtOhIzCpd8WRdJiE7D/HUcZVD0EgQCVjm+Q9gkUXWgBvMmTtZgIG48wq7sOQ==}
-
   '@vitest/pretty-format@3.2.4':
     resolution: {integrity: sha512-IVNZik8IVRJRTr9fxlitMKeJeXFFFN0JaB9PHPGQ8NKQbGpfjlTx9zO4RefN8gp7eqjNy8nyK3NZmBzOPeIxtA==}
-
-  '@vitest/runner@2.1.9':
-    resolution: {integrity: sha512-ZXSSqTFIrzduD63btIfEyOmNcBmQvgOVsPNPe0jYtESiXkhd8u2erDLnMxmGrDCwHCCHE7hxwRDCT3pt0esT4g==}
 
   '@vitest/runner@3.2.4':
     resolution: {integrity: sha512-oukfKT9Mk41LreEW09vt45f8wx7DordoWUZMYdY/cyAk7w5TWkTRCNZYF7sX7n2wB7jyGAl74OxgwhPgKaqDMQ==}
 
-  '@vitest/snapshot@2.1.9':
-    resolution: {integrity: sha512-oBO82rEjsxLNJincVhLhaxxZdEtV0EFHMK5Kmx5sJ6H9L183dHECjiefOAdnqpIgT5eZwT04PoggUnW88vOBNQ==}
-
   '@vitest/snapshot@3.2.4':
     resolution: {integrity: sha512-dEYtS7qQP2CjU27QBC5oUOxLE/v5eLkGqPE0ZKEIDGMs4vKWe7IjgLOeauHsR0D5YuuycGRO5oSRXnwnmA78fQ==}
 
-  '@vitest/spy@2.1.9':
-    resolution: {integrity: sha512-E1B35FwzXXTs9FHNK6bDszs7mtydNi5MIfUWpceJ8Xbfb1gBMscAnwLbEu+B44ed6W3XjL9/ehLPHR1fkf1KLQ==}
-
   '@vitest/spy@3.2.4':
     resolution: {integrity: sha512-vAfasCOe6AIK70iP5UD11Ac4siNUNJ9i/9PZ3NKx07sG6sUxeag1LWdNrMWeKKYBLlzuK+Gn65Yd5nyL6ds+nw==}
-
-  '@vitest/utils@2.1.9':
-    resolution: {integrity: sha512-v0psaMSkNJ3A2NMrUEHFRzJtDPFn+/VWZ5WxImB21T9fjucJRmS7xCS3ppEnARb9y11OAzaD+P2Ps+b+BGX5iQ==}
 
   '@vitest/utils@3.2.4':
     resolution: {integrity: sha512-fB2V0JFrQSMsCo9HiSq3Ezpdv4iYaXRG1Sx8edX3MwxfyNn83mKiGzOcH+Fkxt4MHxr3y42fQi1oeAInqgX2QA==}
@@ -2189,10 +2152,6 @@ packages:
   ansi-regex@5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
     engines: {node: '>=8'}
-
-  ansi-regex@6.1.0:
-    resolution: {integrity: sha512-7HSX4QQb4CspciLpVFwyRe79O3xsIZDDLER21kERQ71oaPodF8jL725AgJMFAYbooIqolJoRLuM81SpeUkpkvA==}
-    engines: {node: '>=12'}
 
   ansi-regex@6.2.2:
     resolution: {integrity: sha512-Bq3SmSpyFHaWjPk8If9yc6svM8c56dB5BAtW4Qbw5jHTwwXXcTLoRMkpDJp6VL0XzlWaCHTXrkFURMYmD0sLqg==}
@@ -2301,10 +2260,6 @@ packages:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
     engines: {node: '>=10'}
 
-  chalk@5.5.0:
-    resolution: {integrity: sha512-1tm8DTaJhPBG3bIkVeZt1iZM9GfSX2lzOeDVZH9R9ffRHpmHvxZ/QhgQH/aDTkswQVt+YHdXAdS/In/30OjCbg==}
-    engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
-
   chalk@5.6.2:
     resolution: {integrity: sha512-7NzBL0rN6fMUW+f7A6Io4h40qQlG+xGmtMxfbnH/K7TAtt8JQWVQK+6g0UXKMeVJoyV5EkkNsErQ8pVD3bLHbA==}
     engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
@@ -2412,15 +2367,6 @@ packages:
   dayjs@1.11.13:
     resolution: {integrity: sha512-oaMBel6gjolK862uaPQOVTA7q3TZhuSvuMQAAglQDOWYO9A91IrAOUJEyKVlqJlHE0vq5p5UXxzdPfMH/x6xNg==}
 
-  debug@4.4.1:
-    resolution: {integrity: sha512-KcKCqiftBJcZr++7ykoDIEwSa3XWowTfNPo92BYxjXiyYEVrUQh2aLyhxBCwww+heortUFxEJYcRzosstTEBYQ==}
-    engines: {node: '>=6.0'}
-    peerDependencies:
-      supports-color: '*'
-    peerDependenciesMeta:
-      supports-color:
-        optional: true
-
   debug@4.4.3:
     resolution: {integrity: sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==}
     engines: {node: '>=6.0'}
@@ -2491,11 +2437,6 @@ packages:
 
   es-module-lexer@1.7.0:
     resolution: {integrity: sha512-jEQoCwk8hyb2AZziIOLhDqpm5+2ww5uIE6lkO/6jcOCusfk6LhMHpXXfBLXTZ7Ydyt0j4VoUQv6uGNYbdW+kBA==}
-
-  esbuild@0.21.5:
-    resolution: {integrity: sha512-mg3OPMV4hXywwpoDxu3Qda5xCKQi+vCTZq8S9J/EpkhB2HzKXq4SNFZE3+NK93JYxc8VMSep+lOUSC/RVKaBqw==}
-    engines: {node: '>=12'}
-    hasBin: true
 
   esbuild@0.25.8:
     resolution: {integrity: sha512-vVC0USHGtMi8+R4Kz8rt6JhEWLxsv9Rnu/lGYbPR8u47B+DCBksq9JarW0zOO7bs37hyOK1l2/oqtbciutL5+Q==}
@@ -2876,9 +2817,6 @@ packages:
   lodash.uniqwith@4.5.0:
     resolution: {integrity: sha512-7lYL8bLopMoy4CTICbxygAUq6CdRJ36vFc80DucPueUee+d5NBRxz3FdT9Pes/HEx5mPoT9jwnsEJWz1N7uq7Q==}
 
-  lodash@4.17.21:
-    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
-
   lodash@4.17.23:
     resolution: {integrity: sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==}
 
@@ -3005,10 +2943,6 @@ packages:
   minimalistic-crypto-utils@1.0.1:
     resolution: {integrity: sha512-JIYlbt6g8i5jKfJ3xz7rF0LXmv2TkDxBLUkiBeZ7bAx4GnnNMr8xFpGnOxn6GhTEHx3SjRrZEoU+j04prX1ktg==}
 
-  minimatch@10.1.1:
-    resolution: {integrity: sha512-enIvLvRAFZYXJzkCYG5RKmPfrFArdLv+R+lbQ53BmIMLIry74bjKzX6iHAm8WYamJkhSSEabrWN5D97XnKObjQ==}
-    engines: {node: 20 || >=22}
-
   minimatch@10.2.1:
     resolution: {integrity: sha512-MClCe8IL5nRRmawL6ib/eT4oLyeKMGCghibcDWK+J0hh0Q8kqSdia6BvbRMVk6mPa6WqUa5uR2oxt6C5jd533A==}
     engines: {node: 20 || >=22}
@@ -3123,9 +3057,6 @@ packages:
   path-type@6.0.0:
     resolution: {integrity: sha512-Vj7sf++t5pBD637NSfkxpHSMfWaeig5+DKWLhcqIYx6mWQz5hdJTGDVMQiJcw1ZYkhs7AazKDGpRVji1LJCZUQ==}
     engines: {node: '>=18'}
-
-  pathe@1.1.2:
-    resolution: {integrity: sha512-whLdWMYL2TwI08hn8/ZqAbrVemu0LNaNNJZX73O6qaIdCTfXutsLhMkjdENX0qhsQ9uIimo4/aQOmXkoon2nDQ==}
 
   pathe@2.0.3:
     resolution: {integrity: sha512-WUjGcAqP1gQacoQe+OBJsFA7Ld4DyXuUIjZ5cc75cLHvJ7dtNsTugphxIADwspS+AraAUePCKrSVtPLFj/F88w==}
@@ -3472,16 +3403,8 @@ packages:
     resolution: {integrity: sha512-Zba82s87IFq9A9XmjiX5uZA/ARWDrB03OHlq+Vw1fSdt0I+4/Kutwy8BP4Y/y/aORMo61FQ0vIb5j44vSo5Pkg==}
     engines: {node: ^18.0.0 || >=20.0.0}
 
-  tinyrainbow@1.2.0:
-    resolution: {integrity: sha512-weEDEq7Z5eTHPDh4xjX789+fHfF+P8boiFB+0vbWzpbnbsEr/GRaohi/uMKxg8RZMXnl1ItAi/IUHWMsjDV7kQ==}
-    engines: {node: '>=14.0.0'}
-
   tinyrainbow@2.0.0:
     resolution: {integrity: sha512-op4nsTR47R6p0vMUUoYl/a+ljLFVtlfaXkLQmqfLR1qHma1h/ysYk4hEXZ880bf2CYgTskvTa/e196Vd5dDQXw==}
-    engines: {node: '>=14.0.0'}
-
-  tinyspy@3.0.2:
-    resolution: {integrity: sha512-n1cw8k1k0x4pgA2+9XrOkFydTerNcJ1zWCO5Nn9scWHTD+5tp8dghT2x1uduQePZTZgd3Tupf+x9BxJjeJi77Q==}
     engines: {node: '>=14.0.0'}
 
   tinyspy@4.0.3:
@@ -3539,9 +3462,6 @@ packages:
     resolution: {integrity: sha512-CWBzXQrc/qOkhidw1OzBTQuYRbfyxDXJMVJ1XNwUHGROVmuaeiEm3OslpZ1RV96d7SKKjZKrSJu3+t/xlw3R9A==}
     engines: {node: '>=14.17'}
     hasBin: true
-
-  undici-types@6.21.0:
-    resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
 
   undici-types@7.16.0:
     resolution: {integrity: sha512-Zz+aZWSj8LE6zoxD+xrjh4VfkIG8Ya6LvYkZqtUQGJPZjYl53ypCaUwWqo7eI0x66KBGeRo+mlBEkMSeSZ38Nw==}
@@ -3603,46 +3523,10 @@ packages:
   vfile@5.3.7:
     resolution: {integrity: sha512-r7qlzkgErKjobAmyNIkkSpizsFPYiUPuJb5pNW1RB4JcYVZhs4lIbVqk8XPk033CV/1z8ss5pkax8SuhGpcG8g==}
 
-  vite-node@2.1.9:
-    resolution: {integrity: sha512-AM9aQ/IPrW/6ENLQg3AGY4K1N2TGZdR5e4gu/MmmR2xR3Ll1+dib+nook92g4TV3PXVyeyxdWwtaCAiUL0hMxA==}
-    engines: {node: ^18.0.0 || >=20.0.0}
-    hasBin: true
-
   vite-node@3.2.4:
     resolution: {integrity: sha512-EbKSKh+bh1E1IFxeO0pg1n4dvoOTt0UDiXMd/qn++r98+jPO1xtJilvXldeuQ8giIB5IkpjCgMleHMNEsGH6pg==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
-
-  vite@5.4.19:
-    resolution: {integrity: sha512-qO3aKv3HoQC8QKiNSTuUM1l9o/XX3+c+VTgLHbJWHZGeTPVAg2XwazI9UWzoxjIJCGCV2zU60uqMzjeLZuULqA==}
-    engines: {node: ^18.0.0 || >=20.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': ^18.0.0 || >=20.0.0
-      less: '*'
-      lightningcss: ^1.21.0
-      sass: '*'
-      sass-embedded: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.4.0
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      less:
-        optional: true
-      lightningcss:
-        optional: true
-      sass:
-        optional: true
-      sass-embedded:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
-        optional: true
 
   vite@7.1.1:
     resolution: {integrity: sha512-yJ+Mp7OyV+4S+afWo+QyoL9jFWD11QFH0i5i7JypnfTcA1rmgxCbiA8WwAICDEtZ1Z1hzrVhN8R8rGTqkTY8ZQ==}
@@ -3682,31 +3566,6 @@ packages:
       tsx:
         optional: true
       yaml:
-        optional: true
-
-  vitest@2.1.9:
-    resolution: {integrity: sha512-MSmPM9REYqDGBI8439mA4mWhV5sKmDlBKWIYbA3lRb2PTHACE0mgKwA8yQ2xq9vxDTuk4iPrECBAEW2aoFXY0Q==}
-    engines: {node: ^18.0.0 || >=20.0.0}
-    hasBin: true
-    peerDependencies:
-      '@edge-runtime/vm': '*'
-      '@types/node': ^18.0.0 || >=20.0.0
-      '@vitest/browser': 2.1.9
-      '@vitest/ui': 2.1.9
-      happy-dom: '*'
-      jsdom: '*'
-    peerDependenciesMeta:
-      '@edge-runtime/vm':
-        optional: true
-      '@types/node':
-        optional: true
-      '@vitest/browser':
-        optional: true
-      '@vitest/ui':
-        optional: true
-      happy-dom:
-        optional: true
-      jsdom:
         optional: true
 
   vitest@3.2.4:
@@ -3828,16 +3687,10 @@ snapshots:
 
   '@babel/helper-validator-identifier@7.27.1': {}
 
-  '@esbuild/aix-ppc64@0.21.5':
-    optional: true
-
   '@esbuild/aix-ppc64@0.25.8':
     optional: true
 
   '@esbuild/aix-ppc64@0.27.0':
-    optional: true
-
-  '@esbuild/android-arm64@0.21.5':
     optional: true
 
   '@esbuild/android-arm64@0.25.8':
@@ -3846,16 +3699,10 @@ snapshots:
   '@esbuild/android-arm64@0.27.0':
     optional: true
 
-  '@esbuild/android-arm@0.21.5':
-    optional: true
-
   '@esbuild/android-arm@0.25.8':
     optional: true
 
   '@esbuild/android-arm@0.27.0':
-    optional: true
-
-  '@esbuild/android-x64@0.21.5':
     optional: true
 
   '@esbuild/android-x64@0.25.8':
@@ -3864,16 +3711,10 @@ snapshots:
   '@esbuild/android-x64@0.27.0':
     optional: true
 
-  '@esbuild/darwin-arm64@0.21.5':
-    optional: true
-
   '@esbuild/darwin-arm64@0.25.8':
     optional: true
 
   '@esbuild/darwin-arm64@0.27.0':
-    optional: true
-
-  '@esbuild/darwin-x64@0.21.5':
     optional: true
 
   '@esbuild/darwin-x64@0.25.8':
@@ -3882,16 +3723,10 @@ snapshots:
   '@esbuild/darwin-x64@0.27.0':
     optional: true
 
-  '@esbuild/freebsd-arm64@0.21.5':
-    optional: true
-
   '@esbuild/freebsd-arm64@0.25.8':
     optional: true
 
   '@esbuild/freebsd-arm64@0.27.0':
-    optional: true
-
-  '@esbuild/freebsd-x64@0.21.5':
     optional: true
 
   '@esbuild/freebsd-x64@0.25.8':
@@ -3900,16 +3735,10 @@ snapshots:
   '@esbuild/freebsd-x64@0.27.0':
     optional: true
 
-  '@esbuild/linux-arm64@0.21.5':
-    optional: true
-
   '@esbuild/linux-arm64@0.25.8':
     optional: true
 
   '@esbuild/linux-arm64@0.27.0':
-    optional: true
-
-  '@esbuild/linux-arm@0.21.5':
     optional: true
 
   '@esbuild/linux-arm@0.25.8':
@@ -3918,16 +3747,10 @@ snapshots:
   '@esbuild/linux-arm@0.27.0':
     optional: true
 
-  '@esbuild/linux-ia32@0.21.5':
-    optional: true
-
   '@esbuild/linux-ia32@0.25.8':
     optional: true
 
   '@esbuild/linux-ia32@0.27.0':
-    optional: true
-
-  '@esbuild/linux-loong64@0.21.5':
     optional: true
 
   '@esbuild/linux-loong64@0.25.8':
@@ -3936,16 +3759,10 @@ snapshots:
   '@esbuild/linux-loong64@0.27.0':
     optional: true
 
-  '@esbuild/linux-mips64el@0.21.5':
-    optional: true
-
   '@esbuild/linux-mips64el@0.25.8':
     optional: true
 
   '@esbuild/linux-mips64el@0.27.0':
-    optional: true
-
-  '@esbuild/linux-ppc64@0.21.5':
     optional: true
 
   '@esbuild/linux-ppc64@0.25.8':
@@ -3954,25 +3771,16 @@ snapshots:
   '@esbuild/linux-ppc64@0.27.0':
     optional: true
 
-  '@esbuild/linux-riscv64@0.21.5':
-    optional: true
-
   '@esbuild/linux-riscv64@0.25.8':
     optional: true
 
   '@esbuild/linux-riscv64@0.27.0':
     optional: true
 
-  '@esbuild/linux-s390x@0.21.5':
-    optional: true
-
   '@esbuild/linux-s390x@0.25.8':
     optional: true
 
   '@esbuild/linux-s390x@0.27.0':
-    optional: true
-
-  '@esbuild/linux-x64@0.21.5':
     optional: true
 
   '@esbuild/linux-x64@0.25.8':
@@ -3987,9 +3795,6 @@ snapshots:
   '@esbuild/netbsd-arm64@0.27.0':
     optional: true
 
-  '@esbuild/netbsd-x64@0.21.5':
-    optional: true
-
   '@esbuild/netbsd-x64@0.25.8':
     optional: true
 
@@ -4000,9 +3805,6 @@ snapshots:
     optional: true
 
   '@esbuild/openbsd-arm64@0.27.0':
-    optional: true
-
-  '@esbuild/openbsd-x64@0.21.5':
     optional: true
 
   '@esbuild/openbsd-x64@0.25.8':
@@ -4017,16 +3819,10 @@ snapshots:
   '@esbuild/openharmony-arm64@0.27.0':
     optional: true
 
-  '@esbuild/sunos-x64@0.21.5':
-    optional: true
-
   '@esbuild/sunos-x64@0.25.8':
     optional: true
 
   '@esbuild/sunos-x64@0.27.0':
-    optional: true
-
-  '@esbuild/win32-arm64@0.21.5':
     optional: true
 
   '@esbuild/win32-arm64@0.25.8':
@@ -4035,16 +3831,10 @@ snapshots:
   '@esbuild/win32-arm64@0.27.0':
     optional: true
 
-  '@esbuild/win32-ia32@0.21.5':
-    optional: true
-
   '@esbuild/win32-ia32@0.25.8':
     optional: true
 
   '@esbuild/win32-ia32@0.27.0':
-    optional: true
-
-  '@esbuild/win32-x64@0.21.5':
     optional: true
 
   '@esbuild/win32-x64@0.25.8':
@@ -4062,12 +3852,6 @@ snapshots:
       resolve: 1.22.10
 
   '@inquirer/figures@1.0.13': {}
-
-  '@isaacs/balanced-match@4.0.1': {}
-
-  '@isaacs/brace-expansion@5.0.0':
-    dependencies:
-      '@isaacs/balanced-match': 4.0.1
 
   '@isaacs/cliui@8.0.2':
     dependencies:
@@ -4121,16 +3905,6 @@ snapshots:
       '@rollup/pluginutils': 5.2.0(rollup@4.60.1)
       estree-walker: 2.0.2
       magic-string: 0.30.17
-    optionalDependencies:
-      rollup: 4.60.1
-
-  '@rollup/plugin-node-resolve@15.3.1(rollup@4.60.1)':
-    dependencies:
-      '@rollup/pluginutils': 5.2.0(rollup@4.60.1)
-      '@types/resolve': 1.20.2
-      deepmerge: 4.3.1
-      is-module: 1.0.0
-      resolve: 1.22.10
     optionalDependencies:
       rollup: 4.60.1
 
@@ -4370,10 +4144,6 @@ snapshots:
     dependencies:
       '@types/node': 24.12.0
 
-  '@types/node@20.19.37':
-    dependencies:
-      undici-types: 6.21.0
-
   '@types/node@24.12.0':
     dependencies:
       undici-types: 7.16.0
@@ -4394,13 +4164,6 @@ snapshots:
 
   '@types/unist@3.0.3': {}
 
-  '@vitest/expect@2.1.9':
-    dependencies:
-      '@vitest/spy': 2.1.9
-      '@vitest/utils': 2.1.9
-      chai: 5.2.1
-      tinyrainbow: 1.2.0
-
   '@vitest/expect@3.2.4':
     dependencies:
       '@types/chai': 5.2.2
@@ -4408,14 +4171,6 @@ snapshots:
       '@vitest/utils': 3.2.4
       chai: 5.2.1
       tinyrainbow: 2.0.0
-
-  '@vitest/mocker@2.1.9(vite@5.4.19(@types/node@24.12.0))':
-    dependencies:
-      '@vitest/spy': 2.1.9
-      estree-walker: 3.0.3
-      magic-string: 0.30.17
-    optionalDependencies:
-      vite: 5.4.19(@types/node@24.12.0)
 
   '@vitest/mocker@3.2.4(vite@7.1.1(@types/node@24.12.0)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.2))':
     dependencies:
@@ -4425,18 +4180,9 @@ snapshots:
     optionalDependencies:
       vite: 7.1.1(@types/node@24.12.0)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.2)
 
-  '@vitest/pretty-format@2.1.9':
-    dependencies:
-      tinyrainbow: 1.2.0
-
   '@vitest/pretty-format@3.2.4':
     dependencies:
       tinyrainbow: 2.0.0
-
-  '@vitest/runner@2.1.9':
-    dependencies:
-      '@vitest/utils': 2.1.9
-      pathe: 1.1.2
 
   '@vitest/runner@3.2.4':
     dependencies:
@@ -4444,31 +4190,15 @@ snapshots:
       pathe: 2.0.3
       strip-literal: 3.0.0
 
-  '@vitest/snapshot@2.1.9':
-    dependencies:
-      '@vitest/pretty-format': 2.1.9
-      magic-string: 0.30.17
-      pathe: 1.1.2
-
   '@vitest/snapshot@3.2.4':
     dependencies:
       '@vitest/pretty-format': 3.2.4
       magic-string: 0.30.17
       pathe: 2.0.3
 
-  '@vitest/spy@2.1.9':
-    dependencies:
-      tinyspy: 3.0.2
-
   '@vitest/spy@3.2.4':
     dependencies:
       tinyspy: 4.0.3
-
-  '@vitest/utils@2.1.9':
-    dependencies:
-      '@vitest/pretty-format': 2.1.9
-      loupe: 3.2.0
-      tinyrainbow: 1.2.0
 
   '@vitest/utils@3.2.4':
     dependencies:
@@ -4498,8 +4228,6 @@ snapshots:
       environment: 1.1.0
 
   ansi-regex@5.0.1: {}
-
-  ansi-regex@6.1.0: {}
 
   ansi-regex@6.2.2: {}
 
@@ -4545,7 +4273,7 @@ snapshots:
 
   benchmark@2.1.4:
     dependencies:
-      lodash: 4.17.21
+      lodash: 4.17.23
       platform: 1.3.6
 
   binary-extensions@2.3.0: {}
@@ -4608,8 +4336,6 @@ snapshots:
     dependencies:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
-
-  chalk@5.5.0: {}
 
   chalk@5.6.2: {}
 
@@ -4714,10 +4440,6 @@ snapshots:
 
   dayjs@1.11.13: {}
 
-  debug@4.4.1:
-    dependencies:
-      ms: 2.1.3
-
   debug@4.4.3:
     dependencies:
       ms: 2.1.3
@@ -4775,32 +4497,6 @@ snapshots:
   environment@1.1.0: {}
 
   es-module-lexer@1.7.0: {}
-
-  esbuild@0.21.5:
-    optionalDependencies:
-      '@esbuild/aix-ppc64': 0.21.5
-      '@esbuild/android-arm': 0.21.5
-      '@esbuild/android-arm64': 0.21.5
-      '@esbuild/android-x64': 0.21.5
-      '@esbuild/darwin-arm64': 0.21.5
-      '@esbuild/darwin-x64': 0.21.5
-      '@esbuild/freebsd-arm64': 0.21.5
-      '@esbuild/freebsd-x64': 0.21.5
-      '@esbuild/linux-arm': 0.21.5
-      '@esbuild/linux-arm64': 0.21.5
-      '@esbuild/linux-ia32': 0.21.5
-      '@esbuild/linux-loong64': 0.21.5
-      '@esbuild/linux-mips64el': 0.21.5
-      '@esbuild/linux-ppc64': 0.21.5
-      '@esbuild/linux-riscv64': 0.21.5
-      '@esbuild/linux-s390x': 0.21.5
-      '@esbuild/linux-x64': 0.21.5
-      '@esbuild/netbsd-x64': 0.21.5
-      '@esbuild/openbsd-x64': 0.21.5
-      '@esbuild/sunos-x64': 0.21.5
-      '@esbuild/win32-arm64': 0.21.5
-      '@esbuild/win32-ia32': 0.21.5
-      '@esbuild/win32-x64': 0.21.5
 
   esbuild@0.25.8:
     optionalDependencies:
@@ -4976,7 +4672,7 @@ snapshots:
     dependencies:
       foreground-child: 3.3.1
       jackspeak: 4.1.1
-      minimatch: 10.1.1
+      minimatch: 10.2.1
       minipass: 7.1.2
       package-json-from-dist: 1.0.1
       path-scurry: 2.0.0
@@ -5197,8 +4893,6 @@ snapshots:
 
   lodash.uniqwith@4.5.0: {}
 
-  lodash@4.17.21: {}
-
   lodash@4.17.23: {}
 
   log-symbols@4.1.0:
@@ -5404,10 +5098,6 @@ snapshots:
 
   minimalistic-crypto-utils@1.0.1: {}
 
-  minimatch@10.1.1:
-    dependencies:
-      '@isaacs/brace-expansion': 5.0.0
-
   minimatch@10.2.1:
     dependencies:
       brace-expansion: 5.0.2
@@ -5513,8 +5203,6 @@ snapshots:
       minipass: 7.1.2
 
   path-type@6.0.0: {}
-
-  pathe@1.1.2: {}
 
   pathe@2.0.3: {}
 
@@ -5707,7 +5395,7 @@ snapshots:
       '@scaffdog/error': 4.1.0
       '@scaffdog/types': 4.1.0
       ansi-escapes: 7.0.0
-      chalk: 5.5.0
+      chalk: 5.6.2
       cli-truncate: 4.0.0
       consola: 3.4.2
       deepmerge: 4.3.1
@@ -5838,7 +5526,7 @@ snapshots:
 
   strip-ansi@7.1.0:
     dependencies:
-      ansi-regex: 6.1.0
+      ansi-regex: 6.2.2
 
   strip-ansi@7.2.0:
     dependencies:
@@ -5901,11 +5589,7 @@ snapshots:
 
   tinypool@1.1.1: {}
 
-  tinyrainbow@1.2.0: {}
-
   tinyrainbow@2.0.0: {}
-
-  tinyspy@3.0.2: {}
 
   tinyspy@4.0.3: {}
 
@@ -5960,8 +5644,6 @@ snapshots:
   type-fest@4.41.0: {}
 
   typescript@5.9.2: {}
-
-  undici-types@6.21.0: {}
 
   undici-types@7.16.0: {}
 
@@ -6041,24 +5723,6 @@ snapshots:
       unist-util-stringify-position: 3.0.3
       vfile-message: 3.1.4
 
-  vite-node@2.1.9(@types/node@24.12.0):
-    dependencies:
-      cac: 6.7.14
-      debug: 4.4.3
-      es-module-lexer: 1.7.0
-      pathe: 1.1.2
-      vite: 5.4.19(@types/node@24.12.0)
-    transitivePeerDependencies:
-      - '@types/node'
-      - less
-      - lightningcss
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-
   vite-node@3.2.4(@types/node@24.12.0)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.2):
     dependencies:
       cac: 6.7.14
@@ -6080,15 +5744,6 @@ snapshots:
       - tsx
       - yaml
 
-  vite@5.4.19(@types/node@24.12.0):
-    dependencies:
-      esbuild: 0.21.5
-      postcss: 8.5.6
-      rollup: 4.60.1
-    optionalDependencies:
-      '@types/node': 24.12.0
-      fsevents: 2.3.3
-
   vite@7.1.1(@types/node@24.12.0)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.2):
     dependencies:
       esbuild: 0.25.8
@@ -6104,41 +5759,6 @@ snapshots:
       tsx: 4.21.0
       yaml: 2.8.2
 
-  vitest@2.1.9(@types/node@24.12.0):
-    dependencies:
-      '@vitest/expect': 2.1.9
-      '@vitest/mocker': 2.1.9(vite@5.4.19(@types/node@24.12.0))
-      '@vitest/pretty-format': 2.1.9
-      '@vitest/runner': 2.1.9
-      '@vitest/snapshot': 2.1.9
-      '@vitest/spy': 2.1.9
-      '@vitest/utils': 2.1.9
-      chai: 5.2.1
-      debug: 4.4.3
-      expect-type: 1.2.2
-      magic-string: 0.30.17
-      pathe: 1.1.2
-      std-env: 3.9.0
-      tinybench: 2.9.0
-      tinyexec: 0.3.2
-      tinypool: 1.1.1
-      tinyrainbow: 1.2.0
-      vite: 5.4.19(@types/node@24.12.0)
-      vite-node: 2.1.9(@types/node@24.12.0)
-      why-is-node-running: 2.3.0
-    optionalDependencies:
-      '@types/node': 24.12.0
-    transitivePeerDependencies:
-      - less
-      - lightningcss
-      - msw
-      - sass
-      - sass-embedded
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-
   vitest@3.2.4(@types/debug@4.1.13)(@types/node@24.12.0)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.2):
     dependencies:
       '@types/chai': 5.2.2
@@ -6150,7 +5770,7 @@ snapshots:
       '@vitest/spy': 3.2.4
       '@vitest/utils': 3.2.4
       chai: 5.2.1
-      debug: 4.4.1
+      debug: 4.4.3
       expect-type: 1.2.2
       magic-string: 0.30.17
       pathe: 2.0.3
