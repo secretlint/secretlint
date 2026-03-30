@@ -1,18 +1,14 @@
 {
   "name": "binary-compiler",
+  "private": true,
   "module": "index.ts",
   "type": "module",
   "scripts": {
-    "i": "bun install",
     "build-binary": "bash build-binary.sh",
-    "test": "bun run build-binary && bash test.sh"
+    "test:binary": "bun run build-binary && bash test.sh"
   },
-  "workspaces": [
-    "../../packages/*",
-    "../../packages/@secretlint/*"
-  ],
   "devDependencies": {
-    "@types/bun": "latest",
+    "@types/bun": "catalog:",
     "@secretlint/formatter": "workspace:*",
     "@secretlint/secretlint-formatter-sarif": "workspace:*",
     "@secretlint/resolver": "workspace:*",

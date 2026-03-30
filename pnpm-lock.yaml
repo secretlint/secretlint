@@ -30,6 +30,9 @@ catalogs:
     '@types/bn.js':
       specifier: ^5.2.0
       version: 5.2.0
+    '@types/bun':
+      specifier: ^1.3.11
+      version: 1.3.11
     '@types/debug':
       specifier: ^4.1.13
       version: 4.1.13
@@ -1410,6 +1413,34 @@ importers:
         specifier: 'catalog:'
         version: 5.9.2
 
+  publish/binary-compiler:
+    dependencies:
+      typescript:
+        specifier: ^5.0.0
+        version: 5.9.2
+    devDependencies:
+      '@secretlint/formatter':
+        specifier: workspace:*
+        version: link:../../packages/@secretlint/formatter
+      '@secretlint/resolver':
+        specifier: workspace:*
+        version: link:../../packages/@secretlint/resolver
+      '@secretlint/secretlint-formatter-sarif':
+        specifier: workspace:*
+        version: link:../../packages/@secretlint/secretlint-formatter-sarif
+      '@secretlint/secretlint-rule-pattern':
+        specifier: workspace:*
+        version: link:../../packages/@secretlint/secretlint-rule-pattern
+      '@secretlint/secretlint-rule-preset-recommend':
+        specifier: workspace:*
+        version: link:../../packages/@secretlint/secretlint-rule-preset-recommend
+      '@types/bun':
+        specifier: 'catalog:'
+        version: 1.3.11
+      secretlint:
+        specifier: workspace:*
+        version: link:../../packages/secretlint
+
 packages:
 
   '@azu/format-text@1.0.2':
@@ -2045,6 +2076,9 @@ packages:
   '@types/braces@3.0.5':
     resolution: {integrity: sha512-SQFof9H+LXeWNz8wDe7oN5zu7ket0qwMu5vZubW4GCJ8Kkeh6nBWUz87+KTz/G3Kqsrp0j/W253XJb3KMEeg3w==}
 
+  '@types/bun@1.3.11':
+    resolution: {integrity: sha512-5vPne5QvtpjGpsGYXiFyycfpDF2ECyPcTSsFBMa0fraoxiQyMJ3SmuQIGhzPg2WJuWxVBoxWJ2kClYTcw/4fAg==}
+
   '@types/chai@5.2.2':
     resolution: {integrity: sha512-8kB30R7Hwqf40JPiKhVzodJs2Qc1ZJ5zuT3uzw5Hq/dhNCl3G3l83jfpdI1e20BP348+fV7VIL/+FxaXkqBmWg==}
 
@@ -2243,6 +2277,9 @@ packages:
 
   buffer@5.7.1:
     resolution: {integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==}
+
+  bun-types@1.3.11:
+    resolution: {integrity: sha512-1KGPpoxQWl9f6wcZh57LvrPIInQMn2TQ7jsgxqpRzg+l0QPOFvJVH7HmvHo/AiPgwXy+/Thf6Ov3EdVn1vOabg==}
 
   cac@6.7.14:
     resolution: {integrity: sha512-b6Ilus+c3RrdDk+JhLKUAQfzzgLEPy6wcXqS7f/xe1EETvsDP6GORG7SFuOs6cID5YkqchW/LXZbX5bc8j7ZcQ==}
@@ -4110,6 +4147,10 @@ snapshots:
 
   '@types/braces@3.0.5': {}
 
+  '@types/bun@1.3.11':
+    dependencies:
+      bun-types: 1.3.11
+
   '@types/chai@5.2.2':
     dependencies:
       '@types/deep-eql': 4.0.2
@@ -4319,6 +4360,10 @@ snapshots:
     dependencies:
       base64-js: 1.5.1
       ieee754: 1.2.1
+
+  bun-types@1.3.11:
+    dependencies:
+      '@types/node': 24.12.0
 
   cac@6.7.14: {}
 

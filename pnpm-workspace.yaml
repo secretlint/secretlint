@@ -2,6 +2,7 @@ packages:
   - packages/*
   - packages/@secretlint/*
   - examples/*
+  - publish/binary-compiler
 
 onlyBuiltDependencies:
   - esbuild
@@ -59,4 +60,5 @@ catalog:
   "tsx": "^4.21.0"
   "turbo": "^2.8.21"
   "typescript": "^5.8.3"
+  "@types/bun": "^1.3.11"
   "vitest": "^3.2.4"
