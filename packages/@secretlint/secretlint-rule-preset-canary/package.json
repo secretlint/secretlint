@@ -75,6 +75,7 @@
         "@secretlint/secretlint-rule-sendgrid": "workspace:*",
         "@secretlint/secretlint-rule-shopify": "workspace:*",
         "@secretlint/secretlint-rule-slack": "workspace:*",
+        "@secretlint/secretlint-rule-vercel": "workspace:*",
         "@secretlint/tester": "workspace:*",
         "@secretlint/types": "workspace:*",
         "@types/node": "^24.12.0",
