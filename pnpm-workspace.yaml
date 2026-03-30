@@ -7,6 +7,9 @@ onlyBuiltDependencies:
   - esbuild
   - secp256k1
 
+settings:
+  strictCatalog: true
+
 catalog:
   "@rollup/plugin-commonjs": "^28.0.9"
   "@rollup/plugin-node-resolve": "^16.0.3"
