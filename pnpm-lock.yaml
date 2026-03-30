@@ -863,6 +863,9 @@ importers:
       '@secretlint/secretlint-rule-slack':
         specifier: workspace:*
         version: link:../secretlint-rule-slack
+      '@secretlint/secretlint-rule-vercel':
+        specifier: workspace:*
+        version: link:../secretlint-rule-vercel
       '@secretlint/tester':
         specifier: workspace:*
         version: link:../tester
@@ -1095,6 +1098,28 @@ importers:
       '@textlint/regexp-string-matcher':
         specifier: ^2.0.2
         version: 2.0.2
+    devDependencies:
+      '@secretlint/tester':
+        specifier: workspace:*
+        version: link:../tester
+      '@types/node':
+        specifier: ^24.12.0
+        version: 24.12.0
+      prettier:
+        specifier: ^2.8.8
+        version: 2.8.8
+      tsx:
+        specifier: ^4.21.0
+        version: 4.21.0
+      typescript:
+        specifier: ^5.8.3
+        version: 5.9.2
+
+  packages/@secretlint/secretlint-rule-vercel:
+    dependencies:
+      '@secretlint/types':
+        specifier: workspace:*
+        version: link:../types
     devDependencies:
       '@secretlint/tester':
         specifier: workspace:*
