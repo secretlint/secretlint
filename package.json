@@ -44,7 +44,7 @@
     "lint-staged": "^16.4.0",
     "prettier": "^2.8.8",
     "scaffdog": "^4.1.0",
-    "turbo": "^2.8.20",
+    "turbo": "^2.8.21",
     "vitest": "^3.2.4"
   },
   "prettier": {
