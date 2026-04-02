@@ -1,1 +1,1 @@
-CLAUDE.md
+@import CLAUDE.md
