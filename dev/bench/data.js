@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1775171621238,
+  "lastUpdate": 1775171706640,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -51336,6 +51336,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.53,
             "range": "±0.71%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "41898282+github-actions[bot]@users.noreply.github.com",
+            "name": "github-actions[bot]",
+            "username": "github-actions[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "0815b742f3419fbd6c803583e451ba007de75076",
+          "message": "v11.5.0 (#1460)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat master -->\n\n## What's Changed\n### Features\n* Add Vercel secretlint rule for detecting token leaks by @azu in\nhttps://github.com/secretlint/secretlint/pull/1451\n* Add allowlist support to Vercel token detection rule by @azu in\nhttps://github.com/secretlint/secretlint/pull/1458\n### Refactoring\n* refactor: use pnpm catalog by @azu in\nhttps://github.com/secretlint/secretlint/pull/1453\n### CI\n* fix: use correct input name for softprops/action-gh-release by @azu in\nhttps://github.com/secretlint/secretlint/pull/1440\n* chore(deps): update oven-sh/setup-bun action to v2.2.0 by\n@renovate[bot] in https://github.com/secretlint/secretlint/pull/1439\n### Dependency Updates\n* chore(deps): update dependency turbo to ^2.8.21 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1455\n* chore(deps): update dependency rollup to ^4.60.1 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1456\n* chore(deps): update dependency turbo to ^2.9.1 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1457\n### Other Changes\n* chore(deps): update node.js to v24.14.0 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1421\n* chore(deps): update dependency bun to v1.3.11 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1434\n* chore(deps): update node.js to v24.14.1 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1454\n\n\n**Full Changelog**:\nhttps://github.com/secretlint/secretlint/compare/v11.4.1...v11.5.0\n\nCo-authored-by: azu <azu@users.noreply.github.com>",
+          "timestamp": "2026-04-03T08:13:37+09:00",
+          "tree_id": "2e2f22d14378f82e179c6902bfbfb53f5fc489fd",
+          "url": "https://github.com/secretlint/secretlint/commit/0815b742f3419fbd6c803583e451ba007de75076"
+        },
+        "date": 1775171703903,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.71,
+            "range": "±1.04%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.53,
+            "range": "±0.80%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
