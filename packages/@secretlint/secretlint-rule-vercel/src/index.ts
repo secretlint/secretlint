@@ -1,4 +1,5 @@
 import type { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
+import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export const messages = {
     VERCEL_PERSONAL_ACCESS_TOKEN: {
@@ -33,7 +34,10 @@ const prefixToMessageId: Record<VercelTokenPrefix, keyof typeof messages> = {
     vck: "VERCEL_AI_GATEWAY_API_KEY",
 };
 
-export const creator: SecretLintRuleCreator = {
+export type Options = {
+    allows?: string[];
+};
+export const creator: SecretLintRuleCreator<Options> = {
     messages,
     meta: {
         id: "@secretlint/secretlint-rule-vercel",
@@ -44,8 +48,11 @@ export const creator: SecretLintRuleCreator = {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-vercel/README.md",
         },
     },
-    create(context) {
+    create(context, options) {
         const t = context.createTranslator(messages);
+        const normalizedOptions = {
+            allows: options?.allows ?? [],
+        };
         return {
             file(source: SecretLintSourceCode) {
                 const pattern = /(?<!\p{L})(?<prefix>vcp|vci|vca|vcr|vck)_[A-Za-z0-9]{20,60}/gu;
@@ -55,6 +62,10 @@ export const creator: SecretLintRuleCreator = {
                     const matchString = match[0] ?? "";
                     const prefix = match.groups?.prefix as VercelTokenPrefix;
                     const messageId = prefixToMessageId[prefix];
+                    const allowedResults = matchPatterns(matchString, normalizedOptions.allows);
+                    if (allowedResults.length > 0) {
+                        continue;
+                    }
                     const range = [index, index + matchString.length] as const;
                     context.report({
                         message: t(messageId, {
