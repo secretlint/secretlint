@@ -169,14 +169,14 @@ test("@secretlint/secretlint-rule-<name>", async (t) => {
 });
 ```
 
-### Step 4: Add to Preset
+### Step 4: Add to Canary Preset
 
-1. First add to **canary** preset for testing:
-   - Add dependency to `secretlint-rule-preset-canary/package.json`
-   - Import and register in `secretlint-rule-preset-canary/src/index.ts`
-   - Run: `pnpm run -r --filter "@secretlint/secretlint-rule-preset-canary" import-test`
-2. Later (major version), sync to **recommend** preset:
-   - Run: `pnpm run -r --filter "@secretlint/secretlint-rule-preset-recommend" sync-canary`
+- Add dependency to `secretlint-rule-preset-canary/package.json`
+- Import and register in `secretlint-rule-preset-canary/src/index.ts`
+- Run: `pnpm run -r --filter "@secretlint/secretlint-rule-preset-canary" import-test`
+
+> **Note**: Syncing to the **recommend** preset is a separate task done at major release time.
+> Run: `pnpm run -r --filter "@secretlint/secretlint-rule-preset-recommend" sync-canary`
 
 ## Agent Workflows
 
