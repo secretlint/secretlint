@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1775171047680,
+  "lastUpdate": 1775171621238,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -51298,6 +51298,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.54,
             "range": "±1.41%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b51c8edf2d2b79f8db5c0b754f6281a431350ffb",
+          "message": "docs: add development guide for AI assistants and contributors (#1459)\n\n## Summary\n\nAdd comprehensive development documentation to guide AI assistants and\ncontributors working on the secretlint codebase. This includes project\noverview, monorepo structure, code conventions, and detailed workflows\nfor creating rules and fixing bugs.\n\n## Changes\n\n- **AGENTS.md**: New 225-line development guide covering:\n  - Project overview and quick reference commands\n  - Monorepo structure and package organization\n  - Code conventions (TypeScript, ESM, Prettier, testing)\n- Step-by-step guide for creating new rules with canonical\nimplementation patterns\n  - Key rules and common pitfalls for rule implementation\n  - Testing patterns using snapshot testing with `@secretlint/tester`\n  - Workflow for adding rules to presets (canary → recommend)\n  - Agent-specific workflows (Rule Creator, Bug Fixer, Code Reviewer)\n  - Important notes about versioning and CI/CD\n\n- **CLAUDE.md**: New import file that references AGENTS.md for easy\naccess\n\n## Details\n\nThe guide provides:\n- **Quick reference** for essential commands (build, test, format, lint,\nCI checks)\n- **Canonical rule structure** with complete TypeScript example showing\nmessages, options, creator pattern, and implementation\n- **Testing conventions** with snapshot directory structure and test\nfile patterns\n- **Validation checklist** for rule creators with 10-point verification\nlist\n- **Common pitfalls** including regex `g` flag requirements, range\ncalculation, translator usage, and ReDoS prevention\n- **Preset management** workflow for graduating rules from canary to\nrecommend\n\nThis documentation enables consistent contributions and helps AI\nassistants understand the project's architecture and conventions.\n\nhttps://claude.ai/code/session_01GZQHAbhdZEo3kg4neBcpqi\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-04-02T23:12:06Z",
+          "tree_id": "df8fbd751bf7d65da8ab4c087119dbce1a9a37e1",
+          "url": "https://github.com/secretlint/secretlint/commit/b51c8edf2d2b79f8db5c0b754f6281a431350ffb"
+        },
+        "date": 1775171618494,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.66,
+            "range": "±0.99%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.53,
+            "range": "±0.71%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
