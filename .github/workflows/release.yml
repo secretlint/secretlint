@@ -112,9 +112,6 @@ jobs:
         uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0 # zizmor: ignore[cache-poisoning]
         with:
           bun-version-file: "./publish/binary-compiler/.bun-version"
-      - name: Install Binary Compiler
-        run: bun install
-        working-directory: ./publish/binary-compiler
       - name: Build binary
         run: bun run build-binary
         working-directory: ./publish/binary-compiler

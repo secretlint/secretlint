@@ -71,11 +71,8 @@ jobs:
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
           bun-version-file: "./publish/binary-compiler/.bun-version"
-      - name: Install Binary Compiler
-        run: bun install
-        working-directory: ./publish/binary-compiler
       - name: Test Binary
-        run: bun run test
+        run: bun run test:binary
         working-directory: ./publish/binary-compiler
 
 concurrency:

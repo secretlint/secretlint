@@ -51,14 +51,14 @@
     "tabWidth": 4
   },
   "dependencies": {
-    "@secretlint/types": "^{{ inputs.version }}"
+    "@secretlint/types": "workspace:*"
   },
   "devDependencies": {
-    "@secretlint/tester": "^{{ inputs.version }}",
-    "@types/node": "^20.19.37",
-    "prettier": "^2.8.1",
-    "tsx": "^4.21.0",
-    "typescript": "^5.1.6"
+    "@secretlint/tester": "workspace:*",
+    "@types/node": "catalog:",
+    "prettier": "catalog:",
+    "tsx": "catalog:",
+    "typescript": "catalog:"
   },
   "engines": {
     "node": ">=20.0.0"
