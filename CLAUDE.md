@@ -178,6 +178,45 @@ test("@secretlint/secretlint-rule-<name>", async (t) => {
 2. Later (major version), sync to **recommend** preset:
    - Run: `pnpm run -r --filter "@secretlint/secretlint-rule-preset-recommend" sync-canary`
 
+## Agent Workflows
+
+### Rule Creator
+
+When creating a new rule, verify every item:
+
+1. `src/index.ts` exports `creator` (SecretLintRuleCreator) and `messages`
+2. Messages include `en` and `ja` locales
+3. Options type has `allows?: string[]`
+4. `meta.id` exactly matches package name `@secretlint/secretlint-rule-<name>`
+5. `meta.type` is `"scanner"` (detection) or `"filter"` (suppression)
+6. Detection uses `matchAll` with global regex, reports via `context.report({ message, range })`
+7. Allow list integrates `@textlint/regexp-string-matcher`
+8. Tests have `ng.*` (error cases) and `ok.*` (valid cases) in `test/snapshots/`
+9. Snapshots generated with `UPDATE_SNAPSHOT=1 pnpm test`
+10. README.md documents the rule's purpose, detected patterns, and options
+
+**Common pitfalls:**
+- Regex must use the `g` flag for `matchAll`
+- Range is `[startIndex, startIndex + match.length]` (exclusive end)
+- Never hardcode English in `context.report()`; always use the translator
+- Avoid ReDoS: limit repetition quantifiers (e.g., `{1,1000}` instead of unbounded `+`)
+
+### Bug Fixer
+
+1. **Reproduce**: Create a minimal `input.txt` in the relevant rule's `test/snapshots/`
+2. **Debug**: Run single package test: `cd packages/@secretlint/secretlint-rule-<name> && pnpm test`
+3. **Fix**: Modify `src/index.ts`, update snapshots if output changes
+4. **Verify**: Run `pnpm test` from root to check for regressions
+
+### Code Reviewer
+
+- Verify regex patterns are not vulnerable to ReDoS
+- Check that `allows` option is properly supported
+- Ensure messages have both `en` and `ja` locales
+- Confirm test cases cover both detection and non-detection scenarios
+- Verify `meta.id` matches the package name
+- Check Prettier formatting (printWidth: 120, tabWidth: 4)
+
 ## Important Notes
 
 - Do NOT manually modify `version` fields in `package.json` files; versioning is handled by CI
