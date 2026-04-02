@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1775120357089,
+  "lastUpdate": 1775139127109,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -51146,6 +51146,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.53,
             "range": "±1.00%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c444fb63497006f5bfa3fe1cea080d4aed895e2c",
+          "message": "refactor: use pnpm catalog (#1453)\n\n## Summary\n\nMigrate all workspace packages to use pnpm catalog protocol (`catalog:`)\nfor centralized dependency version management. This eliminates\nduplicated version specifiers across 43+ package.json files and enforces\nconsistency via strict mode in `pnpm-workspace.yaml`.\n\nCloses #1452\n\n## Changes\n\n- Add `catalog` section to `pnpm-workspace.yaml` with all 48 external\ndependency versions\n- Replace all direct version strings with `catalog:` across 43 workspace\npackage.json files\n- Enable `strictCatalog: true` in `pnpm-workspace.yaml` settings to\nprevent direct version usage\n- Update scaffdog template (`new-rule/package.json`) to use `catalog:`\nand `workspace:*`\n- Unify version discrepancies:\n  - `@types/node`: `^20.19.37` → `^24.12.0`\n  - `@rollup/plugin-node-resolve`: `^15.3.1` → `^16.0.3`\n  - `vitest`: `^2.1.9` → `^3.2.4`\n- Add `publish/binary-compiler` to pnpm workspace to fix Bun's lack of\n`catalog:` support\n  - Remove `bun install` steps from CI workflows (pnpm handles deps now)\n  - Rename `test` → `test:binary` to avoid turbo picking it up\n  - Add `@types/bun` to catalog\n\n## Breaking Changes\n\nNone\n\n## Test Plan\n\n- `pnpm install` completes successfully with catalog resolution\n- `pnpm run build` passes (41/41 tasks)\n- `pnpm run test` passes (83/83 tasks)\n- `pnpm pack` resolves `catalog:` to actual versions in published\npackage.json\n- `pnpm config list` shows `strictCatalog=true` under `[catalog]`\n- Verify no direct version specifiers remain in workspace package.json\nfiles (only `catalog:` and `workspace:*`)\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-04-02T23:10:35+09:00",
+          "tree_id": "111470ae131f304590608d76271b6d225c56e18b",
+          "url": "https://github.com/secretlint/secretlint/commit/c444fb63497006f5bfa3fe1cea080d4aed895e2c"
+        },
+        "date": 1775139124692,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.66,
+            "range": "±0.84%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.53,
+            "range": "±1.82%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
