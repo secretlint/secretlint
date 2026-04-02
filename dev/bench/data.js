@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1775170992534,
+  "lastUpdate": 1775171047680,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -51260,6 +51260,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.54,
             "range": "±1.53%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "327b00b42a9e80457391c0ad0e3113135b4f6f39",
+          "message": "Add allowlist support to Vercel token detection rule (#1458)\n\n## Summary\nThis PR adds support for allowlisting specific Vercel tokens in the\nsecretlint Vercel rule, enabling users to exclude known/safe tokens from\nbeing flagged as secrets.\n\n## Key Changes\n- Added `Options` type with an `allows` property to support token\nallowlisting\n- Updated the rule creator to accept and process options\n- Integrated `@textlint/regexp-string-matcher` for pattern matching\nagainst the allowlist\n- Implemented logic to skip reporting tokens that match patterns in the\nallowlist\n- Updated package.json dependencies to include\n`@textlint/regexp-string-matcher`\n\n## Implementation Details\n- The `allows` option accepts an array of string patterns that can be\nmatched against detected tokens\n- Tokens matching any pattern in the allowlist are silently skipped and\nnot reported as violations\n- The allowlist is normalized with a default empty array if not\nprovided, ensuring backward compatibility\n- Pattern matching is performed using the `matchPatterns` utility from\n`@textlint/regexp-string-matcher`\n\nhttps://claude.ai/code/session_017re2BURMKTtp8amoY1ouNL\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-04-02T23:02:34Z",
+          "tree_id": "2be1f965506a8693b2647ff762786e7eff80b947",
+          "url": "https://github.com/secretlint/secretlint/commit/327b00b42a9e80457391c0ad0e3113135b4f6f39"
+        },
+        "date": 1775171045096,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.73,
+            "range": "±0.74%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.54,
+            "range": "±1.41%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
