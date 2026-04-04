@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1775252470990,
+  "lastUpdate": 1775267519132,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -51412,6 +51412,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.52,
             "range": "±1.36%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "16f9660e62f886b1dd1952f052b34853d5515503",
+          "message": "chore(deps): update dependency turbo to ^2.9.3 (#1462)\n\nThis PR contains the following updates:\n\n| Package | Change |\n[Age](https://docs.renovatebot.com/merge-confidence/) |\n[Confidence](https://docs.renovatebot.com/merge-confidence/) |\n|---|---|---|---|\n| [turbo](https://turborepo.dev)\n([source](https://redirect.github.com/vercel/turborepo)) | [`^2.9.1` →\n`^2.9.3`](https://renovatebot.com/diffs/npm/turbo/2.9.1/2.9.3) |\n![age](https://developer.mend.io/api/mc/badges/age/npm/turbo/2.9.3?slim=true)\n|\n![confidence](https://developer.mend.io/api/mc/badges/confidence/npm/turbo/2.9.1/2.9.3?slim=true)\n|\n\n---\n\n### Release Notes\n\n<details>\n<summary>vercel/turborepo (turbo)</summary>\n\n###\n[`v2.9.3`](https://redirect.github.com/vercel/turborepo/releases/tag/v2.9.3):\nTurborepo v2.9.3\n\n[Compare\nSource](https://redirect.github.com/vercel/turborepo/compare/v2.9.2...v2.9.3)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat v2.9.3 -->\n\n#### What's Changed\n\n##### Changelog\n\n- fix: Preserve per-workspace lockfiles during pnpm pruning by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12519](https://redirect.github.com/vercel/turborepo/pull/12519)\n\n**Full Changelog**:\n<https://github.com/vercel/turborepo/compare/v2.9.2...v2.9.3>\n\n###\n[`v2.9.2`](https://redirect.github.com/vercel/turborepo/releases/tag/v2.9.2):\nTurborepo v2.9.2\n\n[Compare\nSource](https://redirect.github.com/vercel/turborepo/compare/v2.9.1...v2.9.2)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat v2.9.2 -->\n\n#### What's Changed\n\n##### Examples\n\n- feat(examples): Add Next.js + Elysia full-stack starter template by\n[@&#8203;eastgold15](https://redirect.github.com/eastgold15) in\n[#&#8203;12414](https://redirect.github.com/vercel/turborepo/pull/12414)\n\n##### Changelog\n\n- docs: Add documentation for cacheMaxAge and cacheMaxSize options by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12500](https://redirect.github.com/vercel/turborepo/pull/12500)\n- fix: Resolve correct nested bun lockfile versions during prune by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12506](https://redirect.github.com/vercel/turborepo/pull/12506)\n- Revert \"fix: Avoid `setsid()` in PTY spawn to prevent macOS Gatekeeper\nCPU spikes\" by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12507](https://redirect.github.com/vercel/turborepo/pull/12507)\n- fix: Unblock `watch` loop so interruptible persistent tasks restart on\nfile changes by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12509](https://redirect.github.com/vercel/turborepo/pull/12509)\n- fix(api-client): Treat \\* as wildcard in preflight\nAccess-Control-Allow-Headers by\n[@&#8203;bitttttten](https://redirect.github.com/bitttttten) in\n[#&#8203;12503](https://redirect.github.com/vercel/turborepo/pull/12503)\n- docs: Document `turbo.*` generator variables by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12511](https://redirect.github.com/vercel/turborepo/pull/12511)\n- fix: Backfill missing pnpm workspace importer entries during prune by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12514](https://redirect.github.com/vercel/turborepo/pull/12514)\n- fix: Include transitive dependencies in engine graph pruning for\naffected paths using Task Graph by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12516](https://redirect.github.com/vercel/turborepo/pull/12516)\n- fix: Update AI-generated response disclaimer to include human\nattribution by [@&#8203;Copilot](https://redirect.github.com/Copilot) in\n[#&#8203;12517](https://redirect.github.com/vercel/turborepo/pull/12517)\n- fix: Preserve shallow install strategy during npm lockfile pruning by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12520](https://redirect.github.com/vercel/turborepo/pull/12520)\n\n#### New Contributors\n\n- [@&#8203;eastgold15](https://redirect.github.com/eastgold15) made\ntheir first contribution in\n[#&#8203;12414](https://redirect.github.com/vercel/turborepo/pull/12414)\n\n**Full Changelog**:\n<https://github.com/vercel/turborepo/compare/v2.9.1...v2.9.2>\n\n</details>\n\n---\n\n### Configuration\n\n📅 **Schedule**: Branch creation - At any time (no schedule defined),\nAutomerge - At any time (no schedule defined).\n\n🚦 **Automerge**: Enabled.\n\n♻ **Rebasing**: Whenever PR is behind base branch, or you tick the\nrebase/retry checkbox.\n\n🔕 **Ignore**: Close this PR and you won't be reminded about this update\nagain.\n\n---\n\n- [ ] <!-- rebase-check -->If you want to rebase/retry this PR, check\nthis box\n\n---\n\nThis PR was generated by [Mend Renovate](https://mend.io/renovate/).\nView the [repository job\nlog](https://developer.mend.io/github/secretlint/secretlint).\n\n<!--renovate-debug:eyJjcmVhdGVkSW5WZXIiOiI0My4xMDIuMTEiLCJ1cGRhdGVkSW5WZXIiOiI0My4xMDIuMTEiLCJ0YXJnZXRCcmFuY2giOiJtYXN0ZXIiLCJsYWJlbHMiOlsiZGVwZW5kZW5jaWVzIl19-->\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2026-04-04T01:50:25Z",
+          "tree_id": "8dcf7c4bea5464ebb9ce218cdb3800c6a0494746",
+          "url": "https://github.com/secretlint/secretlint/commit/16f9660e62f886b1dd1952f052b34853d5515503"
+        },
+        "date": 1775267516329,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.65,
+            "range": "±1.05%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.53,
+            "range": "±1.35%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
