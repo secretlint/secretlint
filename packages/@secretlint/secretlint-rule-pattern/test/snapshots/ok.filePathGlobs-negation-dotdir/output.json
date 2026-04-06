@@ -1,0 +1,6 @@
+{
+    "filePath": "[SNAPSHOT]/ok.filePathGlobs-negation-dotdir/excluded/.github/input.config",
+    "messages": [],
+    "sourceContent": "acme secret content\n",
+    "sourceContentType": "text"
+}

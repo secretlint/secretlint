@@ -67,8 +67,11 @@ function reportIfFoundPattern({
     for (const p of options.patterns) {
         // Check filePathGlobs if specified
         // Use micromatch() to support negation patterns (e.g., "!**/excluded/**")
+        // `dot: true` is required so that `**` traverses segments that start with `.`
+        // (e.g., `.github`, `.ai`); otherwise negation patterns like `!**/excluded/**`
+        // fail to match files located under a dot-directory.
         if (p.filePathGlobs && p.filePathGlobs.length > 0 && source.filePath) {
-            const matchedPaths = micromatch([source.filePath], p.filePathGlobs);
+            const matchedPaths = micromatch([source.filePath], p.filePathGlobs, { dot: true });
             if (matchedPaths.length === 0) {
                 continue; // Skip if file path doesn't match any glob pattern
             }
