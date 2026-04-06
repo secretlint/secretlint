@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1775267519132,
+  "lastUpdate": 1775487669128,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -51450,6 +51450,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.53,
             "range": "±1.35%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "4b732ab469e611e8fe1f90028f0f91907be79f93",
+          "message": "fix(secretlint-rule-pattern): match files under dot-directories with filePathGlobs (#1463)\n\n## Summary\n\n`@secretlint/secretlint-rule-pattern` uses `micromatch` to apply each\npattern's `filePathGlobs`. By default, micromatch's `**` does not\ntraverse directories whose name starts with `.`, so negation patterns\nlike `!**/excluded/**` failed to filter files located under\ndot-directories such as `.github` or `.ai`. This PR enables `dot: true`\nso dot-directories are matched as expected.\n\n## Changes\n\n- Pass `{ dot: true }` to `micromatch()` in `reportIfFoundPattern`.\n- Add a new snapshot test `ok.filePathGlobs-negation-dotdir` that\nexercises a file located under `excluded/.github/` and verifies the\nnegation glob excludes it.\n\n## Breaking Changes\n\nNone. This only widens the set of file paths the existing\n`filePathGlobs` option can match (specifically, paths that already\ncontain dot-segments).\n\n## Test Plan\n\n- [x] `pnpm --filter @secretlint/secretlint-rule-pattern test`\n- [ ] CI green",
+          "timestamp": "2026-04-06T23:59:39+09:00",
+          "tree_id": "d61d45369105ea3e7edc88a5958a512b6c24f26f",
+          "url": "https://github.com/secretlint/secretlint/commit/4b732ab469e611e8fe1f90028f0f91907be79f93"
+        },
+        "date": 1775487666935,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.65,
+            "range": "±0.58%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.53,
+            "range": "±0.63%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
