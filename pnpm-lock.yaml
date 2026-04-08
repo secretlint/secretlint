@@ -148,8 +148,8 @@ catalogs:
       specifier: ^4.21.0
       version: 4.21.0
     turbo:
-      specifier: ^2.9.3
-      version: 2.9.3
+      specifier: ^2.9.4
+      version: 2.9.5
     typescript:
       specifier: ^5.8.3
       version: 5.9.2
@@ -172,7 +172,7 @@ importers:
         version: 4.1.0
       turbo:
         specifier: 'catalog:'
-        version: 2.9.3
+        version: 2.9.5
       vitest:
         specifier: 'catalog:'
         version: 3.2.4(@types/debug@4.1.13)(@types/node@24.12.2)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.2)
@@ -2043,33 +2043,33 @@ packages:
   '@textlint/types@15.5.2':
     resolution: {integrity: sha512-sJOrlVLLXp4/EZtiWKWq9y2fWyZlI8GP+24rnU5avtPWBIMm/1w97yzKrAqYF8czx2MqR391z5akhnfhj2f/AQ==}
 
-  '@turbo/darwin-64@2.9.3':
-    resolution: {integrity: sha512-P8foouaP+y/p+hhEGBoZpzMbpVvUMwPjDpcy6wN7EYfvvyISD1USuV27qWkczecihwuPJzQ1lDBuL8ERcavTyg==}
+  '@turbo/darwin-64@2.9.5':
+    resolution: {integrity: sha512-qPxhKsLMQP+9+dsmPgAGidi5uNifD4AoAOnEnljab3Qgn0QZRR31Hp+/CgW3Ia5AanWj6JuLLTBYvuQj4mqTWg==}
     cpu: [x64]
     os: [darwin]
 
-  '@turbo/darwin-arm64@2.9.3':
-    resolution: {integrity: sha512-SIzEkvtNdzdI50FJDaIQ6kQGqgSSdFPcdn0wqmmONN6iGKjy6hsT+EH99GP65FsfV7DLZTh2NmtTIRl2kdoz5Q==}
+  '@turbo/darwin-arm64@2.9.5':
+    resolution: {integrity: sha512-vkF/9F/l3aWd4bHxTui5Hh0F5xrTZ4e3rbBsc57zA6O8gNbmHN3B6eZ5psAIP2CnJRZ8ZxRjV3WZHeNXMXkPBw==}
     cpu: [arm64]
     os: [darwin]
 
-  '@turbo/linux-64@2.9.3':
-    resolution: {integrity: sha512-pLRwFmcHHNBvsCySLS6OFabr/07kDT2pxEt/k6eBf/3asiVQZKJ7Rk88AafQx2aYA641qek4RsXvYO3JYpiBug==}
+  '@turbo/linux-64@2.9.5':
+    resolution: {integrity: sha512-z/Get5NUaUxm5HSGFqVMICDRjFNsCUhSc4wnFa/PP1QD0NXCjr7bu9a2EM6md/KMCBW0Qe393Ac+UM7/ryDDTw==}
     cpu: [x64]
     os: [linux]
 
-  '@turbo/linux-arm64@2.9.3':
-    resolution: {integrity: sha512-gy6ApUroC2Nzv+qjGtE/uPNkhHAFU4c8God+zd5Aiv9L9uBgHlxVJpHT3XWl5xwlJZ2KWuMrlHTaS5kmNB+q1Q==}
+  '@turbo/linux-arm64@2.9.5':
+    resolution: {integrity: sha512-jyBifaNoI5/NheyswomiZXJvjdAdvT7hDRYzQ4meP0DKGvpXUjnqsD+4/J2YSDQ34OHxFkL30FnSCUIVOh2PHw==}
     cpu: [arm64]
     os: [linux]
 
-  '@turbo/windows-64@2.9.3':
-    resolution: {integrity: sha512-d0YelTX6hAsB7kIEtGB3PzIzSfAg3yDoUlHwuwJc3adBXUsyUIs0YLG+1NNtuhcDOUGnWQeKUoJ2pGWvbpRj7w==}
+  '@turbo/windows-64@2.9.5':
+    resolution: {integrity: sha512-ph24K5uPtvo7UfuyDXnBiB/8XvrO+RQWbbw5zkA/bVNoy9HDiNoIJJj3s62MxT9tjEb6DnPje5PXSz1UR7QAyg==}
     cpu: [x64]
     os: [win32]
 
-  '@turbo/windows-arm64@2.9.3':
-    resolution: {integrity: sha512-/08CwpKJl3oRY8nOlh2YgilZVJDHsr60XTNxRhuDeuFXONpUZ5X+Nv65izbG/xBew9qxcJFbDX9/sAmAX+ITcQ==}
+  '@turbo/windows-arm64@2.9.5':
+    resolution: {integrity: sha512-6c5RccT/+iR39SdT1G5HyZaD2n57W77o+l0TTfxG/cVlhV94Acyg2gTQW7zUOhW1BeQpBjHzu9x8yVBZwrHh7g==}
     cpu: [arm64]
     os: [win32]
 
@@ -3485,8 +3485,8 @@ packages:
     engines: {node: '>=18.0.0'}
     hasBin: true
 
-  turbo@2.9.3:
-    resolution: {integrity: sha512-J/VUvsGRykPb9R8Kh8dHVBOqioDexLk9BhLCU/ZybRR+HN9UR3cURdazFvNgMDt9zPP8TF6K73Z+tplfmi0PqQ==}
+  turbo@2.9.5:
+    resolution: {integrity: sha512-JXNkRe6H6MjSlk5UQRTjyoKX5YN2zlc2632xcSlSFBao5yvbMWTpv9SNolOZlZmUlcDOHuszPLItbKrvcXnnZA==}
     hasBin: true
 
   type-fest@0.21.3:
@@ -4129,22 +4129,22 @@ snapshots:
     dependencies:
       '@textlint/ast-node-types': 15.5.2
 
-  '@turbo/darwin-64@2.9.3':
+  '@turbo/darwin-64@2.9.5':
     optional: true
 
-  '@turbo/darwin-arm64@2.9.3':
+  '@turbo/darwin-arm64@2.9.5':
     optional: true
 
-  '@turbo/linux-64@2.9.3':
+  '@turbo/linux-64@2.9.5':
     optional: true
 
-  '@turbo/linux-arm64@2.9.3':
+  '@turbo/linux-arm64@2.9.5':
     optional: true
 
-  '@turbo/windows-64@2.9.3':
+  '@turbo/windows-64@2.9.5':
     optional: true
 
-  '@turbo/windows-arm64@2.9.3':
+  '@turbo/windows-arm64@2.9.5':
     optional: true
 
   '@types/bn.js@5.2.0':
@@ -5683,14 +5683,14 @@ snapshots:
     optionalDependencies:
       fsevents: 2.3.3
 
-  turbo@2.9.3:
+  turbo@2.9.5:
     optionalDependencies:
-      '@turbo/darwin-64': 2.9.3
-      '@turbo/darwin-arm64': 2.9.3
-      '@turbo/linux-64': 2.9.3
-      '@turbo/linux-arm64': 2.9.3
-      '@turbo/windows-64': 2.9.3
-      '@turbo/windows-arm64': 2.9.3
+      '@turbo/darwin-64': 2.9.5
+      '@turbo/darwin-arm64': 2.9.5
+      '@turbo/linux-64': 2.9.5
+      '@turbo/linux-arm64': 2.9.5
+      '@turbo/windows-64': 2.9.5
+      '@turbo/windows-arm64': 2.9.5
 
   type-fest@0.21.3: {}
 
