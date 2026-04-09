@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1775553467360,
+  "lastUpdate": 1775700923574,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -51602,6 +51602,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.5,
             "range": "±2.26%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "3572490eb51b32a2aabf8689199b8fe19ae87d65",
+          "message": "chore(deps): update dependency turbo to ^2.9.4 (#1467)\n\nThis PR contains the following updates:\n\n| Package | Change |\n[Age](https://docs.renovatebot.com/merge-confidence/) |\n[Confidence](https://docs.renovatebot.com/merge-confidence/) |\n|---|---|---|---|\n| [turbo](https://turborepo.dev)\n([source](https://redirect.github.com/vercel/turborepo)) | [`^2.9.3` →\n`^2.9.4`](https://renovatebot.com/diffs/npm/turbo/2.9.3/2.9.4) |\n![age](https://developer.mend.io/api/mc/badges/age/npm/turbo/2.9.4?slim=true)\n|\n![confidence](https://developer.mend.io/api/mc/badges/confidence/npm/turbo/2.9.3/2.9.4?slim=true)\n|\n\n---\n\n### Release Notes\n\n<details>\n<summary>vercel/turborepo (turbo)</summary>\n\n###\n[`v2.9.4`](https://redirect.github.com/vercel/turborepo/releases/tag/v2.9.4):\nTurborepo v2.9.4\n\n[Compare\nSource](https://redirect.github.com/vercel/turborepo/compare/v2.9.3...v2.9.4)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat v2.9.4 -->\n\n#### What's Changed\n\n##### [@&#8203;turbo/codemod](https://redirect.github.com/turbo/codemod)\n\n- fix: Always update $schema URL to versioned format during migration by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12529](https://redirect.github.com/vercel/turborepo/pull/12529)\n- fix: Support `turbo.jsonc` in codemod transforms by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12532](https://redirect.github.com/vercel/turborepo/pull/12532)\n- fix: Preserve prerelease info in schema URL during codemod migration\nby [@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12542](https://redirect.github.com/vercel/turborepo/pull/12542)\n\n##### Examples\n\n- build(deps): Bump\n[@&#8203;xmldom/xmldom](https://redirect.github.com/xmldom/xmldom) from\n0.8.11 to 0.8.12 in /examples/with-react-native-web by\n[@&#8203;dependabot](https://redirect.github.com/dependabot)\\[bot] in\n[#&#8203;12537](https://redirect.github.com/vercel/turborepo/pull/12537)\n\n##### Changelog\n\n- feat: Add incremental task caching by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12531](https://redirect.github.com/vercel/turborepo/pull/12531)\n- docs: Send siteId as label on feedback GitHub issues by\n[@&#8203;molebox](https://redirect.github.com/molebox) in\n[#&#8203;12527](https://redirect.github.com/vercel/turborepo/pull/12527)\n- Replace local ai-agent-detection with\n[@&#8203;vercel/agent-readability](https://redirect.github.com/vercel/agent-readability)\nby [@&#8203;molebox](https://redirect.github.com/molebox) in\n[#&#8203;12528](https://redirect.github.com/vercel/turborepo/pull/12528)\n- fix: Prevent `filterUsingTasks` `--filter` from pulling dependents\ninto Task Graph by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12535](https://redirect.github.com/vercel/turborepo/pull/12535)\n- fix: Only enforce signature key length for keys that exist by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12538](https://redirect.github.com/vercel/turborepo/pull/12538)\n- fix: Validate engine concurrency after task-level filtering by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12540](https://redirect.github.com/vercel/turborepo/pull/12540)\n- feat: Allow `--affected` and `--filter` to be combined by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12543](https://redirect.github.com/vercel/turborepo/pull/12543)\n- fix(config): Deep-merge nested OTEL config across priority sources by\n[@&#8203;bitttttten](https://redirect.github.com/bitttttten) in\n[#&#8203;12513](https://redirect.github.com/vercel/turborepo/pull/12513)\n- fix: Retain microfrontend proxy tasks when using `filterUsingTasks` by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12545](https://redirect.github.com/vercel/turborepo/pull/12545)\n- fix: Bun workspace lockfile pruning producing invalid output by\n[@&#8203;JRoy](https://redirect.github.com/JRoy) in\n[#&#8203;12548](https://redirect.github.com/vercel/turborepo/pull/12548)\n- fix: Respect dirty .gitignore patterns during task input hashing by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12557](https://redirect.github.com/vercel/turborepo/pull/12557)\n\n#### New Contributors\n\n- [@&#8203;JRoy](https://redirect.github.com/JRoy) made their first\ncontribution in\n[#&#8203;12548](https://redirect.github.com/vercel/turborepo/pull/12548)\n\n**Full Changelog**:\n<https://github.com/vercel/turborepo/compare/v2.9.3...v2.9.4>\n\n</details>\n\n---\n\n### Configuration\n\n📅 **Schedule**: (in timezone Asia/Tokyo)\n\n- Branch creation\n  - At any time (no schedule defined)\n- Automerge\n  - At any time (no schedule defined)\n\n🚦 **Automerge**: Enabled.\n\n♻ **Rebasing**: Whenever PR is behind base branch, or you tick the\nrebase/retry checkbox.\n\n🔕 **Ignore**: Close this PR and you won't be reminded about this update\nagain.\n\n---\n\n- [ ] <!-- rebase-check -->If you want to rebase/retry this PR, check\nthis box\n\n---\n\nThis PR was generated by [Mend Renovate](https://mend.io/renovate/).\nView the [repository job\nlog](https://developer.mend.io/github/secretlint/secretlint).\n\n<!--renovate-debug:eyJjcmVhdGVkSW5WZXIiOiI0My4xMTAuMiIsInVwZGF0ZWRJblZlciI6IjQzLjExMC4yIiwidGFyZ2V0QnJhbmNoIjoibWFzdGVyIiwibGFiZWxzIjpbImRlcGVuZGVuY2llcyJdfQ==-->\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2026-04-09T02:13:54Z",
+          "tree_id": "f04041067c863d2308c3c517462cd824c1cb8efe",
+          "url": "https://github.com/secretlint/secretlint/commit/3572490eb51b32a2aabf8689199b8fe19ae87d65"
+        },
+        "date": 1775700920508,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.71,
+            "range": "±2.41%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.52,
+            "range": "±1.35%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
