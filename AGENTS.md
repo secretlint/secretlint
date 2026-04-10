@@ -6,6 +6,39 @@ This file provides guidance for AI assistants working on the secretlint codebase
 
 secretlint is a pluggable linting tool that prevents committing secrets/credentials. It is a TypeScript monorepo managed with pnpm workspaces and Turborepo.
 
+## Architecture Overview
+
+Core data flow:
+
+```
+CLI (secretlint) → SecretLintEngine (@secretlint/node) → config-loader → core (lintSource) → rules → formatter → output
+```
+
+1. **CLI** (`packages/secretlint/src/cli.ts`) parses arguments, calls `runSecretLint()`
+2. **SecretLintEngine** (`packages/@secretlint/node`) loads config, discovers files via glob, processes files in parallel with `p-map`
+3. **config-loader** searches for `.secretlintrc.*`, validates with AJV schema, dynamically imports rule modules
+4. **core** (`packages/@secretlint/core/src/index.ts` - `lintSource()`) creates `SecretLintSourceCode`, registers scanner/filter rules, runs them, collects messages
+5. **RuleContext** (`packages/@secretlint/core/src/RuleContext.ts`) provides `report()`, `ignore()`, `createTranslator()` to each rule
+6. **formatter** converts results to textlint-compatible format, applies selected formatter (stylish, json, sarif, table, mask-result)
+
+### Key Package Dependencies
+
+```
+secretlint (CLI)
+  └→ @secretlint/node (engine)
+       ├→ @secretlint/config-loader (config resolution + validation)
+       │    └→ @secretlint/resolver (dynamic imports)
+       ├→ @secretlint/core (linting engine)
+       │    └→ @secretlint/types (shared type definitions)
+       ├→ @secretlint/source-creator (file → SecretLintRawSource)
+       ├→ @secretlint/formatter (output formatting)
+       └→ @secretlint/profiler (performance tracking)
+```
+
+### Dependency Catalog
+
+pnpm catalog (`pnpm-workspace.yaml` with `strictCatalog: true`) manages shared dependency versions. When adding or updating dependencies used across packages, update the catalog entry rather than individual package.json files.
+
 ## Quick Reference
 
 - **Package manager**: pnpm (pinned version in `package.json` `packageManager` field)
@@ -42,7 +75,8 @@ examples/                  # Example projects
 - **Language**: TypeScript (strict mode)
 - **Module system**: ESM (`"type": "module"`)
 - **Formatter**: Prettier (printWidth: 120, tabWidth: 4, singleQuote: false, trailingComma: none)
-- **Test framework**: Node.js native `test` module + `@secretlint/tester` for snapshots
+- **Test framework**: Node.js native `test` module + `@secretlint/tester` for snapshots (`@secretlint/core` and `@secretlint/node` use vitest)
+- **Single package test**: `pnpm test --filter="@secretlint/secretlint-rule-<name>"`
 - **Commit messages**: Angular Convention (`type(component): description`)
   - Types: `feat`, `fix`, `docs`, `style`, `perf`, `test`, `chore`, `refactor`
 
