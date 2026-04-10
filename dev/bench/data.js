@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1775700923574,
+  "lastUpdate": 1775835350866,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -51640,6 +51640,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.52,
             "range": "±1.35%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "8c9896cc3b67a75e67b427c9c31a342e05e300cd",
+          "message": "docs(agents): add architecture overview and improve AI assistant guidance (#1468)\n\n## Summary\n\nThis PR adds a comprehensive architecture overview to AGENTS.md to help\nAI assistants better understand the secretlint codebase structure and\ndata flow. It also updates CLAUDE.md with a proper header for Claude\nCode.\n\n## Changes\n\n- Added \"Architecture Overview\" section to `AGENTS.md` explaining the\ncore data flow from CLI to output\n- Added \"Key Package Dependencies\" diagram showing how packages relate\nto each other\n- Added \"Dependency Catalog\" note explaining pnpm catalog usage\n- Updated test framework note to mention that `@secretlint/core` and\n`@secretlint/node` use vitest\n- Added tip for running single package tests\n- Updated `CLAUDE.md` to include a proper header and description for\nClaude Code\n\n## Breaking Changes\n\nNone\n\n## Test Plan\n\n- No functional changes, documentation only\n- Verify that AGENTS.md renders correctly and architecture diagrams are\naccurate\n\nCo-authored-by: Claude Sonnet 4.6 <noreply@anthropic.com>",
+          "timestamp": "2026-04-10T15:34:22Z",
+          "tree_id": "4188ac36178e1d6c021dddbc9dbd50dded851e12",
+          "url": "https://github.com/secretlint/secretlint/commit/8c9896cc3b67a75e67b427c9c31a342e05e300cd"
+        },
+        "date": 1775835348674,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.68,
+            "range": "±0.76%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.53,
+            "range": "±1.04%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
