@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1775876723869,
+  "lastUpdate": 1775907918270,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -51830,6 +51830,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.46,
             "range": "±1.58%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "555cfbb48a423a3868ec8f51ae53c7850228227a",
+          "message": "feat(secretlint-rule-huggingface): add new rule for Hugging Face User Access Token (#1473)\n\n## Summary\n\nAdd a new rule package `@secretlint/secretlint-rule-huggingface` that\ndetects [Hugging Face User Access\nTokens](https://huggingface.co/docs/hub/security-tokens).\n\n- Detection pattern: `(?<!\\p{L})hf_[a-zA-Z]{34}(?![a-zA-Z])` — `hf_`\nprefix followed by exactly 34 alphabetic characters (a-z, A-Z), with\nUnicode letter boundary and negative lookahead to prevent over-matching.\n- Messages: `HUGGINGFACE_USER_ACCESS_TOKEN` in both `en` and `ja`.\n- `allows` option supported via `@textlint/regexp-string-matcher`.\n- Registered in the **canary** preset\n(`@secretlint/secretlint-rule-preset-canary`). Sync to the recommend\npreset is intentionally deferred per `AGENTS.md`.\n\nOut of scope: organization tokens with the `api_org_` prefix (deprecated\nby Hugging Face).\n\n## Test plan\n\n- [x] `pnpm run build` succeeds across the workspace\n- [x] `pnpm test` — all 85 tasks pass, including new `ng.secret` /\n`ok.valid` snapshot tests for the rule\n- [x] `pnpm run -r --filter \"@secretlint/secretlint-rule-preset-canary\"\nimport-test` regenerates canary snapshots for the new rule\n- [ ] Manual verification on real-world fixtures (deferred to reviewers)\n\nTest fixtures use the documentation placeholder form\n`hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx` so they exercise the regex\nwithout tripping GitHub's push protection on synthetic-looking tokens.\n\nCloses #1449\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-04-11T20:43:36+09:00",
+          "tree_id": "d821ea9086f2940a98bddeff10c633be476a93ec",
+          "url": "https://github.com/secretlint/secretlint/commit/555cfbb48a423a3868ec8f51ae53c7850228227a"
+        },
+        "date": 1775907915122,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.53,
+            "range": "±0.82%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.42,
+            "range": "±1.22%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
