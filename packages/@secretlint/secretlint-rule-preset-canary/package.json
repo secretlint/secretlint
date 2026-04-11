@@ -68,6 +68,7 @@
         "@secretlint/secretlint-rule-filter-comments": "workspace:*",
         "@secretlint/secretlint-rule-gcp": "workspace:*",
         "@secretlint/secretlint-rule-github": "workspace:*",
+        "@secretlint/secretlint-rule-gitlab": "workspace:*",
         "@secretlint/secretlint-rule-linear": "workspace:*",
         "@secretlint/secretlint-rule-npm": "workspace:*",
         "@secretlint/secretlint-rule-openai": "workspace:*",

@@ -11,6 +11,7 @@ import { creator as rulePrivateKey } from "@secretlint/secretlint-rule-privateke
 import { creator as ruleSendgrid } from "@secretlint/secretlint-rule-sendgrid";
 import { creator as ruleShopify } from "@secretlint/secretlint-rule-shopify";
 import { creator as ruleGitHub } from "@secretlint/secretlint-rule-github";
+import { creator as ruleGitLab } from "@secretlint/secretlint-rule-gitlab";
 import { creator as rule1Password } from "@secretlint/secretlint-rule-1password";
 import { creator as ruleDatabaseConnectionString } from "@secretlint/secretlint-rule-database-connection-string";
 import { creator as ruleFilterComments } from "@secretlint/secretlint-rule-filter-comments";
@@ -25,6 +26,7 @@ export const rules = [
     ruleSendgrid,
     ruleShopify,
     ruleGitHub,
+    ruleGitLab,
     ruleOpenAi,
     ruleAnthropic,
     ruleLinear,

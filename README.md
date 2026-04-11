@@ -326,6 +326,7 @@ Secretlint rules has been implemented as separated modules.
 - [@secretlint/secretlint-rule-aws](./packages/@secretlint/secretlint-rule-aws)
 - [@secretlint/secretlint-rule-gcp](./packages/@secretlint/secretlint-rule-gcp)
 - [@secretlint/secretlint-rule-github](./packages/@secretlint/secretlint-rule-github)
+- [@secretlint/secretlint-rule-gitlab](./packages/%40secretlint/secretlint-rule-gitlab)
 - [@secretlint/secretlint-rule-privatekey](./packages/@secretlint/secretlint-rule-privatekey)
 - [@secretlint/secretlint-rule-basicauth](./packages/@secretlint/secretlint-rule-basicauth)
 - [@secretlint/secretlint-rule-slack](./packages/@secretlint/secretlint-rule-slack)

@@ -1,0 +1,33 @@
+{
+    "filePath": "[SNAPSHOT]/ng.personal_access_token/input.txt",
+    "messages": [
+        {
+            "message": "found GitLab Personal Access Token: glpat-aBcDeFgHiJkLmNoPqRsT",
+            "range": [
+                0,
+                26
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-gitlab",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 26
+                }
+            },
+            "severity": "error",
+            "messageId": "GITLAB_PERSONAL_ACCESS_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-gitlab/README.md#GITLAB_PERSONAL_ACCESS_TOKEN",
+            "data": {
+                "KEY": "glpat-aBcDeFgHiJkLmNoPqRsT"
+            }
+        }
+    ],
+    "sourceContent": "glpat-aBcDeFgHiJkLmNoPqRsT\n",
+    "sourceContentType": "text"
+}
