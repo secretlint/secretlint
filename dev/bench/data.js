@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1775865829802,
+  "lastUpdate": 1775875911005,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -51754,6 +51754,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.53,
             "range": "±2.25%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e5a9201ea44740d12f9df3486ecede603d7ecfd3",
+          "message": "Add Notion integration token detection rule (#1471)\n\n## Summary\nThis PR adds a new secretlint rule for detecting Notion integration\ntokens, along with test snapshots for the Vercel rule.\n\n## Key Changes\n- **New Rule**: `@secretlint/secretlint-rule-notion` - Detects Notion\nintegration tokens with the `ntn_` prefix format (introduced September\n2024)\n  - Pattern: `ntn_` prefix + 11 digits + 35 alphanumeric characters\n- Intentionally excludes the legacy `secret_` prefix to avoid false\npositives\n  - Includes comprehensive documentation and test cases\n  - Supports configurable allow patterns via options\n\n- **Test Infrastructure**: Added snapshot test files for both the\nstandalone Notion rule and the canary preset integration\n  - Includes positive test cases (tokens that should be detected)\n  - Includes negative test cases (patterns that should NOT be detected)\n  - Validates proper error messages and token identification\n\n- **Preset Integration**: Integrated the new Notion rule into\n`@secretlint/secretlint-rule-preset-canary`\n\n- **Test Snapshots**: Added missing snapshot files for the Vercel rule\nand private key rule placeholder tests\n\n## Implementation Details\n- Uses Unicode-aware regex with negative lookbehind/lookahead to ensure\ntokens are standalone\n- Implements proper message translation support (English and Japanese)\n- Follows the established secretlint rule pattern with metadata, message\ndefinitions, and context-based reporting\n- Includes comprehensive README with usage examples and references to\nNotion API documentation\n\nhttps://claude.ai/code/session_01SKZua7TKQVCcCdgRtFsSw3\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-04-11T11:50:15+09:00",
+          "tree_id": "f6c2f8119f3b2b1efb5f8c4663e75ec63332b9dc",
+          "url": "https://github.com/secretlint/secretlint/commit/e5a9201ea44740d12f9df3486ecede603d7ecfd3"
+        },
+        "date": 1775875908281,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.64,
+            "range": "±1.03%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.49,
+            "range": "±0.99%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
