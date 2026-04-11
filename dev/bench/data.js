@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1775875911005,
+  "lastUpdate": 1775876723869,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -51792,6 +51792,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.49,
             "range": "±0.99%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "716bb53ea6531b0a0b8db24a200d8aa240e6c3aa",
+          "message": "Add Figma Personal Access Token detection rule (#1472)\n\n## Summary\nThis PR adds a new secretlint rule for detecting Figma Personal Access\nTokens in source code.\n\nCloses #1447\n\n## Key Changes\n- **New package**: `@secretlint/secretlint-rule-figma` - A dedicated\nrule for scanning Figma tokens\n- Detects tokens with the `figd_` prefix followed by 40-200 characters\nof `[A-Za-z0-9_-]`\n- Implements pattern matching based on GitHub's Secret Scanning\nspecification\n  - Supports allowlist configuration via the `allows` option\n  - Includes bilingual messages (English and Japanese)\n  - Provides comprehensive documentation and test coverage\n\n- **Integration**: Added the new rule to\n`@secretlint/secretlint-rule-preset-canary` preset\n  - Includes test snapshots for both valid and invalid token scenarios\n\n## Implementation Details\n- Uses Unicode-aware regex with negative lookbehind/lookahead to avoid\nfalse positives on word boundaries\n- Leverages `@textlint/regexp-string-matcher` for flexible allowlist\npattern matching\n- Follows the established secretlint rule architecture with proper\nTypeScript types\n- Intentionally excludes legacy UUID-format Figma tokens to prevent\nfalse positives\n- Includes snapshot-based tests for validation\n\nhttps://claude.ai/code/session_01PyFZnveYyhEkPJp9y6murP\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-04-11T12:03:54+09:00",
+          "tree_id": "7ce59f7e076625053a7a665d0de923f1a8b2af3d",
+          "url": "https://github.com/secretlint/secretlint/commit/716bb53ea6531b0a0b8db24a200d8aa240e6c3aa"
+        },
+        "date": 1775876720888,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.92,
+            "range": "±0.53%",
+            "unit": "ops/sec",
+            "extra": "12 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.46,
+            "range": "±1.58%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
