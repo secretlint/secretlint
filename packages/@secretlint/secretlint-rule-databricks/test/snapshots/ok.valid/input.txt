@@ -1,0 +1,16 @@
+# These should NOT be detected as Databricks tokens
+
+# Too short (only 4 hex chars after dapi)
+dapi1234
+
+# Too long (body exceeds the expected 32 hex chars after dapi)
+dapiABCDEF1234567890ABCDEF1234567890AB
+
+# Mid-word / variable name (letter boundary)
+mydapi1234567890abcdef1234567890abcdef
+
+# Unrelated prefix
+api1234567890abcdef1234567890abcdef
+
+# Databricks docs URL (not a token)
+https://docs.databricks.com/aws/en/dev-tools/auth/pat
