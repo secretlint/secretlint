@@ -24,7 +24,6 @@ export const creator: SecretLintRuleCreator = {
             file(source: SecretLintSourceCode) {
                 // Groq API keys format:
                 // - Prefix "gsk_" followed by exactly 52 alphanumeric characters
-                // Example: gsk_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghijklmnopqrstuv (56 chars total)
                 // References:
                 // - https://console.groq.com/docs/quickstart
                 // - https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns
