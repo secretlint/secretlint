@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1775907918270,
+  "lastUpdate": 1775908841127,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -51868,6 +51868,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.42,
             "range": "±1.22%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f329f15be32cb0d9d0588e87677956b63439e020",
+          "message": "Add Groq API key detection rule (#1475)\n\n## Summary\n\nAdd a new secretlint rule for detecting Groq API keys. Groq API keys use\nthe `gsk_` prefix followed by exactly 52 alphanumeric characters.\n\n## Key Changes\n\n- **New rule package**: `@secretlint/secretlint-rule-groq`\n- Detection pattern: `/(?<!\\p{L})gsk_[a-zA-Z0-9]{52}(?![a-zA-Z0-9])/gu`\n- Unicode letter negative lookbehind and alphanumeric negative lookahead\nenforce word boundaries\n  - Fixed-length `{52}` is ReDoS-safe\n  - Bilingual messages (English / Japanese)\n- Snapshot tests: NG (3 detections) + OK (6 non-detections: too short,\nword-boundary, too long, wrong prefix, invalid character)\n\n- **Integration with preset packages**:\n  - Registered in `@secretlint/secretlint-rule-preset-recommend`\n  - Registered in `@secretlint/secretlint-rule-preset-canary`\n  - Added snapshot tests for each preset\n\n- **Documentation**:\n- New `README.md` for `secretlint-rule-groq` with usage and pattern\nreference\n- Root `README.md` and `preset-recommend/README.md` updated to list the\nnew rule\n\n## Test plan\n\n- [x] `pnpm run build` (42 tasks successful)\n- [x] `pnpm run test` (85 tasks successful)\n- [x] `@secretlint/secretlint-rule-groq` unit tests pass\n- [x] `@secretlint/secretlint-rule-preset-recommend` snapshot tests\ninclude `secretlint-rule-groq`\n- [x] `@secretlint/secretlint-rule-preset-canary` snapshot tests include\n`secretlint-rule-groq`\n\nCloses #1446\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-04-11T11:58:58Z",
+          "tree_id": "131e5dc87f540ee78b9af3a02caeaeb59a0bae9f",
+          "url": "https://github.com/secretlint/secretlint/commit/f329f15be32cb0d9d0588e87677956b63439e020"
+        },
+        "date": 1775908838251,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.88,
+            "range": "±0.91%",
+            "unit": "ops/sec",
+            "extra": "12 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.4,
+            "range": "±2.18%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
