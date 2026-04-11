@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1775946997954,
+  "lastUpdate": 1775949161313,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -51946,6 +51946,44 @@ window.BENCHMARK_DATA = {
             "range": "±0.89%",
             "unit": "ops/sec",
             "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "65f5caa3af1ee5038b44af88c23d50c4273d227a",
+          "message": "Add Databricks and Vercel token detection rules (#1478)\n\n## Summary\nThis PR adds two new secretlint rules for detecting sensitive tokens\nfrom Databricks and Vercel platforms, along with test snapshots and\nintegration into the canary preset.\n\n## Key Changes\n\n- **New Databricks Rule** (`@secretlint/secretlint-rule-databricks`)\n- Detects Databricks personal access tokens (PAT) with pattern: `dapi`\nprefix + 32 hex characters + optional `-<digit>` suffix\n  - Implements case-insensitive matching for hex characters\n- Includes word boundary checks to avoid false positives in variable\nnames\n  - Comprehensive test cases covering valid and invalid token formats\n\n- **New Vercel Rule** (`@secretlint/secretlint-rule-vercel`)\n  - Detects multiple Vercel token types:\n    - Personal access tokens (`vcp_*`)\n    - Integration tokens (`vci_*`)\n    - App access tokens (`vca_*`)\n    - App refresh tokens (`vcr_*`)\n    - AI Gateway API keys (`vck_*`)\n  - Test snapshots validate detection of all token types\n\n- **Integration Updates**\n- Added both rules to the canary preset\n(`@secretlint/secretlint-rule-preset-canary`)\n  - Updated preset package.json with new rule dependencies\n  - Added test snapshots for preset-level validation\n\n- **Test Infrastructure**\n  - Created snapshot tests for both new rules\n- Added test cases for edge cases (word boundaries, placeholder\npatterns)\n- Updated database connection string tests to handle bash variable\npatterns\n\n## Implementation Details\n\n- Both rules use Unicode-aware regex patterns with word boundary checks\n(`\\p{L}`)\n- Rules support configurable allowlist via `allows` option for pattern\nmatching\n- Comprehensive documentation and README files included for each rule\n- Follows existing secretlint rule structure and conventions\n\nhttps://claude.ai/code/session_01K8ikpZTY86Rjdfp3zZEHTt\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-04-12T08:11:06+09:00",
+          "tree_id": "2259c6c33a966e20507ad8f58e6a77d2b6d5f62e",
+          "url": "https://github.com/secretlint/secretlint/commit/65f5caa3af1ee5038b44af88c23d50c4273d227a"
+        },
+        "date": 1775949158937,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.54,
+            "range": "±0.51%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.37,
+            "range": "±1.47%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
           }
         ]
       }
