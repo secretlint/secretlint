@@ -787,6 +787,31 @@ importers:
         specifier: 'catalog:'
         version: 5.9.2
 
+  packages/@secretlint/secretlint-rule-groq:
+    dependencies:
+      '@secretlint/types':
+        specifier: workspace:*
+        version: link:../types
+      '@textlint/regexp-string-matcher':
+        specifier: 'catalog:'
+        version: 2.0.2
+    devDependencies:
+      '@secretlint/tester':
+        specifier: workspace:*
+        version: link:../tester
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.12.2
+      prettier:
+        specifier: 'catalog:'
+        version: 2.8.8
+      tsx:
+        specifier: 'catalog:'
+        version: 4.21.0
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.2
+
   packages/@secretlint/secretlint-rule-huggingface:
     dependencies:
       '@secretlint/types':
@@ -1073,6 +1098,9 @@ importers:
       '@secretlint/secretlint-rule-github':
         specifier: workspace:*
         version: link:../secretlint-rule-github
+      '@secretlint/secretlint-rule-groq':
+        specifier: workspace:*
+        version: link:../secretlint-rule-groq
       '@secretlint/secretlint-rule-huggingface':
         specifier: workspace:*
         version: link:../secretlint-rule-huggingface
@@ -1169,6 +1197,9 @@ importers:
       '@secretlint/secretlint-rule-github':
         specifier: workspace:*
         version: link:../secretlint-rule-github
+      '@secretlint/secretlint-rule-groq':
+        specifier: workspace:*
+        version: link:../secretlint-rule-groq
       '@secretlint/secretlint-rule-linear':
         specifier: workspace:*
         version: link:../secretlint-rule-linear
