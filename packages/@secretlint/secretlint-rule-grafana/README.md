@@ -36,10 +36,6 @@ See [Grafana Service Accounts](https://grafana.com/docs/grafana/latest/administr
 
 See [Releases page](https://github.com/secretlint/secretlint/releases).
 
-## Running tests
-
-No Test to avoid Dependency cycles.
-
 ## Contributing
 
 Pull requests and stars are always welcome.
