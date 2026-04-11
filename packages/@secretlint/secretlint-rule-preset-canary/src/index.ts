@@ -17,6 +17,7 @@ import { creator as ruleGitHub } from "@secretlint/secretlint-rule-github";
 import { creator as rule1Password } from "@secretlint/secretlint-rule-1password";
 import { creator as ruleDatabaseConnectionString } from "@secretlint/secretlint-rule-database-connection-string";
 import { creator as ruleVercel } from "@secretlint/secretlint-rule-vercel";
+import { creator as ruleDatabricks } from "@secretlint/secretlint-rule-databricks";
 import { creator as ruleFigma } from "@secretlint/secretlint-rule-figma";
 import { creator as ruleFilterComments } from "@secretlint/secretlint-rule-filter-comments";
 
@@ -39,6 +40,7 @@ export const rules = [
     rule1Password,
     ruleDatabaseConnectionString,
     ruleVercel,
+    ruleDatabricks,
     ruleFigma,
     ruleFilterComments,
 ];
