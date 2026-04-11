@@ -13,6 +13,7 @@ import { creator as ruleShopify } from "@secretlint/secretlint-rule-shopify";
 import { creator as ruleGitHub } from "@secretlint/secretlint-rule-github";
 import { creator as rule1Password } from "@secretlint/secretlint-rule-1password";
 import { creator as ruleDatabaseConnectionString } from "@secretlint/secretlint-rule-database-connection-string";
+import { creator as ruleHashiCorpVault } from "@secretlint/secretlint-rule-hashicorp-vault";
 import { creator as ruleFilterComments } from "@secretlint/secretlint-rule-filter-comments";
 
 export const rules = [
@@ -30,6 +31,7 @@ export const rules = [
     ruleLinear,
     rule1Password,
     ruleDatabaseConnectionString,
+    ruleHashiCorpVault,
     ruleFilterComments,
 ];
 export type Options = {};

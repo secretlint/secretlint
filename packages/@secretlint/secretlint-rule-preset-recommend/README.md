@@ -78,6 +78,7 @@ If you want to ignore `"AWSAccountID"` and `"AWSAccessKeyID"` of `"@secretlint/s
 - [@secretlint/secretlint-rule-linear](https://www.npmjs.com/package/@secretlint/secretlint-rule-linear)
 - [@secretlint/secretlint-rule-1password](https://www.npmjs.com/package/@secretlint/secretlint-rule-1password)
 - [@secretlint/secretlint-rule-database-connection-string](https://www.npmjs.com/package/@secretlint/secretlint-rule-database-connection-string)
+- [@secretlint/secretlint-rule-hashicorp-vault](https://www.npmjs.com/package/@secretlint/secretlint-rule-hashicorp-vault)
 - [@secretlint/secretlint-rule-filter-comments](https://www.npmjs.com/package/@secretlint/secretlint-rule-filter-comments)
   - `secretlint-disable` directives. For more details, see <https://github.com/secretlint/secretlint/blob/master/docs/configuration.md#ignoring-error-by-comments>
 

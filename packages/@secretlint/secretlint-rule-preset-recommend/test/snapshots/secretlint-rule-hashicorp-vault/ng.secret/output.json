@@ -1,0 +1,163 @@
+{
+    "filePath": "[SNAPSHOT]/ng.secret/input.txt",
+    "messages": [
+        {
+            "message": "found HashiCorp Vault service token: hvs.hWay-wis3QpoSXob5gz_jyHmBQeyTg0l4IRsl4rnZw0tMbiT8h6X_CCHun3cdyThVbIYuNyEWNWcZ7lgwxBxm98NcV5WjUC",
+            "range": [
+                69,
+                168
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-hashicorp-vault",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 12
+                },
+                "end": {
+                    "line": 2,
+                    "column": 111
+                }
+            },
+            "severity": "error",
+            "messageId": "HASHICORP_VAULT_SERVICE_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-hashicorp-vault/README.md#HASHICORP_VAULT_SERVICE_TOKEN",
+            "data": {
+                "TOKEN": "hvs.hWay-wis3QpoSXob5gz_jyHmBQeyTg0l4IRsl4rnZw0tMbiT8h6X_CCHun3cdyThVbIYuNyEWNWcZ7lgwxBxm98NcV5WjUC"
+            }
+        },
+        {
+            "message": "found HashiCorp Vault service token: hvs.8PnTInftDgGId6RzfGCGjcxTv2r8D0GlD45ZnVv-PQhJGMSD4URSlGxTkLznLFnGysQL9TNlO-Y1f-cO8x0Kyarn82zNeaZtSxqS",
+            "range": [
+                193,
+                297
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-hashicorp-vault",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 4,
+                    "column": 23
+                },
+                "end": {
+                    "line": 4,
+                    "column": 127
+                }
+            },
+            "severity": "error",
+            "messageId": "HASHICORP_VAULT_SERVICE_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-hashicorp-vault/README.md#HASHICORP_VAULT_SERVICE_TOKEN",
+            "data": {
+                "TOKEN": "hvs.8PnTInftDgGId6RzfGCGjcxTv2r8D0GlD45ZnVv-PQhJGMSD4URSlGxTkLznLFnGysQL9TNlO-Y1f-cO8x0Kyarn82zNeaZtSxqS"
+            }
+        },
+        {
+            "message": "found HashiCorp Vault service token: hvs.KofXD9H9SNYoDESrzOeVu1zVp1MXBxuC5wJFPU-SEpTFLGdKLL_tMuRJmUNOVF9YeHzPnhQT8ArGBkOv2-sfwIMCBtKhRPGNLGHdqrv29Usj-oCVznM",
+            "range": [
+                300,
+                419
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-hashicorp-vault",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 6,
+                    "column": 0
+                },
+                "end": {
+                    "line": 6,
+                    "column": 119
+                }
+            },
+            "severity": "error",
+            "messageId": "HASHICORP_VAULT_SERVICE_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-hashicorp-vault/README.md#HASHICORP_VAULT_SERVICE_TOKEN",
+            "data": {
+                "TOKEN": "hvs.KofXD9H9SNYoDESrzOeVu1zVp1MXBxuC5wJFPU-SEpTFLGdKLL_tMuRJmUNOVF9YeHzPnhQT8ArGBkOv2-sfwIMCBtKhRPGNLGHdqrv29Usj-oCVznM"
+            }
+        },
+        {
+            "message": "found HashiCorp Vault batch token: hvb.RANm1YK4Unyk_lWsNpkEq2O0vFQzaXg3i2-yaWZmK8cuKoI6Rqi64gNipFm4bLHXsTx8uvOE5iATyDtPwDxGxoSi5xOUbfqk5CoUx7tJZA09q22Uxl2LAxgRZpr0GP5EeiD5dtrmTYIulOLVrtMfSD",
+            "range": [
+                494,
+                648
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-hashicorp-vault",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 9,
+                    "column": 18
+                },
+                "end": {
+                    "line": 9,
+                    "column": 172
+                }
+            },
+            "severity": "error",
+            "messageId": "HASHICORP_VAULT_BATCH_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-hashicorp-vault/README.md#HASHICORP_VAULT_BATCH_TOKEN",
+            "data": {
+                "TOKEN": "hvb.RANm1YK4Unyk_lWsNpkEq2O0vFQzaXg3i2-yaWZmK8cuKoI6Rqi64gNipFm4bLHXsTx8uvOE5iATyDtPwDxGxoSi5xOUbfqk5CoUx7tJZA09q22Uxl2LAxgRZpr0GP5EeiD5dtrmTYIulOLVrtMfSD"
+            }
+        },
+        {
+            "message": "found HashiCorp Vault batch token: hvb.9-UdwW6vdMeLIgQiEQfZkm-8fN8JglSMjCFrjOY60kdUfhvY9KgUPQc99FczvB-ll_e5hi2Kp3uo5Wyh6xqxMQsXufvnDdSL9wFlNkUyEm8KNdCEkpAKzF1KaLC90NN2tqFfRq-vrA_ICy96cCzCNLzjpz8jjK3VBq2aI4FtGAankHG9Ro7jYVM1KXkAHXtp3VWqM6ki",
+            "range": [
+                650,
+                854
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-hashicorp-vault",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 11,
+                    "column": 0
+                },
+                "end": {
+                    "line": 11,
+                    "column": 204
+                }
+            },
+            "severity": "error",
+            "messageId": "HASHICORP_VAULT_BATCH_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-hashicorp-vault/README.md#HASHICORP_VAULT_BATCH_TOKEN",
+            "data": {
+                "TOKEN": "hvb.9-UdwW6vdMeLIgQiEQfZkm-8fN8JglSMjCFrjOY60kdUfhvY9KgUPQc99FczvB-ll_e5hi2Kp3uo5Wyh6xqxMQsXufvnDdSL9wFlNkUyEm8KNdCEkpAKzF1KaLC90NN2tqFfRq-vrA_ICy96cCzCNLzjpz8jjK3VBq2aI4FtGAankHG9Ro7jYVM1KXkAHXtp3VWqM6ki"
+            }
+        },
+        {
+            "message": "found HashiCorp Vault recovery token: hvr.3WskR14ts7U3oTURLM-EWl0ZwGlmVKurmA0VF3krh2SCPQnvJxK90RlqJBAJYNZK29ZU_I5RUZkqnjUQ3d_6bLEEBiKT6Yg",
+            "range": [
+                935,
+                1034
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-hashicorp-vault",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 14,
+                    "column": 22
+                },
+                "end": {
+                    "line": 14,
+                    "column": 121
+                }
+            },
+            "severity": "error",
+            "messageId": "HASHICORP_VAULT_RECOVERY_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-hashicorp-vault/README.md#HASHICORP_VAULT_RECOVERY_TOKEN",
+            "data": {
+                "TOKEN": "hvr.3WskR14ts7U3oTURLM-EWl0ZwGlmVKurmA0VF3krh2SCPQnvJxK90RlqJBAJYNZK29ZU_I5RUZkqnjUQ3d_6bLEEBiKT6Yg"
+            }
+        }
+    ],
+    "sourceContent": "# HashiCorp Vault service tokens that should be detected\nVAULT_TOKEN=hvs.hWay-wis3QpoSXob5gz_jyHmBQeyTg0l4IRsl4rnZw0tMbiT8h6X_CCHun3cdyThVbIYuNyEWNWcZ7lgwxBxm98NcV5WjUC\n\nvault_service_token = 'hvs.8PnTInftDgGId6RzfGCGjcxTv2r8D0GlD45ZnVv-PQhJGMSD4URSlGxTkLznLFnGysQL9TNlO-Y1f-cO8x0Kyarn82zNeaZtSxqS'\n\nhvs.KofXD9H9SNYoDESrzOeVu1zVp1MXBxuC5wJFPU-SEpTFLGdKLL_tMuRJmUNOVF9YeHzPnhQT8ArGBkOv2-sfwIMCBtKhRPGNLGHdqrv29Usj-oCVznM\n\n# HashiCorp Vault batch tokens that should be detected\nVAULT_BATCH_TOKEN=hvb.RANm1YK4Unyk_lWsNpkEq2O0vFQzaXg3i2-yaWZmK8cuKoI6Rqi64gNipFm4bLHXsTx8uvOE5iATyDtPwDxGxoSi5xOUbfqk5CoUx7tJZA09q22Uxl2LAxgRZpr0GP5EeiD5dtrmTYIulOLVrtMfSD\n\nhvb.9-UdwW6vdMeLIgQiEQfZkm-8fN8JglSMjCFrjOY60kdUfhvY9KgUPQc99FczvB-ll_e5hi2Kp3uo5Wyh6xqxMQsXufvnDdSL9wFlNkUyEm8KNdCEkpAKzF1KaLC90NN2tqFfRq-vrA_ICy96cCzCNLzjpz8jjK3VBq2aI4FtGAankHG9Ro7jYVM1KXkAHXtp3VWqM6ki\n\n# HashiCorp Vault recovery token that should be detected\nVAULT_RECOVERY_TOKEN='hvr.3WskR14ts7U3oTURLM-EWl0ZwGlmVKurmA0VF3krh2SCPQnvJxK90RlqJBAJYNZK29ZU_I5RUZkqnjUQ3d_6bLEEBiKT6Yg'\n",
+    "sourceContentType": "text"
+}
