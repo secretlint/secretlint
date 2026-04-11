@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1775949900975,
+  "lastUpdate": 1775950743242,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -52020,6 +52020,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.36,
             "range": "±2.03%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "2fc5b28b536552b9dca12cb0e86e647f938d619c",
+          "message": "feat(rule): add @secretlint/secretlint-rule-hashicorp-vault (#1477)\n\n## Summary\n\nNew rule `@secretlint/secretlint-rule-hashicorp-vault` detecting the\nthree HashiCorp Vault token formats introduced in Vault 1.10+:\n\n- Service token (`hvs.` + 90–120 chars) →\n`HASHICORP_VAULT_SERVICE_TOKEN`\n- Batch token (`hvb.` + 138–300 chars) → `HASHICORP_VAULT_BATCH_TOKEN`\n- Recovery token (`hvr.` + 90–120 chars) →\n`HASHICORP_VAULT_RECOVERY_TOKEN`\n\nEach pattern uses a leading `(?<!\\p{L})` unicode letter boundary and a\ntrailing `[A-Za-z0-9_-]` negative lookahead, following the regex\nboundary conventions in `AGENTS.md`.\n\nThe rule is registered in both\n`@secretlint/secretlint-rule-preset-recommend` and\n`@secretlint/secretlint-rule-preset-canary`, and included in the rule\nlist in the root `README.md` and preset `README.md`.\n\n## Test plan\n\n- [x] `pnpm build` — 42 tasks successful\n- [x] `pnpm test` — 85 tasks successful (includes the new rule and both\npresets)\n- [x] `ng.secret` snapshot covers all three token types (multi-match)\n- [x] `ok.valid` snapshot covers too-short placeholders, glued-prefix\ncases (`xhvs.…`), and wrong-prefix variants\n\nClose #1444\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-04-12T08:37:23+09:00",
+          "tree_id": "d8a651801baccef0535c9645161f9b05bd743241",
+          "url": "https://github.com/secretlint/secretlint/commit/2fc5b28b536552b9dca12cb0e86e647f938d619c"
+        },
+        "date": 1775950740795,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.49,
+            "range": "±0.92%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.33,
+            "range": "±0.63%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
