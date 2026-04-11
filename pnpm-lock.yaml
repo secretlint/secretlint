@@ -1113,9 +1113,6 @@ importers:
       '@secretlint/secretlint-rule-github':
         specifier: workspace:*
         version: link:../secretlint-rule-github
-      '@secretlint/secretlint-rule-hashicorp-vault':
-        specifier: workspace:*
-        version: link:../secretlint-rule-hashicorp-vault
       '@secretlint/secretlint-rule-linear':
         specifier: workspace:*
         version: link:../secretlint-rule-linear
