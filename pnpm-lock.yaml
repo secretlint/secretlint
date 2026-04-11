@@ -762,6 +762,28 @@ importers:
         specifier: 'catalog:'
         version: 5.9.2
 
+  packages/@secretlint/secretlint-rule-groq:
+    dependencies:
+      '@secretlint/types':
+        specifier: workspace:*
+        version: link:../types
+    devDependencies:
+      '@secretlint/tester':
+        specifier: workspace:*
+        version: link:../tester
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.12.2
+      prettier:
+        specifier: 'catalog:'
+        version: 2.8.8
+      tsx:
+        specifier: 'catalog:'
+        version: 4.21.0
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.2
+
   packages/@secretlint/secretlint-rule-internal-test-cjs:
     dependencies:
       '@secretlint/types':
@@ -995,6 +1017,9 @@ importers:
       '@secretlint/secretlint-rule-github':
         specifier: workspace:*
         version: link:../secretlint-rule-github
+      '@secretlint/secretlint-rule-groq':
+        specifier: workspace:*
+        version: link:../secretlint-rule-groq
       '@secretlint/secretlint-rule-linear':
         specifier: workspace:*
         version: link:../secretlint-rule-linear
@@ -1085,6 +1110,9 @@ importers:
       '@secretlint/secretlint-rule-github':
         specifier: workspace:*
         version: link:../secretlint-rule-github
+      '@secretlint/secretlint-rule-groq':
+        specifier: workspace:*
+        version: link:../secretlint-rule-groq
       '@secretlint/secretlint-rule-linear':
         specifier: workspace:*
         version: link:../secretlint-rule-linear
@@ -2114,9 +2142,6 @@ packages:
 
   '@types/node-forge@1.3.14':
     resolution: {integrity: sha512-mhVF2BnD4BO+jtOp7z1CdzaK4mbuK0LLQYAvdOLqHTavxFNq4zA1EmYkpnFjP8HOUzedfQkRnp0E2ulSAYSzAw==}
-
-  '@types/node@24.12.0':
-    resolution: {integrity: sha512-GYDxsZi3ChgmckRT9HPU0WEhKLP08ev/Yfcq2AstjrDASOYCSXeyjDsHg4v5t4jOj7cyDX3vmprafKlWIG9MXQ==}
 
   '@types/node@24.12.2':
     resolution: {integrity: sha512-A1sre26ke7HDIuY/M23nd9gfB+nrmhtYyMINbjI1zHJxYteKR6qSMX56FsmjMcDb3SMcjJg5BiRRgOCC/yBD0g==}
@@ -4191,10 +4216,6 @@ snapshots:
     dependencies:
       '@types/node': 24.12.2
 
-  '@types/node@24.12.0':
-    dependencies:
-      undici-types: 7.16.0
-
   '@types/node@24.12.2':
     dependencies:
       undici-types: 7.16.0
@@ -4373,7 +4394,7 @@ snapshots:
 
   bun-types@1.3.11:
     dependencies:
-      '@types/node': 24.12.0
+      '@types/node': 24.12.2
 
   cac@6.7.14: {}
 

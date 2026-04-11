@@ -75,6 +75,7 @@ If you want to ignore `"AWSAccountID"` and `"AWSAccessKeyID"` of `"@secretlint/s
 - [@secretlint/secretlint-rule-github](https://www.npmjs.com/package/@secretlint/secretlint-rule-github)
 - [@secretlint/secretlint-rule-openai](https://www.npmjs.com/package/@secretlint/secretlint-rule-openai)
 - [@secretlint/secretlint-rule-anthropic](https://www.npmjs.com/package/@secretlint/secretlint-rule-anthropic)
+- [@secretlint/secretlint-rule-groq](https://www.npmjs.com/package/@secretlint/secretlint-rule-groq)
 - [@secretlint/secretlint-rule-linear](https://www.npmjs.com/package/@secretlint/secretlint-rule-linear)
 - [@secretlint/secretlint-rule-1password](https://www.npmjs.com/package/@secretlint/secretlint-rule-1password)
 - [@secretlint/secretlint-rule-database-connection-string](https://www.npmjs.com/package/@secretlint/secretlint-rule-database-connection-string)
