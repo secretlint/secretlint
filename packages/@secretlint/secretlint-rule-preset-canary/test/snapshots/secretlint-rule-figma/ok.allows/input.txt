@@ -1,0 +1,1 @@
+FIGMA_TOKEN=figd_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghijklmnopqrstuvwxyz

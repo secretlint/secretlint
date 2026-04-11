@@ -1,12 +1,12 @@
-# @secretlint/secretlint-rule-groq
+# @secretlint/secretlint-rule-huggingface
 
-A rule for detecting [Groq](https://groq.com/) API keys in your code.
+A rule for detecting [Hugging Face](https://huggingface.co/) User Access Tokens in your code.
 
 ## Install
 
 Install with [npm](https://www.npmjs.com/):
 
-    npm install @secretlint/secretlint-rule-groq
+    npm install @secretlint/secretlint-rule-huggingface
 
 ## Usage
 
@@ -16,7 +16,7 @@ Via `.secretlintrc.json`(Recommended)
 {
     "rules": [
         {
-            "id": "@secretlint/secretlint-rule-groq"
+            "id": "@secretlint/secretlint-rule-huggingface"
         }
     ]
 }
@@ -24,16 +24,17 @@ Via `.secretlintrc.json`(Recommended)
 
 ## MessageIDs
 
-### GROQ_API_KEY
+### HUGGINGFACE_USER_ACCESS_TOKEN
 
-Groq API key is detected.
+Hugging Face User Access Token is detected.
 
-Groq API keys use the `gsk_` prefix followed by exactly 52 alphanumeric characters.
+A Hugging Face User Access Token starts with the `hf_` prefix followed by exactly 34 alphabetic characters
+(see [User Access Tokens](https://huggingface.co/docs/hub/security-tokens)).
 
 **NG** examples:
 
 ```
-gsk_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghijklmnopqrstuv
+HF_TOKEN=hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
 ## Options
@@ -47,7 +48,7 @@ See [Releases page](https://github.com/secretlint/secretlint/releases).
 
 ## Running tests
 
-    npm test
+No Test to avoid Dependency cycles.
 
 ## Contributing
 

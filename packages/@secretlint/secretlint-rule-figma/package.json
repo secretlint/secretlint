@@ -1,15 +1,13 @@
 {
-    "name": "@secretlint/secretlint-rule-groq",
+    "name": "@secretlint/secretlint-rule-figma",
     "version": "11.6.0",
-    "description": "A secretlint rule for detecting Groq API keys",
+    "description": "A secretlint rule for Figma",
     "keywords": [
         "secretlint",
-        "rule",
-        "groq",
-        "api-key",
-        "security"
+        "testing",
+        "rule"
     ],
-    "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-groq/",
+    "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-figma/",
     "bugs": {
         "url": "https://github.com/secretlint/secretlint/issues"
     },

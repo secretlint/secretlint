@@ -1,15 +1,16 @@
 {
-    "name": "@secretlint/secretlint-rule-groq",
+    "name": "@secretlint/secretlint-rule-notion",
     "version": "11.6.0",
-    "description": "A secretlint rule for detecting Groq API keys",
+    "description": "A secretlint rule for detecting Notion integration tokens",
     "keywords": [
         "secretlint",
         "rule",
-        "groq",
-        "api-key",
+        "notion",
+        "integration",
+        "token",
         "security"
     ],
-    "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-groq/",
+    "homepage": "https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-notion/",
     "bugs": {
         "url": "https://github.com/secretlint/secretlint/issues"
     },

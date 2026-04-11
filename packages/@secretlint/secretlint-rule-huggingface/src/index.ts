@@ -2,29 +2,25 @@ import type { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/ty
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export const messages = {
-    GROQ_API_KEY: {
-        en: (props: { KEY: string }) => `found Groq API key: ${props.KEY}`,
-        ja: (props: { KEY: string }) => `Groq API キー: ${props.KEY} がみつかりました`,
+    HUGGINGFACE_USER_ACCESS_TOKEN: {
+        en: (props: { TOKEN: string }) => `found Hugging Face User Access Token: ${props.TOKEN}`,
+        ja: (props: { TOKEN: string }) => `Hugging Face User Access Token: ${props.TOKEN} がみつかりました`,
     },
 };
 
 export type Options = {
-    /**
-     * Define allow pattern written by RegExp-like strings
-     * See https://github.com/textlint/regexp-string-matcher#regexp-like-string
-     **/
     allows?: string[];
 };
 
 export const creator: SecretLintRuleCreator<Options> = {
     messages,
     meta: {
-        id: "@secretlint/secretlint-rule-groq",
+        id: "@secretlint/secretlint-rule-huggingface",
         recommended: true,
         type: "scanner",
         supportedContentTypes: ["text"],
         docs: {
-            url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-groq/README.md",
+            url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-huggingface/README.md",
         },
     },
     create(context, options) {
@@ -34,13 +30,13 @@ export const creator: SecretLintRuleCreator<Options> = {
         };
         return {
             file(source: SecretLintSourceCode) {
-                // Groq API keys format:
-                // - Prefix "gsk_" followed by exactly 52 alphanumeric characters
+                // Hugging Face User Access Token format:
+                // - Prefix: `hf_`
+                // - Body: exactly 34 alphabetic characters (a-z, A-Z)
                 // References:
-                // - https://console.groq.com/docs/quickstart
-                // - https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns
-                // - https://github.com/trufflesecurity/trufflehog/blob/main/pkg/detectors/groq/groq.go
-                const pattern = /(?<!\p{L})gsk_[a-zA-Z0-9]{52}(?![a-zA-Z0-9])/gu;
+                // - https://huggingface.co/docs/hub/security-tokens
+                // - https://github.com/gitleaks/gitleaks
+                const pattern = /(?<!\p{L})hf_[a-zA-Z]{34}(?![a-zA-Z])/gu;
                 const matches = source.content.matchAll(pattern);
                 for (const match of matches) {
                     const index = match.index ?? 0;
@@ -51,8 +47,8 @@ export const creator: SecretLintRuleCreator<Options> = {
                     }
                     const range = [index, index + matchString.length] as const;
                     context.report({
-                        message: t("GROQ_API_KEY", {
-                            KEY: matchString,
+                        message: t("HUGGINGFACE_USER_ACCESS_TOKEN", {
+                            TOKEN: matchString,
                         }),
                         range,
                     });
