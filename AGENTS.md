@@ -129,7 +129,7 @@ export const creator: SecretLintRuleCreator<Options> = {
         };
         return {
             file(source: SecretLintSourceCode) {
-                const pattern = /YOUR_PATTERN/g;
+                const pattern = /(?<!\p{L})YOUR_PREFIX_[A-Za-z0-9]{20,60}(?![A-Za-z0-9])/gu;
                 const matches = source.content.matchAll(pattern);
                 for (const match of matches) {
                     const index = match.index || 0;
@@ -155,6 +155,11 @@ export const creator: SecretLintRuleCreator<Options> = {
 - **Messages must have at least `en` locale**; `ja` is strongly recommended
 - **Always support `allows` option** using `@textlint/regexp-string-matcher` for user-defined exclusions
 - **Use `matchAll` with global regex** for pattern scanning
+- **Regex boundary conventions**:
+  - Leading: use `(?<!\p{L})` to prevent matching mid-word
+  - Trailing: add a negative lookahead matching the pattern's character class (e.g., `(?![A-Za-z0-9])` or `(?![a-f0-9])`). Without this, greedy quantifiers over-match into adjacent content, causing incorrect `range` and breaking `allows` list matching
+  - Example: `/(?<!\p{L})prefix_[A-Za-z0-9]{20,60}(?![A-Za-z0-9])/gu`
+- **Length ranges**: follow official documentation if available, otherwise align with gitleaks/TruffleHog empirical data. Keep ranges as narrow as possible to minimize false positives
 - **Report with `context.report()`** providing `message` (from translator) and `range` (`[startIndex, endIndex]`)
 - **Filter rules use `context.ignore()`** instead of `context.report()`
 - **Avoid ReDoS**: be careful with regex complexity; use character class limits (e.g., `[A-Za-z0-9]{100,10000}`)
