@@ -17,6 +17,7 @@ import { creator as ruleGitHub } from "@secretlint/secretlint-rule-github";
 import { creator as ruleGrafana } from "@secretlint/secretlint-rule-grafana";
 import { creator as rule1Password } from "@secretlint/secretlint-rule-1password";
 import { creator as ruleDatabaseConnectionString } from "@secretlint/secretlint-rule-database-connection-string";
+import { creator as ruleHashiCorpVault } from "@secretlint/secretlint-rule-hashicorp-vault";
 import { creator as ruleVercel } from "@secretlint/secretlint-rule-vercel";
 import { creator as ruleDatabricks } from "@secretlint/secretlint-rule-databricks";
 import { creator as ruleFigma } from "@secretlint/secretlint-rule-figma";
@@ -41,6 +42,7 @@ export const rules = [
     ruleNotion,
     rule1Password,
     ruleDatabaseConnectionString,
+    ruleHashiCorpVault,
     ruleVercel,
     ruleDatabricks,
     ruleFigma,

@@ -72,6 +72,7 @@
         "@secretlint/secretlint-rule-github": "workspace:*",
         "@secretlint/secretlint-rule-grafana": "workspace:*",
         "@secretlint/secretlint-rule-groq": "workspace:*",
+        "@secretlint/secretlint-rule-hashicorp-vault": "workspace:*",
         "@secretlint/secretlint-rule-huggingface": "workspace:*",
         "@secretlint/secretlint-rule-linear": "workspace:*",
         "@secretlint/secretlint-rule-notion": "workspace:*",

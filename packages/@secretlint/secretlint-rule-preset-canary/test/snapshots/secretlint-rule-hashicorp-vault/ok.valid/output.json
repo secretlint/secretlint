@@ -1,0 +1,6 @@
+{
+    "filePath": "[SNAPSHOT]/ok.valid/input.txt",
+    "messages": [],
+    "sourceContent": "# These should NOT be detected as HashiCorp Vault tokens\nexport const VAULT_ADDR = \"https://vault.example.com\";\nexport const VAULT_NAMESPACE = \"admin\";\n\n# Placeholder/short tokens (too short)\nhvs.abc\nhvb.tooshortxxx\nhvr.placeholder\n\n# Glued to a preceding letter (not a real token)\nxhvs.hWay-wis3QpoSXob5gz_jyHmBQeyTg0l4IRsl4rnZw0tMbiT8h6X_CCHun3cdyThVbIYuNyEWNWcZ7lgwxBxm98NcV5WjUC\n\n# Wrong prefix characters\nhvx.hWay-wis3QpoSXob5gz_jyHmBQeyTg0l4IRsl4rnZw0tMbiT8h6X_CCHun3cdyThVbIYuNyEWNWcZ7lgwxBxm98NcV5WjUC\n\n# Example/documentation strings with explicit note\n# token: hvs.example\n",
+    "sourceContentType": "text"
+}

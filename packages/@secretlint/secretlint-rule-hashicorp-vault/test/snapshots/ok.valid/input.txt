@@ -1,0 +1,17 @@
+# These should NOT be detected as HashiCorp Vault tokens
+export const VAULT_ADDR = "https://vault.example.com";
+export const VAULT_NAMESPACE = "admin";
+
+# Placeholder/short tokens (too short)
+hvs.abc
+hvb.tooshortxxx
+hvr.placeholder
+
+# Glued to a preceding letter (not a real token)
+xhvs.hWay-wis3QpoSXob5gz_jyHmBQeyTg0l4IRsl4rnZw0tMbiT8h6X_CCHun3cdyThVbIYuNyEWNWcZ7lgwxBxm98NcV5WjUC
+
+# Wrong prefix characters
+hvx.hWay-wis3QpoSXob5gz_jyHmBQeyTg0l4IRsl4rnZw0tMbiT8h6X_CCHun3cdyThVbIYuNyEWNWcZ7lgwxBxm98NcV5WjUC
+
+# Example/documentation strings with explicit note
+# token: hvs.example
