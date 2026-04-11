@@ -65,6 +65,7 @@
         "@secretlint/secretlint-rule-aws": "workspace:*",
         "@secretlint/secretlint-rule-basicauth": "workspace:*",
         "@secretlint/secretlint-rule-database-connection-string": "workspace:*",
+        "@secretlint/secretlint-rule-databricks": "workspace:*",
         "@secretlint/secretlint-rule-filter-comments": "workspace:*",
         "@secretlint/secretlint-rule-gcp": "workspace:*",
         "@secretlint/secretlint-rule-github": "workspace:*",

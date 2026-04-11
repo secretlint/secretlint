@@ -336,6 +336,7 @@ Secretlint rules has been implemented as separated modules.
 - [@secretlint/secretlint-rule-linear](./packages/%40secretlint/secretlint-rule-linear)
 - [@secretlint/secretlint-rule-1password](./packages/%40secretlint/secretlint-rule-1password)
 - [@secretlint/secretlint-rule-database-connection-string](./packages/%40secretlint/secretlint-rule-database-connection-string)
+- [@secretlint/secretlint-rule-databricks](./packages/%40secretlint/secretlint-rule-databricks)
 - [@secretlint/secretlint-rule-secp256k1-privatekey](./packages/@secretlint/secretlint-rule-secp256k1-privatekey)
 - [@secretlint/secretlint-rule-no-k8s-kind-secret](./packages/@secretlint/secretlint-rule-no-k8s-kind-secret)
 - [@secretlint/secretlint-rule-pattern](./packages/@secretlint/secretlint-rule-pattern)
