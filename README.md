@@ -333,6 +333,7 @@ Secretlint rules has been implemented as separated modules.
 - [@secretlint/secretlint-rule-shopify](./packages/%40secretlint/secretlint-rule-shopify)
 - [@secretlint/secretlint-rule-openai](./packages/%40secretlint/secretlint-rule-openai)
 - [@secretlint/secretlint-rule-anthropic](./packages/%40secretlint/secretlint-rule-anthropic)
+- [@secretlint/secretlint-rule-grafana](./packages/%40secretlint/secretlint-rule-grafana)
 - [@secretlint/secretlint-rule-linear](./packages/%40secretlint/secretlint-rule-linear)
 - [@secretlint/secretlint-rule-1password](./packages/%40secretlint/secretlint-rule-1password)
 - [@secretlint/secretlint-rule-database-connection-string](./packages/%40secretlint/secretlint-rule-database-connection-string)
