@@ -3,7 +3,7 @@
 # Too short (only 4 hex chars after dapi)
 dapi1234
 
-# Not a hex body (contains uppercase letters)
+# Too long (body exceeds the expected 32 hex chars after dapi)
 dapiABCDEF1234567890ABCDEF1234567890AB
 
 # Mid-word / variable name (letter boundary)
