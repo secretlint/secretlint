@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1775908841127,
+  "lastUpdate": 1775946997954,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -51906,6 +51906,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.4,
             "range": "±2.18%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "fffb1f7f145e968831af1cbec8a5eeaa176efe56",
+          "message": "refactor(preset-recommend): remove groq to defer sync per AGENTS.md (#1479)\n\n## Summary\n\nFollow-up to #1475. Removes the `@secretlint/secretlint-rule-groq` rule\nfrom the `@secretlint/secretlint-rule-preset-recommend` preset, keeping\nit only in `@secretlint/secretlint-rule-preset-canary`.\n\n## Why\n\nPer\n[AGENTS.md](https://github.com/secretlint/secretlint/blob/master/AGENTS.md)\nand\n[CONTRIBUTING.md](https://github.com/secretlint/secretlint/blob/master/CONTRIBUTING.md),\nnew rules follow a two-stage deployment process:\n\n1. First added to the **canary** preset for experimental testing.\n2. Synced to the **recommend** preset at major release time via `pnpm\nrun -r --filter \"@secretlint/secretlint-rule-preset-recommend\"\nsync-canary`.\n\n#1475 unintentionally added the groq rule to both presets in the same\nPR, which was flagged by Devin Review. This PR restores the intended\ntwo-stage deployment by removing groq from recommend so it stays only in\ncanary until the next sync.\n\nThe huggingface rule added in 555cfbb4 explicitly followed this\nconvention.\n\n## Changes\n\n- Remove `ruleGroq` import and rules array entry from\n`packages/@secretlint/secretlint-rule-preset-recommend/src/index.ts`\n- Remove `@secretlint/secretlint-rule-groq` devDependency from\n`packages/@secretlint/secretlint-rule-preset-recommend/package.json`\n- Remove `@secretlint/secretlint-rule-groq` entry from\n`packages/@secretlint/secretlint-rule-preset-recommend/README.md`\n- Remove\n`packages/@secretlint/secretlint-rule-preset-recommend/test/snapshots/secretlint-rule-groq/`\n\n## Test plan\n\n- [x] `pnpm run build` (45 tasks successful)\n- [x] `pnpm run test` (91 tasks successful)\n- [x] `secretlint-rule-preset-recommend` snapshot tests pass without\n`secretlint-rule-groq`\n- [x] `secretlint-rule-preset-canary` still contains and tests\n`secretlint-rule-groq`\n\nRefs #1446\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-04-12T07:34:52+09:00",
+          "tree_id": "5da1b800842c24a30304a9ab9209f4504d131b6f",
+          "url": "https://github.com/secretlint/secretlint/commit/fffb1f7f145e968831af1cbec8a5eeaa176efe56"
+        },
+        "date": 1775946994867,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.59,
+            "range": "±0.85%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.41,
+            "range": "±0.89%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
