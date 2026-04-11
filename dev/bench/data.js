@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1775949161313,
+  "lastUpdate": 1775949900975,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -51982,6 +51982,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.37,
             "range": "±1.47%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ad8f273b379c3c8bfcbc30af6ea633f37d3f3e86",
+          "message": "feat(grafana): add new rule for Grafana API tokens (#1474)\n\n## Summary\n\nAdd `@secretlint/secretlint-rule-grafana`, a new scanner rule that\ndetects Grafana API tokens.\n\n### Detected patterns\n\n- **`GRAFANA_CLOUD_API_TOKEN`**: tokens with the `glc_` prefix followed\nby base64-encoded JWT content. Real tokens start with `glc_eyJ`.\n- Regex:\n`/(?<!\\p{L})glc_[A-Za-z0-9+/]{32,400}={0,2}(?![A-Za-z0-9+/=])/gu`\n- **`GRAFANA_SERVICE_ACCOUNT_TOKEN`**: tokens with the `glsa_` prefix\nfollowed by 32 alphanumeric characters, an underscore, and an\n8-character hex checksum.\n- Regex:\n`/(?<!\\p{L})glsa_[A-Za-z0-9]{32}_[A-Fa-f0-9]{8}(?![A-Fa-f0-9])/gu`\n\nThe service account token format is fixed (32 chars + `_` + 8 hex),\nwhich minimizes false positives. The Cloud token `glc_` prefix is unique\nenough to keep FP risk low despite the base64 body.\n\n### Changes\n\n- New package `packages/@secretlint/secretlint-rule-grafana/` (src,\ntests, snapshots, README, LICENSE, tsconfig, package.json)\n- `allows` option supported via `@textlint/regexp-string-matcher`\n- Messages have `en` and `ja` locales\n- Registered in `@secretlint/secretlint-rule-preset-canary` (per\nAGENTS.md, syncing to the recommend preset is a separate release-time\ntask)\n- Listed in the root `README.md` rule index\n\n### References\n\n- Grafana Service Account tokens docs\n- gitleaks / TruffleHog Grafana detectors\n- GitHub Secret Scanning push protection patterns\n\n## Test plan\n\n- [x] `pnpm --filter \"@secretlint/secretlint-rule-grafana\" test` passes\n(3 snapshot cases)\n- [x] `pnpm --filter \"@secretlint/secretlint-rule-preset-canary\" test`\npasses (includes grafana snapshots)\n- [x] `pnpm --filter \"@secretlint/secretlint-rule-grafana\" build` (tsc)\nsucceeds\n- [x] Full `pnpm test` passes with no regressions\n\nCloses #1443\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>",
+          "timestamp": "2026-04-12T08:23:14+09:00",
+          "tree_id": "4a09eb72b527a8d6f426b71f02ee8064784c0f0c",
+          "url": "https://github.com/secretlint/secretlint/commit/ad8f273b379c3c8bfcbc30af6ea633f37d3f3e86"
+        },
+        "date": 1775949897840,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.56,
+            "range": "±0.82%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.36,
+            "range": "±2.03%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
