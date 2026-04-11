@@ -1113,9 +1113,6 @@ importers:
       '@secretlint/secretlint-rule-github':
         specifier: workspace:*
         version: link:../secretlint-rule-github
-      '@secretlint/secretlint-rule-gitlab':
-        specifier: workspace:*
-        version: link:../secretlint-rule-gitlab
       '@secretlint/secretlint-rule-linear':
         specifier: workspace:*
         version: link:../secretlint-rule-linear
