@@ -69,6 +69,7 @@
         "@secretlint/secretlint-rule-filter-comments": "workspace:*",
         "@secretlint/secretlint-rule-gcp": "workspace:*",
         "@secretlint/secretlint-rule-github": "workspace:*",
+        "@secretlint/secretlint-rule-huggingface": "workspace:*",
         "@secretlint/secretlint-rule-linear": "workspace:*",
         "@secretlint/secretlint-rule-notion": "workspace:*",
         "@secretlint/secretlint-rule-npm": "workspace:*",
