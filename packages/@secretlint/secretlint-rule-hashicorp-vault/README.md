@@ -48,6 +48,29 @@ HashiCorp Vault recovery token is detected.
 
 Format: `hvr.` + 90–120 characters from `[A-Za-z0-9_-]`.
 
+## Options
+
+- `allows`: `string[]`
+    - Allow list of [RegExp-like strings](https://github.com/textlint/regexp-string-matcher#regexp-like-string).
+    - Tokens matching any pattern in the allow list are not reported.
+
+Example configuration:
+
+```json
+{
+    "rules": [
+        {
+            "id": "@secretlint/secretlint-rule-hashicorp-vault",
+            "options": {
+                "allows": [
+                    "/hvs\\.EXAMPLE_FAKE[A-Za-z0-9_-]+/"
+                ]
+            }
+        }
+    ]
+}
+```
+
 ## References
 
 - [HashiCorp Vault: Tokens](https://developer.hashicorp.com/vault/docs/concepts/tokens)

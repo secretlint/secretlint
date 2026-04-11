@@ -1,4 +1,5 @@
 import type { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
+import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export const messages = {
     HASHICORP_VAULT_SERVICE_TOKEN: {
@@ -13,6 +14,10 @@ export const messages = {
         en: (props: { TOKEN: string }) => `found HashiCorp Vault recovery token: ${props.TOKEN}`,
         ja: (props: { TOKEN: string }) => `HashiCorp Vault recovery token: ${props.TOKEN} がみつかりました`,
     },
+};
+
+export type Options = {
+    allows?: string[];
 };
 
 // HashiCorp Vault token formats (Vault 1.10+):
@@ -32,7 +37,7 @@ const serviceTokenPattern = /(?<!\p{L})hvs\.[A-Za-z0-9_-]{90,120}(?![A-Za-z0-9_-
 const batchTokenPattern = /(?<!\p{L})hvb\.[A-Za-z0-9_-]{138,300}(?![A-Za-z0-9_-])/gu;
 const recoveryTokenPattern = /(?<!\p{L})hvr\.[A-Za-z0-9_-]{90,120}(?![A-Za-z0-9_-])/gu;
 
-export const creator: SecretLintRuleCreator = {
+export const creator: SecretLintRuleCreator<Options> = {
     messages,
     meta: {
         id: "@secretlint/secretlint-rule-hashicorp-vault",
@@ -43,8 +48,11 @@ export const creator: SecretLintRuleCreator = {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-hashicorp-vault/README.md",
         },
     },
-    create(context) {
+    create(context, options) {
         const t = context.createTranslator(messages);
+        const normalizedOptions = {
+            allows: options?.allows ?? [],
+        };
         const reportMatches = (
             source: SecretLintSourceCode,
             pattern: RegExp,
@@ -57,6 +65,10 @@ export const creator: SecretLintRuleCreator = {
             for (const match of matches) {
                 const index = match.index ?? 0;
                 const matchString = match[0] ?? "";
+                const allowedResults = matchPatterns(matchString, normalizedOptions.allows);
+                if (allowedResults.length > 0) {
+                    continue;
+                }
                 const range = [index, index + matchString.length] as const;
                 context.report({
                     message: t(messageId, {
