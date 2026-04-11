@@ -681,6 +681,31 @@ importers:
         specifier: 'catalog:'
         version: 5.9.2
 
+  packages/@secretlint/secretlint-rule-figma:
+    dependencies:
+      '@secretlint/types':
+        specifier: workspace:*
+        version: link:../types
+      '@textlint/regexp-string-matcher':
+        specifier: 'catalog:'
+        version: 2.0.2
+    devDependencies:
+      '@secretlint/tester':
+        specifier: workspace:*
+        version: link:../tester
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.12.2
+      prettier:
+        specifier: 'catalog:'
+        version: 2.8.8
+      tsx:
+        specifier: 'catalog:'
+        version: 4.21.0
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.2
+
   packages/@secretlint/secretlint-rule-filter-comments:
     dependencies:
       '@secretlint/types':
@@ -1011,6 +1036,9 @@ importers:
       '@secretlint/secretlint-rule-database-connection-string':
         specifier: workspace:*
         version: link:../secretlint-rule-database-connection-string
+      '@secretlint/secretlint-rule-figma':
+        specifier: workspace:*
+        version: link:../secretlint-rule-figma
       '@secretlint/secretlint-rule-filter-comments':
         specifier: workspace:*
         version: link:../secretlint-rule-filter-comments
