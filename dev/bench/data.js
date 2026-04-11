@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1775854761534,
+  "lastUpdate": 1775865829802,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -51716,6 +51716,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.53,
             "range": "±1.47%",
+            "unit": "ops/sec",
+            "extra": "6 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "4953dedc8148e608de73053fdd26ab41df448a98",
+          "message": "docs(AGENTS): add regex boundary conventions for rule implementation (#1470)\n\n## Summary\n\n- Add leading `(?<!\\p{L})` and trailing negative lookahead conventions\nto rule implementation guide\n- Add guidance on keeping length ranges narrow based on official docs or\ngitleaks/TruffleHog empirical data\n- Update code example pattern to include boundary conventions\n\n## Context\n\nFalse positive analysis of new rule proposals (#1441-#1449) revealed\nthat all proposed regexes lacked trailing boundaries. Without trailing\nboundaries, greedy quantifiers over-match into adjacent content, causing\nincorrect `range` and breaking `allows` list matching.\n\n## Test plan\n\n- [ ] Documentation change only, no code impact\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-authored-by: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+          "timestamp": "2026-04-11T00:02:21Z",
+          "tree_id": "fda3ace9b5b54d0e222b0eb8209e4101fce71968",
+          "url": "https://github.com/secretlint/secretlint/commit/4953dedc8148e608de73053fdd26ab41df448a98"
+        },
+        "date": 1775865826756,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.88,
+            "range": "±1.13%",
+            "unit": "ops/sec",
+            "extra": "12 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.53,
+            "range": "±2.25%",
             "unit": "ops/sec",
             "extra": "6 samples"
           }
