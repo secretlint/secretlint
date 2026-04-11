@@ -7,6 +7,7 @@ import { creator as ruleBasicAuth } from "@secretlint/secretlint-rule-basicauth"
 import { creator as ruleOpenAi } from "@secretlint/secretlint-rule-openai";
 import { creator as ruleAnthropic } from "@secretlint/secretlint-rule-anthropic";
 import { creator as ruleLinear } from "@secretlint/secretlint-rule-linear";
+import { creator as ruleNotion } from "@secretlint/secretlint-rule-notion";
 import { creator as rulePrivateKey } from "@secretlint/secretlint-rule-privatekey";
 import { creator as ruleSendgrid } from "@secretlint/secretlint-rule-sendgrid";
 import { creator as ruleShopify } from "@secretlint/secretlint-rule-shopify";
@@ -29,6 +30,7 @@ export const rules = [
     ruleOpenAi,
     ruleAnthropic,
     ruleLinear,
+    ruleNotion,
     rule1Password,
     ruleDatabaseConnectionString,
     ruleVercel,

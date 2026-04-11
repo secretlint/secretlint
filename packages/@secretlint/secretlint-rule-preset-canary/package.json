@@ -69,6 +69,7 @@
         "@secretlint/secretlint-rule-gcp": "workspace:*",
         "@secretlint/secretlint-rule-github": "workspace:*",
         "@secretlint/secretlint-rule-linear": "workspace:*",
+        "@secretlint/secretlint-rule-notion": "workspace:*",
         "@secretlint/secretlint-rule-npm": "workspace:*",
         "@secretlint/secretlint-rule-openai": "workspace:*",
         "@secretlint/secretlint-rule-privatekey": "workspace:*",
