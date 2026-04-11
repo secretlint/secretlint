@@ -16,7 +16,7 @@ Install with [npm](https://www.npmjs.com/):
 
 Figma Personal Access Tokens (`figd_`) should be private.
 
-The token format is a `figd_` prefix followed by 40 or more characters of
+The token format is a `figd_` prefix followed by 40 to 200 characters of
 `[A-Za-z0-9_-]`. This prefix matches the pattern supported by
 [GitHub Secret Scanning](https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns).
 
