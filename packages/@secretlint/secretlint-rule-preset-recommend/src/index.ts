@@ -6,7 +6,6 @@ import { creator as ruleSlack } from "@secretlint/secretlint-rule-slack";
 import { creator as ruleBasicAuth } from "@secretlint/secretlint-rule-basicauth";
 import { creator as ruleOpenAi } from "@secretlint/secretlint-rule-openai";
 import { creator as ruleAnthropic } from "@secretlint/secretlint-rule-anthropic";
-import { creator as ruleGroq } from "@secretlint/secretlint-rule-groq";
 import { creator as ruleLinear } from "@secretlint/secretlint-rule-linear";
 import { creator as rulePrivateKey } from "@secretlint/secretlint-rule-privatekey";
 import { creator as ruleSendgrid } from "@secretlint/secretlint-rule-sendgrid";
@@ -28,7 +27,6 @@ export const rules = [
     ruleGitHub,
     ruleOpenAi,
     ruleAnthropic,
-    ruleGroq,
     ruleLinear,
     rule1Password,
     ruleDatabaseConnectionString,
