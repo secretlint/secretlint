@@ -1,0 +1,6 @@
+{
+    "filePath": "[SNAPSHOT]/ok.valid/input.txt",
+    "messages": [],
+    "sourceContent": "# These should NOT be detected as Hugging Face tokens\n\n# Too short\nhf_abc\n\n# Contains digits in body\nhf_FakeFakeFake1FakeFakeFakeFakeFakeFa\n\n# Body is 33 alphabetic characters (one short)\nhf_FakeFakeFakeFakeFakeFakeFakeFakeF\n\n# Body is 35 alphabetic characters (one too many)\nhf_FakeFakeFakeFakeFakeFakeFakeFakeFak\n\n# Preceded by another letter (boundary check)\nxhf_FakeFakeFakeFakeFakeFakeFakeFakeFa\n\n# Hugging Face URL, not a token\nhttps://huggingface.co/models\n",
+    "sourceContentType": "text"
+}

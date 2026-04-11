@@ -1,0 +1,6 @@
+{
+    "filePath": "[SNAPSHOT]/ok.valid/input.txt",
+    "messages": [],
+    "sourceContent": "# These should NOT be detected as Databricks tokens\n\n# Too short (only 4 hex chars after dapi)\ndapi1234\n\n# Too long (body exceeds the expected 32 hex chars after dapi)\ndapiABCDEF1234567890ABCDEF1234567890AB\n\n# Mid-word / variable name (letter boundary)\nmydapi1234567890abcdef1234567890abcdef\n\n# Unrelated prefix\napi1234567890abcdef1234567890abcdef\n\n# Databricks docs URL (not a token)\nhttps://docs.databricks.com/aws/en/dev-tools/auth/pat\n",
+    "sourceContentType": "text"
+}

@@ -1,0 +1,6 @@
+{
+    "filePath": "[SNAPSHOT]/ok.valid/input.txt",
+    "messages": [],
+    "sourceContent": "# These should NOT be detected as Notion integration tokens\n\n# Too short\nntn_abc\n\n# Legacy secret_ prefix is intentionally excluded\nsecret_abc123\n\n# Only 10 digits after prefix (one short)\nntn_1234567890aBcDeFgHiJkLmNoPqRsT1234567890abcdef\n\n# 34 alphanumerics after digits (one short)\nntn_12345678901aBcDeFgHiJkLmNoPqRsT1234567890abcd\n\n# 36 alphanumerics after digits (one extra; trailing lookahead fails)\nntn_12345678901aBcDeFgHiJkLmNoPqRsT1234567890abcdef\n\n# Uppercase prefix is not the documented format\nNTN_12345678901aBcDeFgHiJkLmNoPqRsT1234567890abcde\n\n# Preceded by letters (not a standalone token)\nxntn_12345678901aBcDeFgHiJkLmNoPqRsT1234567890abcde\n\n# Notion API URL (not a token)\nhttps://api.notion.com/v1/databases\n",
+    "sourceContentType": "text"
+}
