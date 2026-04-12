@@ -99,10 +99,11 @@ export const creator: SecretLintRuleCreator<Options> = {
     create(context, options) {
         // token length should be 40
         // https://github.blog/2021-04-05-behind-githubs-new-authentication-token-formats/
-        const CLASSIC_GITHUB_TOKEN_PATTERN = /(?<type>ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9_]{36}(?![A-Za-z0-9_])/g;
+        const CLASSIC_GITHUB_TOKEN_PATTERN =
+            /(?<!\p{L})(?<type>ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9_]{36}(?![A-Za-z0-9_])/gu;
         // fine-grained personal access tokens. FIXME: Format of the token is unclear
         // https://github.com/community/community/discussions/36441#discussioncomment-4014190
-        const FINE_GRAINED_GITHUB_TOKEN_PATTERN = /(?<type>github_pat)_[A-Za-z0-9_]{82}(?![A-Za-z0-9_])/g;
+        const FINE_GRAINED_GITHUB_TOKEN_PATTERN = /(?<!\p{L})(?<type>github_pat)_[A-Za-z0-9_]{82}(?![A-Za-z0-9_])/gu;
         const patterns = [CLASSIC_GITHUB_TOKEN_PATTERN, FINE_GRAINED_GITHUB_TOKEN_PATTERN];
         const t = context.createTranslator(messages);
         const normalizedOptions = {

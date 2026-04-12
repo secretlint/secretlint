@@ -51,7 +51,7 @@ function reportIfFoundKey({
      * shppa_[a-zA-Z0-9]{32,64}
      * e.g.) shppa_7jqbg9cupMkZRxJKXWz3v8BvS8QBa7hMdJfAex
      */
-    const SHOPIFY_KEY_PATTERN = /(shppa|shpca|shpat|shpss)_[a-zA-Z0-9]{32,64}(?![a-zA-Z0-9])/g;
+    const SHOPIFY_KEY_PATTERN = /(?<!\p{L})(shppa|shpca|shpat|shpss)_[a-zA-Z0-9]{32,64}(?![a-zA-Z0-9])/gu;
     const results = source.content.matchAll(SHOPIFY_KEY_PATTERN);
     for (const result of results) {
         const index = result.index || 0;
