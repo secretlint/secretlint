@@ -113,7 +113,7 @@ function reportIfFound_NPM_ACCESS_TOKEN({
     // https://github.blog/2021-09-23-announcing-npms-new-access-token-format/
     // https://github.blog/2021-04-05-behind-githubs-new-authentication-token-formats/
     // token length should be 40
-    const NPM_ACCESS_TOKEN_PATTERN = /npm_[A-Za-z0-9_]{36}/g;
+    const NPM_ACCESS_TOKEN_PATTERN = /npm_[A-Za-z0-9_]{36}(?![A-Za-z0-9_])/g;
     const results = source.content.matchAll(NPM_ACCESS_TOKEN_PATTERN);
     for (const result of results) {
         const index = result.index || 0;

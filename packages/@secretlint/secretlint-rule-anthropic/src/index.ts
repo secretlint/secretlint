@@ -32,7 +32,7 @@ export const creator: SecretLintRuleCreator = {
                 // https://docs.anthropic.com/en/api/overview
                 // https://docs.anthropic.com/en/api/admin-api/apikeys/get-api-key
                 // https://docs.gitguardian.com/secrets-detection/secrets-detection-engine/detectors/specifics/claude_api_key
-                const pattern = /sk-ant-api0\d-[A-Za-z0-9_-]{90,128}AA/g;
+                const pattern = /sk-ant-api0\d-[A-Za-z0-9_-]{90,128}AA(?![A-Za-z0-9_-])/g;
                 const matches = source.content.matchAll(pattern);
                 for (const match of matches) {
                     const index = match.index ?? 0;
