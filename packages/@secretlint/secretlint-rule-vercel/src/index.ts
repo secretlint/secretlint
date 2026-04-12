@@ -55,7 +55,7 @@ export const creator: SecretLintRuleCreator<Options> = {
         };
         return {
             file(source: SecretLintSourceCode) {
-                const pattern = /(?<!\p{L})(?<prefix>vcp|vci|vca|vcr|vck)_[A-Za-z0-9]{20,60}/gu;
+                const pattern = /(?<!\p{L})(?<prefix>vcp|vci|vca|vcr|vck)_[A-Za-z0-9]{20,60}(?![A-Za-z0-9])/gu;
                 const matches = source.content.matchAll(pattern);
                 for (const match of matches) {
                     const index = match.index ?? 0;
