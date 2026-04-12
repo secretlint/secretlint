@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1776033814040,
+  "lastUpdate": 1776037244972,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -52248,6 +52248,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.31,
             "range": "±0.80%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "41898282+github-actions[bot]@users.noreply.github.com",
+            "name": "github-actions[bot]",
+            "username": "github-actions[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "cd79345be1d4c0987f0a97bc0e7f59d317fdf599",
+          "message": "v11.7.0 (#1484)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat master -->\n\n## What's Changed\n\nHere is a summary of the 9 new rules added in v11.7.0, organized by\nservice.\n\n| Service | Package | PR |\n|---|---|---|\n| [Notion](https://www.notion.so/) |\n`@secretlint/secretlint-rule-notion` |\n[#1471](https://github.com/secretlint/secretlint/pull/1471) |\n| [Figma](https://www.figma.com/) | `@secretlint/secretlint-rule-figma`\n| [#1472](https://github.com/secretlint/secretlint/pull/1472) |\n| [Hugging Face](https://huggingface.co/) |\n`@secretlint/secretlint-rule-huggingface` |\n[#1473](https://github.com/secretlint/secretlint/pull/1473) |\n| [Grafana](https://grafana.com/) |\n`@secretlint/secretlint-rule-grafana` |\n[#1474](https://github.com/secretlint/secretlint/pull/1474) |\n| [Groq](https://groq.com/) | `@secretlint/secretlint-rule-groq` |\n[#1475](https://github.com/secretlint/secretlint/pull/1475) |\n| [GitLab](https://gitlab.com/) | `@secretlint/secretlint-rule-gitlab` |\n[#1476](https://github.com/secretlint/secretlint/pull/1476) |\n| [HashiCorp Vault](https://www.hashicorp.com/products/vault) |\n`@secretlint/secretlint-rule-hashicorp-vault` |\n[#1477](https://github.com/secretlint/secretlint/pull/1477) |\n| [Databricks](https://www.databricks.com/) |\n`@secretlint/secretlint-rule-databricks` |\n[#1478](https://github.com/secretlint/secretlint/pull/1478) |\n| [Docker](https://www.docker.com/) |\n`@secretlint/secretlint-rule-docker` |\n[#1481](https://github.com/secretlint/secretlint/pull/1481) |\n\n\n### Features\n* Add Notion integration token detection rule by @azu in\nhttps://github.com/secretlint/secretlint/pull/1471\n* Add Figma Personal Access Token detection rule by @azu in\nhttps://github.com/secretlint/secretlint/pull/1472\n* feat(secretlint-rule-huggingface): add new rule for Hugging Face User\nAccess Token by @azu in\nhttps://github.com/secretlint/secretlint/pull/1473\n* Add Groq API key detection rule by @azu in\nhttps://github.com/secretlint/secretlint/pull/1475\n* Add Databricks and Vercel token detection rules by @azu in\nhttps://github.com/secretlint/secretlint/pull/1478\n* feat(grafana): add new rule for Grafana API tokens by @azu in\nhttps://github.com/secretlint/secretlint/pull/1474\n* feat(rule): add @secretlint/secretlint-rule-hashicorp-vault by @azu in\nhttps://github.com/secretlint/secretlint/pull/1477\n* feat(secretlint-rule-gitlab): add rule for GitLab Personal Access\nTokens by @azu in https://github.com/secretlint/secretlint/pull/1476\n* Add Docker Personal Access Token detection rule by @azu in\nhttps://github.com/secretlint/secretlint/pull/1481\n### Bug Fixes\n* fix(rules): add regex boundary assertions to 8 existing scanner rules\nby @azu in https://github.com/secretlint/secretlint/pull/1482\n### Documentation\n* docs(agents): add architecture overview and improve AI assistant\nguidance by @azu in https://github.com/secretlint/secretlint/pull/1468\n* docs(AGENTS): add regex boundary conventions for rule implementation\nby @azu in https://github.com/secretlint/secretlint/pull/1470\n### CI\n* chore(deps): update rhysd/github-action-benchmark action to v1.22.0 by\n@renovate[bot] in https://github.com/secretlint/secretlint/pull/1466\n* ci: add npm environment to release workflow by @azu in\nhttps://github.com/secretlint/secretlint/pull/1483\n### Dependency Updates\n* chore(deps): update dependency @types/node to ^24.12.2 by\n@renovate[bot] in https://github.com/secretlint/secretlint/pull/1465\n* chore(deps): update dependency turbo to ^2.9.4 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1467\n* chore(deps): update dependency turbo to ^2.9.5 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1469\n* chore(deps): update textlint to ^15.5.4 (patch) by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1480\n### Other Changes\n* refactor(preset-recommend): remove groq to defer sync per AGENTS.md by\n@azu in https://github.com/secretlint/secretlint/pull/1479\n\n\n**Full Changelog**:\nhttps://github.com/secretlint/secretlint/compare/v11.6.0...v11.7.0\n\nCo-authored-by: azu <azu@users.noreply.github.com>",
+          "timestamp": "2026-04-13T08:38:54+09:00",
+          "tree_id": "22c539ab56b80158c6874986969a41eb49392681",
+          "url": "https://github.com/secretlint/secretlint/commit/cd79345be1d4c0987f0a97bc0e7f59d317fdf599"
+        },
+        "date": 1776037242199,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.41,
+            "range": "±1.89%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.31,
+            "range": "±1.39%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
