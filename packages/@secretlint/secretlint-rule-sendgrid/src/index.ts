@@ -32,7 +32,7 @@ function reportIfFoundKey({
     context: SecretLintRuleContext;
     t: SecretLintRuleMessageTranslate<typeof messages>;
 }) {
-    const SENDGRID_KEY_PATTERN = /(?<![A-Za-z])SG\.\w{1,128}\.\w{1,128}([-_]?)\w{1,128}(?!\w)/g;
+    const SENDGRID_KEY_PATTERN = /(?<!\p{L})SG\.\w{1,128}\.\w{1,128}([-_]?)\w{1,128}(?!\w)/gu;
     const results = source.content.matchAll(SENDGRID_KEY_PATTERN);
     for (const result of results) {
         const index = result.index || 0;
