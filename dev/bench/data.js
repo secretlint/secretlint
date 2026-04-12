@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1775950743242,
+  "lastUpdate": 1775952468122,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -52058,6 +52058,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.33,
             "range": "±0.63%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "020c9038b61fb67345132e0e1772897ee1d39626",
+          "message": "feat(secretlint-rule-gitlab): add rule for GitLab Personal Access Tokens (#1476)\n\n## Summary\n\n- Add a new rule `@secretlint/secretlint-rule-gitlab` that detects\nGitLab Personal Access Tokens (`glpat-` prefix)\n- Register the rule in both `@secretlint/secretlint-rule-preset-canary`\nand `@secretlint/secretlint-rule-preset-recommend`\n- Add the new package to the root `README.md` rule list\n\n## Detection\n\nUses the ReDoS-safe regex suggested in the issue, with Unicode letter\nboundary and trailing character-class boundary:\n\n```\n/(?<!\\p{L})glpat-[A-Za-z0-9_-]{20,128}(?![A-Za-z0-9_-])/gu\n```\n\nMessage ID: `GITLAB_PERSONAL_ACCESS_TOKEN`\n\nSupports an `allows` option via `@textlint/regexp-string-matcher`,\nmatching the convention used by the GitHub rule.\n\n## References\n\n- [GitLab Docs: Token\nprefixes](https://docs.gitlab.com/security/tokens/)\n- [GitHub Docs: Supported secret scanning\npatterns](https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns)\n\n## Test plan\n\n- [x] `pnpm turbo run build` passes\n- [x] `pnpm turbo run test` passes (85/85 tasks)\n- [x] `secretlint-rule-gitlab` snapshot tests pass (4/4)\n- [x] `secretlint-rule-preset-canary` snapshot tests pass (67/67)\n- [x] `secretlint-rule-preset-recommend` snapshot tests pass (70/70)\n\ncloses #1441\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-04-12T09:06:00+09:00",
+          "tree_id": "aef6160b73481435073884b6e44de4466af9c708",
+          "url": "https://github.com/secretlint/secretlint/commit/020c9038b61fb67345132e0e1772897ee1d39626"
+        },
+        "date": 1775952464924,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.45,
+            "range": "±1.38%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.32,
+            "range": "±1.42%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
