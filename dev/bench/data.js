@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1775958579500,
+  "lastUpdate": 1775970535862,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -52134,6 +52134,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.32,
             "range": "±1.02%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ab0869f85addf0ea47aed99c040fdda1a431210d",
+          "message": "Add Docker Personal Access Token detection rule (#1481)\n\n## Summary\nThis PR adds a new secretlint rule for detecting Docker Personal Access\nTokens (PATs) in source code.\n\n## Key Changes\n- **New package**: `@secretlint/secretlint-rule-docker` - A secretlint\nrule that detects Docker PATs with the `dckr_pat_` prefix followed by\nexactly 27 alphanumeric, underscore, or hyphen characters\n- **Rule implementation** (`src/index.ts`):\n- Detects Docker PATs using regex pattern: `dckr_pat_[a-zA-Z0-9_-]{27}`\n  - Supports configurable allow patterns via options\n  - Provides bilingual messages (English and Japanese)\n  - Marked as recommended rule with type \"scanner\"\n- **Test coverage**: Includes snapshot tests for both valid cases\n(non-matching tokens) and negative cases (actual Docker PATs)\n- **Documentation**: Comprehensive README with installation\ninstructions, message IDs, options, and references to Docker and\nTruffleHog documentation\n- **Integration**: Added to `@secretlint/secretlint-rule-preset-canary`\npackage as a dependency\n\n## Implementation Details\n- Uses Unicode-aware regex with `\\p{L}` to prevent false positives from\npartial matches\n- Leverages `@textlint/regexp-string-matcher` for flexible allow pattern\nmatching\n- Follows the same pattern and structure as other secretlint rules in\nthe monorepo\n- Targets Node.js 20.0.0+ with ES2022 output\n\nhttps://claude.ai/code/session_01LcAET26hAjdxkmm87Cy5Xs\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-04-12T14:07:11+09:00",
+          "tree_id": "0137dee88c09a09c69da35f9a28ff1c2b6cba304",
+          "url": "https://github.com/secretlint/secretlint/commit/ab0869f85addf0ea47aed99c040fdda1a431210d"
+        },
+        "date": 1775970533489,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.35,
+            "range": "±2.38%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.3,
+            "range": "±0.46%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
