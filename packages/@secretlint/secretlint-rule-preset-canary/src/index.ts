@@ -21,6 +21,7 @@ import { creator as ruleDatabaseConnectionString } from "@secretlint/secretlint-
 import { creator as ruleHashiCorpVault } from "@secretlint/secretlint-rule-hashicorp-vault";
 import { creator as ruleVercel } from "@secretlint/secretlint-rule-vercel";
 import { creator as ruleDatabricks } from "@secretlint/secretlint-rule-databricks";
+import { creator as ruleDocker } from "@secretlint/secretlint-rule-docker";
 import { creator as ruleFigma } from "@secretlint/secretlint-rule-figma";
 import { creator as ruleFilterComments } from "@secretlint/secretlint-rule-filter-comments";
 
@@ -47,6 +48,7 @@ export const rules = [
     ruleHashiCorpVault,
     ruleVercel,
     ruleDatabricks,
+    ruleDocker,
     ruleFigma,
     ruleFilterComments,
 ];

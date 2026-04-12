@@ -684,6 +684,31 @@ importers:
         specifier: 'catalog:'
         version: 5.9.2
 
+  packages/@secretlint/secretlint-rule-docker:
+    dependencies:
+      '@secretlint/types':
+        specifier: workspace:*
+        version: link:../types
+      '@textlint/regexp-string-matcher':
+        specifier: 'catalog:'
+        version: 2.0.2
+    devDependencies:
+      '@secretlint/tester':
+        specifier: workspace:*
+        version: link:../tester
+      '@types/node':
+        specifier: 'catalog:'
+        version: 24.12.2
+      prettier:
+        specifier: 'catalog:'
+        version: 2.8.8
+      tsx:
+        specifier: 'catalog:'
+        version: 4.21.0
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.2
+
   packages/@secretlint/secretlint-rule-example:
     dependencies:
       '@secretlint/types':
@@ -1189,6 +1214,9 @@ importers:
       '@secretlint/secretlint-rule-databricks':
         specifier: workspace:*
         version: link:../secretlint-rule-databricks
+      '@secretlint/secretlint-rule-docker':
+        specifier: workspace:*
+        version: link:../secretlint-rule-docker
       '@secretlint/secretlint-rule-figma':
         specifier: workspace:*
         version: link:../secretlint-rule-figma

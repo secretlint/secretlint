@@ -1,0 +1,6 @@
+{
+    "filePath": "[SNAPSHOT]/ok.valid/input.txt",
+    "messages": [],
+    "sourceContent": "DOCKER_TOKEN=not_a_real_token\ndckr_pat_tooshort\ndckr_pat_\n",
+    "sourceContentType": "text"
+}
