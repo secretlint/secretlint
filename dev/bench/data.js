@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1775970535862,
+  "lastUpdate": 1775989460515,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -52172,6 +52172,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.3,
             "range": "±0.46%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "d4cb771eea7c848f605aa497e013b6506f9cc023",
+          "message": "fix(rules): add regex boundary assertions to 8 existing scanner rules (#1482)\n\n## Summary\n\nAGENTS.md の regex boundary conventions に既存ルールを準拠させる。\n\n- 末尾: 各パターンの文字クラスに対応する negative lookahead を追加（過剰マッチ防止）\n- 先頭: `(?<!\\p{L})` + `u` フラグを追加（単語途中でのマッチ防止）\n\n## 対象ルール\n\n| Rule | Leading | Trailing |\n|------|---------|----------|\n| vercel | (既存) | `(?![A-Za-z0-9])` 追加 |\n| github | `(?<!\\p{L})` 追加 | `(?![A-Za-z0-9_])` 追加 |\n| linear | `(?<!\\p{L})` 追加 | `(?![a-zA-Z0-9_])` 追加 |\n| shopify | `(?<!\\p{L})` 追加 | `(?![a-zA-Z0-9])` 追加 |\n| npm | `(?<!\\p{L})` 追加 | `(?![A-Za-z0-9_])` 追加 |\n| sendgrid | `(?<!\\p{L})` に変更 | `(?!\\w)` 追加 |\n| 1password | `(?<!\\p{L})` 追加 | `(?![A-Za-z0-9+/=])` 追加 |\n| anthropic | `(?<!\\p{L})` 追加 | `(?![A-Za-z0-9_-])` 追加 |\n\n## パフォーマンス\n\n100KB入力 x 500回のベンチマークで変更前後の差は 1.02x（実質同等）。\n\nhttps://claude.ai/code/session_012wCR4tfJSFSUpyMTT5CF1A\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-04-12T19:22:22+09:00",
+          "tree_id": "33ceba5ee74005c191da26615df3af89577b964a",
+          "url": "https://github.com/secretlint/secretlint/commit/d4cb771eea7c848f605aa497e013b6506f9cc023"
+        },
+        "date": 1775989457343,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.33,
+            "range": "±0.87%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.29,
+            "range": "±2.15%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
