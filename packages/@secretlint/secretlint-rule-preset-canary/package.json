@@ -70,6 +70,7 @@
         "@secretlint/secretlint-rule-filter-comments": "workspace:*",
         "@secretlint/secretlint-rule-gcp": "workspace:*",
         "@secretlint/secretlint-rule-github": "workspace:*",
+        "@secretlint/secretlint-rule-gitlab": "workspace:*",
         "@secretlint/secretlint-rule-grafana": "workspace:*",
         "@secretlint/secretlint-rule-groq": "workspace:*",
         "@secretlint/secretlint-rule-hashicorp-vault": "workspace:*",
