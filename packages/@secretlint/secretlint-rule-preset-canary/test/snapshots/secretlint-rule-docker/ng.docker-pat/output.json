@@ -9,6 +9,7 @@
             ],
             "type": "message",
             "ruleId": "@secretlint/secretlint-rule-docker",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
             "loc": {
                 "start": {
                     "line": 1,
