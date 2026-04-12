@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1775989460515,
+  "lastUpdate": 1776033814040,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -52210,6 +52210,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.29,
             "range": "±2.15%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "4e607bab5973116139d86ffc42c93360eda9c766",
+          "message": "ci: add npm environment to release workflow (#1483)\n\n## Summary\n\nAdd the `npm` environment to the release workflow in GitHub Actions.\nThis ensures the release job runs with proper npm environment\nconfiguration, which is required for npm OIDC Trusted Publisher\nauthentication.\n\n## Changes\n\n- Added `environment: npm` to the release job in\n`.github/workflows/release.yml`\n\n## Breaking Changes\n\nNone\n\n## Test Plan\n\n- Verify the release workflow runs successfully with the npm environment\nconfigured\n- Check that npm publishing works correctly via OIDC Trusted Publisher\nafter this change\n\nCo-authored-by: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+          "timestamp": "2026-04-12T22:41:37Z",
+          "tree_id": "144210a175876084ba0afe06f03813e022670d07",
+          "url": "https://github.com/secretlint/secretlint/commit/4e607bab5973116139d86ffc42c93360eda9c766"
+        },
+        "date": 1776033810980,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.43,
+            "range": "±1.13%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.31,
+            "range": "±0.80%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
