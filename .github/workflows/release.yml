@@ -65,12 +65,6 @@ jobs:
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Install latest npm
-        if: steps.tag_check.outputs.exists_tag == 'false'
-        run: |
-          echo "Current npm version: $(npm -v)"
-          npm install -g npm@latest
-          echo "Updated npm version: $(npm -v)"
       - name: Publish with OIDC
         if: steps.tag_check.outputs.exists_tag == 'false'
         run: |
