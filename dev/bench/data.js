@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1776037244972,
+  "lastUpdate": 1776040144907,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -52286,6 +52286,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.31,
             "range": "±1.39%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "2ddd70e792dd60fa1bf0dbe8ccb16bdecebd0e0f",
+          "message": "Remove npm upgrade step from release workflow (#1486)\n\n## Summary\nRemoved the \"Install latest npm\" step from the release workflow that was\nupgrading npm to the latest version before publishing.\n\n## Changes\n- Removed the npm upgrade step that was conditionally executed when a\nnew tag was being created\n- This step included version logging before and after the upgrade via\n`npm install -g npm@latest`\n\n## Rationale\nThe npm upgrade step is no longer necessary in the release workflow. The\nenvironment's default npm version should be sufficient for publishing\npackages, reducing unnecessary operations and potential compatibility\nconcerns during the release process.\n\nhttps://claude.ai/code/session_01E5amJaUDy7PGGueyniGnLy\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-04-13T00:27:12Z",
+          "tree_id": "b45f110bc93e15c14fcd8c7a38f495d4a293b0a8",
+          "url": "https://github.com/secretlint/secretlint/commit/2ddd70e792dd60fa1bf0dbe8ccb16bdecebd0e0f"
+        },
+        "date": 1776040141860,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.42,
+            "range": "±0.55%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.3,
+            "range": "±1.71%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
