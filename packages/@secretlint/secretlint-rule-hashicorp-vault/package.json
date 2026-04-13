@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-hashicorp-vault",
-    "version": "11.7.0",
+    "version": "11.7.1",
     "description": "A secretlint rule for detecting HashiCorp Vault tokens",
     "keywords": [
         "secretlint",
