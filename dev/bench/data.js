@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1776462956461,
+  "lastUpdate": 1776516778237,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -52476,6 +52476,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.38,
             "range": "±2.80%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "bb55ccf1851f79f1ee03690304800a3e3cade79b",
+          "message": "chore(deps): upgrade major dependencies (#1492)\n\n## Summary\n\nUpgrade major dependencies including TypeScript v6, vitest v4, prettier\nv3, globby v16, and others. Update tsconfig.json files across all\npackages for TypeScript 6 compatibility.\n\n## Changes\n\n- Upgrade TypeScript from v5 to v6\n- Upgrade vitest from v3 to v4\n- Upgrade prettier from v2 to v3\n- Upgrade globby from v14 to v16\n- Upgrade @types/node from v24 to v25\n- Upgrade @rollup/plugin-commonjs from v28 to v29\n- Upgrade node-sarif-builder from v3 to v4\n- Upgrade read-pkg from v9 to v10\n- Upgrade terminal-link from v4 to v5\n- Add `rootDir` and `types: [\"node\"]` to all package tsconfig.json files\nfor TypeScript 6 compatibility\n- Add `@types/node` to devDependencies of internal test packages\n\n## Breaking Changes\n\n- TypeScript 6, vitest 4, prettier 3 are major version bumps that may\nrequire code changes\n- globby 16, read-pkg 10, terminal-link 5 are ESM-only major bumps\n\n## Test Plan\n\n- CI will run tests to verify compatibility with all upgraded\ndependencies\n- Verify build succeeds with TypeScript 6\n- Verify all lint rules pass tests with vitest 4\n\nCo-authored-by: Claude Opus 4.6 (1M context) <noreply@anthropic.com>",
+          "timestamp": "2026-04-18T12:51:10Z",
+          "tree_id": "4959b16a460f1a9e355f779875d95df4b9010d2d",
+          "url": "https://github.com/secretlint/secretlint/commit/bb55ccf1851f79f1ee03690304800a3e3cade79b"
+        },
+        "date": 1776516775551,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.41,
+            "range": "±1.04%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.31,
+            "range": "±0.34%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
