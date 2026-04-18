@@ -1,0 +1,85 @@
+{
+    "filePath": "[SNAPSHOT]/ng.secret/input.txt",
+    "messages": [
+        {
+            "message": "found Groq API key: gsk_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghijklmnopqrstuv",
+            "range": [
+                56,
+                112
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-groq",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 16
+                },
+                "end": {
+                    "line": 2,
+                    "column": 72
+                }
+            },
+            "severity": "error",
+            "messageId": "GROQ_API_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-groq/README.md#GROQ_API_KEY",
+            "data": {
+                "KEY": "gsk_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghijklmnopqrstuv"
+            }
+        },
+        {
+            "message": "found Groq API key: gsk_0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOP",
+            "range": [
+                115,
+                171
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-groq",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 4,
+                    "column": 0
+                },
+                "end": {
+                    "line": 4,
+                    "column": 56
+                }
+            },
+            "severity": "error",
+            "messageId": "GROQ_API_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-groq/README.md#GROQ_API_KEY",
+            "data": {
+                "KEY": "gsk_0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOP"
+            }
+        },
+        {
+            "message": "found Groq API key: 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",
+            "range": [
+                186,
+                242
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-groq",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 6,
+                    "column": 13
+                },
+                "end": {
+                    "line": 6,
+                    "column": 69
+                }
+            },
+            "severity": "error",
+            "messageId": "GROQ_API_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-groq/README.md#GROQ_API_KEY",
+            "data": {
+                "KEY": "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"
+            }
+        }
+    ],
+    "sourceContent": "# Groq API keys that should be detected\ngroq_api_key = 'gsk_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghijklmnopqrstuv'\n\ngsk_0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOP\n\nGROQ_API_KEY=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\n",
+    "sourceContentType": "text"
+}

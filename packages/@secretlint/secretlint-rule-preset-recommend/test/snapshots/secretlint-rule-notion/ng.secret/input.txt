@@ -1,0 +1,6 @@
+# Notion integration tokens that should be detected
+NOTION_TOKEN=ntn_12345678901aBcDeFgHiJkLmNoPqRsT1234567890abcde
+
+notion_token = 'ntn_98765432109ZyXwVuTsRqPoNmLkJiHgFeDcBa012345678'
+
+export const NOTION_API_KEY = "ntn_11122233344AbCdEfGhIjKlMnOpQrStUvWxYz012345678";

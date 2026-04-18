@@ -1,0 +1,85 @@
+{
+    "filePath": "[SNAPSHOT]/ng.secret/input.txt",
+    "messages": [
+        {
+            "message": "found Databricks personal access token: dapi1234567890ABCDEF1234567890ABCDEF",
+            "range": [
+                77,
+                113
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-databricks",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 17
+                },
+                "end": {
+                    "line": 2,
+                    "column": 53
+                }
+            },
+            "severity": "error",
+            "messageId": "DATABRICKS_PERSONAL_ACCESS_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-databricks/README.md#DATABRICKS_PERSONAL_ACCESS_TOKEN",
+            "data": {
+                "ID": "dapi1234567890ABCDEF1234567890ABCDEF"
+            }
+        },
+        {
+            "message": "found Databricks personal access token: dapi0123456789ABCDEF0123456789ABCDEF-3",
+            "range": [
+                123,
+                161
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-databricks",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 4,
+                    "column": 8
+                },
+                "end": {
+                    "line": 4,
+                    "column": 46
+                }
+            },
+            "severity": "error",
+            "messageId": "DATABRICKS_PERSONAL_ACCESS_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-databricks/README.md#DATABRICKS_PERSONAL_ACCESS_TOKEN",
+            "data": {
+                "ID": "dapi0123456789ABCDEF0123456789ABCDEF-3"
+            }
+        },
+        {
+            "message": "found Databricks personal access token: dapiFEDCBA9876543210FEDCBA9876543210",
+            "range": [
+                182,
+                218
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-databricks",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 6,
+                    "column": 18
+                },
+                "end": {
+                    "line": 6,
+                    "column": 54
+                }
+            },
+            "severity": "error",
+            "messageId": "DATABRICKS_PERSONAL_ACCESS_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-databricks/README.md#DATABRICKS_PERSONAL_ACCESS_TOKEN",
+            "data": {
+                "ID": "dapiFEDCBA9876543210FEDCBA9876543210"
+            }
+        }
+    ],
+    "sourceContent": "# Databricks personal access tokens that should be detected\nDATABRICKS_TOKEN=dapi1234567890ABCDEF1234567890ABCDEF\n\ntoken: \"dapi0123456789ABCDEF0123456789ABCDEF-3\"\n\ndatabricks_pat = 'dapiFEDCBA9876543210FEDCBA9876543210'\n",
+    "sourceContentType": "text"
+}

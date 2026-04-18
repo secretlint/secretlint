@@ -1,0 +1,33 @@
+{
+    "filePath": "[SNAPSHOT]/ng.secret/input.txt",
+    "messages": [
+        {
+            "message": "found Hugging Face User Access Token: hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "range": [
+                70,
+                107
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-huggingface",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 12
+                },
+                "end": {
+                    "line": 2,
+                    "column": 49
+                }
+            },
+            "severity": "error",
+            "messageId": "HUGGINGFACE_USER_ACCESS_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-huggingface/README.md#HUGGINGFACE_USER_ACCESS_TOKEN",
+            "data": {
+                "TOKEN": "hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+            }
+        }
+    ],
+    "sourceContent": "# Hugging Face User Access Tokens that should be detected\nhf_token = 'hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'\n",
+    "sourceContentType": "text"
+}

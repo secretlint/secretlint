@@ -1,0 +1,6 @@
+# Databricks personal access tokens that should be detected
+DATABRICKS_TOKEN=dapi1234567890ABCDEF1234567890ABCDEF
+
+token: "dapi0123456789ABCDEF0123456789ABCDEF-3"
+
+databricks_pat = 'dapiFEDCBA9876543210FEDCBA9876543210'

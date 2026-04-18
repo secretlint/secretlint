@@ -1,0 +1,6 @@
+{
+    "filePath": "[SNAPSHOT]/ok.valid/input.txt",
+    "messages": [],
+    "sourceContent": "# These should NOT be detected as Groq API keys\nexport const EXAMPLE_URL = \"https://api.groq.com\";\n\n# Too short (less than 52 chars after prefix)\ngsk_abc123\n\n# Prefix inside another word (should not match due to negative lookbehind)\nwordgsk_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghijklmnopqrstuv\n\n# Too long (more than 52 chars after prefix, should not match due to negative lookahead)\ngsk_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghijklmnopqrstuvWXYZ\n\n# Wrong prefix\nsk_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghijklmnopqrstuv\n\n# Contains invalid character (dash)\ngsk_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghijklmnopqrs-uv\n",
+    "sourceContentType": "text"
+}
