@@ -5,9 +5,11 @@
  * top-level MAC verifies against the well-known `notasecret` password.
  * Full decryption of the PKCS#12 ContentInfo is unnecessary for that check,
  * so we only parse enough of the DER structure to extract the MacData and
- * the authSafe content, then recompute the MAC.
+ * the authSafe content, then recompute the MAC. Supports the SHA-1 MAC
+ * used by the classic openssl default and the SHA-256 MAC emitted by
+ * openssl 3+.
  *
- * Runs in Node.js 22+ and any environment with a Web Crypto
+ * Runs in Node.js 20+ and any environment with a Web Crypto
  * implementation on `globalThis.crypto.subtle`.
  *
  * References:
@@ -87,9 +89,29 @@ function bytesEqual(a: Uint8Array, b: Uint8Array): boolean {
 // OIDs we recognize, DER-encoded value bytes (without tag/length).
 const OID_DATA = new Uint8Array([0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x07, 0x01]);
 const OID_SHA1 = new Uint8Array([0x2b, 0x0e, 0x03, 0x02, 0x1a]);
+const OID_SHA256 = new Uint8Array([0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x01]);
+
+type MacHash = {
+    name: "SHA-1" | "SHA-256";
+    outputSize: number; // u
+    blockSize: number; // v
+};
+
+const MAC_HASHES: ReadonlyArray<{ oid: Uint8Array; hash: MacHash }> = [
+    { oid: OID_SHA1, hash: { name: "SHA-1", outputSize: 20, blockSize: 64 } },
+    { oid: OID_SHA256, hash: { name: "SHA-256", outputSize: 32, blockSize: 64 } },
+];
+
+function matchHash(oidBytes: Uint8Array): MacHash | undefined {
+    for (const { oid, hash } of MAC_HASHES) {
+        if (bytesEqual(oidBytes, oid)) return hash;
+    }
+    return undefined;
+}
 
 type ParsedPkcs12 = {
     authSafe: Uint8Array;
+    macHash: MacHash;
     macSalt: Uint8Array;
     macDigest: Uint8Array;
     iterations: number;
@@ -132,7 +154,8 @@ function parsePkcs12(buf: Uint8Array): ParsedPkcs12 {
     expectTag(alg, TAG_SEQUENCE, "AlgorithmIdentifier SEQUENCE");
     const algOid = readTlv(alg.content, 0);
     expectTag(algOid, TAG_OID, "algorithm OID");
-    if (!bytesEqual(algOid.content, OID_SHA1)) {
+    const macHash = matchHash(algOid.content);
+    if (!macHash) {
         throw new Error("PKCS12: unsupported MAC digest algorithm");
     }
     // Optional NULL parameters are ignored.
@@ -157,14 +180,12 @@ function parsePkcs12(buf: Uint8Array): ParsedPkcs12 {
 
     return {
         authSafe: authSafeOctet.content,
+        macHash,
         macSalt: salt.content,
         macDigest: digest.content,
         iterations,
     };
 }
-
-const SHA1_BLOCK_SIZE = 64; // v
-const SHA1_OUTPUT_SIZE = 20; // u
 
 // Web Crypto's BufferSource requires an ArrayBufferView whose buffer is an
 // ArrayBuffer (not the default ArrayBufferLike of Uint8Array). Copy into a
@@ -175,8 +196,8 @@ function toBufferSource(data: Uint8Array): Uint8Array<ArrayBuffer> {
     return copy;
 }
 
-async function sha1(data: Uint8Array): Promise<Uint8Array> {
-    return new Uint8Array(await globalThis.crypto.subtle.digest("SHA-1", toBufferSource(data)));
+async function digest(hash: MacHash, data: Uint8Array): Promise<Uint8Array> {
+    return new Uint8Array(await globalThis.crypto.subtle.digest(hash.name, toBufferSource(data)));
 }
 
 function padToMultipleOf(src: Uint8Array, blockSize: number): Uint8Array {
@@ -203,14 +224,19 @@ function encodePasswordAsBmpString(password: string): Uint8Array {
 /**
  * PKCS#12 key derivation (RFC 7292 Appendix B.2) for deriving the MAC key.
  *
- * Specialized for SHA-1 and a key length that is at most the hash output
- * size (20 bytes), which is exactly what HMAC-SHA1 needs. In that case only
- * a single block A[1] is produced, so the iterative I-update loop from the
- * spec is not needed.
+ * Specialized for the case where the desired key length is at most the
+ * hash output size (which is always true for HMAC keys here: 20 bytes for
+ * SHA-1, 32 bytes for SHA-256). In that case only a single block A[1] is
+ * produced, so the iterative I-update loop from the spec is unnecessary.
  */
-async function deriveMacKey(password: string, salt: Uint8Array, iterations: number): Promise<Uint8Array> {
-    const v = SHA1_BLOCK_SIZE;
-    const u = SHA1_OUTPUT_SIZE;
+async function deriveMacKey(
+    hash: MacHash,
+    password: string,
+    salt: Uint8Array,
+    iterations: number,
+): Promise<Uint8Array> {
+    const v = hash.blockSize;
+    const u = hash.outputSize;
     const ID_MAC = 3;
 
     const D = new Uint8Array(v).fill(ID_MAC);
@@ -222,9 +248,9 @@ async function deriveMacKey(password: string, salt: Uint8Array, iterations: numb
     DI.set(S, D.length);
     DI.set(P, D.length + S.length);
 
-    let A = await sha1(DI);
+    let A = await digest(hash, DI);
     for (let i = 1; i < iterations; i++) {
-        A = await sha1(A);
+        A = await digest(hash, A);
     }
     return A.subarray(0, u);
 }
@@ -233,8 +259,9 @@ async function deriveMacKey(password: string, salt: Uint8Array, iterations: numb
  * Verify a PKCS#12 PFX MAC using the supplied password.
  *
  * Returns `true` only when the file is a well-formed PKCS#12 v3 structure
- * with an unencrypted `data` authSafe, a SHA-1 MAC, and a MAC that matches
- * the password. Any structural or algorithmic mismatch yields `false`.
+ * with an unencrypted `data` authSafe, a recognized MAC digest algorithm
+ * (SHA-1 or SHA-256), and a MAC that matches the password. Any structural
+ * or algorithmic mismatch yields `false`.
  */
 export async function verifyPkcs12Mac(pfxBytes: Uint8Array, password: string): Promise<boolean> {
     let parsed: ParsedPkcs12;
@@ -243,11 +270,11 @@ export async function verifyPkcs12Mac(pfxBytes: Uint8Array, password: string): P
     } catch {
         return false;
     }
-    const key = await deriveMacKey(password, parsed.macSalt, parsed.iterations);
+    const key = await deriveMacKey(parsed.macHash, password, parsed.macSalt, parsed.iterations);
     const cryptoKey = await globalThis.crypto.subtle.importKey(
         "raw",
         toBufferSource(key),
-        { name: "HMAC", hash: "SHA-1" },
+        { name: "HMAC", hash: parsed.macHash.name },
         false,
         ["sign"],
     );
