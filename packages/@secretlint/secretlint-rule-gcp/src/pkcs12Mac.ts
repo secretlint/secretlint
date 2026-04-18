@@ -5,9 +5,9 @@
  * top-level MAC verifies against the well-known `notasecret` password.
  * Full decryption of the PKCS#12 ContentInfo is unnecessary for that check,
  * so we only parse enough of the DER structure to extract the MacData and
- * the authSafe content, then recompute the MAC. Supports the SHA-1 MAC
- * used by the classic openssl default and the SHA-256 MAC emitted by
- * openssl 3+.
+ * the authSafe content, then recompute the MAC. Supports MAC digests of
+ * SHA-1 (classic openssl default), SHA-256 (openssl 3 default), SHA-384,
+ * and SHA-512.
  *
  * Runs in Node.js 20+ and any environment with a Web Crypto
  * implementation on `globalThis.crypto.subtle`.
@@ -90,9 +90,11 @@ function bytesEqual(a: Uint8Array, b: Uint8Array): boolean {
 const OID_DATA = new Uint8Array([0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x07, 0x01]);
 const OID_SHA1 = new Uint8Array([0x2b, 0x0e, 0x03, 0x02, 0x1a]);
 const OID_SHA256 = new Uint8Array([0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x01]);
+const OID_SHA384 = new Uint8Array([0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x02]);
+const OID_SHA512 = new Uint8Array([0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x03]);
 
 type MacHash = {
-    name: "SHA-1" | "SHA-256";
+    name: "SHA-1" | "SHA-256" | "SHA-384" | "SHA-512";
     outputSize: number; // u
     blockSize: number; // v
 };
@@ -100,6 +102,8 @@ type MacHash = {
 const MAC_HASHES: ReadonlyArray<{ oid: Uint8Array; hash: MacHash }> = [
     { oid: OID_SHA1, hash: { name: "SHA-1", outputSize: 20, blockSize: 64 } },
     { oid: OID_SHA256, hash: { name: "SHA-256", outputSize: 32, blockSize: 64 } },
+    { oid: OID_SHA384, hash: { name: "SHA-384", outputSize: 48, blockSize: 128 } },
+    { oid: OID_SHA512, hash: { name: "SHA-512", outputSize: 64, blockSize: 128 } },
 ];
 
 function matchHash(oidBytes: Uint8Array): MacHash | undefined {
@@ -260,7 +264,7 @@ async function deriveMacKey(
  *
  * Returns `true` only when the file is a well-formed PKCS#12 v3 structure
  * with an unencrypted `data` authSafe, a recognized MAC digest algorithm
- * (SHA-1 or SHA-256), and a MAC that matches the password. Any structural
+ * (SHA-1/256/384/512), and a MAC that matches the password. Any structural
  * or algorithmic mismatch yields `false`.
  */
 export async function verifyPkcs12Mac(pfxBytes: Uint8Array, password: string): Promise<boolean> {
