@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1776517982005,
+  "lastUpdate": 1776518094542,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -52590,6 +52590,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.31,
             "range": "±1.06%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "915368c3465d12fd25b30901e81293e9fc49d272",
+          "message": "Consolidate TypeScript configuration into shared base config (#1496)\n\n## Summary\nRefactored TypeScript configuration across the monorepo by extracting\ncommon compiler options into a shared `tsconfig.base.json` file. All\npackage-level `tsconfig.json` files now extend this base configuration,\neliminating duplication and improving maintainability.\n\nCloses #1494\n\n## Key Changes\n- Created new `tsconfig.base.json` at the repository root containing all\ncommon TypeScript compiler options (module resolution, target, strict\nmode settings, etc.)\n- Updated 50+ package `tsconfig.json` files to extend the base\nconfiguration instead of duplicating settings\n- Retained package-specific overrides (e.g., `outDir`, `rootDir`,\n`noEmit` for preset packages)\n- Removed redundant `exclude` patterns from individual package configs\n(now inherited from base)\n- Added `*.tsbuildinfo` to `.gitignore` for TypeScript incremental build\nartifacts\n\n## Implementation Details\n- The base configuration includes all standard compiler options:\n`module: \"NodeNext\"`, `target: \"ES2022\"`, strict type checking, source\nmaps, and declaration files\n- Special case: `@secretlint/secretlint-rule-internal-test-cjs`\noverrides `module` and `moduleResolution` for CommonJS compatibility\n- Preset packages (`preset-canary`, `preset-recommend`) retain their\n`noEmit: true` setting\n- All packages maintain their specific `outDir` and `rootDir`\nconfigurations as needed\n\nhttps://claude.ai/code/session_01Af8a9aFwd7NrKwfGdt3ppL\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-04-18T22:13:07+09:00",
+          "tree_id": "37612bf02408eb80a1f898e91b42a9748456bf63",
+          "url": "https://github.com/secretlint/secretlint/commit/915368c3465d12fd25b30901e81293e9fc49d272"
+        },
+        "date": 1776518091710,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.28,
+            "range": "±1.83%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.31,
+            "range": "±0.80%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
