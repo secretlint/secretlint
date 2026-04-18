@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1776516778237,
+  "lastUpdate": 1776517653117,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -52514,6 +52514,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.31,
             "range": "±0.34%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "298eaa8307282ac530fd00bec4b7905a7853a01b",
+          "message": "Remove CommonJS build output and dual-package support (#1495)\n\nThis PR simplifies the package configuration by removing CommonJS build\nsupport and consolidating to a single ESM output.\n\nfix #1493\n\n## Summary\nThe `@secretlint/types` package previously maintained dual CommonJS and\nESM builds. This change removes the CommonJS build infrastructure and\nconsolidates all exports to use the ESM `module/` directory.\n\n## Key changes made\n- Removed `require` export condition from package.json exports, keeping\nonly the ESM `import` condition\n- Consolidated `main` and `types` entry points to use `./module/`\ninstead of `./lib/`\n- Removed `tsconfig.cjs.json` configuration file used for CommonJS\ncompilation\n- Simplified build scripts by removing `tsconfig-to-dual-package` tool\nand separate CJS build step\n- Removed `lib/` directory from package files list\n- Removed `tsconfig-to-dual-package` from devDependencies and workspace\ncatalog\n- Updated `.gitignore` to exclude `*.tsbuildinfo` files\n\n## Implementation details\n- The package now uses a single TypeScript build configuration targeting\nESM\n- Build process simplified from two separate compilations to a single\n`tsc --build` command\n- All consumers of this package will now receive ESM modules only\n\nhttps://claude.ai/code/session_01QCP8oy3Wr7MzGbVUATtkjt\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-04-18T13:05:43Z",
+          "tree_id": "2a68e83bc5eb4c2407eca9aaf990925c2a5c5a84",
+          "url": "https://github.com/secretlint/secretlint/commit/298eaa8307282ac530fd00bec4b7905a7853a01b"
+        },
+        "date": 1776517650506,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.4,
+            "range": "±1.07%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.31,
+            "range": "±2.81%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
