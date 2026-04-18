@@ -57,6 +57,7 @@
         "@secretlint/types": "workspace:*"
     },
     "devDependencies": {
+        "@types/node": "catalog:",
         "typescript": "catalog:"
     },
     "engines": {
