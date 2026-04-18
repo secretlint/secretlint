@@ -171,3 +171,4 @@ dist/
 browser/
 /module/
 /lib/
+*.tsbuildinfo

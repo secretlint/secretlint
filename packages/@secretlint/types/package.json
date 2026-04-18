@@ -23,30 +23,23 @@
                 "types": "./module/index.d.ts",
                 "default": "./module/index.js"
             },
-            "require": {
-                "types": "./lib/index.d.ts",
-                "default": "./lib/index.js"
-            },
-            "default": "./lib/index.js"
+            "default": "./module/index.js"
         },
         "./package.json": "./package.json"
     },
-    "main": "./lib/index.js",
-    "module": "./module/index.js",
-    "types": "./lib/index.d.ts",
+    "main": "./module/index.js",
+    "types": "./module/index.d.ts",
     "directories": {
-        "lib": "lib",
         "test": "test"
     },
     "files": [
         "bin/",
-        "lib/",
         "module/",
         "src/"
     ],
     "scripts": {
-        "build": "tsc --build . && tsc --build ./tsconfig.cjs.json && tsconfig-to-dual-package",
-        "clean": "tsc --build --clean && tsc --build --clean ./tsconfig.cjs.json",
+        "build": "tsc --build",
+        "clean": "tsc --build --clean",
         "prepublishOnly": "npm run clean && npm run build",
         "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
         "prepublish": "npm run --if-present build",
@@ -60,7 +53,6 @@
     "devDependencies": {
         "@types/node": "catalog:",
         "prettier": "catalog:",
-        "tsconfig-to-dual-package": "catalog:",
         "tsx": "catalog:",
         "typescript": "catalog:",
         "vitest": "catalog:"
