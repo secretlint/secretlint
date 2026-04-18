@@ -121,6 +121,8 @@ type ParsedPkcs12 = {
     iterations: number;
 };
 
+const MAX_MAC_ITERATIONS = 1_000_000;
+
 function parsePkcs12(buf: Uint8Array): ParsedPkcs12 {
     // PFX ::= SEQUENCE { version INTEGER, authSafe ContentInfo, macData MacData OPTIONAL }
     const pfx = readTlv(buf, 0);
@@ -180,6 +182,13 @@ function parsePkcs12(buf: Uint8Array): ParsedPkcs12 {
     if (salt.end < macData.content.length) {
         const iter = readTlv(macData.content, salt.end);
         iterations = readInteger(iter);
+    }
+    // Reject untrusted iteration counts that would let a crafted .p12 DoS the
+    // scanner: each iteration is one Web Crypto digest call. The cap is
+    // generous enough to cover openssl's default (2048) and pathological-but-
+    // plausible values (PKI.js tests up to 600k).
+    if (iterations < 1 || iterations > MAX_MAC_ITERATIONS) {
+        throw new Error("PKCS12: MAC iteration count out of range");
     }
 
     return {
@@ -274,14 +283,22 @@ export async function verifyPkcs12Mac(pfxBytes: Uint8Array, password: string): P
     } catch {
         return false;
     }
-    const key = await deriveMacKey(parsed.macHash, password, parsed.macSalt, parsed.iterations);
-    const cryptoKey = await globalThis.crypto.subtle.importKey(
-        "raw",
-        toBufferSource(key),
-        { name: "HMAC", hash: parsed.macHash.name },
-        false,
-        ["sign"],
-    );
-    const mac = new Uint8Array(await globalThis.crypto.subtle.sign("HMAC", cryptoKey, toBufferSource(parsed.authSafe)));
-    return bytesEqual(mac, parsed.macDigest);
+    try {
+        const key = await deriveMacKey(parsed.macHash, password, parsed.macSalt, parsed.iterations);
+        const cryptoKey = await globalThis.crypto.subtle.importKey(
+            "raw",
+            toBufferSource(key),
+            { name: "HMAC", hash: parsed.macHash.name },
+            false,
+            ["sign"],
+        );
+        const mac = new Uint8Array(
+            await globalThis.crypto.subtle.sign("HMAC", cryptoKey, toBufferSource(parsed.authSafe)),
+        );
+        return bytesEqual(mac, parsed.macDigest);
+    } catch {
+        // Missing crypto.subtle, unsupported algorithm, etc. — treat as "not a
+        // verifiable GCP p12" rather than propagating to the caller.
+        return false;
+    }
 }
