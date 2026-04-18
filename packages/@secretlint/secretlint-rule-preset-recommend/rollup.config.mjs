@@ -6,8 +6,9 @@ export default {
     input: "src/index.ts",
     treeshake: {
         preset: "smallest",
-        // node-forge's lib/index.js attaches sub-modules (pkcs12, asn1, util, ...) to
-        // the forge object via top-level `require()` side effects. Preserve those.
+        // node-forge sub-modules attach themselves to the shared forge object
+        // via top-level `require()` side effects (e.g. pkcs12.js requires
+        // asn1/util/pbe/...). Preserve those side effects so features stay wired.
         moduleSideEffects: (id) => id.includes("node-forge"),
     },
     output: [

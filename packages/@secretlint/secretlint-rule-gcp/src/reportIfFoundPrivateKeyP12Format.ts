@@ -22,7 +22,11 @@ export async function reportIfFoundPrivateKeyP12Format({
         const path = await import("node:path");
         // Read file as Buffer to Base64 -> bytes -> asn1
         const p12String = fs.readFileSync(source.filePath).toString("base64");
-        const forge = (await import("node-forge")).default;
+        // Import only the forge sub-modules we need. pkcs12 transitively pulls in
+        // the asn1/util/pbe deps it requires and attaches them to the shared
+        // forge object exported by `node-forge/lib/forge.js`.
+        const forge = (await import("node-forge/lib/forge.js")).default;
+        await import("node-forge/lib/pkcs12.js");
         const p12Der = forge.util.decode64(p12String);
         const p12Asn1 = forge.asn1.fromDer(p12Der);
         // read p12 file with "notasecret" pass phase
