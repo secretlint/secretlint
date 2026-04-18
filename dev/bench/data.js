@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1776518094542,
+  "lastUpdate": 1776522864147,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -52628,6 +52628,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.31,
             "range": "±0.80%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "33f77cb732c2f730a32b464efe4df576a55b103d",
+          "message": "Replace node-forge with native PKCS#12 MAC verification (#1497)\n\n## Summary\nReplace the heavy `node-forge` dependency with a lightweight, native\nPKCS#12 MAC verification implementation using Web Crypto APIs. This\nreduces dependencies and improves performance for GCP Service Account\np12 file detection.\n\n## Key Changes\n- **New `pkcs12Mac.ts` module**: Implements minimal PKCS#12 MAC\nverification according to RFC 7292, supporting SHA-1, SHA-256, SHA-384,\nand SHA-512 digest algorithms\n- Parses only the necessary DER structure (MacData and authSafe content)\nwithout full decryption\n  - Uses Web Crypto's `crypto.subtle` for HMAC operations\n  - Includes proper ASN.1 TLV parsing with comprehensive error handling\n  \n- **Updated `reportIfFoundPrivateKeyP12Format.ts`**: \n- Replaced `node-forge` dependency with new `verifyPkcs12Mac()` function\n- Simplified logic: reads p12 file as bytes and verifies MAC against the\nwell-known `notasecret` password\n  - Removed unnecessary ASN.1 parsing and decryption overhead\n  \n- **Removed `node-forge` dependency** from `package.json`\n\n- **Added comprehensive test coverage**:\n- Test cases for p12 files with SHA-256, SHA-384, and SHA-512 MACs\n(covering openssl 3.0+ defaults)\n- Invalid test cases: empty files, truncated files, random bytes, and\np12 without MAC\n  - All test snapshots included\n\n- **Cleanup**: Removed obsolete rollup config comments about treeshaking\nissues with the gcp rule\n\n## Implementation Details\n- The PKCS#12 MAC verification works by:\n1. Parsing the DER-encoded PFX structure to extract MacData and authSafe\ncontent\n2. Deriving the MAC key using PKCS#12 key derivation (RFC 7292 Appendix\nB.2)\n  3. Computing HMAC over the authSafe content\n  4. Comparing against the stored MAC digest\n- Gracefully handles malformed files by returning `false` rather than\nthrowing\n- Compatible with Node.js 20+ and any environment with Web Crypto\nsupport\n\nhttps://claude.ai/code/session_01M4rUJxFJEvCDtrKDRrcvUx\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-04-18T14:32:40Z",
+          "tree_id": "6586f1be82687cedf691e7f3e648597187d88b71",
+          "url": "https://github.com/secretlint/secretlint/commit/33f77cb732c2f730a32b464efe4df576a55b103d"
+        },
+        "date": 1776522860648,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.56,
+            "range": "±2.18%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.31,
+            "range": "±1.62%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
