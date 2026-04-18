@@ -51,7 +51,9 @@ function readTlv(buf: Uint8Array, offset: number): TLV {
         }
         length = 0;
         for (let i = 0; i < lenBytes; i++) {
-            length = (length << 8) | buf[offset + 2 + i]!;
+            // Multiply instead of `<< 8` so a 4-byte length with the high bit
+            // set does not overflow into a negative 32-bit signed integer.
+            length = length * 256 + buf[offset + 2 + i]!;
         }
         contentStart = offset + 2 + lenBytes;
     }
@@ -223,8 +225,10 @@ function padToMultipleOf(src: Uint8Array, blockSize: number): Uint8Array {
 }
 
 function encodePasswordAsBmpString(password: string): Uint8Array {
-    // PKCS#12 passwords are encoded as BMPString (UTF-16BE) with a trailing
-    // two-byte null terminator.
+    // RFC 7292 Appendix B.1: non-empty passwords are encoded as BMPString
+    // (UTF-16BE) with a trailing two-byte null terminator. The empty password
+    // is the empty byte sequence, not `[0x00, 0x00]`.
+    if (password.length === 0) return new Uint8Array(0);
     const bytes = new Uint8Array(password.length * 2 + 2);
     for (let i = 0; i < password.length; i++) {
         const code = password.charCodeAt(i);
