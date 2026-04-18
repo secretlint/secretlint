@@ -1,34 +1,10 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    /* Basic Options */
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "esModuleInterop": true,
-    "newLine": "LF",
     "outDir": "./module/",
-    "rootDir": "./src",
-    "target": "ES2022",
-    "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
-    "jsx": "preserve",
-    "lib": [
-      "esnext",
-      "dom"
-    ],
-    "strict": true,
-    "skipLibCheck": true,
-    "types": ["node"],
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true
+    "rootDir": "./src"
   },
   "include": [
     "src/**/*"
-  ],
-  "exclude": [
-    ".git",
-    "node_modules"
   ]
 }
