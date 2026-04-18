@@ -4,13 +4,7 @@ import commonjs from "@rollup/plugin-commonjs";
 
 export default {
     input: "src/index.ts",
-    treeshake: {
-        preset: "smallest",
-        // node-forge sub-modules attach themselves to the shared forge object
-        // via top-level `require()` side effects (e.g. pkcs12.js requires
-        // asn1/util/pbe/...). Preserve those side effects so features stay wired.
-        moduleSideEffects: (id) => id.includes("node-forge"),
-    },
+    treeshake: "smallest",
     output: [
         {
             dir: "module/",

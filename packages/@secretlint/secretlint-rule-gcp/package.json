@@ -55,13 +55,11 @@
     },
     "dependencies": {
         "@secretlint/types": "workspace:*",
-        "@textlint/regexp-string-matcher": "catalog:",
-        "node-forge": "catalog:"
+        "@textlint/regexp-string-matcher": "catalog:"
     },
     "devDependencies": {
         "@secretlint/tester": "workspace:*",
         "@types/node": "catalog:",
-        "@types/node-forge": "catalog:",
         "prettier": "catalog:",
         "tsx": "catalog:",
         "typescript": "catalog:"

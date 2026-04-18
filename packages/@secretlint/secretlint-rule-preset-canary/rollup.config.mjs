@@ -4,12 +4,7 @@ import commonjs from "@rollup/plugin-commonjs";
 
 export default {
     input: "src/index.ts",
-    treeshake: {
-        preset: "smallest",
-        // node-forge's lib/index.js attaches sub-modules (pkcs12, asn1, util, ...) to
-        // the forge object via top-level `require()` side effects. Preserve those.
-        moduleSideEffects: (id) => id.includes("node-forge"),
-    },
+    treeshake: "smallest",
     output: [
         {
             dir: "module/",
