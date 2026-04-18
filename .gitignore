@@ -171,6 +171,4 @@ dist/
 browser/
 /module/
 /lib/
-
-# TypeScript incremental build output
 *.tsbuildinfo
