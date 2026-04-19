@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1776522864147,
+  "lastUpdate": 1776559639929,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -52666,6 +52666,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.31,
             "range": "±1.62%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "fb0a9d5af3bbdd9035338eece6e6b3ab635a7dfa",
+          "message": "feat(preset-recommend)!: sync canary rules into recommend preset (#1498)\n\n## Summary\n\nSyncs the `@secretlint/secretlint-rule-preset-canary` rule set into\n`@secretlint/secretlint-rule-preset-recommend` as a major update, per\nthe process described in `AGENTS.md`.\n\n### New rules added to recommend\n\n- `@secretlint/secretlint-rule-groq`\n- `@secretlint/secretlint-rule-huggingface`\n- `@secretlint/secretlint-rule-notion`\n- `@secretlint/secretlint-rule-gitlab`\n- `@secretlint/secretlint-rule-grafana`\n- `@secretlint/secretlint-rule-hashicorp-vault`\n- `@secretlint/secretlint-rule-vercel`\n- `@secretlint/secretlint-rule-databricks`\n- `@secretlint/secretlint-rule-docker`\n- `@secretlint/secretlint-rule-figma`\n\n`src/index.ts`, `test/snapshots/`, and `package.json` devDependencies\nwere synced from canary. The `sync-canary` npm script uses BSD `sed`, so\nthe sync was performed manually with equivalent Linux tooling.\n\n### BREAKING CHANGE\n\nUsers of `@secretlint/secretlint-rule-preset-recommend` will start\ndetecting the secret types above. This is a major version bump.\n\n## Test plan\n\n- [x] `pnpm run build` (all 50 packages build)\n- [x] `cd packages/@secretlint/secretlint-rule-preset-recommend && pnpm\ntest` (93/93 pass)\n- [x] `pnpm test` (101/101 tasks successful)\n- [ ] CI passes on GitHub\n\nhttps://claude.ai/code/session_01FpXxFViqXUSpX9mp4udwKM\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-04-19T09:45:31+09:00",
+          "tree_id": "cc80b3602a9f57576c22b23304d2eb6d21aea86d",
+          "url": "https://github.com/secretlint/secretlint/commit/fb0a9d5af3bbdd9035338eece6e6b3ab635a7dfa"
+        },
+        "date": 1776559637280,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.37,
+            "range": "±1.04%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.31,
+            "range": "±0.47%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
