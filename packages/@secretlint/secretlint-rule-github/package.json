@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-github",
-    "version": "12.0.0",
+    "version": "12.0.1",
     "description": "A secretlint rule for sendgrid api keys.",
     "keywords": [
         "rule",
