@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1776559933206,
+  "lastUpdate": 1776562641094,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -52742,6 +52742,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.31,
             "range": "±0.69%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "9406ee5f726e2a1d9bb5dbdf036518325ed7f69c",
+          "message": "Add macOS SecureClipboard application to documentation (#1500)\n\n## Summary\nAdded documentation for SecureClipboard, a macOS menu bar application\nthat integrates with secretlint to detect and mask secrets in the\nclipboard.\n\n## Changes\n- Added new \"macOS\" section to the README under integrations\n- Documented SecureClipboard as a macOS-specific tool that uses\nsecretlint to prevent accidental exposure of secrets when pasting\n- Included link to the SecureClipboard GitHub repository\n\n## Details\nThis addition highlights an official macOS integration that extends\nsecretlint's functionality to the system clipboard level, helping\ndevelopers avoid pasting sensitive credentials in unintended locations.\n\nhttps://claude.ai/code/session_015xVAm1eUuZzFteUfTxFUy7\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-04-19T01:35:36Z",
+          "tree_id": "32dbeb04cb8109ea9b9e9efb77f94e4fb0399f2e",
+          "url": "https://github.com/secretlint/secretlint/commit/9406ee5f726e2a1d9bb5dbdf036518325ed7f69c"
+        },
+        "date": 1776562638663,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.4,
+            "range": "±1.16%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.31,
+            "range": "±1.92%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
