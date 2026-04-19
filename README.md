@@ -60,7 +60,7 @@ For more details, please see [secretlint's Dockerfile](./publish/docker).
 
 ### Using Node.js
 
-**Prerequisites:**  Require [Node.js 20+](https://nodejs.org/).
+**Prerequisites:**  Require [Node.js 22+](https://nodejs.org/).
 
 Secretlint is written by JavaScript.
 You can install Secretlint using [npm](https://www.npmjs.com/):
@@ -503,7 +503,7 @@ jobs:
       - name: setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 22
       - name: Install
         run: npm ci
       - name: Lint with Secretlint
@@ -554,7 +554,7 @@ jobs:
       - name: setup Node ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - name: Show changed files
         run: echo "${{ steps.changed-files.outputs.all_changed_files }}"
       - name: Install
