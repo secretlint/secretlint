@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1776559639929,
+  "lastUpdate": 1776559933206,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -52704,6 +52704,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.31,
             "range": "±0.47%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "41898282+github-actions[bot]@users.noreply.github.com",
+            "name": "github-actions[bot]",
+            "username": "github-actions[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7bf97cdaeb350f70d9895f63dfc4af3fabbb1447",
+          "message": "v12.0.0 (#1499)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat master -->\n\n## What's Changed\n\n### New rules added to recommend\n\nSecretlint v12.0.0 includes the following new rules in the\n[@secretlint/secretlint-rule-preset-recommend](https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-preset-recommend)\npreset:\n\n-\n[`@secretlint/secretlint-rule-groq`](https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-groq/)\n-\n[`@secretlint/secretlint-rule-huggingface`](https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-huggingface/)\n-\n[`@secretlint/secretlint-rule-notion`](https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-notion/)\n-\n[`@secretlint/secretlint-rule-gitlab`](https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-gitlab/)\n-\n[`@secretlint/secretlint-rule-grafana`](https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-grafana/)\n-\n[`@secretlint/secretlint-rule-hashicorp-vault`](https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-hashicorp-vault/)\n-\n[`@secretlint/secretlint-rule-vercel`](https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-vercel/)\n-\n[`@secretlint/secretlint-rule-databricks`](https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-databricks/)\n-\n[`@secretlint/secretlint-rule-docker`](https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-docker/)\n-\n[`@secretlint/secretlint-rule-figma`](https://github.com/secretlint/secretlint/tree/master/packages/@secretlint/secretlint-rule-figma/)\n\n### Breaking Changes\n* Remove CommonJS build output and dual-package support by @azu in\nhttps://github.com/secretlint/secretlint/pull/1495\n* feat(preset-recommend)!: sync canary rules into recommend preset by\n@azu in https://github.com/secretlint/secretlint/pull/1498\n### Refactoring\n* Consolidate TypeScript configuration into shared base config by @azu\nin https://github.com/secretlint/secretlint/pull/1496\n* Replace node-forge with native PKCS#12 MAC verification by @azu in\nhttps://github.com/secretlint/secretlint/pull/1497\n### CI\n* chore(deps): update actions/upload-artifact action to v7.0.1 by\n@renovate[bot] in https://github.com/secretlint/secretlint/pull/1491\n### Dependency Updates\n* chore(deps): update dependency turbo to ^2.9.6 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1488\n* chore(deps): update dependency @types/bun to ^1.3.12 by @renovate[bot]\nin https://github.com/secretlint/secretlint/pull/1489\n* chore(deps): upgrade major dependencies by @azu in\nhttps://github.com/secretlint/secretlint/pull/1492\n### Other Changes\n* chore(deps): update dependency bun to v1.3.12 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1490\n\n\n**Full Changelog**:\nhttps://github.com/secretlint/secretlint/compare/v11.7.1...v12.0.0\n\nCo-authored-by: azu <azu@users.noreply.github.com>",
+          "timestamp": "2026-04-19T09:50:27+09:00",
+          "tree_id": "f071322ff6ffe998c1c4b61227df267edd51821b",
+          "url": "https://github.com/secretlint/secretlint/commit/7bf97cdaeb350f70d9895f63dfc4af3fabbb1447"
+        },
+        "date": 1776559930785,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.37,
+            "range": "±0.97%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.31,
+            "range": "±0.69%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
