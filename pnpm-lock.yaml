@@ -1322,9 +1322,6 @@ importers:
       '@secretlint/secretlint-rule-aws':
         specifier: workspace:*
         version: link:../secretlint-rule-aws
-      '@secretlint/secretlint-rule-azure':
-        specifier: workspace:*
-        version: link:../secretlint-rule-azure
       '@secretlint/secretlint-rule-basicauth':
         specifier: workspace:*
         version: link:../secretlint-rule-basicauth

@@ -64,7 +64,6 @@
         "@secretlint/secretlint-rule-1password": "workspace:*",
         "@secretlint/secretlint-rule-anthropic": "workspace:*",
         "@secretlint/secretlint-rule-aws": "workspace:*",
-        "@secretlint/secretlint-rule-azure": "workspace:*",
         "@secretlint/secretlint-rule-basicauth": "workspace:*",
         "@secretlint/secretlint-rule-database-connection-string": "workspace:*",
         "@secretlint/secretlint-rule-databricks": "workspace:*",
