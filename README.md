@@ -591,6 +591,12 @@ This web extension aims to find credentials that are included in your request/re
 Secretlint WebExtension integrates to DevTools in Chrome/Firefox.
 This extension helps web developers to notice exposed credentials.
 
+### macOS
+
+[SecureClipboard](https://github.com/secretlint/secure-clipboard) is a macOS menu bar application that uses secretlint to detect and mask secrets in your clipboard before they are pasted elsewhere.
+
+- <https://github.com/secretlint/secure-clipboard>
+
 ### Others
 
 #### SARIF format support
