@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-linear",
-    "version": "11.7.1",
+    "version": "12.0.0",
     "description": "A secretlint rule for linear",
     "keywords": [
         "secretlint",
