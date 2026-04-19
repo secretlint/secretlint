@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1776607120543,
+  "lastUpdate": 1776610526600,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -52856,6 +52856,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.3,
             "range": "±0.73%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "41898282+github-actions[bot]@users.noreply.github.com",
+            "name": "github-actions[bot]",
+            "username": "github-actions[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "3c03146603e93eeb6d8c7f4bb90018d9ae8c8ec7",
+          "message": "v12.0.1 (#1503)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat master -->\n\n## What's Changed\n### Documentation\n* Add macOS SecureClipboard application to documentation by @azu in\nhttps://github.com/secretlint/secretlint/pull/1500\n### Refactoring\n* Bump minimum Node.js version requirement to 22 by @azu in\nhttps://github.com/secretlint/secretlint/pull/1502\n* secretelint v12 requires Node.js 22+\n\n### CI\n* chore(deps): update softprops/action-gh-release action to v2.6.2 by\n@renovate[bot] in https://github.com/secretlint/secretlint/pull/1501\n\n\n**Full Changelog**:\nhttps://github.com/secretlint/secretlint/compare/v12.0.0...v12.0.1\n\nCo-authored-by: azu <azu@users.noreply.github.com>",
+          "timestamp": "2026-04-19T23:53:41+09:00",
+          "tree_id": "a5f11a0bc0a1cb15b016728a581933096602f3aa",
+          "url": "https://github.com/secretlint/secretlint/commit/3c03146603e93eeb6d8c7f4bb90018d9ae8c8ec7"
+        },
+        "date": 1776610523397,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.37,
+            "range": "±1.35%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.31,
+            "range": "±0.88%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
