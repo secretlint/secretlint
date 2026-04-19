@@ -1,0 +1,17 @@
+# These should NOT be detected as Groq API keys
+export const EXAMPLE_URL = "https://api.groq.com";
+
+# Too short (less than 52 chars after prefix)
+gsk_abc123
+
+# Prefix inside another word (should not match due to negative lookbehind)
+wordgsk_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghijklmnopqrstuv
+
+# Too long (more than 52 chars after prefix, should not match due to negative lookahead)
+gsk_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghijklmnopqrstuvWXYZ
+
+# Wrong prefix
+sk_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghijklmnopqrstuv
+
+# Contains invalid character (dash)
+gsk_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghijklmnopqrs-uv

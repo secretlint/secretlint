@@ -1,0 +1,3 @@
+DOCKER_TOKEN=not_a_real_token
+dckr_pat_tooshort
+dckr_pat_

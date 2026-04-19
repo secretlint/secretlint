@@ -1,0 +1,25 @@
+# These should NOT be detected as Notion integration tokens
+
+# Too short
+ntn_abc
+
+# Legacy secret_ prefix is intentionally excluded
+secret_abc123
+
+# Only 10 digits after prefix (one short)
+ntn_1234567890aBcDeFgHiJkLmNoPqRsT1234567890abcdef
+
+# 34 alphanumerics after digits (one short)
+ntn_12345678901aBcDeFgHiJkLmNoPqRsT1234567890abcd
+
+# 36 alphanumerics after digits (one extra; trailing lookahead fails)
+ntn_12345678901aBcDeFgHiJkLmNoPqRsT1234567890abcdef
+
+# Uppercase prefix is not the documented format
+NTN_12345678901aBcDeFgHiJkLmNoPqRsT1234567890abcde
+
+# Preceded by letters (not a standalone token)
+xntn_12345678901aBcDeFgHiJkLmNoPqRsT1234567890abcde
+
+# Notion API URL (not a token)
+https://api.notion.com/v1/databases

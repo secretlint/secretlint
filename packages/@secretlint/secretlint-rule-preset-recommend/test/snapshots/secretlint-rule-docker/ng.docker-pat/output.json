@@ -1,0 +1,33 @@
+{
+    "filePath": "[SNAPSHOT]/ng.docker-pat/input.txt",
+    "messages": [
+        {
+            "message": "found Docker Personal Access Token: dckr_pat_Example1234567890AbCdEfGhjK",
+            "range": [
+                13,
+                49
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-docker",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 13
+                },
+                "end": {
+                    "line": 1,
+                    "column": 49
+                }
+            },
+            "severity": "error",
+            "messageId": "DOCKER_PERSONAL_ACCESS_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-docker/README.md#DOCKER_PERSONAL_ACCESS_TOKEN",
+            "data": {
+                "TOKEN": "dckr_pat_Example1234567890AbCdEfGhjK"
+            }
+        }
+    ],
+    "sourceContent": "DOCKER_TOKEN=dckr_pat_Example1234567890AbCdEfGhjK\n",
+    "sourceContentType": "text"
+}

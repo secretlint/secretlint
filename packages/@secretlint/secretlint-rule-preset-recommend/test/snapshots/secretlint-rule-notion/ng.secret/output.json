@@ -1,0 +1,85 @@
+{
+    "filePath": "[SNAPSHOT]/ng.secret/input.txt",
+    "messages": [
+        {
+            "message": "found Notion integration token: ntn_12345678901aBcDeFgHiJkLmNoPqRsT1234567890abcde",
+            "range": [
+                65,
+                115
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-notion",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 13
+                },
+                "end": {
+                    "line": 2,
+                    "column": 63
+                }
+            },
+            "severity": "error",
+            "messageId": "NOTION_INTEGRATION_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-notion/README.md#NOTION_INTEGRATION_TOKEN",
+            "data": {
+                "TOKEN": "ntn_12345678901aBcDeFgHiJkLmNoPqRsT1234567890abcde"
+            }
+        },
+        {
+            "message": "found Notion integration token: ntn_98765432109ZyXwVuTsRqPoNmLkJiHgFeDcBa012345678",
+            "range": [
+                133,
+                183
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-notion",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 4,
+                    "column": 16
+                },
+                "end": {
+                    "line": 4,
+                    "column": 66
+                }
+            },
+            "severity": "error",
+            "messageId": "NOTION_INTEGRATION_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-notion/README.md#NOTION_INTEGRATION_TOKEN",
+            "data": {
+                "TOKEN": "ntn_98765432109ZyXwVuTsRqPoNmLkJiHgFeDcBa012345678"
+            }
+        },
+        {
+            "message": "found Notion integration token: ntn_11122233344AbCdEfGhIjKlMnOpQrStUvWxYz012345678",
+            "range": [
+                217,
+                267
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-notion",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 6,
+                    "column": 31
+                },
+                "end": {
+                    "line": 6,
+                    "column": 81
+                }
+            },
+            "severity": "error",
+            "messageId": "NOTION_INTEGRATION_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-notion/README.md#NOTION_INTEGRATION_TOKEN",
+            "data": {
+                "TOKEN": "ntn_11122233344AbCdEfGhIjKlMnOpQrStUvWxYz012345678"
+            }
+        }
+    ],
+    "sourceContent": "# Notion integration tokens that should be detected\nNOTION_TOKEN=ntn_12345678901aBcDeFgHiJkLmNoPqRsT1234567890abcde\n\nnotion_token = 'ntn_98765432109ZyXwVuTsRqPoNmLkJiHgFeDcBa012345678'\n\nexport const NOTION_API_KEY = \"ntn_11122233344AbCdEfGhIjKlMnOpQrStUvWxYz012345678\";\n",
+    "sourceContentType": "text"
+}

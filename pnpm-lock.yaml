@@ -1310,15 +1310,21 @@ importers:
       '@secretlint/secretlint-rule-aws':
         specifier: workspace:*
         version: link:../secretlint-rule-aws
-      '@secretlint/secretlint-rule-azure':
-        specifier: workspace:*
-        version: link:../secretlint-rule-azure
       '@secretlint/secretlint-rule-basicauth':
         specifier: workspace:*
         version: link:../secretlint-rule-basicauth
       '@secretlint/secretlint-rule-database-connection-string':
         specifier: workspace:*
         version: link:../secretlint-rule-database-connection-string
+      '@secretlint/secretlint-rule-databricks':
+        specifier: workspace:*
+        version: link:../secretlint-rule-databricks
+      '@secretlint/secretlint-rule-docker':
+        specifier: workspace:*
+        version: link:../secretlint-rule-docker
+      '@secretlint/secretlint-rule-figma':
+        specifier: workspace:*
+        version: link:../secretlint-rule-figma
       '@secretlint/secretlint-rule-filter-comments':
         specifier: workspace:*
         version: link:../secretlint-rule-filter-comments
@@ -1328,9 +1334,27 @@ importers:
       '@secretlint/secretlint-rule-github':
         specifier: workspace:*
         version: link:../secretlint-rule-github
+      '@secretlint/secretlint-rule-gitlab':
+        specifier: workspace:*
+        version: link:../secretlint-rule-gitlab
+      '@secretlint/secretlint-rule-grafana':
+        specifier: workspace:*
+        version: link:../secretlint-rule-grafana
+      '@secretlint/secretlint-rule-groq':
+        specifier: workspace:*
+        version: link:../secretlint-rule-groq
+      '@secretlint/secretlint-rule-hashicorp-vault':
+        specifier: workspace:*
+        version: link:../secretlint-rule-hashicorp-vault
+      '@secretlint/secretlint-rule-huggingface':
+        specifier: workspace:*
+        version: link:../secretlint-rule-huggingface
       '@secretlint/secretlint-rule-linear':
         specifier: workspace:*
         version: link:../secretlint-rule-linear
+      '@secretlint/secretlint-rule-notion':
+        specifier: workspace:*
+        version: link:../secretlint-rule-notion
       '@secretlint/secretlint-rule-npm':
         specifier: workspace:*
         version: link:../secretlint-rule-npm
@@ -1349,6 +1373,9 @@ importers:
       '@secretlint/secretlint-rule-slack':
         specifier: workspace:*
         version: link:../secretlint-rule-slack
+      '@secretlint/secretlint-rule-vercel':
+        specifier: workspace:*
+        version: link:../secretlint-rule-vercel
       '@secretlint/tester':
         specifier: workspace:*
         version: link:../tester

@@ -1,0 +1,137 @@
+{
+    "filePath": "[SNAPSHOT]/ng.secret/input.txt",
+    "messages": [
+        {
+            "message": "found Vercel personal access token: vcp_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghij",
+            "range": [
+                0,
+                44
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-vercel",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 44
+                }
+            },
+            "severity": "error",
+            "messageId": "VERCEL_PERSONAL_ACCESS_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-vercel/README.md#VERCEL_PERSONAL_ACCESS_TOKEN",
+            "data": {
+                "ID": "vcp_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghij"
+            }
+        },
+        {
+            "message": "found Vercel integration token: vci_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghij",
+            "range": [
+                45,
+                89
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-vercel",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 0
+                },
+                "end": {
+                    "line": 2,
+                    "column": 44
+                }
+            },
+            "severity": "error",
+            "messageId": "VERCEL_INTEGRATION_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-vercel/README.md#VERCEL_INTEGRATION_TOKEN",
+            "data": {
+                "ID": "vci_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghij"
+            }
+        },
+        {
+            "message": "found Vercel app access token: vca_BQuu9ChDu3n6Pfh6YQnCshpoYkWDSFKogLqmBtQ0tC8NAA5rXt340sjz",
+            "range": [
+                90,
+                150
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-vercel",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 3,
+                    "column": 0
+                },
+                "end": {
+                    "line": 3,
+                    "column": 60
+                }
+            },
+            "severity": "error",
+            "messageId": "VERCEL_APP_ACCESS_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-vercel/README.md#VERCEL_APP_ACCESS_TOKEN",
+            "data": {
+                "ID": "vca_BQuu9ChDu3n6Pfh6YQnCshpoYkWDSFKogLqmBtQ0tC8NAA5rXt340sjz"
+            }
+        },
+        {
+            "message": "found Vercel app refresh token: vcr_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghij",
+            "range": [
+                151,
+                195
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-vercel",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 4,
+                    "column": 0
+                },
+                "end": {
+                    "line": 4,
+                    "column": 44
+                }
+            },
+            "severity": "error",
+            "messageId": "VERCEL_APP_REFRESH_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-vercel/README.md#VERCEL_APP_REFRESH_TOKEN",
+            "data": {
+                "ID": "vcr_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghij"
+            }
+        },
+        {
+            "message": "found Vercel AI Gateway API key: vck_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghij",
+            "range": [
+                196,
+                240
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-vercel",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 5,
+                    "column": 0
+                },
+                "end": {
+                    "line": 5,
+                    "column": 44
+                }
+            },
+            "severity": "error",
+            "messageId": "VERCEL_AI_GATEWAY_API_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-vercel/README.md#VERCEL_AI_GATEWAY_API_KEY",
+            "data": {
+                "ID": "vck_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghij"
+            }
+        }
+    ],
+    "sourceContent": "vcp_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghij\nvci_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghij\nvca_BQuu9ChDu3n6Pfh6YQnCshpoYkWDSFKogLqmBtQ0tC8NAA5rXt340sjz\nvcr_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghij\nvck_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghij\n",
+    "sourceContentType": "text"
+}

@@ -1,0 +1,6 @@
+# Groq API keys that should be detected
+groq_api_key = 'gsk_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghijklmnopqrstuv'
+
+gsk_0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOP
+
+GROQ_API_KEY=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

@@ -1,0 +1,33 @@
+{
+    "filePath": "[SNAPSHOT]/ng.cloud_api_token/input.txt",
+    "messages": [
+        {
+            "message": "found Grafana Cloud API token: glc_eyJvIjoiMTIzNDUiLCJuIjoidGVzdCIsImsiOiJhYmMifQ==",
+            "range": [
+                0,
+                52
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-grafana",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 52
+                }
+            },
+            "severity": "error",
+            "messageId": "GRAFANA_CLOUD_API_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-grafana/README.md#GRAFANA_CLOUD_API_TOKEN",
+            "data": {
+                "TOKEN": "glc_eyJvIjoiMTIzNDUiLCJuIjoidGVzdCIsImsiOiJhYmMifQ=="
+            }
+        }
+    ],
+    "sourceContent": "glc_eyJvIjoiMTIzNDUiLCJuIjoidGVzdCIsImsiOiJhYmMifQ==\n",
+    "sourceContentType": "text"
+}

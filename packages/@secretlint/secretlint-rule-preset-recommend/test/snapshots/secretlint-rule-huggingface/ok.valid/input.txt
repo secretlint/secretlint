@@ -1,0 +1,19 @@
+# These should NOT be detected as Hugging Face tokens
+
+# Too short
+hf_abc
+
+# Contains digits in body
+hf_FakeFakeFake1FakeFakeFakeFakeFakeFa
+
+# Body is 33 alphabetic characters (one short)
+hf_FakeFakeFakeFakeFakeFakeFakeFakeF
+
+# Body is 35 alphabetic characters (one too many)
+hf_FakeFakeFakeFakeFakeFakeFakeFakeFak
+
+# Preceded by another letter (boundary check)
+xhf_FakeFakeFakeFakeFakeFakeFakeFakeFa
+
+# Hugging Face URL, not a token
+https://huggingface.co/models
