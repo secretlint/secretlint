@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1776604361336,
+  "lastUpdate": 1776607120543,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -52818,6 +52818,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.31,
             "range": "±0.82%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "cacd99e769b85654a56ee2b46fdf2cac80796250",
+          "message": "Bump minimum Node.js version requirement to 22 (#1502)\n\n## Summary\nThis PR updates the minimum required Node.js version from 20 to 22\nacross the entire secretlint project.\n\nhttps://github.com/secretlint/secretlint/releases/tag/v12.0.0 require\nNode.js 22+.\n\n## Key Changes\n- Updated `engines.node` field in all package.json files from `>=20.0.0`\nto `>=22.0.0`\n- Updated README.md documentation to reflect Node.js 22+ requirement\n- Updated GitHub Actions workflows to use Node.js 22 and 24 (removed\nNode.js 20 from test matrix)\n- Updated documentation links to point to Node.js 22.x API documentation\n- Updated rule testing documentation to reference Node.js 22+\nrequirement\n\n## Details\n- **README.md**: Updated prerequisites section and GitHub Actions\nworkflow examples\n- **docs/secretlint-rule.md**: Updated Node.js Test runner documentation\nlink and minimum version requirement\n- **.github/workflows/test.yml**: Removed Node.js 20 from the test\nmatrix, keeping 22 and 24\n- **All package.json files**: Consistently updated engine requirements\nacross 50+ packages in the monorepo\n\nThis change ensures the project leverages Node.js 22's features and\nimprovements while dropping support for the older Node.js 20 LTS\nversion.\n\nhttps://claude.ai/code/session_01WrE8peTzwCVwePt6W8nmwf\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-04-19T13:56:51Z",
+          "tree_id": "71d6eb5baff9d7c93173227eb35709d5f1a0f2b6",
+          "url": "https://github.com/secretlint/secretlint/commit/cacd99e769b85654a56ee2b46fdf2cac80796250"
+        },
+        "date": 1776607118126,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.25,
+            "range": "±2.96%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.3,
+            "range": "±0.73%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
