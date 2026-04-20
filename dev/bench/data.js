@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1776647723608,
+  "lastUpdate": 1776648206290,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -52932,6 +52932,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.31,
             "range": "±1.88%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "41898282+github-actions[bot]@users.noreply.github.com",
+            "name": "github-actions[bot]",
+            "username": "github-actions[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "6d2a502c5cf7e671261f56ac3db13bf81277a09e",
+          "message": "v12.1.0 (#1505)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat master -->\n\n## What's Changed\n### Features\n* Add per-pattern allows configuration for secretlint-rule-pattern by\n@azu in https://github.com/secretlint/secretlint/pull/1504\n\n\n**Full Changelog**:\nhttps://github.com/secretlint/secretlint/compare/v12.0.1...v12.1.0\n\nCo-authored-by: azu <azu@users.noreply.github.com>",
+          "timestamp": "2026-04-20T10:21:38+09:00",
+          "tree_id": "792f363620277d3413650fdadf4073dadb99c68e",
+          "url": "https://github.com/secretlint/secretlint/commit/6d2a502c5cf7e671261f56ac3db13bf81277a09e"
+        },
+        "date": 1776648203591,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.36,
+            "range": "±0.94%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.31,
+            "range": "±1.05%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
