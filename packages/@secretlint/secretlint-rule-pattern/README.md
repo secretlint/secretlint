@@ -106,6 +106,7 @@ Each pattern can have its own `allows` list in addition to the global `allows`. 
     {
       "id": "@secretlint/secretlint-rule-pattern",
       "options": {
+        "allows": ["/^test-/"],
         "patterns": [
           {
             "name": "password=",
@@ -123,7 +124,9 @@ Each pattern can have its own `allows` list in addition to the global `allows`. 
 }
 ```
 
-In this example, `dummy-*` values are allowed only for the `password=` pattern, but still flagged for `apikey=`.
+In this example:
+- `test-*` values are allowed globally for all patterns
+- `dummy-*` values are allowed only for the `password=` pattern, but still flagged for `apikey=`
 
 ### Deprecated options
 
