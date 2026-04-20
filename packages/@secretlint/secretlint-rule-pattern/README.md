@@ -94,6 +94,36 @@ Disallow to use specified RegEx patterns from SecretLint config.
         - `patterns?: string[]` - Array of RegExp-like strings to match against file content
         - `pattern?: string` - **[DEPRECATED]** Single RegExp-like string to match against file content (use `patterns` instead)
         - `filePathGlobs?: string[]` - Array of glob patterns to match against file paths
+        - `allows?: string[]` - Allows a list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string) for this pattern only
+
+### Per-pattern allows
+
+Each pattern can have its own `allows` list in addition to the global `allows`. This is useful when you want to allow a value only for a specific pattern.
+
+```json
+{
+  "rules": [
+    {
+      "id": "@secretlint/secretlint-rule-pattern",
+      "options": {
+        "patterns": [
+          {
+            "name": "password=",
+            "patterns": ["/password\\s*=\\s*(?<password>[\\w\\d]{1,256})\\b.*/gi"],
+            "allows": ["/^dummy-/"]
+          },
+          {
+            "name": "apikey=",
+            "patterns": ["/apikey\\s*=\\s*(?<apikey>[\\w\\d]{8,})\\b.*/gi"]
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
+In this example, `dummy-*` values are allowed only for the `password=` pattern, but still flagged for `apikey=`.
 
 ### Deprecated options
 
