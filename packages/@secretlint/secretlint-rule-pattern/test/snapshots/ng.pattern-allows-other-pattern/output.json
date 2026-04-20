@@ -1,0 +1,32 @@
+{
+    "filePath": "[SNAPSHOT]/ng.pattern-allows-other-pattern/input.txt",
+    "messages": [
+        {
+            "message": "found matching apikey=: apikey = foo-bar-baz",
+            "range": [
+                23,
+                43
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-pattern",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 0
+                },
+                "end": {
+                    "line": 2,
+                    "column": 20
+                }
+            },
+            "severity": "error",
+            "messageId": "PATTERN",
+            "data": {
+                "PATTERN_NAME": "apikey=",
+                "CREDENTIAL": "apikey = foo-bar-baz"
+            }
+        }
+    ],
+    "sourceContent": "password = foo-bar-baz\napikey = foo-bar-baz\n",
+    "sourceContentType": "text"
+}
