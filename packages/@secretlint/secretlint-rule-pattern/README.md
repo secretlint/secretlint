@@ -85,20 +85,9 @@ Disallow to use specified RegEx patterns from SecretLint config.
 
 ## Options
 
-- `allows: string[]`
-    - Allows a list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string)
-- `patterns: PatternType[]`
-    - Array of pattern configurations
-    - Each pattern can have:
-        - `name: string` - Name of the pattern (required)
-        - `patterns?: string[]` - Array of RegExp-like strings to match against file content
-        - `pattern?: string` - **[DEPRECATED]** Single RegExp-like string to match against file content (use `patterns` instead)
-        - `filePathGlobs?: string[]` - Array of glob patterns to match against file paths
-        - `allows?: string[]` - Allows a list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string) for this pattern only
+### `allows`
 
-### Per-pattern allows
-
-Each pattern can have its own `allows` list in addition to the global `allows`. This is useful when you want to allow a value only for a specific pattern.
+A global list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string) that are allowed across all patterns. Each pattern can additionally define its own `allows` list to allow values only for that specific pattern.
 
 ```json
 {
@@ -127,6 +116,16 @@ Each pattern can have its own `allows` list in addition to the global `allows`. 
 In this example:
 - `test-*` values are allowed globally for all patterns
 - `dummy-*` values are allowed only for the `password=` pattern, but still flagged for `apikey=`
+
+### `patterns`
+
+Array of pattern configurations. Each pattern can have:
+
+- `name: string` - Name of the pattern (required)
+- `patterns?: string[]` - Array of RegExp-like strings to match against file content
+- `pattern?: string` - **[DEPRECATED]** Single RegExp-like string to match against file content (use `patterns` instead)
+- `filePathGlobs?: string[]` - Array of glob patterns to match against file paths
+- `allows?: string[]` - Per-pattern allow list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string), applied in addition to the global `allows`
 
 ### Deprecated options
 
