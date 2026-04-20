@@ -82,14 +82,13 @@ function reportIfFoundPattern({
 
         // Check patterns if specified
         if (allPatterns.length > 0) {
+            const mergedAllows = [...options.allows, ...(p.allows ?? [])];
             const results = matchPatterns(source.content, allPatterns);
             for (const result of results) {
                 const index = result.startIndex || 0;
                 const match = result.match || "";
                 const range = [index, index + match.length] as const;
-                const globalAllows = options.allows;
-                const patternAllows = p.allows ?? [];
-                const allowedResults = matchPatterns(match, [...globalAllows, ...patternAllows]);
+                const allowedResults = matchPatterns(match, mergedAllows);
                 if (allowedResults.length > 0) {
                     continue;
                 }
