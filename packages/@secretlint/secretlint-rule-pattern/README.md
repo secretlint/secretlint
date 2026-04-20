@@ -85,15 +85,47 @@ Disallow to use specified RegEx patterns from SecretLint config.
 
 ## Options
 
-- `allows: string[]`
-    - Allows a list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string)
-- `patterns: PatternType[]`
-    - Array of pattern configurations
-    - Each pattern can have:
-        - `name: string` - Name of the pattern (required)
-        - `patterns?: string[]` - Array of RegExp-like strings to match against file content
-        - `pattern?: string` - **[DEPRECATED]** Single RegExp-like string to match against file content (use `patterns` instead)
-        - `filePathGlobs?: string[]` - Array of glob patterns to match against file paths
+### `allows`
+
+A global list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string) that are allowed across all patterns. Each pattern can additionally define its own `allows` list to allow values only for that specific pattern.
+
+```json
+{
+  "rules": [
+    {
+      "id": "@secretlint/secretlint-rule-pattern",
+      "options": {
+        "allows": ["/^test-/"],
+        "patterns": [
+          {
+            "name": "password=",
+            "patterns": ["/password\\s*=\\s*(?<password>[\\w\\d]{1,256})\\b.*/gi"],
+            "allows": ["/^dummy-/"]
+          },
+          {
+            "name": "apikey=",
+            "patterns": ["/apikey\\s*=\\s*(?<apikey>[\\w\\d]{8,})\\b.*/gi"]
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
+In this example:
+- `test-*` values are allowed globally for all patterns
+- `dummy-*` values are allowed only for the `password=` pattern, but still flagged for `apikey=`
+
+### `patterns`
+
+Array of pattern configurations. Each pattern can have:
+
+- `name: string` - Name of the pattern (required)
+- `patterns?: string[]` - Array of RegExp-like strings to match against file content
+- `pattern?: string` - **[DEPRECATED]** Single RegExp-like string to match against file content (use `patterns` instead)
+- `filePathGlobs?: string[]` - Array of glob patterns to match against file paths
+- `allows?: string[]` - Per-pattern allow list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string), applied in addition to the global `allows`
 
 ### Deprecated options
 

@@ -1,0 +1,6 @@
+{
+    "filePath": "[SNAPSHOT]/ok.pattern-allows/input.txt",
+    "messages": [],
+    "sourceContent": "password = foo-bar\napikey = myapikey123\n",
+    "sourceContentType": "text"
+}

@@ -25,6 +25,7 @@ export type PatternType = {
      */
     pattern?: string;
     filePathGlobs?: string[];
+    allows?: string[];
 };
 
 export type Options = {
@@ -36,7 +37,7 @@ function collectPatterns(patternConfig: PatternType): string[] {
     // Error if both patterns and pattern are specified
     if (patternConfig.patterns && patternConfig.patterns.length > 0 && patternConfig.pattern) {
         throw new Error(
-            `Pattern "${patternConfig.name}" cannot have both "patterns" and "pattern" specified. Use "patterns" array instead.`
+            `Pattern "${patternConfig.name}" cannot have both "patterns" and "pattern" specified. Use "patterns" array instead.`,
         );
     }
 
@@ -81,12 +82,13 @@ function reportIfFoundPattern({
 
         // Check patterns if specified
         if (allPatterns.length > 0) {
+            const mergedAllows = [...options.allows, ...(p.allows ?? [])];
             const results = matchPatterns(source.content, allPatterns);
             for (const result of results) {
                 const index = result.startIndex || 0;
                 const match = result.match || "";
                 const range = [index, index + match.length] as const;
-                const allowedResults = matchPatterns(match, options.allows);
+                const allowedResults = matchPatterns(match, mergedAllows);
                 if (allowedResults.length > 0) {
                     continue;
                 }
@@ -131,7 +133,7 @@ export const creator: SecretLintRuleCreator<Options> = {
             // Validate that patterns and pattern are not both specified
             if (p.patterns && p.patterns.length > 0 && p.pattern) {
                 throw new Error(
-                    `Pattern "${p.name}" cannot have both "patterns" and "pattern" specified. Use "patterns" array instead.`
+                    `Pattern "${p.name}" cannot have both "patterns" and "pattern" specified. Use "patterns" array instead.`,
                 );
             }
 
@@ -139,7 +141,7 @@ export const creator: SecretLintRuleCreator<Options> = {
             const hasFilePathGlobs = p.filePathGlobs && p.filePathGlobs.length > 0;
             if (!hasPatterns && !hasFilePathGlobs) {
                 throw new Error(
-                    `Pattern "${p.name}" must have either "patterns", "pattern" (deprecated), or "filePathGlobs" specified`
+                    `Pattern "${p.name}" must have either "patterns", "pattern" (deprecated), or "filePathGlobs" specified`,
                 );
             }
         }

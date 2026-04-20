@@ -1,0 +1,2 @@
+password = foo-bar-baz
+apikey = foo-bar-baz
