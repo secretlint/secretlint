@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1776610526600,
+  "lastUpdate": 1776647723608,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -52894,6 +52894,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.31,
             "range": "±0.88%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "31d82ceedd1a9597c76e9ef93a6a13c12f2979cf",
+          "message": "Add per-pattern allows configuration for secretlint-rule-pattern (#1504)\n\n## Summary\nThis PR adds support for per-pattern `allows` configuration in the\nsecretlint-rule-pattern rule, enabling more granular control over which\nvalues are allowed for specific patterns.\n\n## Key Changes\n- Added `allows?: string[]` field to the `PatternType` interface to\nsupport pattern-level allowlist configuration\n- Modified the pattern matching logic to merge global `allows` with\npattern-specific `allows` when checking for allowed values\n- Updated validation error messages with trailing commas for consistency\n- Added comprehensive test cases demonstrating:\n- Pattern-specific allows that prevent false positives\n(ok.pattern-allows)\n- Pattern-specific allows that don't apply to other patterns\n(ng.pattern-allows-other-pattern)\n\n## Implementation Details\nThe key change in the matching logic combines both global and\npattern-specific allowlists:\n```typescript\nconst globalAllows = options.allows;\nconst patternAllows = p.allows ?? [];\nconst allowedResults = matchPatterns(match, [...globalAllows, ...patternAllows]);\n```\n\nThis allows users to define allowlists at both the global level\n(applying to all patterns) and at the individual pattern level (applying\nonly to that specific pattern), providing flexibility in secret\ndetection configuration.\n\nhttps://claude.ai/code/session_0156Eig3oPpp7LeXG3AogZEs\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-04-20T10:13:39+09:00",
+          "tree_id": "c4d0d405edc4752ac62f2e9817d92d504c3363ac",
+          "url": "https://github.com/secretlint/secretlint/commit/31d82ceedd1a9597c76e9ef93a6a13c12f2979cf"
+        },
+        "date": 1776647720971,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.33,
+            "range": "±0.97%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.31,
+            "range": "±1.88%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
