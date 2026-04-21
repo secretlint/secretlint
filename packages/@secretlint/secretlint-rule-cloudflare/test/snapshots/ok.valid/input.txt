@@ -4,11 +4,11 @@
 cfat_tooshort
 
 # Wrong prefix
-cf_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxX
-xcfat_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxX
+cf_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStT03fa099b
+xcfat_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStT03fa099b
 
-# Too long (49 chars after prefix, should not match exactly 48)
-cfat_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXy
+# Too long (extra char after checksum, trailing boundary check)
+cfat_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStT03fa099bZ
 
 # Valid Cloudflare URL (not a token)
 https://api.cloudflare.com/client/v4/zones

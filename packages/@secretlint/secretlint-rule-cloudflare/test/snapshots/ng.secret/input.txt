@@ -1,10 +1,10 @@
 # Cloudflare API tokens that should be detected
 
 # Account API Token (cfat_)
-CLOUDFLARE_API_TOKEN=cfat_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxX
+CLOUDFLARE_API_TOKEN=cfat_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStT03fa099b
 
 # User API Token (cfut_)
-cfut_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxX
+cfut_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStT03fa099b
 
 # Global API Key (cfk_)
-cfk_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxX
+cfk_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStT03fa099b

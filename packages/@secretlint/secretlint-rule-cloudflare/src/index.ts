@@ -23,7 +23,7 @@ export const messages = {
 
 export type Options = {
     /**
-     * Define allow pattern written by RegReg-like strings
+     * Define allow pattern written by RegExp-like strings
      * See https://github.com/textlint/regexp-string-matcher#regexp-like-string
      **/
     allows?: string[];
@@ -38,9 +38,9 @@ const messageIdMap: Record<CLOUDFLARE_TOKEN_TYPE, keyof typeof messages> = {
 
 // Cloudflare prefixed token format: {prefix}_{40 chars body}{8 chars checksum}
 // The checksum is CRC32 of the body encoded as 8 lowercase hex chars (fixed length).
-// If Cloudflare changes the checksum algorithm, update the total length ({48}) accordingly.
+// If Cloudflare changes the checksum algorithm, update [0-9a-f]{8} to match the new format.
 // https://developers.cloudflare.com/fundamentals/api/get-started/token-formats/
-const CLOUDFLARE_TOKEN_PATTERN = /(?<!\p{L})(?<prefix>cfk|cfut|cfat)_[A-Za-z0-9]{48}(?![A-Za-z0-9])/gu;
+const CLOUDFLARE_TOKEN_PATTERN = /(?<!\p{L})(?<prefix>cfk|cfut|cfat)_[A-Za-z0-9]{40}[0-9a-f]{8}(?![A-Za-z0-9])/gu;
 
 function reportIfFound({
     source,

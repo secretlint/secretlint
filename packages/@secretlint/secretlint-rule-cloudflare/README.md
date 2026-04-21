@@ -39,7 +39,7 @@ Via `.secretlintrc.json`:
 ```ts
 export type Options = {
     /**
-     * Define allow pattern written by RegReg-like strings
+     * Define allow pattern written by RegExp-like strings
      * See https://github.com/textlint/regexp-string-matcher#regexp-like-string
      **/
     allows?: string[];
