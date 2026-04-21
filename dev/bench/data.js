@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1776783696428,
+  "lastUpdate": 1776789474833,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -53046,6 +53046,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.3,
             "range": "±1.14%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "nozomiishii.jp@gmail.com",
+            "name": "Nozomi Ishii",
+            "username": "nozomiishii"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "bfcd17e07356d795e5835444f134e43c4068342b",
+          "message": "chore(docker): add OCI image source label (#1511)\n\n## Summary\n\nAdd standard OCI image labels to `publish/docker/Dockerfile` so\ndownstream\ntooling (Renovate, Dependabot, Docker Hub image page, GHCR \"Connect\nrepository\")\ncan auto-resolve this repository as the image source.\n\n## Why\n\nWhen a consumer project updates `secretlint/secretlint` via Renovate,\nthe\ngenerated PR body currently has no repository link and no release notes\nsection, because the Docker datasource reads\n`org.opencontainers.image.source`\nfrom the image metadata to discover the source repo. Adding this single\nlabel\nfixes this for every downstream consumer without any configuration on\ntheir\nend.\n\nFor context, the `npx` snippet shown in the README is the standard setup\n—\nthis proposal is specifically useful when users additionally pin a\nspecific\n`secretlint/secretlint` Docker tag for reproducible CI, since in that\nsetup\nRenovate / Dependabot update PRs become the main surface for reviewing\nwhat\nchanged between versions.\n\n## Changes\n\n- Add `LABEL org.opencontainers.image.source` (points to this repo)\n- Add `LABEL org.opencontainers.image.licenses=\"MIT\"` (matches the\nproject LICENSE)\n\n## References\n\n- [OCI image-spec — pre-defined annotation\nkeys](https://github.com/opencontainers/image-spec/blob/main/annotations.md#pre-defined-annotation-keys)\n- Same labels are used by projects like renovatebot/renovate and\nfluent/fluent-bit.\n\n## Verification\n\n- `docker build -t secretlint publish/docker/` succeeds locally.\n- `docker image inspect <tag> --format '{{json .Config.Labels}}'` shows\nthe new labels:\n  ```json\n  {\n    \"description\": \"Docker Container for secretlint\",\n    \"maintainer\": \"azu <azuciao@gmail.com>\",\n    \"org.opencontainers.image.licenses\": \"MIT\",\n\"org.opencontainers.image.source\":\n\"https://github.com/secretlint/secretlint\"\n  }\n  ```\n- `docker run --rm <tag> secretlint --version` → `4.0.0`\n\nCloses #1510",
+          "timestamp": "2026-04-22T01:36:06+09:00",
+          "tree_id": "b999664472b62d2ed2b1770c0a6248e4010f554d",
+          "url": "https://github.com/secretlint/secretlint/commit/bfcd17e07356d795e5835444f134e43c4068342b"
+        },
+        "date": 1776789472141,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.35,
+            "range": "±1.27%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.3,
+            "range": "±0.30%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
