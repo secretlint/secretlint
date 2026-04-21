@@ -37,6 +37,8 @@ const messageIdMap: Record<CLOUDFLARE_TOKEN_TYPE, keyof typeof messages> = {
 };
 
 // Cloudflare prefixed token format: {prefix}_{40 chars body}{8 chars checksum}
+// The checksum is CRC32 of the body encoded as 8 lowercase hex chars (fixed length).
+// If Cloudflare changes the checksum algorithm, update the total length ({48}) accordingly.
 // https://developers.cloudflare.com/fundamentals/api/get-started/token-formats/
 const CLOUDFLARE_TOKEN_PATTERN = /(?<!\p{L})(?<prefix>cfk|cfut|cfat)_[A-Za-z0-9]{48}(?![A-Za-z0-9])/gu;
 
