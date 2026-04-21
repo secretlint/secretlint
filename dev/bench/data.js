@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1776648206290,
+  "lastUpdate": 1776732987374,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -52970,6 +52970,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.31,
             "range": "±1.05%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ab180aa6ec0147760fe8cb10fa10ea9131316b20",
+          "message": "docs: Update README and CONTRIBUTING with new rules and corrections (#1507)\n\n## Summary\nThis PR updates documentation to reflect new secretlint rules and\ncorrects references to build tools and commands.\n\n## Key Changes\n- **Added 5 new secretlint rules** to the README rules list:\n  - Azure\n  - Docker\n  - Figma\n  - HuggingFace\n  - Notion\n\n- **Updated command references** from `npm` to `pnpm` for consistency\nwith the project's package manager:\n  - `npm run gen:rule` → `pnpm run gen:rule`\n\n- **Fixed documentation errors**:\n- Corrected \"Turbopack\" to \"Turborepo\" in CONTRIBUTING.md (the actual\nmonorepo tool used)\n- Updated Prettier command reference from `pnpm prettier` to `pnpm\nformat` to match actual npm scripts\n\n## Notes\nThese changes ensure the documentation accurately reflects the current\nstate of the project, including newly available rules and the correct\ntooling/commands for contributors.\n\nhttps://claude.ai/code/session_01PyFaNNG9eVNU1SgpsVxt4g\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-04-21T09:54:42+09:00",
+          "tree_id": "e1077a7a515ad8638bdaac22e04635013d8326f6",
+          "url": "https://github.com/secretlint/secretlint/commit/ab180aa6ec0147760fe8cb10fa10ea9131316b20"
+        },
+        "date": 1776732984565,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.37,
+            "range": "±1.06%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.31,
+            "range": "±1.42%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
