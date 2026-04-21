@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1776732987374,
+  "lastUpdate": 1776783696428,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -53008,6 +53008,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.31,
             "range": "±1.42%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "18ab987ae60be7b086f1816420ae2c7136e7d55e",
+          "message": "Add Cloudflare API token detection rule (#1508)\n\n## Summary\nThis PR adds a new secretlint rule for detecting Cloudflare API tokens\nin source code. The rule identifies three types of Cloudflare tokens\nbased on their prefixes and validates their format according to\nCloudflare's token specification.\n\n## Key Changes\n- **New rule package**: `@secretlint/secretlint-rule-cloudflare` that\ndetects three token types:\n  - Global API Keys (`cfk_` prefix)\n  - User API Tokens (`cfut_` prefix)\n  - Account API Tokens (`cfat_` prefix)\n- **Token format validation**: Uses regex pattern to match tokens with\nthe exact format: prefix + 40 character body + 8 character CRC32\nchecksum (48 chars total after prefix)\n- **Bilingual support**: Messages in English and Japanese\n- **Configurable allowlist**: Supports `allows` option for pattern-based\ntoken allowlisting\n- **Comprehensive test coverage**: Includes positive and negative test\ncases with snapshot validation\n- **Integration**: Added to the canary preset package for inclusion in\nthe default rule set\n\n## Implementation Details\n- Uses Unicode-aware regex with negative lookbehind/lookahead to avoid\nmatching partial tokens\n- Implements proper boundary checking to prevent false positives from\ntokens embedded in longer strings\n- Follows the official Cloudflare token format specification from their\nAPI documentation\n- Includes proper TypeScript types and follows the secretlint rule\ncreator pattern\n\nfix #1506 \n\nhttps://claude.ai/code/session_014gzyosGghVNkKDvUqYcZXW\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-04-21T23:59:41+09:00",
+          "tree_id": "62774db021f759c07c30fac1e5f6691c2c552095",
+          "url": "https://github.com/secretlint/secretlint/commit/18ab987ae60be7b086f1816420ae2c7136e7d55e"
+        },
+        "date": 1776783693672,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.36,
+            "range": "±1.04%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.3,
+            "range": "±1.14%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
