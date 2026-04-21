@@ -1,0 +1,6 @@
+{
+    "filePath": "[SNAPSHOT]/ok.valid/input.txt",
+    "messages": [],
+    "sourceContent": "# These should NOT be detected as Cloudflare API tokens\n\n# Too short (fewer than 48 chars after prefix)\ncfat_tooshort\n\n# Wrong prefix\ncf_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxX\nxcfat_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxX\n\n# Too long (49 chars after prefix, should not match exactly 48)\ncfat_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXy\n\n# Valid Cloudflare URL (not a token)\nhttps://api.cloudflare.com/client/v4/zones\n",
+    "sourceContentType": "text"
+}

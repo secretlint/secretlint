@@ -1,0 +1,14 @@
+# These should NOT be detected as Cloudflare API tokens
+
+# Too short (fewer than 48 chars after prefix)
+cfat_tooshort
+
+# Wrong prefix
+cf_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxX
+xcfat_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxX
+
+# Too long (49 chars after prefix, should not match exactly 48)
+cfat_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXy
+
+# Valid Cloudflare URL (not a token)
+https://api.cloudflare.com/client/v4/zones

@@ -67,6 +67,7 @@
         "@secretlint/secretlint-rule-database-connection-string": "workspace:*",
         "@secretlint/secretlint-rule-databricks": "workspace:*",
         "@secretlint/secretlint-rule-docker": "workspace:*",
+        "@secretlint/secretlint-rule-cloudflare": "workspace:*",
         "@secretlint/secretlint-rule-figma": "workspace:*",
         "@secretlint/secretlint-rule-filter-comments": "workspace:*",
         "@secretlint/secretlint-rule-gcp": "workspace:*",
