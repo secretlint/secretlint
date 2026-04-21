@@ -2,6 +2,8 @@ FROM node:22-alpine
 
 LABEL maintainer="azu <azuciao@gmail.com>"
 LABEL description="Docker Container for secretlint"
+LABEL org.opencontainers.image.source="https://github.com/secretlint/secretlint"
+LABEL org.opencontainers.image.licenses="MIT"
 
 ARG SECRETLINT_VERSION
 ENV SECRETLINT_VERSION=${SECRETLINT_VERSION:-4.0.0}
