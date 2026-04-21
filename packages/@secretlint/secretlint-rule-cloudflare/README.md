@@ -48,9 +48,17 @@ export type Options = {
 
 ## Messages
 
-### CLOUDFLARE_API_TOKEN
+### CLOUDFLARE_GLOBAL_API_KEY
 
-Detected a Cloudflare API token (Global API Key, User API Token, or Account API Token).
+Detected a Cloudflare Global API Key (`cfk_` prefix).
+
+### CLOUDFLARE_USER_API_TOKEN
+
+Detected a Cloudflare User API Token (`cfut_` prefix).
+
+### CLOUDFLARE_ACCOUNT_API_TOKEN
+
+Detected a Cloudflare Account API Token (`cfat_` prefix).
 
 ## License
 

@@ -20,11 +20,10 @@
                 }
             },
             "severity": "error",
-            "messageId": "CLOUDFLARE_API_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-cloudflare/README.md#CLOUDFLARE_API_TOKEN",
+            "messageId": "CLOUDFLARE_ACCOUNT_API_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-cloudflare/README.md#CLOUDFLARE_ACCOUNT_API_TOKEN",
             "data": {
-                "TOKEN": "cfat_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxX",
-                "TYPE": "Account API Token"
+                "TOKEN": "cfat_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxX"
             }
         },
         {
@@ -46,11 +45,10 @@
                 }
             },
             "severity": "error",
-            "messageId": "CLOUDFLARE_API_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-cloudflare/README.md#CLOUDFLARE_API_TOKEN",
+            "messageId": "CLOUDFLARE_USER_API_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-cloudflare/README.md#CLOUDFLARE_USER_API_TOKEN",
             "data": {
-                "TOKEN": "cfut_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxX",
-                "TYPE": "User API Token"
+                "TOKEN": "cfut_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxX"
             }
         },
         {
@@ -72,11 +70,10 @@
                 }
             },
             "severity": "error",
-            "messageId": "CLOUDFLARE_API_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-cloudflare/README.md#CLOUDFLARE_API_TOKEN",
+            "messageId": "CLOUDFLARE_GLOBAL_API_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-cloudflare/README.md#CLOUDFLARE_GLOBAL_API_KEY",
             "data": {
-                "TOKEN": "cfk_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxX",
-                "TYPE": "Global API Key"
+                "TOKEN": "cfk_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxX"
             }
         }
     ],

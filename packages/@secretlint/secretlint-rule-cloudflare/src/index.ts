@@ -7,9 +7,17 @@ import type {
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export const messages = {
-    CLOUDFLARE_API_TOKEN: {
-        en: (props: { TOKEN: string; TYPE: string }) => `found Cloudflare ${props.TYPE}: ${props.TOKEN}`,
-        ja: (props: { TOKEN: string; TYPE: string }) => `Cloudflare ${props.TYPE}が見つかりました: ${props.TOKEN}`,
+    CLOUDFLARE_GLOBAL_API_KEY: {
+        en: (props: { TOKEN: string }) => `found Cloudflare Global API Key: ${props.TOKEN}`,
+        ja: (props: { TOKEN: string }) => `Cloudflare Global API Keyが見つかりました: ${props.TOKEN}`,
+    },
+    CLOUDFLARE_USER_API_TOKEN: {
+        en: (props: { TOKEN: string }) => `found Cloudflare User API Token: ${props.TOKEN}`,
+        ja: (props: { TOKEN: string }) => `Cloudflare User API Tokenが見つかりました: ${props.TOKEN}`,
+    },
+    CLOUDFLARE_ACCOUNT_API_TOKEN: {
+        en: (props: { TOKEN: string }) => `found Cloudflare Account API Token: ${props.TOKEN}`,
+        ja: (props: { TOKEN: string }) => `Cloudflare Account API Tokenが見つかりました: ${props.TOKEN}`,
     },
 };
 
@@ -21,10 +29,11 @@ export type Options = {
     allows?: string[];
 };
 
-const TOKEN_TYPES: Record<string, string> = {
-    cfk: "Global API Key",
-    cfut: "User API Token",
-    cfat: "Account API Token",
+type CLOUDFLARE_TOKEN_TYPE = "cfk" | "cfut" | "cfat";
+const messageIdMap: Record<CLOUDFLARE_TOKEN_TYPE, keyof typeof messages> = {
+    cfk: "CLOUDFLARE_GLOBAL_API_KEY",
+    cfut: "CLOUDFLARE_USER_API_TOKEN",
+    cfat: "CLOUDFLARE_ACCOUNT_API_TOKEN",
 };
 
 // Cloudflare prefixed token format: {prefix}_{40 chars body}{8 chars checksum}
@@ -46,16 +55,18 @@ function reportIfFound({
     for (const result of results) {
         const index = result.index ?? 0;
         const match = result[0] ?? "";
-        const prefix = result.groups?.["prefix"] ?? "";
+        const prefix = result.groups?.["prefix"] as CLOUDFLARE_TOKEN_TYPE | undefined;
+        if (!prefix) {
+            continue;
+        }
         const range = [index, index + match.length] as const;
         const allowedResults = matchPatterns(match, options.allows);
         if (allowedResults.length > 0) {
             continue;
         }
         context.report({
-            message: t("CLOUDFLARE_API_TOKEN", {
+            message: t(messageIdMap[prefix], {
                 TOKEN: match,
-                TYPE: TOKEN_TYPES[prefix] ?? "API token",
             }),
             range,
         });
