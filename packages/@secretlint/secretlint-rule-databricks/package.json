@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-databricks",
-    "version": "12.1.0",
+    "version": "12.2.0",
     "description": "A secretlint rule for detecting Databricks personal access tokens",
     "keywords": [
         "secretlint",
