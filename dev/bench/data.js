@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1776789474833,
+  "lastUpdate": 1776789591542,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -53084,6 +53084,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.3,
             "range": "±0.30%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "41898282+github-actions[bot]@users.noreply.github.com",
+            "name": "github-actions[bot]",
+            "username": "github-actions[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f6ee24b61445236350dd5c87fde433ee676eb88d",
+          "message": "v12.2.0 (#1512)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat master -->\n\n## What's Changed\n### Features\n* Add Cloudflare API token detection rule by @azu in\nhttps://github.com/secretlint/secretlint/pull/1508\n### Documentation\n* docs: Update README and CONTRIBUTING with new rules and corrections by\n@azu in https://github.com/secretlint/secretlint/pull/1507\n* chore(docker): add OCI image source label by @nozomiishii in\nhttps://github.com/secretlint/secretlint/pull/1511\n\n## New Contributors\n* @nozomiishii made their first contribution in\nhttps://github.com/secretlint/secretlint/pull/1511\n\n**Full Changelog**:\nhttps://github.com/secretlint/secretlint/compare/v12.1.0...v12.2.0\n\nCo-authored-by: azu <azu@users.noreply.github.com>",
+          "timestamp": "2026-04-22T01:38:06+09:00",
+          "tree_id": "e1ad4eea6afaf00f771b7ecf627eeee84270915a",
+          "url": "https://github.com/secretlint/secretlint/commit/f6ee24b61445236350dd5c87fde433ee676eb88d"
+        },
+        "date": 1776789589099,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.38,
+            "range": "±0.90%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.3,
+            "range": "±0.92%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
