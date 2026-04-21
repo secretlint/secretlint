@@ -342,6 +342,11 @@ Secretlint rules has been implemented as separated modules.
 - [@secretlint/secretlint-rule-databricks](./packages/%40secretlint/secretlint-rule-databricks)
 - [@secretlint/secretlint-rule-hashicorp-vault](./packages/%40secretlint/secretlint-rule-hashicorp-vault)
 - [@secretlint/secretlint-rule-vercel](./packages/%40secretlint/secretlint-rule-vercel)
+- [@secretlint/secretlint-rule-azure](./packages/%40secretlint/secretlint-rule-azure)
+- [@secretlint/secretlint-rule-docker](./packages/%40secretlint/secretlint-rule-docker)
+- [@secretlint/secretlint-rule-figma](./packages/%40secretlint/secretlint-rule-figma)
+- [@secretlint/secretlint-rule-huggingface](./packages/%40secretlint/secretlint-rule-huggingface)
+- [@secretlint/secretlint-rule-notion](./packages/%40secretlint/secretlint-rule-notion)
 - [@secretlint/secretlint-rule-secp256k1-privatekey](./packages/@secretlint/secretlint-rule-secp256k1-privatekey)
 - [@secretlint/secretlint-rule-no-k8s-kind-secret](./packages/@secretlint/secretlint-rule-no-k8s-kind-secret)
 - [@secretlint/secretlint-rule-pattern](./packages/@secretlint/secretlint-rule-pattern)
@@ -709,10 +714,10 @@ See also, [CONTRIBUTING.md](./CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](./CODE_O
 
 ### Add New Rule
 
-You can use `npm run gen:rule` command to create new rule.
+You can use `pnpm run gen:rule` command to create new rule.
 
 ```shell script
-npm run gen:rule
+pnpm run gen:rule
 ```
 
 For more details, please see [CONTRIBUTING.md](./CONTRIBUTING.md)

@@ -76,7 +76,7 @@ After getting your clone, you can start playing with secretlint.
     $ pnpm run build
     ```
 
-Under the hood, secretlint uses Turbopack to manage multiple packages:
+Under the hood, secretlint uses Turborepo to manage multiple packages:
 
 - `packages/*`
 - `packages/@secretlint/*`
@@ -116,7 +116,7 @@ This repository uses [Prettier](https://prettier.io/) for code formatter. We use
 - Run Prettier to reformat code:
 
     ```sh
-    $ pnpm prettier
+    $ pnpm format
     ```
 
 ##### Commit Message Format
