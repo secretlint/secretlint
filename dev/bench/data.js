@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1776789591542,
+  "lastUpdate": 1776804771020,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -53122,6 +53122,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.3,
             "range": "±0.92%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "59428c1a3d61c8337c44feff153c1cc98271e985",
+          "message": "Update dependency rollup to ^4.60.2 (#1513)\n\nThis PR contains the following updates:\n\n| Package | Change |\n[Age](https://docs.renovatebot.com/merge-confidence/) |\n[Confidence](https://docs.renovatebot.com/merge-confidence/) |\n|---|---|---|---|\n| [rollup](https://rollupjs.org/)\n([source](https://redirect.github.com/rollup/rollup)) | [`^4.60.1` →\n`^4.60.2`](https://renovatebot.com/diffs/npm/rollup/4.60.1/4.60.2) |\n![age](https://developer.mend.io/api/mc/badges/age/npm/rollup/4.60.2?slim=true)\n|\n![confidence](https://developer.mend.io/api/mc/badges/confidence/npm/rollup/4.60.1/4.60.2?slim=true)\n|\n\n---\n\n### Release Notes\n\n<details>\n<summary>rollup/rollup (rollup)</summary>\n\n###\n[`v4.60.2`](https://redirect.github.com/rollup/rollup/blob/HEAD/CHANGELOG.md#4602)\n\n[Compare\nSource](https://redirect.github.com/rollup/rollup/compare/v4.60.1...v4.60.2)\n\n*2026-04-18*\n\n##### Bug Fixes\n\n- Resolve a variable rendering bug when generating different formats\nfrom the same build\n([#&#8203;6350](https://redirect.github.com/rollup/rollup/issues/6350))\n\n##### Pull Requests\n\n- [#&#8203;6327](https://redirect.github.com/rollup/rollup/pull/6327):\ndocs: fix various typos in source and documentation\n([@&#8203;Abhi3975](https://redirect.github.com/Abhi3975),\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6331](https://redirect.github.com/rollup/rollup/pull/6331):\nfix(deps): update minor/patch updates\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6332](https://redirect.github.com/rollup/rollup/pull/6332):\nchore(deps): update codecov/codecov-action action to v6\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6333](https://redirect.github.com/rollup/rollup/pull/6333):\nchore(deps): update dependency eslint-plugin-unicorn to v64\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6334](https://redirect.github.com/rollup/rollup/pull/6334):\nfix(deps): update rust crate swc\\_compiler\\_base to v51\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6335](https://redirect.github.com/rollup/rollup/pull/6335):\nchore(deps): lock file maintenance\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot],\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6346](https://redirect.github.com/rollup/rollup/pull/6346):\nfix(deps): update minor/patch updates\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6347](https://redirect.github.com/rollup/rollup/pull/6347):\nchore(deps): update dependency lru-cache to v11\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6348](https://redirect.github.com/rollup/rollup/pull/6348):\nfix(deps): update swc monorepo (major)\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot],\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6349](https://redirect.github.com/rollup/rollup/pull/6349):\nchore(deps): lock file maintenance\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot],\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6350](https://redirect.github.com/rollup/rollup/pull/6350):\nfix: reset variable render names between outputs in the same generate\n([@&#8203;barry3406](https://redirect.github.com/barry3406),\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6351](https://redirect.github.com/rollup/rollup/pull/6351):\nchore(deps): update minor/patch updates\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6352](https://redirect.github.com/rollup/rollup/pull/6352):\nchore(deps): update cross-platform-actions/action action to v1\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6353](https://redirect.github.com/rollup/rollup/pull/6353):\nchore(deps): update dependency lru-cache to v11\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot],\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6354](https://redirect.github.com/rollup/rollup/pull/6354):\nchore(deps): lock file maintenance\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6355](https://redirect.github.com/rollup/rollup/pull/6355):\nchore(deps): lock file maintenance\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6356](https://redirect.github.com/rollup/rollup/pull/6356):\nchore(deps): lock file maintenance\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6358](https://redirect.github.com/rollup/rollup/pull/6358):\nchore: remove cross-env from devDeps\n([@&#8203;K-tecchan](https://redirect.github.com/K-tecchan))\n\n</details>\n\n---\n\n### Configuration\n\n📅 **Schedule**: (in timezone Asia/Tokyo)\n\n- Branch creation\n  - At any time (no schedule defined)\n- Automerge\n  - At any time (no schedule defined)\n\n🚦 **Automerge**: Enabled.\n\n♻ **Rebasing**: Whenever PR is behind base branch, or you tick the\nrebase/retry checkbox.\n\n🔕 **Ignore**: Close this PR and you won't be reminded about this update\nagain.\n\n---\n\n- [ ] <!-- rebase-check -->If you want to rebase/retry this PR, check\nthis box\n\n---\n\nThis PR was generated by [Mend Renovate](https://mend.io/renovate/).\nView the [repository job\nlog](https://developer.mend.io/github/secretlint/secretlint).\n\n<!--renovate-debug:eyJjcmVhdGVkSW5WZXIiOiI0My4xMzguMSIsInVwZGF0ZWRJblZlciI6IjQzLjEzOC4xIiwidGFyZ2V0QnJhbmNoIjoibWFzdGVyIiwibGFiZWxzIjpbImRlcGVuZGVuY2llcyJdfQ==-->\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2026-04-21T20:51:01Z",
+          "tree_id": "7cc25be8fe6c40a772aca0ccb1af6dda0c41eaa7",
+          "url": "https://github.com/secretlint/secretlint/commit/59428c1a3d61c8337c44feff153c1cc98271e985"
+        },
+        "date": 1776804768566,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.31,
+            "range": "±1.24%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.29,
+            "range": "±2.92%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
