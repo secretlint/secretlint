@@ -1,0 +1,82 @@
+{
+    "filePath": "[SNAPSHOT]/ng.secret/input.txt",
+    "messages": [
+        {
+            "message": "found Cloudflare Account API Token: cfat_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStT03fa099b",
+            "range": [
+                98,
+                151
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-cloudflare",
+            "loc": {
+                "start": {
+                    "line": 4,
+                    "column": 21
+                },
+                "end": {
+                    "line": 4,
+                    "column": 74
+                }
+            },
+            "severity": "error",
+            "messageId": "CLOUDFLARE_ACCOUNT_API_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-cloudflare/README.md#CLOUDFLARE_ACCOUNT_API_TOKEN",
+            "data": {
+                "TOKEN": "cfat_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStT03fa099b"
+            }
+        },
+        {
+            "message": "found Cloudflare User API Token: cfut_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStT03fa099b",
+            "range": [
+                178,
+                231
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-cloudflare",
+            "loc": {
+                "start": {
+                    "line": 7,
+                    "column": 0
+                },
+                "end": {
+                    "line": 7,
+                    "column": 53
+                }
+            },
+            "severity": "error",
+            "messageId": "CLOUDFLARE_USER_API_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-cloudflare/README.md#CLOUDFLARE_USER_API_TOKEN",
+            "data": {
+                "TOKEN": "cfut_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStT03fa099b"
+            }
+        },
+        {
+            "message": "found Cloudflare Global API Key: cfk_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStT03fa099b",
+            "range": [
+                257,
+                309
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-cloudflare",
+            "loc": {
+                "start": {
+                    "line": 10,
+                    "column": 0
+                },
+                "end": {
+                    "line": 10,
+                    "column": 52
+                }
+            },
+            "severity": "error",
+            "messageId": "CLOUDFLARE_GLOBAL_API_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-cloudflare/README.md#CLOUDFLARE_GLOBAL_API_KEY",
+            "data": {
+                "TOKEN": "cfk_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStT03fa099b"
+            }
+        }
+    ],
+    "sourceContent": "# Cloudflare API tokens that should be detected\n\n# Account API Token (cfat_)\nCLOUDFLARE_API_TOKEN=cfat_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStT03fa099b\n\n# User API Token (cfut_)\ncfut_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStT03fa099b\n\n# Global API Key (cfk_)\ncfk_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStT03fa099b\n",
+    "sourceContentType": "text"
+}

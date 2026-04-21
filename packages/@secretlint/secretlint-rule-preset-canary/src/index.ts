@@ -23,6 +23,7 @@ import { creator as ruleVercel } from "@secretlint/secretlint-rule-vercel";
 import { creator as ruleDatabricks } from "@secretlint/secretlint-rule-databricks";
 import { creator as ruleDocker } from "@secretlint/secretlint-rule-docker";
 import { creator as ruleFigma } from "@secretlint/secretlint-rule-figma";
+import { creator as ruleCloudflare } from "@secretlint/secretlint-rule-cloudflare";
 import { creator as ruleFilterComments } from "@secretlint/secretlint-rule-filter-comments";
 
 export const rules = [
@@ -50,6 +51,7 @@ export const rules = [
     ruleDatabricks,
     ruleDocker,
     ruleFigma,
+    ruleCloudflare,
     ruleFilterComments,
 ];
 export type Options = {};
