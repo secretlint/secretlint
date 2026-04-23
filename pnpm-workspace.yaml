@@ -33,7 +33,7 @@ catalog:
   "js-yaml": "^4.1.1"
   "lint-staged": "^16.4.0"
   "micromatch": "^4.0.8"
-  "node-sarif-builder": "^4.0.0"
+  "node-sarif-builder": "^4.1.0"
   "p-map": "^7.0.4"
   "pluralize": "^8.0.0"
   "prettier": "^3.8.3"
