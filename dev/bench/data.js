@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1776920353995,
+  "lastUpdate": 1777053432868,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -53236,6 +53236,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.29,
             "range": "±0.80%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "555f4489f330578d1741242a57fb739e4e87fcce",
+          "message": "Update dependency vitest to ^4.1.5 (#1517)\n\nThis PR contains the following updates:\n\n| Package | Change |\n[Age](https://docs.renovatebot.com/merge-confidence/) |\n[Confidence](https://docs.renovatebot.com/merge-confidence/) |\n|---|---|---|---|\n| [vitest](https://vitest.dev)\n([source](https://redirect.github.com/vitest-dev/vitest/tree/HEAD/packages/vitest))\n| [`^4.1.4` →\n`^4.1.5`](https://renovatebot.com/diffs/npm/vitest/4.1.4/4.1.5) |\n![age](https://developer.mend.io/api/mc/badges/age/npm/vitest/4.1.5?slim=true)\n|\n![confidence](https://developer.mend.io/api/mc/badges/confidence/npm/vitest/4.1.4/4.1.5?slim=true)\n|\n\n---\n\n### Release Notes\n\n<details>\n<summary>vitest-dev/vitest (vitest)</summary>\n\n###\n[`v4.1.5`](https://redirect.github.com/vitest-dev/vitest/releases/tag/v4.1.5)\n\n[Compare\nSource](https://redirect.github.com/vitest-dev/vitest/compare/v4.1.4...v4.1.5)\n\n#####    🚀 Experimental Features\n\n- **coverage**: Istanbul to support `instrumenter` option  -  by\n[@&#8203;BartWaardenburg](https://redirect.github.com/BartWaardenburg)\nand [@&#8203;AriPerkkio](https://redirect.github.com/AriPerkkio) in\n[#&#8203;10119](https://redirect.github.com/vitest-dev/vitest/issues/10119)\n[<samp>(0e0ff)</samp>](https://redirect.github.com/vitest-dev/vitest/commit/0e0ff41c7)\n\n#####    🐞 Bug Fixes\n\n- \\--project negation excludes browser instances  -  by\n[@&#8203;felamaslen](https://redirect.github.com/felamaslen) in\n[#&#8203;10131](https://redirect.github.com/vitest-dev/vitest/issues/10131)\n[<samp>(9423d)</samp>](https://redirect.github.com/vitest-dev/vitest/commit/9423dc084)\n- Project color label on html reporter  -  by\n[@&#8203;hi-ogawa](https://redirect.github.com/hi-ogawa) in\n[#&#8203;10142](https://redirect.github.com/vitest-dev/vitest/issues/10142)\n[<samp>(596f7)</samp>](https://redirect.github.com/vitest-dev/vitest/commit/596f73986)\n- Fix `vi.defineHelper` called as object method  -  by\n[@&#8203;hi-ogawa](https://redirect.github.com/hi-ogawa) in\n[#&#8203;10163](https://redirect.github.com/vitest-dev/vitest/issues/10163)\n[<samp>(122c2)</samp>](https://redirect.github.com/vitest-dev/vitest/commit/122c25b5b)\n- Alias `agent` reporter to `minimal`  -  by\n[@&#8203;sheremet-va](https://redirect.github.com/sheremet-va) in\n[#&#8203;10157](https://redirect.github.com/vitest-dev/vitest/issues/10157)\n[<samp>(663b9)</samp>](https://redirect.github.com/vitest-dev/vitest/commit/663b99fe3)\n- Respect diff config options in soft assertions  -  by\n[@&#8203;Copilot](https://redirect.github.com/Copilot), **sheremet-va**\nand [@&#8203;sheremet-va](https://redirect.github.com/sheremet-va) in\n[#&#8203;8696](https://redirect.github.com/vitest-dev/vitest/issues/8696)\n[<samp>(9787d)</samp>](https://redirect.github.com/vitest-dev/vitest/commit/9787dedad)\n- Respect diff config options in soft assertions \"  -  by\n[@&#8203;sheremet-va](https://redirect.github.com/sheremet-va) in\n[#&#8203;8696](https://redirect.github.com/vitest-dev/vitest/issues/8696)\n[<samp>(7dc6d)</samp>](https://redirect.github.com/vitest-dev/vitest/commit/7dc6d54fd)\n- **ast-collect**: Recognize \\_*vi\\_import* prefix in static test\ndiscovery  -  by\n[@&#8203;Yejneshwar](https://redirect.github.com/Yejneshwar) in\n[#&#8203;10129](https://redirect.github.com/vitest-dev/vitest/issues/10129)\n[<samp>(32546)</samp>](https://redirect.github.com/vitest-dev/vitest/commit/325463ab2)\n- **coverage**: Descriptive error message when reports directory is\nremoved during test run  -  by\n[@&#8203;DaveT1991](https://redirect.github.com/DaveT1991) and\n[@&#8203;AriPerkkio](https://redirect.github.com/AriPerkkio) in\n[#&#8203;10117](https://redirect.github.com/vitest-dev/vitest/issues/10117)\n[<samp>(14133)</samp>](https://redirect.github.com/vitest-dev/vitest/commit/1413382e1)\n- **snapshot**: Increase default snapshot max output length  -  by\n[@&#8203;hi-ogawa](https://redirect.github.com/hi-ogawa) and **Codex**\nin\n[#&#8203;10150](https://redirect.github.com/vitest-dev/vitest/issues/10150)\n[<samp>(21e66)</samp>](https://redirect.github.com/vitest-dev/vitest/commit/21e66ff63)\n- **ui**: Fix jsx/tsx syntax highlight  -  by\n[@&#8203;hi-ogawa](https://redirect.github.com/hi-ogawa) in\n[#&#8203;10152](https://redirect.github.com/vitest-dev/vitest/issues/10152)\n[<samp>(f1b1f)</samp>](https://redirect.github.com/vitest-dev/vitest/commit/f1b1f6c7b)\n- **web-worker**: Support MessagePort objects referenced inside\npostMessage data  -  by\n[@&#8203;whitphx](https://redirect.github.com/whitphx) and **Claude Opus\n4.6 (1M context)** in\n[#&#8203;9927](https://redirect.github.com/vitest-dev/vitest/issues/9927)\nand\n[#&#8203;10124](https://redirect.github.com/vitest-dev/vitest/issues/10124)\n[<samp>(7ad7d)</samp>](https://redirect.github.com/vitest-dev/vitest/commit/7ad7d39af)\n- **api**: Make test-specification options writable  -  by\n[@&#8203;sheremet-va](https://redirect.github.com/sheremet-va) in\n[#&#8203;10154](https://redirect.github.com/vitest-dev/vitest/issues/10154)\n[<samp>(6abd5)</samp>](https://redirect.github.com/vitest-dev/vitest/commit/6abd557b7)\n\n#####     [View changes on\nGitHub](https://redirect.github.com/vitest-dev/vitest/compare/v4.1.4...v4.1.5)\n\n</details>\n\n---\n\n### Configuration\n\n📅 **Schedule**: (in timezone Asia/Tokyo)\n\n- Branch creation\n  - At any time (no schedule defined)\n- Automerge\n  - At any time (no schedule defined)\n\n🚦 **Automerge**: Enabled.\n\n♻ **Rebasing**: Whenever PR is behind base branch, or you tick the\nrebase/retry checkbox.\n\n🔕 **Ignore**: Close this PR and you won't be reminded about this update\nagain.\n\n---\n\n- [ ] <!-- rebase-check -->If you want to rebase/retry this PR, check\nthis box\n\n---\n\nThis PR was generated by [Mend Renovate](https://mend.io/renovate/).\nView the [repository job\nlog](https://developer.mend.io/github/secretlint/secretlint).\n\n<!--renovate-debug:eyJjcmVhdGVkSW5WZXIiOiI0My4xNDEuMyIsInVwZGF0ZWRJblZlciI6IjQzLjE0MS4zIiwidGFyZ2V0QnJhbmNoIjoibWFzdGVyIiwibGFiZWxzIjpbImRlcGVuZGVuY2llcyJdfQ==-->\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2026-04-24T17:55:21Z",
+          "tree_id": "51cc02d06a7343fa47dcd011230ccebbc50b7958",
+          "url": "https://github.com/secretlint/secretlint/commit/555f4489f330578d1741242a57fb739e4e87fcce"
+        },
+        "date": 1777053429752,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.5,
+            "range": "±1.27%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.29,
+            "range": "±1.01%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
