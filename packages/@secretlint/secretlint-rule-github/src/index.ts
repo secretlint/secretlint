@@ -104,10 +104,10 @@ export const creator: SecretLintRuleCreator<Options> = {
         // fine-grained personal access tokens. FIXME: Format of the token is unclear
         // https://github.com/community/community/discussions/36441#discussioncomment-4014190
         const FINE_GRAINED_GITHUB_TOKEN_PATTERN = /(?<!\p{L})(?<type>github_pat)_[A-Za-z0-9_]{82}(?![A-Za-z0-9_])/gu;
-        // new format: ghs_<AppID>_<JWT> (~520 chars, JWT contains base64url chars and dots)
+        // new format: ghs_<AppID>_<JWT> (~520 chars, JWT contains three base64url segments separated by dots)
         // https://github.blog/changelog/2026-04-24-notice-about-upcoming-new-format-for-github-app-installation-tokens/
         const GITHUB_APP_INSTALLATION_TOKEN_PATTERN =
-            /(?<!\p{L})(?<type>ghs)_[0-9]+_[A-Za-z0-9\-_.]{100,}(?![A-Za-z0-9\-_.])/gu;
+            /(?<!\p{L})(?<type>ghs)_[0-9]{1,20}_[A-Za-z0-9_-]{1,1000}\.[A-Za-z0-9_-]{1,10000}\.[A-Za-z0-9_-]{1,1000}(?![A-Za-z0-9_-])/gu;
         const patterns = [
             CLASSIC_GITHUB_TOKEN_PATTERN,
             FINE_GRAINED_GITHUB_TOKEN_PATTERN,
