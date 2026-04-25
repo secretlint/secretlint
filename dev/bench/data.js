@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1777053432868,
+  "lastUpdate": 1777122800757,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -53274,6 +53274,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.29,
             "range": "±1.01%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "704e32f76d2303a10fb07640b1dcaf677ad37608",
+          "message": "Update pnpm to v10.33.1 (#1519)\n\nThis PR contains the following updates:\n\n| Package | Change |\n[Age](https://docs.renovatebot.com/merge-confidence/) |\n[Confidence](https://docs.renovatebot.com/merge-confidence/) |\n|---|---|---|---|\n| [pnpm](https://pnpm.io)\n([source](https://redirect.github.com/pnpm/pnpm/tree/HEAD/pnpm)) |\n[`10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a544c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319`\n→ `10.33.1`](https://renovatebot.com/diffs/npm/pnpm/10.33.0/10.33.1) |\n![age](https://developer.mend.io/api/mc/badges/age/npm/pnpm/10.33.1?slim=true)\n|\n![confidence](https://developer.mend.io/api/mc/badges/confidence/npm/pnpm/10.33.0/10.33.1?slim=true)\n|\n\n---\n\n### Release Notes\n\n<details>\n<summary>pnpm/pnpm (pnpm)</summary>\n\n###\n[`v10.33.1`](https://redirect.github.com/pnpm/pnpm/releases/tag/v10.33.1):\npnpm 10.33.1\n\n[Compare\nSource](https://redirect.github.com/pnpm/pnpm/compare/v10.33.0...v10.33.1)\n\n##### Patch Changes\n\n- When a project's `packageManager` field selects pnpm v11 or newer,\ncommands that v10 would have passed through to npm (`version`, `login`,\n`logout`, `publish`, `unpublish`, `deprecate`, `dist-tag`, `docs`,\n`ping`, `search`, `star`, `stars`, `unstar`, `whoami`, etc.) are now\nhanded over to the wanted pnpm, which implements them natively.\nPreviously they silently shelled out to npm — making, for example, `pnpm\nversion --help` print npm's help on a project with `packageManager:\npnpm@11.0.0-rc.3`\n[#&#8203;11328](https://redirect.github.com/pnpm/pnpm/issues/11328).\n\n<!-- sponsors -->\n\n##### Platinum Sponsors\n\n<table>\n  <tbody>\n    <tr>\n      <td align=\"center\" valign=\"middle\">\n<a href=\"https://bit.cloud/?utm_source=pnpm&utm_medium=release_notes\"\ntarget=\"_blank\"><img src=\"https://pnpm.io/img/users/bit.svg\" width=\"80\"\nalt=\"Bit\"></a>\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n##### Gold Sponsors\n\n<table>\n  <tbody>\n    <tr>\n      <td align=\"center\" valign=\"middle\">\n<a href=\"https://sanity.io/?utm_source=pnpm&utm_medium=release_notes\"\ntarget=\"_blank\">\n          <picture>\n<source media=\"(prefers-color-scheme: light)\"\nsrcset=\"https://pnpm.io/img/users/sanity.svg\" />\n<source media=\"(prefers-color-scheme: dark)\"\nsrcset=\"https://pnpm.io/img/users/sanity_light.svg\" />\n<img src=\"https://pnpm.io/img/users/sanity.svg\" width=\"120\" alt=\"Sanity\"\n/>\n          </picture>\n        </a>\n      </td>\n      <td align=\"center\" valign=\"middle\">\n<a href=\"https://discord.com/?utm_source=pnpm&utm_medium=release_notes\"\ntarget=\"_blank\">\n          <picture>\n<source media=\"(prefers-color-scheme: light)\"\nsrcset=\"https://pnpm.io/img/users/discord.svg\" />\n<source media=\"(prefers-color-scheme: dark)\"\nsrcset=\"https://pnpm.io/img/users/discord_light.svg\" />\n<img src=\"https://pnpm.io/img/users/discord.svg\" width=\"220\"\nalt=\"Discord\" />\n          </picture>\n        </a>\n      </td>\n      <td align=\"center\" valign=\"middle\">\n<a href=\"https://vite.dev/?utm_source=pnpm&utm_medium=release_notes\"\ntarget=\"_blank\"><img src=\"https://pnpm.io/img/users/vitejs.svg\"\nwidth=\"42\" alt=\"Vite\"></a>\n      </td>\n    </tr>\n    <tr>\n      <td align=\"center\" valign=\"middle\">\n<a href=\"https://serpapi.com/?utm_source=pnpm&utm_medium=release_notes\"\ntarget=\"_blank\">\n          <picture>\n<source media=\"(prefers-color-scheme: light)\"\nsrcset=\"https://pnpm.io/img/users/serpapi_dark.svg\" />\n<source media=\"(prefers-color-scheme: dark)\"\nsrcset=\"https://pnpm.io/img/users/serpapi_light.svg\" />\n<img src=\"https://pnpm.io/img/users/serpapi_dark.svg\" width=\"160\"\nalt=\"SerpApi\" />\n          </picture>\n        </a>\n      </td>\n      <td align=\"center\" valign=\"middle\">\n<a\nhref=\"https://coderabbit.ai/?utm_source=pnpm&utm_medium=release_notes\"\ntarget=\"_blank\">\n          <picture>\n<source media=\"(prefers-color-scheme: light)\"\nsrcset=\"https://pnpm.io/img/users/coderabbit.svg\" />\n<source media=\"(prefers-color-scheme: dark)\"\nsrcset=\"https://pnpm.io/img/users/coderabbit_light.svg\" />\n<img src=\"https://pnpm.io/img/users/coderabbit.svg\" width=\"220\"\nalt=\"CodeRabbit\" />\n          </picture>\n        </a>\n      </td>\n      <td align=\"center\" valign=\"middle\">\n<a\nhref=\"https://stackblitz.com/?utm_source=pnpm&utm_medium=release_notes\"\ntarget=\"_blank\">\n          <picture>\n<source media=\"(prefers-color-scheme: light)\"\nsrcset=\"https://pnpm.io/img/users/stackblitz.svg\" />\n<source media=\"(prefers-color-scheme: dark)\"\nsrcset=\"https://pnpm.io/img/users/stackblitz_light.svg\" />\n<img src=\"https://pnpm.io/img/users/stackblitz.svg\" width=\"190\"\nalt=\"Stackblitz\" />\n          </picture>\n        </a>\n      </td>\n    </tr>\n    <tr>\n      <td align=\"center\" valign=\"middle\">\n<a href=\"https://workleap.com/?utm_source=pnpm&utm_medium=release_notes\"\ntarget=\"_blank\">\n          <picture>\n<source media=\"(prefers-color-scheme: light)\"\nsrcset=\"https://pnpm.io/img/users/workleap.svg\" />\n<source media=\"(prefers-color-scheme: dark)\"\nsrcset=\"https://pnpm.io/img/users/workleap_light.svg\" />\n<img src=\"https://pnpm.io/img/users/workleap.svg\" width=\"190\"\nalt=\"Workleap\" />\n          </picture>\n        </a>\n      </td>\n      <td align=\"center\" valign=\"middle\">\n<a href=\"https://nx.dev/?utm_source=pnpm&utm_medium=release_notes\"\ntarget=\"_blank\">\n          <picture>\n<source media=\"(prefers-color-scheme: light)\"\nsrcset=\"https://pnpm.io/img/users/nx.svg\" />\n<source media=\"(prefers-color-scheme: dark)\"\nsrcset=\"https://pnpm.io/img/users/nx_light.svg\" />\n<img src=\"https://pnpm.io/img/users/nx.svg\" width=\"50\" alt=\"Nx\" />\n          </picture>\n        </a>\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<!-- sponsors end -->\n\n</details>\n\n---\n\n### Configuration\n\n📅 **Schedule**: (in timezone Asia/Tokyo)\n\n- Branch creation\n  - At any time (no schedule defined)\n- Automerge\n  - At any time (no schedule defined)\n\n🚦 **Automerge**: Enabled.\n\n♻ **Rebasing**: Whenever PR is behind base branch, or you tick the\nrebase/retry checkbox.\n\n🔕 **Ignore**: Close this PR and you won't be reminded about this update\nagain.\n\n---\n\n- [ ] <!-- rebase-check -->If you want to rebase/retry this PR, check\nthis box\n\n---\n\nThis PR was generated by [Mend Renovate](https://mend.io/renovate/).\nView the [repository job\nlog](https://developer.mend.io/github/secretlint/secretlint).\n\n<!--renovate-debug:eyJjcmVhdGVkSW5WZXIiOiI0My4xNDEuMyIsInVwZGF0ZWRJblZlciI6IjQzLjE0MS4zIiwidGFyZ2V0QnJhbmNoIjoibWFzdGVyIiwibGFiZWxzIjpbImRlcGVuZGVuY2llcyJdfQ==-->\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2026-04-25T13:11:28Z",
+          "tree_id": "f13707fb8a768a16ee65a73fbf950e545c0b83a9",
+          "url": "https://github.com/secretlint/secretlint/commit/704e32f76d2303a10fb07640b1dcaf677ad37608"
+        },
+        "date": 1777122797543,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.36,
+            "range": "±0.66%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.3,
+            "range": "±0.50%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
