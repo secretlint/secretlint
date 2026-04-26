@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1777149611036,
+  "lastUpdate": 1777165228510,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -53350,6 +53350,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.3,
             "range": "±0.93%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "94a16aaa372dcd18f0ec06ede3df659bceb91ed9",
+          "message": "feat(@secretlint/secretlint-rule-github): support new GitHub App installation token format (ghs_) (#1520)\n\n## Summary\n\nGitHub announced a new format for GitHub App installation tokens\n(`ghs_`) that changes from ~40 characters to ~520 characters in a\nJWT-based structure (`ghs_<AppID>_<JWT>`). This PR adds detection\nsupport for the new format while keeping the existing pattern for\nold-format tokens.\n\nCloses #1518\n\n## Changes\n\n- `packages/@secretlint/secretlint-rule-github/src/index.ts`: Add\n`GITHUB_APP_INSTALLATION_TOKEN_PATTERN` to detect new-format\n`ghs_<AppID>_<JWT>` tokens. The existing `CLASSIC_GITHUB_TOKEN_PATTERN`\nis unchanged and continues to detect old-format tokens.\n- Add test snapshots for `ng.app_installation_token` in\n`secretlint-rule-github`, `secretlint-rule-preset-recommend`, and\n`secretlint-rule-preset-canary`.\n\n**New pattern:**\n```ts\n// new format: ghs_<AppID>_<JWT> (~520 chars, JWT contains base64url chars and dots)\n// https://github.blog/changelog/2026-04-24-notice-about-upcoming-new-format-for-github-app-installation-tokens/\nconst GITHUB_APP_INSTALLATION_TOKEN_PATTERN =\n    /(?<!\\p{L})(?<type>ghs)_[0-9]+_[A-Za-z0-9\\-_.]{100,}(?![A-Za-z0-9\\-_.])/gu;\n```\n\n## Breaking Changes\n\nNone. The existing detection behavior is preserved.\n\n## Test Plan\n\n- `pnpm --filter @secretlint/secretlint-rule-github test` — passes with\nthe new `ng.app_installation_token` snapshot\n- `pnpm --filter @secretlint/secretlint-rule-preset-recommend test` —\npasses\n- `pnpm --filter @secretlint/secretlint-rule-preset-canary test` —\npasses\n\n## References\n\n-\nhttps://github.blog/changelog/2026-04-24-notice-about-upcoming-new-format-for-github-app-installation-tokens/\n- Rollout: April 27 – June 2026 (GitHub Enterprise Cloud and Data\nResidency only; GitHub Enterprise Server is not affected)\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-04-26T09:58:34+09:00",
+          "tree_id": "41edb57f4c66727a6c65c9f5de0c1e416c193ba4",
+          "url": "https://github.com/secretlint/secretlint/commit/94a16aaa372dcd18f0ec06ede3df659bceb91ed9"
+        },
+        "date": 1777165225122,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.37,
+            "range": "±0.70%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.3,
+            "range": "±0.64%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
