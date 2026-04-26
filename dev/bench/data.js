@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1777179042412,
+  "lastUpdate": 1777210406809,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -53464,6 +53464,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.29,
             "range": "±0.93%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "41898282+github-actions[bot]@users.noreply.github.com",
+            "name": "github-actions[bot]",
+            "username": "github-actions[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f197857baa63373adadb93415681ede431b723cd",
+          "message": "v12.3.1 (#1524)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat master -->\n\n## What's Changed\n### CI\n* Pin QEMU binfmt image version in Docker release workflow by @azu in\nhttps://github.com/secretlint/secretlint/pull/1523\n\n\n**Full Changelog**:\nhttps://github.com/secretlint/secretlint/compare/v12.3.0...v12.3.1\n\nCo-authored-by: azu <azu@users.noreply.github.com>",
+          "timestamp": "2026-04-26T22:31:33+09:00",
+          "tree_id": "0b3c7d5ad204d71f431591f9b6a1c29238445455",
+          "url": "https://github.com/secretlint/secretlint/commit/f197857baa63373adadb93415681ede431b723cd"
+        },
+        "date": 1777210403459,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.36,
+            "range": "±0.75%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.3,
+            "range": "±0.42%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
