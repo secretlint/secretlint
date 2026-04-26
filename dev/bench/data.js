@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1777165228510,
+  "lastUpdate": 1777165307120,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -53388,6 +53388,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.3,
             "range": "±0.64%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "41898282+github-actions[bot]@users.noreply.github.com",
+            "name": "github-actions[bot]",
+            "username": "github-actions[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "995206c805666b57c486c6d4f15baae827bfa7c7",
+          "message": "v12.3.0 (#1522)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat master -->\n\n## What's Changed\n### Features\n* feat(@secretlint/secretlint-rule-github): support new GitHub App\ninstallation token format (ghs_) by @azu in\nhttps://github.com/secretlint/secretlint/pull/1520\n### CI\n* Update github/codeql-action action to v3.35.2 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1515\n### Dependency Updates\n* Update dependency rollup to ^4.60.2 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1513\n* Update dependency node-sarif-builder to ^4.1.0 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1516\n* Update dependency vitest to ^4.1.5 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1517\n* Update pnpm to v10.33.1 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1519\n* Update dependency @types/bun to ^1.3.13 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1521\n\n\n**Full Changelog**:\nhttps://github.com/secretlint/secretlint/compare/v12.2.0...v12.3.0\n\nCo-authored-by: azu <azu@users.noreply.github.com>",
+          "timestamp": "2026-04-26T10:00:01+09:00",
+          "tree_id": "1888c8d30c35147dd0e18e93a22ab13214b4384f",
+          "url": "https://github.com/secretlint/secretlint/commit/995206c805666b57c486c6d4f15baae827bfa7c7"
+        },
+        "date": 1777165304674,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.36,
+            "range": "±0.54%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.29,
+            "range": "±1.21%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
