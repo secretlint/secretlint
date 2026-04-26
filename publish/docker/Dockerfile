@@ -13,7 +13,7 @@ COPY .secretlintrc.json $SECRETLINTRC
 RUN npm install -g secretlint@${SECRETLINT_VERSION} \
             @secretlint/secretlint-rule-preset-recommend@${SECRETLINT_VERSION} \
             @secretlint/secretlint-rule-pattern@${SECRETLINT_VERSION} \
-            @secretlint/secretlint-formatter-sarif@latest && \
+            @secretlint/secretlint-formatter-sarif@${SECRETLINT_VERSION} && \
     rm -rf /usr/share/man /tmp/* \
            /root/.npm /root/.node-gyp \
            /usr/lib/node_modules/npm/man \
