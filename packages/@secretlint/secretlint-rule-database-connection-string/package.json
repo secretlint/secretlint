@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-database-connection-string",
-    "version": "12.2.0",
+    "version": "12.3.0",
     "description": "A secretlint rule for database-connection-string",
     "keywords": [
         "secretlint",

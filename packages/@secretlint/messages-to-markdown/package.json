@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/messages-to-markdown",
-    "version": "12.2.0",
+    "version": "12.3.0",
     "description": "Create Markdown text from rule's messages(ids)",
     "keywords": [
         "secretlint"
