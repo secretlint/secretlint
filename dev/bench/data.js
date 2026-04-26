@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1777165307120,
+  "lastUpdate": 1777179042412,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -53426,6 +53426,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.29,
             "range": "±1.21%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a998b35015bdafc9e86de7c78c4d3cef026d5cfd",
+          "message": "Pin QEMU binfmt image version in Docker release workflow (#1523)\n\n## Summary\nUpdated the Docker release workflow to explicitly pin the QEMU binfmt\nimage version used during multi-platform builds.\n\n## Changes\n- Added explicit `image` configuration to the `docker/setup-qemu-action`\nstep\n- Pinned QEMU binfmt to version `qemu-v9.2.2` for reproducible and\nconsistent multi-platform Docker builds\n\n## Details\nThis change ensures that the QEMU binary format handler used for\nbuilding Docker images across different architectures (ARM, etc.) uses a\nspecific, known version rather than relying on the action's default.\nThis improves build reproducibility and prevents unexpected behavior\nchanges from automatic QEMU updates.\n\nhttps://claude.ai/code/session_01Gune1gD1dhJwrRv3KmpzUa\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-04-26T13:48:53+09:00",
+          "tree_id": "36da465ca512baf2422add67116fbb9ef378bf65",
+          "url": "https://github.com/secretlint/secretlint/commit/a998b35015bdafc9e86de7c78c4d3cef026d5cfd"
+        },
+        "date": 1777179039984,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.34,
+            "range": "±1.44%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.29,
+            "range": "±0.93%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
