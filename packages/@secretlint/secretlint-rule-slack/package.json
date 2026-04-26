@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-slack",
-    "version": "12.3.0",
+    "version": "12.3.1",
     "description": "A secretlint rule for slack.",
     "keywords": [
         "rule",

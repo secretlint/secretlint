@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-filter-comments",
-    "version": "12.3.0",
+    "version": "12.3.1",
     "description": "secretlint-disable comment directive.",
     "keywords": [
         "secretlint",

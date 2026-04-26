@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-gitlab",
-    "version": "12.3.0",
+    "version": "12.3.1",
     "description": "A secretlint rule for GitLab tokens.",
     "keywords": [
         "secretlint",
