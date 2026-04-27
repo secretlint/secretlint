@@ -20,7 +20,7 @@ catalog:
   "@types/node": "^25.6.0"
   "@types/pluralize": "0.0.33"
   "@types/secp256k1": "^4.0.7"
-  "ajv": "^8.18.0"
+  "ajv": "^8.20.0"
   "assert-json-equal": "^2.0.0"
   "benchmark": "^2.1.4"
   "bn.js": "^5.2.3"
