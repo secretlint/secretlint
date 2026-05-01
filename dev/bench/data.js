@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1777325407105,
+  "lastUpdate": 1777662091573,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -53616,6 +53616,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.29,
             "range": "±1.41%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "be23e9a810e2787063e9d288f54e0833d982c3b8",
+          "message": "Update textlint to ^15.6.0 (minor) (#1529)\n\nThis PR contains the following updates:\n\n| Package | Change |\n[Age](https://docs.renovatebot.com/merge-confidence/) |\n[Confidence](https://docs.renovatebot.com/merge-confidence/) |\n|---|---|---|---|\n|\n[@textlint/linter-formatter](https://redirect.github.com/textlint/textlint/tree/master/packages/@textlint/linter-formatter)\n([source](https://redirect.github.com/textlint/textlint)) | [`^15.5.4` →\n`^15.6.0`](https://renovatebot.com/diffs/npm/@textlint%2flinter-formatter/15.5.4/15.6.0)\n|\n![age](https://developer.mend.io/api/mc/badges/age/npm/@textlint%2flinter-formatter/15.6.0?slim=true)\n|\n![confidence](https://developer.mend.io/api/mc/badges/confidence/npm/@textlint%2flinter-formatter/15.5.4/15.6.0?slim=true)\n|\n|\n[@textlint/module-interop](https://redirect.github.com/textlint/textlint/tree/master/packages/@textlint/module-interop/)\n([source](https://redirect.github.com/textlint/textlint)) | [`^15.5.4` →\n`^15.6.0`](https://renovatebot.com/diffs/npm/@textlint%2fmodule-interop/15.5.4/15.6.0)\n|\n![age](https://developer.mend.io/api/mc/badges/age/npm/@textlint%2fmodule-interop/15.6.0?slim=true)\n|\n![confidence](https://developer.mend.io/api/mc/badges/confidence/npm/@textlint%2fmodule-interop/15.5.4/15.6.0?slim=true)\n|\n|\n[@textlint/types](https://redirect.github.com/textlint/textlint/tree/master/packages/@textlint/types/)\n([source](https://redirect.github.com/textlint/textlint)) | [`^15.5.4` →\n`^15.6.0`](https://renovatebot.com/diffs/npm/@textlint%2ftypes/15.5.4/15.6.0)\n|\n![age](https://developer.mend.io/api/mc/badges/age/npm/@textlint%2ftypes/15.6.0?slim=true)\n|\n![confidence](https://developer.mend.io/api/mc/badges/confidence/npm/@textlint%2ftypes/15.5.4/15.6.0?slim=true)\n|\n\n---\n\n### Release Notes\n\n<details>\n<summary>textlint/textlint (@&#8203;textlint/linter-formatter)</summary>\n\n###\n[`v15.6.0`](https://redirect.github.com/textlint/textlint/releases/tag/v15.6.0)\n\n[Compare\nSource](https://redirect.github.com/textlint/textlint/compare/v15.5.4...v15.6.0)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat master -->\n\n#### What's Changed\n\n##### Features\n\n- feat(markdown-to-ast): add support for TOML and JSON frontmatter by\n[@&#8203;3w36zj6](https://redirect.github.com/3w36zj6) in\n[#&#8203;2012](https://redirect.github.com/textlint/textlint/pull/2012)\n\n##### CI\n\n- fix(ci): remove CNAME from website PR preview build by\n[@&#8203;azu](https://redirect.github.com/azu) in\n[#&#8203;1999](https://redirect.github.com/textlint/textlint/pull/1999)\n- chore(deps): update github/codeql-action action to v3.35.2 by\n[@&#8203;renovate](https://redirect.github.com/renovate)\\[bot] in\n[#&#8203;2010](https://redirect.github.com/textlint/textlint/pull/2010)\n- Update merge-gatekeeper action and add actions permission by\n[@&#8203;azu](https://redirect.github.com/azu) in\n[#&#8203;2014](https://redirect.github.com/textlint/textlint/pull/2014)\n\n##### Dependency Updates\n\n- chore(deps): update docusaurus monorepo to ^3.10.0 (minor) by\n[@&#8203;renovate](https://redirect.github.com/renovate)\\[bot] in\n[#&#8203;2000](https://redirect.github.com/textlint/textlint/pull/2000)\n- chore(deps): update dependency oxlint to ^1.59.0 by\n[@&#8203;renovate](https://redirect.github.com/renovate)\\[bot] in\n[#&#8203;2002](https://redirect.github.com/textlint/textlint/pull/2002)\n- chore(deps): update patch updates (patch) by\n[@&#8203;renovate](https://redirect.github.com/renovate)\\[bot] in\n[#&#8203;2001](https://redirect.github.com/textlint/textlint/pull/2001)\n- chore(deps): update dependency oxlint-tsgolint to ^0.20.0 by\n[@&#8203;renovate](https://redirect.github.com/renovate)\\[bot] in\n[#&#8203;2004](https://redirect.github.com/textlint/textlint/pull/2004)\n- chore(deps): update dependency json5 to ^2.2.3 by\n[@&#8203;renovate](https://redirect.github.com/renovate)\\[bot] in\n[#&#8203;2003](https://redirect.github.com/textlint/textlint/pull/2003)\n- chore(deps): update react monorepo to ^19.2.5 (patch) by\n[@&#8203;renovate](https://redirect.github.com/renovate)\\[bot] in\n[#&#8203;2005](https://redirect.github.com/textlint/textlint/pull/2005)\n- chore(deps): update dependency oxlint-tsgolint to ^0.21.0 by\n[@&#8203;renovate](https://redirect.github.com/renovate)\\[bot] in\n[#&#8203;2007](https://redirect.github.com/textlint/textlint/pull/2007)\n- chore(deps): update dependency oxlint-tsgolint to ^0.21.1 by\n[@&#8203;renovate](https://redirect.github.com/renovate)\\[bot] in\n[#&#8203;2009](https://redirect.github.com/textlint/textlint/pull/2009)\n- chore(deps): update pnpm to v10.33.1 by\n[@&#8203;renovate](https://redirect.github.com/renovate)\\[bot] in\n[#&#8203;2011](https://redirect.github.com/textlint/textlint/pull/2011)\n- chore(deps): update pnpm to v10.33.2 by\n[@&#8203;renovate](https://redirect.github.com/renovate)\\[bot] in\n[#&#8203;2013](https://redirect.github.com/textlint/textlint/pull/2013)\n\n##### Other Changes\n\n- fix(website): move onBrokenMarkdownLinks into markdown.hooks by\n[@&#8203;azu](https://redirect.github.com/azu) in\n[#&#8203;1998](https://redirect.github.com/textlint/textlint/pull/1998)\n\n**Full Changelog**:\n<https://github.com/textlint/textlint/compare/v15.5.4...v15.6.0>\n\n</details>\n\n---\n\n### Configuration\n\n📅 **Schedule**: (in timezone Asia/Tokyo)\n\n- Branch creation\n  - At any time (no schedule defined)\n- Automerge\n  - At any time (no schedule defined)\n\n🚦 **Automerge**: Enabled.\n\n♻ **Rebasing**: Whenever PR is behind base branch, or you tick the\nrebase/retry checkbox.\n\n🔕 **Ignore**: Close this PR and you won't be reminded about these\nupdates again.\n\n---\n\n- [ ] <!-- rebase-check -->If you want to rebase/retry this PR, check\nthis box\n\n---\n\nThis PR was generated by [Mend Renovate](https://mend.io/renovate/).\nView the [repository job\nlog](https://developer.mend.io/github/secretlint/secretlint).\n\n<!--renovate-debug:eyJjcmVhdGVkSW5WZXIiOiI0My4xNTkuMiIsInVwZGF0ZWRJblZlciI6IjQzLjE1OS4yIiwidGFyZ2V0QnJhbmNoIjoibWFzdGVyIiwibGFiZWxzIjpbImRlcGVuZGVuY2llcyJdfQ==-->\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2026-05-01T18:59:43Z",
+          "tree_id": "94903bc8c32849880223a04fd04be69c95a2a74c",
+          "url": "https://github.com/secretlint/secretlint/commit/be23e9a810e2787063e9d288f54e0833d982c3b8"
+        },
+        "date": 1777662088703,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.39,
+            "range": "±0.79%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.3,
+            "range": "±0.61%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
