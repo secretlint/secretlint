@@ -16,17 +16,17 @@ catalogs:
       specifier: ^12.3.0
       version: 12.3.0
     '@textlint/linter-formatter':
-      specifier: ^15.5.4
-      version: 15.5.4
+      specifier: ^15.6.0
+      version: 15.6.0
     '@textlint/module-interop':
-      specifier: ^15.5.4
-      version: 15.5.4
+      specifier: ^15.6.0
+      version: 15.6.0
     '@textlint/regexp-string-matcher':
       specifier: ^2.0.2
       version: 2.0.2
     '@textlint/types':
-      specifier: ^15.5.4
-      version: 15.5.4
+      specifier: ^15.6.0
+      version: 15.6.0
     '@types/bn.js':
       specifier: ^5.2.0
       version: 5.2.0
@@ -313,13 +313,13 @@ importers:
         version: link:../types
       '@textlint/linter-formatter':
         specifier: 'catalog:'
-        version: 15.5.4
+        version: 15.6.0
       '@textlint/module-interop':
         specifier: 'catalog:'
-        version: 15.5.4
+        version: 15.6.0
       '@textlint/types':
         specifier: 'catalog:'
-        version: 15.5.4
+        version: 15.6.0
       chalk:
         specifier: 'catalog:'
         version: 5.6.2
@@ -2345,23 +2345,23 @@ packages:
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
-  '@textlint/ast-node-types@15.5.4':
-    resolution: {integrity: sha512-bVtB6VEy9U9DpW8cTt25k5T+lz86zV5w6ImePZqY1AXzSuPhqQNT77lkMPxonXzUducEIlSvUu3o7sKw3y9+Sw==}
+  '@textlint/ast-node-types@15.6.0':
+    resolution: {integrity: sha512-CxZHFbYAU7J0A4izz31wV2ZZfySR6aVj2OSR6/3tppZm7VV6hM7nA7sutsLwIiBL/v4lsB1RM79l4Dc/VrH4qw==}
 
-  '@textlint/linter-formatter@15.5.4':
-    resolution: {integrity: sha512-D9qJedKBLmAo+kiudop4UKgSxXMi4O8U86KrCidVXZ9RsK0NSVIw6+r2rlMUOExq79iEY81FRENyzmNVRxDBsg==}
+  '@textlint/linter-formatter@15.6.0':
+    resolution: {integrity: sha512-IwHRhjwxs0a5t1eNAoKAdV224CDca38LyopPofXpwO/d0J75wBvzf/cBHXNl4TMsLKhYGtR83UprcLEKj/gZsA==}
 
-  '@textlint/module-interop@15.5.4':
-    resolution: {integrity: sha512-JyAUd26ll3IFF87LP0uGoa8Tzw5ZKiYvGs6v8jLlzyND1lUYCI4+2oIAslrODLkf0qwoCaJrBQWM3wsw+asVGQ==}
+  '@textlint/module-interop@15.6.0':
+    resolution: {integrity: sha512-MHY6pJx9i5kOlrvUSK51887tYZjHAV2qnr6unBm7LtBLGDFo93utdYqHyWep8r9QLsilQdeijWtufJI46z4v4w==}
 
   '@textlint/regexp-string-matcher@2.0.2':
     resolution: {integrity: sha512-OXLD9XRxMhd3S0LWuPHpiARQOI7z9tCOs0FsynccW2lmyZzHHFJ9/eR6kuK9xF459Qf+740qI5h+/0cx+NljzA==}
 
-  '@textlint/resolver@15.5.4':
-    resolution: {integrity: sha512-5GUagtpQuYcmhlOzBGdmVBvDu5lKgVTjwbxtdfoidN4OIqblIxThJHHjazU+ic+/bCIIzI2JcOjHGSaRmE8Gcg==}
+  '@textlint/resolver@15.6.0':
+    resolution: {integrity: sha512-T1l2Gd3455pwtm0cTewhX/LLy3bL9z6/Fu/am+jj+jjGfXVoknYkjfkZEKrjHlA7xzay0EfUKnu//teYemLeZw==}
 
-  '@textlint/types@15.5.4':
-    resolution: {integrity: sha512-mY28j2U7nrWmZbxyKnRvB8vJxJab4AxqOobLfb6iozrLelJbqxcOTvBQednadWPfAk9XWaZVMqUr9Nird3mutg==}
+  '@textlint/types@15.6.0':
+    resolution: {integrity: sha512-CvgYb1PiqF4BGyoZebGWzAJCZ4ChJAZ9gtWjpQIMKE4Xe2KlSwDA8m8MsiZIV321f5Ibx38BMjC1Z/2ZYP2GQg==}
 
   '@turbo/darwin-64@2.9.6':
     resolution: {integrity: sha512-X/56SnVXIQZBLKwniGTwEQTGmtE5brSACnKMBWpY3YafuxVYefrC2acamfjgxP7BG5w3I+6jf0UrLoSzgPcSJg==}
@@ -2517,10 +2517,6 @@ packages:
   ansi-styles@4.3.0:
     resolution: {integrity: sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg==}
     engines: {node: '>=8'}
-
-  ansi-styles@6.2.1:
-    resolution: {integrity: sha512-bN798gFfQX+viw3R7yrGWRqnrN2oRkEkUjjl4JNn4E8GxxbjtG3FbrEIIY3l8/hrwUwIeCZvi4QuOTP4MErVug==}
-    engines: {node: '>=12'}
 
   ansi-styles@6.2.3:
     resolution: {integrity: sha512-4Dj6M28JB+oAH8kFkTLUo+a2jwOFkuqb3yucU0CANcRRUbxS0cP0nZYCGjcc3BNXwRIsUVmDGgzawme7zvJHvg==}
@@ -4424,15 +4420,15 @@ snapshots:
 
   '@standard-schema/spec@1.1.0': {}
 
-  '@textlint/ast-node-types@15.5.4': {}
+  '@textlint/ast-node-types@15.6.0': {}
 
-  '@textlint/linter-formatter@15.5.4':
+  '@textlint/linter-formatter@15.6.0':
     dependencies:
       '@azu/format-text': 1.0.2
       '@azu/style-format': 1.0.1
-      '@textlint/module-interop': 15.5.4
-      '@textlint/resolver': 15.5.4
-      '@textlint/types': 15.5.4
+      '@textlint/module-interop': 15.6.0
+      '@textlint/resolver': 15.6.0
+      '@textlint/types': 15.6.0
       chalk: 4.1.2
       debug: 4.4.3
       js-yaml: 4.1.1
@@ -4445,7 +4441,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@textlint/module-interop@15.5.4': {}
+  '@textlint/module-interop@15.6.0': {}
 
   '@textlint/regexp-string-matcher@2.0.2':
     dependencies:
@@ -4454,11 +4450,11 @@ snapshots:
       lodash.uniq: 4.5.0
       lodash.uniqwith: 4.5.0
 
-  '@textlint/resolver@15.5.4': {}
+  '@textlint/resolver@15.6.0': {}
 
-  '@textlint/types@15.5.4':
+  '@textlint/types@15.6.0':
     dependencies:
-      '@textlint/ast-node-types': 15.5.4
+      '@textlint/ast-node-types': 15.6.0
 
   '@turbo/darwin-64@2.9.6':
     optional: true
@@ -4615,8 +4611,6 @@ snapshots:
   ansi-styles@4.3.0:
     dependencies:
       color-convert: 2.0.1
-
-  ansi-styles@6.2.1: {}
 
   ansi-styles@6.2.3: {}
 
@@ -5871,7 +5865,7 @@ snapshots:
 
   string-length@6.0.0:
     dependencies:
-      strip-ansi: 7.1.0
+      strip-ansi: 7.2.0
 
   string-width@4.2.3:
     dependencies:
@@ -5889,7 +5883,7 @@ snapshots:
     dependencies:
       emoji-regex: 10.6.0
       get-east-asian-width: 1.5.0
-      strip-ansi: 7.1.0
+      strip-ansi: 7.2.0
 
   string-width@8.2.0:
     dependencies:
@@ -6175,7 +6169,7 @@ snapshots:
 
   wrap-ansi@8.1.0:
     dependencies:
-      ansi-styles: 6.2.1
+      ansi-styles: 6.2.3
       string-width: 5.1.2
       strip-ansi: 7.2.0
 
@@ -6183,7 +6177,7 @@ snapshots:
     dependencies:
       ansi-styles: 6.2.3
       string-width: 7.2.0
-      strip-ansi: 7.1.0
+      strip-ansi: 7.2.0
 
   wrappy@1.0.2: {}
 
