@@ -118,15 +118,20 @@ const presentIgnoreNames = (entries: readonly Dirent[], ignoreFiles: readonly st
 };
 
 /**
- * Per-walk constants threaded through every recursive call. `walkRoot` is the
- * anchor for cascade-ignore relative paths (always `cwd`). `matchRoot` is the
- * per-job anchor for include-pattern matching (job's `rootDir`).
+ * Per-walk constants threaded through every recursive call. The same
+ * instance is reused at every level of the recursion so the helpers can
+ * stay slim instead of passing 5+ positional arguments.
  */
 type WalkContext = {
+    /** Names of ignore files (e.g. `.gitignore`) loaded at every directory. */
     ignoreFiles: readonly string[];
+    /** Anchor for cascade-ignore relative paths. Always equal to the walk's `cwd`. */
     walkRoot: string;
+    /** Per-job anchor for include-pattern matching. Equals the job's `rootDir`. */
     matchRoot: string;
+    /** Compiled include matcher; null means "match every file". */
     matcher: CompiledMatcher;
+    /** Shared dedup sink for absolute file paths in POSIX form. */
     results: Set<string>;
 };
 
