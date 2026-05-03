@@ -2,12 +2,25 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import ignore, { type Ignore } from "ignore";
 
+/** A node-ignore matcher used as a directory's cumulative ignore stack. */
 export type IgnoreInstance = Ignore;
 
+/**
+ * Build the root ignore instance for a walk. `extraPatterns` are seeded
+ * before any file-based rules so callers can hard-code project-level
+ * exclusions (e.g. `**\/.git/**`).
+ */
 export const createRootIgnore = (extraPatterns: readonly string[]): IgnoreInstance => {
     return ignore().add(extraPatterns as string[]);
 };
 
+/**
+ * Read an ignore file and return its content, or null when the file is
+ * absent or unreadable. ENOENT (file not present) and EACCES (permission
+ * denied) are tolerated so a single missing/locked ignore file does not
+ * abort the entire walk; other errors are wrapped and rethrown with the
+ * original error preserved on `cause`.
+ */
 const tryReadIgnoreFile = async (filePath: string): Promise<string | null> => {
     try {
         return await readFile(filePath, "utf8");
@@ -20,15 +33,14 @@ const tryReadIgnoreFile = async (filePath: string): Promise<string | null> => {
     }
 };
 
-const isMeaningful = (content: string): boolean => {
-    // Skip empty / whitespace-only / comment-only files to avoid
-    // allocating a new ignore() instance with zero rules.
-    for (const line of content.split("\n")) {
-        const trimmed = line.trim();
-        if (trimmed.length > 0 && !trimmed.startsWith("#")) return true;
-    }
-    return false;
-};
+/**
+ * Returns true when `content` has any non-whitespace characters.
+ *
+ * Used to skip empty ignore files (e.g. `touch .gitignore`) so we don't
+ * allocate a fresh ignore() instance that adds no rules. Comments and
+ * pattern parsing are left to node-ignore.
+ */
+const hasContent = (content: string): boolean => content.trim().length > 0;
 
 /**
  * Build a new ignore instance by extending `parent` with any ignore files
@@ -49,7 +61,7 @@ export const extendIgnore = async (
     if (candidates.length === 0) return parent;
 
     const reads = await Promise.all(candidates.map((name) => tryReadIgnoreFile(path.join(dir, name))));
-    const contents = reads.filter((c): c is string => c !== null && isMeaningful(c));
+    const contents = reads.filter((c): c is string => c !== null && hasContent(c));
     if (contents.length === 0) return parent;
 
     const next = ignore().add(parent);
