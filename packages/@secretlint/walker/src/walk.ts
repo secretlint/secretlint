@@ -1,7 +1,7 @@
 import { readdir, stat } from "node:fs/promises";
 import path from "node:path";
 import type { Dirent } from "node:fs";
-import ignore, { type Ignore } from "ignore";
+import picomatch from "picomatch";
 import { createRootIgnore, extendIgnore, type IgnoreInstance } from "./ignore-stack.js";
 import { isDynamicPattern, splitGlobRoot } from "./glob-root.js";
 
@@ -28,18 +28,37 @@ export type WalkOptions = {
 const toPosix = (p: string): string => (path.sep === "\\" ? p.replaceAll("\\", "/") : p);
 
 /**
- * Compile a list of glob patterns into a single matcher that returns true
- * when a path matches any of them. Uses node-ignore's matcher because
- * (1) it already handles dotfiles correctly under `**` and (2) it shares
- * pattern semantics with the cascade ignore stack, so include and exclude
- * rules behave consistently.
- *
- * Returns null when patterns is empty (caller can short-circuit and accept
- * everything).
+ * A matcher that returns true when a relative POSIX path matches the
+ * compiled include patterns. `null` means "no patterns supplied" — callers
+ * short-circuit and accept everything.
  */
-const compileMatcher = (patterns: readonly string[]): Ignore | null => {
+type CompiledMatcher = ((relPath: string) => boolean) | null;
+
+/**
+ * Compile a list of glob patterns into a single matcher.
+ *
+ * Picomatch is used (rather than node-ignore or `path.matchesGlob`) for
+ * three reasons:
+ *
+ * 1. Brace expansion. Patterns like `**\/*.{ts,js}` are common in CLI usage
+ *    but node-ignore (gitignore semantics) does not expand braces. The
+ *    cascade ignore stack still uses node-ignore — gitignore is a different
+ *    pattern language from globs and the two should not be unified.
+ * 2. Dotfile traversal under `**`. `path.matchesGlob` (Node 22+) and
+ *    `fs.glob` do not match dotfiles via `**\/*`, and there is no `dot`
+ *    flag to opt in. Picomatch's `{ dot: true }` makes `**\/*` match every
+ *    file as users expect.
+ * 3. Picomatch is the same engine that micromatch / globby / fast-glob
+ *    wrap, so its glob dialect is the de-facto standard in the Node
+ *    ecosystem.
+ *
+ * Returns `null` when there are no patterns so the caller can skip the
+ * matcher call entirely on the hot path.
+ */
+const compileMatcher = (patterns: readonly string[]): CompiledMatcher => {
     if (patterns.length === 0) return null;
-    return ignore().add(patterns as string[]);
+    const matchers = patterns.map((p) => picomatch(p, { dot: true }));
+    return (relPath) => matchers.some((m) => m(relPath));
 };
 
 /**
@@ -50,8 +69,6 @@ type PatternGroup = {
     rootDir: string;
     matchPatterns: string[];
 };
-
-type CompiledMatcher = Ignore | null;
 
 /**
  * Group user-supplied patterns by the static prefix they descend from.
@@ -212,7 +229,7 @@ const processEntries = async (
                 ctx.results.add(toPosix(full));
             } else {
                 const relFromPatternRoot = toPosix(path.relative(ctx.patternRoot, full));
-                if (ctx.matcher.ignores(relFromPatternRoot)) ctx.results.add(toPosix(full));
+                if (ctx.matcher(relFromPatternRoot)) ctx.results.add(toPosix(full));
             }
         }),
     );

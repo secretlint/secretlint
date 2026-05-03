@@ -45,6 +45,9 @@ catalogs:
     '@types/node':
       specifier: ^25.6.0
       version: 25.6.0
+    '@types/picomatch':
+      specifier: ^4.0.3
+      version: 4.0.3
     '@types/pluralize':
       specifier: 0.0.33
       version: 0.0.33
@@ -96,6 +99,9 @@ catalogs:
     p-map:
       specifier: ^7.0.4
       version: 7.0.4
+    picomatch:
+      specifier: ^4.0.2
+      version: 4.0.4
     pluralize:
       specifier: ^8.0.0
       version: 8.0.0
@@ -1664,10 +1670,16 @@ importers:
       ignore:
         specifier: 'catalog:'
         version: 7.0.5
+      picomatch:
+        specifier: 'catalog:'
+        version: 4.0.4
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
         version: 25.6.0
+      '@types/picomatch':
+        specifier: 'catalog:'
+        version: 4.0.3
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -2455,6 +2467,9 @@ packages:
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
+
+  '@types/picomatch@4.0.3':
+    resolution: {integrity: sha512-iG0T6+nYJ9FAPmx9SsUlnwcq1ZVRuCXcVEvWnntoPlrOpwtSTKNDC9uVAxTsC3PUvJ+99n4RpAcNgBbHX3JSnQ==, tarball: https://registry.npmjs.org/@types/picomatch/-/picomatch-4.0.3.tgz}
 
   '@types/pluralize@0.0.33':
     resolution: {integrity: sha512-JOqsl+ZoCpP4e8TDke9W79FDcSgPAR0l6pixx2JHkhnRjvShyYiAYw2LVsnA7K08Y6DeOnaU6ujmENO4os/cYg==}
@@ -3432,7 +3447,7 @@ packages:
     engines: {node: '>=8.6'}
 
   picomatch@4.0.4:
-    resolution: {integrity: sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A==}
+    resolution: {integrity: sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A==, tarball: https://registry.npmjs.org/picomatch/-/picomatch-4.0.4.tgz}
     engines: {node: '>=12'}
 
   pkg-dir@7.0.0:
@@ -4532,6 +4547,8 @@ snapshots:
       undici-types: 7.19.2
 
   '@types/normalize-package-data@2.4.4': {}
+
+  '@types/picomatch@4.0.3': {}
 
   '@types/pluralize@0.0.33': {}
 
