@@ -136,12 +136,13 @@ type WalkContext = {
  * level. This ensures that walks that start below `cwd` (because of a glob's
  * static prefix) still respect ancestor `.gitignore` files.
  */
-const seedAncestorIgnore = async (
-    rootIg: IgnoreInstance,
-    cwd: string,
-    targetDir: string,
-    ignoreFiles: readonly string[],
-): Promise<IgnoreInstance> => {
+const seedAncestorIgnore = async (options: {
+    rootIg: IgnoreInstance;
+    cwd: string;
+    targetDir: string;
+    ignoreFiles: readonly string[];
+}): Promise<IgnoreInstance> => {
+    const { rootIg, cwd, targetDir, ignoreFiles } = options;
     const relative = path.relative(cwd, targetDir);
     if (relative === "" || relative.startsWith("..") || path.isAbsolute(relative)) {
         return await extendIgnore(rootIg, cwd, ignoreFiles);
@@ -212,13 +213,14 @@ const processEntries = async (
  * Resolve a literal user-supplied path: stat once, then walk if it's a
  * directory or add directly if it's a file (after a final ignore check).
  */
-const handleStaticPath = async (
-    absPath: string,
-    parentIg: IgnoreInstance,
-    ignoreFiles: readonly string[],
-    walkRoot: string,
-    results: Set<string>,
-): Promise<void> => {
+const handleStaticPath = async (options: {
+    absPath: string;
+    parentIg: IgnoreInstance;
+    ignoreFiles: readonly string[];
+    walkRoot: string;
+    results: Set<string>;
+}): Promise<void> => {
+    const { absPath, parentIg, ignoreFiles, walkRoot, results } = options;
     let info;
     try {
         info = await stat(absPath);
@@ -260,11 +262,17 @@ export const walk = async (options: WalkOptions): Promise<string[]> => {
             const globPatterns = job.matchPatterns.filter((p) => p !== "");
             if (literalEntries.length > 0 && globPatterns.length === 0) {
                 const parentDir = path.dirname(job.rootDir);
-                const seededIg = await seedAncestorIgnore(rootIg, cwd, parentDir, ignoreFiles);
-                await handleStaticPath(job.rootDir, seededIg, ignoreFiles, cwd, results);
+                const seededIg = await seedAncestorIgnore({ rootIg, cwd, targetDir: parentDir, ignoreFiles });
+                await handleStaticPath({
+                    absPath: job.rootDir,
+                    parentIg: seededIg,
+                    ignoreFiles,
+                    walkRoot: cwd,
+                    results,
+                });
                 return;
             }
-            const seededIg = await seedAncestorIgnore(rootIg, cwd, job.rootDir, ignoreFiles);
+            const seededIg = await seedAncestorIgnore({ rootIg, cwd, targetDir: job.rootDir, ignoreFiles });
             await walkSeeded(job.rootDir, seededIg, {
                 ignoreFiles,
                 walkRoot: cwd,
