@@ -29,6 +29,8 @@ Options
   --no-glob          disable glob pattern interpretation; treat all inputs as literal file paths.
   --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
   --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
+  --no-gitignore     disable .gitignore cascade respect; .gitignore files are
+                     respected by default (since v13).
   --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
 
 Options for Developer
@@ -86,6 +88,14 @@ const options = {
     secretlintignore: {
         type: OPTION_TYPE_STRING,
         default: ".secretlintignore",
+    },
+    /**
+     * CLI respects nested .gitignore files by default (since v13).
+     * If you want to disable .gitignore cascade, use --no-gitignore option.
+     */
+    gitignore: {
+        type: OPTION_TYPE_BOOLEAN,
+        default: true,
     },
     stdinFileName: {
         type: OPTION_TYPE_STRING,
@@ -199,6 +209,7 @@ const readCliOptions = async ({ input = cli.input, flags = cli.flags }): Promise
             outputFilePath: flags.output,
             ignoreFilePath: flags.secretlintignore,
             noGlob: flags.glob === false,
+            respectGitignore: flags.gitignore !== false,
             cwd: flags.cwd,
         };
     }
