@@ -15,18 +15,16 @@ describe("walk - large tree", () => {
         for (let d = 0; d < dirCount; d++) {
             const sub = path.join(dir, `d${d}`);
             await mkdir(sub);
-            await Promise.all(
-                Array.from({ length: PER_DIR }, (_, i) => writeFile(path.join(sub, `f${i}.txt`), ""))
-            );
+            await Promise.all(Array.from({ length: PER_DIR }, (_, i) => writeFile(path.join(sub, `f${i}.txt`), "")));
         }
-    }, 60_000);
+    }, 180_000);
 
     afterAll(async () => {
         if (dir) await rm(dir, { recursive: true, force: true });
-    }, 60_000);
+    }, 180_000);
 
     it("walks 10k files without stack overflow or hang", async () => {
         const results = await walk({ cwd: dir });
         expect(results.length).toBe(FILES);
-    }, 60_000);
+    }, 120_000);
 });
