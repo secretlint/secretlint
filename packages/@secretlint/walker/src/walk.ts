@@ -43,10 +43,10 @@ const compileMatcher = (patterns: readonly string[]): Ignore | null => {
 };
 
 /**
- * One traversal unit: a starting directory and the patterns to match files
- * against once they are below it.
+ * Patterns sharing the same static-prefix root, grouped together so the
+ * walker descends into each root once.
  */
-type WalkJob = {
+type PatternGroup = {
     rootDir: string;
     matchPatterns: string[];
 };
@@ -54,31 +54,35 @@ type WalkJob = {
 type CompiledMatcher = Ignore | null;
 
 /**
- * Group user-supplied patterns into traversal jobs by their static prefix.
+ * Group user-supplied patterns by the static prefix they descend from.
  *
- * Each job represents one directory the walker descends into; patterns that
- * share a static prefix collapse into the same job so the walker traverses
- * each directory at most once.
+ * Each group represents one directory the walker descends into; patterns
+ * that share a static prefix collapse into the same group so the walker
+ * traverses each directory at most once.
  *
- * - When `patterns` is omitted, returns a single job rooted at `cwd`.
+ * - When `patterns` is omitted, returns a single group rooted at `cwd`.
  * - Patterns containing no glob characters (or any pattern when `noGlob` is
  *   true) are flagged with the empty-string sentinel so the caller knows to
  *   take the literal-path branch via {@link handleStaticPath}.
  * - Otherwise, {@link splitGlobRoot} pulls the static prefix off the front
- *   of the pattern and the remainder is stored as the per-job match pattern.
+ *   of the pattern and the remainder is stored as the per-group match pattern.
  */
-const buildJobs = (cwd: string, patterns: readonly string[] | undefined, noGlob: boolean | undefined): WalkJob[] => {
+const groupPatterns = (
+    cwd: string,
+    patterns: readonly string[] | undefined,
+    noGlob: boolean | undefined,
+): PatternGroup[] => {
     if (patterns === undefined || patterns.length === 0) {
         return [{ rootDir: cwd, matchPatterns: [] }];
     }
-    const byRoot = new Map<string, WalkJob>();
+    const byRoot = new Map<string, PatternGroup>();
     const upsert = (rootDir: string, pattern: string): void => {
-        let job = byRoot.get(rootDir);
-        if (!job) {
-            job = { rootDir, matchPatterns: [] };
-            byRoot.set(rootDir, job);
+        let group = byRoot.get(rootDir);
+        if (!group) {
+            group = { rootDir, matchPatterns: [] };
+            byRoot.set(rootDir, group);
         }
-        job.matchPatterns.push(pattern);
+        group.matchPatterns.push(pattern);
     };
     for (const raw of patterns) {
         const normalized = raw.replaceAll("\\", "/");
@@ -126,9 +130,9 @@ type WalkContext = {
     /** Names of ignore files (e.g. `.gitignore`) loaded at every directory. */
     ignoreFiles: readonly string[];
     /** Anchor for cascade-ignore relative paths. Always equal to the walk's `cwd`. */
-    walkRoot: string;
-    /** Per-job anchor for include-pattern matching. Equals the job's `rootDir`. */
-    matchRoot: string;
+    ignoreRoot: string;
+    /** Per-group anchor for include-pattern matching. Equals the group's `rootDir`. */
+    patternRoot: string;
     /** Compiled include matcher; null means "match every file". */
     matcher: CompiledMatcher;
     /** Shared dedup sink for absolute file paths in POSIX form. */
@@ -199,16 +203,16 @@ const processEntries = async (
             const isFile = entry.isFile();
             if (!isDir && !isFile) return;
             const full = path.join(absDir, entry.name);
-            const relFromWalkRoot = toPosix(path.relative(ctx.walkRoot, full));
-            const target = isDir ? `${relFromWalkRoot}/` : relFromWalkRoot;
+            const relFromIgnoreRoot = toPosix(path.relative(ctx.ignoreRoot, full));
+            const target = isDir ? `${relFromIgnoreRoot}/` : relFromIgnoreRoot;
             if (ig.ignores(target)) return;
             if (isDir) {
                 await walkSubdir(full, ig, ctx);
             } else if (ctx.matcher === null) {
                 ctx.results.add(toPosix(full));
             } else {
-                const relFromMatchRoot = toPosix(path.relative(ctx.matchRoot, full));
-                if (ctx.matcher.ignores(relFromMatchRoot)) ctx.results.add(toPosix(full));
+                const relFromPatternRoot = toPosix(path.relative(ctx.patternRoot, full));
+                if (ctx.matcher.ignores(relFromPatternRoot)) ctx.results.add(toPosix(full));
             }
         }),
     );
@@ -222,10 +226,10 @@ const handleStaticPath = async (options: {
     absPath: string;
     parentIg: IgnoreInstance;
     ignoreFiles: readonly string[];
-    walkRoot: string;
+    ignoreRoot: string;
     results: Set<string>;
 }): Promise<void> => {
-    const { absPath, parentIg, ignoreFiles, walkRoot, results } = options;
+    const { absPath, parentIg, ignoreFiles, ignoreRoot, results } = options;
     let info;
     try {
         info = await stat(absPath);
@@ -237,14 +241,14 @@ const handleStaticPath = async (options: {
     if (info.isDirectory()) {
         await walkSubdir(absPath, parentIg, {
             ignoreFiles,
-            walkRoot,
-            matchRoot: absPath,
+            ignoreRoot,
+            patternRoot: absPath,
             matcher: null,
             results,
         });
     } else if (info.isFile()) {
-        const relFromWalkRoot = toPosix(path.relative(walkRoot, absPath));
-        if (parentIg.ignores(relFromWalkRoot)) return;
+        const relFromIgnoreRoot = toPosix(path.relative(ignoreRoot, absPath));
+        if (parentIg.ignores(relFromIgnoreRoot)) return;
         results.add(toPosix(absPath));
     }
 };
@@ -260,28 +264,28 @@ export const walk = async (options: WalkOptions): Promise<string[]> => {
     const ignoreFiles = options.ignoreFiles ?? [];
     const rootIg = createRootIgnore(options.extraIgnorePatterns ?? []);
     const results = new Set<string>();
-    const jobs = buildJobs(cwd, options.patterns, options.noGlob);
+    const groups = groupPatterns(cwd, options.patterns, options.noGlob);
     await Promise.all(
-        jobs.map(async (job) => {
-            const literalEntries = job.matchPatterns.filter((p) => p === "");
-            const globPatterns = job.matchPatterns.filter((p) => p !== "");
+        groups.map(async (group) => {
+            const literalEntries = group.matchPatterns.filter((p) => p === "");
+            const globPatterns = group.matchPatterns.filter((p) => p !== "");
             if (literalEntries.length > 0 && globPatterns.length === 0) {
-                const parentDir = path.dirname(job.rootDir);
+                const parentDir = path.dirname(group.rootDir);
                 const seededIg = await seedAncestorIgnore({ rootIg, cwd, targetDir: parentDir, ignoreFiles });
                 await handleStaticPath({
-                    absPath: job.rootDir,
+                    absPath: group.rootDir,
                     parentIg: seededIg,
                     ignoreFiles,
-                    walkRoot: cwd,
+                    ignoreRoot: cwd,
                     results,
                 });
                 return;
             }
-            const seededIg = await seedAncestorIgnore({ rootIg, cwd, targetDir: job.rootDir, ignoreFiles });
-            await walkSeeded(job.rootDir, seededIg, {
+            const seededIg = await seedAncestorIgnore({ rootIg, cwd, targetDir: group.rootDir, ignoreFiles });
+            await walkSeeded(group.rootDir, seededIg, {
                 ignoreFiles,
-                walkRoot: cwd,
-                matchRoot: job.rootDir,
+                ignoreRoot: cwd,
+                patternRoot: group.rootDir,
                 matcher: compileMatcher(globPatterns),
                 results,
             });
