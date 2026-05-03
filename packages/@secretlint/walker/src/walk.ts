@@ -45,14 +45,14 @@ const buildJobs = (cwd: string, patterns: readonly string[] | undefined, noGlob:
     for (const raw of patterns) {
         const normalized = raw.replaceAll("\\", "/");
         if (noGlob || !isDynamicPattern(normalized)) {
-            const abs = path.resolve(cwd, normalized);
+            const abs = toPosix(path.resolve(cwd, normalized));
             const list = byRoot.get(abs) ?? [];
             list.push("");
             byRoot.set(abs, list);
             continue;
         }
         const { rootDir, matchPattern } = splitGlobRoot(normalized);
-        const abs = rootDir === "" ? cwd : path.resolve(cwd, rootDir);
+        const abs = rootDir === "" ? toPosix(cwd) : toPosix(path.resolve(cwd, rootDir));
         const list = byRoot.get(abs) ?? [];
         list.push(matchPattern);
         byRoot.set(abs, list);
@@ -168,10 +168,10 @@ const processEntries = async (
                 await walkSubdir(full, ig, ignoreFiles, walkRoot, matchRoot, matcher, results);
             } else {
                 if (matcher === null) {
-                    results.add(full);
+                    results.add(toPosix(full));
                 } else {
                     const relFromMatchRoot = toPosix(path.relative(matchRoot, full));
-                    if (matcher.ignores(relFromMatchRoot)) results.add(full);
+                    if (matcher.ignores(relFromMatchRoot)) results.add(toPosix(full));
                 }
             }
         }),
@@ -198,7 +198,7 @@ const handleStaticPath = async (
     } else if (info.isFile()) {
         const relFromWalkRoot = toPosix(path.relative(walkRoot, absPath));
         if (parentIg.ignores(relFromWalkRoot)) return;
-        results.add(absPath);
+        results.add(toPosix(absPath));
     }
 };
 

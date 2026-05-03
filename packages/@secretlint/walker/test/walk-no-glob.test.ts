@@ -5,6 +5,7 @@ import { walk } from "../src/index.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const fixtureDir = path.join(__dirname, "fixtures", "no-glob");
+const toPosix = (p: string): string => (path.sep === "\\" ? p.replaceAll("\\", "/") : p);
 
 describe("walk - noGlob mode", () => {
     it("treats glob-like paths as literal", async () => {
@@ -14,7 +15,7 @@ describe("walk - noGlob mode", () => {
             patterns: [target],
             noGlob: true,
         });
-        expect(results).toEqual([target]);
+        expect(results).toEqual([toPosix(target)]);
     });
 
     it("treats [param] as a literal directory", async () => {
@@ -24,6 +25,6 @@ describe("walk - noGlob mode", () => {
             patterns: [target],
             noGlob: true,
         });
-        expect(results).toEqual([target]);
+        expect(results).toEqual([toPosix(target)]);
     });
 });
