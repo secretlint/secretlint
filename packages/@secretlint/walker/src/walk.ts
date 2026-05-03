@@ -1,5 +1,6 @@
 import { readdir, stat } from "node:fs/promises";
 import path from "node:path";
+import type { Dirent } from "node:fs";
 import { createRootIgnore, extendIgnore, type IgnoreInstance } from "./ignore-stack.js";
 import { isDynamicPattern, splitGlobRoot } from "./glob-root.js";
 
@@ -49,6 +50,26 @@ const buildJobs = (cwd: string, patterns: readonly string[] | undefined, noGlob:
     return [...byRoot.entries()].map(([rootDir, matchPatterns]) => ({ rootDir, matchPatterns }));
 };
 
+const safeReaddir = async (absDir: string): Promise<Dirent[] | null> => {
+    try {
+        return await readdir(absDir, { withFileTypes: true });
+    } catch (error) {
+        const code = (error as NodeJS.ErrnoException).code;
+        if (code === "ENOENT" || code === "EACCES") return null;
+        throw error;
+    }
+};
+
+const presentIgnoreNames = (entries: readonly Dirent[], ignoreFiles: readonly string[]): ReadonlySet<string> => {
+    if (ignoreFiles.length === 0) return new Set();
+    const wanted = new Set(ignoreFiles);
+    const found = new Set<string>();
+    for (const entry of entries) {
+        if (entry.isFile() && wanted.has(entry.name)) found.add(entry.name);
+    }
+    return found;
+};
+
 /**
  * Build an ignore instance by walking the directory chain from `cwd` down to
  * (and including) `targetDir`, applying any ignore files encountered at each
@@ -59,11 +80,10 @@ const seedAncestorIgnore = async (
     rootIg: IgnoreInstance,
     cwd: string,
     targetDir: string,
-    ignoreFiles: readonly string[]
+    ignoreFiles: readonly string[],
 ): Promise<IgnoreInstance> => {
     const relative = path.relative(cwd, targetDir);
     if (relative === "" || relative.startsWith("..") || path.isAbsolute(relative)) {
-        // targetDir is cwd, outside cwd, or unrelated — only seed at cwd itself.
         return await extendIgnore(rootIg, cwd, ignoreFiles);
     }
     let ig = await extendIgnore(rootIg, cwd, ignoreFiles);
@@ -75,37 +95,72 @@ const seedAncestorIgnore = async (
     return ig;
 };
 
-const walkDir = async (
+/**
+ * Walk a directory whose ignore stack has already been seeded for the
+ * directory itself. Reads `absDir` once, derives ignore-file presence from
+ * the dirent listing, and recurses with `walkSubdir` (which loads ignore
+ * files for the child).
+ */
+const walkSeeded = async (
+    absDir: string,
+    ig: IgnoreInstance,
+    ignoreFiles: readonly string[],
+    walkRoot: string,
+    matchRoot: string,
+    matchPatterns: readonly string[],
+    results: Set<string>,
+): Promise<void> => {
+    const entries = await safeReaddir(absDir);
+    if (entries === null) return;
+    await processEntries(absDir, entries, ig, ignoreFiles, walkRoot, matchRoot, matchPatterns, results);
+};
+
+/**
+ * Recurse into a child directory: read it once, derive ignore-file presence,
+ * extend the ignore stack accordingly, then process entries.
+ */
+const walkSubdir = async (
     absDir: string,
     parentIg: IgnoreInstance,
     ignoreFiles: readonly string[],
     walkRoot: string,
     matchRoot: string,
     matchPatterns: readonly string[],
-    results: Set<string>
+    results: Set<string>,
 ): Promise<void> => {
-    const ig = await extendIgnore(parentIg, absDir, ignoreFiles);
-    let entries;
-    try {
-        entries = await readdir(absDir, { withFileTypes: true });
-    } catch (error) {
-        const code = (error as NodeJS.ErrnoException).code;
-        if (code === "ENOENT" || code === "EACCES") return;
-        throw error;
-    }
+    const entries = await safeReaddir(absDir);
+    if (entries === null) return;
+    const present = presentIgnoreNames(entries, ignoreFiles);
+    const ig = await extendIgnore(parentIg, absDir, ignoreFiles, present);
+    await processEntries(absDir, entries, ig, ignoreFiles, walkRoot, matchRoot, matchPatterns, results);
+};
+
+const processEntries = async (
+    absDir: string,
+    entries: readonly Dirent[],
+    ig: IgnoreInstance,
+    ignoreFiles: readonly string[],
+    walkRoot: string,
+    matchRoot: string,
+    matchPatterns: readonly string[],
+    results: Set<string>,
+): Promise<void> => {
     await Promise.all(
         entries.map(async (entry) => {
+            const isDir = entry.isDirectory();
+            const isFile = entry.isFile();
+            if (!isDir && !isFile) return;
             const full = path.join(absDir, entry.name);
             const relFromWalkRoot = toPosix(path.relative(walkRoot, full));
-            const target = entry.isDirectory() ? `${relFromWalkRoot}/` : relFromWalkRoot;
+            const target = isDir ? `${relFromWalkRoot}/` : relFromWalkRoot;
             if (ig.ignores(target)) return;
-            if (entry.isDirectory()) {
-                await walkDir(full, ig, ignoreFiles, walkRoot, matchRoot, matchPatterns, results);
-            } else if (entry.isFile()) {
+            if (isDir) {
+                await walkSubdir(full, ig, ignoreFiles, walkRoot, matchRoot, matchPatterns, results);
+            } else {
                 const relFromMatchRoot = toPosix(path.relative(matchRoot, full));
                 if (matchesAny(relFromMatchRoot, matchPatterns)) results.add(full);
             }
-        })
+        }),
     );
 };
 
@@ -114,7 +169,7 @@ const handleStaticPath = async (
     parentIg: IgnoreInstance,
     ignoreFiles: readonly string[],
     walkRoot: string,
-    results: Set<string>
+    results: Set<string>,
 ): Promise<void> => {
     let info;
     try {
@@ -125,8 +180,7 @@ const handleStaticPath = async (
         throw error;
     }
     if (info.isDirectory()) {
-        const ig = await extendIgnore(parentIg, absPath, ignoreFiles);
-        await walkDir(absPath, ig, ignoreFiles, walkRoot, absPath, [], results);
+        await walkSubdir(absPath, parentIg, ignoreFiles, walkRoot, absPath, [], results);
     } else if (info.isFile()) {
         const relFromWalkRoot = toPosix(path.relative(walkRoot, absPath));
         if (parentIg.ignores(relFromWalkRoot)) return;
@@ -144,9 +198,6 @@ export const walk = async (options: WalkOptions): Promise<string[]> => {
         jobs.map(async (job) => {
             const literalEntries = job.matchPatterns.filter((p) => p === "");
             const globPatterns = job.matchPatterns.filter((p) => p !== "");
-            // For static paths the ancestor seed is taken from the parent
-            // directory of the path; for directory walks it's from cwd up to
-            // (and including) the job's root directory.
             if (literalEntries.length > 0 && globPatterns.length === 0) {
                 const parentDir = path.dirname(job.rootDir);
                 const seededIg = await seedAncestorIgnore(rootIg, cwd, parentDir, ignoreFiles);
@@ -154,48 +205,8 @@ export const walk = async (options: WalkOptions): Promise<string[]> => {
                 return;
             }
             const seededIg = await seedAncestorIgnore(rootIg, cwd, job.rootDir, ignoreFiles);
-            // walkDir's first step calls extendIgnore(seededIg, job.rootDir, ...)
-            // again, which would double-apply the rootDir's ignore file. To
-            // avoid the duplicate read we walk children directly.
-            await walkChildren(job.rootDir, seededIg, ignoreFiles, cwd, job.rootDir, globPatterns, results);
-        })
+            await walkSeeded(job.rootDir, seededIg, ignoreFiles, cwd, job.rootDir, globPatterns, results);
+        }),
     );
     return [...results];
-};
-
-/**
- * Like walkDir but does NOT call extendIgnore for `absDir` — used when the
- * caller has already seeded the ignore instance for that exact directory.
- */
-const walkChildren = async (
-    absDir: string,
-    ig: IgnoreInstance,
-    ignoreFiles: readonly string[],
-    walkRoot: string,
-    matchRoot: string,
-    matchPatterns: readonly string[],
-    results: Set<string>
-): Promise<void> => {
-    let entries;
-    try {
-        entries = await readdir(absDir, { withFileTypes: true });
-    } catch (error) {
-        const code = (error as NodeJS.ErrnoException).code;
-        if (code === "ENOENT" || code === "EACCES") return;
-        throw error;
-    }
-    await Promise.all(
-        entries.map(async (entry) => {
-            const full = path.join(absDir, entry.name);
-            const relFromWalkRoot = toPosix(path.relative(walkRoot, full));
-            const target = entry.isDirectory() ? `${relFromWalkRoot}/` : relFromWalkRoot;
-            if (ig.ignores(target)) return;
-            if (entry.isDirectory()) {
-                await walkDir(full, ig, ignoreFiles, walkRoot, matchRoot, matchPatterns, results);
-            } else if (entry.isFile()) {
-                const relFromMatchRoot = toPosix(path.relative(matchRoot, full));
-                if (matchesAny(relFromMatchRoot, matchPatterns)) results.add(full);
-            }
-        })
-    );
 };
