@@ -294,7 +294,9 @@ To scan files that are gitignored — for example, a `.env` file in a project wh
 secretlint --no-gitignore "**/*"
 ```
 
-> **Migrating to v13:** `.gitignore` is now respected by default. Previously, secretlint scanned all matching files regardless of `.gitignore`. Pass `--no-gitignore` to restore the previous behaviour.
+> **Migrating to v13:**
+> - `.gitignore` is now respected by default. Previously, secretlint scanned all matching files regardless of `.gitignore`. Pass `--no-gitignore` to restore the previous behaviour.
+> - Patterns are always interpreted as globs unless you pass `--no-glob`. To scan a file whose name contains glob special characters (`[`, `(`, `{`, `?`, `*`), use `--no-glob` and pass the literal path. Previously, secretlint applied an automatic best-effort escape for some such paths; this is no longer the case.
 
 ### Ignoring by comment
 
