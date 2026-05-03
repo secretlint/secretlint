@@ -1,26 +1,8 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, beforeAll, afterAll } from "vitest";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import os from "node:os";
-
-// Track if we should throw EIO on the next readdir call
-let throwEIOOnce = false;
-
-vi.mock("node:fs/promises", async (importActual) => {
-    const actual = await importActual<typeof import("node:fs/promises")>();
-    return {
-        ...actual,
-        readdir: vi.fn(async (...args: Parameters<typeof actual.readdir>) => {
-            if (throwEIOOnce) {
-                throwEIOOnce = false;
-                throw Object.assign(new Error("boom"), { code: "EIO" });
-            }
-            // @ts-expect-error overloaded function
-            return actual.readdir(...args);
-        }),
-    };
-});
-
-const { walk } = await import("../src/index.js");
+import { walk } from "../src/index.js";
 
 describe("walk - errors", () => {
     it("returns empty when cwd does not exist", async () => {
@@ -28,8 +10,22 @@ describe("walk - errors", () => {
         expect(results).toEqual([]);
     });
 
-    it("propagates non-ENOENT/EACCES readdir errors", async () => {
-        throwEIOOnce = true;
-        await expect(walk({ cwd: os.tmpdir() })).rejects.toThrow("boom");
+    describe("propagates non-ENOENT/EACCES readdir errors", () => {
+        let tmpDir: string;
+        let filePath: string;
+        beforeAll(async () => {
+            tmpDir = await mkdtemp(path.join(os.tmpdir(), "walker-errors-"));
+            filePath = path.join(tmpDir, "not-a-directory.txt");
+            await writeFile(filePath, "x", "utf8");
+        });
+        afterAll(async () => {
+            await rm(tmpDir, { recursive: true, force: true });
+        });
+        it("rejects with ENOTDIR when cwd is a file", async () => {
+            // readdir on a regular file throws ENOTDIR, which safeReaddir does
+            // not swallow (only ENOENT/EACCES are soft-skipped), so it must
+            // propagate out of walk().
+            await expect(walk({ cwd: filePath })).rejects.toMatchObject({ code: "ENOTDIR" });
+        });
     });
 });
