@@ -10,15 +10,9 @@
 
 **Spec:** `docs/superpowers/specs/2026-05-03-walker-gitignore-cascade-design.md`
 
-**PR boundaries:** This plan produces three PRs.
+**PR strategy:** All work lands in a **single draft PR** so reviewers can verify the walker, the secretlint migration, and the documentation together (compatibility check). The branch is already created (`feat/walker-gitignore-cascade`). Only the final task opens the PR.
 
-| PR | Tasks | Output |
-|---|---|---|
-| #1 | 1–17 | New `@secretlint/walker` package (independent, no consumers yet) |
-| #2 | 18–24 | Migrate `packages/secretlint` to walker; add `--no-gitignore`; remove `globby` |
-| #3 | 25–26 | Documentation updates (README, CHANGELOG migration guide) |
-
-Run `git push -u origin <branch>` and `gh pr create --draft` at the end of each PR group. Land in order: PR #1 → PR #2 → PR #3.
+The plan still groups tasks into three logical "stages" (walker → migration → docs), and Tasks 17 and 22 (the per-stage PR steps) are removed. Stage boundaries are kept as commit boundaries only.
 
 ---
 
@@ -1620,43 +1614,13 @@ EOF
 
 ---
 
-## Task 17: Open PR #1
+## Task 17: (removed — single-PR strategy)
 
-- [ ] **Step 1: Verify everything builds and tests pass**
-
-Run: `pnpm install && pnpm run build && pnpm --filter @secretlint/walker run test`
-Expected: build succeeds; all tests pass.
-
-- [ ] **Step 2: Push and open draft PR**
-
-```bash
-git push -u origin <branch-name>
-gh pr create --draft --title "feat: add @secretlint/walker package with nested .gitignore cascade" --body "$(cat <<'EOF'
-## Summary
-
-- Adds new `@secretlint/walker` package that walks the file system with nested `.gitignore` cascade.
-- Built on `Promise.all` + `fs.readdir({ withFileTypes: true })` + `ignore` (node-ignore) + Node.js 22+ `path.matchesGlob`.
-- No consumers in this PR; secretlint migration follows in PR #2.
-
-Spec: `docs/superpowers/specs/2026-05-03-walker-gitignore-cascade-design.md`
-Plan: `docs/superpowers/plans/2026-05-03-walker-gitignore-cascade-plan.md`
-
-## Test plan
-
-- [ ] `pnpm --filter @secretlint/walker run test` passes locally
-- [ ] Verified subtree pruning via readdir spy
-- [ ] Symlinks not followed; large-tree sanity (10k files) ok
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
-EOF
-)"
-```
-
-- [ ] **Step 3: STOP — wait for user / CI before PR #2**
+Skipped. PR is opened at the end (Task 24).
 
 ---
 
-# PR #2 — Migrate `packages/secretlint` to `@secretlint/walker`
+# Stage 2 — Migrate `packages/secretlint` to `@secretlint/walker`
 
 ## Task 18: Add walker dependency and stub call
 
@@ -1952,41 +1916,13 @@ If anything required edits, commit them with a clear scope. Otherwise, skip.
 
 ---
 
-## Task 22: Open PR #2
+## Task 22: (removed — single-PR strategy)
 
-- [ ] **Step 1: Push and create draft PR**
-
-```bash
-git push
-gh pr create --draft --title "feat!: respect .gitignore by default via @secretlint/walker" --body "$(cat <<'EOF'
-## Summary
-
-- secretlint now respects nested `.gitignore` files by default.
-- Replaces `globby`-based search with `@secretlint/walker` (added in PR #1).
-- Adds `--no-gitignore` CLI flag for opting out.
-
-**Breaking change** — files newly excluded by `.gitignore` will no longer be scanned. Targeted release: secretlint v13.
-
-Spec: `docs/superpowers/specs/2026-05-03-walker-gitignore-cascade-design.md`
-Plan: `docs/superpowers/plans/2026-05-03-walker-gitignore-cascade-plan.md`
-
-## Test plan
-
-- [ ] CLI snapshot for default `.gitignore` respect
-- [ ] CLI snapshot for `--no-gitignore`
-- [ ] Existing CLI tests still pass
-- [ ] `pnpm run lint` passes (self-lint of repo)
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
-EOF
-)"
-```
-
-- [ ] **Step 2: STOP — wait for review before PR #3**
+Skipped. PR is opened at the end (Task 24).
 
 ---
 
-# PR #3 — Documentation
+# Stage 3 — Documentation
 
 ## Task 23: Update root `README.md`
 
@@ -2045,26 +1981,45 @@ EOF
 
 ---
 
-## Task 24: Open PR #3
+## Task 24: Open the single PR (walker + migration + docs)
 
-- [ ] **Step 1: Push and create PR**
+- [ ] **Step 1: Final repo-wide verification**
+
+Run: `pnpm install && pnpm run build && pnpm run test && pnpm run lint`
+Expected: all pass.
+
+- [ ] **Step 2: Push branch and create draft PR**
 
 ```bash
-git push
-gh pr create --draft --title "docs: --no-gitignore and v13 migration notes" --body "$(cat <<'EOF'
+git push -u origin feat/walker-gitignore-cascade
+gh pr create --draft --title "feat!: respect .gitignore by default via @secretlint/walker" --body "$(cat <<'EOF'
 ## Summary
 
-- Documents the `--no-gitignore` CLI flag added in PR #2.
-- Adds a "Migrating to v13" section.
+- New package `@secretlint/walker` with nested `.gitignore` cascade.
+- secretlint migrated to use the walker; `globby` removed.
+- New `--no-gitignore` CLI flag (default: respect `.gitignore`).
+- Documentation and v13 migration notes.
+
+**Breaking change** — files newly excluded by `.gitignore` are no longer scanned. Targeted release: secretlint v13.
 
 Spec: `docs/superpowers/specs/2026-05-03-walker-gitignore-cascade-design.md`
+Plan: `docs/superpowers/plans/2026-05-03-walker-gitignore-cascade-plan.md`
+
+## Test plan
+
+- [ ] `pnpm --filter @secretlint/walker run test` passes
+- [ ] `pnpm run test` passes across the repo
+- [ ] CLI snapshots for default `.gitignore` respect and `--no-gitignore` are stable
+- [ ] `pnpm run lint` (self-lint) passes
+- [ ] Walker subtree pruning verified via readdir spy
+- [ ] Symlinks not followed; large-tree (10k files) sanity ok
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
 EOF
 )"
 ```
 
-- [ ] **Step 2: STOP — done**
+- [ ] **Step 3: STOP — done**
 
 ---
 
