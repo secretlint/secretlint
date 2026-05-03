@@ -29,6 +29,7 @@ catalog:
   "debug": "^4.4.3"
   "escape-string-regexp": "^5.0.0"
   "globby": "^16.2.0"
+  "ignore": "^7.0.5"
   "istextorbinary": "^9.5.0"
   "js-yaml": "^4.1.1"
   "lint-staged": "^16.4.0"
