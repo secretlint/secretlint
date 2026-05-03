@@ -40,3 +40,26 @@ describe("walk - glob patterns", () => {
         expect(rel(results)).toEqual(["src/a.ini", "src/c.ts", "src/sub/b.ini"]);
     });
 });
+
+describe("walk - glob + ignore cascade interaction", () => {
+    const dir = path.join(__dirname, "fixtures", "glob-with-gitignore");
+    const r = (paths: string[]) => paths.map((p) => path.relative(dir, p).replaceAll("\\", "/")).sort();
+
+    it("ancestor .gitignore is honoured when pattern has a static prefix", async () => {
+        const results = await walk({
+            cwd: dir,
+            patterns: ["src/**/*"],
+            ignoreFiles: [".gitignore"],
+        });
+        expect(r(results)).toEqual(["src/api.ts", "src/main.ts"]);  // NOT api.secrets
+    });
+
+    it("ancestor .gitignore is honoured for static file paths", async () => {
+        const results = await walk({
+            cwd: dir,
+            patterns: ["src/api.secrets"],
+            ignoreFiles: [".gitignore"],
+        });
+        expect(r(results)).toEqual([]);  // *.secrets ignored even though path was explicit
+    });
+});
