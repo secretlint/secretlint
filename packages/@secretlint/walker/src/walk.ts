@@ -45,14 +45,14 @@ const buildJobs = (cwd: string, patterns: readonly string[] | undefined, noGlob:
     for (const raw of patterns) {
         const normalized = raw.replaceAll("\\", "/");
         if (noGlob || !isDynamicPattern(normalized)) {
-            const abs = path.isAbsolute(normalized) ? normalized : path.join(cwd, normalized);
+            const abs = path.resolve(cwd, normalized);
             const list = byRoot.get(abs) ?? [];
             list.push("");
             byRoot.set(abs, list);
             continue;
         }
         const { rootDir, matchPattern } = splitGlobRoot(normalized);
-        const abs = rootDir === "" ? cwd : path.isAbsolute(rootDir) ? rootDir : path.join(cwd, rootDir);
+        const abs = rootDir === "" ? cwd : path.resolve(cwd, rootDir);
         const list = byRoot.get(abs) ?? [];
         list.push(matchPattern);
         byRoot.set(abs, list);
