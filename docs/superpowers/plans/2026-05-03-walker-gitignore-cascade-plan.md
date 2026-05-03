@@ -203,8 +203,6 @@ module
 # @secretlint/walker
 
 Promise-based file system walker with nested `.gitignore` cascade support.
-
-See `docs/superpowers/specs/2026-05-03-walker-gitignore-cascade-design.md` for design details.
 ```
 
 - [ ] **Step 8: Install dependencies and verify build**
@@ -649,34 +647,42 @@ EOF
 - Test: `packages/@secretlint/walker/test/walk-extra-ignore.test.ts`
 - Test fixtures: `packages/@secretlint/walker/test/fixtures/extra-ignore/`
 
-- [ ] **Step 1: Create fixture (with `.git` simulation)**
+- [ ] **Step 1: Create the static fixture**
 
 ```bash
-mkdir -p packages/@secretlint/walker/test/fixtures/extra-ignore/.git
 mkdir -p packages/@secretlint/walker/test/fixtures/extra-ignore/node_modules/some-dep
 mkdir -p packages/@secretlint/walker/test/fixtures/extra-ignore/src
-printf 'x' > packages/@secretlint/walker/test/fixtures/extra-ignore/.git/HEAD
 printf 'y' > packages/@secretlint/walker/test/fixtures/extra-ignore/node_modules/some-dep/index.js
 printf 'z' > packages/@secretlint/walker/test/fixtures/extra-ignore/src/main.ts
 ```
 
-Important: ensure the fixture's `.git` directory is **not** treated as a git repo by the host's git. Add a `.gitignore` at the repo root inside `packages/@secretlint/walker/test/fixtures/.gitignore` containing `extra-ignore/.git/` so the test fixture isn't accidentally crawled by host git tools. Example: append entry. Verify the fixture is committed by running `git status` after creating it.
+The `.git/HEAD` is **not** committed because git refuses to add files inside a path containing `.git/`. The test creates `.git/HEAD` at runtime in `beforeAll` and removes it in `afterAll`.
 
-- [ ] **Step 2: Write failing test**
+- [ ] **Step 2: Write the test**
 
 Create `test/walk-extra-ignore.test.ts`:
 
 ```ts
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeAll, afterAll } from "vitest";
+import { mkdir, writeFile, rm } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { walk } from "../src/index.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const fixtureDir = path.join(__dirname, "fixtures", "extra-ignore");
+const gitDir = path.join(fixtureDir, ".git");
 const rel = (paths: string[]) => paths.map((p) => path.relative(fixtureDir, p).replaceAll("\\", "/")).sort();
 
 describe("walk - extraIgnorePatterns", () => {
+    beforeAll(async () => {
+        await mkdir(gitDir, { recursive: true });
+        await writeFile(path.join(gitDir, "HEAD"), "x");
+    });
+    afterAll(async () => {
+        await rm(gitDir, { recursive: true, force: true });
+    });
+
     it("excludes .git and node_modules via extraIgnorePatterns", async () => {
         const results = await walk({
             cwd: fixtureDir,
@@ -703,9 +709,13 @@ Expected: PASS. (Implementation already supports this from Task 4.)
 - [ ] **Step 4: Commit**
 
 ```bash
-git add packages/@secretlint/walker/test/fixtures/extra-ignore packages/@secretlint/walker/test/walk-extra-ignore.test.ts packages/@secretlint/walker/test/fixtures/.gitignore
+git add packages/@secretlint/walker/test/fixtures/extra-ignore packages/@secretlint/walker/test/walk-extra-ignore.test.ts
 git commit -m "$(cat <<'EOF'
 test(walker): cover extraIgnorePatterns for .git/node_modules exclusion
+
+The .git/HEAD file is created at runtime (beforeAll) and torn down
+(afterAll) because git refuses to track files inside any path named
+.git/.
 
 Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
 EOF
