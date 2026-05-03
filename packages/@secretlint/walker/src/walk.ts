@@ -1,6 +1,7 @@
 import { readdir, stat } from "node:fs/promises";
 import path from "node:path";
 import type { Dirent } from "node:fs";
+import ignore, { type Ignore } from "ignore";
 import { createRootIgnore, extendIgnore, type IgnoreInstance } from "./ignore-stack.js";
 import { isDynamicPattern, splitGlobRoot } from "./glob-root.js";
 
@@ -14,18 +15,27 @@ export type WalkOptions = {
 
 const toPosix = (p: string): string => (path.sep === "\\" ? p.replaceAll("\\", "/") : p);
 
-const matchesAny = (relPosix: string, patterns: readonly string[]): boolean => {
-    if (patterns.length === 0) return true;
-    for (const p of patterns) {
-        if (path.matchesGlob(relPosix, p)) return true;
-    }
-    return false;
+/**
+ * Compile a list of glob patterns into a single matcher that returns true
+ * when a path matches any of them. Uses node-ignore's matcher because
+ * (1) it already handles dotfiles correctly under `**` and (2) it shares
+ * pattern semantics with the cascade ignore stack, so include and exclude
+ * rules behave consistently.
+ *
+ * Returns null when patterns is empty (caller can short-circuit and accept
+ * everything).
+ */
+const compileMatcher = (patterns: readonly string[]): Ignore | null => {
+    if (patterns.length === 0) return null;
+    return ignore().add(patterns as string[]);
 };
 
 type WalkJob = {
     rootDir: string;
     matchPatterns: string[];
 };
+
+type CompiledMatcher = Ignore | null;
 
 const buildJobs = (cwd: string, patterns: readonly string[] | undefined, noGlob: boolean | undefined): WalkJob[] => {
     if (patterns === undefined || patterns.length === 0) {
@@ -107,12 +117,12 @@ const walkSeeded = async (
     ignoreFiles: readonly string[],
     walkRoot: string,
     matchRoot: string,
-    matchPatterns: readonly string[],
+    matcher: CompiledMatcher,
     results: Set<string>,
 ): Promise<void> => {
     const entries = await safeReaddir(absDir);
     if (entries === null) return;
-    await processEntries(absDir, entries, ig, ignoreFiles, walkRoot, matchRoot, matchPatterns, results);
+    await processEntries(absDir, entries, ig, ignoreFiles, walkRoot, matchRoot, matcher, results);
 };
 
 /**
@@ -125,14 +135,14 @@ const walkSubdir = async (
     ignoreFiles: readonly string[],
     walkRoot: string,
     matchRoot: string,
-    matchPatterns: readonly string[],
+    matcher: CompiledMatcher,
     results: Set<string>,
 ): Promise<void> => {
     const entries = await safeReaddir(absDir);
     if (entries === null) return;
     const present = presentIgnoreNames(entries, ignoreFiles);
     const ig = await extendIgnore(parentIg, absDir, ignoreFiles, present);
-    await processEntries(absDir, entries, ig, ignoreFiles, walkRoot, matchRoot, matchPatterns, results);
+    await processEntries(absDir, entries, ig, ignoreFiles, walkRoot, matchRoot, matcher, results);
 };
 
 const processEntries = async (
@@ -142,7 +152,7 @@ const processEntries = async (
     ignoreFiles: readonly string[],
     walkRoot: string,
     matchRoot: string,
-    matchPatterns: readonly string[],
+    matcher: CompiledMatcher,
     results: Set<string>,
 ): Promise<void> => {
     await Promise.all(
@@ -155,10 +165,14 @@ const processEntries = async (
             const target = isDir ? `${relFromWalkRoot}/` : relFromWalkRoot;
             if (ig.ignores(target)) return;
             if (isDir) {
-                await walkSubdir(full, ig, ignoreFiles, walkRoot, matchRoot, matchPatterns, results);
+                await walkSubdir(full, ig, ignoreFiles, walkRoot, matchRoot, matcher, results);
             } else {
-                const relFromMatchRoot = toPosix(path.relative(matchRoot, full));
-                if (matchesAny(relFromMatchRoot, matchPatterns)) results.add(full);
+                if (matcher === null) {
+                    results.add(full);
+                } else {
+                    const relFromMatchRoot = toPosix(path.relative(matchRoot, full));
+                    if (matcher.ignores(relFromMatchRoot)) results.add(full);
+                }
             }
         }),
     );
@@ -180,7 +194,7 @@ const handleStaticPath = async (
         throw error;
     }
     if (info.isDirectory()) {
-        await walkSubdir(absPath, parentIg, ignoreFiles, walkRoot, absPath, [], results);
+        await walkSubdir(absPath, parentIg, ignoreFiles, walkRoot, absPath, null, results);
     } else if (info.isFile()) {
         const relFromWalkRoot = toPosix(path.relative(walkRoot, absPath));
         if (parentIg.ignores(relFromWalkRoot)) return;
@@ -205,7 +219,8 @@ export const walk = async (options: WalkOptions): Promise<string[]> => {
                 return;
             }
             const seededIg = await seedAncestorIgnore(rootIg, cwd, job.rootDir, ignoreFiles);
-            await walkSeeded(job.rootDir, seededIg, ignoreFiles, cwd, job.rootDir, globPatterns, results);
+            const matcher = compileMatcher(globPatterns);
+            await walkSeeded(job.rootDir, seededIg, ignoreFiles, cwd, job.rootDir, matcher, results);
         }),
     );
     return [...results];

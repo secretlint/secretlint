@@ -2,6 +2,12 @@
     "exitStatus": 0,
     "stdout": [
         {
+            "filePath": "[SNAPSHOT]/--no-gitignore/fixtures/.gitignore",
+            "sourceContent": "*.log\n",
+            "sourceContentType": "text",
+            "messages": []
+        },
+        {
             "filePath": "[SNAPSHOT]/--no-gitignore/fixtures/secret.log",
             "sourceContent": "AKIAFAKEAKIAFAKEAKIA\n",
             "sourceContentType": "text",
