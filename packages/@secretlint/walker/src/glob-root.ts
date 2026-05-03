@@ -8,9 +8,9 @@ export const isDynamicPattern = (pattern: string): boolean => {
  * Split a glob pattern into a static walk root and the remaining match pattern.
  *
  * Examples:
- *   "src/**\/*.ini"  → { rootDir: "src",     matchPattern: "**\/*.ini" }
- *   "**\/*.ini"     → { rootDir: "",        matchPattern: "**\/*.ini" }
- *   "src/foo.ts"   → { rootDir: "src",     matchPattern: "foo.ts" }
+ *   "src/**\/*.ini" → { rootDir: "src", matchPattern: "**\/*.ini" }
+ *   "**\/*.ini"     → { rootDir: "",    matchPattern: "**\/*.ini" }
+ *   "src/foo.ts"    → { rootDir: "src", matchPattern: "foo.ts" }
  *
  * The walker uses `rootDir` as the directory to descend into and `matchPattern`
  * as the relative-path pattern to match files against.
