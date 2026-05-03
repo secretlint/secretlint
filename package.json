@@ -54,7 +54,7 @@
     "trailingComma": "none"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,css}": [
+    "!(packages/@secretlint/walker/test/fixtures/**).{js,jsx,ts,tsx,css}": [
       "prettier --write"
     ]
   },
