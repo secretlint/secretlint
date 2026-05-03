@@ -61,7 +61,8 @@
         "@types/node": "catalog:",
         "prettier": "catalog:",
         "tsx": "catalog:",
-        "typescript": "catalog:"
+        "typescript": "catalog:",
+        "vitest": "catalog:"
     },
     "engines": {
         "node": ">=22.0.0"

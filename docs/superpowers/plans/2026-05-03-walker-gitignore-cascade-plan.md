@@ -115,7 +115,8 @@ Edit `pnpm-workspace.yaml`. Insert into the alphabetised `catalog:` block (after
         "@types/node": "catalog:",
         "prettier": "catalog:",
         "tsx": "catalog:",
-        "typescript": "catalog:"
+        "typescript": "catalog:",
+        "vitest": "catalog:"
     },
     "engines": {
         "node": ">=22.0.0"
