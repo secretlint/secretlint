@@ -34,15 +34,6 @@ const tryReadIgnoreFile = async (filePath: string): Promise<string | null> => {
 };
 
 /**
- * Returns true when `content` has any non-whitespace characters.
- *
- * Used to skip empty ignore files (e.g. `touch .gitignore`) so we don't
- * allocate a fresh ignore() instance that adds no rules. Comments and
- * pattern parsing are left to node-ignore.
- */
-const hasContent = (content: string): boolean => content.trim().length > 0;
-
-/**
  * Build a new ignore instance by extending `parent` with any ignore files
  * found in `dir`. If none are present, returns `parent` unchanged so callers
  * can avoid allocating new instances on each level.
@@ -61,7 +52,10 @@ export const extendIgnore = async (
     if (candidates.length === 0) return parent;
 
     const reads = await Promise.all(candidates.map((name) => tryReadIgnoreFile(path.join(dir, name))));
-    const contents = reads.filter((c): c is string => c !== null && hasContent(c));
+    // Empty / whitespace-only ignore files (e.g. `touch .gitignore`) add zero
+    // rules; skipping them lets us reuse `parent` instead of allocating a
+    // fresh wrapper that has identical behaviour.
+    const contents = reads.filter((c): c is string => c !== null && c.trim().length > 0);
     if (contents.length === 0) return parent;
 
     const next = ignore().add(parent);
