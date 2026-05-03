@@ -1,21 +1,19 @@
 import fs from "node:fs";
+import { readdir } from "node:fs/promises";
 import path from "node:path";
-import { walk } from "@secretlint/walker";
 import { createConfig } from "@secretlint/config-creator";
 
 export type runConfigCreatorOptions = {
     cwd: string;
 };
 export const runConfigCreator = async (
-    options: runConfigCreatorOptions
+    options: runConfigCreatorOptions,
 ): Promise<{ exitStatus: number; stdout: string | null; stderr: Error | null }> => {
-    const existingConfigFiles = await walk({
-        cwd: options.cwd,
-        patterns: [".secretlintrc*"],
-        ignoreFiles: [],
-        extraIgnorePatterns: [],
-        noGlob: false,
-    });
+    // Match top-level entries only; the previous `globby('.secretlintrc*', { cwd })`
+    // was non-recursive, so `secretlint --init` shouldn't fail just because a nested
+    // package below cwd already has its own config.
+    const entries = await readdir(options.cwd);
+    const existingConfigFiles = entries.filter((name) => name.startsWith(".secretlintrc"));
     if (existingConfigFiles.length > 0) {
         return {
             exitStatus: 1,

@@ -12,7 +12,10 @@ const tryReadIgnoreFile = async (filePath: string): Promise<string | null> => {
     try {
         return await readFile(filePath, "utf8");
     } catch (error) {
-        if ((error as NodeJS.ErrnoException).code === "ENOENT") return null;
+        const code = (error as NodeJS.ErrnoException).code;
+        // Mirror safeReaddir/handleStaticPath: a single unreadable ignore file
+        // shouldn't abort the entire walk.
+        if (code === "ENOENT" || code === "EACCES") return null;
         throw new Error(`Failed to read ignore file: ${filePath}`, { cause: error });
     }
 };
@@ -42,9 +45,7 @@ export const extendIgnore = async (
     ignoreFiles: readonly string[],
     presentNames?: ReadonlySet<string>,
 ): Promise<IgnoreInstance> => {
-    const candidates = presentNames
-        ? ignoreFiles.filter((name) => presentNames.has(name))
-        : ignoreFiles;
+    const candidates = presentNames ? ignoreFiles.filter((name) => presentNames.has(name)) : ignoreFiles;
     if (candidates.length === 0) return parent;
 
     const reads = await Promise.all(candidates.map((name) => tryReadIgnoreFile(path.join(dir, name))));
