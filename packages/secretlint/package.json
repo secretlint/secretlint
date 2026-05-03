@@ -67,8 +67,8 @@
         "@secretlint/node": "workspace:*",
         "@secretlint/profiler": "workspace:*",
         "@secretlint/resolver": "workspace:*",
+        "@secretlint/walker": "workspace:*",
         "debug": "catalog:",
-        "globby": "catalog:",
         "read-pkg": "catalog:"
     },
     "devDependencies": {

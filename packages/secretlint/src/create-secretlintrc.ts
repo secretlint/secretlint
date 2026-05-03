@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { globby } from "globby";
+import { walk } from "@secretlint/walker";
 import { createConfig } from "@secretlint/config-creator";
 
 export type runConfigCreatorOptions = {
@@ -9,8 +9,12 @@ export type runConfigCreatorOptions = {
 export const runConfigCreator = async (
     options: runConfigCreatorOptions
 ): Promise<{ exitStatus: number; stdout: string | null; stderr: Error | null }> => {
-    const existingConfigFiles = await globby(`.secretlintrc*`, {
+    const existingConfigFiles = await walk({
         cwd: options.cwd,
+        patterns: [".secretlintrc*"],
+        ignoreFiles: [],
+        extraIgnorePatterns: [],
+        noGlob: false,
     });
     if (existingConfigFiles.length > 0) {
         return {

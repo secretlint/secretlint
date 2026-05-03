@@ -1,7 +1,10 @@
-import { globby, isDynamicPattern, convertPathToPattern } from "globby";
+import fs from "node:fs/promises";
+import path from "node:path";
+import { walk } from "@secretlint/walker";
 import debug0 from "debug";
 
 const debug = debug0("secretlint");
+
 const DEFAULT_IGNORE_PATTERNS = [
     "**/.git/**",
     "**/node_modules/**",
@@ -9,83 +12,97 @@ const DEFAULT_IGNORE_PATTERNS = [
     "**/.secretlintrc.{json,yaml,yml,js}/**",
     "**/.secretlintignore*/**",
 ];
+
 export type SearchFilesOptions = {
     cwd: string;
     ignoreFilePath?: string;
     noGlob?: boolean;
+    respectGitignore?: boolean;
+};
+
+const existsOnDisk = async (cwd: string, p: string): Promise<boolean> => {
+    const abs = path.isAbsolute(p) ? p : path.join(cwd, p);
+    try {
+        await fs.access(abs);
+        return true;
+    } catch {
+        return false;
+    }
 };
 
 /**
- * globby wrapper that support ignore options
- * @param patterns
- * @param options
+ * Pre-classify patterns into literal paths (existing on disk) and glob
+ * patterns. A pattern that resolves to an existing path is always treated
+ * literally even if it contains glob special characters such as `[`, `(`,
+ * `{`, or `?`. This mirrors globby's `convertPathToPattern` behaviour.
+ */
+const classifyPatterns = async (
+    cwd: string,
+    patterns: readonly string[],
+    noGlob: boolean
+): Promise<{ literal: string[]; glob: string[] }> => {
+    if (noGlob) {
+        return { literal: [...patterns], glob: [] };
+    }
+    const literal: string[] = [];
+    const glob: string[] = [];
+    await Promise.all(
+        patterns.map(async (p) => {
+            if (await existsOnDisk(cwd, p)) {
+                literal.push(p);
+            } else {
+                glob.push(p);
+            }
+        })
+    );
+    return { literal, glob };
+};
+
+/**
+ * Search files matching the given patterns under `options.cwd`.
+ * Always honours DEFAULT_IGNORE_PATTERNS. When `respectGitignore` is true
+ * (default), nested `.gitignore` files are respected with Git semantics.
  */
 export const searchFiles = async (patterns: string[], options: SearchFilesOptions) => {
-    // secretelint support glob pattern
-    const normalizedPatterns = patterns.map((pattern) => {
-        // glob can not handle Windows style path separator
-        // So, replace path separator to POSIX style
-        // https://github.com/secretlint/secretlint/issues/816
-        const normalizedPattern = process.platform === "win32" ? pattern.replace(/\\/g, "/") : pattern;
-        // When noGlob is set, treat all inputs as literal file paths
-        // This is useful when file paths contain glob special characters
-        // like SvelteKit's (group) and [param] routing patterns
-        // https://github.com/secretlint/secretlint/issues/1057
-        if (options.noGlob) {
-            return {
-                pattern: convertPathToPattern(normalizedPattern),
-                isDynamic: false,
-            };
-        }
-        // isDynamicPattern arguments should be posix path
-        // isDynamicPattern("C:\\path\\to\\file") => true
-        // If pattern includes glob pattern, just return `pattern`
-        // Because user need to use `secretint "**/*"` in any platform(Windows, macOS, Linux)
-        const isPatternGlobStyle = isDynamicPattern(normalizedPattern);
-        if (isPatternGlobStyle) {
-            return {
-                pattern: pattern,
-                isDynamic: true,
-            };
-        }
-        // static path should be escaped special characters
-        return {
-            pattern: convertPathToPattern(normalizedPattern),
-            isDynamic: false,
-        };
-    });
-    debug("search patterns: %o", normalizedPatterns);
+    const ignoreFiles: string[] = [];
+    if (options.ignoreFilePath) ignoreFiles.push(options.ignoreFilePath);
+    if (options.respectGitignore !== false) ignoreFiles.push(".gitignore");
+
+    debug("search patterns: %o", patterns);
     debug("search DEFAULT_IGNORE_PATTERNS: %o", DEFAULT_IGNORE_PATTERNS);
-    debug("search ignoreFilePath: %s", options.ignoreFilePath);
-    const globPatterns = normalizedPatterns.map((pattern) => pattern.pattern);
-    const searchResultItems = await globby(globPatterns, {
+    debug("search ignoreFiles: %o", ignoreFiles);
+
+    const { literal, glob } = await classifyPatterns(options.cwd, patterns, options.noGlob === true);
+
+    const sharedOpts = {
         cwd: options.cwd,
-        ignore: DEFAULT_IGNORE_PATTERNS,
-        ignoreFiles: options.ignoreFilePath ? [options.ignoreFilePath] : undefined,
-        dot: true,
-        absolute: true,
-    });
-    if (searchResultItems.length > 0) {
-        return {
-            ok: true,
-            items: searchResultItems,
-        };
+        ignoreFiles,
+        extraIgnorePatterns: DEFAULT_IGNORE_PATTERNS,
+    };
+    const [literalItems, globItems] = await Promise.all([
+        literal.length > 0 ? walk({ ...sharedOpts, patterns: literal, noGlob: true }) : Promise.resolve([]),
+        glob.length > 0 ? walk({ ...sharedOpts, patterns: glob, noGlob: false }) : Promise.resolve([]),
+    ]);
+    const items = [...new Set([...literalItems, ...globItems])];
+
+    if (items.length > 0) {
+        return { ok: true, items };
     }
+
     /**
-     * If globby result with ignoring is empty and globby result is not empty, Secretlint suppress "not found target file" error.
-     * It is valid case.
-     * It aim to avoid error that is caused by ignore files and not found target file.
-     * TODO: This is also performance issue. we need to more reasonable mechanism.
+     * If the result is empty due to ignoring, suppress the "not found target file" error.
+     * Re-walk without any ignore handling to detect this case.
      */
-    const isEmptyResultIsHappenByIgnoring =
-        (
-            await globby(globPatterns, {
-                cwd: options.cwd,
-                dot: true,
-            })
-        ).length > 0;
+    const [rawLiteral, rawGlob] = await Promise.all([
+        literal.length > 0
+            ? walk({ cwd: options.cwd, patterns: literal, ignoreFiles: [], extraIgnorePatterns: [], noGlob: true })
+            : Promise.resolve([]),
+        glob.length > 0
+            ? walk({ cwd: options.cwd, patterns: glob, ignoreFiles: [], extraIgnorePatterns: [], noGlob: false })
+            : Promise.resolve([]),
+    ]);
     return {
-        ok: isEmptyResultIsHappenByIgnoring,
-        items: [],
+        ok: rawLiteral.length + rawGlob.length > 0,
+        items: [] as string[],
     };
 };
