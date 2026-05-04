@@ -1,73 +1,94 @@
 /**
- * End-to-end check: run secretlint's file-discovery against the
- * secretlint repository itself and assert that gitignored paths do
- * not leak into the result.
+ * End-to-end check: run secretlint's file discovery against the
+ * secretlint repository itself and use `git check-ignore -v` as the
+ * oracle for which paths are gitignored.
  *
- * Why this exists: walker / cli tests cover ignore semantics in
- * isolation against synthetic fixtures. This test guards the same
- * behaviour against a real, multi-package monorepo with nested
- * `.gitignore` files, built `module/` directories, `.turbo` caches,
- * and `node_modules`.
- *
- * The CLI flow is exercised via `searchFiles` (the same function the
- * CLI calls). Running the full lint engine adds ~10s and provides no
- * extra coverage for the gitignore-respect question.
+ * Walker scope vs. git scope:
+ *   The walker only reads `.gitignore` files at or below the cwd.
+ *   Global gitignore (`core.excludesfile`) and `.git/info/exclude`
+ *   are intentionally out of scope (mirrors the design spec). Git's
+ *   `check-ignore` always consults all sources, so we filter the
+ *   results to only count rules sourced from in-repo `.gitignore`
+ *   files. Otherwise developers with a populated global gitignore
+ *   (e.g. `.DS_Store`, `.idea/`) would see false-positive leaks.
  */
 import { describe, it, expect } from "vitest";
+import { spawnSync } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { searchFiles } from "../src/search.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, "../../..");
-const sep = path.sep;
 
-const has = (items: readonly string[], predicate: (p: string) => boolean): string | undefined => items.find(predicate);
+/**
+ * Run `git check-ignore -v --no-index --stdin` against the given
+ * relative paths and return the subset that is ignored by an in-repo
+ * `.gitignore` file. Each `git check-ignore -v` line is formatted as
+ * `<source>:<linenum>:<pattern>\t<path>`.
+ *
+ * Sources that come from outside the repo (absolute paths) and from
+ * `.git/info/exclude` are filtered out so the result reflects only
+ * what the walker is supposed to honour.
+ */
+const ignoredByRepoGitignore = (relPaths: readonly string[]): string[] => {
+    if (relPaths.length === 0) return [];
+    const result = spawnSync("git", ["check-ignore", "--no-index", "-v", "--stdin"], {
+        cwd: repoRoot,
+        input: relPaths.join("\n"),
+        encoding: "utf8",
+        maxBuffer: 64 * 1024 * 1024,
+    });
+    if (result.status === 128) {
+        throw new Error(`git check-ignore failed: ${result.stderr}`);
+    }
+    const ignored: string[] = [];
+    for (const line of result.stdout.split("\n")) {
+        if (line === "") continue;
+        // Format: `<source>:<linenum>:<pattern>\t<path>`
+        const tab = line.indexOf("\t");
+        if (tab < 0) continue;
+        const meta = line.slice(0, tab);
+        const target = line.slice(tab + 1);
+        const firstColon = meta.indexOf(":");
+        const secondColon = meta.indexOf(":", firstColon + 1);
+        const source = meta.slice(0, firstColon);
+        const pattern = secondColon >= 0 ? meta.slice(secondColon + 1) : "";
+        // Skip global excludes (absolute path source) and .git/info/exclude.
+        if (path.isAbsolute(source)) continue;
+        if (source.startsWith(".git/")) continue;
+        // Skip negation rules — `git check-ignore -v` lists them as "matching"
+        // even though the pattern un-ignores the path.
+        if (pattern.startsWith("!")) continue;
+        ignored.push(target);
+    }
+    return ignored;
+};
 
-describe("E2E: secretlint searchFiles on its own repo", () => {
-    it("default behaviour respects the root .gitignore (built `module/` is excluded)", async () => {
+describe("E2E: secretlint searchFiles vs git check-ignore", () => {
+    it("default behaviour returns no path that an in-repo .gitignore covers", async () => {
         const { ok, items } = await searchFiles(["**/*"], { cwd: repoRoot });
         expect(ok).toBe(true);
         expect(items.length).toBeGreaterThan(0);
 
-        // Always-excluded by DEFAULT_IGNORE_PATTERNS regardless of .gitignore.
+        const relItems = items.map((p) => path.relative(repoRoot, p));
+        const ignored = ignoredByRepoGitignore(relItems);
+
         expect(
-            has(items, (p) => p.includes(`${sep}node_modules${sep}`)),
-            "node_modules must always be excluded",
-        ).toBeUndefined();
-        expect(has(items, (p) => p.includes(`${sep}.git${sep}`)), ".git must always be excluded").toBeUndefined();
-
-        // Excluded by repo-root .gitignore (`module/`).
-        // Built outputs live at `packages/<name>/module/*.js` (and many `module/**`).
-        const builtModuleFile = has(items, (p) =>
-            /[/\\]packages[/\\][^/\\]+(?:[/\\]@secretlint[/\\][^/\\]+)?[/\\]module[/\\][^/\\]+\.(?:js|d\.ts)$/.test(p),
-        );
-        expect(builtModuleFile, "built `module/` files should be excluded by .gitignore").toBeUndefined();
-
-        // Excluded by repo-root .gitignore (`.turbo`).
-        expect(has(items, (p) => p.includes(`${sep}.turbo${sep}`)), ".turbo cache must be excluded").toBeUndefined();
-
-        // Sanity: a known source file IS present.
-        const knownSource = has(items, (p) =>
-            p.endsWith(`${sep}packages${sep}secretlint${sep}src${sep}index.ts`),
-        );
-        expect(knownSource, "packages/secretlint/src/index.ts should be present").toBeDefined();
+            ignored,
+            `secretlint returned ${ignored.length} gitignored paths (first 10):\n${ignored.slice(0, 10).join("\n")}`,
+        ).toEqual([]);
     }, 60_000);
 
-    it("respectGitignore: false includes built `module/` outputs", async () => {
+    it("respectGitignore: false leaks at least one in-repo gitignored path", async () => {
+        // Sanity check on the methodology: when we explicitly disable
+        // .gitignore respect, in-repo gitignored paths should appear in the
+        // result. Otherwise the assertion above could be passing for the
+        // wrong reason (e.g. searchFiles returning nothing).
         const { items } = await searchFiles(["**/*"], { cwd: repoRoot, respectGitignore: false });
+        const relItems = items.map((p) => path.relative(repoRoot, p));
+        const ignored = ignoredByRepoGitignore(relItems);
 
-        // node_modules / .git are still excluded — those come from the always-on hard-coded patterns,
-        // not from .gitignore.
-        expect(
-            has(items, (p) => p.includes(`${sep}node_modules${sep}`)),
-            "node_modules must remain excluded even with --no-gitignore",
-        ).toBeUndefined();
-
-        // Now `module/` files appear because the root .gitignore is no longer consulted.
-        const builtModuleFile = has(items, (p) =>
-            /[/\\]packages[/\\][^/\\]+(?:[/\\]@secretlint[/\\][^/\\]+)?[/\\]module[/\\][^/\\]+\.(?:js|d\.ts)$/.test(p),
-        );
-        expect(builtModuleFile, "built `module/` files should appear when .gitignore is disabled").toBeDefined();
+        expect(ignored.length).toBeGreaterThan(0);
     }, 60_000);
 });

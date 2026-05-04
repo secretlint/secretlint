@@ -171,13 +171,13 @@ const seedAncestorIgnore = async (options: {
     const { rootIg, cwd, targetDir, ignoreFiles } = options;
     const relative = path.relative(cwd, targetDir);
     if (relative === "" || relative.startsWith("..") || path.isAbsolute(relative)) {
-        return await extendIgnore(rootIg, cwd, ignoreFiles);
+        return await extendIgnore(rootIg, cwd, cwd, ignoreFiles);
     }
-    let ig = await extendIgnore(rootIg, cwd, ignoreFiles);
+    let ig = await extendIgnore(rootIg, cwd, cwd, ignoreFiles);
     let current = cwd;
     for (const segment of relative.split(path.sep).filter(Boolean)) {
         current = path.join(current, segment);
-        ig = await extendIgnore(ig, current, ignoreFiles);
+        ig = await extendIgnore(ig, current, cwd, ignoreFiles);
     }
     return ig;
 };
@@ -200,7 +200,7 @@ const walkSubdir = async (absDir: string, parentIg: IgnoreInstance, ctx: WalkCon
     const entries = await safeReaddir(absDir);
     if (entries === null) return;
     const present = presentIgnoreNames(entries, ctx.ignoreFiles);
-    const ig = await extendIgnore(parentIg, absDir, ctx.ignoreFiles, present);
+    const ig = await extendIgnore(parentIg, absDir, ctx.ignoreRoot, ctx.ignoreFiles, present);
     await processEntries(absDir, entries, ig, ctx);
 };
 
