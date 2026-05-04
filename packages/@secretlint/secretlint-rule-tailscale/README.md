@@ -62,6 +62,11 @@ Fallback message used when the key type does not match a known prefix.
 
 A leaked Tailscale key can grant access to manage devices, ACLs, and network configuration.
 
+## Options
+
+- `allows: string[]`
+    - Allows a list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string)
+
 ## Changelog
 
 See [Releases page](https://github.com/secretlint/secretlint/releases).

@@ -1,4 +1,5 @@
 import type { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
+import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export const messages = {
     TAILSCALE_API_KEY: {
@@ -35,7 +36,15 @@ const messageIdByType: Record<string, keyof typeof messages> = {
     webhook: "TAILSCALE_WEBHOOK_KEY",
 };
 
-export const creator: SecretLintRuleCreator = {
+export type Options = {
+    /**
+     * Define allow pattern written by RegExp-like strings
+     * See https://github.com/textlint/regexp-string-matcher#regexp-like-string
+     */
+    allows?: string[];
+};
+
+export const creator: SecretLintRuleCreator<Options> = {
     messages,
     meta: {
         id: "@secretlint/secretlint-rule-tailscale",
@@ -46,8 +55,11 @@ export const creator: SecretLintRuleCreator = {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-tailscale/README.md",
         },
     },
-    create(context) {
+    create(context, options) {
         const t = context.createTranslator(messages);
+        const normalizedOptions: Required<Options> = {
+            allows: options.allows ?? [],
+        };
         return {
             file(source: SecretLintSourceCode) {
                 // Tailscale keys: tskey-{type}-{identifier}-{secret}
@@ -63,6 +75,10 @@ export const creator: SecretLintRuleCreator = {
                     const matchString = match[0] ?? "";
                     const type = match.groups?.type ?? "";
                     const range = [index, index + matchString.length] as const;
+                    const allowedResults = matchPatterns(matchString, normalizedOptions.allows);
+                    if (allowedResults.length > 0) {
+                        continue;
+                    }
                     const messageId = messageIdByType[type] ?? "TAILSCALE_KEY";
                     context.report({
                         message: t(messageId, {
