@@ -4,20 +4,31 @@ import path from "node:path";
 import os from "node:os";
 import { walk } from "../src/index.js";
 
-describe("walk - symlinks", () => {
+// Probe whether the test environment lets us create symlinks (Windows
+// without privileges, restricted CI sandboxes, etc.). When it doesn't,
+// the entire describe block is skipped via `describe.skipIf` rather
+// than every test paying for an `if (skip) return` early-out.
+const canSymlink = await (async () => {
+    const probe = await mkdtemp(path.join(os.tmpdir(), "walker-symlink-probe-"));
+    try {
+        await symlink(probe, path.join(probe, "link"), "dir");
+        return true;
+    } catch {
+        return false;
+    } finally {
+        await rm(probe, { recursive: true, force: true });
+    }
+})();
+
+describe.skipIf(!canSymlink)("walk - symlinks", () => {
     let dir: string;
-    let skipSymlink = false;
 
     beforeAll(async () => {
         dir = await mkdtemp(path.join(os.tmpdir(), "walker-symlink-"));
         await mkdir(path.join(dir, "real"));
         await writeFile(path.join(dir, "real", "in-real.ts"), "x");
         await writeFile(path.join(dir, "top.ts"), "y");
-        try {
-            await symlink(path.join(dir, "real"), path.join(dir, "linked"), "dir");
-        } catch {
-            skipSymlink = true;
-        }
+        await symlink(path.join(dir, "real"), path.join(dir, "linked"), "dir");
     });
 
     afterAll(async () => {
@@ -25,7 +36,6 @@ describe("walk - symlinks", () => {
     });
 
     it("descends into a directory symlink by default", async () => {
-        if (skipSymlink) return;
         const results = await walk({ cwd: dir });
         const r = results.map((p) => path.relative(dir, p).replaceAll("\\", "/")).sort();
         expect(r).toContain("real/in-real.ts");
@@ -34,7 +44,6 @@ describe("walk - symlinks", () => {
     });
 
     it("does not descend when followSymlinks is false", async () => {
-        if (skipSymlink) return;
         const results = await walk({ cwd: dir, followSymlinks: false });
         const r = results.map((p) => path.relative(dir, p).replaceAll("\\", "/")).sort();
         expect(r).toContain("real/in-real.ts");
@@ -43,7 +52,6 @@ describe("walk - symlinks", () => {
     });
 
     it("ignore rules apply to the symlink path, not the resolved target", async () => {
-        if (skipSymlink) return;
         // `linked` is a symlink to the existing `real/`. With an ignore
         // rule on the symlink path we should not descend it even though
         // followSymlinks is true.
@@ -57,16 +65,14 @@ describe("walk - symlinks", () => {
     });
 
     it("does not loop on circular symlinks", async () => {
-        if (skipSymlink) return;
         // Walk completes; if it loops, vitest's testTimeout (30s) will fail us.
         const results = await walk({ cwd: dir });
         expect(Array.isArray(results)).toBe(true);
     });
 });
 
-describe("walk - symlink cycles", () => {
+describe.skipIf(!canSymlink)("walk - symlink cycles", () => {
     let dir: string;
-    let skipSymlink = false;
 
     beforeAll(async () => {
         dir = await mkdtemp(path.join(os.tmpdir(), "walker-symlink-cycle-"));
@@ -75,12 +81,8 @@ describe("walk - symlink cycles", () => {
         await mkdir(path.join(dir, "b"));
         await writeFile(path.join(dir, "a", "in-a.ts"), "x");
         await writeFile(path.join(dir, "b", "in-b.ts"), "y");
-        try {
-            await symlink(path.join(dir, "a"), path.join(dir, "b", "to-a"), "dir");
-            await symlink(path.join(dir, "b"), path.join(dir, "a", "to-b"), "dir");
-        } catch {
-            skipSymlink = true;
-        }
+        await symlink(path.join(dir, "a"), path.join(dir, "b", "to-a"), "dir");
+        await symlink(path.join(dir, "b"), path.join(dir, "a", "to-b"), "dir");
     });
 
     afterAll(async () => {
@@ -88,7 +90,6 @@ describe("walk - symlink cycles", () => {
     });
 
     it("breaks the cycle via realpath dedup", async () => {
-        if (skipSymlink) return;
         // Without cycle detection this would recurse infinitely. The
         // realpath set guarantees each unique target dir is entered at
         // most once.
