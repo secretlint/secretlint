@@ -39,6 +39,21 @@ describe("walk - glob patterns", () => {
         });
         expect(rel(results)).toEqual(["src/a.ini", "src/c.ts", "src/sub/b.ini"]);
     });
+
+    it("a literal directory entry combined with a glob in the same root unions to all files", async () => {
+        // Regression: when groupPatterns merged `src` (literal dir → "" sentinel)
+        // and `src/**/*.ini` (glob) into the same root group, the walk()
+        // glob branch ignored the "" sentinel and only the glob's matcher
+        // ran. As a result `src/c.ts` (matched by the literal dir intent
+        // but not the glob) was silently dropped. The fix: a `""` sentinel
+        // in the matchPatterns means "include every file under this root",
+        // which subsumes any sibling glob.
+        const results = await walk({
+            cwd: fixtureDir,
+            patterns: ["src", "src/**/*.ini"],
+        });
+        expect(rel(results)).toEqual(["src/a.ini", "src/c.ts", "src/sub/b.ini"]);
+    });
 });
 
 describe("walk - glob + ignore cascade interaction", () => {

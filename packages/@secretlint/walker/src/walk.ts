@@ -427,10 +427,18 @@ export const walk = async (options: WalkOptions): Promise<string[]> => {
                 targetDir: group.rootDir,
                 ignoreFiles,
             });
+            // A `""` sentinel in matchPatterns means the user supplied a
+            // literal directory whose intent is "include every file under
+            // here". When mixed with sibling glob patterns at the same root,
+            // the literal subsumes them — so collapse the matcher to null
+            // (= match every file). Without this, a call like
+            // `walk({ patterns: ["src", "src/**/*.ini"] })` would silently
+            // drop `src/c.ts` because only the glob ran.
+            const matcher = literalEntries.length > 0 ? null : compileMatcher(globPatterns);
             await walkSeeded(group.rootDir, seededChain, {
                 ignoreFiles,
                 patternRoot: group.rootDir,
-                matcher: compileMatcher(globPatterns),
+                matcher,
                 results,
                 followSymlinks,
                 visitedRealPaths,
