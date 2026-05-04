@@ -1,0 +1,6 @@
+{
+    "filePath": "[SNAPSHOT]/ok.valid/input.txt",
+    "messages": [],
+    "sourceContent": "This is just regular text without any Tailscale keys.\nA short string like tskey-foo is not a key.\nRandom tokens like abc-def-ghi should not match.\n",
+    "sourceContentType": "text"
+}

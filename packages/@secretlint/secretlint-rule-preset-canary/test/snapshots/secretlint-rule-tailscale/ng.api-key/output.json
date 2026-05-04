@@ -1,0 +1,33 @@
+{
+    "filePath": "[SNAPSHOT]/ng.api-key/input.txt",
+    "messages": [
+        {
+            "message": "found Tailscale key: tskey-api-AAAAAAAAAAAA-BBBBBBBBBBBBBBBBBBBBBBBB",
+            "range": [
+                0,
+                47
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-tailscale",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 47
+                }
+            },
+            "severity": "error",
+            "messageId": "TAILSCALE_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-tailscale/README.md#TAILSCALE_KEY",
+            "data": {
+                "KEY": "tskey-api-AAAAAAAAAAAA-BBBBBBBBBBBBBBBBBBBBBBBB"
+            }
+        }
+    ],
+    "sourceContent": "tskey-api-AAAAAAAAAAAA-BBBBBBBBBBBBBBBBBBBBBBBB\n",
+    "sourceContentType": "text"
+}
