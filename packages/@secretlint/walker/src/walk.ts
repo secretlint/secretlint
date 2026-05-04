@@ -5,29 +5,34 @@ import picomatch from "picomatch";
 import { createRootIgnore, extendIgnore, isIgnoredByChain, type IgnoreChain } from "./ignore-stack.js";
 import { isDynamicPattern, splitGlobRoot } from "./glob-root.js";
 
-/**
- * Public options for {@link walk}.
- *
- * - `cwd`: starting directory. All relative paths in `patterns` resolve here.
- * - `patterns`: glob patterns and/or static paths. Omit to walk all of `cwd`.
- * - `ignoreFiles`: file names looked up per directory and merged into the
- *   cascade ignore stack (e.g. `[".gitignore", ".secretlintignore"]`).
- * - `extraIgnorePatterns`: hard-coded patterns added to the root ignore
- *   instance before any file-based rules (e.g. `["**\/.git"]`).
- * - `noGlob`: treat every entry in `patterns` as a literal path, even when it
- *   contains glob special characters such as `[`, `(`, `{`, `?`.
- * - `followSymlinks`: when true (default) the walker follows directory
- *   symlinks during search but still treats them as their symlink path
- *   for ignore matching (so cascaded `.gitignore` rules apply at the
- *   symlink's location, not the resolved target). Cycles are detected
- *   via realpath and skipped.
- */
+/** Public options for {@link walk}. */
 export type WalkOptions = {
+    /** Starting directory. All relative paths in `patterns` resolve here. */
     cwd: string;
+    /** Glob patterns and/or static paths. Omit to walk all of `cwd`. */
     patterns?: string[];
+    /**
+     * File names looked up per directory and merged into the cascade ignore
+     * stack (e.g. `[".gitignore", ".secretlintignore"]`).
+     */
     ignoreFiles?: string[];
+    /**
+     * Hard-coded patterns added to the root ignore instance before any
+     * file-based rules (e.g. `["**\/.git"]`).
+     */
     extraIgnorePatterns?: string[];
+    /**
+     * Treat every entry in `patterns` as a literal path, even when it
+     * contains glob special characters such as `[`, `(`, `{`, `?`.
+     */
     noGlob?: boolean;
+    /**
+     * When true (default) the walker follows directory symlinks during
+     * search but still treats them as their symlink path for ignore
+     * matching (so cascaded `.gitignore` rules apply at the symlink's
+     * location, not the resolved target). Cycles are detected via
+     * realpath and skipped.
+     */
     followSymlinks?: boolean;
 };
 
