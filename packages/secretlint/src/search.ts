@@ -6,11 +6,18 @@ const debug = debug0("secretlint");
 // Patterns are written WITHOUT a trailing `/**` so node-ignore prunes the
 // directory itself (not just its contents). With `**/foo/**` the walker
 // would still readdir `foo/` and check each child individually.
+//
+// node-ignore (gitignore semantics) does not expand braces, so the four
+// `.secretlintrc.{json,yaml,yml,js}` variants are listed individually
+// rather than as a single brace pattern.
 const DEFAULT_IGNORE_PATTERNS = [
     "**/.git",
     "**/node_modules",
     "**/.secretlintrc",
-    "**/.secretlintrc.{json,yaml,yml,js}",
+    "**/.secretlintrc.json",
+    "**/.secretlintrc.yaml",
+    "**/.secretlintrc.yml",
+    "**/.secretlintrc.js",
     "**/.secretlintignore*",
 ];
 
