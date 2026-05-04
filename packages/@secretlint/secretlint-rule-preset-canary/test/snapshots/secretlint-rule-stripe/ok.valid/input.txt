@@ -1,0 +1,24 @@
+# These should NOT be detected as Stripe API keys
+
+# Publishable keys (pk_) are not secrets
+pk_live_AAAAAAAAAAAAAAAAAAAAAAAA
+pk_test_BBBBBBBBBBBBBBBBBBBBBBBB
+
+# Too short (fewer than 24 chars after prefix)
+sk_live_short
+sk_test_abc
+rk_live_x
+rk_test_y
+sk_live_AAAAAAAAAAAAAAAAAAAAAAA
+sk_test_BBBBBBBBBBBBBBBBBBBBBBB
+
+# Wrong prefix / mid-word boundary
+xsk_live_AAAAAAAAAAAAAAAAAAAAAAAA
+foosk_test_BBBBBBBBBBBBBBBBBBBBBBBB
+
+# Different product names that share the prefix
+SKILLS_inventory
+RKLIST_value
+
+# Stripe documentation URL (not a key)
+https://docs.stripe.com/keys

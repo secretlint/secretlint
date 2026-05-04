@@ -1,0 +1,6 @@
+{
+    "filePath": "[SNAPSHOT]/ok.valid/input.txt",
+    "messages": [],
+    "sourceContent": "# These should NOT be detected as Stripe API keys\n\n# Publishable keys (pk_) are not secrets\npk_live_AAAAAAAAAAAAAAAAAAAAAAAA\npk_test_BBBBBBBBBBBBBBBBBBBBBBBB\n\n# Too short (fewer than 24 chars after prefix)\nsk_live_short\nsk_test_abc\nrk_live_x\nrk_test_y\nsk_live_AAAAAAAAAAAAAAAAAAAAAAA\nsk_test_BBBBBBBBBBBBBBBBBBBBBBB\n\n# Wrong prefix / mid-word boundary\nxsk_live_AAAAAAAAAAAAAAAAAAAAAAAA\nfoosk_test_BBBBBBBBBBBBBBBBBBBBBBBB\n\n# Different product names that share the prefix\nSKILLS_inventory\nRKLIST_value\n\n# Stripe documentation URL (not a key)\nhttps://docs.stripe.com/keys\n",
+    "sourceContentType": "text"
+}

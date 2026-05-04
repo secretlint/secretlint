@@ -85,6 +85,7 @@
         "@secretlint/secretlint-rule-sendgrid": "workspace:*",
         "@secretlint/secretlint-rule-shopify": "workspace:*",
         "@secretlint/secretlint-rule-slack": "workspace:*",
+        "@secretlint/secretlint-rule-stripe": "workspace:*",
         "@secretlint/secretlint-rule-tailscale": "workspace:*",
         "@secretlint/secretlint-rule-vercel": "workspace:*",
         "@secretlint/tester": "workspace:*",
