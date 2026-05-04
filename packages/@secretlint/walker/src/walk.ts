@@ -87,17 +87,37 @@ type PatternGroup = {
  * - Patterns containing no glob characters (or any pattern when `noGlob` is
  *   true) are flagged with the empty-string sentinel so the caller knows to
  *   take the literal-path branch via {@link handleStaticPath}.
+ * - Patterns with glob metacharacters but that resolve to an existing path
+ *   on disk (e.g. `input-[group].md` when such a file exists) are also
+ *   classified as literal — this mirrors globby's old `convertPathToPattern`
+ *   behaviour so users don't need `--no-glob` for real filenames that happen
+ *   to contain `[`, `(`, `{`, or `?`.
  * - Otherwise, {@link splitGlobRoot} pulls the static prefix off the front
  *   of the pattern and the remainder is stored as the per-group match pattern.
  */
-const groupPatterns = (
+const groupPatterns = async (
     cwd: string,
     patterns: readonly string[] | undefined,
     noGlob: boolean | undefined,
-): PatternGroup[] => {
+): Promise<PatternGroup[]> => {
     if (patterns === undefined || patterns.length === 0) {
         return [{ rootDir: cwd, matchPatterns: [] }];
     }
+    // Probe the disk for any pattern that has glob metacharacters but might
+    // also be a real file the user wants treated literally. Done in parallel
+    // so the cost is one stat round-trip per glob-shaped input, not N.
+    const probedLiteral = await Promise.all(
+        patterns.map(async (raw) => {
+            const normalized = raw.replaceAll("\\", "/");
+            if (noGlob || !isDynamicPattern(normalized)) return true;
+            try {
+                await stat(path.resolve(cwd, normalized));
+                return true;
+            } catch {
+                return false;
+            }
+        }),
+    );
     const byRoot = new Map<string, PatternGroup>();
     const upsert = (rootDir: string, pattern: string): void => {
         let group = byRoot.get(rootDir);
@@ -107,9 +127,10 @@ const groupPatterns = (
         }
         group.matchPatterns.push(pattern);
     };
-    for (const raw of patterns) {
+    for (let i = 0; i < patterns.length; i++) {
+        const raw = patterns[i] as string;
         const normalized = raw.replaceAll("\\", "/");
-        if (noGlob || !isDynamicPattern(normalized)) {
+        if (probedLiteral[i]) {
             upsert(toPosix(path.resolve(cwd, normalized)), "");
             continue;
         }
@@ -354,7 +375,7 @@ export const walk = async (options: WalkOptions): Promise<string[]> => {
     // Shared across all groups so two patterns under the same job don't
     // re-enter the same symlinked directory twice.
     const visitedRealPaths = new Set<string>();
-    const groups = groupPatterns(cwd, options.patterns, options.noGlob);
+    const groups = await groupPatterns(cwd, options.patterns, options.noGlob);
     await Promise.all(
         groups.map(async (group) => {
             const literalEntries = group.matchPatterns.filter((p) => p === "");
