@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1777662091573,
+  "lastUpdate": 1777877688442,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -53654,6 +53654,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.3,
             "range": "±0.61%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "86ca775bfdba7e353cc8dc553c9b7c5ade0ad6f6",
+          "message": "feat!: respect .gitignore by default via @secretlint/walker (#1530)\n\n## Summary\n\n- Add new package `@secretlint/walker` — Promise-based file system\nwalker with nested `.gitignore` cascade.\n- Migrate `packages/secretlint` to use the walker; remove `globby`.\n- New `--no-gitignore` CLI flag (default: respect `.gitignore`).\n- Documentation and v13 migration notes.\n\n**Breaking change** — files newly excluded by `.gitignore` are no longer\nscanned by default. Targeted release: secretlint v13.\n\nTo restore previous behaviour: `secretlint --no-gitignore \"**/*\"`\n\n## Design\n\n- Algorithm: `Promise.all` + `fs.readdir({ withFileTypes: true })`\nrecursion + `ignore` (node-ignore) cascade per directory + Node 22+\n`path.matchesGlob`. Subtree pruning when an ignored directory is hit.\n- Cascade semantics modelled after BurntSushi/ripgrep's `ignore` crate:\nparent rules inherited via `add(parent)`, child files merged on top,\nnegation patterns work across levels.\n- secretlint integration: `searchFiles` pre-classifies user-supplied\npatterns by disk existence so a real path containing glob special\ncharacters such as `[`, `(`, `{`, or `?` is treated literally even\nwithout `--no-glob` (mirrors globby's old `convertPathToPattern`).\n\n\n## Benchmark (15-run median)\n\n| target | **BEFORE** (master / globby) | **AFTER** (PR HEAD)<br>same\ncondition (no-gitignore) | **AFTER** (PR HEAD)<br>default (gitignore on)\n|\n|---|---|---|---|\n| js-primer / `**/*` | 12.6ms / 539 files | **11.3ms** / 539 files |\n29.7ms / 532 files |\n| js-primer / `**/*.{md,json}` | 9.7ms / 148 files | 16.7ms / 148 files\n| 85.1ms / 148 files |\n| secretlint repo / `**/*` | 99.8ms / 7596 files | 216ms / 7826 files |\n414ms / **3846 files** |\n\n### Notes\n\n- **Small repo apples-to-apples** (js-primer / `**/*`): walker 11.3ms ≒\nglobby 12.6ms — on par.\n- **Brace patterns** (`**/*.{md,json}`): walker (picomatch) returns the\nsame 148 files; ~1.7x of globby on this small fixture.\n- **Large repo apples-to-apples** (secretlint repo): walker 216ms vs\nglobby 100ms — 2.2x slower. The +230 files come from following directory\nsymlinks (which globby also does).\n- **Large repo default behaviour**: walker narrows to 3846 files (globby\nreturns 7596 because it does not respect `.gitignore`). End-to-end (walk\n+ lint) is faster because the lint engine processes ~half the files.\n- `.gitignore` cascade adds ~200ms on a large repo (per-directory\n`.gitignore` read + chain check).\n\nPure walk speed is below globby (fdir-backed), but the trade-off buys\ncorrect gitignore semantics, brace + dotfile support, symlink follow,\nand stays well under 1 second on real-world inputs.\n\n## Test plan\n\n- [x] `@secretlint/walker` test suite — 44 tests across 14 files:\ncascade, negation, subtree pruning (readdir spy), symlinks,\nENOENT/EACCES, 10k-file sanity, glob + ignore interaction, etc.\n- [x] `secretlint` CLI snapshots cover the new defaults\n(`gitignore-default` and `--no-gitignore` fixtures).\n- [x] All 105 turbo tasks pass on the repo (`pnpm run ci`).\n- [x] `--help` snapshot updated with the new flag.\n\n## References\n\n- Spec:\n`docs/superpowers/specs/2026-05-03-walker-gitignore-cascade-design.md`\n- Plan:\n`docs/superpowers/plans/2026-05-03-walker-gitignore-cascade-plan.md`\n- BurntSushi/ripgrep `ignore` crate: <https://docs.rs/ignore/>\n- Node.js `path.matchesGlob`:\n<https://nodejs.org/api/path.html#pathmatchesglobpath-pattern>\n\nfix #337 \n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\n---------\n\nCo-authored-by: Claude Opus 4.7 (1M context) <noreply@anthropic.com>",
+          "timestamp": "2026-05-04T15:52:54+09:00",
+          "tree_id": "1682caa0ac9a19036b755171456074a42f866629",
+          "url": "https://github.com/secretlint/secretlint/commit/86ca775bfdba7e353cc8dc553c9b7c5ade0ad6f6"
+        },
+        "date": 1777877685317,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.78,
+            "range": "±1.01%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.28,
+            "range": "±1.74%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
