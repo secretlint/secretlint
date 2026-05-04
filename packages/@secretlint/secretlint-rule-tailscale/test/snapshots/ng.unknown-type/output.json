@@ -1,0 +1,32 @@
+{
+    "filePath": "[SNAPSHOT]/ng.unknown-type/input.txt",
+    "messages": [
+        {
+            "message": "found Tailscale key: tskey-future-KKKKKKKKKKKK-LLLLLLLLLLLLLLLLLLLLLLLL",
+            "range": [
+                0,
+                50
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-tailscale",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 50
+                }
+            },
+            "severity": "error",
+            "messageId": "TAILSCALE_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-tailscale/README.md#TAILSCALE_KEY",
+            "data": {
+                "KEY": "tskey-future-KKKKKKKKKKKK-LLLLLLLLLLLLLLLLLLLLLLLL"
+            }
+        }
+    ],
+    "sourceContent": "tskey-future-KKKKKKKKKKKK-LLLLLLLLLLLLLLLLLLLLLLLL\n",
+    "sourceContentType": "text"
+}

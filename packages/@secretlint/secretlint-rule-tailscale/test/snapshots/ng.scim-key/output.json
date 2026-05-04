@@ -1,0 +1,32 @@
+{
+    "filePath": "[SNAPSHOT]/ng.scim-key/input.txt",
+    "messages": [
+        {
+            "message": "found Tailscale SCIM key: tskey-scim-GGGGGGGGGGGG-HHHHHHHHHHHHHHHHHHHHHHHH",
+            "range": [
+                0,
+                48
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-tailscale",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 48
+                }
+            },
+            "severity": "error",
+            "messageId": "TAILSCALE_SCIM_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-tailscale/README.md#TAILSCALE_SCIM_KEY",
+            "data": {
+                "KEY": "tskey-scim-GGGGGGGGGGGG-HHHHHHHHHHHHHHHHHHHHHHHH"
+            }
+        }
+    ],
+    "sourceContent": "tskey-scim-GGGGGGGGGGGG-HHHHHHHHHHHHHHHHHHHHHHHH\n",
+    "sourceContentType": "text"
+}
