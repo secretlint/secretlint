@@ -14,7 +14,8 @@ Usage
   $ secretlint [file|glob*]
 
 Note
-  supported glob syntax is based on microglob
+  supported glob syntax is based on picomatch (the engine used by micromatch)
+  https://github.com/micromatch/picomatch#globbing-features
   https://github.com/micromatch/micromatch#matching-features
 
 Options
@@ -218,7 +219,7 @@ const readCliOptions = async ({ input = cli.input, flags = cli.flags }): Promise
 };
 export const run = async (
     input = cli.input,
-    flags = cli.flags
+    flags = cli.flags,
 ): Promise<{ exitStatus: number; stdout: string | null; stderr: Error | null }> => {
     if (flags.help) {
         return {

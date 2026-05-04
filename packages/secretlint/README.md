@@ -14,7 +14,8 @@ Install with [npm](https://www.npmjs.com/):
       $ secretlint [file|glob*]
  
     Note
-      supported glob syntax is based on microglob
+      supported glob syntax is based on picomatch (the engine used by micromatch)
+      https://github.com/micromatch/picomatch#globbing-features
       https://github.com/micromatch/micromatch#matching-features
  
     Options
