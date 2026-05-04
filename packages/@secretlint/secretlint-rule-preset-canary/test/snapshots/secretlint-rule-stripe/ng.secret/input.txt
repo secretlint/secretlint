@@ -1,0 +1,14 @@
+# Stripe API keys that should be detected
+# Source: https://docs.stripe.com/keys
+
+# Live Secret Key
+STRIPE_SECRET_KEY=sk_live_AAAAAAAAAAAAAAAAAAAAAAAA
+
+# Test Secret Key
+sk_test_BBBBBBBBBBBBBBBBBBBBBBBB
+
+# Live Restricted Key
+rk_live_CCCCCCCCCCCCCCCCCCCCCCCC
+
+# Test Restricted Key
+rk_test_DDDDDDDDDDDDDDDDDDDDDDDD
