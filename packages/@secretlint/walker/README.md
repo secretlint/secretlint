@@ -17,7 +17,7 @@ const files = await walk({
     cwd: process.cwd(),
     patterns: ["src/**/*.ts"],
     ignoreFiles: [".secretlintignore", ".gitignore"],
-    extraIgnorePatterns: ["**/.git/**", "**/node_modules/**"],
+    extraIgnorePatterns: ["**/.git", "**/node_modules"],
 });
 ```
 
