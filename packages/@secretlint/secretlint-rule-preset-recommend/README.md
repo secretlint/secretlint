@@ -24,40 +24,41 @@ Via `.secretlintrc.json`
 
 ## Options
 
-```json5
+You can override preset default options for each rule.
+
+```json
 {
-    rules: [
+    "rules": [
         {
-            id: "@secretlint/secretlint-rule-preset-recommend",
-            // You can override preset default options for each rule
-            rules: [
+            "id": "@secretlint/secretlint-rule-preset-recommend",
+            "rules": [
                 {
-                    id: "@secretlint/secretlint-rule-aws",
-                    options: {
-                        allows: ["allowed token"],
-                    },
-                },
-            ],
-        },
-    ],
+                    "id": "@secretlint/secretlint-rule-aws",
+                    "options": {
+                        "allows": ["allowed token"]
+                    }
+                }
+            ]
+        }
+    ]
 }
 ```
 
 If you want to ignore `"AWSAccountID"` and `"AWSAccessKeyID"` of `"@secretlint/secretlint-rule-aws"`, you can configure following.
 
-```json5
+```json
 {
-    rules: [
+    "rules": [
         {
-            id: "@secretlint/secretlint-rule-preset-recommend",
-            rules: [
+            "id": "@secretlint/secretlint-rule-preset-recommend",
+            "rules": [
                 {
-                    id: "@secretlint/secretlint-rule-aws",
-                    allowMessageIds: ["AWSAccountID", "AWSAccessKeyID"],
-                },
-            ],
-        },
-    ],
+                    "id": "@secretlint/secretlint-rule-aws",
+                    "allowMessageIds": ["AWSAccountID", "AWSAccessKeyID"]
+                }
+            ]
+        }
+    ]
 }
 ```
 
