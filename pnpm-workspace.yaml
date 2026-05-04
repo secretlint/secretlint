@@ -36,7 +36,7 @@ catalog:
   "micromatch": "^4.0.8"
   "node-sarif-builder": "^4.1.0"
   "p-map": "^7.0.4"
-  "picomatch": "^4.0.2"
+  "picomatch": "^4.0.4"
   "pluralize": "^8.0.0"
   "prettier": "^3.8.3"
   "rc-config-loader": "^4.1.4"
