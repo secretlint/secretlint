@@ -1,0 +1,111 @@
+{
+    "filePath": "[SNAPSHOT]/ng.secret/input.txt",
+    "messages": [
+        {
+            "message": "found Stripe Live Secret Key: sk_live_AAAAAAAAAAAAAAAAAAAAAAAA",
+            "range": [
+                118,
+                150
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-stripe",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 5,
+                    "column": 18
+                },
+                "end": {
+                    "line": 5,
+                    "column": 50
+                }
+            },
+            "severity": "error",
+            "messageId": "STRIPE_SECRET_KEY_LIVE",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-stripe/README.md#STRIPE_SECRET_KEY_LIVE",
+            "data": {
+                "KEY": "sk_live_AAAAAAAAAAAAAAAAAAAAAAAA"
+            }
+        },
+        {
+            "message": "found Stripe Test Secret Key: sk_test_BBBBBBBBBBBBBBBBBBBBBBBB",
+            "range": [
+                170,
+                202
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-stripe",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 8,
+                    "column": 0
+                },
+                "end": {
+                    "line": 8,
+                    "column": 32
+                }
+            },
+            "severity": "error",
+            "messageId": "STRIPE_SECRET_KEY_TEST",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-stripe/README.md#STRIPE_SECRET_KEY_TEST",
+            "data": {
+                "KEY": "sk_test_BBBBBBBBBBBBBBBBBBBBBBBB"
+            }
+        },
+        {
+            "message": "found Stripe Live Restricted Key: rk_live_CCCCCCCCCCCCCCCCCCCCCCCC",
+            "range": [
+                226,
+                258
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-stripe",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 11,
+                    "column": 0
+                },
+                "end": {
+                    "line": 11,
+                    "column": 32
+                }
+            },
+            "severity": "error",
+            "messageId": "STRIPE_RESTRICTED_KEY_LIVE",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-stripe/README.md#STRIPE_RESTRICTED_KEY_LIVE",
+            "data": {
+                "KEY": "rk_live_CCCCCCCCCCCCCCCCCCCCCCCC"
+            }
+        },
+        {
+            "message": "found Stripe Test Restricted Key: rk_test_DDDDDDDDDDDDDDDDDDDDDDDD",
+            "range": [
+                282,
+                314
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-stripe",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-recommend",
+            "loc": {
+                "start": {
+                    "line": 14,
+                    "column": 0
+                },
+                "end": {
+                    "line": 14,
+                    "column": 32
+                }
+            },
+            "severity": "error",
+            "messageId": "STRIPE_RESTRICTED_KEY_TEST",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-stripe/README.md#STRIPE_RESTRICTED_KEY_TEST",
+            "data": {
+                "KEY": "rk_test_DDDDDDDDDDDDDDDDDDDDDDDD"
+            }
+        }
+    ],
+    "sourceContent": "# Stripe API keys that should be detected\n# Source: https://docs.stripe.com/keys\n\n# Live Secret Key\nSTRIPE_SECRET_KEY=sk_live_AAAAAAAAAAAAAAAAAAAAAAAA\n\n# Test Secret Key\nsk_test_BBBBBBBBBBBBBBBBBBBBBBBB\n\n# Live Restricted Key\nrk_live_CCCCCCCCCCCCCCCCCCCCCCCC\n\n# Test Restricted Key\nrk_test_DDDDDDDDDDDDDDDDDDDDDDDD\n",
+    "sourceContentType": "text"
+}

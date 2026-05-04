@@ -13,6 +13,7 @@ import { creator as ruleNotion } from "@secretlint/secretlint-rule-notion";
 import { creator as rulePrivateKey } from "@secretlint/secretlint-rule-privatekey";
 import { creator as ruleSendgrid } from "@secretlint/secretlint-rule-sendgrid";
 import { creator as ruleShopify } from "@secretlint/secretlint-rule-shopify";
+import { creator as ruleStripe } from "@secretlint/secretlint-rule-stripe";
 import { creator as ruleGitHub } from "@secretlint/secretlint-rule-github";
 import { creator as ruleGitLab } from "@secretlint/secretlint-rule-gitlab";
 import { creator as ruleGrafana } from "@secretlint/secretlint-rule-grafana";
@@ -23,6 +24,8 @@ import { creator as ruleVercel } from "@secretlint/secretlint-rule-vercel";
 import { creator as ruleDatabricks } from "@secretlint/secretlint-rule-databricks";
 import { creator as ruleDocker } from "@secretlint/secretlint-rule-docker";
 import { creator as ruleFigma } from "@secretlint/secretlint-rule-figma";
+import { creator as ruleCloudflare } from "@secretlint/secretlint-rule-cloudflare";
+import { creator as ruleTailscale } from "@secretlint/secretlint-rule-tailscale";
 import { creator as ruleFilterComments } from "@secretlint/secretlint-rule-filter-comments";
 
 export const rules = [
@@ -34,6 +37,7 @@ export const rules = [
     ruleSlack,
     ruleSendgrid,
     ruleShopify,
+    ruleStripe,
     ruleGitHub,
     ruleGitLab,
     ruleGrafana,
@@ -50,6 +54,8 @@ export const rules = [
     ruleDatabricks,
     ruleDocker,
     ruleFigma,
+    ruleCloudflare,
+    ruleTailscale,
     ruleFilterComments,
 ];
 export type Options = {};
