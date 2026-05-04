@@ -1,66 +1,70 @@
 import { describe, it, expect } from "vitest";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { extendIgnore, createRootIgnore } from "../src/ignore-stack.js";
+import { extendIgnore, createRootIgnore, isIgnoredByChain } from "../src/ignore-stack.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const fixtureDir = path.join(__dirname, "fixtures", "ignore-stack");
 
 describe("createRootIgnore", () => {
     it("starts empty", () => {
-        const ig = createRootIgnore([]);
-        expect(ig.ignores("foo.txt")).toBe(false);
+        const chain = createRootIgnore(fixtureDir, []);
+        expect(isIgnoredByChain(chain, path.join(fixtureDir, "foo.txt"), false)).toBe(false);
     });
     it("applies extra patterns", () => {
-        const ig = createRootIgnore(["*.log"]);
-        expect(ig.ignores("debug.log")).toBe(true);
-        expect(ig.ignores("main.ts")).toBe(false);
+        const chain = createRootIgnore(fixtureDir, ["*.log"]);
+        expect(isIgnoredByChain(chain, path.join(fixtureDir, "debug.log"), false)).toBe(true);
+        expect(isIgnoredByChain(chain, path.join(fixtureDir, "main.ts"), false)).toBe(false);
     });
 });
 
-describe("extendIgnore", () => {
+describe("extendIgnore (chain) and isIgnoredByChain", () => {
     it("inherits parent rules", async () => {
-        const root = createRootIgnore(["*.log"]);
+        // Root with explicit *.log; descend into parent/ which has its own
+        // .gitignore (also `*.log`). Both layers contribute.
+        const root = createRootIgnore(fixtureDir, ["*.log"]);
         const parentDir = path.join(fixtureDir, "parent");
-        // walkRoot = parentDir → patterns from parentDir/.gitignore are added as-is.
-        const child = await extendIgnore(root, parentDir, parentDir, [".gitignore"]);
-        expect(child.ignores("debug.log")).toBe(true);
+        const child = await extendIgnore(root, parentDir, [".gitignore"]);
+        expect(isIgnoredByChain(child, path.join(parentDir, "debug.log"), false)).toBe(true);
     });
 
-    it("rewrites a child .gitignore's patterns to be anchored at the child's relative dir", async () => {
-        const root = createRootIgnore([]);
+    it("nested .gitignore rules anchor to their own directory", async () => {
+        // parent/.gitignore     → `*.log`
+        // parent/child/.gitignore → `build/` and `!keep-this.log`
         const parentDir = path.join(fixtureDir, "parent");
         const childDir = path.join(parentDir, "child");
-        // walkRoot stays at parentDir for both calls, mirroring how the
-        // walker uses the same `ignoreRoot` across the cascade.
-        const parent = await extendIgnore(root, parentDir, parentDir, [".gitignore"]);
-        // parent/.gitignore (`*.log`) is non-rooted at relDir="" → matches at any depth.
-        expect(parent.ignores("debug.log")).toBe(true);
-        expect(parent.ignores("child/sub/debug.log")).toBe(true);
+        const root = createRootIgnore(parentDir, []);
+        const parent = await extendIgnore(root, parentDir, [".gitignore"]);
+        const chain = await extendIgnore(parent, childDir, [".gitignore"]);
 
-        const child = await extendIgnore(parent, childDir, parentDir, [".gitignore"]);
-        // child/.gitignore says `build/` and `!keep-this.log`. After rewriting
-        // these are anchored to `child/`:
-        //   build/         → child/**/build/
-        //   !keep-this.log → !child/**/keep-this.log
-        expect(child.ignores("child/build/")).toBe(true);
-        expect(child.ignores("child/some/dir/build/")).toBe(true);
-        expect(child.ignores("build/")).toBe(false); // not under child/
-        expect(child.ignores("debug.log")).toBe(true); // parent rule still applies
-        expect(child.ignores("child/keep-this.log")).toBe(false); // negation un-ignores under child/
+        // Parent's `*.log` matches anywhere under parent.
+        expect(isIgnoredByChain(chain, path.join(parentDir, "debug.log"), false)).toBe(true);
+        expect(isIgnoredByChain(chain, path.join(childDir, "sub", "debug.log"), false)).toBe(true);
+
+        // Child's `build/` matches only under the child level. (No build/
+        // sibling exists in the parent fixture; the cascade test relies on
+        // the path being inside child/.)
+        expect(isIgnoredByChain(chain, path.join(childDir, "build"), true)).toBe(true);
+        expect(isIgnoredByChain(chain, path.join(childDir, "some", "build"), true)).toBe(true);
+
+        // Child's `!keep-this.log` un-ignores a file the parent's `*.log`
+        // would otherwise have caught — but only inside the child level.
+        expect(isIgnoredByChain(chain, path.join(childDir, "keep-this.log"), false)).toBe(false);
+        // Outside the child level the parent rule still applies.
+        expect(isIgnoredByChain(chain, path.join(parentDir, "keep-this.log"), false)).toBe(true);
     });
 
     it("returns parent unchanged when no ignore file present", async () => {
-        const root = createRootIgnore(["*.log"]);
+        const root = createRootIgnore(fixtureDir, ["*.log"]);
         const childDir = path.join(fixtureDir, "parent", "child");
-        const child = await extendIgnore(root, childDir, fixtureDir, [".no-such-file"]);
+        const child = await extendIgnore(root, childDir, [".no-such-file"]);
         expect(child).toBe(root);
     });
 
     it("supports multiple ignore file names", async () => {
-        const root = createRootIgnore([]);
         const parentDir = path.join(fixtureDir, "parent");
-        const ig = await extendIgnore(root, parentDir, parentDir, [".secretlintignore", ".gitignore"]);
-        expect(ig.ignores("debug.log")).toBe(true);
+        const root = createRootIgnore(parentDir, []);
+        const chain = await extendIgnore(root, parentDir, [".secretlintignore", ".gitignore"]);
+        expect(isIgnoredByChain(chain, path.join(parentDir, "debug.log"), false)).toBe(true);
     });
 });

@@ -2,7 +2,7 @@ import { readdir, stat } from "node:fs/promises";
 import path from "node:path";
 import type { Dirent } from "node:fs";
 import picomatch from "picomatch";
-import { createRootIgnore, extendIgnore, type IgnoreInstance } from "./ignore-stack.js";
+import { createRootIgnore, extendIgnore, isIgnoredByChain, type IgnoreChain } from "./ignore-stack.js";
 import { isDynamicPattern, splitGlobRoot } from "./glob-root.js";
 
 /**
@@ -146,8 +146,6 @@ const presentIgnoreNames = (entries: readonly Dirent[], ignoreFiles: readonly st
 type WalkContext = {
     /** Names of ignore files (e.g. `.gitignore`) loaded at every directory. */
     ignoreFiles: readonly string[];
-    /** Anchor for cascade-ignore relative paths. Always equal to the walk's `cwd`. */
-    ignoreRoot: string;
     /** Per-group anchor for include-pattern matching. Equals the group's `rootDir`. */
     patternRoot: string;
     /** Compiled include matcher; null means "match every file". */
@@ -157,61 +155,63 @@ type WalkContext = {
 };
 
 /**
- * Build an ignore instance by walking the directory chain from `cwd` down to
- * (and including) `targetDir`, applying any ignore files encountered at each
- * level. This ensures that walks that start below `cwd` (because of a glob's
- * static prefix) still respect ancestor `.gitignore` files.
+ * Build an ignore chain by walking the directory chain from `cwd` down to
+ * (and including) `targetDir`, pushing one chain level per directory that
+ * contains an ignore file. This ensures that walks starting below `cwd`
+ * (because of a glob's static prefix) still respect ancestor `.gitignore`
+ * files.
  */
 const seedAncestorIgnore = async (options: {
-    rootIg: IgnoreInstance;
+    rootIg: IgnoreChain;
     cwd: string;
     targetDir: string;
     ignoreFiles: readonly string[];
-}): Promise<IgnoreInstance> => {
+}): Promise<IgnoreChain> => {
     const { rootIg, cwd, targetDir, ignoreFiles } = options;
     const relative = path.relative(cwd, targetDir);
     if (relative === "" || relative.startsWith("..") || path.isAbsolute(relative)) {
-        return await extendIgnore(rootIg, cwd, cwd, ignoreFiles);
+        return await extendIgnore(rootIg, cwd, ignoreFiles);
     }
-    let ig = await extendIgnore(rootIg, cwd, cwd, ignoreFiles);
+    let chain = await extendIgnore(rootIg, cwd, ignoreFiles);
     let current = cwd;
     for (const segment of relative.split(path.sep).filter(Boolean)) {
         current = path.join(current, segment);
-        ig = await extendIgnore(ig, current, cwd, ignoreFiles);
+        chain = await extendIgnore(chain, current, ignoreFiles);
     }
-    return ig;
+    return chain;
 };
 
 /**
  * Walk a directory whose ignore stack has already been seeded for the
  * directory itself. Reads `absDir` once and processes entries.
  */
-const walkSeeded = async (absDir: string, ig: IgnoreInstance, ctx: WalkContext): Promise<void> => {
+const walkSeeded = async (absDir: string, chain: IgnoreChain, ctx: WalkContext): Promise<void> => {
     const entries = await safeReaddir(absDir);
     if (entries === null) return;
-    await processEntries(absDir, entries, ig, ctx);
+    await processEntries(absDir, entries, chain, ctx);
 };
 
 /**
  * Recurse into a child directory: read it once, derive ignore-file presence,
- * extend the ignore stack accordingly, then process entries.
+ * extend the ignore chain with that directory's ignore file (if any), then
+ * process entries.
  */
-const walkSubdir = async (absDir: string, parentIg: IgnoreInstance, ctx: WalkContext): Promise<void> => {
+const walkSubdir = async (absDir: string, parentChain: IgnoreChain, ctx: WalkContext): Promise<void> => {
     const entries = await safeReaddir(absDir);
     if (entries === null) return;
     const present = presentIgnoreNames(entries, ctx.ignoreFiles);
-    const ig = await extendIgnore(parentIg, absDir, ctx.ignoreRoot, ctx.ignoreFiles, present);
-    await processEntries(absDir, entries, ig, ctx);
+    const chain = await extendIgnore(parentChain, absDir, ctx.ignoreFiles, present);
+    await processEntries(absDir, entries, chain, ctx);
 };
 
 /**
- * For each entry: skip if its path is ignored by the cascade stack;
+ * For each entry: skip if its path is ignored by the cascade chain;
  * otherwise recurse (directory) or run it through the include matcher (file).
  */
 const processEntries = async (
     absDir: string,
     entries: readonly Dirent[],
-    ig: IgnoreInstance,
+    chain: IgnoreChain,
     ctx: WalkContext,
 ): Promise<void> => {
     await Promise.all(
@@ -220,11 +220,9 @@ const processEntries = async (
             const isFile = entry.isFile();
             if (!isDir && !isFile) return;
             const full = path.join(absDir, entry.name);
-            const relFromIgnoreRoot = toPosix(path.relative(ctx.ignoreRoot, full));
-            const target = isDir ? `${relFromIgnoreRoot}/` : relFromIgnoreRoot;
-            if (ig.ignores(target)) return;
+            if (isIgnoredByChain(chain, full, isDir)) return;
             if (isDir) {
-                await walkSubdir(full, ig, ctx);
+                await walkSubdir(full, chain, ctx);
             } else if (ctx.matcher === null) {
                 ctx.results.add(toPosix(full));
             } else {
@@ -241,12 +239,11 @@ const processEntries = async (
  */
 const handleStaticPath = async (options: {
     absPath: string;
-    parentIg: IgnoreInstance;
+    parentChain: IgnoreChain;
     ignoreFiles: readonly string[];
-    ignoreRoot: string;
     results: Set<string>;
 }): Promise<void> => {
-    const { absPath, parentIg, ignoreFiles, ignoreRoot, results } = options;
+    const { absPath, parentChain, ignoreFiles, results } = options;
     let info;
     try {
         info = await stat(absPath);
@@ -256,16 +253,14 @@ const handleStaticPath = async (options: {
         throw error;
     }
     if (info.isDirectory()) {
-        await walkSubdir(absPath, parentIg, {
+        await walkSubdir(absPath, parentChain, {
             ignoreFiles,
-            ignoreRoot,
             patternRoot: absPath,
             matcher: null,
             results,
         });
     } else if (info.isFile()) {
-        const relFromIgnoreRoot = toPosix(path.relative(ignoreRoot, absPath));
-        if (parentIg.ignores(relFromIgnoreRoot)) return;
+        if (isIgnoredByChain(parentChain, absPath, false)) return;
         results.add(toPosix(absPath));
     }
 };
@@ -279,7 +274,7 @@ const handleStaticPath = async (options: {
 export const walk = async (options: WalkOptions): Promise<string[]> => {
     const cwd = path.resolve(options.cwd);
     const ignoreFiles = options.ignoreFiles ?? [];
-    const rootIg = createRootIgnore(options.extraIgnorePatterns ?? []);
+    const rootChain = createRootIgnore(cwd, options.extraIgnorePatterns ?? []);
     const results = new Set<string>();
     const groups = groupPatterns(cwd, options.patterns, options.noGlob);
     await Promise.all(
@@ -288,20 +283,28 @@ export const walk = async (options: WalkOptions): Promise<string[]> => {
             const globPatterns = group.matchPatterns.filter((p) => p !== "");
             if (literalEntries.length > 0 && globPatterns.length === 0) {
                 const parentDir = path.dirname(group.rootDir);
-                const seededIg = await seedAncestorIgnore({ rootIg, cwd, targetDir: parentDir, ignoreFiles });
+                const seededChain = await seedAncestorIgnore({
+                    rootIg: rootChain,
+                    cwd,
+                    targetDir: parentDir,
+                    ignoreFiles,
+                });
                 await handleStaticPath({
                     absPath: group.rootDir,
-                    parentIg: seededIg,
+                    parentChain: seededChain,
                     ignoreFiles,
-                    ignoreRoot: cwd,
                     results,
                 });
                 return;
             }
-            const seededIg = await seedAncestorIgnore({ rootIg, cwd, targetDir: group.rootDir, ignoreFiles });
-            await walkSeeded(group.rootDir, seededIg, {
+            const seededChain = await seedAncestorIgnore({
+                rootIg: rootChain,
+                cwd,
+                targetDir: group.rootDir,
                 ignoreFiles,
-                ignoreRoot: cwd,
+            });
+            await walkSeeded(group.rootDir, seededChain, {
+                ignoreFiles,
                 patternRoot: group.rootDir,
                 matcher: compileMatcher(globPatterns),
                 results,
