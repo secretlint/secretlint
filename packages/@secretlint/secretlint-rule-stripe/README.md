@@ -6,10 +6,10 @@ A secretlint rule for detecting [Stripe](https://stripe.com/) API keys.
 
 | Key Type | Prefix | Format |
 |---|---|---|
-| Live Secret Key | `sk_live_` | `sk_live_` + 10–99 alphanumeric chars |
-| Test Secret Key | `sk_test_` | `sk_test_` + 10–99 alphanumeric chars |
-| Live Restricted Key | `rk_live_` | `rk_live_` + 10–99 alphanumeric chars |
-| Test Restricted Key | `rk_test_` | `rk_test_` + 10–99 alphanumeric chars |
+| Live Secret Key | `sk_live_` | `sk_live_` + 24–99 alphanumeric chars |
+| Test Secret Key | `sk_test_` | `sk_test_` + 24–99 alphanumeric chars |
+| Live Restricted Key | `rk_live_` | `rk_live_` + 24–99 alphanumeric chars |
+| Test Restricted Key | `rk_test_` | `rk_test_` + 24–99 alphanumeric chars |
 
 References:
 

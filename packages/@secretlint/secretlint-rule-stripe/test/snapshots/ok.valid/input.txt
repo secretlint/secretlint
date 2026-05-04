@@ -4,11 +4,13 @@
 pk_live_AAAAAAAAAAAAAAAAAAAAAAAA
 pk_test_BBBBBBBBBBBBBBBBBBBBBBBB
 
-# Too short (fewer than 10 chars after prefix)
+# Too short (fewer than 24 chars after prefix)
 sk_live_short
 sk_test_abc
 rk_live_x
 rk_test_y
+sk_live_AAAAAAAAAAAAAAAAAAAAAAA
+sk_test_BBBBBBBBBBBBBBBBBBBBBBB
 
 # Wrong prefix / mid-word boundary
 xsk_live_AAAAAAAAAAAAAAAAAAAAAAAA

@@ -41,14 +41,26 @@ const messageIdMap: Record<STRIPE_KEY_PREFIX, keyof typeof messages> = {
     rk_test: "STRIPE_RESTRICTED_KEY_TEST",
 };
 
-// Stripe API key format: {prefix}_{10-99 alphanumeric chars}
+// Stripe API key format: {prefix}_{24-99 alphanumeric chars}
 // Officially documented prefixes (https://docs.stripe.com/keys):
 // - sk_live_ : Live Secret Key
 // - sk_test_ : Test Secret Key
 // - rk_live_ : Live Restricted Key
 // - rk_test_ : Test Restricted Key
-// GitHub Push Protection and gitleaks use the same pattern.
-const STRIPE_KEY_PATTERN = /(?<!\p{L})(?<prefix>sk_live|sk_test|rk_live|rk_test)_[a-zA-Z0-9]{10,99}(?![a-zA-Z0-9])/gu;
+//
+// Length lower bound (24):
+//   Stripe's documentation samples and historical key format use a 24-char body
+//   after the prefix. Issue #1531 also describes the format as "typically 24-32
+//   characters" after the prefix. Stripe does not publish a hard minimum, but
+//   24 reflects the smallest length seen in real keys; gitleaks uses 10 and
+//   TruffleHog uses 20, but those values produce more false positives.
+//   Tightening to 24 trades a (non-existent in practice) shorter key for fewer
+//   false positives.
+//
+// Length upper bound (99):
+//   Modern Stripe keys use an extended `51...` account-prefix encoding and run
+//   up to ~99 chars after the prefix. Matches gitleaks' upper bound.
+const STRIPE_KEY_PATTERN = /(?<!\p{L})(?<prefix>sk_live|sk_test|rk_live|rk_test)_[a-zA-Z0-9]{24,99}(?![a-zA-Z0-9])/gu;
 
 function reportIfFound({
     source,
