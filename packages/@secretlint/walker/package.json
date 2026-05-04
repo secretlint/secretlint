@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/walker",
-    "version": "12.3.1",
+    "version": "13.0.0",
     "description": "Promise-based file system walker with nested .gitignore cascade support.",
     "keywords": [
         "secretlint",
