@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1777891152564,
+  "lastUpdate": 1777891920814,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -53844,6 +53844,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.28,
             "range": "±1.46%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "806149148877f9d860ee43a74e222cb1703828ae",
+          "message": "Add Tailscale API key detection rule (#1536)\n\n## Summary\n\nAdds `@secretlint/secretlint-rule-tailscale`, a new rule for detecting\nTailscale keys (the `tskey-` family).\n\nCloses https://github.com/secretlint/secretlint/issues/1533\n\n## Detected key types\n\nPer the [official Tailscale key\nprefixes](https://tailscale.com/docs/reference/key-prefixes):\n\n| Prefix | MessageId | Purpose |\n|---|---|---|\n| `tskey-api-` | `TAILSCALE_API_KEY` | API access token |\n| `tskey-auth-` | `TAILSCALE_AUTH_KEY` | Pre-authentication key |\n| `tskey-client-` | `TAILSCALE_CLIENT_KEY` | OAuth client key |\n| `tskey-scim-` | `TAILSCALE_SCIM_KEY` | SCIM key |\n| `tskey-webhook-` | `TAILSCALE_WEBHOOK_KEY` | Webhook key |\n| `tskey-*` (other) | `TAILSCALE_KEY` | Fallback for future types |\n\n## Implementation\n\n- Pattern:\n`/(?<!\\p{L})tskey-(?<type>[a-z]+)-[0-9A-Za-z_]{8,40}-[0-9A-Za-z_]{16,60}(?![0-9A-Za-z_])/gu`\n- Aligned with TruffleHog's detection\n(`\\btskey-[a-z]+-[0-9A-Za-z_]+-[0-9A-Za-z_]+\\b`) and GitHub Secret\nScanning's documented Push Protection coverage.\n- Type segment is captured with a named group and dispatched to a\ntype-specific messageId; unknown types fall back to the generic\n`TAILSCALE_KEY` message.\n- Word-boundary lookbehind/lookahead avoids mid-word matches and keeps\nthe reported `range` accurate.\n\n## Integration\n\n- Registered in `@secretlint/secretlint-rule-preset-canary` (preset src\n+ package.json + import-test snapshots).\n- Per `AGENTS.md`, syncing to `preset-recommend` is deferred to the next\nmajor release; this PR does not modify recommend.\n\n## Test plan\n\n- [x] `pnpm test` in the new package (5 snapshot cases: api, auth,\nclient, valid, plus generated `ng.*`)\n- [x] `pnpm run import-test` in `preset-canary` regenerates and passes\n- [x] `pnpm run ci` (build + test) passes locally — 107/107 turbo tasks\n- [x] `pnpm-lock.yaml` regenerated to include the new workspace package\n\nhttps://claude.ai/code/session_01F65Bk9jv96mfdHtgbRhvLP\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-05-04T10:50:05Z",
+          "tree_id": "db18e27107c6b5bbfc3d82bf5afbe9ac72652148",
+          "url": "https://github.com/secretlint/secretlint/commit/806149148877f9d860ee43a74e222cb1703828ae"
+        },
+        "date": 1777891918043,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.57,
+            "range": "±0.72%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.27,
+            "range": "±1.53%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
