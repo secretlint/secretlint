@@ -95,14 +95,15 @@ export const extendIgnore = async (
  * matcher (`foo` vs `foo/` are distinct in gitignore semantics).
  */
 export const isIgnoredByChain = (chain: IgnoreChain, fullPath: string, isDirectory: boolean): boolean => {
-    // Collect chain levels root → leaf so child rules apply on top of parents.
-    const levels: IgnoreChain[] = [];
-    for (let cur: IgnoreChain | null = chain; cur !== null; cur = cur.parent) levels.push(cur);
-    levels.reverse();
-
-    let verdict = false;
-    for (const level of levels) {
-        const rel = path.relative(level.dir, fullPath);
+    // Walk leaf → root (the chain's natural direction) and return on the
+    // first level that takes a position. This is equivalent to walking
+    // root → leaf with "last match wins" semantics — gitignore guarantees
+    // that within any single matcher's rules the last hit decides, and
+    // node-ignore's `test()` already collapses each level to a single
+    // verdict, so the first level whose verdict is non-empty wins overall.
+    // Avoids the buffer + reverse() the root → leaf form needed.
+    for (let cur: IgnoreChain | null = chain; cur !== null; cur = cur.parent) {
+        const rel = path.relative(cur.dir, fullPath);
         // Skip levels whose dir does not contain fullPath. The path leaves
         // the level only when the relative result IS the literal `..`
         // directive or starts with `..` followed by a separator, never
@@ -111,9 +112,9 @@ export const isIgnoredByChain = (chain: IgnoreChain, fullPath: string, isDirecto
         if (rel === "" || rel === ".." || rel.startsWith(`..${path.sep}`) || path.isAbsolute(rel)) continue;
         const relPosix = path.sep === "\\" ? rel.replaceAll("\\", "/") : rel;
         const target = isDirectory ? `${relPosix}/` : relPosix;
-        const r = level.matcher.test(target);
-        if (r.ignored) verdict = true;
-        else if (r.unignored) verdict = false;
+        const r = cur.matcher.test(target);
+        if (r.ignored) return true;
+        if (r.unignored) return false;
     }
-    return verdict;
+    return false;
 };
