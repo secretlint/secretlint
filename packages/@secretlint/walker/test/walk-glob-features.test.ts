@@ -57,4 +57,30 @@ describe("walk - glob feature support", () => {
         expect(r).toContain("src/lib.js");
         expect(r).toContain("src/style.css");
     });
+
+    it("negation pattern (`!**/*.css`) excludes from a positive match", async () => {
+        // micromatch semantics: a file is included iff some positive
+        // pattern matches AND no negation pattern matches. A naive
+        // `.some(positive | negation)` lets `.css` through because
+        // `picomatch("!**/*.css")` returns true on every non-css path.
+        const results = await walk({
+            cwd: fixtureDir,
+            patterns: ["**/*", "!**/*.css"],
+        });
+        const r = rel(results);
+        expect(r).toContain("src/main.ts");
+        expect(r).toContain("src/lib.js");
+        expect(r).not.toContain("src/style.css");
+    });
+
+    it("negation-only pattern includes everything except the negated set", async () => {
+        const results = await walk({
+            cwd: fixtureDir,
+            patterns: ["!**/*.css"],
+        });
+        const r = rel(results);
+        expect(r).toContain("src/main.ts");
+        expect(r).toContain("src/lib.js");
+        expect(r).not.toContain("src/style.css");
+    });
 });

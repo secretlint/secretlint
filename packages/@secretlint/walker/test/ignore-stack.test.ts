@@ -67,4 +67,23 @@ describe("extendIgnore (chain) and isIgnoredByChain", () => {
         const chain = await extendIgnore(root, parentDir, [".secretlintignore", ".gitignore"]);
         expect(isIgnoredByChain(chain, path.join(parentDir, "debug.log"), false)).toBe(true);
     });
+
+    it("does not skip the level for paths inside a directory whose name starts with `..`", async () => {
+        // Regression: the previous guard `rel.startsWith("..")` also skipped
+        // valid relative paths like `..config/file` (not the `..` parent
+        // directive). The level should still apply because the path is
+        // inside the chain's directory.
+        const root = createRootIgnore(fixtureDir, ["..config"]);
+        // path.relative(fixtureDir, fixtureDir/..config/file) === "..config/file"
+        // — starts with `..` but is a real descent, not a parent traversal.
+        expect(isIgnoredByChain(root, path.join(fixtureDir, "..config", "file"), false)).toBe(true);
+    });
+
+    it("still skips the level when the path is above the chain dir", async () => {
+        // Sanity: `path.relative(parent, /sibling/x)` returns
+        // "../sibling/x" — that IS a parent-traversal and must skip.
+        const parentDir = path.join(fixtureDir, "parent");
+        const root = createRootIgnore(parentDir, ["sibling"]);
+        expect(isIgnoredByChain(root, path.join(fixtureDir, "sibling", "x"), false)).toBe(false);
+    });
 });

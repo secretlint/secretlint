@@ -58,13 +58,31 @@ type CompiledMatcher = ((relPath: string) => boolean) | null;
  *    wrap, so its glob dialect is the de-facto standard in the Node
  *    ecosystem.
  *
+ * Negation patterns (those starting with `!`) are split out and applied
+ * separately, mirroring micromatch's semantics: a path is included when
+ * any positive pattern matches AND no negation pattern matches. When the
+ * input is negation-only the positive check degenerates to "everything",
+ * so `["!**\/*.log"]` matches every non-log file.
+ *
  * Returns `null` when there are no patterns so the caller can skip the
  * matcher call entirely on the hot path.
  */
 const compileMatcher = (patterns: readonly string[]): CompiledMatcher => {
     if (patterns.length === 0) return null;
-    const matchers = patterns.map((p) => picomatch(p, { dot: true }));
-    return (relPath) => matchers.some((m) => m(relPath));
+    const positives: ((p: string) => boolean)[] = [];
+    const negatives: ((p: string) => boolean)[] = [];
+    for (const pattern of patterns) {
+        if (pattern.startsWith("!")) {
+            negatives.push(picomatch(pattern.slice(1), { dot: true }));
+        } else {
+            positives.push(picomatch(pattern, { dot: true }));
+        }
+    }
+    return (relPath) => {
+        if (positives.length > 0 && !positives.some((m) => m(relPath))) return false;
+        if (negatives.some((m) => m(relPath))) return false;
+        return true;
+    };
 };
 
 /**

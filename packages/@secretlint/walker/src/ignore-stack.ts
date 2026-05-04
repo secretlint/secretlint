@@ -103,8 +103,12 @@ export const isIgnoredByChain = (chain: IgnoreChain, fullPath: string, isDirecto
     let verdict = false;
     for (const level of levels) {
         const rel = path.relative(level.dir, fullPath);
-        // Skip levels whose dir does not contain fullPath.
-        if (rel === "" || rel.startsWith("..") || path.isAbsolute(rel)) continue;
+        // Skip levels whose dir does not contain fullPath. The path leaves
+        // the level only when the relative result IS the literal `..`
+        // directive or starts with `..` followed by a separator, never
+        // when it merely starts with two dots in a directory name like
+        // `..config/file`.
+        if (rel === "" || rel === ".." || rel.startsWith(`..${path.sep}`) || path.isAbsolute(rel)) continue;
         const relPosix = path.sep === "\\" ? rel.replaceAll("\\", "/") : rel;
         const target = isDirectory ? `${relPosix}/` : relPosix;
         const r = level.matcher.test(target);
