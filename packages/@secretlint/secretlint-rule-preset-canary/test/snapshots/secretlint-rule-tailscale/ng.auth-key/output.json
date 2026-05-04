@@ -2,7 +2,7 @@
     "filePath": "[SNAPSHOT]/ng.auth-key/input.txt",
     "messages": [
         {
-            "message": "found Tailscale key: tskey-auth-CCCCCCCCCCCC-DDDDDDDDDDDDDDDDDDDDDDDD",
+            "message": "found Tailscale pre-authentication key: tskey-auth-CCCCCCCCCCCC-DDDDDDDDDDDDDDDDDDDDDDDD",
             "range": [
                 0,
                 48
@@ -21,8 +21,8 @@
                 }
             },
             "severity": "error",
-            "messageId": "TAILSCALE_KEY",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-tailscale/README.md#TAILSCALE_KEY",
+            "messageId": "TAILSCALE_AUTH_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-tailscale/README.md#TAILSCALE_AUTH_KEY",
             "data": {
                 "KEY": "tskey-auth-CCCCCCCCCCCC-DDDDDDDDDDDDDDDDDDDDDDDD"
             }

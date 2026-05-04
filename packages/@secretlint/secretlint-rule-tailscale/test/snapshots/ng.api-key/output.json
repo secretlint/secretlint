@@ -2,7 +2,7 @@
     "filePath": "[SNAPSHOT]/ng.api-key/input.txt",
     "messages": [
         {
-            "message": "found Tailscale key: tskey-api-AAAAAAAAAAAA-BBBBBBBBBBBBBBBBBBBBBBBB",
+            "message": "found Tailscale API access token: tskey-api-AAAAAAAAAAAA-BBBBBBBBBBBBBBBBBBBBBBBB",
             "range": [
                 0,
                 47
@@ -20,8 +20,8 @@
                 }
             },
             "severity": "error",
-            "messageId": "TAILSCALE_KEY",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-tailscale/README.md#TAILSCALE_KEY",
+            "messageId": "TAILSCALE_API_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-tailscale/README.md#TAILSCALE_API_KEY",
             "data": {
                 "KEY": "tskey-api-AAAAAAAAAAAA-BBBBBBBBBBBBBBBBBBBBBBBB"
             }

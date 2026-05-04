@@ -2,7 +2,7 @@
     "filePath": "[SNAPSHOT]/ng.client-key/input.txt",
     "messages": [
         {
-            "message": "found Tailscale key: tskey-client-EEEEEEEEEEEE-FFFFFFFFFFFFFFFFFFFFFFFF",
+            "message": "found Tailscale OAuth client key: tskey-client-EEEEEEEEEEEE-FFFFFFFFFFFFFFFFFFFFFFFF",
             "range": [
                 0,
                 50
@@ -20,8 +20,8 @@
                 }
             },
             "severity": "error",
-            "messageId": "TAILSCALE_KEY",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-tailscale/README.md#TAILSCALE_KEY",
+            "messageId": "TAILSCALE_CLIENT_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-tailscale/README.md#TAILSCALE_CLIENT_KEY",
             "data": {
                 "KEY": "tskey-client-EEEEEEEEEEEE-FFFFFFFFFFFFFFFFFFFFFFFF"
             }

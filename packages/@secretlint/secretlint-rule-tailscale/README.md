@@ -34,9 +34,31 @@ Add the rule to your `.secretlintrc.json`:
 
 ## MessageIDs
 
+### TAILSCALE_API_KEY
+
+> found Tailscale API access token: ${props.KEY}
+
+### TAILSCALE_AUTH_KEY
+
+> found Tailscale pre-authentication key: ${props.KEY}
+
+### TAILSCALE_CLIENT_KEY
+
+> found Tailscale OAuth client key: ${props.KEY}
+
+### TAILSCALE_SCIM_KEY
+
+> found Tailscale SCIM key: ${props.KEY}
+
+### TAILSCALE_WEBHOOK_KEY
+
+> found Tailscale webhook key: ${props.KEY}
+
 ### TAILSCALE_KEY
 
 > found Tailscale key: ${props.KEY}
+
+Fallback message used when the key type does not match a known prefix.
 
 A leaked Tailscale key can grant access to manage devices, ACLs, and network configuration.
 
