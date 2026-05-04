@@ -68,7 +68,7 @@ export const creator: SecretLintRuleCreator<Options> = {
                 // GitHub Secret Scanning supports these as Push Protection targets.
                 // TruffleHog uses the equivalent pattern: \btskey-[a-z]+-[0-9A-Za-z_]+-[0-9A-Za-z_]+\b
                 const pattern =
-                    /(?<![0-9A-Za-z_])tskey-(?<type>[a-z]+)-[0-9A-Za-z_]{8,40}-[0-9A-Za-z_]{16,60}(?![0-9A-Za-z_])/gu;
+                    /(?<!\p{L})tskey-(?<type>[a-z]{2,20})-[0-9A-Za-z_]{8,40}-[0-9A-Za-z_]{16,60}(?![0-9A-Za-z_])/gu;
                 const matches = source.content.matchAll(pattern);
                 for (const match of matches) {
                     const index = match.index ?? 0;
