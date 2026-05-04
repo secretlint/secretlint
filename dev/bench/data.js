@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1777894597590,
+  "lastUpdate": 1777896597398,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -53920,6 +53920,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.26,
             "range": "±2.09%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "44d79b38cab96b8e8d10c6adff076f856b522e25",
+          "message": "feat(secretlint-rule-preset-recommend): promote cloudflare, stripe, tailscale from canary (#1538)\n\n## Summary\n\nPromote the following rules from canary to the recommend preset:\n\n- `@secretlint/secretlint-rule-cloudflare`\n- `@secretlint/secretlint-rule-stripe`\n- `@secretlint/secretlint-rule-tailscale`\n\n## Test Plan\n\n- `pnpm run build`\n- `pnpm test`\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-05-04T21:07:52+09:00",
+          "tree_id": "c652be6270124aa964dcc73d5e255680d53c35dd",
+          "url": "https://github.com/secretlint/secretlint/commit/44d79b38cab96b8e8d10c6adff076f856b522e25"
+        },
+        "date": 1777896594861,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.48,
+            "range": "±0.92%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.25,
+            "range": "±1.22%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
