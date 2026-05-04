@@ -1,91 +1,79 @@
-import { globby, isDynamicPattern, convertPathToPattern } from "globby";
+import { walk } from "@secretlint/walker";
 import debug0 from "debug";
 
 const debug = debug0("secretlint");
+
+// Patterns are written WITHOUT a trailing `/**` so node-ignore prunes the
+// directory itself (not just its contents). With `**/foo/**` the walker
+// would still readdir `foo/` and check each child individually.
+//
+// node-ignore (gitignore semantics) does not expand braces, so the four
+// `.secretlintrc.{json,yaml,yml,js}` variants are listed individually
+// rather than as a single brace pattern.
 const DEFAULT_IGNORE_PATTERNS = [
-    "**/.git/**",
-    "**/node_modules/**",
-    "**/.secretlintrc/**",
-    "**/.secretlintrc.{json,yaml,yml,js}/**",
-    "**/.secretlintignore*/**",
+    "**/.git",
+    "**/node_modules",
+    "**/.secretlintrc",
+    "**/.secretlintrc.json",
+    "**/.secretlintrc.yaml",
+    "**/.secretlintrc.yml",
+    "**/.secretlintrc.js",
+    "**/.secretlintignore*",
 ];
+
 export type SearchFilesOptions = {
     cwd: string;
     ignoreFilePath?: string;
     noGlob?: boolean;
+    respectGitignore?: boolean;
 };
 
 /**
- * globby wrapper that support ignore options
- * @param patterns
- * @param options
+ * Search files matching the given patterns under `options.cwd`.
+ * Always honours DEFAULT_IGNORE_PATTERNS. When `respectGitignore` is true
+ * (default), nested `.gitignore` files are respected with Git semantics.
+ *
+ * Patterns are interpreted as globs by default. To pass a literal path —
+ * for example a file whose name contains glob special characters such as
+ * `[`, `(`, `{`, or `?` — set `noGlob: true` (CLI: `--no-glob`).
  */
 export const searchFiles = async (patterns: string[], options: SearchFilesOptions) => {
-    // secretelint support glob pattern
-    const normalizedPatterns = patterns.map((pattern) => {
-        // glob can not handle Windows style path separator
-        // So, replace path separator to POSIX style
-        // https://github.com/secretlint/secretlint/issues/816
-        const normalizedPattern = process.platform === "win32" ? pattern.replace(/\\/g, "/") : pattern;
-        // When noGlob is set, treat all inputs as literal file paths
-        // This is useful when file paths contain glob special characters
-        // like SvelteKit's (group) and [param] routing patterns
-        // https://github.com/secretlint/secretlint/issues/1057
-        if (options.noGlob) {
-            return {
-                pattern: convertPathToPattern(normalizedPattern),
-                isDynamic: false,
-            };
-        }
-        // isDynamicPattern arguments should be posix path
-        // isDynamicPattern("C:\\path\\to\\file") => true
-        // If pattern includes glob pattern, just return `pattern`
-        // Because user need to use `secretint "**/*"` in any platform(Windows, macOS, Linux)
-        const isPatternGlobStyle = isDynamicPattern(normalizedPattern);
-        if (isPatternGlobStyle) {
-            return {
-                pattern: pattern,
-                isDynamic: true,
-            };
-        }
-        // static path should be escaped special characters
-        return {
-            pattern: convertPathToPattern(normalizedPattern),
-            isDynamic: false,
-        };
-    });
-    debug("search patterns: %o", normalizedPatterns);
+    const ignoreFiles: string[] = [];
+    if (options.ignoreFilePath) ignoreFiles.push(options.ignoreFilePath);
+    if (options.respectGitignore !== false) ignoreFiles.push(".gitignore");
+
+    debug("search patterns: %o", patterns);
     debug("search DEFAULT_IGNORE_PATTERNS: %o", DEFAULT_IGNORE_PATTERNS);
-    debug("search ignoreFilePath: %s", options.ignoreFilePath);
-    const globPatterns = normalizedPatterns.map((pattern) => pattern.pattern);
-    const searchResultItems = await globby(globPatterns, {
+    debug("search ignoreFiles: %o", ignoreFiles);
+
+    const items = await walk({
         cwd: options.cwd,
-        ignore: DEFAULT_IGNORE_PATTERNS,
-        ignoreFiles: options.ignoreFilePath ? [options.ignoreFilePath] : undefined,
-        dot: true,
-        absolute: true,
+        patterns,
+        ignoreFiles,
+        extraIgnorePatterns: DEFAULT_IGNORE_PATTERNS,
+        noGlob: options.noGlob,
     });
-    if (searchResultItems.length > 0) {
-        return {
-            ok: true,
-            items: searchResultItems,
-        };
+
+    if (items.length > 0) {
+        return { ok: true, items };
     }
+
     /**
-     * If globby result with ignoring is empty and globby result is not empty, Secretlint suppress "not found target file" error.
-     * It is valid case.
-     * It aim to avoid error that is caused by ignore files and not found target file.
-     * TODO: This is also performance issue. we need to more reasonable mechanism.
+     * If the result is empty because every match was filtered out by an
+     * ignore file, suppress the "not found target file" error. The
+     * fallback walk drops the file-based cascade (`ignoreFiles: []`) but
+     * keeps DEFAULT_IGNORE_PATTERNS so we never descend into `.git/` or
+     * `node_modules/` just to answer this diagnostic question.
      */
-    const isEmptyResultIsHappenByIgnoring =
-        (
-            await globby(globPatterns, {
-                cwd: options.cwd,
-                dot: true,
-            })
-        ).length > 0;
+    const itemsWithoutIgnore = await walk({
+        cwd: options.cwd,
+        patterns,
+        ignoreFiles: [],
+        extraIgnorePatterns: DEFAULT_IGNORE_PATTERNS,
+        noGlob: options.noGlob,
+    });
     return {
-        ok: isEmptyResultIsHappenByIgnoring,
-        items: [],
+        ok: itemsWithoutIgnore.length > 0,
+        items: [] as string[],
     };
 };

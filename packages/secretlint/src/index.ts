@@ -11,6 +11,7 @@ export type SecretLintFileOptions = {
     outputFilePath?: string;
     ignoreFilePath?: string;
     noGlob?: boolean;
+    respectGitignore?: boolean;
 };
 /**
  * Lint text from stdin
@@ -36,6 +37,7 @@ const lintFileOrText = async ({
             cwd: cliOptions.cwd,
             ignoreFilePath: cliOptions.ignoreFilePath,
             noGlob: cliOptions.noGlob,
+            respectGitignore: cliOptions.respectGitignore,
         });
         if (!ok) {
             throw new Error("Not found target files");

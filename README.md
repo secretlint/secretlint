@@ -120,6 +120,8 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
     --no-maskSecrets   disable masking of secret values; secrets are masked by default.
     --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
     --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
+    --no-gitignore     disable .gitignore cascade respect; .gitignore files are
+                       respected by default (since v13).
     --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
     
     Options for Developer
@@ -275,6 +277,28 @@ For example, If you want to ignore "AWSAccountID" and "AWSAccessKeyID" of "@secr
   ]
 }
 ```
+
+### Ignoring files via `.gitignore` and `.secretlintignore`
+
+Secretlint walks the file system the same way Git does, honouring nested `.gitignore` files. A file or directory matched by any `.gitignore` along the path from the working directory to the file is skipped.
+
+`.secretlintignore` works the same way as `.gitignore` and is consulted in addition. The resolution order is:
+
+1. Built-in ignores: `.git`, `node_modules`, and the `.secretlintrc*` family.
+2. The file pointed to by `--secretlintignore` (default: `.secretlintignore`).
+3. Each directory's `.gitignore` (cascaded).
+
+To scan files that are gitignored — for example, a `.env` file in a project where `.env` is gitignored — pass `--no-gitignore`:
+
+```
+secretlint --no-gitignore "**/*"
+```
+
+> **Migrating to v13:**
+> - `.gitignore` is now respected by default. Previously, secretlint scanned all matching files regardless of `.gitignore`. Pass `--no-gitignore` to restore the previous behaviour.
+> - Include patterns follow picomatch glob syntax (brace expansion, `**`, character classes, …). The cascaded ignore stack (`.gitignore`, `.secretlintignore`, and the built-in ignore list) follows standard `.gitignore` semantics, which does NOT support brace expansion — write `**/.cache` rather than `**/{cache,tmp}` for ignore patterns.
+> - Patterns are interpreted as globs by default. When a pattern resolves to an existing on-disk path the walker treats it literally even if the name contains glob metacharacters (`[`, `(`, `{`, `?`), mirroring globby's old `convertPathToPattern` behaviour. Pass `--no-glob` to force literal handling for paths that don't yet exist on disk.
+> - Directory symlinks are followed during search (matching the previous globby-based behaviour) but the symlink path — not the resolved target — is what `.gitignore` and `.secretlintignore` rules see. Cycles are detected via `realpath` so each unique target is entered at most once.
 
 ### Ignoring by comment
 
