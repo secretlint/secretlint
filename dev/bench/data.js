@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1777896597398,
+  "lastUpdate": 1777898066335,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -53958,6 +53958,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.25,
             "range": "±1.22%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "41898282+github-actions[bot]@users.noreply.github.com",
+            "name": "github-actions[bot]",
+            "username": "github-actions[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "873b507a78ee07b248328548e1ee31755eaf97b3",
+          "message": "v13.0.0 (#1539)\n\n## Highlights\n\nv13 changes how files are discovered on disk and adds three credential\ndetection rules.\n\n### `.gitignore` is respected by default\n\nNested `.gitignore` files now apply to file discovery with ripgrep\nsemantics: rules from each directory cascade into its subtree, and a\nnegation rule in a deeper file can flip an earlier verdict.\n\nFiles excluded by any `.gitignore` on the path are no longer scanned.\nRepositories that previously relied on Secretlint scanning ignored files\n(such as `dist/` or generated artefacts) will see fewer files in the\noutput. `.secretlintignore` is unchanged and continues to apply\nalongside `.gitignore`.\n\nTo restore the v12 behaviour:\n\n```bash\nsecretlint --no-gitignore \"**/*\"\n```\n\nIf a file is matched by a `.gitignore` rule but still appears in\nSecretlint's output, please open an issue at\nhttps://github.com/secretlint/secretlint/issues.\n\n### Glob-shaped paths that exist on disk are treated literally\n\n`--no-glob` and \"globs by default\" both existed in v12. What changed in\nv13 is the fallback for inputs that contain glob metacharacters but\nresolve to a real file or directory.\n\nIn v12, an input like `src/(group)/page.tsx` was always parsed as a\nglob, so SvelteKit / Next.js routes whose names contain `()`, `[]`,\n`{}`, or `?` required `--no-glob`. v13 runs a single `stat` per\nglob-shaped input: if it exists, the input is treated literally;\notherwise it stays a glob.\n\n| Pattern | On disk | v12 default | v13 default |\n|---|---|---|---|\n| `src/(group)/page.tsx` | exists | parsed as glob, no match | matched\nliterally |\n| `src/(missing)/page.tsx` | absent | parsed as glob | parsed as glob |\n| `src/[a-z]ormal.tsx` | `normal.tsx` exists | matched via glob |\nmatched via glob |\n\nPass `--no-glob` to skip the probe and force literal interpretation.\n\n### New and promoted rules\n\nAdded to `preset-recommend`:\n\n| Rule | Detects |\n|---|---|\n| `@secretlint/secretlint-rule-tailscale` | Tailscale API keys (new\npackage) |\n| `@secretlint/secretlint-rule-stripe` | Stripe API keys (new package) |\n| `@secretlint/secretlint-rule-cloudflare` | Cloudflare API tokens\n(promoted from `preset-canary`) |\n\n## What's Changed\n### Breaking Changes\n* feat!: respect .gitignore by default via @secretlint/walker by @azu in\nhttps://github.com/secretlint/secretlint/pull/1530\n* feat(secretlint-rule-preset-recommend): promote cloudflare, stripe,\ntailscale from canary by @azu in\nhttps://github.com/secretlint/secretlint/pull/1538\n### Features\n* Add Tailscale API key detection rule by @azu in\nhttps://github.com/secretlint/secretlint/pull/1536\n* feat(secretlint-rule-stripe): add Stripe API key detection rule by\n@azu in https://github.com/secretlint/secretlint/pull/1537\n### CI\n* Update actions/setup-node action to v6.4.0 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1527\n### Dependency Updates\n* Update pnpm to v10.33.2 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1525\n* Update dependency ajv to ^8.20.0 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1528\n* Update textlint to ^15.6.0 (minor) by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1529\n* Update dependency picomatch to ^4.0.4 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1534\n* Update dependency turbo to ^2.9.7 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1535\n### Other Changes\n* Update Node.js to v24.15.0 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1514\n* Update dependency Bun to v1.3.13 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1526\n\n\n**Full Changelog**:\nhttps://github.com/secretlint/secretlint/compare/v12.3.1...v13.0.0\n\nCo-authored-by: azu <azu@users.noreply.github.com>",
+          "timestamp": "2026-05-04T21:32:20+09:00",
+          "tree_id": "938830d4ed7ba84aeb198c4b21016005bc63c1c1",
+          "url": "https://github.com/secretlint/secretlint/commit/873b507a78ee07b248328548e1ee31755eaf97b3"
+        },
+        "date": 1777898063629,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.46,
+            "range": "±1.35%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.25,
+            "range": "±2.32%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
