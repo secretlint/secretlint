@@ -1,4 +1,4 @@
-import { readdir, stat } from "node:fs/promises";
+import { readdir, realpath, stat } from "node:fs/promises";
 import path from "node:path";
 import type { Dirent } from "node:fs";
 import picomatch from "picomatch";
@@ -13,9 +13,14 @@ import { isDynamicPattern, splitGlobRoot } from "./glob-root.js";
  * - `ignoreFiles`: file names looked up per directory and merged into the
  *   cascade ignore stack (e.g. `[".gitignore", ".secretlintignore"]`).
  * - `extraIgnorePatterns`: hard-coded patterns added to the root ignore
- *   instance before any file-based rules (e.g. `["**\/.git/**"]`).
+ *   instance before any file-based rules (e.g. `["**\/.git"]`).
  * - `noGlob`: treat every entry in `patterns` as a literal path, even when it
  *   contains glob special characters such as `[`, `(`, `{`, `?`.
+ * - `followSymlinks`: when true (default) the walker follows directory
+ *   symlinks during search but still treats them as their symlink path
+ *   for ignore matching (so cascaded `.gitignore` rules apply at the
+ *   symlink's location, not the resolved target). Cycles are detected
+ *   via realpath and skipped.
  */
 export type WalkOptions = {
     cwd: string;
@@ -23,6 +28,7 @@ export type WalkOptions = {
     ignoreFiles?: string[];
     extraIgnorePatterns?: string[];
     noGlob?: boolean;
+    followSymlinks?: boolean;
 };
 
 const toPosix = (p: string): string => (path.sep === "\\" ? p.replaceAll("\\", "/") : p);
@@ -152,6 +158,15 @@ type WalkContext = {
     matcher: CompiledMatcher;
     /** Shared dedup sink for absolute file paths in POSIX form. */
     results: Set<string>;
+    /** When true, descend into directory symlinks (with cycle detection). */
+    followSymlinks: boolean;
+    /**
+     * Real paths of directory symlink targets we have already entered, used
+     * to break `a → b → a` style cycles. Shared across the whole walk so
+     * sibling symlinks pointing at the same target are also visited at most
+     * once.
+     */
+    visitedRealPaths: Set<string>;
 };
 
 /**
@@ -205,8 +220,41 @@ const walkSubdir = async (absDir: string, parentChain: IgnoreChain, ctx: WalkCon
 };
 
 /**
+ * Resolve a Dirent's effective type. For symlinks the entry itself reports
+ * `isFile() === isDirectory() === false`, so we stat the target to find
+ * out what to do with it. Returns null when the symlink is dangling /
+ * inaccessible / points to something we don't care about (sockets etc.).
+ */
+const resolveEntryKind = async (
+    full: string,
+    entry: Dirent,
+    followSymlinks: boolean,
+): Promise<{ kind: "file" | "dir"; isSymlink: boolean } | null> => {
+    if (entry.isDirectory()) return { kind: "dir", isSymlink: false };
+    if (entry.isFile()) return { kind: "file", isSymlink: false };
+    if (!entry.isSymbolicLink() || !followSymlinks) return null;
+    let info;
+    try {
+        info = await stat(full);
+    } catch (error) {
+        const code = (error as NodeJS.ErrnoException).code;
+        if (code === "ENOENT" || code === "EACCES") return null;
+        throw error;
+    }
+    if (info.isDirectory()) return { kind: "dir", isSymlink: true };
+    if (info.isFile()) return { kind: "file", isSymlink: true };
+    return null;
+};
+
+/**
  * For each entry: skip if its path is ignored by the cascade chain;
  * otherwise recurse (directory) or run it through the include matcher (file).
+ *
+ * Symlinks are handled by following the target for *search* (so a symlinked
+ * directory's contents end up in the result list) while keeping the
+ * symlink's path for *ignore matching* (so a `.gitignore` rule like
+ * `vendor/` excludes a `vendor → /shared/lib` symlink without us having
+ * to consult `/shared/lib`'s rules). Cycles are detected via realpath.
  */
 const processEntries = async (
     absDir: string,
@@ -216,12 +264,25 @@ const processEntries = async (
 ): Promise<void> => {
     await Promise.all(
         entries.map(async (entry) => {
-            const isDir = entry.isDirectory();
-            const isFile = entry.isFile();
-            if (!isDir && !isFile) return;
             const full = path.join(absDir, entry.name);
+            const resolved = await resolveEntryKind(full, entry, ctx.followSymlinks);
+            if (resolved === null) return;
+            const isDir = resolved.kind === "dir";
+            // Ignore evaluation always uses the symlink's path, never the resolved target.
             if (isIgnoredByChain(chain, full, isDir)) return;
             if (isDir) {
+                if (resolved.isSymlink) {
+                    let real;
+                    try {
+                        real = await realpath(full);
+                    } catch (error) {
+                        const code = (error as NodeJS.ErrnoException).code;
+                        if (code === "ENOENT" || code === "EACCES") return;
+                        throw error;
+                    }
+                    if (ctx.visitedRealPaths.has(real)) return;
+                    ctx.visitedRealPaths.add(real);
+                }
                 await walkSubdir(full, chain, ctx);
             } else if (ctx.matcher === null) {
                 ctx.results.add(toPosix(full));
@@ -242,8 +303,14 @@ const handleStaticPath = async (options: {
     parentChain: IgnoreChain;
     ignoreFiles: readonly string[];
     results: Set<string>;
+    followSymlinks: boolean;
+    visitedRealPaths: Set<string>;
 }): Promise<void> => {
-    const { absPath, parentChain, ignoreFiles, results } = options;
+    const { absPath, parentChain, ignoreFiles, results, followSymlinks, visitedRealPaths } = options;
+    // `stat` resolves symlinks. A literal user-supplied path is treated
+    // permissively: if it points at a directory (real or via symlink) we
+    // walk it. The ignore check uses absPath (the user's literal input),
+    // never the resolved target.
     let info;
     try {
         info = await stat(absPath);
@@ -263,6 +330,8 @@ const handleStaticPath = async (options: {
             patternRoot: absPath,
             matcher: null,
             results,
+            followSymlinks,
+            visitedRealPaths,
         });
     } else if (info.isFile()) {
         if (isIgnoredByChain(parentChain, absPath, false)) return;
@@ -281,6 +350,10 @@ export const walk = async (options: WalkOptions): Promise<string[]> => {
     const ignoreFiles = options.ignoreFiles ?? [];
     const rootChain = createRootIgnore(cwd, options.extraIgnorePatterns ?? []);
     const results = new Set<string>();
+    const followSymlinks = options.followSymlinks !== false;
+    // Shared across all groups so two patterns under the same job don't
+    // re-enter the same symlinked directory twice.
+    const visitedRealPaths = new Set<string>();
     const groups = groupPatterns(cwd, options.patterns, options.noGlob);
     await Promise.all(
         groups.map(async (group) => {
@@ -299,6 +372,8 @@ export const walk = async (options: WalkOptions): Promise<string[]> => {
                     parentChain: seededChain,
                     ignoreFiles,
                     results,
+                    followSymlinks,
+                    visitedRealPaths,
                 });
                 return;
             }
@@ -313,6 +388,8 @@ export const walk = async (options: WalkOptions): Promise<string[]> => {
                 patternRoot: group.rootDir,
                 matcher: compileMatcher(globPatterns),
                 results,
+                followSymlinks,
+                visitedRealPaths,
             });
         }),
     );

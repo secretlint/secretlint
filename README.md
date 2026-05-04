@@ -297,6 +297,7 @@ secretlint --no-gitignore "**/*"
 > **Migrating to v13:**
 > - `.gitignore` is now respected by default. Previously, secretlint scanned all matching files regardless of `.gitignore`. Pass `--no-gitignore` to restore the previous behaviour.
 > - Patterns are always interpreted as globs unless you pass `--no-glob`. To scan a file whose name contains glob special characters (`[`, `(`, `{`, `?`, `*`), use `--no-glob` and pass the literal path. Previously, secretlint applied an automatic best-effort escape for some such paths; this is no longer the case.
+> - Directory symlinks are followed during search (matching the previous globby-based behaviour) but the symlink path — not the resolved target — is what `.gitignore` and `.secretlintignore` rules see. Cycles are detected via `realpath` so each unique target is entered at most once.
 
 ### Ignoring by comment
 
