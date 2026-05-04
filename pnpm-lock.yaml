@@ -1293,6 +1293,9 @@ importers:
       '@secretlint/secretlint-rule-slack':
         specifier: workspace:*
         version: link:../secretlint-rule-slack
+      '@secretlint/secretlint-rule-tailscale':
+        specifier: workspace:*
+        version: link:../secretlint-rule-tailscale
       '@secretlint/secretlint-rule-vercel':
         specifier: workspace:*
         version: link:../secretlint-rule-vercel
@@ -1548,6 +1551,31 @@ importers:
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-slack:
+    dependencies:
+      '@secretlint/types':
+        specifier: workspace:*
+        version: link:../types
+      '@textlint/regexp-string-matcher':
+        specifier: 'catalog:'
+        version: 2.0.2
+    devDependencies:
+      '@secretlint/tester':
+        specifier: workspace:*
+        version: link:../tester
+      '@types/node':
+        specifier: 'catalog:'
+        version: 25.6.0
+      prettier:
+        specifier: 'catalog:'
+        version: 3.8.3
+      tsx:
+        specifier: 'catalog:'
+        version: 4.21.0
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+
+  packages/@secretlint/secretlint-rule-tailscale:
     dependencies:
       '@secretlint/types':
         specifier: workspace:*

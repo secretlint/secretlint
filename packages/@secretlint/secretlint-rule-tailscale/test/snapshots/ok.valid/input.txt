@@ -1,0 +1,3 @@
+This is just regular text without any Tailscale keys.
+A short string like tskey-foo is not a key.
+Random tokens like abc-def-ghi should not match.
