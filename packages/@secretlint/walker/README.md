@@ -15,8 +15,8 @@ import { walk } from "@secretlint/walker";
 
 const files = await walk({
     cwd: process.cwd(),
-    patterns: ["src/**/*.ts"],
-    ignoreFiles: [".secretlintignore", ".gitignore"],
+    patterns: ["**/*.{ts,js}"],
+    ignoreFiles: [".gitignore"],
     extraIgnorePatterns: ["**/.git", "**/node_modules"],
 });
 ```
@@ -25,15 +25,16 @@ const files = await walk({
 
 ### `walk(options): Promise<string[]>`
 
-| Option | Type | Description |
-|---|---|---|
-| `cwd` | `string` | Absolute or relative starting directory |
-| `patterns` | `string[]` (optional) | Glob patterns and/or static paths. Omit to walk all of `cwd`. |
-| `ignoreFiles` | `string[]` (optional) | Names of ignore files honoured per directory in cascade order. Empty by default. |
-| `extraIgnorePatterns` | `string[]` (optional) | Hard-coded ignore patterns added to the root before any file-based rules. |
-| `noGlob` | `boolean` (optional) | Treat all `patterns` as literal paths. |
+| Option | Type | Default | Description |
+|---|---|---|---|
+| `cwd` | `string` | (required) | Absolute or relative starting directory |
+| `patterns` | `string[]` | `undefined` | Glob patterns and/or static paths. Omit to walk all of `cwd`. |
+| `ignoreFiles` | `string[]` | `[]` | Names of ignore files honoured per directory in cascade order (e.g. `[".gitignore"]`). |
+| `extraIgnorePatterns` | `string[]` | `[]` | Hard-coded ignore patterns added at the cascade root, before any file-based rules. |
+| `noGlob` | `boolean` | `false` | Treat all `patterns` as literal paths. |
+| `followSymlinks` | `boolean` | `true` | Descend into directory symlinks during search. Cascade ignore rules still see the symlink path, never the resolved target. Cycles are broken via `realpath`. |
 
-Returns absolute paths with the OS-native separator.
+Returns absolute paths with POSIX-form separators.
 
 ## Pattern syntax
 
