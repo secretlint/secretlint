@@ -75,10 +75,38 @@ const options = {
         type: OPTION_TYPE_STRING,
     },
     /**
+     * CLI enable ANSI-color of output by default
+     */
+    color: {
+        type: OPTION_TYPE_BOOLEAN,
+        default: true,
+    },
+    /**
+     * CLI enable terminalLink by default.
+     * Some formatter will output that includes clickable clink
+     * https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda
+     */
+    terminalLink: {
+        type: OPTION_TYPE_BOOLEAN,
+        default: true,
+    },
+    /**
      * enable maskSecrets by default since secretlint v10+.
      * If you want to disable masking of secret values, use --no-maskSecrets option.
      */
     maskSecrets: {
+        type: OPTION_TYPE_BOOLEAN,
+        default: true,
+    },
+    /**
+     * CLI enables glob pattern matching by default.
+     * If you want to disable glob pattern interpretation (treat all inputs as literal file paths),
+     * use --no-glob option.
+     * This is useful when file paths contain glob special characters
+     * like SvelteKit/Next.js's (group) and [param] routing patterns.
+     * https://github.com/secretlint/secretlint/issues/1057
+     */
+    glob: {
         type: OPTION_TYPE_BOOLEAN,
         default: true,
     },
@@ -100,42 +128,16 @@ const options = {
     stdinFileName: {
         type: OPTION_TYPE_STRING,
     },
+    // Options for Developer
     profile: {
         type: OPTION_TYPE_BOOLEAN,
     },
     secretlintrcJSON: {
         type: OPTION_TYPE_STRING,
     },
+    // Experimental Options
     locale: {
         type: OPTION_TYPE_STRING,
-    },
-    /**
-     * CLI enables glob pattern matching by default.
-     * If you want to disable glob pattern interpretation (treat all inputs as literal file paths),
-     * use --no-glob option.
-     * This is useful when file paths contain glob special characters
-     * like SvelteKit/Next.js's (group) and [param] routing patterns.
-     * https://github.com/secretlint/secretlint/issues/1057
-     */
-    glob: {
-        type: OPTION_TYPE_BOOLEAN,
-        default: true,
-    },
-    /**
-     * CLI enable ANSI-color of output by default
-     */
-    color: {
-        type: OPTION_TYPE_BOOLEAN,
-        default: true,
-    },
-    /**
-     * CLI enable terminalLink by default.
-     * Some formatter will output that includes clickable clink
-     * https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda
-     */
-    terminalLink: {
-        type: OPTION_TYPE_BOOLEAN,
-        default: true,
     },
     // DEBUG option
     cwd: {
