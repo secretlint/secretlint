@@ -3,12 +3,15 @@ import debug0 from "debug";
 
 const debug = debug0("secretlint");
 
+// Patterns are written WITHOUT a trailing `/**` so node-ignore prunes the
+// directory itself (not just its contents). With `**/foo/**` the walker
+// would still readdir `foo/` and check each child individually.
 const DEFAULT_IGNORE_PATTERNS = [
-    "**/.git/**",
-    "**/node_modules/**",
-    "**/.secretlintrc/**",
-    "**/.secretlintrc.{json,yaml,yml,js}/**",
-    "**/.secretlintignore*/**",
+    "**/.git",
+    "**/node_modules",
+    "**/.secretlintrc",
+    "**/.secretlintrc.{json,yaml,yml,js}",
+    "**/.secretlintignore*",
 ];
 
 export type SearchFilesOptions = {
@@ -49,14 +52,17 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
     }
 
     /**
-     * If the result is empty due to ignoring, suppress the "not found target file" error.
-     * Re-walk without any ignore handling to detect this case.
+     * If the result is empty because every match was filtered out by an
+     * ignore file, suppress the "not found target file" error. The
+     * fallback walk drops the file-based cascade (`ignoreFiles: []`) but
+     * keeps DEFAULT_IGNORE_PATTERNS so we never descend into `.git/` or
+     * `node_modules/` just to answer this diagnostic question.
      */
     const itemsWithoutIgnore = await walk({
         cwd: options.cwd,
         patterns,
         ignoreFiles: [],
-        extraIgnorePatterns: [],
+        extraIgnorePatterns: DEFAULT_IGNORE_PATTERNS,
         noGlob: options.noGlob,
     });
     return {

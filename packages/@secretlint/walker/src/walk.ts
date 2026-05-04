@@ -253,6 +253,11 @@ const handleStaticPath = async (options: {
         throw error;
     }
     if (info.isDirectory()) {
+        // Same defensive ignore check as the file branch below: a literal
+        // directory path explicitly passed by the user is still subject
+        // to the cascade, so we don't descend into e.g. `node_modules`
+        // when the caller asked us to walk it directly.
+        if (isIgnoredByChain(parentChain, absPath, true)) return;
         await walkSubdir(absPath, parentChain, {
             ignoreFiles,
             patternRoot: absPath,

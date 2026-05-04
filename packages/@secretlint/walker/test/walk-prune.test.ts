@@ -44,4 +44,18 @@ describe("walk - subtree pruning", () => {
         });
         expect(readdirCalls.some((d) => d.endsWith(`${path.sep}src`))).toBe(true);
     });
+
+    it("extraIgnorePatterns prunes the directory itself, not just its contents", async () => {
+        // Regression test for #1530 review: `**/node_modules/**` matches
+        // entries inside node_modules but not the directory, so the walker
+        // would readdir node_modules then check each child individually.
+        // The fix is to use `**/node_modules` (no trailing /**) so the
+        // directory itself matches and never gets opened.
+        await walk({
+            cwd: fixtureDir,
+            extraIgnorePatterns: ["**/node_modules"],
+        });
+        const calledIntoNodeModules = readdirCalls.some((d) => d.includes(`${path.sep}node_modules`));
+        expect(calledIntoNodeModules).toBe(false);
+    });
 });
