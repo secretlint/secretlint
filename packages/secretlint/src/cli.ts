@@ -24,15 +24,15 @@ Options
       .map((item) => item.name)
       .join(", ")}
   --output           [path:String] output file path that is written of reported result.
+  --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
+  --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
+  --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
   --no-color         disable ANSI-color of output.
   --no-terminalLink  disable terminalLink of output.
   --no-maskSecrets   disable masking of secret values; secrets are masked by default.
   --no-glob          disable glob pattern interpretation; treat all inputs as literal file paths.
-  --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
-  --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
   --no-gitignore     disable .gitignore cascade respect; .gitignore files are
                      respected by default (since v13).
-  --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
 
 Options for Developer
   --profile          Enable performance profile. 
@@ -75,6 +75,16 @@ const options = {
     output: {
         type: OPTION_TYPE_STRING,
     },
+    secretlintrc: {
+        type: OPTION_TYPE_STRING,
+    },
+    secretlintignore: {
+        type: OPTION_TYPE_STRING,
+        default: ".secretlintignore",
+    },
+    stdinFileName: {
+        type: OPTION_TYPE_STRING,
+    },
     /**
      * CLI enable ANSI-color of output by default
      */
@@ -111,13 +121,6 @@ const options = {
         type: OPTION_TYPE_BOOLEAN,
         default: true,
     },
-    secretlintrc: {
-        type: OPTION_TYPE_STRING,
-    },
-    secretlintignore: {
-        type: OPTION_TYPE_STRING,
-        default: ".secretlintignore",
-    },
     /**
      * CLI respects nested .gitignore files by default (since v13).
      * If you want to disable .gitignore cascade, use --no-gitignore option.
@@ -125,9 +128,6 @@ const options = {
     gitignore: {
         type: OPTION_TYPE_BOOLEAN,
         default: true,
-    },
-    stdinFileName: {
-        type: OPTION_TYPE_STRING,
     },
     // Options for Developer
     profile: {

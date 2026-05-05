@@ -116,15 +116,15 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
     --init             setup config file. Create .secretlintrc.json file from your package.json
     --format           [String] formatter name. Default: "stylish". Available Formatter: checkstyle, compact, github, jslint-xml, junit, pretty-error, stylish, tap, unix, json, mask-result, table
     --output           [path:String] output file path that is written of reported result.
+    --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
+    --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
+    --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
     --no-color         disable ANSI-color of output.
     --no-terminalLink  disable terminalLink of output.
     --no-maskSecrets   disable masking of secret values; secrets are masked by default.
     --no-glob          disable glob pattern interpretation; treat all inputs as literal file paths.
-    --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
-    --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
     --no-gitignore     disable .gitignore cascade respect; .gitignore files are
                        respected by default (since v13).
-    --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
     
     Options for Developer
     --profile          Enable performance profile.

@@ -24,15 +24,15 @@ Install with [npm](https://www.npmjs.com/):
           .map((item) => item.name)
           .join(", ")}
       --output           [path:String] output file path that is written of reported result.
+      --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
+      --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
+      --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
       --no-color         disable ANSI-color of output.
       --no-terminalLink  disable terminalLink of output.
       --no-maskSecrets   disable masking of secret values; secrets are masked by default.
       --no-glob          disable glob pattern interpretation; treat all inputs as literal file paths.
-      --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
-      --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
       --no-gitignore     disable .gitignore cascade respect; .gitignore files are
                          respected by default (since v13).
-      --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
 
     Options for Developer
       --profile          Enable performance profile. 
