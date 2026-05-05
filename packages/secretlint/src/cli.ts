@@ -42,14 +42,33 @@ Experimental Options
   --locale            [String] locale tag for translating message. Default: en
 
 Examples
+  # Scan a single file
   $ secretlint ./README.md
-  # glob pattern should be wrapped with double quote
+
+  # Scan all files (wrap glob in double quotes to avoid shell expansion)
   $ secretlint "**/*"
   $ secretlint "source/**/*.ini"
-  # output masked result to file
+
+  # Treat inputs as literal paths (for SvelteKit (group) / Next.js [param] etc.)
+  $ secretlint --no-glob "src/(auth)/login.ts"
+
+  # Lint STDIN content (filename hint affects which rules apply)
+  $ echo "SECRET" | secretlint --stdinFileName=secret.txt
+
+  # Use a custom config file
+  $ secretlint "**/*" --secretlintrc=.secretlintrc.custom.json
+
+  # Scan files ignored by .gitignore (e.g. to verify build artifacts)
+  $ secretlint --no-gitignore "dist/**/*"
+
+  # Mask secrets in a file in-place
   $ secretlint .zsh_history --format=mask-result --output=.zsh_history
-  # lint STDIN content instead of file
-  $ echo "SECRET CONTENT" | secretlint --stdinFileName=secret.txt
+
+  # Output JSON for programmatic parsing
+  $ secretlint "**/*" --format=json --output=secretlint-report.json
+
+  # Output GitHub Actions annotations in CI
+  $ secretlint "**/*" --format=github
   
 Exit Status
   Secretlint exits with the following values:
