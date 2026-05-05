@@ -119,6 +119,7 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
     --no-color         disable ANSI-color of output.
     --no-terminalLink  disable terminalLink of output.
     --no-maskSecrets   disable masking of secret values; secrets are masked by default.
+    --no-glob          disable glob pattern interpretation; treat all inputs as literal file paths.
     --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
     --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
     --no-gitignore     disable .gitignore cascade respect; .gitignore files are
