@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1778055860151,
+  "lastUpdate": 1778157563009,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -54034,6 +54034,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.26,
             "range": "±1.10%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ad8a0a4ea3fc621e701eeecae7280c7b107588e3",
+          "message": "ci: replace merge-gatekeeper with automerge-gate (#1543)\n\n## Summary\n\nReplace the `merge-gatekeeper` workflow with\n[`pkgdeps/automerge-gate`](https://github.com/pkgdeps/automerge-gate) to\ngate auto-merge on all required checks passing. The new gate publishes a\nsingle check (`automerge-gate/all-passed`) that aggregates the status of\nevery other workflow run on the PR, which can be used as a required\nstatus check in branch protection / rulesets.\n\n## Changes\n\n- Remove `.github/workflows/merge-gatekeeper.yml`.\n- Add `.github/workflows/automerge-gate.yaml` running\n`pkgdeps/automerge-gate@v4.0.0` in `public` gate-mode on `opened`,\n`synchronize`, `reopened`, and `auto_merge_enabled` events.\n\n## Breaking Changes\n\nNone for end users. Repository branch protection / ruleset configuration\nmust be updated so the required status check name points at\n`automerge-gate/all-passed` instead of the previous `merge-gatekeeper`\ncheck.\n\n## Test Plan\n\n- [ ] Confirm the `automerge-gate` workflow runs on this PR and posts\nthe `automerge-gate/all-passed` check.\n- [ ] After merging, update the branch protection ruleset to require\n`automerge-gate/all-passed`.\n- [ ] Open a follow-up PR with auto-merge enabled and verify that merge\nproceeds only after all other workflows succeed.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-authored-by: Claude Opus 4.7 (1M context) <noreply@anthropic.com>",
+          "timestamp": "2026-05-07T21:37:46+09:00",
+          "tree_id": "fbf0b02dc4653d8b7073d7ce39a198d64968d8a5",
+          "url": "https://github.com/secretlint/secretlint/commit/ad8a0a4ea3fc621e701eeecae7280c7b107588e3"
+        },
+        "date": 1778157560530,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 3.23,
+            "range": "±0.75%",
+            "unit": "ops/sec",
+            "extra": "13 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.32,
+            "range": "±2.18%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
