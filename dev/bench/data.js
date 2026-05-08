@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1778157563009,
+  "lastUpdate": 1778219628395,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -54072,6 +54072,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.32,
             "range": "±2.18%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "8b11e95242900f7d808ba6ec04f9e292bf5fe6ba",
+          "message": "Update dependency turbo to ^2.9.9 (#1544)\n\nThis PR contains the following updates:\n\n| Package | Change |\n[Age](https://docs.renovatebot.com/merge-confidence/) |\n[Confidence](https://docs.renovatebot.com/merge-confidence/) |\n|---|---|---|---|\n| [turbo](https://turborepo.dev)\n([source](https://redirect.github.com/vercel/turborepo)) | [`^2.9.8` →\n`^2.9.9`](https://renovatebot.com/diffs/npm/turbo/2.9.8/2.9.9) |\n![age](https://developer.mend.io/api/mc/badges/age/npm/turbo/2.9.9?slim=true)\n|\n![confidence](https://developer.mend.io/api/mc/badges/confidence/npm/turbo/2.9.8/2.9.9?slim=true)\n|\n\n---\n\n### Release Notes\n\n<details>\n<summary>vercel/turborepo (turbo)</summary>\n\n###\n[`v2.9.9`](https://redirect.github.com/vercel/turborepo/releases/tag/v2.9.9):\nTurborepo v2.9.9\n\n[Compare\nSource](https://redirect.github.com/vercel/turborepo/compare/v2.9.8...v2.9.9)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat v2.9.9 -->\n\n#### What's Changed\n\n##### Changelog\n\n- release(turborepo): 2.9.8 by\n[@&#8203;github-actions](https://redirect.github.com/github-actions)\\[bot]\nin\n[#&#8203;12700](https://redirect.github.com/vercel/turborepo/pull/12700)\n- fix: Remove Unix parent death watchdogs by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12699](https://redirect.github.com/vercel/turborepo/pull/12699)\n- release(turborepo): 2.9.9-canary.1 by\n[@&#8203;github-actions](https://redirect.github.com/github-actions)\\[bot]\nin\n[#&#8203;12705](https://redirect.github.com/vercel/turborepo/pull/12705)\n- fix: Scope repo index prefixes to Git root by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12706](https://redirect.github.com/vercel/turborepo/pull/12706)\n- release(turborepo): 2.9.9-canary.2 by\n[@&#8203;github-actions](https://redirect.github.com/github-actions)\\[bot]\nin\n[#&#8203;12708](https://redirect.github.com/vercel/turborepo/pull/12708)\n- ci: Harden non-release GitHub Actions by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12707](https://redirect.github.com/vercel/turborepo/pull/12707)\n- docs: Add pnpm workspace flag (-w) to Oxc setup docs by\n[@&#8203;mattjoll](https://redirect.github.com/mattjoll) in\n[#&#8203;12655](https://redirect.github.com/vercel/turborepo/pull/12655)\n- fix: Harden OG image signatures by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12709](https://redirect.github.com/vercel/turborepo/pull/12709)\n- fix: Scope release npm publishing credentials by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12710](https://redirect.github.com/vercel/turborepo/pull/12710)\n- ci: Harden release workflows by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12711](https://redirect.github.com/vercel/turborepo/pull/12711)\n- release(turborepo): 2.9.9-canary.3 by\n[@&#8203;github-actions](https://redirect.github.com/github-actions)\\[bot]\nin\n[#&#8203;12712](https://redirect.github.com/vercel/turborepo/pull/12712)\n- fix: Harden docs security endpoints by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12713](https://redirect.github.com/vercel/turborepo/pull/12713)\n- ci: Harden internal GitHub Actions by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12714](https://redirect.github.com/vercel/turborepo/pull/12714)\n- ci: Harden release workflow handling by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12715](https://redirect.github.com/vercel/turborepo/pull/12715)\n- fix: Preserve lockfiles during dry-run conversion by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12717](https://redirect.github.com/vercel/turborepo/pull/12717)\n- ci: Fix LSP workflow container matrix by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12718](https://redirect.github.com/vercel/turborepo/pull/12718)\n\n#### New Contributors\n\n- [@&#8203;mattjoll](https://redirect.github.com/mattjoll) made their\nfirst contribution in\n[#&#8203;12655](https://redirect.github.com/vercel/turborepo/pull/12655)\n\n**Full Changelog**:\n<https://github.com/vercel/turborepo/compare/v2.9.8...v2.9.9>\n\n</details>\n\n---\n\n### Configuration\n\n📅 **Schedule**: (in timezone Asia/Tokyo)\n\n- Branch creation\n  - At any time (no schedule defined)\n- Automerge\n  - At any time (no schedule defined)\n\n🚦 **Automerge**: Enabled.\n\n♻ **Rebasing**: Whenever PR is behind base branch, or you tick the\nrebase/retry checkbox.\n\n🔕 **Ignore**: Close this PR and you won't be reminded about this update\nagain.\n\n---\n\n- [ ] <!-- rebase-check -->If you want to rebase/retry this PR, check\nthis box\n\n---\n\nThis PR was generated by [Mend Renovate](https://mend.io/renovate/).\nView the [repository job\nlog](https://developer.mend.io/github/secretlint/secretlint).\n\n<!--renovate-debug:eyJjcmVhdGVkSW5WZXIiOiI0My4xNTkuMiIsInVwZGF0ZWRJblZlciI6IjQzLjE1OS4yIiwidGFyZ2V0QnJhbmNoIjoibWFzdGVyIiwibGFiZWxzIjpbImRlcGVuZGVuY2llcyJdfQ==-->\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2026-05-08T05:51:51Z",
+          "tree_id": "edd812b0bb55163f63bae3bae5a73e47d653a2a9",
+          "url": "https://github.com/secretlint/secretlint/commit/8b11e95242900f7d808ba6ec04f9e292bf5fe6ba"
+        },
+        "date": 1778219625962,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.53,
+            "range": "±0.81%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.25,
+            "range": "±0.93%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
