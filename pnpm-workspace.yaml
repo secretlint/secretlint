@@ -17,7 +17,7 @@ catalog:
   "@types/debug": "^4.1.13"
   "@types/js-yaml": "^4.0.9"
   "@types/micromatch": "^4.0.10"
-  "@types/node": "^25.6.0"
+  "@types/node": "^25.6.1"
   "@types/picomatch": "^4.0.3"
   "@types/pluralize": "0.0.33"
   "@types/secp256k1": "^4.0.7"
