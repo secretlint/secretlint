@@ -145,7 +145,7 @@ catalogs:
       specifier: ^4.21.0
       version: 4.21.0
     turbo:
-      specifier: ^2.9.9
+      specifier: ^2.9.10
       version: 2.9.10
     typescript:
       specifier: ^6.0.3
