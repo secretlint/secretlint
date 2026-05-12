@@ -113,7 +113,7 @@ const options = {
     },
     /**
      * CLI enable terminalLink by default.
-     * Some formatter will output that includes clickable clink
+     * Some formatter will output that includes clickable link
      * https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda
      */
     terminalLink: {
