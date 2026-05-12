@@ -14,7 +14,8 @@ Usage
   $ secretlint [file|glob*]
 
 Note
-  supported glob syntax is based on microglob
+  supported glob syntax is based on picomatch (the engine used by micromatch)
+  https://github.com/micromatch/picomatch#globbing-features
   https://github.com/micromatch/micromatch#matching-features
 
 Options
@@ -23,15 +24,15 @@ Options
       .map((item) => item.name)
       .join(", ")}
   --output           [path:String] output file path that is written of reported result.
+  --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
+  --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
+  --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
   --no-color         disable ANSI-color of output.
   --no-terminalLink  disable terminalLink of output.
   --no-maskSecrets   disable masking of secret values; secrets are masked by default.
   --no-glob          disable glob pattern interpretation; treat all inputs as literal file paths.
-  --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
-  --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
   --no-gitignore     disable .gitignore cascade respect; .gitignore files are
                      respected by default (since v13).
-  --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
 
 Options for Developer
   --profile          Enable performance profile. 
@@ -41,14 +42,33 @@ Experimental Options
   --locale            [String] locale tag for translating message. Default: en
 
 Examples
+  # Scan a single file
   $ secretlint ./README.md
-  # glob pattern should be wrapped with double quote
+
+  # Scan all files (wrap glob in double quotes to avoid shell expansion)
   $ secretlint "**/*"
   $ secretlint "source/**/*.ini"
-  # output masked result to file
+
+  # Treat inputs as literal paths (for SvelteKit (group) / Next.js [param] etc.)
+  $ secretlint --no-glob "src/(auth)/login.ts"
+
+  # Lint STDIN content (filename hint affects which rules apply)
+  $ echo "SECRET" | secretlint --stdinFileName=secret.txt
+
+  # Use a custom config file
+  $ secretlint "**/*" --secretlintrc=.secretlintrc.custom.json
+
+  # Scan files ignored by .gitignore (e.g. to verify build artifacts)
+  $ secretlint --no-gitignore "dist/**/*"
+
+  # Mask secrets in a file in-place
   $ secretlint .zsh_history --format=mask-result --output=.zsh_history
-  # lint STDIN content instead of file
-  $ echo "SECRET CONTENT" | secretlint --stdinFileName=secret.txt
+
+  # Output JSON for programmatic parsing
+  $ secretlint "**/*" --format=json --output=secretlint-report.json
+
+  # Output GitHub Actions annotations in CI
+  $ secretlint "**/*" --format=github
   
 Exit Status
   Secretlint exits with the following values:
@@ -74,14 +94,6 @@ const options = {
     output: {
         type: OPTION_TYPE_STRING,
     },
-    /**
-     * enable maskSecrets by default since secretlint v10+.
-     * If you want to disable masking of secret values, use --no-maskSecrets option.
-     */
-    maskSecrets: {
-        type: OPTION_TYPE_BOOLEAN,
-        default: true,
-    },
     secretlintrc: {
         type: OPTION_TYPE_STRING,
     },
@@ -89,25 +101,32 @@ const options = {
         type: OPTION_TYPE_STRING,
         default: ".secretlintignore",
     },
-    /**
-     * CLI respects nested .gitignore files by default (since v13).
-     * If you want to disable .gitignore cascade, use --no-gitignore option.
-     */
-    gitignore: {
-        type: OPTION_TYPE_BOOLEAN,
-        default: true,
-    },
     stdinFileName: {
         type: OPTION_TYPE_STRING,
     },
-    profile: {
+    /**
+     * CLI enable ANSI-color of output by default
+     */
+    color: {
         type: OPTION_TYPE_BOOLEAN,
+        default: true,
     },
-    secretlintrcJSON: {
-        type: OPTION_TYPE_STRING,
+    /**
+     * CLI enable terminalLink by default.
+     * Some formatter will output that includes clickable link
+     * https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda
+     */
+    terminalLink: {
+        type: OPTION_TYPE_BOOLEAN,
+        default: true,
     },
-    locale: {
-        type: OPTION_TYPE_STRING,
+    /**
+     * enable maskSecrets by default since secretlint v10+.
+     * If you want to disable masking of secret values, use --no-maskSecrets option.
+     */
+    maskSecrets: {
+        type: OPTION_TYPE_BOOLEAN,
+        default: true,
     },
     /**
      * CLI enables glob pattern matching by default.
@@ -122,20 +141,23 @@ const options = {
         default: true,
     },
     /**
-     * CLI enable ANSI-color of output by default
+     * CLI respects nested .gitignore files by default (since v13).
+     * If you want to disable .gitignore cascade, use --no-gitignore option.
      */
-    color: {
+    gitignore: {
         type: OPTION_TYPE_BOOLEAN,
         default: true,
     },
-    /**
-     * CLI enable terminalLink by default.
-     * Some formatter will output that includes clickable clink
-     * https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda
-     */
-    terminalLink: {
+    // Options for Developer
+    profile: {
         type: OPTION_TYPE_BOOLEAN,
-        default: true,
+    },
+    secretlintrcJSON: {
+        type: OPTION_TYPE_STRING,
+    },
+    // Experimental Options
+    locale: {
+        type: OPTION_TYPE_STRING,
     },
     // DEBUG option
     cwd: {
@@ -216,7 +238,7 @@ const readCliOptions = async ({ input = cli.input, flags = cli.flags }): Promise
 };
 export const run = async (
     input = cli.input,
-    flags = cli.flags
+    flags = cli.flags,
 ): Promise<{ exitStatus: number; stdout: string | null; stderr: Error | null }> => {
     if (flags.help) {
         return {

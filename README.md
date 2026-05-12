@@ -108,21 +108,23 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
     $ secretlint [file|glob*]
     
     Note
-    supported glob syntax is based on microglob
+    supported glob syntax is based on picomatch (the engine used by micromatch)
+    https://github.com/micromatch/picomatch#globbing-features
     https://github.com/micromatch/micromatch#matching-features
     
     Options
     --init             setup config file. Create .secretlintrc.json file from your package.json
     --format           [String] formatter name. Default: "stylish". Available Formatter: checkstyle, compact, github, jslint-xml, junit, pretty-error, stylish, tap, unix, json, mask-result, table
     --output           [path:String] output file path that is written of reported result.
+    --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
+    --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
+    --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
     --no-color         disable ANSI-color of output.
     --no-terminalLink  disable terminalLink of output.
     --no-maskSecrets   disable masking of secret values; secrets are masked by default.
-    --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
-    --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
+    --no-glob          disable glob pattern interpretation; treat all inputs as literal file paths.
     --no-gitignore     disable .gitignore cascade respect; .gitignore files are
                        respected by default (since v13).
-    --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
     
     Options for Developer
     --profile          Enable performance profile.
@@ -132,14 +134,33 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
     --locale            [String] locale tag for translating message. Default: en
     
     Examples
+    # Scan a single file
     $ secretlint ./README.md
-    # glob pattern should be wrapped with double quote
+
+    # Scan all files (wrap glob in double quotes to avoid shell expansion)
     $ secretlint "**/*"
     $ secretlint "source/**/*.ini"
-    # output masked result to file
+
+    # Treat inputs as literal paths (for SvelteKit (group) / Next.js [param] etc.)
+    $ secretlint --no-glob "src/(auth)/login.ts"
+
+    # Lint STDIN content (filename hint affects which rules apply)
+    $ echo "SECRET" | secretlint --stdinFileName=secret.txt
+
+    # Use a custom config file
+    $ secretlint "**/*" --secretlintrc=.secretlintrc.custom.json
+
+    # Scan files ignored by .gitignore (e.g. to verify build artifacts)
+    $ secretlint --no-gitignore "dist/**/*"
+
+    # Mask secrets in a file in-place
     $ secretlint .zsh_history --format=mask-result --output=.zsh_history
-    # lint STDIN content instead of file
-    $ echo "SECRET CONTENT" | secretlint --stdinFileName=secret.txt
+
+    # Output JSON for programmatic parsing
+    $ secretlint "**/*" --format=json --output=secretlint-report.json
+
+    # Output GitHub Actions annotations in CI
+    $ secretlint "**/*" --format=github
     
     Exit Status
     Secretlint exits with the following values:
