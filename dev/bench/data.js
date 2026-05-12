@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1778551202482,
+  "lastUpdate": 1778586978792,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -54414,6 +54414,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.25,
             "range": "±0.89%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "5351a4de683e077c607b45177578d55c2427acca",
+          "message": "Update dependency turbo to ^2.9.12 (#1556)\n\nThis PR contains the following updates:\n\n| Package | Change |\n[Age](https://docs.renovatebot.com/merge-confidence/) |\n[Confidence](https://docs.renovatebot.com/merge-confidence/) |\n|---|---|---|---|\n| [turbo](https://turborepo.dev)\n([source](https://redirect.github.com/vercel/turborepo)) | [`^2.9.10` →\n`^2.9.12`](https://renovatebot.com/diffs/npm/turbo/2.9.10/2.9.12) |\n![age](https://developer.mend.io/api/mc/badges/age/npm/turbo/2.9.12?slim=true)\n|\n![confidence](https://developer.mend.io/api/mc/badges/confidence/npm/turbo/2.9.10/2.9.12?slim=true)\n|\n\n---\n\n### Release Notes\n\n<details>\n<summary>vercel/turborepo (turbo)</summary>\n\n###\n[`v2.9.12`](https://redirect.github.com/vercel/turborepo/releases/tag/v2.9.12):\nTurborepo v2.9.12\n\n[Compare\nSource](https://redirect.github.com/vercel/turborepo/compare/v2.9.11...v2.9.12)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat v2.9.12 -->\n\n#### What's Changed\n\n##### Changelog\n\n- release(turborepo): 2.9.11 by\n[@&#8203;github-actions](https://redirect.github.com/github-actions)\\[bot]\nin\n[#&#8203;12771](https://redirect.github.com/vercel/turborepo/pull/12771)\n- fix: Allow transit nodes in LSP diagnostics by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12773](https://redirect.github.com/vercel/turborepo/pull/12773)\n\n**Full Changelog**:\n<https://github.com/vercel/turborepo/compare/v2.9.11...v2.9.12>\n\n###\n[`v2.9.11`](https://redirect.github.com/vercel/turborepo/releases/tag/v2.9.11):\nTurborepo v2.9.11\n\n[Compare\nSource](https://redirect.github.com/vercel/turborepo/compare/v2.9.10...v2.9.11)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat v2.9.11 -->\n\n#### What's Changed\n\n##### Changelog\n\n- release(turborepo): 2.9.10 by\n[@&#8203;github-actions](https://redirect.github.com/github-actions)\\[bot]\nin\n[#&#8203;12745](https://redirect.github.com/vercel/turborepo/pull/12745)\n- ci: Publish VS Code extension on release by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12747](https://redirect.github.com/vercel/turborepo/pull/12747)\n- fix: Start daemon for VSCode Extension from the extension itself by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12749](https://redirect.github.com/vercel/turborepo/pull/12749)\n- release(turborepo): 2.9.11-canary.1 by\n[@&#8203;github-actions](https://redirect.github.com/github-actions)\\[bot]\nin\n[#&#8203;12748](https://redirect.github.com/vercel/turborepo/pull/12748)\n- fix: Include file URIs in LSP lifecycle logs by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12751](https://redirect.github.com/vercel/turborepo/pull/12751)\n- fix: Handle JSON decoration visitor depth by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12752](https://redirect.github.com/vercel/turborepo/pull/12752)\n- fix: Resolve relative `turbo path` in VS Code extension by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12753](https://redirect.github.com/vercel/turborepo/pull/12753)\n- fix: Preserve Bun nested dependencies during prune by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12754](https://redirect.github.com/vercel/turborepo/pull/12754)\n- fix: Prefer installed Turbo for LSP by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12755](https://redirect.github.com/vercel/turborepo/pull/12755)\n- release(turborepo): 2.9.11-canary.2 by\n[@&#8203;github-actions](https://redirect.github.com/github-actions)\\[bot]\nin\n[#&#8203;12750](https://redirect.github.com/vercel/turborepo/pull/12750)\n- ci: Parallelize LSP release publishing by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12758](https://redirect.github.com/vercel/turborepo/pull/12758)\n- fix: Reduce VS Code extension startup popups by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12759](https://redirect.github.com/vercel/turborepo/pull/12759)\n- fix: Support `turbo.jsonc` in VS Code extension by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12760](https://redirect.github.com/vercel/turborepo/pull/12760)\n- fix: Remove VS Code task key gradient by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12761](https://redirect.github.com/vercel/turborepo/pull/12761)\n- release(turborepo): 2.9.11-canary.3 by\n[@&#8203;github-actions](https://redirect.github.com/github-actions)\\[bot]\nin\n[#&#8203;12756](https://redirect.github.com/vercel/turborepo/pull/12756)\n- chore: Release v2.9.11-canary.4 by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12762](https://redirect.github.com/vercel/turborepo/pull/12762)\n- ci: Stop VS Code publish from blocking release PR by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12763](https://redirect.github.com/vercel/turborepo/pull/12763)\n- release(turborepo): 2.9.11-canary.5 by\n[@&#8203;github-actions](https://redirect.github.com/github-actions)\\[bot]\nin\n[#&#8203;12764](https://redirect.github.com/vercel/turborepo/pull/12764)\n- fix: Publish VS Code extension from release tag by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12765](https://redirect.github.com/vercel/turborepo/pull/12765)\n- fix: Support shimmed VS Code LSP probes by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12767](https://redirect.github.com/vercel/turborepo/pull/12767)\n- release(turborepo): 2.9.11-canary.6 by\n[@&#8203;github-actions](https://redirect.github.com/github-actions)\\[bot]\nin\n[#&#8203;12766](https://redirect.github.com/vercel/turborepo/pull/12766)\n- release(turborepo): 2.9.11-canary.7 by\n[@&#8203;github-actions](https://redirect.github.com/github-actions)\\[bot]\nin\n[#&#8203;12768](https://redirect.github.com/vercel/turborepo/pull/12768)\n- fix: Allow `$TURBO_EXTENDS$` in LSP diagnostics by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12770](https://redirect.github.com/vercel/turborepo/pull/12770)\n\n**Full Changelog**:\n<https://github.com/vercel/turborepo/compare/v2.9.10...v2.9.11>\n\n</details>\n\n---\n\n### Configuration\n\n📅 **Schedule**: (in timezone Asia/Tokyo)\n\n- Branch creation\n  - At any time (no schedule defined)\n- Automerge\n  - At any time (no schedule defined)\n\n🚦 **Automerge**: Enabled.\n\n♻ **Rebasing**: Whenever PR becomes conflicted, or you tick the\nrebase/retry checkbox.\n\n🔕 **Ignore**: Close this PR and you won't be reminded about this update\nagain.\n\n---\n\n- [ ] <!-- rebase-check -->If you want to rebase/retry this PR, check\nthis box\n\n---\n\nThis PR was generated by [Mend Renovate](https://mend.io/renovate/).\nView the [repository job\nlog](https://developer.mend.io/github/secretlint/secretlint).\n\n<!--renovate-debug:eyJjcmVhdGVkSW5WZXIiOiI0My4xNzMuNiIsInVwZGF0ZWRJblZlciI6IjQzLjE3My42IiwidGFyZ2V0QnJhbmNoIjoibWFzdGVyIiwibGFiZWxzIjpbImRlcGVuZGVuY2llcyJdfQ==-->\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2026-05-12T11:54:17Z",
+          "tree_id": "a447525a54cc842bcdd5812a108c29f01a8fb433",
+          "url": "https://github.com/secretlint/secretlint/commit/5351a4de683e077c607b45177578d55c2427acca"
+        },
+        "date": 1778586976248,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.53,
+            "range": "±0.98%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.25,
+            "range": "±1.73%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
