@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1778479663307,
+  "lastUpdate": 1778544743919,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -54338,6 +54338,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.25,
             "range": "±1.30%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b272c37bd2d28ab7e62cd1f9d8889b3b9a051975",
+          "message": "ci(release): prevent cache poisoning (#1555)\n\n## Summary\n\nAddress zizmor security findings in `.github/workflows/release.yml` by\navoiding direct template expansion of job outputs in `run` scripts and\nby disabling Bun setup cache to mitigate the cache-poisoning warning\nwithout suppressing it.\n\nContext: TanStack is affected by cache poisoning\n[Postmortem: TanStack npm supply-chain compromise | TanStack\nBlog](https://tanstack.com/blog/npm-supply-chain-compromise-postmortem)\n\n## Changes\n\n- Pass `needs.publish.outputs.version` via the `env:` block (`VERSION`)\nand reference `${VERSION}` inside the `Set TAG_NAME` shell step instead\nof inlining `${{ ... }}` in `run:`.\n- Apply the same `env`-based pattern to the `actions/github-script` step\nthat comments the release, reading `process.env.VERSION` instead of\ninlining the expression in the script.\n- Remove the `# zizmor: ignore[cache-poisoning]` comment on\n`oven-sh/setup-bun` and instead disable caching with `no-cache: true` so\nthe underlying concern is resolved.\n\n## Breaking Changes\n\nNone.\n\n## Test Plan\n\n- [ ] Confirm the release workflow YAML parses (GitHub Actions lint\npasses on push).\n- [ ] Re-run `zizmor` (or rely on the workflow's zizmor job) to verify\nthe previously flagged findings are resolved.\n- [ ] On the next release, verify `TAG_NAME`, `SECRETLINT_VERSION`, and\nthe GitHub release comment still reflect the published version.",
+          "timestamp": "2026-05-12T00:10:28Z",
+          "tree_id": "d835cab1d8e4ab892335e0c11b749f70cb4042f0",
+          "url": "https://github.com/secretlint/secretlint/commit/b272c37bd2d28ab7e62cd1f9d8889b3b9a051975"
+        },
+        "date": 1778544740592,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.55,
+            "range": "±0.50%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.25,
+            "range": "±1.66%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
