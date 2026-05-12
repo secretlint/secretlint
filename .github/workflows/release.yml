@@ -104,9 +104,10 @@ jobs:
         run: pnpm run build
       # build the binary
       - name: Setup Bun
-        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0 # zizmor: ignore[cache-poisoning]
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
           bun-version-file: "./publish/binary-compiler/.bun-version"
+          no-cache: true
       - name: Build binary
         run: bun run build-binary
         working-directory: ./publish/binary-compiler
@@ -127,9 +128,11 @@ jobs:
         with:
           persist-credentials: false
       - name: Set TAG_NAME
+        env:
+          VERSION: ${{ needs.publish.outputs.version }}
         run: |
-          echo "TAG_NAME=v${{ needs.publish.outputs.version }}" >> $GITHUB_ENV
-          echo "SECRETLINT_VERSION=${{ needs.publish.outputs.version }}" >> $GITHUB_ENV
+          echo "TAG_NAME=v${VERSION}" >> $GITHUB_ENV
+          echo "SECRETLINT_VERSION=${VERSION}" >> $GITHUB_ENV
       - name: Set HUB_TAG
         run: |
           echo "PKG_TAG=${DOCKER_BASE_NAME}:${TAG_NAME}" >> $GITHUB_ENV
@@ -199,10 +202,12 @@ jobs:
           prerelease: false
           files: ./binary-dist/**
       - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        env:
+          VERSION: ${{ needs.publish.outputs.version }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const version = '${{ needs.publish.outputs.version }}';
+            const version = process.env.VERSION;
             const repository = process.env.GITHUB_REPOSITORY;
             github.rest.issues.createComment({
               issue_number: context.issue.number,
