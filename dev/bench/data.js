@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1778544743919,
+  "lastUpdate": 1778551202482,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -54376,6 +54376,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.25,
             "range": "±1.66%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "1d583ffcfed6123680f89b4f7708289d8e8dda9a",
+          "message": "Reorganize CLI options and update glob syntax documentation (#1540)",
+          "timestamp": "2026-05-12T01:57:59Z",
+          "tree_id": "6bd564293db6d41d6986d559e5df71d2ce4e91af",
+          "url": "https://github.com/secretlint/secretlint/commit/1d583ffcfed6123680f89b4f7708289d8e8dda9a"
+        },
+        "date": 1778551199669,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.47,
+            "range": "±1.71%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.25,
+            "range": "±0.89%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
