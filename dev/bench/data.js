@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1778586978792,
+  "lastUpdate": 1778634019598,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -54452,6 +54452,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.25,
             "range": "±1.73%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "8a1b8ab4f31ab811c9e5779412617e2b11d6dd59",
+          "message": "chore(CI): update to pkgdeps/automerge-gate@4.1 (#1557)\n\n- update to pkgdeps/automerge-gate@4.1",
+          "timestamp": "2026-05-13T00:58:10Z",
+          "tree_id": "6a1eaed6d2b8f714add90fdfd07e56ef03be02ea",
+          "url": "https://github.com/secretlint/secretlint/commit/8a1b8ab4f31ab811c9e5779412617e2b11d6dd59"
+        },
+        "date": 1778634016982,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.44,
+            "range": "±0.74%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.25,
+            "range": "±0.59%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
