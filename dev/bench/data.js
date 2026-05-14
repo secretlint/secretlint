@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1778690603716,
+  "lastUpdate": 1778752924636,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -54528,6 +54528,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.25,
             "range": "±1.29%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "4356d15560e5f98396ccd6be5de2de2ebc24ca93",
+          "message": "Update textlint to ^15.6.1 (#1559)\n\nThis PR contains the following updates:\n\n| Package | Change |\n[Age](https://docs.renovatebot.com/merge-confidence/) |\n[Confidence](https://docs.renovatebot.com/merge-confidence/) |\n|---|---|---|---|\n|\n[@textlint/linter-formatter](https://redirect.github.com/textlint/textlint/tree/master/packages/@textlint/linter-formatter)\n([source](https://redirect.github.com/textlint/textlint)) | [`^15.6.0` →\n`^15.6.1`](https://renovatebot.com/diffs/npm/@textlint%2flinter-formatter/15.6.0/15.6.1)\n|\n![age](https://developer.mend.io/api/mc/badges/age/npm/@textlint%2flinter-formatter/15.6.1?slim=true)\n|\n![confidence](https://developer.mend.io/api/mc/badges/confidence/npm/@textlint%2flinter-formatter/15.6.0/15.6.1?slim=true)\n|\n|\n[@textlint/module-interop](https://redirect.github.com/textlint/textlint/tree/master/packages/@textlint/module-interop/)\n([source](https://redirect.github.com/textlint/textlint)) | [`^15.6.0` →\n`^15.6.1`](https://renovatebot.com/diffs/npm/@textlint%2fmodule-interop/15.6.0/15.6.1)\n|\n![age](https://developer.mend.io/api/mc/badges/age/npm/@textlint%2fmodule-interop/15.6.1?slim=true)\n|\n![confidence](https://developer.mend.io/api/mc/badges/confidence/npm/@textlint%2fmodule-interop/15.6.0/15.6.1?slim=true)\n|\n|\n[@textlint/types](https://redirect.github.com/textlint/textlint/tree/master/packages/@textlint/types/)\n([source](https://redirect.github.com/textlint/textlint)) | [`^15.6.0` →\n`^15.6.1`](https://renovatebot.com/diffs/npm/@textlint%2ftypes/15.6.0/15.6.1)\n|\n![age](https://developer.mend.io/api/mc/badges/age/npm/@textlint%2ftypes/15.6.1?slim=true)\n|\n![confidence](https://developer.mend.io/api/mc/badges/confidence/npm/@textlint%2ftypes/15.6.0/15.6.1?slim=true)\n|\n\n---\n\n### Release Notes\n\n<details>\n<summary>textlint/textlint (@&#8203;textlint/linter-formatter)</summary>\n\n###\n[`v15.6.1`](https://redirect.github.com/textlint/textlint/releases/tag/v15.6.1)\n\n[Compare\nSource](https://redirect.github.com/textlint/textlint/compare/v15.6.0...v15.6.1)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat master -->\n\n#### What's Changed\n\n##### CI\n\n- chore(deps): update starkware-libs/merge-gatekeeper action to v1.2.0\nby [@&#8203;renovate](https://redirect.github.com/renovate)\\[bot] in\n[#&#8203;2023](https://redirect.github.com/textlint/textlint/pull/2023)\n- chore(deps): update github/codeql-action action to v3.35.3 by\n[@&#8203;renovate](https://redirect.github.com/renovate)\\[bot] in\n[#&#8203;2026](https://redirect.github.com/textlint/textlint/pull/2026)\n- Replace Merge Gatekeeper with automerge-gate workflow by\n[@&#8203;azu](https://redirect.github.com/azu) in\n[#&#8203;2036](https://redirect.github.com/textlint/textlint/pull/2036)\n\n##### Dependency Updates\n\n- chore(deps): update dependency ajv to ^8.20.0 by\n[@&#8203;renovate](https://redirect.github.com/renovate)\\[bot] in\n[#&#8203;2016](https://redirect.github.com/textlint/textlint/pull/2016)\n- chore(deps): update dependency oxlint-tsgolint to ^0.22.0 by\n[@&#8203;renovate](https://redirect.github.com/renovate)\\[bot] in\n[#&#8203;2017](https://redirect.github.com/textlint/textlint/pull/2017)\n- chore(deps): update dependency oxlint-tsgolint to ^0.22.1 by\n[@&#8203;renovate](https://redirect.github.com/renovate)\\[bot] in\n[#&#8203;2018](https://redirect.github.com/textlint/textlint/pull/2018)\n- chore(deps): update docusaurus monorepo to ^3.10.1 (patch) by\n[@&#8203;renovate](https://redirect.github.com/renovate)\\[bot] in\n[#&#8203;2019](https://redirect.github.com/textlint/textlint/pull/2019)\n- chore(deps): update dependency\n[@&#8203;babel/register](https://redirect.github.com/babel/register) to\n^7.29.3 by\n[@&#8203;renovate](https://redirect.github.com/renovate)\\[bot] in\n[#&#8203;2021](https://redirect.github.com/textlint/textlint/pull/2021)\n- chore(deps): update dependency\n[@&#8203;babel/preset-env](https://redirect.github.com/babel/preset-env)\nto ^7.29.3 by\n[@&#8203;renovate](https://redirect.github.com/renovate)\\[bot] in\n[#&#8203;2020](https://redirect.github.com/textlint/textlint/pull/2020)\n- chore(deps): update pnpm to v10.33.3 by\n[@&#8203;renovate](https://redirect.github.com/renovate)\\[bot] in\n[#&#8203;2024](https://redirect.github.com/textlint/textlint/pull/2024)\n- chore(deps): update dependency\n[@&#8203;babel/preset-env](https://redirect.github.com/babel/preset-env)\nto ^7.29.5 by\n[@&#8203;renovate](https://redirect.github.com/renovate)\\[bot] in\n[#&#8203;2025](https://redirect.github.com/textlint/textlint/pull/2025)\n- chore(deps): update pnpm to v10.33.4 by\n[@&#8203;renovate](https://redirect.github.com/renovate)\\[bot] in\n[#&#8203;2028](https://redirect.github.com/textlint/textlint/pull/2028)\n- chore(deps): update react monorepo to ^19.2.6 (patch) by\n[@&#8203;renovate](https://redirect.github.com/renovate)\\[bot] in\n[#&#8203;2029](https://redirect.github.com/textlint/textlint/pull/2029)\n- chore(deps): update dependency\n[@&#8203;types/node](https://redirect.github.com/types/node) to ^24.12.3\nby [@&#8203;renovate](https://redirect.github.com/renovate)\\[bot] in\n[#&#8203;2035](https://redirect.github.com/textlint/textlint/pull/2035)\n- chore(deps): update glob dependency to ^13.0.6 in pnpm workspace by\n[@&#8203;314systems](https://redirect.github.com/314systems) in\n[#&#8203;2033](https://redirect.github.com/textlint/textlint/pull/2033)\n\n##### Other Changes\n\n- chore: add core-js to allowBuilds with false setting by\n[@&#8203;314systems](https://redirect.github.com/314systems) in\n[#&#8203;2034](https://redirect.github.com/textlint/textlint/pull/2034)\n\n#### New Contributors\n\n- [@&#8203;314systems](https://redirect.github.com/314systems) made\ntheir first contribution in\n[#&#8203;2034](https://redirect.github.com/textlint/textlint/pull/2034)\n\n**Full Changelog**:\n<https://github.com/textlint/textlint/compare/v15.6.0...v15.6.1>\n\n</details>\n\n---\n\n### Configuration\n\n📅 **Schedule**: (in timezone Asia/Tokyo)\n\n- Branch creation\n  - At any time (no schedule defined)\n- Automerge\n  - At any time (no schedule defined)\n\n🚦 **Automerge**: Enabled.\n\n♻ **Rebasing**: Whenever PR is behind base branch, or you tick the\nrebase/retry checkbox.\n\n🔕 **Ignore**: Close this PR and you won't be reminded about these\nupdates again.\n\n---\n\n- [ ] <!-- rebase-check -->If you want to rebase/retry this PR, check\nthis box\n\n---\n\nThis PR was generated by [Mend Renovate](https://mend.io/renovate/).\nView the [repository job\nlog](https://developer.mend.io/github/secretlint/secretlint).\n\n<!--renovate-debug:eyJjcmVhdGVkSW5WZXIiOiI0My4xNzMuNiIsInVwZGF0ZWRJblZlciI6IjQzLjE3My42IiwidGFyZ2V0QnJhbmNoIjoibWFzdGVyIiwibGFiZWxzIjpbImRlcGVuZGVuY2llcyJdfQ==-->\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2026-05-14T10:00:00Z",
+          "tree_id": "67b04f9fc92132af04b052c8242c4d8a9d121c49",
+          "url": "https://github.com/secretlint/secretlint/commit/4356d15560e5f98396ccd6be5de2de2ebc24ca93"
+        },
+        "date": 1778752921717,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.47,
+            "range": "±0.80%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.25,
+            "range": "±0.69%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
