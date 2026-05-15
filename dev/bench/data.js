@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1778852311534,
+  "lastUpdate": 1778854247912,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -54680,6 +54680,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.26,
             "range": "±0.95%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f0ec5c068b938f3891f75de985dfd667cf092de4",
+          "message": "Fix secp256k1 private key detection to avoid false positives (#1564)\n\n## Summary\n\nFix false positives in\n`@secretlint/secretlint-rule-secp256k1-privatekey` where 64-char hex\nsubstrings inside longer hex sequences (such as `DOTENV_PUBLIC_KEY`,\nwhich is 66 hex chars, and pnpm `packageManager` sha512 hashes, which\nare 128 hex chars) were incorrectly reported as secp256k1 private keys.\n\n## Changes\n\n- Add non-hex boundary assertions to the regex so substrings inside\nlonger hex strings are no longer matched:\n  - `/[0-9a-f]{64}/gi` → `/(?<![0-9a-f])[0-9a-f]{64}(?![0-9a-f])/gi`\n- Replace `return` with `continue` in the private-key verification loop\nso a single non-private-key candidate no longer aborts scanning the rest\nof the file.\n- Add snapshot tests reproducing both reported false-positive scenarios\n(`ok.dotenvx_public_key`, `ok.packagemanager_sha512`).\n\n## Breaking Changes\n\nNone. Existing detections remain valid (verified by the existing\n`ng.privkey` snapshot, which is preserved).\n\n## Test Plan\n\n- `pnpm test` in\n`packages/@secretlint/secretlint-rule-secp256k1-privatekey/` — all 5\nsnapshots pass.\n- New `ok.dotenvx_public_key` snapshot confirms\n`DOTENV_PUBLIC_KEY=\"037cfbfc…c9c4b2\"` (66 hex chars, a secp256k1\ncompressed public key per dotenvx encryption) is no longer flagged.\n- New `ok.packagemanager_sha512` snapshot confirms a pnpm\n`packageManager` field with an embedded 128-char sha512 hash is no\nlonger flagged.\n- Existing `ng.privkey` snapshot continues to detect the leaked private\nkey.\n\nFixes #1560\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-05-15T14:08:42Z",
+          "tree_id": "138f38c97d5a27e5848fe53fa9d4dba667dfa05d",
+          "url": "https://github.com/secretlint/secretlint/commit/f0ec5c068b938f3891f75de985dfd667cf092de4"
+        },
+        "date": 1778854244237,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.45,
+            "range": "±0.76%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.25,
+            "range": "±1.22%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
