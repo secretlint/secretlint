@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1778854247912,
+  "lastUpdate": 1778854372316,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -54718,6 +54718,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.25,
             "range": "±1.22%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "41898282+github-actions[bot]@users.noreply.github.com",
+            "name": "github-actions[bot]",
+            "username": "github-actions[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "63a6fd4e64f8df6b75023cc6569addf45eaba033",
+          "message": "v13.0.1 (#1565)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat master -->\n\n## What's Changed\n### Bug Fixes\n* Fix secp256k1 private key detection to avoid false positives by @azu\nin https://github.com/secretlint/secretlint/pull/1564\n### CI\n* ci: replace merge-gatekeeper with automerge-gate by @azu in\nhttps://github.com/secretlint/secretlint/pull/1543\n* Update github/codeql-action action to v3.35.3 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1546\n* ci(release): prevent cache poisoning by @azu in\nhttps://github.com/secretlint/secretlint/pull/1555\n* chore(CI): update to pkgdeps/automerge-gate@4.1 by @azu in\nhttps://github.com/secretlint/secretlint/pull/1557\n* Update rhysd/github-action-benchmark action to v1.22.1 by\n@renovate[bot] in https://github.com/secretlint/secretlint/pull/1558\n* Update github/codeql-action action to v3.35.4 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1563\n### Dependency Updates\n* Update dependency turbo to ^2.9.8 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1542\n* Update dependency turbo to ^2.9.9 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1544\n* Update Patch updates (patch) by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1545\n* Update pnpm to v10.33.4 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1551\n* Update dependency @types/node to ^25.6.1 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1552\n* Update dependency turbo to ^2.9.10 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1553\n* Update dependency @types/node to ^25.6.2 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1554\n* Update dependency turbo to ^2.9.12 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1556\n* Update textlint to ^15.6.1 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1559\n* Update dependency vitest to ^4.1.6 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1561\n* Update dependency @types/node to ^25.7.0 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1562\n### Other Changes\n* Reorganize CLI options and update glob syntax documentation by @azu in\nhttps://github.com/secretlint/secretlint/pull/1540\n\n\n**Full Changelog**:\nhttps://github.com/secretlint/secretlint/compare/v13.0.0...v13.0.1\n\nCo-authored-by: azu <azu@users.noreply.github.com>",
+          "timestamp": "2026-05-15T14:10:51Z",
+          "tree_id": "42ec81c81dfad455b6ceeb3d21b10dc4f527176a",
+          "url": "https://github.com/secretlint/secretlint/commit/63a6fd4e64f8df6b75023cc6569addf45eaba033"
+        },
+        "date": 1778854369525,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.53,
+            "range": "±0.82%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.25,
+            "range": "±0.65%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
