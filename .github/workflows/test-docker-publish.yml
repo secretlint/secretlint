@@ -1,0 +1,93 @@
+name: Test Docker Multi-arch Build (TEMPORARY - DELETE BEFORE MERGE)
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/release.yml'
+      - '.github/workflows/test-docker-publish.yml'
+      - 'publish/docker/**'
+  workflow_dispatch:
+
+env:
+  DOCKER_BASE_NAME: ghcr.io/${{ github.repository }}
+  SECRETLINT_VERSION: "13.0.2"
+
+jobs:
+  test-publish-docker:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux/amd64
+            runner: ubuntu-latest
+          - platform: linux/arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    permissions:
+      packages: write
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+      - name: Prepare environment
+        env:
+          PLATFORM: ${{ matrix.platform }}
+        run: echo "PLATFORM_PAIR=${PLATFORM//\//-}" >> $GITHUB_ENV
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4.0.0
+      - name: Login to GitHub Container Registry
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ACTOR: ${{ github.actor }}
+        run: echo "${GITHUB_TOKEN}" | docker login ghcr.io -u "${ACTOR}" --password-stdin
+      - name: Build, smoke test, and push by digest
+        working-directory: ./publish/docker
+        run: |
+          mkdir -p /tmp/digests
+          docker buildx build . \
+            --build-arg SECRETLINT_VERSION=${SECRETLINT_VERSION} \
+            --platform ${{ matrix.platform }} \
+            --output "type=docker,name=secretlint:smoke" \
+            --output "type=image,name=${DOCKER_BASE_NAME},push-by-digest=true,name-canonical=true,push=true" \
+            --metadata-file /tmp/metadata.json
+          docker run --rm secretlint:smoke --version
+          digest=$(jq -r '."containerimage.digest"' /tmp/metadata.json)
+          touch "/tmp/digests/${digest#sha256:}"
+      - name: Upload digest
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: docker-digests-test-${{ env.PLATFORM_PAIR }}
+          path: /tmp/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+  test-publish-docker-merge:
+    needs: [test-publish-docker]
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    env:
+      TEST_TAG: test-pr-${{ github.event.pull_request.number || github.run_id }}
+    steps:
+      - name: Download digests
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          path: /tmp/digests
+          pattern: docker-digests-test-*
+          merge-multiple: true
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4.0.0
+      - name: Login to GitHub Container Registry
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ACTOR: ${{ github.actor }}
+        run: echo "${GITHUB_TOKEN}" | docker login ghcr.io -u "${ACTOR}" --password-stdin
+      - name: Create manifest list and push
+        working-directory: /tmp/digests
+        run: |
+          docker buildx imagetools create \
+            -t "${DOCKER_BASE_NAME}:${TEST_TAG}" \
+            $(printf "${DOCKER_BASE_NAME}@sha256:%s " *)
+      - name: Verify
+        run: |
+          docker buildx imagetools inspect "${DOCKER_BASE_NAME}:${TEST_TAG}"
