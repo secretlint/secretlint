@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1778854372316,
+  "lastUpdate": 1778856023665,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -54756,6 +54756,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.25,
             "range": "±0.65%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "41898282+github-actions[bot]@users.noreply.github.com",
+            "name": "github-actions[bot]",
+            "username": "github-actions[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "56012e52061df4c3b2c821d62f9b9c84f41840a4",
+          "message": "v13.0.2 (#1566)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat master -->\n\n## What's Changed\n\n📝 v13.0.1 published as v13.0.2\n\n### Bug Fixes\n* Fix secp256k1 private key detection to avoid false positives by @azu\nin https://github.com/secretlint/secretlint/pull/1564\n### CI\n* ci: replace merge-gatekeeper with automerge-gate by @azu in\nhttps://github.com/secretlint/secretlint/pull/1543\n* Update github/codeql-action action to v3.35.3 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1546\n* ci(release): prevent cache poisoning by @azu in\nhttps://github.com/secretlint/secretlint/pull/1555\n* chore(CI): update to pkgdeps/automerge-gate@4.1 by @azu in\nhttps://github.com/secretlint/secretlint/pull/1557\n* Update rhysd/github-action-benchmark action to v1.22.1 by\n@renovate[bot] in https://github.com/secretlint/secretlint/pull/1558\n* Update github/codeql-action action to v3.35.4 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1563\n### Dependency Updates\n* Update dependency turbo to ^2.9.8 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1542\n* Update dependency turbo to ^2.9.9 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1544\n* Update Patch updates (patch) by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1545\n* Update pnpm to v10.33.4 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1551\n* Update dependency @types/node to ^25.6.1 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1552\n* Update dependency turbo to ^2.9.10 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1553\n* Update dependency @types/node to ^25.6.2 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1554\n* Update dependency turbo to ^2.9.12 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1556\n* Update textlint to ^15.6.1 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1559\n* Update dependency vitest to ^4.1.6 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1561\n* Update dependency @types/node to ^25.7.0 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1562\n### Other Changes\n* Reorganize CLI options and update glob syntax documentation by @azu in\nhttps://github.com/secretlint/secretlint/pull/1540\n\n\n**Full Changelog**:\nhttps://github.com/secretlint/secretlint/compare/v13.0.0...v13.0.2\n\nCo-authored-by: azu <azu@users.noreply.github.com>",
+          "timestamp": "2026-05-15T14:38:29Z",
+          "tree_id": "2fffe24514329b7aae12414a001d0a72ed577b9d",
+          "url": "https://github.com/secretlint/secretlint/commit/56012e52061df4c3b2c821d62f9b9c84f41840a4"
+        },
+        "date": 1778856020960,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.55,
+            "range": "±0.71%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.25,
+            "range": "±0.72%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
