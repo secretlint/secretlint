@@ -1,0 +1,8 @@
+#/-------------------[DOTENV_PUBLIC_KEY]--------------------/
+#/            public-key encryption for .env files          /
+#/       [how it works](https://dotenvx.com/encryption)     /
+#/----------------------------------------------------------/
+DOTENV_PUBLIC_KEY="037cfbfc90234cfdab7eb54050566293789efaa1a35dc420749662db400dc9c4b2"
+
+# .env
+HELLO="encrypted:BLAH"
