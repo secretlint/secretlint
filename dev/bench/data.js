@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1778860823416,
+  "lastUpdate": 1778863820989,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -54832,6 +54832,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.25,
             "range": "±1.39%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "044d470d460c244bcb5218cd2e09caff9cd0f5ee",
+          "message": "Configure TypeScript module output to NodeNext in rollup configs (#1567)\n\n## Summary\nUpdated the TypeScript plugin configuration in rollup build files to\nexplicitly set the module output format to \"NodeNext\" for both the\ncanary and recommend rule preset packages.\n\n## Changes\n- Modified\n`packages/@secretlint/secretlint-rule-preset-canary/rollup.config.mjs`\nto pass `{ module: \"NodeNext\" }` to the `typescript()` plugin\n- Modified\n`packages/@secretlint/secretlint-rule-preset-recommend/rollup.config.mjs`\nto pass `{ module: \"NodeNext\" }` to the `typescript()` plugin\n\n## Details\nThe TypeScript plugin now explicitly targets \"NodeNext\" as the module\noutput format. This ensures consistent module resolution behavior\naligned with modern Node.js ESM standards, particularly important given\nthe existing configuration that disables `__esModule` interop for proper\nNode.js ESM compatibility.\n\nhttps://claude.ai/code/session_01VWWEvQQLkia2MCoH5UMyKL\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-05-16T01:48:24+09:00",
+          "tree_id": "2390e5a23ebdee056968b51a85bf8cb21b2def8e",
+          "url": "https://github.com/secretlint/secretlint/commit/044d470d460c244bcb5218cd2e09caff9cd0f5ee"
+        },
+        "date": 1778863817851,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.56,
+            "range": "±0.88%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.25,
+            "range": "±1.23%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
