@@ -18,5 +18,5 @@ export default {
         // disable __esModule interop
         // Node.js ESM does not recognize `__esModule` flag interop
         defaultIsModuleExports: true
-    }), typescript({ module: "NodeNext" })]
+    }), typescript()]
 };
