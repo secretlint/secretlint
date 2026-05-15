@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1778856023665,
+  "lastUpdate": 1778860823416,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -54794,6 +54794,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.25,
             "range": "±0.72%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "1e6e20e5255222f46dee55aa85dd0ffb443ebc8c",
+          "message": "ci(release): build docker images on native runners (no QEMU) (#1568)\n\n## Motivation\n\nThe `publish-docker` job intermittently fails on `linux/arm64` with\n`qemu: uncaught target signal 4 (Illegal instruction) - core dumped`\nduring `npm install -g secretlint`. The root cause is\n`tonistiigi/binfmt:qemu-v9.2.2` + `node:22-alpine` (musl) — QEMU 9.2\ncannot reliably emulate V8 instructions, so each release currently\nrequires manual reruns.\n\nSwitching to native ARM64 GitHub-hosted runners (`ubuntu-24.04-arm`)\nremoves emulation entirely and fixes the issue at the source.\n\n## Changes\n\n`.github/workflows/release.yml`:\n\n- Split `publish-docker` into a matrix that builds on native runners\n(`ubuntu-latest` for amd64, `ubuntu-24.04-arm` for arm64) and pushes\nper-platform digests to GHCR\n- Added `publish-docker-merge` that downloads digest artifacts and\ncreates the multi-arch manifest list (`v<version>`, `latest`) across\nGHCR and Docker Hub with `docker buildx imagetools create`\n- Removed `docker/setup-qemu-action` and the binfmt image pin\n- Build, smoke test (`docker run --rm secretlint:smoke --version`), and\npush-by-digest are done in a single `docker buildx build` invocation\nwith `--output type=docker,...` + `--output\ntype=image,push-by-digest=true,...`, so the smoke-tested image is\nbit-identical to what gets pushed\n- `Verify` step now inspects both `PKG_TAG` (GHCR) and `HUB_TAG` (Docker\nHub) to confirm the manifest list reached both registries\n\n## Verification\n\nA temporary `test-docker-publish.yml` workflow was added that runs the\nsame matrix+merge logic against a throw-away `test-pr-1568` GHCR tag.\nResults from [run\n25925660101](https://github.com/secretlint/secretlint/actions/runs/25925660101):\n\n| Job | Runner | Result | Duration |\n| --- | --- | --- | --- |\n| `test-publish-docker (linux/amd64)` | `ubuntu-latest` | success | 33s\n|\n| `test-publish-docker (linux/arm64)` | `ubuntu-24.04-arm` | success |\n33s |\n| `test-publish-docker-merge` | `ubuntu-latest` | success | 15s |\n\nThis confirms native ARM64 runners are available, the multi-output\nbuildx command produces both a loadable local image and a pushable\ndigest, and `imagetools create` correctly assembles the manifest list\nfrom per-platform digests. The temporary workflow has been removed in\n[71cd643](https://github.com/secretlint/secretlint/commit/71cd643). The\n`test-pr-1568` tag remains in GHCR and can be deleted manually after\nmerge.\n\n## Risks / Notes\n\n- The next release run will exercise the cross-registry `imagetools\ncreate` (GHCR → Docker Hub) for the first time. Same buildx command,\njust additional `-t` flags, so risk is low, but worth watching the first\nrelease CI.\n- Native ARM64 runners are GA for public repos but may have queueing\ncharacteristics different from x86 runners.\n- No QEMU = no SIGILL retries. Build time also drops because emulation\noverhead is gone.\n\nhttps://claude.ai/code/session_011fVhh8E9Fn7fRY8HTNPefq\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-05-16T00:58:28+09:00",
+          "tree_id": "314f2d413db58981c8ecc0608333c94520fc7910",
+          "url": "https://github.com/secretlint/secretlint/commit/1e6e20e5255222f46dee55aa85dd0ffb443ebc8c"
+        },
+        "date": 1778860820710,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.49,
+            "range": "±1.01%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.25,
+            "range": "±1.39%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
