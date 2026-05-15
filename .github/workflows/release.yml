@@ -120,29 +120,76 @@ jobs:
   publish-docker:
     needs: [publish]
     if: needs.publish.outputs.exists_tag == 'false'
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: linux/amd64
+            runner: ubuntu-latest
+          - platform: linux/arm64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
     permissions:
       packages: write
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
-      - name: Set TAG_NAME
+      - name: Prepare environment
+        env:
+          VERSION: ${{ needs.publish.outputs.version }}
+          PLATFORM: ${{ matrix.platform }}
+        run: |
+          echo "PLATFORM_PAIR=${PLATFORM//\//-}" >> $GITHUB_ENV
+          echo "SECRETLINT_VERSION=${VERSION}" >> $GITHUB_ENV
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4.0.0
+      - name: Login to GitHub Container Registry
+        run: echo "${GITHUB_TOKEN}" | docker login ghcr.io -u azu --password-stdin
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build, smoke test, and push by digest
+        working-directory: ./publish/docker
+        run: |
+          mkdir -p /tmp/digests
+          docker buildx build . \
+            --build-arg SECRETLINT_VERSION=${SECRETLINT_VERSION} \
+            --platform ${{ matrix.platform }} \
+            --output "type=docker,name=secretlint:smoke" \
+            --output "type=image,name=${DOCKER_BASE_NAME},push-by-digest=true,name-canonical=true,push=true" \
+            --metadata-file /tmp/metadata.json
+          docker run --rm secretlint:smoke --version
+          digest=$(jq -r '."containerimage.digest"' /tmp/metadata.json)
+          touch "/tmp/digests/${digest#sha256:}"
+      - name: Upload digest
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: docker-digests-${{ env.PLATFORM_PAIR }}
+          path: /tmp/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+  publish-docker-merge:
+    needs: [publish, publish-docker]
+    if: needs.publish.outputs.exists_tag == 'false'
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+      - name: Prepare tags
         env:
           VERSION: ${{ needs.publish.outputs.version }}
         run: |
-          echo "TAG_NAME=v${VERSION}" >> $GITHUB_ENV
-          echo "SECRETLINT_VERSION=${VERSION}" >> $GITHUB_ENV
-      - name: Set HUB_TAG
-        run: |
-          echo "PKG_TAG=${DOCKER_BASE_NAME}:${TAG_NAME}" >> $GITHUB_ENV
+          echo "PKG_TAG=${DOCKER_BASE_NAME}:v${VERSION}" >> $GITHUB_ENV
           echo "PKG_LATEST_TAG=${DOCKER_BASE_NAME}:latest" >> $GITHUB_ENV
-          echo "HUB_TAG=${DOCKER_HUB_BASE_NAME}:${TAG_NAME}" >> $GITHUB_ENV
+          echo "HUB_TAG=${DOCKER_HUB_BASE_NAME}:v${VERSION}" >> $GITHUB_ENV
           echo "HUB_LATEST_TAG=${DOCKER_HUB_BASE_NAME}:latest" >> $GITHUB_ENV
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@ce360397dd3f832beb865e1373c09c0e9f86d70a # v4.0.0
+      - name: Download digests
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
-          image: tonistiigi/binfmt:qemu-v9.2.2@sha256:1b804311fe87047a4c96d38b4b3ef6f62fca8cd125265917a9e3dc3c996c39e6
+          path: /tmp/digests
+          pattern: docker-digests-*
+          merge-multiple: true
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4.0.0
       - name: Login to Registries
@@ -152,28 +199,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
-      - name: Build image
+      - name: Create manifest list and push
+        working-directory: /tmp/digests
         run: |
-          docker buildx build . \
-            --build-arg SECRETLINT_VERSION=${SECRETLINT_VERSION} \
-            --load \
-            -t "${PKG_TAG}"
-        working-directory: ./publish/docker
-      - name: Print version
-        run: |
-          docker run --rm ${PKG_TAG} --version
-        working-directory: ./publish/docker
-      - name: Build and push images
-        run: |
-          docker buildx build . \
-            --build-arg SECRETLINT_VERSION=${SECRETLINT_VERSION} \
-            --platform linux/amd64,linux/arm64 \
-            --push \
+          docker buildx imagetools create \
             -t "${PKG_TAG}" \
             -t "${PKG_LATEST_TAG}" \
             -t "${HUB_TAG}" \
-            -t "${HUB_LATEST_TAG}"
-        working-directory: ./publish/docker
+            -t "${HUB_LATEST_TAG}" \
+            $(printf "${DOCKER_BASE_NAME}@sha256:%s " *)
+      - name: Verify
+        run: |
+          docker buildx imagetools inspect "${PKG_TAG}"
+          docker buildx imagetools inspect "${HUB_TAG}"
 
   create-release:
     needs: [publish, publish-binary]
