@@ -148,24 +148,17 @@ jobs:
         run: echo "${GITHUB_TOKEN}" | docker login ghcr.io -u azu --password-stdin
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Smoke test (build & run --version)
-        working-directory: ./publish/docker
-        run: |
-          docker buildx build . \
-            --build-arg SECRETLINT_VERSION=${SECRETLINT_VERSION} \
-            --platform ${{ matrix.platform }} \
-            --load \
-            -t secretlint:smoke
-          docker run --rm secretlint:smoke --version
-      - name: Build and push by digest
+      - name: Build, smoke test, and push by digest
         working-directory: ./publish/docker
         run: |
           mkdir -p /tmp/digests
           docker buildx build . \
             --build-arg SECRETLINT_VERSION=${SECRETLINT_VERSION} \
             --platform ${{ matrix.platform }} \
+            --output "type=docker,name=secretlint:smoke" \
             --output "type=image,name=${DOCKER_BASE_NAME},push-by-digest=true,name-canonical=true,push=true" \
             --metadata-file /tmp/metadata.json
+          docker run --rm secretlint:smoke --version
           digest=$(jq -r '."containerimage.digest"' /tmp/metadata.json)
           touch "/tmp/digests/${digest#sha256:}"
       - name: Upload digest
@@ -216,7 +209,9 @@ jobs:
             -t "${HUB_LATEST_TAG}" \
             $(printf "${DOCKER_BASE_NAME}@sha256:%s " *)
       - name: Verify
-        run: docker buildx imagetools inspect "${PKG_TAG}"
+        run: |
+          docker buildx imagetools inspect "${PKG_TAG}"
+          docker buildx imagetools inspect "${HUB_TAG}"
 
   create-release:
     needs: [publish, publish-binary]
