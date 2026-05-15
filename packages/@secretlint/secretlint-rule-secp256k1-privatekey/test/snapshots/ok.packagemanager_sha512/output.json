@@ -1,0 +1,6 @@
+{
+    "filePath": "[SNAPSHOT]/ok.packagemanager_sha512/input.txt",
+    "messages": [],
+    "sourceContent": "{\n    \"name\": \"example\",\n    \"packageManager\": \"pnpm@10.4.1+sha512.0a31fc7ee2cca8f25aacafb0fae1c5d27e8c4d3ecbf3eea76e9c4be73f6d4f3b27c00fc99e83c8cae0a6e7e4ce6c2a8b9e5b7d6e5d62e35f50e3a85a8b3d4d4\"\n}\n",
+    "sourceContentType": "text"
+}

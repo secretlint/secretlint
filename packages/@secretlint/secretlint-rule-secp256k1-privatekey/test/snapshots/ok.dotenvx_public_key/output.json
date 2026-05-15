@@ -1,0 +1,6 @@
+{
+    "filePath": "[SNAPSHOT]/ok.dotenvx_public_key/input.txt",
+    "messages": [],
+    "sourceContent": "#/-------------------[DOTENV_PUBLIC_KEY]--------------------/\n#/            public-key encryption for .env files          /\n#/       [how it works](https://dotenvx.com/encryption)     /\n#/----------------------------------------------------------/\nDOTENV_PUBLIC_KEY=\"037cfbfc90234cfdab7eb54050566293789efaa1a35dc420749662db400dc9c4b2\"\n\n# .env\nHELLO=\"encrypted:BLAH\"\n",
+    "sourceContentType": "text"
+}

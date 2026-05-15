@@ -33,7 +33,10 @@ export const creator: SecretLintRuleCreator<Options> = {
         const t = context.createTranslator(messages);
         return {
             file(source: SecretLintSourceCode) {
-                const pattern = /[0-9a-f]{64}/gi;
+                // Require non-hex boundaries so substrings inside longer hex strings
+                // (e.g. DOTENV_PUBLIC_KEY which is 66 hex chars, or sha512 hashes which are 128 hex chars)
+                // are not falsely matched as 64-hex-char private keys.
+                const pattern = /(?<![0-9a-f])[0-9a-f]{64}(?![0-9a-f])/gi;
                 const matches = source.content.matchAll(pattern);
                 for (const match of matches) {
                     const index = match.index || 0;
@@ -41,7 +44,7 @@ export const creator: SecretLintRuleCreator<Options> = {
                     const range = [index, index + matchString.length] as const;
                     try {
                         if (!secp256k1.privateKeyVerify(new BN(matchString, 16).toBuffer())) {
-                            return;
+                            continue;
                         }
                         context.report({
                             message: t("secp256k1Priv", {
