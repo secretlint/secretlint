@@ -43,8 +43,8 @@ catalogs:
       specifier: ^4.0.10
       version: 4.0.10
     '@types/node':
-      specifier: ^25.6.2
-      version: 25.6.2
+      specifier: ^25.7.0
+      version: 25.8.0
     '@types/picomatch':
       specifier: ^4.0.3
       version: 4.0.3
@@ -166,13 +166,13 @@ importers:
         version: 3.8.3
       scaffdog:
         specifier: 'catalog:'
-        version: 4.1.0(@types/node@25.6.2)
+        version: 4.1.0(@types/node@25.8.0)
       turbo:
         specifier: 'catalog:'
         version: 2.9.12
       vitest:
         specifier: 'catalog:'
-        version: 4.1.6(@types/node@25.6.2)(vite@7.1.1(@types/node@25.6.2)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.3))
+        version: 4.1.6(@types/node@25.8.0)(vite@7.1.1(@types/node@25.8.0)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.3))
 
   examples/benchmark:
     dependencies:
@@ -218,7 +218,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -261,7 +261,7 @@ importers:
         version: 4.1.13
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       create-validator-ts:
         specifier: 'catalog:'
         version: 6.0.1
@@ -295,7 +295,7 @@ importers:
         version: 4.1.13
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       assert-json-equal:
         specifier: 'catalog:'
         version: 2.0.0
@@ -350,7 +350,7 @@ importers:
         version: 4.1.13
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       '@types/pluralize':
         specifier: 'catalog:'
         version: 0.0.33
@@ -378,7 +378,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -424,7 +424,7 @@ importers:
         version: 4.1.13
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -439,7 +439,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -461,7 +461,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -473,7 +473,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -495,7 +495,7 @@ importers:
         version: link:../types
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       escape-string-regexp:
         specifier: 'catalog:'
         version: 5.0.0
@@ -523,7 +523,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -545,7 +545,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -570,7 +570,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -595,7 +595,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -620,7 +620,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -645,7 +645,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -670,7 +670,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -695,7 +695,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -720,7 +720,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -742,7 +742,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -767,7 +767,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -792,7 +792,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -817,7 +817,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -842,7 +842,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -867,7 +867,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -892,7 +892,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -917,7 +917,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -942,7 +942,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -967,7 +967,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -986,7 +986,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -999,7 +999,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1015,7 +1015,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1037,7 +1037,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1065,7 +1065,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1093,7 +1093,7 @@ importers:
         version: 4.0.9
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1118,7 +1118,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1143,7 +1143,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1165,7 +1165,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1196,7 +1196,7 @@ importers:
         version: 4.0.10
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1310,7 +1310,7 @@ importers:
         version: link:../types
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1433,7 +1433,7 @@ importers:
         version: link:../types
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1467,7 +1467,7 @@ importers:
         version: link:../types
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1501,7 +1501,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1526,7 +1526,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1551,7 +1551,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1576,7 +1576,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1601,7 +1601,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1626,7 +1626,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1651,7 +1651,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1673,7 +1673,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1701,7 +1701,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1716,7 +1716,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1728,7 +1728,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: 'catalog:'
-        version: 4.1.6(@types/node@25.6.2)(vite@7.1.1(@types/node@25.6.2)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.3))
+        version: 4.1.6(@types/node@25.8.0)(vite@7.1.1(@types/node@25.8.0)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.3))
 
   packages/@secretlint/walker:
     dependencies:
@@ -1741,7 +1741,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       '@types/picomatch':
         specifier: 'catalog:'
         version: 4.0.3
@@ -1756,7 +1756,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: 'catalog:'
-        version: 4.1.6(@types/node@25.6.2)(vite@7.1.1(@types/node@25.6.2)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.3))
+        version: 4.1.6(@types/node@25.8.0)(vite@7.1.1(@types/node@25.8.0)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.3))
 
   packages/secretlint:
     dependencies:
@@ -1799,7 +1799,7 @@ importers:
         version: 4.1.13
       '@types/node':
         specifier: 'catalog:'
-        version: 25.6.2
+        version: 25.8.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -2529,6 +2529,9 @@ packages:
 
   '@types/node@25.6.2':
     resolution: {integrity: sha512-sokuT28dxf9JT5Kady1fsXOvI4HVpjZa95NKT5y9PNTIrs2AsobR4GFAA90ZG8M+nxVRLysCXsVj6eGC7Vbrlw==}
+
+  '@types/node@25.8.0':
+    resolution: {integrity: sha512-TCFSk8IZh+iLX1xtksoBVtdmgL+1IX0fC9BeU4QqFSuNdN/K+HUlhqOzEmSYYpZUVsLYcPqc9KX+60iDuninSQ==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -3903,6 +3906,9 @@ packages:
   undici-types@7.19.2:
     resolution: {integrity: sha512-qYVnV5OEm2AW8cJMCpdV20CDyaN3g0AjDlOGf1OW4iaDEx8MwdtChUp4zu4H0VP3nDRF/8RKWH+IPp9uW0YGZg==}
 
+  undici-types@7.24.6:
+    resolution: {integrity: sha512-WRNW+sJgj5OBN4/0JpHFqtqzhpbnV0GuB+OozA9gCL7a993SmU+1JBZCzLNxYsbMfIeDL+lTsphD5jN5N+n0zg==}
+
   unicode-emoji-modifier-base@1.0.0:
     resolution: {integrity: sha512-yLSH4py7oFH3oG/9K+XWrz1pSi3dfUrWEnInbxMfArOfc1+33BlGPQtLsOYwvdMy11AwUBetYuaRxSPqgkq+8g==}
     engines: {node: '>=4'}
@@ -4296,12 +4302,12 @@ snapshots:
     dependencies:
       resolve: 1.22.10
 
-  '@inquirer/external-editor@1.0.3(@types/node@25.6.2)':
+  '@inquirer/external-editor@1.0.3(@types/node@25.8.0)':
     dependencies:
       chardet: 2.1.1
       iconv-lite: 0.7.2
     optionalDependencies:
-      '@types/node': 25.6.2
+      '@types/node': 25.8.0
 
   '@inquirer/figures@1.0.15': {}
 
@@ -4568,7 +4574,7 @@ snapshots:
 
   '@types/bn.js@5.2.0':
     dependencies:
-      '@types/node': 25.6.2
+      '@types/node': 25.8.0
 
   '@types/braces@3.0.5': {}
 
@@ -4611,6 +4617,10 @@ snapshots:
     dependencies:
       undici-types: 7.19.2
 
+  '@types/node@25.8.0':
+    dependencies:
+      undici-types: 7.24.6
+
   '@types/normalize-package-data@2.4.4': {}
 
   '@types/picomatch@4.0.3': {}
@@ -4623,7 +4633,7 @@ snapshots:
 
   '@types/secp256k1@4.0.7':
     dependencies:
-      '@types/node': 25.6.2
+      '@types/node': 25.8.0
 
   '@types/unist@2.0.11': {}
 
@@ -4638,13 +4648,13 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.1.0
 
-  '@vitest/mocker@4.1.6(vite@7.1.1(@types/node@25.6.2)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.3))':
+  '@vitest/mocker@4.1.6(vite@7.1.1(@types/node@25.8.0)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.3))':
     dependencies:
       '@vitest/spy': 4.1.6
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 7.1.1(@types/node@25.6.2)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.3)
+      vite: 7.1.1(@types/node@25.8.0)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.3)
 
   '@vitest/pretty-format@4.1.6':
     dependencies:
@@ -5200,18 +5210,18 @@ snapshots:
 
   ini@4.1.1: {}
 
-  inquirer-autocomplete-prompt@3.0.1(inquirer@9.3.8(@types/node@25.6.2)):
+  inquirer-autocomplete-prompt@3.0.1(inquirer@9.3.8(@types/node@25.8.0)):
     dependencies:
       ansi-escapes: 6.2.1
       figures: 5.0.0
-      inquirer: 9.3.8(@types/node@25.6.2)
+      inquirer: 9.3.8(@types/node@25.8.0)
       picocolors: 1.1.1
       run-async: 2.4.1
       rxjs: 7.8.2
 
-  inquirer@9.3.8(@types/node@25.6.2):
+  inquirer@9.3.8(@types/node@25.8.0):
     dependencies:
-      '@inquirer/external-editor': 1.0.3(@types/node@25.6.2)
+      '@inquirer/external-editor': 1.0.3(@types/node@25.8.0)
       '@inquirer/figures': 1.0.15
       ansi-escapes: 4.3.2
       cli-width: 4.1.0
@@ -5840,7 +5850,7 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  scaffdog@4.1.0(@types/node@25.6.2):
+  scaffdog@4.1.0(@types/node@25.8.0):
     dependencies:
       '@scaffdog/config': 4.1.0
       '@scaffdog/core': 4.1.0
@@ -5857,8 +5867,8 @@ snapshots:
       fuse.js: 7.3.0
       globby: 14.1.0
       indent-string: 5.0.0
-      inquirer: 9.3.8(@types/node@25.6.2)
-      inquirer-autocomplete-prompt: 3.0.1(inquirer@9.3.8(@types/node@25.6.2))
+      inquirer: 9.3.8(@types/node@25.8.0)
+      inquirer-autocomplete-prompt: 3.0.1(inquirer@9.3.8(@types/node@25.8.0))
       is-plain-obj: 4.1.0
       log-symbols: 7.0.1
       micromatch: 4.0.8
@@ -6103,6 +6113,8 @@ snapshots:
 
   undici-types@7.19.2: {}
 
+  undici-types@7.24.6: {}
+
   unicode-emoji-modifier-base@1.0.0: {}
 
   unicorn-magic@0.3.0: {}
@@ -6179,7 +6191,7 @@ snapshots:
       unist-util-stringify-position: 3.0.3
       vfile-message: 3.1.4
 
-  vite@7.1.1(@types/node@25.6.2)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.3):
+  vite@7.1.1(@types/node@25.8.0)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.3):
     dependencies:
       esbuild: 0.25.12
       fdir: 6.5.0(picomatch@4.0.4)
@@ -6188,16 +6200,16 @@ snapshots:
       rollup: 4.60.3
       tinyglobby: 0.2.16
     optionalDependencies:
-      '@types/node': 25.6.2
+      '@types/node': 25.8.0
       fsevents: 2.3.3
       jiti: 1.21.7
       tsx: 4.21.0
       yaml: 2.8.3
 
-  vitest@4.1.6(@types/node@25.6.2)(vite@7.1.1(@types/node@25.6.2)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.3)):
+  vitest@4.1.6(@types/node@25.8.0)(vite@7.1.1(@types/node@25.8.0)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.3)):
     dependencies:
       '@vitest/expect': 4.1.6
-      '@vitest/mocker': 4.1.6(vite@7.1.1(@types/node@25.6.2)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.3))
+      '@vitest/mocker': 4.1.6(vite@7.1.1(@types/node@25.8.0)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.3))
       '@vitest/pretty-format': 4.1.6
       '@vitest/runner': 4.1.6
       '@vitest/snapshot': 4.1.6
@@ -6214,10 +6226,10 @@ snapshots:
       tinyexec: 1.1.1
       tinyglobby: 0.2.16
       tinyrainbow: 3.1.0
-      vite: 7.1.1(@types/node@25.6.2)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.3)
+      vite: 7.1.1(@types/node@25.8.0)(jiti@1.21.7)(tsx@4.21.0)(yaml@2.8.3)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@types/node': 25.6.2
+      '@types/node': 25.8.0
     transitivePeerDependencies:
       - msw
 
