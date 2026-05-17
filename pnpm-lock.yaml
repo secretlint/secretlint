@@ -16,16 +16,16 @@ catalogs:
       specifier: ^12.3.0
       version: 12.3.0
     '@textlint/linter-formatter':
-      specifier: ^15.6.1
+      specifier: ^15.7.0
       version: 15.7.0
     '@textlint/module-interop':
-      specifier: ^15.6.1
+      specifier: ^15.7.0
       version: 15.7.0
     '@textlint/regexp-string-matcher':
       specifier: ^2.0.2
       version: 2.0.2
     '@textlint/types':
-      specifier: ^15.6.1
+      specifier: ^15.7.0
       version: 15.7.0
     '@types/bn.js':
       specifier: ^5.2.0
