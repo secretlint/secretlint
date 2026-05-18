@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1779052116390,
+  "lastUpdate": 1779079399865,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -54984,6 +54984,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.25,
             "range": "±1.10%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e5bd420f6ac4099a8883a97378b6c280a689e88d",
+          "message": "Update dependency turbo to ^2.9.14 (#1576)\n\nThis PR contains the following updates:\n\n| Package | Change |\n[Age](https://docs.renovatebot.com/merge-confidence/) |\n[Confidence](https://docs.renovatebot.com/merge-confidence/) |\n|---|---|---|---|\n| [turbo](https://turborepo.dev)\n([source](https://redirect.github.com/vercel/turborepo)) | [`^2.9.12` →\n`^2.9.14`](https://renovatebot.com/diffs/npm/turbo/2.9.12/2.9.14) |\n![age](https://developer.mend.io/api/mc/badges/age/npm/turbo/2.9.14?slim=true)\n|\n![confidence](https://developer.mend.io/api/mc/badges/confidence/npm/turbo/2.9.12/2.9.14?slim=true)\n|\n\n---\n\n### Release Notes\n\n<details>\n<summary>vercel/turborepo (turbo)</summary>\n\n###\n[`v2.9.14`](https://redirect.github.com/vercel/turborepo/releases/tag/v2.9.14):\nTurborepo v2.9.14\n\n[Compare\nSource](https://redirect.github.com/vercel/turborepo/compare/v2.9.12...v2.9.14)\n\n> \\[!NOTE]\n> This release contains important security fixes.\n\n##### High:\n\n- [GHSA-5xc8-49mv-x4mm: Turborepo VSCode Extension command\ninjection](https://redirect.github.com/vercel/turborepo/security/advisories/GHSA-5xc8-49mv-x4mm)\n\n##### Low:\n\n- [GHSA-hcf7-66rw-9f5r: Login callback CSRF/session\nfixation](https://redirect.github.com/vercel/turborepo/security/advisories/GHSA-hcf7-66rw-9f5r)\n- [GHSA-3qcw-2rhx-2726: Unexpected local code execution during Yarn\nBerry\ndetection](https://redirect.github.com/vercel/turborepo/security/advisories/GHSA-3qcw-2rhx-2726)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat v2.9.14 -->\n\n#### What's Changed\n\n##### Changelog\n\n- release(turborepo): 2.9.12 by\n[@&#8203;github-actions](https://redirect.github.com/github-actions)\\[bot]\nin\n[#&#8203;12774](https://redirect.github.com/vercel/turborepo/pull/12774)\n- fix: Restore docs mobile menu by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12782](https://redirect.github.com/vercel/turborepo/pull/12782)\n- ci: Use `pull_request` for PR title linting by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12787](https://redirect.github.com/vercel/turborepo/pull/12787)\n- ci: Scope GitHub Actions caches by branch by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12788](https://redirect.github.com/vercel/turborepo/pull/12788)\n- test: Validate lockfiles without dependency downloads by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12789](https://redirect.github.com/vercel/turborepo/pull/12789)\n- Removed unneeded import form hash creation script in docs by\n[@&#8203;dancrumb](https://redirect.github.com/dancrumb) in\n[#&#8203;12799](https://redirect.github.com/vercel/turborepo/pull/12799)\n- fix: Validate auth callback state by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12802](https://redirect.github.com/vercel/turborepo/pull/12802)\n- fix: Harden VS Code extension command execution by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12800](https://redirect.github.com/vercel/turborepo/pull/12800)\n- fix: Avoid project-local Yarn during detection by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12801](https://redirect.github.com/vercel/turborepo/pull/12801)\n- chore: Release 2.9.13 by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12803](https://redirect.github.com/vercel/turborepo/pull/12803)\n\n#### New Contributors\n\n- [@&#8203;dancrumb](https://redirect.github.com/dancrumb) made their\nfirst contribution in\n[#&#8203;12799](https://redirect.github.com/vercel/turborepo/pull/12799)\n\n**Full Changelog**:\n<https://github.com/vercel/turborepo/compare/v2.9.12...v2.9.14>\n\n</details>\n\n---\n\n### Configuration\n\n📅 **Schedule**: (in timezone Asia/Tokyo)\n\n- Branch creation\n  - At any time (no schedule defined)\n- Automerge\n  - At any time (no schedule defined)\n\n🚦 **Automerge**: Enabled.\n\n♻ **Rebasing**: Whenever PR is behind base branch, or you tick the\nrebase/retry checkbox.\n\n🔕 **Ignore**: Close this PR and you won't be reminded about this update\nagain.\n\n---\n\n- [ ] <!-- rebase-check -->If you want to rebase/retry this PR, check\nthis box\n\n---\n\nThis PR was generated by [Mend Renovate](https://mend.io/renovate/).\nView the [repository job\nlog](https://developer.mend.io/github/secretlint/secretlint).\n\n<!--renovate-debug:eyJjcmVhdGVkSW5WZXIiOiI0My4xNzkuMyIsInVwZGF0ZWRJblZlciI6IjQzLjE3OS4zIiwidGFyZ2V0QnJhbmNoIjoibWFzdGVyIiwibGFiZWxzIjpbImRlcGVuZGVuY2llcyJdfQ==-->\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2026-05-18T04:41:27Z",
+          "tree_id": "532b065b24dd40a5b232ed5c83a86839c1d70c47",
+          "url": "https://github.com/secretlint/secretlint/commit/e5bd420f6ac4099a8883a97378b6c280a689e88d"
+        },
+        "date": 1779079397240,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.55,
+            "range": "±0.67%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.25,
+            "range": "±0.64%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
