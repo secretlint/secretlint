@@ -5,7 +5,7 @@ packages:
   - publish/binary-compiler
 
 catalog:
-  "@rollup/plugin-commonjs": "^29.0.2"
+  "@rollup/plugin-commonjs": "^29.0.3"
   "@rollup/plugin-node-resolve": "^16.0.3"
   "@rollup/plugin-typescript": "^12.3.0"
   "@textlint/linter-formatter": "^15.7.0"
