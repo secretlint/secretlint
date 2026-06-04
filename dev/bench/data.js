@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1780581921067,
+  "lastUpdate": 1780581928287,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -55630,6 +55630,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.25,
             "range": "±2.76%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a324ad6aa01f74fc9022a5a9e496c952a2702c9f",
+          "message": "Update Minor updates to ^4.61.0 (#1596)\n\nThis PR contains the following updates:\n\n| Package | Change |\n[Age](https://docs.renovatebot.com/merge-confidence/) |\n[Confidence](https://docs.renovatebot.com/merge-confidence/) |\n|---|---|---|---|\n| [rollup](https://rollupjs.org/)\n([source](https://redirect.github.com/rollup/rollup)) | [`^4.60.4` →\n`^4.61.0`](https://renovatebot.com/diffs/npm/rollup/4.60.4/4.61.0) |\n![age](https://developer.mend.io/api/mc/badges/age/npm/rollup/4.61.0?slim=true)\n|\n![confidence](https://developer.mend.io/api/mc/badges/confidence/npm/rollup/4.60.4/4.61.0?slim=true)\n|\n\n---\n\n### Release Notes\n\n<details>\n<summary>rollup/rollup (rollup)</summary>\n\n###\n[`v4.61.0`](https://redirect.github.com/rollup/rollup/blob/HEAD/CHANGELOG.md#4610)\n\n[Compare\nSource](https://redirect.github.com/rollup/rollup/compare/v4.60.4...v4.61.0)\n\n*2026-06-01*\n\n##### Features\n\n- Sort entry modules to make chunk hashes deterministic\n([#&#8203;6391](https://redirect.github.com/rollup/rollup/issues/6391))\n\n##### Pull Requests\n\n- [#&#8203;6376](https://redirect.github.com/rollup/rollup/pull/6376):\nEliminate AWS credential exposure on fork PRs in REPL artefact workflow\n([@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6378](https://redirect.github.com/rollup/rollup/pull/6378):\nfix(deps): update minor/patch updates\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6379](https://redirect.github.com/rollup/rollup/pull/6379):\nchore(deps): update dependency lint-staged to v17\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot],\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6380](https://redirect.github.com/rollup/rollup/pull/6380):\nchore(deps): update dependency lru-cache to v11\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot],\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6381](https://redirect.github.com/rollup/rollup/pull/6381):\nchore(deps): lock file maintenance\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot],\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6382](https://redirect.github.com/rollup/rollup/pull/6382):\nchore(deps): update dependency\n[@&#8203;types/node](https://redirect.github.com/types/node) to\n^20.19.41\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6386](https://redirect.github.com/rollup/rollup/pull/6386):\nfix(deps): update minor/patch updates\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6387](https://redirect.github.com/rollup/rollup/pull/6387):\nchore(deps): update aws-actions/configure-aws-credentials action to v6\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6388](https://redirect.github.com/rollup/rollup/pull/6388):\nfix(deps): update swc monorepo (major)\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot],\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6389](https://redirect.github.com/rollup/rollup/pull/6389):\nchore(deps): lock file maintenance\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6391](https://redirect.github.com/rollup/rollup/pull/6391):\nSort entry modules to make chunk hash names deterministic\n([@&#8203;TrickyPi](https://redirect.github.com/TrickyPi))\n- [#&#8203;6394](https://redirect.github.com/rollup/rollup/pull/6394):\nfix(deps): update minor/patch updates\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot],\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6395](https://redirect.github.com/rollup/rollup/pull/6395):\nchore(deps): update react monorepo to v19\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot],\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6396](https://redirect.github.com/rollup/rollup/pull/6396):\nfix(deps): update rust crate swc\\_compiler\\_base to v57\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot],\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6397](https://redirect.github.com/rollup/rollup/pull/6397):\nchore(deps): lock file maintenance\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot],\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6400](https://redirect.github.com/rollup/rollup/pull/6400):\ndocs: fix broken links\n([@&#8203;jiyujie2006](https://redirect.github.com/jiyujie2006))\n\n</details>\n\n---\n\n### Configuration\n\n📅 **Schedule**: (in timezone Asia/Tokyo)\n\n- Branch creation\n  - At any time (no schedule defined)\n- Automerge\n  - At any time (no schedule defined)\n\n🚦 **Automerge**: Enabled.\n\n♻ **Rebasing**: Whenever PR is behind base branch, or you tick the\nrebase/retry checkbox.\n\n🔕 **Ignore**: Close this PR and you won't be reminded about this update\nagain.\n\n---\n\n- [ ] <!-- rebase-check -->If you want to rebase/retry this PR, check\nthis box\n\n---\n\nThis PR was generated by [Mend Renovate](https://mend.io/renovate/).\nView the [repository job\nlog](https://developer.mend.io/github/secretlint/secretlint).\n\n<!--renovate-debug:eyJjcmVhdGVkSW5WZXIiOiI0My4yMDkuNCIsInVwZGF0ZWRJblZlciI6IjQzLjIwOS40IiwidGFyZ2V0QnJhbmNoIjoibWFzdGVyIiwibGFiZWxzIjpbImRlcGVuZGVuY2llcyJdfQ==-->\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2026-06-04T14:03:24Z",
+          "tree_id": "0196849ec457b5a7c7e3e589ef628b87b4dba65e",
+          "url": "https://github.com/secretlint/secretlint/commit/a324ad6aa01f74fc9022a5a9e496c952a2702c9f"
+        },
+        "date": 1780581924428,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.5,
+            "range": "±0.98%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.25,
+            "range": "±2.11%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
