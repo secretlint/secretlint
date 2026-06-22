@@ -43,8 +43,8 @@ catalogs:
       specifier: ^4.0.10
       version: 4.0.10
     '@types/node':
-      specifier: ^25.9.3
-      version: 25.9.3
+      specifier: ^25.9.4
+      version: 25.9.4
     '@types/picomatch':
       specifier: ^4.0.3
       version: 4.0.3
@@ -118,8 +118,8 @@ catalogs:
       specifier: ^6.1.3
       version: 6.1.3
     rollup:
-      specifier: ^4.62.0
-      version: 4.62.0
+      specifier: ^4.62.2
+      version: 4.62.2
     rollup-plugin-polyfill-node:
       specifier: ^0.13.0
       version: 0.13.0
@@ -166,13 +166,13 @@ importers:
         version: 3.8.3
       scaffdog:
         specifier: 'catalog:'
-        version: 4.1.0(@types/node@25.9.3)
+        version: 4.1.0(@types/node@25.9.4)
       turbo:
         specifier: 'catalog:'
         version: 2.9.18
       vitest:
         specifier: 'catalog:'
-        version: 4.1.9(@types/node@25.9.3)(vite@7.1.1(@types/node@25.9.3)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3))
+        version: 4.1.9(@types/node@25.9.4)(vite@7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3))
 
   examples/benchmark:
     dependencies:
@@ -218,7 +218,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -261,7 +261,7 @@ importers:
         version: 4.1.13
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       create-validator-ts:
         specifier: 'catalog:'
         version: 6.0.1
@@ -295,7 +295,7 @@ importers:
         version: 4.1.13
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       assert-json-equal:
         specifier: 'catalog:'
         version: 2.0.0
@@ -350,7 +350,7 @@ importers:
         version: 4.1.13
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       '@types/pluralize':
         specifier: 'catalog:'
         version: 0.0.33
@@ -378,7 +378,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -424,7 +424,7 @@ importers:
         version: 4.1.13
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -439,7 +439,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -461,7 +461,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -473,7 +473,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -495,7 +495,7 @@ importers:
         version: link:../types
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       escape-string-regexp:
         specifier: 'catalog:'
         version: 5.0.0
@@ -523,7 +523,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -545,7 +545,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -570,7 +570,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -595,7 +595,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -620,7 +620,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -645,7 +645,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -670,7 +670,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -695,7 +695,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -720,7 +720,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -742,7 +742,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -767,7 +767,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -792,7 +792,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -817,7 +817,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -842,7 +842,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -867,7 +867,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -892,7 +892,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -917,7 +917,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -942,7 +942,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -967,7 +967,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -986,7 +986,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -999,7 +999,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1015,7 +1015,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1037,7 +1037,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1065,7 +1065,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1093,7 +1093,7 @@ importers:
         version: 4.0.9
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1118,7 +1118,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1143,7 +1143,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1165,7 +1165,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1196,7 +1196,7 @@ importers:
         version: 4.0.10
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1211,13 +1211,13 @@ importers:
     devDependencies:
       '@rollup/plugin-commonjs':
         specifier: 'catalog:'
-        version: 29.0.3(rollup@4.62.0)
+        version: 29.0.3(rollup@4.62.2)
       '@rollup/plugin-node-resolve':
         specifier: 'catalog:'
-        version: 16.0.3(rollup@4.62.0)
+        version: 16.0.3(rollup@4.62.2)
       '@rollup/plugin-typescript':
         specifier: 'catalog:'
-        version: 12.3.0(rollup@4.62.0)(tslib@2.8.1)(typescript@6.0.3)
+        version: 12.3.0(rollup@4.62.2)(tslib@2.8.1)(typescript@6.0.3)
       '@secretlint/secretlint-rule-1password':
         specifier: workspace:*
         version: link:../secretlint-rule-1password
@@ -1310,7 +1310,7 @@ importers:
         version: link:../types
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1319,10 +1319,10 @@ importers:
         version: 6.1.3
       rollup:
         specifier: 'catalog:'
-        version: 4.62.0
+        version: 4.62.2
       rollup-plugin-polyfill-node:
         specifier: 'catalog:'
-        version: 0.13.0(rollup@4.62.0)
+        version: 0.13.0(rollup@4.62.2)
       tsx:
         specifier: 'catalog:'
         version: 4.22.4
@@ -1334,13 +1334,13 @@ importers:
     devDependencies:
       '@rollup/plugin-commonjs':
         specifier: 'catalog:'
-        version: 29.0.3(rollup@4.62.0)
+        version: 29.0.3(rollup@4.62.2)
       '@rollup/plugin-node-resolve':
         specifier: 'catalog:'
-        version: 16.0.3(rollup@4.62.0)
+        version: 16.0.3(rollup@4.62.2)
       '@rollup/plugin-typescript':
         specifier: 'catalog:'
-        version: 12.3.0(rollup@4.62.0)(tslib@2.8.1)(typescript@6.0.3)
+        version: 12.3.0(rollup@4.62.2)(tslib@2.8.1)(typescript@6.0.3)
       '@secretlint/secretlint-rule-1password':
         specifier: workspace:*
         version: link:../secretlint-rule-1password
@@ -1433,7 +1433,7 @@ importers:
         version: link:../types
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1442,10 +1442,10 @@ importers:
         version: 6.1.3
       rollup:
         specifier: 'catalog:'
-        version: 4.62.0
+        version: 4.62.2
       rollup-plugin-polyfill-node:
         specifier: 'catalog:'
-        version: 0.13.0(rollup@4.62.0)
+        version: 0.13.0(rollup@4.62.2)
       tsx:
         specifier: 'catalog:'
         version: 4.22.4
@@ -1467,7 +1467,7 @@ importers:
         version: link:../types
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1501,7 +1501,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1526,7 +1526,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1551,7 +1551,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1576,7 +1576,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1601,7 +1601,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1626,7 +1626,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1651,7 +1651,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1673,7 +1673,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1701,7 +1701,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1716,7 +1716,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -1728,7 +1728,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: 'catalog:'
-        version: 4.1.9(@types/node@25.9.3)(vite@7.1.1(@types/node@25.9.3)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3))
+        version: 4.1.9(@types/node@25.9.4)(vite@7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3))
 
   packages/@secretlint/walker:
     dependencies:
@@ -1741,7 +1741,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       '@types/picomatch':
         specifier: 'catalog:'
         version: 4.0.3
@@ -1756,7 +1756,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: 'catalog:'
-        version: 4.1.9(@types/node@25.9.3)(vite@7.1.1(@types/node@25.9.3)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3))
+        version: 4.1.9(@types/node@25.9.4)(vite@7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3))
 
   packages/secretlint:
     dependencies:
@@ -1799,7 +1799,7 @@ importers:
         version: 4.1.13
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.3
+        version: 25.9.4
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
@@ -2281,8 +2281,18 @@ packages:
     cpu: [arm]
     os: [android]
 
+  '@rollup/rollup-android-arm-eabi@4.62.2':
+    resolution: {integrity: sha512-6o7ZLZK+BeenkZCFNDXqpbjw9bD6nuWonvS/lwQJp7NoVVxm6p3qE7qQ5jGuBjiFsgvqjD8mZAU5oWxTmbOeOg==}
+    cpu: [arm]
+    os: [android]
+
   '@rollup/rollup-android-arm64@4.62.0':
     resolution: {integrity: sha512-M6s9cr10MibETyo8JsOkq+Lo1+lU6hcvb1MApnUql5qte/5hMEgzlN8/ReIKNfRV8rrqX50W1BX9zoUhC192RA==}
+    cpu: [arm64]
+    os: [android]
+
+  '@rollup/rollup-android-arm64@4.62.2':
+    resolution: {integrity: sha512-BaH7BllCACHoH1LguOU56UItGfUWjujlO65kS9LAodViaN4bwIKd7oeW/ZHJ/4ljr/7MIiENnNy3HJ0zXv8Zkw==}
     cpu: [arm64]
     os: [android]
 
@@ -2291,8 +2301,18 @@ packages:
     cpu: [arm64]
     os: [darwin]
 
+  '@rollup/rollup-darwin-arm64@4.62.2':
+    resolution: {integrity: sha512-v39RCCvj4He82I9sFmk+M1VZ0PLM9sfsLVikjfx2hYBNALhrrOR2D3JjQA6AhlaSOgcR+RzrKY7e1+bT6SUO/A==}
+    cpu: [arm64]
+    os: [darwin]
+
   '@rollup/rollup-darwin-x64@4.62.0':
     resolution: {integrity: sha512-SIMzST3VFNXDAbeIWDWiFCNM5qncUBDWaEV7NfE7oZbDt2mgfW4MvbKdbYiGOLoM32gbTv608UMd0XktEYSD7w==}
+    cpu: [x64]
+    os: [darwin]
+
+  '@rollup/rollup-darwin-x64@4.62.2':
+    resolution: {integrity: sha512-yl0y2vq3S3lHeuXhEdss6TWfKW8vkujImO12tn4ZkG/4oghr09LvdYm2RElVjokTQiUvDUGXLGsYeLqUMCKpGA==}
     cpu: [x64]
     os: [darwin]
 
@@ -2301,13 +2321,29 @@ packages:
     cpu: [arm64]
     os: [freebsd]
 
+  '@rollup/rollup-freebsd-arm64@4.62.2':
+    resolution: {integrity: sha512-tT4pvt4qXD+vEoezupCWi+a1F0vvDiksiHc+PxRlYTOH1I6/X4id9jPxTP+Fg+545euaFT1jJVs4CEdHZAU1vw==}
+    cpu: [arm64]
+    os: [freebsd]
+
   '@rollup/rollup-freebsd-x64@4.62.0':
     resolution: {integrity: sha512-9+qTWGW9AZRhnUgwtTwzNwcPlL87ngkeN0LA+q1bADvmY9aNvWaF2TFW8BZgnQPYxpDI7+rMVLivcd4V737TAQ==}
     cpu: [x64]
     os: [freebsd]
 
+  '@rollup/rollup-freebsd-x64@4.62.2':
+    resolution: {integrity: sha512-6nU5F2wCW+qvCBhTn1pdIU3bzsIoF7EUwsCDRxilWGprQR6yd508YnH9+OKFCwpfS8pjZqDUmnCAr7exax0XCg==}
+    cpu: [x64]
+    os: [freebsd]
+
   '@rollup/rollup-linux-arm-gnueabihf@4.62.0':
     resolution: {integrity: sha512-T1dMEQhXA/jkJ/jyMIw9IovK8bSUq7A8kLIlvZTb/6YIVsp2zLavr4F3oyllHWo7eIVJRyE5n3tUjQJEbE1IuQ==}
+    cpu: [arm]
+    os: [linux]
+    libc: [glibc]
+
+  '@rollup/rollup-linux-arm-gnueabihf@4.62.2':
+    resolution: {integrity: sha512-n1GJHPOvpIfhi3TmrCeh6S6URt9BFCt0KQE3qvexyGCTAKpR4Lg+eWvNZEqu7epxwus/8ElT3hacYEucm49SZg==}
     cpu: [arm]
     os: [linux]
     libc: [glibc]
@@ -2318,8 +2354,20 @@ packages:
     os: [linux]
     libc: [musl]
 
+  '@rollup/rollup-linux-arm-musleabihf@4.62.2':
+    resolution: {integrity: sha512-JqgflS8wEB+UXV/vS1RpRbifGBeN4D5lz8D8oOFbFZw4vedvdOgCFAjfBmIMdW3yL10XpQQ0Ambepw6MXrhOnA==}
+    cpu: [arm]
+    os: [linux]
+    libc: [musl]
+
   '@rollup/rollup-linux-arm64-gnu@4.62.0':
     resolution: {integrity: sha512-bVURMg+6eNN9C/yc0aVjooZcwTTtYF4YW3xta5pP0//r3o1V8gXEHXWCndj47w/HhwsFroZrFhR+6uQP5T0n0g==}
+    cpu: [arm64]
+    os: [linux]
+    libc: [glibc]
+
+  '@rollup/rollup-linux-arm64-gnu@4.62.2':
+    resolution: {integrity: sha512-wnFJkogWvN4jm/hQRF2UBaeUmk20j5+DmHvoyWii2b8HJDyvz1MF2OU/6ynXt2KR63rbZLWkFpoytpdc/yBuSA==}
     cpu: [arm64]
     os: [linux]
     libc: [glibc]
@@ -2330,8 +2378,20 @@ packages:
     os: [linux]
     libc: [musl]
 
+  '@rollup/rollup-linux-arm64-musl@4.62.2':
+    resolution: {integrity: sha512-HVu2bp0zhvJ8xHEV9+UUs7S90VadmBSY3LcIMvozbPo4AuMGDWlz3ymHLHZPX4hR67TKTt8Qp5PJ5RBg/i+RMQ==}
+    cpu: [arm64]
+    os: [linux]
+    libc: [musl]
+
   '@rollup/rollup-linux-loong64-gnu@4.62.0':
     resolution: {integrity: sha512-9Gp/DgrkzfUBmNPVTyPTvay+4xEP7M/clXpj3efXBcm6uTIVIgDg4rqUpqKXvLEuFRVuEpSAOkhgNeecvaZ4Cg==}
+    cpu: [loong64]
+    os: [linux]
+    libc: [glibc]
+
+  '@rollup/rollup-linux-loong64-gnu@4.62.2':
+    resolution: {integrity: sha512-mQqqAV8QaoSgr9I2fKDLY2BAVvmKjWoGiu/cSYQonsLvtqwEn1E4QYfnCOcp5zoEqNhsDYin1s6jx/VJmrxlZg==}
     cpu: [loong64]
     os: [linux]
     libc: [glibc]
@@ -2342,8 +2402,20 @@ packages:
     os: [linux]
     libc: [musl]
 
+  '@rollup/rollup-linux-loong64-musl@4.62.2':
+    resolution: {integrity: sha512-IxKLoxCQ2IWi6bT2akyDUBGsOImDKB+sPp4EsTmwFQ/fMwpCKm8uLSSgP/Kx/QYUgKis6SEZ5/Nlhup0DIA0PQ==}
+    cpu: [loong64]
+    os: [linux]
+    libc: [musl]
+
   '@rollup/rollup-linux-ppc64-gnu@4.62.0':
     resolution: {integrity: sha512-3UvJ5PNVU16aJf6M3tFI24pWzAl2/ynfbyRN3ICyQajK1lSkrnVYNnLz3v04J32qKa0FczJc22zeToc0lr2A3w==}
+    cpu: [ppc64]
+    os: [linux]
+    libc: [glibc]
+
+  '@rollup/rollup-linux-ppc64-gnu@4.62.2':
+    resolution: {integrity: sha512-Mk5ha2RQSgyFfmYYLkBpPnUk8D8FriBxesO1u9O75X0mHgXL1UQcH5Itl2lurWL2tj0RxV9b9tJgipac0hRY9A==}
     cpu: [ppc64]
     os: [linux]
     libc: [glibc]
@@ -2354,8 +2426,20 @@ packages:
     os: [linux]
     libc: [musl]
 
+  '@rollup/rollup-linux-ppc64-musl@4.62.2':
+    resolution: {integrity: sha512-CjvEnqJL/0/TQ3TXX3OPIJ/kmBellrWd4heXUmHeJlTnmwjKpSJzoehLaL6Xk0ZnMHBu9dZuFADNOrtjF4v+2w==}
+    cpu: [ppc64]
+    os: [linux]
+    libc: [musl]
+
   '@rollup/rollup-linux-riscv64-gnu@4.62.0':
     resolution: {integrity: sha512-c00T5SYENHAt86cfW47URaP3Us5vLC/4QO7GYud1G5VNRffCwwCuBspwqYrriuJB+5m0WFzClCn9wed0FBjKvg==}
+    cpu: [riscv64]
+    os: [linux]
+    libc: [glibc]
+
+  '@rollup/rollup-linux-riscv64-gnu@4.62.2':
+    resolution: {integrity: sha512-1SiZbzwdkaDURsew/tSOrooKiYy7EQGT6m8ufavAi9NEyQb/6VuIxFXAL1fqa4iZe3g4NbNk4P7J32z2tw5Mgg==}
     cpu: [riscv64]
     os: [linux]
     libc: [glibc]
@@ -2366,8 +2450,20 @@ packages:
     os: [linux]
     libc: [musl]
 
+  '@rollup/rollup-linux-riscv64-musl@4.62.2':
+    resolution: {integrity: sha512-nQts12zJ3NQRoE6uYljOH89v7szzLDvG2JD/vsX+vGXU8w/At1GowTZ5/7qeFQ8m7L55rpR8Okugnuo5bgjy2Q==}
+    cpu: [riscv64]
+    os: [linux]
+    libc: [musl]
+
   '@rollup/rollup-linux-s390x-gnu@4.62.0':
     resolution: {integrity: sha512-7pfYFSTc4/rUC/FtAI0Qp6QthDBCIi6/AuP1xYqFk5vanI6KnL5dWKP60OM/05LOsbwTmIcvr6eXC4CJuJ75IA==}
+    cpu: [s390x]
+    os: [linux]
+    libc: [glibc]
+
+  '@rollup/rollup-linux-s390x-gnu@4.62.2':
+    resolution: {integrity: sha512-E9/ll019jhPIJgpzfZoIkBGhcz+kKNgVWYRY0zr9srBdPPFVpvOKW8VaJKUbeK+eZXyQF9ltME+Kk6affeaPgg==}
     cpu: [s390x]
     os: [linux]
     libc: [glibc]
@@ -2378,8 +2474,20 @@ packages:
     os: [linux]
     libc: [glibc]
 
+  '@rollup/rollup-linux-x64-gnu@4.62.2':
+    resolution: {integrity: sha512-5BqxR/pshjey51iliyzTD5Xi3EN0aLmQ2lZ3lvefVV9c82BvrLo2/6OT55iifpWBufs6kdwWbuOKS841DrmK9A==}
+    cpu: [x64]
+    os: [linux]
+    libc: [glibc]
+
   '@rollup/rollup-linux-x64-musl@4.62.0':
     resolution: {integrity: sha512-eRZevouTH2i1HeAVLqJuLnt256krQkGY0TN6WsTmsIhuzbh457HuWDMakKwmi0Cjadux983CoSr8Lim2QhUIFw==}
+    cpu: [x64]
+    os: [linux]
+    libc: [musl]
+
+  '@rollup/rollup-linux-x64-musl@4.62.2':
+    resolution: {integrity: sha512-uNN83XxQrRAh/w0/pmAfibcwyb6YWt4gP+dpnQKPVJshAloQ785ii8CT8ZCIxkGg9opVsvAlGhFitSm6D1Jjpg==}
     cpu: [x64]
     os: [linux]
     libc: [musl]
@@ -2389,8 +2497,18 @@ packages:
     cpu: [x64]
     os: [openbsd]
 
+  '@rollup/rollup-openbsd-x64@4.62.2':
+    resolution: {integrity: sha512-srjEIxSH3LRnJN6THczDHWQplqEMFiAJrTab0msUryh9kwNpkICf3Ea6q6MN/2cZwRFUNx5w+h6Hpi4QuHS6Zg==}
+    cpu: [x64]
+    os: [openbsd]
+
   '@rollup/rollup-openharmony-arm64@4.62.0':
     resolution: {integrity: sha512-yTB9TgfWj5wHe5QgktAgXTLLot1gvEjl1NiPPAUiCs4oPrIWFl5V4nC3GrkNdj9LaAU4s94nVrGbGOCqUpyWsg==}
+    cpu: [arm64]
+    os: [openharmony]
+
+  '@rollup/rollup-openharmony-arm64@4.62.2':
+    resolution: {integrity: sha512-8hOJnxgbyObnCm5AlRA3A931xX19xq80RjVTKgJOvEKWqJruP/Uf12IbAOaDjjEXYRewwHLfmF0YRIdK3OwKWA==}
     cpu: [arm64]
     os: [openharmony]
 
@@ -2399,8 +2517,18 @@ packages:
     cpu: [arm64]
     os: [win32]
 
+  '@rollup/rollup-win32-arm64-msvc@4.62.2':
+    resolution: {integrity: sha512-mmF4AY1i0hG/bLWUctUq59gtmgaSIRa3cu/A3JFRp/sCNEme2bgDEiDS22P9FbnJB8NJNF4jPJiSP5RHQpUTDg==}
+    cpu: [arm64]
+    os: [win32]
+
   '@rollup/rollup-win32-ia32-msvc@4.62.0':
     resolution: {integrity: sha512-yYkWHhmbhRTWTnWos5HC4GcPQfjlzzCNbM9e/+GXrLuaBXYA3qSDR9f0Vgufd5S8yX81U8jPKp7ZnAjZFMtRnw==}
+    cpu: [ia32]
+    os: [win32]
+
+  '@rollup/rollup-win32-ia32-msvc@4.62.2':
+    resolution: {integrity: sha512-DZgkknc6jhHrk46V25vbAM0zZkyP0nSDkJB8/dRkLTxv470dOmWDqGoEJl/9A0dFfS7yE3REOwNDxpHwSLSt0Q==}
     cpu: [ia32]
     os: [win32]
 
@@ -2409,8 +2537,18 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@rollup/rollup-win32-x64-gnu@4.62.2':
+    resolution: {integrity: sha512-T6xr6ucWSFto+VGajA8YH26LdpHRuP4YLHEKAtCWvJDOlnmWcDZVCI2Jmjr+IFHDlt2zRaTAKE4tfjTaWLgJBg==}
+    cpu: [x64]
+    os: [win32]
+
   '@rollup/rollup-win32-x64-msvc@4.62.0':
     resolution: {integrity: sha512-5L+T1fMX4RIEBoZzT0+sQ0PhTS36NULFmMXtl1TZo44TMAROIMHbZufSOjVWt/Y622BtxgxtaNOokbTDvfsrZA==}
+    cpu: [x64]
+    os: [win32]
+
+  '@rollup/rollup-win32-x64-msvc@4.62.2':
+    resolution: {integrity: sha512-BfzEnDJOt9T8M989/lA37EcJgat01wLRnoi5dQf3QzOH7jzpqTAzdDbVfRljVr5r+jzKqpbHeyOfAaXxAd0PAA==}
     cpu: [x64]
     os: [win32]
 
@@ -2529,6 +2667,9 @@ packages:
 
   '@types/node@25.9.3':
     resolution: {integrity: sha512-603BddQMv3pUcr4U2dhujk83N2tTDVr/34wII2B6bJy6g+8WD6yUb11jszNs0gdi4PesVWl7ABt8nYMVpnLUcg==}
+
+  '@types/node@25.9.4':
+    resolution: {integrity: sha512-dszCsrKb5U7ZsVZBWiHFklTloVl0mSEnWH/iZXfZUlI4rzCUnsvGmgqfuVRHL54ugE7/wRuxEIXRa2iMZ+BG6g==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -3626,6 +3767,11 @@ packages:
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
 
+  rollup@4.62.2:
+    resolution: {integrity: sha512-RFnrW4lhXA3s3eqHDZvN654g8OTjzRfqpIRJYczCGB6HzphckVAi/Qh4tbPUbRuDi7s1Llv8g/NspLkttY3gTA==}
+    engines: {node: '>=18.0.0', npm: '>=8.0.0'}
+    hasBin: true
+
   run-async@2.4.1:
     resolution: {integrity: sha512-tvVnVv01b8c1RrA6Ep7JkStj85Guv/YrMcwqYQnwjsAS2cTmmPGBBjAjpCW7RrSodNSoE2/qg9O4bceNvUuDgQ==}
     engines: {node: '>=0.12.0'}
@@ -4294,12 +4440,12 @@ snapshots:
     dependencies:
       resolve: 1.22.10
 
-  '@inquirer/external-editor@1.0.3(@types/node@25.9.3)':
+  '@inquirer/external-editor@1.0.3(@types/node@25.9.4)':
     dependencies:
       chardet: 2.1.1
       iconv-lite: 0.7.2
     optionalDependencies:
-      '@types/node': 25.9.3
+      '@types/node': 25.9.4
 
   '@inquirer/figures@1.0.15': {}
 
@@ -4338,9 +4484,9 @@ snapshots:
       '@pnpm/network.ca-file': 1.0.2
       config-chain: 1.1.13
 
-  '@rollup/plugin-commonjs@29.0.3(rollup@4.62.0)':
+  '@rollup/plugin-commonjs@29.0.3(rollup@4.62.2)':
     dependencies:
-      '@rollup/pluginutils': 5.3.0(rollup@4.62.0)
+      '@rollup/pluginutils': 5.3.0(rollup@4.62.2)
       commondir: 1.0.1
       estree-walker: 2.0.2
       fdir: 6.5.0(picomatch@4.0.4)
@@ -4348,124 +4494,199 @@ snapshots:
       magic-string: 0.30.21
       picomatch: 4.0.4
     optionalDependencies:
-      rollup: 4.62.0
+      rollup: 4.62.2
 
-  '@rollup/plugin-inject@5.0.5(rollup@4.62.0)':
+  '@rollup/plugin-inject@5.0.5(rollup@4.62.2)':
     dependencies:
-      '@rollup/pluginutils': 5.3.0(rollup@4.62.0)
+      '@rollup/pluginutils': 5.3.0(rollup@4.62.2)
       estree-walker: 2.0.2
       magic-string: 0.30.21
     optionalDependencies:
-      rollup: 4.62.0
+      rollup: 4.62.2
 
-  '@rollup/plugin-node-resolve@16.0.3(rollup@4.62.0)':
+  '@rollup/plugin-node-resolve@16.0.3(rollup@4.62.2)':
     dependencies:
-      '@rollup/pluginutils': 5.2.0(rollup@4.62.0)
+      '@rollup/pluginutils': 5.2.0(rollup@4.62.2)
       '@types/resolve': 1.20.2
       deepmerge: 4.3.1
       is-module: 1.0.0
       resolve: 1.22.10
     optionalDependencies:
-      rollup: 4.62.0
+      rollup: 4.62.2
 
-  '@rollup/plugin-typescript@12.3.0(rollup@4.62.0)(tslib@2.8.1)(typescript@6.0.3)':
+  '@rollup/plugin-typescript@12.3.0(rollup@4.62.2)(tslib@2.8.1)(typescript@6.0.3)':
     dependencies:
-      '@rollup/pluginutils': 5.2.0(rollup@4.62.0)
+      '@rollup/pluginutils': 5.2.0(rollup@4.62.2)
       resolve: 1.22.10
       typescript: 6.0.3
     optionalDependencies:
-      rollup: 4.62.0
+      rollup: 4.62.2
       tslib: 2.8.1
 
-  '@rollup/pluginutils@5.2.0(rollup@4.62.0)':
+  '@rollup/pluginutils@5.2.0(rollup@4.62.2)':
     dependencies:
       '@types/estree': 1.0.9
       estree-walker: 2.0.2
       picomatch: 4.0.4
     optionalDependencies:
-      rollup: 4.62.0
+      rollup: 4.62.2
 
-  '@rollup/pluginutils@5.3.0(rollup@4.62.0)':
+  '@rollup/pluginutils@5.3.0(rollup@4.62.2)':
     dependencies:
       '@types/estree': 1.0.9
       estree-walker: 2.0.2
       picomatch: 4.0.4
     optionalDependencies:
-      rollup: 4.62.0
+      rollup: 4.62.2
 
   '@rollup/rollup-android-arm-eabi@4.62.0':
+    optional: true
+
+  '@rollup/rollup-android-arm-eabi@4.62.2':
     optional: true
 
   '@rollup/rollup-android-arm64@4.62.0':
     optional: true
 
+  '@rollup/rollup-android-arm64@4.62.2':
+    optional: true
+
   '@rollup/rollup-darwin-arm64@4.62.0':
+    optional: true
+
+  '@rollup/rollup-darwin-arm64@4.62.2':
     optional: true
 
   '@rollup/rollup-darwin-x64@4.62.0':
     optional: true
 
+  '@rollup/rollup-darwin-x64@4.62.2':
+    optional: true
+
   '@rollup/rollup-freebsd-arm64@4.62.0':
+    optional: true
+
+  '@rollup/rollup-freebsd-arm64@4.62.2':
     optional: true
 
   '@rollup/rollup-freebsd-x64@4.62.0':
     optional: true
 
+  '@rollup/rollup-freebsd-x64@4.62.2':
+    optional: true
+
   '@rollup/rollup-linux-arm-gnueabihf@4.62.0':
+    optional: true
+
+  '@rollup/rollup-linux-arm-gnueabihf@4.62.2':
     optional: true
 
   '@rollup/rollup-linux-arm-musleabihf@4.62.0':
     optional: true
 
+  '@rollup/rollup-linux-arm-musleabihf@4.62.2':
+    optional: true
+
   '@rollup/rollup-linux-arm64-gnu@4.62.0':
+    optional: true
+
+  '@rollup/rollup-linux-arm64-gnu@4.62.2':
     optional: true
 
   '@rollup/rollup-linux-arm64-musl@4.62.0':
     optional: true
 
+  '@rollup/rollup-linux-arm64-musl@4.62.2':
+    optional: true
+
   '@rollup/rollup-linux-loong64-gnu@4.62.0':
+    optional: true
+
+  '@rollup/rollup-linux-loong64-gnu@4.62.2':
     optional: true
 
   '@rollup/rollup-linux-loong64-musl@4.62.0':
     optional: true
 
+  '@rollup/rollup-linux-loong64-musl@4.62.2':
+    optional: true
+
   '@rollup/rollup-linux-ppc64-gnu@4.62.0':
+    optional: true
+
+  '@rollup/rollup-linux-ppc64-gnu@4.62.2':
     optional: true
 
   '@rollup/rollup-linux-ppc64-musl@4.62.0':
     optional: true
 
+  '@rollup/rollup-linux-ppc64-musl@4.62.2':
+    optional: true
+
   '@rollup/rollup-linux-riscv64-gnu@4.62.0':
+    optional: true
+
+  '@rollup/rollup-linux-riscv64-gnu@4.62.2':
     optional: true
 
   '@rollup/rollup-linux-riscv64-musl@4.62.0':
     optional: true
 
+  '@rollup/rollup-linux-riscv64-musl@4.62.2':
+    optional: true
+
   '@rollup/rollup-linux-s390x-gnu@4.62.0':
+    optional: true
+
+  '@rollup/rollup-linux-s390x-gnu@4.62.2':
     optional: true
 
   '@rollup/rollup-linux-x64-gnu@4.62.0':
     optional: true
 
+  '@rollup/rollup-linux-x64-gnu@4.62.2':
+    optional: true
+
   '@rollup/rollup-linux-x64-musl@4.62.0':
+    optional: true
+
+  '@rollup/rollup-linux-x64-musl@4.62.2':
     optional: true
 
   '@rollup/rollup-openbsd-x64@4.62.0':
     optional: true
 
+  '@rollup/rollup-openbsd-x64@4.62.2':
+    optional: true
+
   '@rollup/rollup-openharmony-arm64@4.62.0':
+    optional: true
+
+  '@rollup/rollup-openharmony-arm64@4.62.2':
     optional: true
 
   '@rollup/rollup-win32-arm64-msvc@4.62.0':
     optional: true
 
+  '@rollup/rollup-win32-arm64-msvc@4.62.2':
+    optional: true
+
   '@rollup/rollup-win32-ia32-msvc@4.62.0':
+    optional: true
+
+  '@rollup/rollup-win32-ia32-msvc@4.62.2':
     optional: true
 
   '@rollup/rollup-win32-x64-gnu@4.62.0':
     optional: true
 
+  '@rollup/rollup-win32-x64-gnu@4.62.2':
+    optional: true
+
   '@rollup/rollup-win32-x64-msvc@4.62.0':
+    optional: true
+
+  '@rollup/rollup-win32-x64-msvc@4.62.2':
     optional: true
 
   '@scaffdog/config@4.1.0':
@@ -4566,7 +4787,7 @@ snapshots:
 
   '@types/bn.js@5.2.0':
     dependencies:
-      '@types/node': 25.9.3
+      '@types/node': 25.9.4
 
   '@types/braces@3.0.5': {}
 
@@ -4609,6 +4830,10 @@ snapshots:
     dependencies:
       undici-types: 7.24.6
 
+  '@types/node@25.9.4':
+    dependencies:
+      undici-types: 7.24.6
+
   '@types/normalize-package-data@2.4.4': {}
 
   '@types/picomatch@4.0.3': {}
@@ -4621,7 +4846,7 @@ snapshots:
 
   '@types/secp256k1@4.0.7':
     dependencies:
-      '@types/node': 25.9.3
+      '@types/node': 25.9.4
 
   '@types/unist@2.0.11': {}
 
@@ -4636,13 +4861,13 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.1.0
 
-  '@vitest/mocker@4.1.9(vite@7.1.1(@types/node@25.9.3)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3))':
+  '@vitest/mocker@4.1.9(vite@7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3))':
     dependencies:
       '@vitest/spy': 4.1.9
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 7.1.1(@types/node@25.9.3)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3)
+      vite: 7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3)
 
   '@vitest/pretty-format@4.1.9':
     dependencies:
@@ -5194,18 +5419,18 @@ snapshots:
 
   ini@4.1.1: {}
 
-  inquirer-autocomplete-prompt@3.0.1(inquirer@9.3.8(@types/node@25.9.3)):
+  inquirer-autocomplete-prompt@3.0.1(inquirer@9.3.8(@types/node@25.9.4)):
     dependencies:
       ansi-escapes: 6.2.1
       figures: 5.0.0
-      inquirer: 9.3.8(@types/node@25.9.3)
+      inquirer: 9.3.8(@types/node@25.9.4)
       picocolors: 1.1.1
       run-async: 2.4.1
       rxjs: 7.8.2
 
-  inquirer@9.3.8(@types/node@25.9.3):
+  inquirer@9.3.8(@types/node@25.9.4):
     dependencies:
-      '@inquirer/external-editor': 1.0.3(@types/node@25.9.3)
+      '@inquirer/external-editor': 1.0.3(@types/node@25.9.4)
       '@inquirer/figures': 1.0.15
       ansi-escapes: 4.3.2
       cli-width: 4.1.0
@@ -5778,10 +6003,10 @@ snapshots:
       glob: 13.0.5
       package-json-from-dist: 1.0.1
 
-  rollup-plugin-polyfill-node@0.13.0(rollup@4.62.0):
+  rollup-plugin-polyfill-node@0.13.0(rollup@4.62.2):
     dependencies:
-      '@rollup/plugin-inject': 5.0.5(rollup@4.62.0)
-      rollup: 4.62.0
+      '@rollup/plugin-inject': 5.0.5(rollup@4.62.2)
+      rollup: 4.62.2
 
   rollup@4.62.0:
     dependencies:
@@ -5814,6 +6039,37 @@ snapshots:
       '@rollup/rollup-win32-x64-msvc': 4.62.0
       fsevents: 2.3.3
 
+  rollup@4.62.2:
+    dependencies:
+      '@types/estree': 1.0.9
+    optionalDependencies:
+      '@rollup/rollup-android-arm-eabi': 4.62.2
+      '@rollup/rollup-android-arm64': 4.62.2
+      '@rollup/rollup-darwin-arm64': 4.62.2
+      '@rollup/rollup-darwin-x64': 4.62.2
+      '@rollup/rollup-freebsd-arm64': 4.62.2
+      '@rollup/rollup-freebsd-x64': 4.62.2
+      '@rollup/rollup-linux-arm-gnueabihf': 4.62.2
+      '@rollup/rollup-linux-arm-musleabihf': 4.62.2
+      '@rollup/rollup-linux-arm64-gnu': 4.62.2
+      '@rollup/rollup-linux-arm64-musl': 4.62.2
+      '@rollup/rollup-linux-loong64-gnu': 4.62.2
+      '@rollup/rollup-linux-loong64-musl': 4.62.2
+      '@rollup/rollup-linux-ppc64-gnu': 4.62.2
+      '@rollup/rollup-linux-ppc64-musl': 4.62.2
+      '@rollup/rollup-linux-riscv64-gnu': 4.62.2
+      '@rollup/rollup-linux-riscv64-musl': 4.62.2
+      '@rollup/rollup-linux-s390x-gnu': 4.62.2
+      '@rollup/rollup-linux-x64-gnu': 4.62.2
+      '@rollup/rollup-linux-x64-musl': 4.62.2
+      '@rollup/rollup-openbsd-x64': 4.62.2
+      '@rollup/rollup-openharmony-arm64': 4.62.2
+      '@rollup/rollup-win32-arm64-msvc': 4.62.2
+      '@rollup/rollup-win32-ia32-msvc': 4.62.2
+      '@rollup/rollup-win32-x64-gnu': 4.62.2
+      '@rollup/rollup-win32-x64-msvc': 4.62.2
+      fsevents: 2.3.3
+
   run-async@2.4.1: {}
 
   run-async@3.0.0: {}
@@ -5836,7 +6092,7 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  scaffdog@4.1.0(@types/node@25.9.3):
+  scaffdog@4.1.0(@types/node@25.9.4):
     dependencies:
       '@scaffdog/config': 4.1.0
       '@scaffdog/core': 4.1.0
@@ -5853,8 +6109,8 @@ snapshots:
       fuse.js: 7.3.0
       globby: 14.1.0
       indent-string: 5.0.0
-      inquirer: 9.3.8(@types/node@25.9.3)
-      inquirer-autocomplete-prompt: 3.0.1(inquirer@9.3.8(@types/node@25.9.3))
+      inquirer: 9.3.8(@types/node@25.9.4)
+      inquirer-autocomplete-prompt: 3.0.1(inquirer@9.3.8(@types/node@25.9.4))
       is-plain-obj: 4.1.0
       log-symbols: 7.0.1
       micromatch: 4.0.8
@@ -6174,7 +6430,7 @@ snapshots:
       unist-util-stringify-position: 3.0.3
       vfile-message: 3.1.4
 
-  vite@7.1.1(@types/node@25.9.3)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3):
+  vite@7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3):
     dependencies:
       esbuild: 0.25.12
       fdir: 6.5.0(picomatch@4.0.4)
@@ -6183,16 +6439,16 @@ snapshots:
       rollup: 4.62.0
       tinyglobby: 0.2.16
     optionalDependencies:
-      '@types/node': 25.9.3
+      '@types/node': 25.9.4
       fsevents: 2.3.3
       jiti: 1.21.7
       tsx: 4.22.4
       yaml: 2.8.3
 
-  vitest@4.1.9(@types/node@25.9.3)(vite@7.1.1(@types/node@25.9.3)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3)):
+  vitest@4.1.9(@types/node@25.9.4)(vite@7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3)):
     dependencies:
       '@vitest/expect': 4.1.9
-      '@vitest/mocker': 4.1.9(vite@7.1.1(@types/node@25.9.3)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3))
+      '@vitest/mocker': 4.1.9(vite@7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3))
       '@vitest/pretty-format': 4.1.9
       '@vitest/runner': 4.1.9
       '@vitest/snapshot': 4.1.9
@@ -6209,10 +6465,10 @@ snapshots:
       tinyexec: 1.1.1
       tinyglobby: 0.2.16
       tinyrainbow: 3.1.0
-      vite: 7.1.1(@types/node@25.9.3)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3)
+      vite: 7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@types/node': 25.9.3
+      '@types/node': 25.9.4
     transitivePeerDependencies:
       - msw
 
