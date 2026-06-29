@@ -24,7 +24,7 @@ catalog:
   "ajv": "^8.20.0"
   "assert-json-equal": "^2.0.0"
   "benchmark": "^2.1.4"
-  "bn.js": "^5.2.3"
+  "bn.js": "^5.2.4"
   "chalk": "^5.6.2"
   "create-validator-ts": "^6.0.1"
   "debug": "^4.4.3"
