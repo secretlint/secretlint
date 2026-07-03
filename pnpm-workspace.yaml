@@ -51,7 +51,7 @@ catalog:
   "table": "^6.9.0"
   "terminal-link": "^5.0.0"
   "tsx": "^4.22.4"
-  "turbo": "^2.10.1"
+  "turbo": "^2.10.2"
   "typescript": "^6.0.3"
   "vitest": "^4.1.9"
 
