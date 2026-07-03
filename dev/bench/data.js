@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1783040648133,
+  "lastUpdate": 1783040707126,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -56276,6 +56276,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.25,
             "range": "±0.81%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "15de6eeff663491a9941891f16b1cc0d805c6d76",
+          "message": "Update dependency turbo to ^2.10.1 (#1614)\n\nThis PR contains the following updates:\n\n| Package | Change |\n[Age](https://docs.renovatebot.com/merge-confidence/) |\n[Confidence](https://docs.renovatebot.com/merge-confidence/) |\n|---|---|---|---|\n| [turbo](https://turborepo.dev)\n([source](https://redirect.github.com/vercel/turborepo)) | [`^2.10.0` →\n`^2.10.1`](https://renovatebot.com/diffs/npm/turbo/2.10.0/2.10.1) |\n![age](https://developer.mend.io/api/mc/badges/age/npm/turbo/2.10.1?slim=true)\n|\n![confidence](https://developer.mend.io/api/mc/badges/confidence/npm/turbo/2.10.0/2.10.1?slim=true)\n|\n\n---\n\n### Release Notes\n\n<details>\n<summary>vercel/turborepo (turbo)</summary>\n\n###\n[`v2.10.1`](https://redirect.github.com/vercel/turborepo/releases/tag/v2.10.1):\nTurborepo v2.10.1\n\n[Compare\nSource](https://redirect.github.com/vercel/turborepo/compare/v2.10.0...v2.10.1)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat v2.10.1 -->\n\n#### What's Changed\n\n##### Changelog\n\n- release(turborepo): 2.10.0 by\n[@&#8203;github-actions](https://redirect.github.com/github-actions)\\[bot]\nin\n[#&#8203;13131](https://redirect.github.com/vercel/turborepo/pull/13131)\n- docs: Add Turborepo 2.10 release post and update docs by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;13096](https://redirect.github.com/vercel/turborepo/pull/13096)\n- perf: Avoid normalizing git index path joins by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;12944](https://redirect.github.com/vercel/turborepo/pull/12944)\n- chore: Remove tbx package by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;13133](https://redirect.github.com/vercel/turborepo/pull/13133)\n- feat: Migrate TUI virtual terminals from vt100 to Ghostty by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;13135](https://redirect.github.com/vercel/turborepo/pull/13135)\n- chore: Add examples maintenance agent by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;13136](https://redirect.github.com/vercel/turborepo/pull/13136)\n- chore: Remove a few pre-push hooks by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;13137](https://redirect.github.com/vercel/turborepo/pull/13137)\n- ci: Making sure Zig works in releases by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;13138](https://redirect.github.com/vercel/turborepo/pull/13138)\n- release(turborepo): 2.10.1-canary.1 by\n[@&#8203;github-actions](https://redirect.github.com/github-actions)\\[bot]\nin\n[#&#8203;13139](https://redirect.github.com/vercel/turborepo/pull/13139)\n- fix: Support Corepack packageManager integrity hashes by\n[@&#8203;gwagjiug](https://redirect.github.com/gwagjiug) in\n[#&#8203;13123](https://redirect.github.com/vercel/turborepo/pull/13123)\n- fix(env): Add XDG\\_DATA\\_\\* to pass-through by\n[@&#8203;vercel](https://redirect.github.com/vercel)\\[bot] in\n[#&#8203;13145](https://redirect.github.com/vercel/turborepo/pull/13145)\n- release(turborepo): 2.10.1-canary.2 by\n[@&#8203;github-actions](https://redirect.github.com/github-actions)\\[bot]\nin\n[#&#8203;13147](https://redirect.github.com/vercel/turborepo/pull/13147)\n- feat: Support `devEngines.packageManager` by\n[@&#8203;lachieh](https://redirect.github.com/lachieh) in\n[#&#8203;12388](https://redirect.github.com/vercel/turborepo/pull/12388)\n- feat: Support devEngines packageManager in workspaces by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;13150](https://redirect.github.com/vercel/turborepo/pull/13150)\n- release(turborepo): 2.10.1-canary.3 by\n[@&#8203;github-actions](https://redirect.github.com/github-actions)\\[bot]\nin\n[#&#8203;13149](https://redirect.github.com/vercel/turborepo/pull/13149)\n- feat: Update add package manager codemod by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;13151](https://redirect.github.com/vercel/turborepo/pull/13151)\n- feat: Update workspace package manager declarations by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;13154](https://redirect.github.com/vercel/turborepo/pull/13154)\n\n#### New Contributors\n\n- [@&#8203;lachieh](https://redirect.github.com/lachieh) made their\nfirst contribution in\n[#&#8203;12388](https://redirect.github.com/vercel/turborepo/pull/12388)\n\n**Full Changelog**:\n<https://github.com/vercel/turborepo/compare/v2.10.0...v2.10.1>\n\n</details>\n\n---\n\n### Configuration\n\n📅 **Schedule**: (in timezone Asia/Tokyo)\n\n- Branch creation\n  - At any time (no schedule defined)\n- Automerge\n  - At any time (no schedule defined)\n\n🚦 **Automerge**: Enabled.\n\n♻ **Rebasing**: Whenever PR is behind base branch, or you tick the\nrebase/retry checkbox.\n\n🔕 **Ignore**: Close this PR and you won't be reminded about this update\nagain.\n\n---\n\n- [ ] <!-- rebase-check -->If you want to rebase/retry this PR, check\nthis box\n\n---\n\nThis PR was generated by [Mend Renovate](https://mend.io/renovate/).\nView the [repository job\nlog](https://developer.mend.io/github/secretlint/secretlint).\n\n<!--renovate-debug:eyJjcmVhdGVkSW5WZXIiOiI0My4yNDIuMiIsInVwZGF0ZWRJblZlciI6IjQzLjI0Mi4yIiwidGFyZ2V0QnJhbmNoIjoibWFzdGVyIiwibGFiZWxzIjpbImRlcGVuZGVuY2llcyJdfQ==-->\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2026-07-03T01:03:03Z",
+          "tree_id": "0211e9a0e610ccf931da3cf262911fb6bb28a288",
+          "url": "https://github.com/secretlint/secretlint/commit/15de6eeff663491a9941891f16b1cc0d805c6d76"
+        },
+        "date": 1783040703505,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.54,
+            "range": "±0.89%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.25,
+            "range": "±1.00%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
