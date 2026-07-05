@@ -100,8 +100,8 @@ catalogs:
       specifier: ^7.0.5
       version: 7.0.5
     picomatch:
-      specifier: ^4.0.4
-      version: 4.0.4
+      specifier: ^4.0.5
+      version: 4.0.5
     pluralize:
       specifier: ^8.0.0
       version: 8.0.0
@@ -142,8 +142,8 @@ catalogs:
       specifier: ^5.0.0
       version: 5.0.0
     tsx:
-      specifier: ^4.22.4
-      version: 4.22.4
+      specifier: ^4.22.5
+      version: 4.23.0
     turbo:
       specifier: ^2.10.2
       version: 2.10.2
@@ -172,7 +172,7 @@ importers:
         version: 2.10.2
       vitest:
         specifier: 'catalog:'
-        version: 4.1.9(@types/node@25.9.4)(vite@7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3))
+        version: 4.1.9(@types/node@25.9.4)(vite@7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.23.0)(yaml@2.8.3))
 
   examples/benchmark:
     dependencies:
@@ -224,7 +224,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -270,7 +270,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -304,7 +304,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -362,7 +362,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -384,7 +384,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -430,7 +430,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -445,7 +445,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -479,7 +479,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -504,7 +504,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -529,7 +529,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -551,7 +551,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -576,7 +576,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -601,7 +601,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -626,7 +626,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -651,7 +651,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -676,7 +676,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -701,7 +701,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -726,7 +726,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -748,7 +748,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -773,7 +773,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -798,7 +798,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -823,7 +823,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -848,7 +848,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -873,7 +873,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -898,7 +898,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -923,7 +923,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -948,7 +948,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -973,7 +973,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1021,7 +1021,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1043,7 +1043,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1071,7 +1071,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1099,7 +1099,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1124,7 +1124,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1149,7 +1149,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1171,7 +1171,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1202,7 +1202,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1325,7 +1325,7 @@ importers:
         version: 0.13.0(rollup@4.62.2)
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1448,7 +1448,7 @@ importers:
         version: 0.13.0(rollup@4.62.2)
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1473,7 +1473,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1507,7 +1507,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1532,7 +1532,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1557,7 +1557,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1582,7 +1582,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1607,7 +1607,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1632,7 +1632,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1657,7 +1657,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1679,7 +1679,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1707,7 +1707,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1722,13 +1722,13 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
       vitest:
         specifier: 'catalog:'
-        version: 4.1.9(@types/node@25.9.4)(vite@7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3))
+        version: 4.1.9(@types/node@25.9.4)(vite@7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.23.0)(yaml@2.8.3))
 
   packages/@secretlint/walker:
     dependencies:
@@ -1737,7 +1737,7 @@ importers:
         version: 7.0.5
       picomatch:
         specifier: 'catalog:'
-        version: 4.0.4
+        version: 4.0.5
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
@@ -1750,13 +1750,13 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
       vitest:
         specifier: 'catalog:'
-        version: 4.1.9(@types/node@25.9.4)(vite@7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3))
+        version: 4.1.9(@types/node@25.9.4)(vite@7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.23.0)(yaml@2.8.3))
 
   packages/secretlint:
     dependencies:
@@ -1805,7 +1805,7 @@ importers:
         version: 3.8.3
       tsx:
         specifier: 'catalog:'
-        version: 4.22.4
+        version: 4.23.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -3519,6 +3519,10 @@ packages:
     resolution: {integrity: sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A==}
     engines: {node: '>=12'}
 
+  picomatch@4.0.5:
+    resolution: {integrity: sha512-RvwwcruNjI1ncT5xRakeyS9Lf8lcItv34KD+aif+VH9kduAyfYBipGh12274xtenIPZ119/R9BdTBa8gAwSh0A==}
+    engines: {node: '>=12'}
+
   pkg-dir@7.0.0:
     resolution: {integrity: sha512-Ie9z/WINcxxLp27BKOCHGde4ITq9UklYKDzVo1nhk5sqGEXU3FpkwP5GM2voTGJkGd9B3Otl+Q4uwSOeSUtOBA==}
     engines: {node: '>=14.16'}
@@ -3861,8 +3865,8 @@ packages:
   tslib@2.8.1:
     resolution: {integrity: sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==}
 
-  tsx@4.22.4:
-    resolution: {integrity: sha512-X8EX+XV4QR5xCsrgxaED954zTDfY8KqlDtskKEL0cHhyS/P8b4IFOvGDQpsC9Q1XnLq915wEfwwY/zzskCtmhg==}
+  tsx@4.23.0:
+    resolution: {integrity: sha512-eUdUIaCr963q2h5u3+QwvYp0+eqPvn+egeqZUm0hwERCqqx1E3kK5ehbGCvqSE5MQAULr67ww0cA3jKc3YkM1w==}
     engines: {node: '>=18.0.0'}
     hasBin: true
 
@@ -4643,13 +4647,13 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.1.0
 
-  '@vitest/mocker@4.1.9(vite@7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3))':
+  '@vitest/mocker@4.1.9(vite@7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.23.0)(yaml@2.8.3))':
     dependencies:
       '@vitest/spy': 4.1.9
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3)
+      vite: 7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.23.0)(yaml@2.8.3)
 
   '@vitest/pretty-format@4.1.9':
     dependencies:
@@ -5676,6 +5680,8 @@ snapshots:
 
   picomatch@4.0.4: {}
 
+  picomatch@4.0.5: {}
+
   pkg-dir@7.0.0:
     dependencies:
       find-up: 6.3.0
@@ -6072,7 +6078,7 @@ snapshots:
 
   tslib@2.8.1: {}
 
-  tsx@4.22.4:
+  tsx@4.23.0:
     dependencies:
       esbuild: 0.28.0
     optionalDependencies:
@@ -6181,7 +6187,7 @@ snapshots:
       unist-util-stringify-position: 3.0.3
       vfile-message: 3.1.4
 
-  vite@7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3):
+  vite@7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.23.0)(yaml@2.8.3):
     dependencies:
       esbuild: 0.25.12
       fdir: 6.5.0(picomatch@4.0.4)
@@ -6193,13 +6199,13 @@ snapshots:
       '@types/node': 25.9.4
       fsevents: 2.3.3
       jiti: 1.21.7
-      tsx: 4.22.4
+      tsx: 4.23.0
       yaml: 2.8.3
 
-  vitest@4.1.9(@types/node@25.9.4)(vite@7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3)):
+  vitest@4.1.9(@types/node@25.9.4)(vite@7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.23.0)(yaml@2.8.3)):
     dependencies:
       '@vitest/expect': 4.1.9
-      '@vitest/mocker': 4.1.9(vite@7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3))
+      '@vitest/mocker': 4.1.9(vite@7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.23.0)(yaml@2.8.3))
       '@vitest/pretty-format': 4.1.9
       '@vitest/runner': 4.1.9
       '@vitest/snapshot': 4.1.9
@@ -6216,7 +6222,7 @@ snapshots:
       tinyexec: 1.1.1
       tinyglobby: 0.2.16
       tinyrainbow: 3.1.0
-      vite: 7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.22.4)(yaml@2.8.3)
+      vite: 7.1.1(@types/node@25.9.4)(jiti@1.21.7)(tsx@4.23.0)(yaml@2.8.3)
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 25.9.4
