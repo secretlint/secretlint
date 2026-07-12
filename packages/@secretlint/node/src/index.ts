@@ -190,6 +190,7 @@ export const createEngine = async (options: SecretLintEngineOptions) => {
             debug("Load ConfigFileJSON: %s", options.configFileJSON);
             return loadPackagesFromConfigDescriptor({
                 configDescriptor: options.configFileJSON,
+                cwd: options.cwd,
             });
         }
         const loadConfigResult = await loadConfig({

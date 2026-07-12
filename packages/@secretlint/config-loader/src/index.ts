@@ -70,6 +70,12 @@ export type SecretLintLoadPackagesFromRawConfigOptions = {
      */
     configDescriptor: SecretLintConfigDescriptor;
     /**
+     * Working directory of the linted project.
+     * Rules and presets are resolved from this directory.
+     * Default: process.cwd()
+     */
+    cwd?: string;
+    /**
      * node_modules directory path
      * Default: undefined
      */
@@ -107,6 +113,7 @@ export const loadPackagesFromConfigDescriptor = async (
     // Search secretlint's module
     const moduleResolver = new SecretLintModuleResolver({
         baseDirectory: options.node_moduleDir,
+        cwd: options.cwd,
     });
     // TODO: remove any
     const isSecretLintCoreConfigRulePreset = (v: SecretLintUnionRuleCreator): v is SecretLintRulePresetCreator => {
@@ -223,6 +230,7 @@ export const loadConfig = async (options: SecretLintConfigLoaderOptions): Promis
     });
     const configLoadResult = await loadPackagesFromConfigDescriptor({
         configDescriptor,
+        cwd: options.cwd,
         node_moduleDir: options.node_moduleDir,
         testReplaceDefinitions: options.testReplaceDefinitions,
     });

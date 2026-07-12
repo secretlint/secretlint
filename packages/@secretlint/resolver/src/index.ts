@@ -7,6 +7,14 @@ const require = createRequire(import.meta.url);
 export type ResolverContext = {
     parentImportMeta: ImportMeta;
     parentModule: "config-loader" | "formatter";
+    /**
+     * Directories to resolve `packageName` from.
+     * Secretlint's rules, presets and formatters are dependencies of the user's project,
+     * so they have to be resolved from the project instead of from the location that
+     * `@secretlint/resolver` itself is installed in.
+     * Default: `[process.cwd()]`
+     */
+    baseDirectories?: string[];
 };
 type ResolverSkipResult = undefined;
 /**
@@ -65,6 +73,21 @@ export const tryResolve = (packageName: string, context: ResolverContext): strin
             }
         }
 
+        // Resolve from the user's project first.
+        // Node.js looks up `node_modules` by walking up from the importer, so `require` -
+        // which is created from this module's own url - only finds the project's packages
+        // when this module happens to be installed inside the project. That is not the case
+        // when the package manager stores packages outside of the project, as pnpm does with
+        // `enableGlobalVirtualStore: true`.
+        // https://github.com/secretlint/secretlint/issues/1624
+        const baseDirectories = context.baseDirectories ?? [process.cwd()];
+        if (baseDirectories.length > 0) {
+            try {
+                return require.resolve(packageName, { paths: baseDirectories });
+            } catch {
+                // Fallback to resolving from this module's own location
+            }
+        }
         // TODO: import.meta.resolve is not supported in Node.js 18
         // We will change to import.meta.resolve(packageName)
         return require.resolve(packageName);
