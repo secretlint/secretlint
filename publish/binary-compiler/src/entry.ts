@@ -33,7 +33,7 @@ if (cli.flags.version) {
     process.exit(0);
 }
 // secretlint CLI wrapper
-run(cli.input, cli.flags).then(
+run(cli.input, cli.flags, { moduleResolutionBase: process.execPath }).then(
     ({ exitStatus, stderr, stdout }) => {
         if (stdout) {
             console.log(stdout);
