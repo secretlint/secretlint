@@ -166,8 +166,9 @@ export const snapshot = (options: SnapshotOptions) => {
                         }
                         const actualFilePath = path.join(testCaseDir, actualFileName);
                         const loadedConfig = await (fs.existsSync(secretlintrcFilePath)
-                            ? loadConfig({
+                              ? loadConfig({
                                   configFilePath: secretlintrcFilePath,
+                                  moduleResolutionBase: secretlintrcFilePath,
                                   testReplaceDefinitions: testDefinitions,
                               })
                             : undefined);

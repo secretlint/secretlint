@@ -17,10 +17,11 @@ import tableFormatter from "./formatters/table.js";
 
 const BuiltInFormatters = ["json", "mask-result", "table"];
 const debug = debug0("@secretlint/formatter");
-const tryResolveModule = (moduleName: string) => {
+const tryResolveModule = (moduleName: string, moduleResolutionBase: string | URL) => {
     return tryResolve(moduleName, {
         parentImportMeta: import.meta,
         parentModule: "formatter",
+        moduleResolutionBase,
     });
 };
 type Formatter = (results: SecretLintCoreResult[], formatterConfig: FormatterConfig) => string;
@@ -41,6 +42,10 @@ export interface SecretLintFormatterConfig {
      * Default: false
      */
     terminalLink?: boolean;
+    /**
+     * Logical module entry used to resolve an external formatter package.
+     */
+    moduleResolutionBase: string | URL;
 }
 
 /**
@@ -104,6 +109,7 @@ const convertSecretLintResultToTextlintResult = (
 
 export async function loadFormatter(formatterConfig: SecretLintFormatterConfig) {
     const formatterName = formatterConfig.formatterName;
+    const moduleResolutionBase = formatterConfig.moduleResolutionBase;
     const isHumanReadableFormat = ["stylish", "pretty-error"].includes(formatterName);
     /**
      * Terminal Link is enabled when use human-readable format and option is enabled
@@ -119,7 +125,11 @@ export async function loadFormatter(formatterConfig: SecretLintFormatterConfig) 
             },
         };
     } catch {
-        const formatter = await textlintCreateFormatter(formatterConfig);
+        const textlintFormatterPath = tryResolveModule(`textlint-formatter-${formatterName}`, moduleResolutionBase);
+        const formatter = await textlintCreateFormatter({
+            ...formatterConfig,
+            formatterName: textlintFormatterPath ?? formatterName,
+        });
         return {
             format: (results: SecretLintCoreResult[]) => {
                 return formatter.format(
@@ -134,8 +144,11 @@ export async function loadFormatter(formatterConfig: SecretLintFormatterConfig) 
     }
 }
 
-export async function secretlintCreateFormatter(formatterConfig: FormatterConfig) {
+export async function secretlintCreateFormatter(
+    formatterConfig: FormatterConfig & Pick<SecretLintFormatterConfig, "moduleResolutionBase">
+) {
     const formatterName = formatterConfig.formatterName;
+    const moduleResolutionBase = formatterConfig.moduleResolutionBase;
     debug(`formatterName: ${formatterName}`);
     if (BuiltInFormatters.includes(formatterName)) {
         switch (formatterName) {
@@ -166,7 +179,9 @@ export async function secretlintCreateFormatter(formatterConfig: FormatterConfig
     } else if (fs.existsSync(path.resolve(process.cwd(), formatterName))) {
         formatterPath = path.resolve(process.cwd(), formatterName);
     } else {
-        const pkgPath = tryResolveModule(formatterName) || tryResolveModule(`secretlint-formatter-${formatterName}`);
+        const pkgPath =
+            tryResolveModule(formatterName, moduleResolutionBase) ||
+            tryResolveModule(`secretlint-formatter-${formatterName}`, moduleResolutionBase);
         if (pkgPath) {
             formatterPath = pkgPath;
         }

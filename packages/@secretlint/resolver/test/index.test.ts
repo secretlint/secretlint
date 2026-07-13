@@ -3,6 +3,7 @@ import {
     registerResolveHook,
     registerImportHook,
     dynamicImport,
+    ResolveContext,
     ResolverContext,
     tryResolve,
     clearHooks,
@@ -41,6 +42,7 @@ describe("@secretlint/resolver", () => {
             const result = tryResolve("my-module", {
                 parentImportMeta: import.meta,
                 parentModule: "formatter",
+                moduleResolutionBase: import.meta.url,
             });
             assert.strictEqual(result, myModuleURL);
         });
@@ -48,8 +50,16 @@ describe("@secretlint/resolver", () => {
             const result = tryResolve("other-module", {
                 parentImportMeta: import.meta,
                 parentModule: "formatter",
+                moduleResolutionBase: import.meta.url,
             });
             assert.ok(!result);
+        });
+        it("should require moduleResolutionBase", () => {
+            const context = {
+                parentImportMeta: import.meta,
+                parentModule: "formatter",
+            } as ResolveContext;
+            assert.throws(() => tryResolve("other-module", context), /moduleResolutionBase is required/);
         });
     });
     describe("dynamicImport", () => {

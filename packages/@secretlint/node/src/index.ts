@@ -21,6 +21,11 @@ export type SecretLintEngineOptionsBase = {
      */
     cwd?: string;
     /**
+     * Logical module entry used to resolve rules, presets, plugins, and external formatters.
+     * Use this when the physical package location differs from the installation that owns those packages.
+     */
+    moduleResolutionBase: string | URL;
+    /**
      * If color is false, disable ANSI-color of the output.
      * Default: true
      */
@@ -123,6 +128,7 @@ const executeOnContent = async ({
         color: options.color ?? true,
         formatterName: options.formatter,
         terminalLink: options.terminalLink ?? false,
+        moduleResolutionBase: options.moduleResolutionBase,
     });
     const output = formatter.format([result]);
     secretLintProfiler.mark({
@@ -162,6 +168,7 @@ const executeOnFiles = async ({
         color: options.color ?? true,
         formatterName: options.formatter,
         terminalLink: options.terminalLink ?? false,
+        moduleResolutionBase: options.moduleResolutionBase,
     });
     const output = formatter.format(results);
     secretLintProfiler.mark({
@@ -190,11 +197,13 @@ export const createEngine = async (options: SecretLintEngineOptions) => {
             debug("Load ConfigFileJSON: %s", options.configFileJSON);
             return loadPackagesFromConfigDescriptor({
                 configDescriptor: options.configFileJSON,
+                moduleResolutionBase: options.moduleResolutionBase,
             });
         }
         const loadConfigResult = await loadConfig({
             cwd: options.cwd,
             configFilePath: options.configFilePath,
+            moduleResolutionBase: options.moduleResolutionBase,
         });
         debug("Loaded ConfigFilePath: %s", loadConfigResult.configFilePath);
         return loadConfigResult;

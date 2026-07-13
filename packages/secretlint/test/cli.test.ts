@@ -42,14 +42,18 @@ const createSnapshotReplacer = () => {
  */
 describe("cli snapshot testing", () => {
     it("--version should return version", async () => {
-        const actual = await run([], {
-            ...cli.flags,
-            version: true,
-            cwd: process.cwd(),
-            // Less diff between env
-            color: false,
-            format: "json",
-        });
+        const actual = await run(
+            [],
+            {
+                ...cli.flags,
+                version: true,
+                cwd: process.cwd(),
+                // Less diff between env
+                color: false,
+                format: "json",
+            },
+            { moduleResolutionBase: import.meta.url }
+        );
         assert.ok(actual.stdout);
         assert.match(actual.stdout, /^[\d.]+$/);
     });
@@ -64,14 +68,18 @@ describe("cli snapshot testing", () => {
             const actualInputs = options.inputs;
             // Logging Group
             console.group(`Snapshot Fixture: ${fixtureDir}`);
-            const actual = await run(actualInputs ? actualInputs : [actualFilePath], {
-                ...cli.flags,
-                ...actualOptions,
-                cwd: fixtureDir,
-                // Less diff between env
-                color: false,
-                format: "json",
-            }).catch((error) => {
+            const actual = await run(
+                actualInputs ? actualInputs : [actualFilePath],
+                {
+                    ...cli.flags,
+                    ...actualOptions,
+                    cwd: fixtureDir,
+                    // Less diff between env
+                    color: false,
+                    format: "json",
+                },
+                { moduleResolutionBase: import.meta.url }
+            ).catch((error) => {
                 // if throw an error, save it
                 return `Error: ${error.message}`;
             });

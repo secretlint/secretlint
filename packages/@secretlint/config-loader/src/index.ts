@@ -29,6 +29,10 @@ export function importSecretlintCreator(
 export type SecretLintConfigLoaderOptions = {
     cwd?: string;
     configFilePath?: string;
+    /**
+     * Logical module entry used to resolve rules and presets.
+     */
+    moduleResolutionBase: string | URL;
     // For debugging
     /**
      * node_modules directory path
@@ -70,6 +74,10 @@ export type SecretLintLoadPackagesFromRawConfigOptions = {
      */
     configDescriptor: SecretLintConfigDescriptor;
     /**
+     * Logical module entry used to resolve rules and presets.
+     */
+    moduleResolutionBase: string | URL;
+    /**
      * node_modules directory path
      * Default: undefined
      */
@@ -106,7 +114,8 @@ export const loadPackagesFromConfigDescriptor = async (
     });
     // Search secretlint's module
     const moduleResolver = new SecretLintModuleResolver({
-        baseDirectory: options.node_moduleDir,
+        nodeModulesDirectory: options.node_moduleDir,
+        moduleResolutionBase: options.moduleResolutionBase,
     });
     // TODO: remove any
     const isSecretLintCoreConfigRulePreset = (v: SecretLintUnionRuleCreator): v is SecretLintRulePresetCreator => {
@@ -223,6 +232,7 @@ export const loadConfig = async (options: SecretLintConfigLoaderOptions): Promis
     });
     const configLoadResult = await loadPackagesFromConfigDescriptor({
         configDescriptor,
+        moduleResolutionBase: options.moduleResolutionBase,
         node_moduleDir: options.node_moduleDir,
         testReplaceDefinitions: options.testReplaceDefinitions,
     });

@@ -12,7 +12,11 @@
 try {
     // if imported code is syntax error, throw error -> exit 2
     const { run, cli } = await import("../module/cli.js");
-    const { exitStatus, stderr, stdout } = await run(cli.input, cli.flags);
+    const { exitStatus, stderr, stdout } = await run(cli.input, cli.flags, {
+        // process.argv[1] preserves the logical command entry created by package managers.
+        // This lets rules and formatters resolve from the same install group as this CLI.
+        moduleResolutionBase: process.argv[1],
+    });
     if (stdout) {
         console.log(stdout);
     }

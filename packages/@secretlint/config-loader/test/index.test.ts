@@ -21,6 +21,7 @@ describe("@secretlint/config-loader", () => {
     it("should load .secretlintrc.json with CJS rules", async () => {
         const config = await loadConfig({
             cwd: path.join(__dirname, "fixtures/valid-config-cjs/"),
+            moduleResolutionBase: import.meta.url,
             node_moduleDir: path.join(__dirname, "fixtures/valid-config-cjs/modules"),
         });
         // deep partial equality check
@@ -51,6 +52,7 @@ describe("@secretlint/config-loader", () => {
     it("should load .secretlintrc.json with ESM rule", async () => {
         const config = await loadConfig({
             cwd: path.join(__dirname, "fixtures/valid-config-esm"),
+            moduleResolutionBase: import.meta.url,
             node_moduleDir: path.join(__dirname, "fixtures/valid-config-esm/modules"),
         });
         const rule = config.config.rules[0] as SecretLintCoreConfigUnionRule;
@@ -62,6 +64,7 @@ describe("@secretlint/config-loader", () => {
     it("should return errors if rule module is not found in .secretlintrc.json", async () => {
         return loadConfig({
             cwd: path.join(__dirname, "fixtures/missing-rule-config"),
+            moduleResolutionBase: import.meta.url,
         })
             .then(() => assert.fail("should not be called"))
             .catch((error: unknown) => {
@@ -71,6 +74,7 @@ describe("@secretlint/config-loader", () => {
     it("should return errors if .secretlintrc.json is invalid format", async () => {
         return loadConfig({
             cwd: path.join(__dirname, "fixtures/invalid-config"),
+            moduleResolutionBase: import.meta.url,
         })
             .then(() => assert.fail("should not be called"))
             .catch((error: Error) => {

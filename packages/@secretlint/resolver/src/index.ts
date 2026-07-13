@@ -8,13 +8,19 @@ export type ResolverContext = {
     parentImportMeta: ImportMeta;
     parentModule: "config-loader" | "formatter";
 };
+export type ResolveContext = ResolverContext & {
+    /**
+     * Logical module entry used as the package resolution base.
+     */
+    moduleResolutionBase: string | URL;
+};
 type ResolverSkipResult = undefined;
 /**
  * Resolve Hook
  */
 export type ResolveHook = (
     specifier: string,
-    context: ResolverContext
+    context: ResolveContext
 ) =>
     | {
           url: string | undefined;
@@ -52,7 +58,10 @@ export const registerResolveHook = (hook: ResolveHook) => {
  * @param packageName
  * @param context
  */
-export const tryResolve = (packageName: string, context: ResolverContext): string | undefined => {
+export const tryResolve = (packageName: string, context: ResolveContext): string | undefined => {
+    if (!context.moduleResolutionBase) {
+        throw new TypeError("moduleResolutionBase is required");
+    }
     try {
         for (const hook of resolveHooks) {
             const result = hook(packageName, context);
@@ -65,9 +74,7 @@ export const tryResolve = (packageName: string, context: ResolverContext): strin
             }
         }
 
-        // TODO: import.meta.resolve is not supported in Node.js 18
-        // We will change to import.meta.resolve(packageName)
-        return require.resolve(packageName);
+        return createRequire(context.moduleResolutionBase).resolve(packageName);
     } catch {
         return undefined;
     }

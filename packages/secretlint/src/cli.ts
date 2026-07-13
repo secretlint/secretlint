@@ -237,8 +237,11 @@ const readCliOptions = async ({ input = cli.input, flags = cli.flags }): Promise
     }
 };
 export const run = async (
-    input = cli.input,
-    flags = cli.flags,
+    input: string[],
+    flags: typeof cli.flags,
+    runtimeOptions: {
+        moduleResolutionBase: string | URL;
+    },
 ): Promise<{ exitStatus: number; stdout: string | null; stderr: Error | null }> => {
     if (flags.help) {
         return {
@@ -283,6 +286,7 @@ export const run = async (
                   // Parse config string as JSON
                   configFileJSON: JSON.parse(flags.secretlintrcJSON),
                   cwd: cwd,
+                  moduleResolutionBase: runtimeOptions.moduleResolutionBase,
                   formatter: flags.format,
                   color: flags.color,
                   terminalLink: flags.terminalLink,
@@ -292,6 +296,7 @@ export const run = async (
             : {
                   configFilePath: flags.secretlintrc,
                   cwd: cwd,
+                  moduleResolutionBase: runtimeOptions.moduleResolutionBase,
                   formatter: flags.format,
                   color: flags.color,
                   terminalLink: flags.terminalLink,

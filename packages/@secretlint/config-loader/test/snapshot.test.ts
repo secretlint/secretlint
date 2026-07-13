@@ -12,7 +12,7 @@ const formatResult = (result: validateConfigResult) => {
         ? "OK"
         : result.error.message
               .replace(/cwd: .*/, "cwd: <cwd>")
-              .replace(/baseDir: .*/, "baseDir: <baseDir>")
+              .replace(/nodeModulesDir: .*/, "nodeModulesDir: <nodeModulesDir>")
               // 1. escape \n \t \r
               .replace(/\\([ntr])/g, "_!!!_$1")
               // 2. normalize path separator for Windows
@@ -39,6 +39,7 @@ describe("validateConfig", () => {
                 const actual = await validateConfig({
                     cwd: fixtureDir,
                     configFilePath: actualFilePath,
+                    moduleResolutionBase: import.meta.url,
                     node_moduleDir: path.join(fixtureDir, "modules"),
                 });
                 const expectedFilePath = path.join(fixtureDir, "output.txt");
