@@ -79,8 +79,8 @@ catalogs:
       specifier: ^5.0.0
       version: 5.0.0
     ignore:
-      specifier: ^7.0.5
-      version: 7.0.5
+      specifier: ^7.0.6
+      version: 7.0.6
     istextorbinary:
       specifier: ^9.5.0
       version: 9.5.0
@@ -1734,7 +1734,7 @@ importers:
     dependencies:
       ignore:
         specifier: 'catalog:'
-        version: 7.0.5
+        version: 7.0.6
       picomatch:
         specifier: 'catalog:'
         version: 4.0.5
@@ -3077,6 +3077,10 @@ packages:
 
   ignore@7.0.5:
     resolution: {integrity: sha512-Hs59xBNfUIunMFgWAbGX5cq6893IbWg4KnrjbYwX3tx0ztorVgTDA6B2sxf8ejHJ4wz8BqGUMYlnzNBer5NvGg==}
+    engines: {node: '>= 4'}
+
+  ignore@7.0.6:
+    resolution: {integrity: sha512-BAg6QkE8W+TuQLrrw0Ugr7HegXduRuuj8/ti2kSOc+jz1dmx8/WNcjr6XGnq5YpDWxFwwaavqD0+jIUOKelTsw==}
     engines: {node: '>= 4'}
 
   indent-string@5.0.0:
@@ -5198,6 +5202,8 @@ snapshots:
   ieee754@1.2.1: {}
 
   ignore@7.0.5: {}
+
+  ignore@7.0.6: {}
 
   indent-string@5.0.0: {}
 
