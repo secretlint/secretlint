@@ -56,50 +56,39 @@ describe("@secretlint/formatter", () => {
             testName: "Secretlint formatter",
             formatterName: "secretlint-formatter-logical-install-fixture",
             formatterPackageName: "secretlint-formatter-logical-install-fixture",
-            expectedOutput: "loaded from the logical install group"
+            expectedOutput: "loaded from the logical install group",
         },
         {
             testName: "textlint formatter shorthand",
             formatterName: "logical-install-fixture",
             formatterPackageName: "textlint-formatter-logical-install-fixture",
-            expectedOutput: "loaded textlint formatter from the logical install group"
-        }
+            expectedOutput: "loaded textlint formatter from the logical install group",
+        },
     ])("loads a $testName from an explicit logical install group", async (testCase) => {
         const installGroupDirectory = fs.realpathSync(
-            fs.mkdtempSync(path.join(os.tmpdir(), "secretlint-formatter-install-group-"))
+            fs.mkdtempSync(path.join(os.tmpdir(), "secretlint-formatter-install-group-")),
         );
-        const formatterDirectory = path.join(
-            installGroupDirectory,
-            "node_modules",
-            testCase.formatterPackageName
-        );
+        const formatterDirectory = path.join(installGroupDirectory, "node_modules", testCase.formatterPackageName);
+        const formatterFixtureDirectory = path.join(__dirname, "fixtures", testCase.formatterPackageName);
         const moduleResolutionBase = path.join(
             installGroupDirectory,
             "node_modules",
             "secretlint",
             "bin",
-            "secretlint.js"
+            "secretlint.js",
         );
-        fs.mkdirSync(formatterDirectory, { recursive: true });
-        fs.writeFileSync(
-            path.join(formatterDirectory, "package.json"),
-            JSON.stringify({
-                name: testCase.formatterPackageName,
-                version: "1.0.0",
-                type: "module",
-                exports: "./index.js"
-            })
-        );
-        fs.writeFileSync(
-            path.join(formatterDirectory, "index.js"),
-            `export default () => ${JSON.stringify(testCase.expectedOutput)};\n`
+        fs.mkdirSync(path.dirname(formatterDirectory), { recursive: true });
+        fs.symlinkSync(
+            formatterFixtureDirectory,
+            formatterDirectory,
+            process.platform === "win32" ? "junction" : "dir",
         );
 
         try {
             const formatter = await loadFormatter({
                 color: false,
                 formatterName: testCase.formatterName,
-                moduleResolutionBase
+                moduleResolutionBase,
             });
 
             assert.strictEqual(formatter.format(results), testCase.expectedOutput);

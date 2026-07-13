@@ -10,5 +10,7 @@ export const quickStart = async () => {
         ...cli.flags,
         secretlintrc: cli.flags.secretlintrc ?? defaultSecretlintRc,
     };
-    return run(cli.input, flags);
+    return run(cli.input, flags, {
+        moduleResolutionBase: process.argv[1],
+    });
 };
