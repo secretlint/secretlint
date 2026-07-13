@@ -165,13 +165,13 @@ export const snapshot = (options: SnapshotOptions) => {
                             throw new Error(`Not found input file in ${testCaseDir}`);
                         }
                         const actualFilePath = path.join(testCaseDir, actualFileName);
-                        const loadedConfig = await (fs.existsSync(secretlintrcFilePath)
-                              ? loadConfig({
+                        const loadedConfig = fs.existsSync(secretlintrcFilePath)
+                            ? await loadConfig({
                                   configFilePath: secretlintrcFilePath,
                                   moduleResolutionBase: secretlintrcFilePath,
                                   testReplaceDefinitions: testDefinitions,
                               })
-                            : undefined);
+                            : undefined;
                         const config = loadedConfig && loadedConfig.ok ? loadedConfig.config : options.defaultConfig;
                         const rawSource = await createRawSource(actualFilePath);
                         const actualResult = await lintSource({
