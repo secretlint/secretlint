@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1784197012185,
+  "lastUpdate": 1784625880805,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -56770,6 +56770,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.25,
             "range": "±1.08%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a025dae19e71312eb7111a7911c08dab556afcdf",
+          "message": "fix(database-connection): Ignore database connection strings with identical example credentials (#1631)\n\n## Summary\n\n- Treat connection strings with matching usernames and passwords as\nexamples.\n- Apply the filtering consistently to MongoDB, MySQL, and PostgreSQL\nrules.\n- Document the behavior and add regression fixtures for identical\ncredentials.\n\n## Testing\n\n- Updated snapshot coverage for valid identical username/password\nexamples.",
+          "timestamp": "2026-07-21T09:22:42Z",
+          "tree_id": "0361b68d16b5cf05b8ccf15d950a2464c3ac95d0",
+          "url": "https://github.com/secretlint/secretlint/commit/a025dae19e71312eb7111a7911c08dab556afcdf"
+        },
+        "date": 1784625877945,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.48,
+            "range": "±1.18%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.25,
+            "range": "±1.10%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
