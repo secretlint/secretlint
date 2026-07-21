@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/node",
-    "version": "13.0.2",
+    "version": "13.0.3",
     "description": "Secretlint client library for Node.js",
     "keywords": [
         "secretlint",

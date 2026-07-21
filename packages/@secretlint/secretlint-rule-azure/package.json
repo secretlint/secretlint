@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-azure",
-    "version": "13.0.2",
+    "version": "13.0.3",
     "description": "A secretlint rule for Azure.",
     "keywords": [
         "secretlint",
