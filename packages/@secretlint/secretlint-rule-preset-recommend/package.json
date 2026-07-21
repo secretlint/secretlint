@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-preset-recommend",
-    "version": "13.0.2",
+    "version": "13.0.3",
     "description": "Recommended rule preset of secretlint.",
     "keywords": [
         "secretlint",

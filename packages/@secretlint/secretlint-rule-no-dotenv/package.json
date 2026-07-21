@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-no-dotenv",
-    "version": "13.0.2",
+    "version": "13.0.3",
     "description": "A secretlint rule for dotenv",
     "keywords": [
         "secretlint",
