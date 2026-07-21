@@ -74,9 +74,12 @@ function isVariableLikeString(str: string): boolean {
 }
 
 /**
- * Check if the password part looks like a real credential
+ * Check if the username and password look like real credentials
  */
-function isLikelyRealPassword(password: string): boolean {
+function isLikelyRealCredential(username: string, password: string): boolean {
+    // Skip example credentials that repeat the username as the password
+    if (username === password) return false;
+
     // Skip if it's too short or too simple
     if (password.length < 4) return false;
 
@@ -122,8 +125,8 @@ function reportMongoDBConnectionString({
         // Skip if no credentials found
         if (!username || !password) continue;
 
-        // Skip if password doesn't look real
-        if (!isLikelyRealPassword(password)) continue;
+        // Skip if the credentials look like an example
+        if (!isLikelyRealCredential(username, password)) continue;
 
         const range = [index, index + match.length] as const;
         const allowedResults = matchPatterns(match, options.allows);
@@ -166,8 +169,8 @@ function reportMySQLConnectionString({
         // Skip if no credentials found
         if (!username || !password) continue;
 
-        // Skip if password doesn't look real
-        if (!isLikelyRealPassword(password)) continue;
+        // Skip if the credentials look like an example
+        if (!isLikelyRealCredential(username, password)) continue;
 
         const range = [index, index + match.length] as const;
         const allowedResults = matchPatterns(match, options.allows);
@@ -210,8 +213,8 @@ function reportPostgreSQLConnectionString({
         // Skip if no credentials found
         if (!username || !password) continue;
 
-        // Skip if password doesn't look real
-        if (!isLikelyRealPassword(password)) continue;
+        // Skip if the credentials look like an example
+        if (!isLikelyRealCredential(username, password)) continue;
 
         const range = [index, index + match.length] as const;
         const allowedResults = matchPatterns(match, options.allows);

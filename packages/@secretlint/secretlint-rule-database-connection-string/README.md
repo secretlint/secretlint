@@ -27,6 +27,7 @@ const uri = "mongodb://localhost:27017/mydb";
 const uri = "mongodb://username:${PASSWORD}@host:27017/mydb";
 const uri = "mongodb://username:REPLACE_WITH_PASSWORD@localhost:27017/mydb";  // placeholder
 const uri = "mongodb+srv://user:{password}@cluster.mongodb.net/test";
+const uri = "mongodb://mongodb:mongodb@localhost:27017/mydb";  // identical example credentials
 ```
 
 **Bad:**
@@ -50,6 +51,7 @@ Detects:
 const uri = "mysql://localhost:3306/mydb";
 const uri = "mysql://user:${PASSWORD}@host:3306/mydb";
 const uri = "mysql://user:REPLACE_WITH_PASSWORD@localhost:3306/mydb";  // placeholder
+const uri = "mysql://mysql:mysql@localhost:3306/mydb";  // identical example credentials
 ```
 
 **Bad:**
@@ -71,6 +73,7 @@ Detects:
 const uri = "postgresql://localhost:5432/mydb";
 const uri = "postgres://user:${PASSWORD}@host:5432/mydb";
 const uri = "postgres://user:REPLACE_WITH_PASSWORD@localhost:5432/mydb";  // placeholder
+const uri = "postgres://postgres:postgres@localhost:5432/mydb";  // identical example credentials
 ```
 
 **Bad:**
@@ -90,14 +93,16 @@ This rule includes several mechanisms to prevent false positives:
 
 1. **Variable Pattern Detection**: Automatically ignores common variable patterns like `${PASSWORD}`, `{password}`, `{{username}}`
 2. **Placeholder Detection**: Skips common placeholder values like `password`, `username`, `YOUR_PASSWORD`, etc.
-3. **Entropy Analysis**: Uses entropy calculation to distinguish real passwords from simple placeholder text
-4. **Minimum Length**: Requires passwords to be at least 4 characters long to reduce noise
+3. **Identical Credential Detection**: Skips credentials whose username and password are exactly the same
+4. **Repetitive Password Detection**: Skips passwords made by repeating the same character
+5. **Minimum Length**: Requires passwords to be at least 4 characters long to reduce noise
 
 Example patterns that are **ignored**:
 ```
 mongodb://username:password@localhost:27017/database
 mysql://user:${PASSWORD}@host:3306/db
 postgresql://{username}:{password}@host:5432/db
+postgresql://postgres:postgres@localhost:5432/db
 ```
 
 ## Changelog

@@ -14,6 +14,11 @@ const PG_NO_AUTH = "postgresql://db.server.com:5432/production";
 const CONFIG_EXAMPLE = "mongodb://YOUR_USERNAME:YOUR_PASSWORD@cluster.mongodb.net/test";
 const DOC_EXAMPLE = "mysql://admin:REPLACE_WITH_PASSWORD@mysql.server.com:3306/database";
 
+# Identical username and password
+const MONGO_IDENTICAL_CREDENTIALS = "mongodb://mongodb:mongodb@localhost:27017/database";
+const MYSQL_IDENTICAL_CREDENTIALS = "mysql://mysql:mysql@localhost:3306/database";
+const POSTGRES_IDENTICAL_CREDENTIALS = "postgres://postgres:postgres@localhost:5432/database";
+
 # Bash default value pattern (${VAR:-default})
 postgres="postgres://postgres@${POSTGRES_HOST:-localhost}:${POSTGRES_PORT:-5432}/$dbname?sslmode=disable"
 
