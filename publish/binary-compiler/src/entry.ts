@@ -3,6 +3,12 @@ import { cli, run } from "secretlint/cli";
 import * as fs from "node:fs";
 import * as path from "node:path";
 
+const writeOutput = async (output: string, destination: "stdout" | "stderr") => {
+    const writer = (destination === "stdout" ? Bun.stdout : Bun.stderr).writer();
+    writer.write(output);
+    await writer.end();
+};
+
 // --init override
 if (cli.flags.init) {
     // write .secretlintrc.json
@@ -33,18 +39,18 @@ if (cli.flags.version) {
     process.exit(0);
 }
 // secretlint CLI wrapper
-run(cli.input, cli.flags).then(
-    ({ exitStatus, stderr, stdout }) => {
-        if (stdout) {
-            console.log(stdout);
-        }
-        if (stderr) {
-            console.error(stderr);
-        }
-        process.exit(exitStatus);
-    },
-    (error) => {
-        console.error(error);
-        process.exit(1);
+try {
+    const { exitStatus, stderr, stdout } = await run(cli.input, cli.flags);
+    if (stdout) {
+        await writeOutput(`${stdout}\n`, "stdout");
     }
-);
+    if (stderr) {
+        const errorMessage = stderr.stack ?? stderr.message;
+        await writeOutput(`${errorMessage}\n`, "stderr");
+    }
+    process.exit(exitStatus);
+} catch (error) {
+    const errorMessage = error instanceof Error ? (error.stack ?? error.message) : String(error);
+    await writeOutput(`${errorMessage}\n`, "stderr");
+    process.exit(1);
+}

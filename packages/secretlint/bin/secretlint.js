@@ -19,8 +19,8 @@ try {
     if (stderr) {
         console.error(stderr);
     }
-    process.exit(exitStatus);
+    process.exitCode = exitStatus;
 } catch (error) {
     console.error(error);
-    process.exit(2); // fatal error
+    process.exitCode = 2; // fatal error
 }

@@ -47,7 +47,7 @@
         "prepublishOnly": "npm run clean && npm run build",
         "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
         "prepublish": "npm run --if-present build",
-        "test": "node bin/quick-start.js \"**/*\" && exit 1 || exit 0",
+        "test": "node --test test/*.test.js",
         "watch": "tsc --build --watch"
     },
     "prettier": {
