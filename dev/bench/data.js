@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1784678904523,
+  "lastUpdate": 1784681666790,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -56960,6 +56960,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.25,
             "range": "±1.28%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "41898282+github-actions[bot]@users.noreply.github.com",
+            "name": "github-actions[bot]",
+            "username": "github-actions[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "725e479e0e7b2f760400d0140c317c60cd4e8849",
+          "message": "v13.0.4 (#1638)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat master -->\n\n## What's Changed\n### CI\n* Update actions/setup-node action to v6.5.0 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1635\n### Other Changes\n* fix(cli): flush piped output before exit by @azu in\nhttps://github.com/secretlint/secretlint/pull/1637\n\n\n**Full Changelog**:\nhttps://github.com/secretlint/secretlint/compare/v13.0.3...v13.0.4\n\nCo-authored-by: azu <azu@users.noreply.github.com>",
+          "timestamp": "2026-07-22T00:52:31Z",
+          "tree_id": "c125713871a3d020939c222b898a9c4a432f2bd9",
+          "url": "https://github.com/secretlint/secretlint/commit/725e479e0e7b2f760400d0140c317c60cd4e8849"
+        },
+        "date": 1784681664111,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.5,
+            "range": "±0.60%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.25,
+            "range": "±1.47%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
