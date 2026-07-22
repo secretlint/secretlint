@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1784664827206,
+  "lastUpdate": 1784678904523,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -56921,6 +56921,44 @@ window.BENCHMARK_DATA = {
           {
             "name": "run secretlint for js-primer",
             "value": 0.32,
+            "range": "±1.28%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "4d86b3c70c6f072f5fe0b963455e21490cba8c13",
+          "message": "fix(cli): flush piped output before exit (#1637)\n\n## Summary\n- Fixes #1634 by preventing large CLI output from being truncated when\nstdout is piped to another process.\n- Covers the Node.js CLI entry points and the compiled Bun binary.\n\n## Changes\n- Replace immediate `process.exit()` calls with `process.exitCode` in\nthe secretlint and quick-start Node.js entry points, allowing pending\nstdout and stderr writes to finish.\n- Write Bun binary output through a `FileSink` and await `end()` before\nexiting.\n- Add regression tests that send more than 2 MiB of input through the\nCLI and verify the complete JSON output.\n- Extend the compiled binary smoke test with the same large piped-output\nscenario.\n\n## Breaking Changes\n- None.\n\n## Test Plan\n- `turbo run test --filter=secretlint --filter=@secretlint/quick-start`\n— all relevant tasks passed.\n- Ran the repository self-lint through\n`packages/secretlint/bin/secretlint.js`.\n- `bash -n publish/binary-compiler/test.sh`\n- Compiled the macOS arm64 binary and verified complete 2 MiB piped JSON\noutput, with secretlint exiting with status 1 and the JSON consumer\nexiting with status 0.",
+          "timestamp": "2026-07-22T09:06:24+09:00",
+          "tree_id": "76d02a5f7c7592eda5f26258f695296079f51a62",
+          "url": "https://github.com/secretlint/secretlint/commit/4d86b3c70c6f072f5fe0b963455e21490cba8c13"
+        },
+        "date": 1784678901602,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.5,
+            "range": "±0.98%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.25,
             "range": "±1.28%",
             "unit": "ops/sec",
             "extra": "5 samples"
