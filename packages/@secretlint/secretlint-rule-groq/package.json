@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-groq",
-    "version": "13.0.3",
+    "version": "13.0.4",
     "description": "A secretlint rule for detecting Groq API keys",
     "keywords": [
         "secretlint",
