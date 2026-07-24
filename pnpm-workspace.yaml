@@ -35,7 +35,7 @@ catalog:
   "lint-staged": "^16.4.0"
   "micromatch": "^4.0.8"
   "node-sarif-builder": "^4.1.0"
-  "p-map": "^7.0.5"
+  "p-map": "^7.0.6"
   "picomatch": "^4.0.5"
   "pluralize": "^8.0.0"
   "prettier": "^3.8.3"

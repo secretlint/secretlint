@@ -97,8 +97,8 @@ catalogs:
       specifier: ^4.1.0
       version: 4.1.0
     p-map:
-      specifier: ^7.0.5
-      version: 7.0.5
+      specifier: ^7.0.6
+      version: 7.0.6
     picomatch:
       specifier: ^4.0.5
       version: 4.0.5
@@ -414,7 +414,7 @@ importers:
         version: 4.4.3
       p-map:
         specifier: 'catalog:'
-        version: 7.0.5
+        version: 7.0.6
     devDependencies:
       '@secretlint/secretlint-rule-example':
         specifier: workspace:*
@@ -3475,8 +3475,8 @@ packages:
     resolution: {integrity: sha512-wPrq66Llhl7/4AGC6I+cqxT07LhXvWL08LNXz1fENOw0Ap4sRZZ/gZpTTJ5jpurzzzfS2W/Ge9BY3LgLjCShcw==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
-  p-map@7.0.5:
-    resolution: {integrity: sha512-e8vJF4XdVkzqqSHguEMz41mQO1wKwxKm5ENrUJQUu9kLDCtn83cxbyHZcszr4QC5zEA7WffRRC4gsTecC7J9oA==}
+  p-map@7.0.6:
+    resolution: {integrity: sha512-I4Prw6ivkd6p8PiYR1tXASOAOBzIJwu0TB7fqaX0c/8c3QAehNYmX57EijyGGGBt3c/BIowGwV03RVBtXvHEVg==}
     engines: {node: '>=18'}
 
   package-json-from-dist@1.0.1:
@@ -5652,7 +5652,7 @@ snapshots:
     dependencies:
       p-limit: 4.0.0
 
-  p-map@7.0.5: {}
+  p-map@7.0.6: {}
 
   package-json-from-dist@1.0.1: {}
 
