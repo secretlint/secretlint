@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1785337841423,
+  "lastUpdate": 1785363289244,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -57264,6 +57264,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.25,
             "range": "±1.41%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c45fb6584ec4ac1abbdbacc45306311a5b3f957e",
+          "message": "Update dependency rollup to ^4.62.3 (#1647)\n\nThis PR contains the following updates:\n\n| Package | Change |\n[Age](https://docs.renovatebot.com/merge-confidence/) |\n[Confidence](https://docs.renovatebot.com/merge-confidence/) |\n|---|---|---|---|\n| [rollup](https://rollupjs.org/)\n([source](https://redirect.github.com/rollup/rollup)) | [`^4.62.2` →\n`^4.62.3`](https://renovatebot.com/diffs/npm/rollup/4.62.2/4.62.3) |\n![age](https://developer.mend.io/api/mc/badges/age/npm/rollup/4.62.3?slim=true)\n|\n![confidence](https://developer.mend.io/api/mc/badges/confidence/npm/rollup/4.62.2/4.62.3?slim=true)\n|\n\n---\n\n### Release Notes\n\n<details>\n<summary>rollup/rollup (rollup)</summary>\n\n###\n[`v4.62.3`](https://redirect.github.com/rollup/rollup/blob/HEAD/CHANGELOG.md#4623)\n\n[Compare\nSource](https://redirect.github.com/rollup/rollup/compare/v4.62.2...v4.62.3)\n\n*2026-07-26*\n\n##### Bug Fixes\n\n- Sanitize illegal characters preserved modules input base\n([#&#8203;6439](https://redirect.github.com/rollup/rollup/issues/6439))\n\n##### Pull Requests\n\n- [#&#8203;6421](https://redirect.github.com/rollup/rollup/pull/6421):\ndocs: update x\\_google\\_ignoreList link to canonical URL\n([@&#8203;DucMinhNe](https://redirect.github.com/DucMinhNe),\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6422](https://redirect.github.com/rollup/rollup/pull/6422):\nfix(deps): update minor/patch updates\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot],\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6423](https://redirect.github.com/rollup/rollup/pull/6423):\nchore(deps): update actions/checkout action to v7\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6424](https://redirect.github.com/rollup/rollup/pull/6424):\nchore(deps): update dependency eslint-plugin-unicorn to v68\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot],\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6425](https://redirect.github.com/rollup/rollup/pull/6425):\nchore(deps): lock file maintenance\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot],\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6426](https://redirect.github.com/rollup/rollup/pull/6426):\nchore(deps): lock file maintenance\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6432](https://redirect.github.com/rollup/rollup/pull/6432):\nfix: make isLegal idempotent by not using a global-flag regex\n([@&#8203;spokodev](https://redirect.github.com/spokodev),\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6433](https://redirect.github.com/rollup/rollup/pull/6433):\ndocs: clarify sideEffects and moduleSideEffects\n([@&#8203;ishaanlabs-gg](https://redirect.github.com/ishaanlabs-gg),\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6434](https://redirect.github.com/rollup/rollup/pull/6434):\nchore(deps): update dtolnay/rust-toolchain digest to\n[`4be7066`](https://redirect.github.com/rollup/rollup/commit/4be7066)\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot],\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6435](https://redirect.github.com/rollup/rollup/pull/6435):\nfix(deps): update minor/patch updates\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6436](https://redirect.github.com/rollup/rollup/pull/6436):\nchore(deps): update actions/cache action to v6\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6438](https://redirect.github.com/rollup/rollup/pull/6438):\nchore(deps): lock file maintenance\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot],\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6439](https://redirect.github.com/rollup/rollup/pull/6439):\nSanitize input base before computing preserved module chunk names\n([@&#8203;MahinAnowar](https://redirect.github.com/MahinAnowar),\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6443](https://redirect.github.com/rollup/rollup/pull/6443):\nchore(deps): update dependency eslint-plugin-unicorn to v71\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot],\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6444](https://redirect.github.com/rollup/rollup/pull/6444):\nfix(deps): update rust crate swc\\_compiler\\_base to v60\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6446](https://redirect.github.com/rollup/rollup/pull/6446):\nchore(deps): update dtolnay/rust-toolchain digest to\n[`4cda84d`](https://redirect.github.com/rollup/rollup/commit/4cda84d)\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6447](https://redirect.github.com/rollup/rollup/pull/6447):\nfix(deps): update minor/patch updates\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6448](https://redirect.github.com/rollup/rollup/pull/6448):\nchore(deps): update actions/setup-node action to v7\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6449](https://redirect.github.com/rollup/rollup/pull/6449):\nchore(deps): update dependency eslint-plugin-unicorn to v72\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6450](https://redirect.github.com/rollup/rollup/pull/6450):\nchore(deps): update dependency pinia to v4\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot],\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6451](https://redirect.github.com/rollup/rollup/pull/6451):\nchore(deps): lock file maintenance\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot],\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6455](https://redirect.github.com/rollup/rollup/pull/6455):\ndocs: fix broken commonjs namedExports link in troubleshooting\n([@&#8203;Hashim1999164](https://redirect.github.com/Hashim1999164),\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6456](https://redirect.github.com/rollup/rollup/pull/6456):\nfix(deps): update minor/patch updates\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6457](https://redirect.github.com/rollup/rollup/pull/6457):\nchore(deps): update dependency magic-string to v1\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot],\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6458](https://redirect.github.com/rollup/rollup/pull/6458):\nfix(deps): update swc monorepo (major)\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6459](https://redirect.github.com/rollup/rollup/pull/6459):\nchore(deps): lock file maintenance\n([@&#8203;renovate](https://redirect.github.com/renovate)\\[bot])\n- [#&#8203;6460](https://redirect.github.com/rollup/rollup/pull/6460):\nFix build:docs after rollup update\n([@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n\n</details>\n\n---\n\n### Configuration\n\n📅 **Schedule**: (in timezone Asia/Tokyo)\n\n- Branch creation\n  - At any time (no schedule defined)\n- Automerge\n  - At any time (no schedule defined)\n\n🚦 **Automerge**: Enabled.\n\n♻ **Rebasing**: Whenever PR is behind base branch, or you tick the\nrebase/retry checkbox.\n\n🔕 **Ignore**: Close this PR and you won't be reminded about this update\nagain.\n\n---\n\n- [ ] <!-- rebase-check -->If you want to rebase/retry this PR, check\nthis box\n\n---\n\nThis PR was generated by [Mend Renovate](https://mend.io/renovate/).\nView the [repository job\nlog](https://developer.mend.io/github/secretlint/secretlint).\n\n<!--renovate-debug:eyJjcmVhdGVkSW5WZXIiOiI0My4yODAuMCIsInVwZGF0ZWRJblZlciI6IjQzLjI4MC4wIiwidGFyZ2V0QnJhbmNoIjoibWFzdGVyIiwibGFiZWxzIjpbImRlcGVuZGVuY2llcyJdfQ==-->\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2026-07-29T22:12:42Z",
+          "tree_id": "249d61ff17ca82d06c6cd3488ca2a9cba85ca963",
+          "url": "https://github.com/secretlint/secretlint/commit/c45fb6584ec4ac1abbdbacc45306311a5b3f957e"
+        },
+        "date": 1785363285682,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.47,
+            "range": "±0.84%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.25,
+            "range": "±0.60%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
