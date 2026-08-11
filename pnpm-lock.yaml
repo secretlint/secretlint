@@ -127,8 +127,8 @@ catalogs:
       specifier: ^4.1.0
       version: 4.1.0
     secp256k1:
-      specifier: ^5.0.1
-      version: 5.0.1
+      specifier: ^5.0.2
+      version: 5.0.2
     strip-ansi:
       specifier: ^7.2.0
       version: 7.2.0
@@ -142,7 +142,7 @@ catalogs:
       specifier: ^5.0.0
       version: 5.0.0
     tsx:
-      specifier: ^4.23.10
+      specifier: ^4.23.11
       version: 4.23.11
     turbo:
       specifier: ^2.10.8
@@ -1494,7 +1494,7 @@ importers:
         version: 5.2.5
       secp256k1:
         specifier: 'catalog:'
-        version: 5.0.1
+        version: 5.0.2
     devDependencies:
       '@secretlint/tester':
         specifier: workspace:*
@@ -3676,8 +3676,8 @@ packages:
     resolution: {integrity: sha512-BL0H/PC3OfVC+LosOy/ynai3A6SqzDn0W1+wOVkaJIHZ7LxfUyOPGvZPj7X3Qu4tnQ8gjcy+9KILlmiSeGqDmA==}
     hasBin: true
 
-  secp256k1@5.0.1:
-    resolution: {integrity: sha512-lDFs9AAIaWP9UCdtWrotXWWF9t8PWgQDcxqgAnpM9rMqxb3Oaq2J0thzPVSxBwdJgyQtkU/sYtFtbM1RSt/iYA==}
+  secp256k1@5.0.2:
+    resolution: {integrity: sha512-HwMOXeWjr1UvBNYt9S+w9bMuuyUOrPFQ8CWd23CGai/8vbgtUKS2ITngFOzMhaPZQAPxTb/f9alLou9mPnNV2Q==}
     engines: {node: '>=18.0.0'}
 
   semver@7.7.4:
@@ -5905,7 +5905,7 @@ snapshots:
       - '@types/node'
       - supports-color
 
-  secp256k1@5.0.1:
+  secp256k1@5.0.2:
     dependencies:
       elliptic: 6.6.1
       node-addon-api: 5.1.0
