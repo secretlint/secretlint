@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1787256262175,
+  "lastUpdate": 1787349010132,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -57948,6 +57948,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 0.31,
             "range": "±0.62%",
+            "unit": "ops/sec",
+            "extra": "5 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "10e687f851f63df4b88952bc12e8612697944321",
+          "message": "Update dependency turbo to ^2.10.11 (#1668)\n\nThis PR contains the following updates:\n\n| Package | Change |\n[Age](https://docs.renovatebot.com/merge-confidence/) |\n[Confidence](https://docs.renovatebot.com/merge-confidence/) |\n|---|---|---|---|\n| [turbo](https://turborepo.dev)\n([source](https://redirect.github.com/vercel/turborepo)) | [`^2.10.10` →\n`^2.10.11`](https://renovatebot.com/diffs/npm/turbo/2.10.10/2.10.11) |\n![age](https://developer.mend.io/api/mc/badges/age/npm/turbo/2.10.11?slim=true)\n|\n![confidence](https://developer.mend.io/api/mc/badges/confidence/npm/turbo/2.10.10/2.10.11?slim=true)\n|\n\n⚠️ Renovate does not enforce Minimum Release Age for `bump`,\n`lockfileUpdate`, or `rollback` updates, so these are raised without a\nMinimum Release Age check. You will need to manually validate the\nMinimum Release Age for these package(s).\n\n---\n\n### Release Notes\n\n<details>\n<summary>vercel/turborepo (turbo)</summary>\n\n###\n[`v2.10.11`](https://redirect.github.com/vercel/turborepo/releases/tag/v2.10.11):\nTurborepo v2.10.11\n\n[Compare\nSource](https://redirect.github.com/vercel/turborepo/compare/v2.10.10...v2.10.11)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat v2.10.11 -->\n\n#### What's Changed\n\n##### Changelog\n\n- chore: Release Turborepo 2.10.10 by\n[@&#8203;github-actions](https://redirect.github.com/github-actions)\\[bot]\nin\n[#&#8203;13741](https://redirect.github.com/vercel/turborepo/pull/13741)\n- fix: Automatically approve release workflows by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;13743](https://redirect.github.com/vercel/turborepo/pull/13743)\n- chore: Release Turborepo 2.10.11-canary.1 by\n[@&#8203;github-actions](https://redirect.github.com/github-actions)\\[bot]\nin\n[#&#8203;13744](https://redirect.github.com/vercel/turborepo/pull/13744)\n- fix: Avoid repeated strict entrypoint traversal by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;13745](https://redirect.github.com/vercel/turborepo/pull/13745)\n- chore: Release Turborepo 2.10.11-canary.2 by\n[@&#8203;github-actions](https://redirect.github.com/github-actions)\\[bot]\nin\n[#&#8203;13747](https://redirect.github.com/vercel/turborepo/pull/13747)\n- feat: Cache native uv tool tasks by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;13748](https://redirect.github.com/vercel/turborepo/pull/13748)\n- chore: Release Turborepo 2.10.11-canary.3 by\n[@&#8203;github-actions](https://redirect.github.com/github-actions)\\[bot]\nin\n[#&#8203;13749](https://redirect.github.com/vercel/turborepo/pull/13749)\n- fix: Isolate concurrent generator config bundles by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;13750](https://redirect.github.com/vercel/turborepo/pull/13750)\n- chore: Forbid release-age exclusions in examples maintenance by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;13751](https://redirect.github.com/vercel/turborepo/pull/13751)\n- fix: Respect gitignore without git metadata by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;13756](https://redirect.github.com/vercel/turborepo/pull/13756)\n- chore: Release Turborepo 2.10.11-canary.4 by\n[@&#8203;github-actions](https://redirect.github.com/github-actions)\\[bot]\nin\n[#&#8203;13759](https://redirect.github.com/vercel/turborepo/pull/13759)\n- feat: Expand performance agent toolbox by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;13761](https://redirect.github.com/vercel/turborepo/pull/13761)\n- docs: Redesign Turborepo homepage by\n[@&#8203;christopherkindl](https://redirect.github.com/christopherkindl)\nin\n[#&#8203;13702](https://redirect.github.com/vercel/turborepo/pull/13702)\n- fix: Tolerate transient input files by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;13734](https://redirect.github.com/vercel/turborepo/pull/13734)\n\n**Full Changelog**:\n<https://github.com/vercel/turborepo/compare/v2.10.10...v2.10.11>\n\n</details>\n\n---\n\n### Configuration\n\n📅 **Schedule**: (in timezone Asia/Tokyo)\n\n- Branch creation\n  - At any time (no schedule defined)\n- Automerge\n  - At any time (no schedule defined)\n\n🚦 **Automerge**: Enabled.\n\n♻ **Rebasing**: Whenever PR is behind base branch, or you tick the\nrebase/retry checkbox.\n\n🔕 **Ignore**: Close this PR and you won't be reminded about this update\nagain.\n\n---\n\n- [ ] <!-- rebase-check -->If you want to rebase/retry this PR, check\nthis box\n\n---\n\nThis PR was generated by [Mend Renovate](https://mend.io/renovate/).\nView the [repository job\nlog](https://developer.mend.io/github/secretlint/secretlint).\n\n<!--renovate-debug:eyJjcmVhdGVkSW5WZXIiOiI0NC4zOS4wIiwidXBkYXRlZEluVmVyIjoiNDQuMzkuMCIsInRhcmdldEJyYW5jaCI6Im1hc3RlciIsImxhYmVscyI6WyJkZXBlbmRlbmNpZXMiXX0=-->\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2026-08-21T21:48:29Z",
+          "tree_id": "829cab73885259b7ee2faa73439e83bd4a3018ff",
+          "url": "https://github.com/secretlint/secretlint/commit/10e687f851f63df4b88952bc12e8612697944321"
+        },
+        "date": 1787349006652,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 3.17,
+            "range": "±1.90%",
+            "unit": "ops/sec",
+            "extra": "12 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 0.31,
+            "range": "±2.32%",
             "unit": "ops/sec",
             "extra": "5 samples"
           }
