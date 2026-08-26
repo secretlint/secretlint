@@ -255,6 +255,9 @@ export const run = async (
             stderr: null,
         };
     }
+    // Profiling costs performance, so it is enabled only when --profile is specified
+    // https://github.com/secretlint/secretlint/issues/1633
+    secretLintProfiler.setEnabled(Boolean(flags.profile));
     secretLintProfiler.mark({
         type: "secretlint>cli::start",
     });
