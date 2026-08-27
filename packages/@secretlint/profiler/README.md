@@ -10,7 +10,24 @@ Install with [npm](https://www.npmjs.com/):
 
 ## Usage
 
-- [ ] Write usage instructions
+`@secretlint/profiler` exports a shared `secretLintProfiler` instance. Secretlint packages mark their own timings with it.
+
+Profiling costs performance—`performance.mark()` is called for each rule and each file—so the profiler should be enabled only when you need the profiling result.
+The `secretlint` CLI enables it only when the `--profile` flag is passed.
+
+```js
+import { secretLintProfiler } from "@secretlint/profiler";
+
+// Disable profiling: `mark()` becomes no-op and `PerformanceObserver` is not started
+secretLintProfiler.setEnabled(false);
+
+// Enable profiling before running secretlint
+secretLintProfiler.setEnabled(true);
+// ... run secretlint ...
+const measures = await secretLintProfiler.getMeasures();
+```
+
+The profiler is enabled by default. If you use Secretlint as a library and do not need the profiling result, call `secretLintProfiler.setEnabled(false)` before running secretlint.
 
 ## Changelog
 

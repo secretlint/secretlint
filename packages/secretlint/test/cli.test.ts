@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import assert from "node:assert";
 import { cli, run } from "../src/cli.js";
+import { secretLintProfiler } from "@secretlint/profiler";
 import { fileURLToPath } from "url";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
@@ -88,7 +89,7 @@ describe("cli snapshot testing", () => {
                 fs.writeFileSync(
                     expectedFilePath,
                     JSON.stringify(normalizedActual, createSnapshotReplacer(), 4),
-                    "utf-8"
+                    "utf-8",
                 );
                 t.skip(); // skip when updating snapshots
                 return;
@@ -102,8 +103,49 @@ describe("cli snapshot testing", () => {
 Fixture: ${fixtureDir}
 Result:
 ${JSON.stringify(normalizedActual, createSnapshotReplacer(), 4)}
-`
+`,
             );
         });
+    });
+});
+
+describe("--profile", () => {
+    const fixtureDir = path.join(SNAPSHOT_DIR, "--format=json");
+    const inputFilePath = path.join(fixtureDir, "input.txt");
+    afterEach(() => {
+        // reset the profiler state for other tests
+        secretLintProfiler.setEnabled(false);
+    });
+    it("should not enable the profiler if --profile is not specified", async () => {
+        await run([inputFilePath], {
+            ...cli.flags,
+            cwd: fixtureDir,
+            color: false,
+            format: "json",
+        });
+        assert.strictEqual(secretLintProfiler.isEnabled, false);
+    });
+    it("should enable the profiler and print the measures if --profile is specified", async () => {
+        const logs: string[] = [];
+        const consoleLog = console.log;
+        console.log = (...args: unknown[]) => {
+            logs.push(args.join(" "));
+        };
+        try {
+            await run([inputFilePath], {
+                ...cli.flags,
+                cwd: fixtureDir,
+                color: false,
+                format: "stylish",
+                profile: true,
+            });
+        } finally {
+            console.log = consoleLog;
+        }
+        assert.strictEqual(secretLintProfiler.isEnabled, true);
+        assert.ok(
+            logs.some((log) => /^.+ - [\d.]+ms$/.test(log)),
+            `should print the measures: ${JSON.stringify(logs)}`,
+        );
     });
 });

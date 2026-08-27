@@ -100,19 +100,65 @@ export type LimitedPerformanceObserver = Constructor<{
 export type SecretLintProfilerOptions = {
     perf: Performance;
     PerformanceObserver: LimitedPerformanceObserver;
+    /**
+     * If `enabled` is `false`, the profiler does not do anything.
+     * `mark()` becomes no-op and `PerformanceObserver` is not started.
+     * Default: true
+     */
+    enabled?: boolean;
 };
 
 export class SecretLintProfiler {
     private perf: Performance;
+    private PerformanceObserver: LimitedPerformanceObserver;
+    private observer: InstanceType<LimitedPerformanceObserver> | undefined;
+    /**
+     * Profiling costs performance.
+     * `performance.mark()` and `PerformanceObserver` callback are called for each rule and each file.
+     * So, the profiler should be disabled if the user does not need the profiling result.
+     * https://github.com/secretlint/secretlint/issues/1633
+     */
+    private enabled: boolean;
     private entries: PerformanceEntry[] = [];
     private measures: PerformanceEntry[] = [];
+    /**
+     * Set of mark names that have already been marked as `{mark}::start`
+     */
+    private startMarkNames: Set<string> = new Set();
 
     private executionPromises: Promise<void>[] = [];
 
     constructor(options: SecretLintProfilerOptions) {
         this.perf = options.perf;
+        this.PerformanceObserver = options.PerformanceObserver;
+        this.enabled = options.enabled ?? true;
+    }
+
+    get isEnabled(): boolean {
+        return this.enabled;
+    }
+
+    /**
+     * Enable or Disable the profiler.
+     * If the profiler is disabled, `mark()` does nothing and collected entries are cleared.
+     * @param enabled
+     */
+    setEnabled(enabled: boolean) {
+        if (this.enabled === enabled) {
+            return;
+        }
+        this.enabled = enabled;
+        if (!enabled) {
+            this.stopObserving();
+        }
+    }
+
+    private startObserving() {
         const pattern = /(.*?)::end(\|\|.*)?/;
-        const observer = new options.PerformanceObserver((items: PerformanceObserverEntryList) => {
+        const observer = new this.PerformanceObserver((items: PerformanceObserverEntryList) => {
+            if (!this.enabled) {
+                return;
+            }
             const entries = items.getEntries();
             entries.forEach((entry) => {
                 if (entry.entryType === "mark") {
@@ -121,23 +167,18 @@ export class SecretLintProfiler {
                     const suffix = match && match[2] ? match[2] : "";
                     // if mark already {mark}::start, measure start to end
                     if (endIdentifier) {
-                        const startIdentifier = `${endIdentifier}::start`;
-                        this.entries.find((savedEntry) => {
-                            return savedEntry.name === startIdentifier;
-                        });
-                        // create measure
-                        if (startIdentifier) {
+                        const startMarkName = `${endIdentifier}::start${suffix}`;
+                        // create measure only when the paired `{mark}::start` is already marked
+                        if (this.startMarkNames.has(startMarkName)) {
                             // FIXME: avoid ERR_INVALID_PERFORMANCE_MARK error
                             this.executionPromises.push(
                                 Promise.resolve().then(() => {
-                                    this.perf.measure(
-                                        endIdentifier + suffix,
-                                        `${endIdentifier}::start${suffix}`,
-                                        `${endIdentifier}::end${suffix}`
-                                    );
-                                })
+                                    this.perf.measure(endIdentifier + suffix, startMarkName, entry.name);
+                                }),
                             );
                         }
+                    } else {
+                        this.startMarkNames.add(entry.name);
                     }
                     this.entries.push(entry);
                 } else if (entry.entryType === "measure") {
@@ -146,9 +187,27 @@ export class SecretLintProfiler {
             });
         });
         observer.observe({ entryTypes: ["mark", "measure"] });
+        this.observer = observer;
+    }
+
+    private stopObserving() {
+        this.observer?.disconnect();
+        this.observer = undefined;
+        this.entries.length = 0;
+        this.measures.length = 0;
+        this.executionPromises.length = 0;
+        this.startMarkNames.clear();
     }
 
     mark(marker: SecretLintProfilerMarker) {
+        if (!this.enabled) {
+            return;
+        }
+        // Start observing lazily
+        // It avoids to start PerformanceObserver when the profiler is disabled before the first mark
+        if (!this.observer) {
+            this.startObserving();
+        }
         if ("id" in marker) {
             this.perf.mark(`${marker.type}||${marker.id}`);
         } else {
