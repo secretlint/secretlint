@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1787789047101,
+  "lastUpdate": 1787789837939,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -58140,6 +58140,44 @@ window.BENCHMARK_DATA = {
             "range": "±1.15%",
             "unit": "ops/sec",
             "extra": "10 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "41898282+github-actions[bot]@users.noreply.github.com",
+            "name": "github-actions[bot]",
+            "username": "github-actions[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "249e977cdba2048654aa2920c3222b372bead72a",
+          "message": "v13.0.5 (#1674)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat master -->\n\n## What's Changed\n### Performance\n* fix(profiler): enable profiling only when --profile is specified by\n@azu in https://github.com/secretlint/secretlint/pull/1673\n\nIt will fix linting performance problems #1653 #1633 \n\n### CI\n* Update github/codeql-action action to v3.37.1 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1640\n* Update Minor updates by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1643\n* Update github/codeql-action action to v3.37.2 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1645\n* Update github/codeql-action action to v3.37.3 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1646\n* Update github/codeql-action action to v3.37.4 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1657\n* Update github/codeql-action action to v3.37.5 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1661\n* Update github/codeql-action action to v3.37.6 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1664\n* Update github/codeql-action action to v3.37.7 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1667\n### Dependency Updates\n* Update dependency p-map to ^7.0.6 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1641\n* Update dependency turbo to ^2.10.6 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1642\n* Update dependency turbo to ^2.10.7 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1644\n* Update dependency rollup to ^4.62.3 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1647\n* Update dependency turbo to ^2.10.8 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1648\n* Update Patch updates (patch) by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1649\n* Update dependency tsx to ^4.23.4 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1651\n* Update dependency tsx to ^4.23.5 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1652\n* Update dependency tsx to ^4.23.6 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1655\n* Update dependency tsx to ^4.23.7 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1656\n* Update dependency tsx to ^4.23.8 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1658\n* Update dependency tsx to ^4.23.9 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1659\n* Update dependency tsx to ^4.23.10 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1660\n* Update Patch updates (patch) by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1663\n* Update dependency turbo to ^2.10.9 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1662\n* Update dependency tsx to ^4.23.12 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1665\n* Update dependency turbo to ^2.10.10 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1666\n* Update dependency turbo to ^2.10.11 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1668\n* Update dependency vitest to ^4.1.11 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1669\n* Update dependency rollup to ^4.62.5 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1670\n* Update dependency @types/bun to ^1.4.0 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1671\n\n\n**Full Changelog**:\nhttps://github.com/secretlint/secretlint/compare/v13.0.4...v13.0.5\n\nCo-authored-by: azu <azu@users.noreply.github.com>",
+          "timestamp": "2026-08-27T00:15:45Z",
+          "tree_id": "ef43496ee5093a520c1139036c15bf7ea88e5872",
+          "url": "https://github.com/secretlint/secretlint/commit/249e977cdba2048654aa2920c3222b372bead72a"
+        },
+        "date": 1787789834015,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 3.05,
+            "range": "±0.56%",
+            "unit": "ops/sec",
+            "extra": "12 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 1.57,
+            "range": "±0.68%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
           }
         ]
       }
