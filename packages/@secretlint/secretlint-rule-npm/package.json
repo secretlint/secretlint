@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-npm",
-    "version": "13.0.4",
+    "version": "13.0.5",
     "description": "A secretlint rule for npm.",
     "keywords": [
         "npm",
