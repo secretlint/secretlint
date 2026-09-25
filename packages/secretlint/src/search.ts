@@ -33,6 +33,10 @@ export type SearchFilesOptions = {
  * Always honours DEFAULT_IGNORE_PATTERNS. When `respectGitignore` is true
  * (default), nested `.gitignore` files are respected with Git semantics.
  *
+ * Symlinks encountered while walking are not followed, like Prettier,
+ * gitleaks, and ripgrep. A symlink passed explicitly as a pattern is
+ * still resolved and scanned.
+ *
  * Patterns are interpreted as globs by default. To pass a literal path —
  * for example a file whose name contains glob special characters such as
  * `[`, `(`, `{`, or `?` — set `noGlob: true` (CLI: `--no-glob`).
@@ -52,6 +56,7 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
         ignoreFiles,
         extraIgnorePatterns: DEFAULT_IGNORE_PATTERNS,
         noGlob: options.noGlob,
+        followSymlinks: false,
     });
 
     if (items.length > 0) {
@@ -60,8 +65,8 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
 
     /**
      * If the result is empty because every match was filtered out by an
-     * ignore file, suppress the "not found target file" error. The
-     * fallback walk drops the file-based cascade (`ignoreFiles: []`) but
+     * ignore file or was a skipped symlink, suppress the "not found target
+     * file" error. The fallback walk drops the file-based cascade (`ignoreFiles: []`) but
      * keeps DEFAULT_IGNORE_PATTERNS so we never descend into `.git/` or
      * `node_modules/` just to answer this diagnostic question.
      */
@@ -71,6 +76,10 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
         ignoreFiles: [],
         extraIgnorePatterns: DEFAULT_IGNORE_PATTERNS,
         noGlob: options.noGlob,
+        followSymlinks: false,
+        // Count skipped symlinks as matches without reading their targets,
+        // so a pattern that matches only symlinks is not "not found".
+        listSymlinks: true,
     });
     return {
         ok: itemsWithoutIgnore.length > 0,

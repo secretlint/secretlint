@@ -33,6 +33,7 @@ const files = await walk({
 | `extraIgnorePatterns` | `string[]` | `[]` | Hard-coded ignore patterns added at the cascade root, before any file-based rules. |
 | `noGlob` | `boolean` | `false` | Treat all `patterns` as literal paths. |
 | `followSymlinks` | `boolean` | `true` | Descend into directory symlinks during search. Cascade ignore rules still see the symlink path, never the resolved target. Cycles are broken via `realpath`. |
+| `listSymlinks` | `boolean` | `false` | Only when `followSymlinks` is `false`: return symlink entries by their own path, like regular files, without resolving or reading the target. |
 
 Returns absolute paths with POSIX-form separators.
 

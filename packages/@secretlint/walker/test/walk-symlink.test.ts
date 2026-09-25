@@ -51,6 +51,22 @@ describe.skipIf(!canSymlink)("walk - symlinks", () => {
         expect(r).not.toContain("linked/in-real.ts");
     });
 
+    it("returns symlinks by their own path with listSymlinks", async () => {
+        const results = await walk({ cwd: dir, followSymlinks: false, listSymlinks: true });
+        const r = results.map((p) => path.relative(dir, p).replaceAll("\\", "/")).sort();
+        expect(r).toContain("real/in-real.ts");
+        expect(r).toContain("top.ts");
+        expect(r).toContain("linked");
+        expect(r).not.toContain("linked/in-real.ts");
+    });
+
+    it("ignores listSymlinks when followSymlinks is true", async () => {
+        const results = await walk({ cwd: dir, listSymlinks: true });
+        const r = results.map((p) => path.relative(dir, p).replaceAll("\\", "/")).sort();
+        expect(r).toContain("linked/in-real.ts");
+        expect(r).not.toContain("linked");
+    });
+
     it("ignore rules apply to the symlink path, not the resolved target", async () => {
         // `linked` is a symlink to the existing `real/`. With an ignore
         // rule on the symlink path we should not descend it even though
