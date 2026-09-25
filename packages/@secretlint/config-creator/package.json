@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/config-creator",
-    "version": "13.0.5",
+    "version": "13.0.6",
     "description": "Config file creator for secretlint.",
     "keywords": [
         "secretlint"
