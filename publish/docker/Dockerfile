@@ -5,9 +5,13 @@ LABEL description="Docker Container for secretlint"
 LABEL org.opencontainers.image.source="https://github.com/secretlint/secretlint"
 LABEL org.opencontainers.image.licenses="MIT"
 
+# DL3064 flags names containing "SECRET"; these are a version and a config path, not secrets.
+# hadolint ignore=DL3064
 ARG SECRETLINT_VERSION
+# hadolint ignore=DL3064
 ENV SECRETLINT_VERSION=${SECRETLINT_VERSION:-4.0.0}
 
+# hadolint ignore=DL3064
 ENV SECRETLINTRC=/.secretlintrc.json
 COPY .secretlintrc.json $SECRETLINTRC
 RUN npm install -g secretlint@${SECRETLINT_VERSION} \
