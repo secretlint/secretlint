@@ -1,6 +1,6 @@
 {
     "name": "secretlint",
-    "version": "13.0.5",
+    "version": "13.0.6",
     "description": "Secretlint CLI that scan secret/credential data.",
     "keywords": [
         "secretlint",
