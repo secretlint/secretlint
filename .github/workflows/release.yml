@@ -142,6 +142,23 @@ jobs:
         run: |
           echo "PLATFORM_PAIR=${PLATFORM//\//-}" >> $GITHUB_ENV
           echo "SECRETLINT_VERSION=${VERSION}" >> $GITHUB_ENV
+      # `pnpm publish` can return before the npm registry serves the new version,
+      # so wait until every package installed by the Dockerfile is resolvable.
+      - name: Wait for npm packages to be available
+        run: |
+          packages="secretlint @secretlint/secretlint-rule-preset-recommend @secretlint/secretlint-rule-pattern @secretlint/secretlint-formatter-sarif"
+          for pkg in $packages; do
+            for i in $(seq 1 30); do
+              if npm view "${pkg}@${SECRETLINT_VERSION}" version --prefer-online > /dev/null 2>&1; then
+                echo "${pkg}@${SECRETLINT_VERSION} is available"
+                continue 2
+              fi
+              echo "Waiting for ${pkg}@${SECRETLINT_VERSION} (${i}/30)"
+              sleep 20
+            done
+            echo "::error::${pkg}@${SECRETLINT_VERSION} is not available on npm"
+            exit 1
+          done
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
       - name: Login to GitHub Container Registry
