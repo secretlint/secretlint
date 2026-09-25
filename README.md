@@ -309,6 +309,12 @@ Secretlint walks the file system the same way Git does, honouring nested `.gitig
 2. The file pointed to by `--secretlintignore` (default: `.secretlintignore`).
 3. Each directory's `.gitignore` (cascaded).
 
+Symlinks found while walking are not followed, like Prettier, gitleaks, and ripgrep. This prevents a symlink inside the project from pulling in files outside the working directory. To scan a symlink's target, pass the symlink path explicitly:
+
+```
+secretlint "path/to/link/**/*"
+```
+
 To scan files that are gitignored — for example, a `.env` file in a project where `.env` is gitignored — pass `--no-gitignore`:
 
 ```
@@ -319,7 +325,7 @@ secretlint --no-gitignore "**/*"
 > - `.gitignore` is now respected by default. Previously, secretlint scanned all matching files regardless of `.gitignore`. Pass `--no-gitignore` to restore the previous behaviour.
 > - Include patterns follow picomatch glob syntax (brace expansion, `**`, character classes, …). The cascaded ignore stack (`.gitignore`, `.secretlintignore`, and the built-in ignore list) follows standard `.gitignore` semantics, which does NOT support brace expansion — write `**/.cache` rather than `**/{cache,tmp}` for ignore patterns.
 > - Patterns are interpreted as globs by default. When a pattern resolves to an existing on-disk path the walker treats it literally even if the name contains glob metacharacters (`[`, `(`, `{`, `?`), mirroring globby's old `convertPathToPattern` behaviour. Pass `--no-glob` to force literal handling for paths that don't yet exist on disk.
-> - Directory symlinks are followed during search (matching the previous globby-based behaviour) but the symlink path — not the resolved target — is what `.gitignore` and `.secretlintignore` rules see. Cycles are detected via `realpath` so each unique target is entered at most once.
+> - Symlinks (both files and directories) found while walking are not followed. Pass the symlink path explicitly (e.g. `secretlint "path/to/link/**/*"`) to scan its target.
 
 ### Ignoring by comment
 
