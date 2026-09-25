@@ -62,6 +62,17 @@ describe.skipIf(!canSymlink)("searchFiles - symlinks", () => {
         expect(relative(items)).toEqual(["file-link.txt"]);
     });
 
+    it("does not fail when a pattern matches only symlinks", async () => {
+        const { ok, items } = await searchFiles(["*-link*"], { cwd });
+        expect(ok).toBe(true);
+        expect(items).toEqual([]);
+    });
+
+    it("still fails when a pattern matches nothing", async () => {
+        const { ok } = await searchFiles(["no-such-file*"], { cwd });
+        expect(ok).toBe(false);
+    });
+
     it("does not include the symlink target in the CLI JSON report", async () => {
         const result = await run(["**/*"], {
             ...cli.flags,

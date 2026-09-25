@@ -34,6 +34,13 @@ export type WalkOptions = {
      * realpath and skipped.
      */
     followSymlinks?: boolean;
+    /**
+     * Only used when `followSymlinks` is false. When true, a symlink entry
+     * is returned by its own path, like a regular file, without resolving
+     * or reading its target. Useful for asking "did the patterns match
+     * anything, including symlinks we skip?". Default: false.
+     */
+    listSymlinks?: boolean;
 };
 
 const toPosix = (p: string): string => (path.sep === "\\" ? p.replaceAll("\\", "/") : p);
@@ -204,6 +211,8 @@ type WalkContext = {
     results: Set<string>;
     /** When true, descend into directory symlinks (with cycle detection). */
     followSymlinks: boolean;
+    /** When true and not following, symlinks are returned by their own path. */
+    listSymlinks: boolean;
     /**
      * Real paths of directory symlink targets we have already entered, used
      * to break `a → b → a` style cycles. Shared across the whole walk so
@@ -273,10 +282,12 @@ const resolveEntryKind = async (
     full: string,
     entry: Dirent,
     followSymlinks: boolean,
+    listSymlinks: boolean,
 ): Promise<{ kind: "file" | "dir"; isSymlink: boolean } | null> => {
     if (entry.isDirectory()) return { kind: "dir", isSymlink: false };
     if (entry.isFile()) return { kind: "file", isSymlink: false };
-    if (!entry.isSymbolicLink() || !followSymlinks) return null;
+    if (!entry.isSymbolicLink()) return null;
+    if (!followSymlinks) return listSymlinks ? { kind: "file", isSymlink: true } : null;
     let info;
     try {
         info = await stat(full);
@@ -309,7 +320,7 @@ const processEntries = async (
     await Promise.all(
         entries.map(async (entry) => {
             const full = path.join(absDir, entry.name);
-            const resolved = await resolveEntryKind(full, entry, ctx.followSymlinks);
+            const resolved = await resolveEntryKind(full, entry, ctx.followSymlinks, ctx.listSymlinks);
             if (resolved === null) return;
             const isDir = resolved.kind === "dir";
             // Ignore evaluation always uses the symlink's path, never the resolved target.
@@ -348,9 +359,10 @@ const handleStaticPath = async (options: {
     ignoreFiles: readonly string[];
     results: Set<string>;
     followSymlinks: boolean;
+    listSymlinks: boolean;
     visitedRealPaths: Set<string>;
 }): Promise<void> => {
-    const { absPath, parentChain, ignoreFiles, results, followSymlinks, visitedRealPaths } = options;
+    const { absPath, parentChain, ignoreFiles, results, followSymlinks, listSymlinks, visitedRealPaths } = options;
     // `stat` resolves symlinks. A literal user-supplied path is treated
     // permissively: if it points at a directory (real or via symlink) we
     // walk it. The ignore check uses absPath (the user's literal input),
@@ -375,6 +387,7 @@ const handleStaticPath = async (options: {
             matcher: null,
             results,
             followSymlinks,
+            listSymlinks,
             visitedRealPaths,
         });
     } else if (info.isFile()) {
@@ -395,6 +408,7 @@ export const walk = async (options: WalkOptions): Promise<string[]> => {
     const rootChain = createRootIgnore(cwd, options.extraIgnorePatterns ?? []);
     const results = new Set<string>();
     const followSymlinks = options.followSymlinks !== false;
+    const listSymlinks = !followSymlinks && options.listSymlinks === true;
     // Shared across all groups so two patterns under the same job don't
     // re-enter the same symlinked directory twice.
     const visitedRealPaths = new Set<string>();
@@ -417,6 +431,7 @@ export const walk = async (options: WalkOptions): Promise<string[]> => {
                     ignoreFiles,
                     results,
                     followSymlinks,
+                    listSymlinks,
                     visitedRealPaths,
                 });
                 return;
@@ -441,6 +456,7 @@ export const walk = async (options: WalkOptions): Promise<string[]> => {
                 matcher,
                 results,
                 followSymlinks,
+                listSymlinks,
                 visitedRealPaths,
             });
         }),
