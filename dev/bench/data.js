@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1790342528860,
+  "lastUpdate": 1790342540671,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -58822,6 +58822,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 1.58,
             "range": "±0.71%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "584b74a38266471afc4da3815fa6bd511727de79",
+          "message": "Update github/codeql-action action to v3.38.0 (#1690)\n\nThis PR contains the following updates:\n\n| Package | Type | Update | Change | Pending |\n|---|---|---|---|---|\n|\n[docker/setup-buildx-action](https://redirect.github.com/docker/setup-buildx-action)\n| action | minor | `v4.3.0` → `v4.4.1` | |\n|\n[github/codeql-action](https://redirect.github.com/github/codeql-action)\n| action | minor | `v3.37.9` → `v3.38.0` | `v3.38.2` (+1) |\n\n---\n\n### Release Notes\n\n<details>\n<summary>docker/setup-buildx-action\n(docker/setup-buildx-action)</summary>\n\n###\n[`v4.4.1`](https://redirect.github.com/docker/setup-buildx-action/compare/v4.4.0...v4.4.1)\n\n[Compare\nSource](https://redirect.github.com/docker/setup-buildx-action/compare/v4.4.0...v4.4.1)\n\n###\n[`v4.4.0`](https://redirect.github.com/docker/setup-buildx-action/releases/tag/v4.4.0)\n\n[Compare\nSource](https://redirect.github.com/docker/setup-buildx-action/compare/v4.3.0...v4.4.0)\n\n- Use official Buildx releases for cloud driver by\n[@&#8203;crazy-max](https://redirect.github.com/crazy-max) in\n[#&#8203;606](https://redirect.github.com/docker/setup-buildx-action/pull/606)\n- Pull BuildKit image before builder creation by\n[@&#8203;crazy-max](https://redirect.github.com/crazy-max) in\n[#&#8203;609](https://redirect.github.com/docker/setup-buildx-action/pull/609)\n- Use shared error helpers for Buildx and Docker commands by\n[@&#8203;crazy-max](https://redirect.github.com/crazy-max) in\n[#&#8203;620](https://redirect.github.com/docker/setup-buildx-action/pull/620)\n- Bump\n[@&#8203;docker/actions-toolkit](https://redirect.github.com/docker/actions-toolkit)\nfrom 0.95.0 to 0.100.0 in\n[#&#8203;610](https://redirect.github.com/docker/setup-buildx-action/pull/610)\n[#&#8203;618](https://redirect.github.com/docker/setup-buildx-action/pull/618)\n[#&#8203;619](https://redirect.github.com/docker/setup-buildx-action/pull/619)\n- Bump [@&#8203;humanfs/node](https://redirect.github.com/humanfs/node)\nfrom 0.16.7 to 0.16.8 in\n[#&#8203;614](https://redirect.github.com/docker/setup-buildx-action/pull/614)\n- Bump js-yaml from 5.3.0 to 5.4.2 in\n[#&#8203;608](https://redirect.github.com/docker/setup-buildx-action/pull/608)\n[#&#8203;617](https://redirect.github.com/docker/setup-buildx-action/pull/617)\n- Bump postcss-selector-parser from 7.1.1 to 7.1.5 in\n[#&#8203;611](https://redirect.github.com/docker/setup-buildx-action/pull/611)\n\n**Full Changelog**:\n<https://github.com/docker/setup-buildx-action/compare/v4.3.0...v4.4.0>\n\n</details>\n\n<details>\n<summary>github/codeql-action (github/codeql-action)</summary>\n\n###\n[`v3.38.0`](https://redirect.github.com/github/codeql-action/releases/tag/v3.38.0)\n\n[Compare\nSource](https://redirect.github.com/github/codeql-action/compare/v3.37.9...v3.38.0)\n\n- On GitHub-hosted runners, the CodeQL Action now deletes unused CodeQL\nbundles from the toolcache before downloading a different bundle, which\nfrees up disk space for the analysis. We expect to roll this change out\nto everyone in September.\n[#&#8203;4124](https://redirect.github.com/github/codeql-action/pull/4124)\n- The CodeQL Action now supports CodeQL releases that are compatible\nwith Linux Arm64 and downloads the native `linux-arm64` CodeQL bundle\nwhen available.\n[#&#8203;4072](https://redirect.github.com/github/codeql-action/pull/4072)\n- Update default CodeQL bundle version to\n[2.27.0](https://redirect.github.com/github/codeql-action/releases/tag/codeql-bundle-v2.27.0).\n[#&#8203;4129](https://redirect.github.com/github/codeql-action/pull/4129)\n\n</details>\n\n---\n\n### Configuration\n\n📅 **Schedule**: (in timezone Asia/Tokyo)\n\n- Branch creation\n  - At any time (no schedule defined)\n- Automerge\n  - At any time (no schedule defined)\n\n🚦 **Automerge**: Enabled.\n\n♻ **Rebasing**: Whenever PR is behind base branch, or you tick the\nrebase/retry checkbox.\n\n👻 **Immortal**: This PR will be recreated if closed unmerged. Get\n[config\nhelp](https://redirect.github.com/renovatebot/renovate/discussions) if\nthat's undesired.\n\n---\n\n- [ ] <!-- rebase-check -->If you want to rebase/retry this PR, check\nthis box\n\n---\n\nThis PR was generated by [Mend Renovate](https://mend.io/renovate/).\nView the [repository job\nlog](https://developer.mend.io/github/secretlint/secretlint).\n\n<!--renovate-debug:eyJjcmVhdGVkSW5WZXIiOiI0NC45NC4wIiwidXBkYXRlZEluVmVyIjoiNDQuMTEyLjAiLCJ0YXJnZXRCcmFuY2giOiJtYXN0ZXIiLCJsYWJlbHMiOlsiVHlwZTogQ0kiXX0=-->\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2026-09-25T13:20:51Z",
+          "tree_id": "37337c2475c01a605049b7d2a9f8e835b815acf2",
+          "url": "https://github.com/secretlint/secretlint/commit/584b74a38266471afc4da3815fa6bd511727de79"
+        },
+        "date": 1790342536965,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.93,
+            "range": "±2.17%",
+            "unit": "ops/sec",
+            "extra": "12 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 1.56,
+            "range": "±2.14%",
             "unit": "ops/sec",
             "extra": "8 samples"
           }
