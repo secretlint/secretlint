@@ -14,11 +14,12 @@ const startsWith = (content: Buffer, bom: number[]): boolean =>
 /**
  * Returns the UTF-16 encoding the byte order mark declares, or null.
  *
- * A UTF-32LE file starts with the UTF-16LE mark, so it has to be excluded, and an odd
- * number of bytes cannot be UTF-16 at all.
+ * A UTF-32LE file starts with the UTF-16LE mark, so it has to be excluded first. The
+ * standard reads `FF FE 00 00` as the UTF-32LE mark rather than as UTF-16LE text whose
+ * first character is NUL.
  */
 const utf16Encoding = (content: Buffer): "utf16le" | "utf16be" | null => {
-    if (startsWith(content, UTF32LE_BOM) || content.length % 2 !== 0) {
+    if (startsWith(content, UTF32LE_BOM)) {
         return null;
     }
     if (startsWith(content, UTF16LE_BOM)) {
@@ -42,7 +43,11 @@ const decodeContent = (content: Buffer): string => {
         case "utf16le":
             return content.toString("utf16le");
         case "utf16be":
-            return Buffer.from(content).swap16().toString("utf16le");
+            // `swap16()` throws on an odd byte count, and `toString("utf16le")` ignores a
+            // trailing odd byte, so drop it instead of failing the whole file.
+            return Buffer.from(content.subarray(0, content.length - (content.length % 2)))
+                .swap16()
+                .toString("utf16le");
         default:
             return content.toString();
     }
