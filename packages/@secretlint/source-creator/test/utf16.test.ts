@@ -26,3 +26,20 @@ describe("createRawSource with a UTF-16 source", () => {
         );
     });
 });
+
+describe("createRawSource with a source that only looks like UTF-16", () => {
+    it("does not throw on an odd number of bytes after a UTF-16BE BOM", async () => {
+        const source = await createRawSource(path.join(__dirname, "snapshots/utf16be-odd/input.txt"));
+
+        assert.ok(typeof source.content === "string");
+    });
+
+    it("does not decode UTF-32LE as UTF-16LE", async () => {
+        const source = await createRawSource(path.join(__dirname, "snapshots/utf32le/input.txt"));
+
+        assert.ok(
+            !source.content.includes("\u0000t\u0000o"),
+            `expected not to be read as UTF-16, got ${JSON.stringify(source.content.slice(0, 40))}`,
+        );
+    });
+});
