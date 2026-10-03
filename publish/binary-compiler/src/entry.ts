@@ -10,26 +10,46 @@ const writeOutput = async (output: string, destination: "stdout" | "stderr") => 
 };
 
 // --init override
+// The binary bundles the recommended rules, so it writes a fixed config instead of reading package.json.
+// Keep the same cwd handling and existing-config check as the Node CLI's runConfigCreator.
 if (cli.flags.init) {
-    // write .secretlintrc.json
-    fs.writeFileSync(
-        path.join(process.cwd(), ".secretlintrc.json"),
-        JSON.stringify(
-            {
-                rules: [
-                    {
-                        id: "@secretlint/secretlint-rule-preset-recommend"
-                    },
-                    {
-                        id: "@secretlint/secretlint-rule-pattern"
-                    }
-                ]
-            },
-            null,
-            4
-        )
-    );
-    console.log("Create .secretlintrc.json");
+    const cwd = cli.flags.cwd;
+    const exitWithExistingConfigError = async () => {
+        await writeOutput("secretlint config file is already existed.\n", "stderr");
+        process.exit(1);
+    };
+    const existingConfigFiles = fs.readdirSync(cwd).filter((name) => name.startsWith(".secretlintrc"));
+    if (existingConfigFiles.length > 0) {
+        await exitWithExistingConfigError();
+    }
+    const configFilePath = path.join(cwd, ".secretlintrc.json");
+    try {
+        // "wx" fails if the file is created between the scan above and this write
+        fs.writeFileSync(
+            configFilePath,
+            JSON.stringify(
+                {
+                    rules: [
+                        {
+                            id: "@secretlint/secretlint-rule-preset-recommend"
+                        },
+                        {
+                            id: "@secretlint/secretlint-rule-pattern"
+                        }
+                    ]
+                },
+                null,
+                4
+            ),
+            { flag: "wx" }
+        );
+    } catch (error) {
+        if ((error as NodeJS.ErrnoException).code === "EEXIST") {
+            await exitWithExistingConfigError();
+        }
+        throw error;
+    }
+    console.log(`Create ${configFilePath}`);
     process.exit(0);
 }
 // Handle --version flag specifically for binary
