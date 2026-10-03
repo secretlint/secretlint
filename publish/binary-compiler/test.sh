@@ -27,6 +27,28 @@ cp ./dist/secretlint-${CURRENT_VERSION}-${OS}-${ARCH} ${TMP_DIR}/secretlint
 cd ${TMP_DIR}
 # init
 ./secretlint --init
+# --init should not overwrite an existing config
+CONFIG_BEFORE=$(cat .secretlintrc.json)
+if ./secretlint --init; then
+    echo "❌ --init overwrote an existing config"
+    exit 1
+fi
+if [ "$(cat .secretlintrc.json)" != "$CONFIG_BEFORE" ]; then
+    echo "❌ --init modified an existing config"
+    exit 1
+fi
+# --init should respect --cwd
+mkdir init-target
+./secretlint --init --cwd init-target
+if [ ! -f init-target/.secretlintrc.json ]; then
+    echo "❌ --init --cwd did not create config in the target directory"
+    exit 1
+fi
+if [ "$(cat .secretlintrc.json)" != "$CONFIG_BEFORE" ]; then
+    echo "❌ --init --cwd modified the config in the current directory"
+    exit 1
+fi
+rm -rf init-target
 # Run the dist binary
 ./secretlint --version
 # Test that version matches expected version

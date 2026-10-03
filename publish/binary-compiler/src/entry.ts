@@ -10,10 +10,18 @@ const writeOutput = async (output: string, destination: "stdout" | "stderr") => 
 };
 
 // --init override
+// The binary bundles the recommended rules, so it writes a fixed config instead of reading package.json.
+// Keep the same cwd handling and existing-config check as the Node CLI's runConfigCreator.
 if (cli.flags.init) {
-    // write .secretlintrc.json
+    const cwd = cli.flags.cwd;
+    const existingConfigFiles = fs.readdirSync(cwd).filter((name) => name.startsWith(".secretlintrc"));
+    if (existingConfigFiles.length > 0) {
+        await writeOutput("secretlint config file is already existed.\n", "stderr");
+        process.exit(1);
+    }
+    const configFilePath = path.join(cwd, ".secretlintrc.json");
     fs.writeFileSync(
-        path.join(process.cwd(), ".secretlintrc.json"),
+        configFilePath,
         JSON.stringify(
             {
                 rules: [
@@ -29,7 +37,7 @@ if (cli.flags.init) {
             4
         )
     );
-    console.log("Create .secretlintrc.json");
+    console.log(`Create ${configFilePath}`);
     process.exit(0);
 }
 // Handle --version flag specifically for binary
