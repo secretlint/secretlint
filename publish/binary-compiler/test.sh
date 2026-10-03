@@ -29,8 +29,12 @@ cd ${TMP_DIR}
 ./secretlint --init
 # --init should not overwrite an existing config
 CONFIG_BEFORE=$(cat .secretlintrc.json)
-if ./secretlint --init; then
-    echo "❌ --init overwrote an existing config"
+set +e
+INIT_STDERR=$(./secretlint --init 2>&1 >/dev/null)
+INIT_STATUS=$?
+set -e
+if [ "$INIT_STATUS" -ne 1 ] || [ "$INIT_STDERR" != "secretlint config file is already existed." ]; then
+    echo "❌ --init with an existing config should exit 1 with an error (status: $INIT_STATUS, stderr: $INIT_STDERR)"
     exit 1
 fi
 if [ "$(cat .secretlintrc.json)" != "$CONFIG_BEFORE" ]; then
