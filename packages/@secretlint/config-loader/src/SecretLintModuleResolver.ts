@@ -18,6 +18,18 @@ const tryResolveModulePath = (modulePath: string): string | undefined => {
 };
 
 /**
+ * Join baseDir and package name.
+ * If baseDir is empty, return the package name as is.
+ * `path.join("", "@scope/name")` returns "@scope\\name" on Windows, and it breaks package name matching.
+ * https://github.com/secretlint/secretlint/issues/1707
+ * @param baseDir
+ * @param packageName
+ */
+const joinBaseDir = (baseDir: string, packageName: string): string => {
+    return baseDir ? path.join(baseDir, packageName) : packageName;
+};
+
+/**
  * This class aim to resolve secretlint's package name and get the module path.
  *
  * Define
@@ -52,8 +64,8 @@ export class SecretLintModuleResolver {
         const fullPackageName = createFullPackageName("secretlint-rule-", packageName);
         // <rule-name> or secretlint-rule-<rule-name>
         const pkgPath =
-            tryResolveModulePath(path.join(baseDir, fullPackageName)) ||
-            tryResolveModulePath(path.join(baseDir, packageName));
+            tryResolveModulePath(joinBaseDir(baseDir, fullPackageName)) ||
+            tryResolveModulePath(joinBaseDir(baseDir, packageName));
         if (!pkgPath) {
             debug(`rule fullPackageName: ${fullPackageName}`);
             throw new ReferenceError(`Failed to load secretlint's rule module: "${packageName}" is not found.
@@ -75,8 +87,8 @@ baseDir: ${baseDir}
         const fullPackageName = createFullPackageName("secretlint-filter-rule-", packageName);
         // <rule-name> or secretlint-filter-rule-<rule-name> or @scope/<rule-name>
         const pkgPath =
-            tryResolveModulePath(path.join(baseDir, fullPackageName)) ||
-            tryResolveModulePath(path.join(baseDir, packageName));
+            tryResolveModulePath(joinBaseDir(baseDir, fullPackageName)) ||
+            tryResolveModulePath(joinBaseDir(baseDir, packageName));
         if (!pkgPath) {
             debug(`filter rule fullPackageName: ${fullPackageName}`);
             throw new ReferenceError(`Failed to load secretlint's filter rule module: "${packageName}" is not found.
@@ -98,8 +110,8 @@ baseDir: ${baseDir}
         const fullPackageName = createFullPackageName("secretlint-plugin-", packageName);
         // <plugin-name> or secretlint-plugin-<rule-name>
         const pkgPath =
-            tryResolveModulePath(path.join(baseDir, fullPackageName)) ||
-            tryResolveModulePath(path.join(baseDir, packageName));
+            tryResolveModulePath(joinBaseDir(baseDir, fullPackageName)) ||
+            tryResolveModulePath(joinBaseDir(baseDir, packageName));
         if (!pkgPath) {
             debug(`plugin fullPackageName: ${fullPackageName}`);
             throw new ReferenceError(`Failed to load secretlint's plugin module: "${packageName}" is not found.
@@ -143,13 +155,13 @@ baseDir: ${baseDir}
         const fullFullPackageName = `${PREFIX}${packageNameWithoutPreset}`;
         const pkgPath =
             // secretlint-rule-preset-<preset-name> or @scope/secretlint-rule-preset-<preset-name>
-            tryResolveModulePath(path.join(baseDir, fullFullPackageName)) ||
+            tryResolveModulePath(joinBaseDir(baseDir, fullFullPackageName)) ||
             // <preset-name>
-            tryResolveModulePath(path.join(baseDir, packageNameWithoutPreset)) ||
+            tryResolveModulePath(joinBaseDir(baseDir, packageNameWithoutPreset)) ||
             // <rule-name>
-            tryResolveModulePath(path.join(baseDir, fullPackageName)) ||
+            tryResolveModulePath(joinBaseDir(baseDir, fullPackageName)) ||
             // <package-name>
-            tryResolveModulePath(path.join(baseDir, packageName));
+            tryResolveModulePath(joinBaseDir(baseDir, packageName));
         if (!pkgPath) {
             debug(`preset fullPackageName: ${fullPackageName}`);
             debug(`preset fullFullPackageName: ${fullFullPackageName}`);
@@ -172,8 +184,8 @@ baseDir: ${baseDir}
         const fullPackageName = createFullPackageName("secretlint-config-", packageName);
         // <plugin-name> or secretlint-config-<rule-name>
         const pkgPath =
-            tryResolveModulePath(path.join(baseDir, fullPackageName)) ||
-            tryResolveModulePath(path.join(baseDir, packageName));
+            tryResolveModulePath(joinBaseDir(baseDir, fullPackageName)) ||
+            tryResolveModulePath(joinBaseDir(baseDir, packageName));
         if (!pkgPath) {
             throw new ReferenceError(`Failed to load secretlint's config module: "${packageName}" is not found.
 
