@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-grafana",
-    "version": "13.0.6",
+    "version": "13.0.7",
     "description": "A secretlint rule for grafana",
     "keywords": [
         "secretlint",
