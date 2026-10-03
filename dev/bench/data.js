@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1790989096962,
+  "lastUpdate": 1790989264547,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -59316,6 +59316,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 1.6,
             "range": "±0.47%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "41898282+github-actions[bot]@users.noreply.github.com",
+            "name": "github-actions[bot]",
+            "username": "github-actions[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "333c530dc132ed886dfb1fb8c262a79de6ba3ad5",
+          "message": "v13.0.7 (#1711)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat master -->\n\n## What's Changed\n### Bug Fixes\n* fix(binary): respect --cwd and existing config in --init by @azu in\nhttps://github.com/secretlint/secretlint/pull/1709\n* fix(config-loader): keep package name as is when baseDirectory is\nempty by @azu in https://github.com/secretlint/secretlint/pull/1710\n### CI\n* Update rhysd/github-action-benchmark action to v1.22.2 by\n@renovate[bot] in https://github.com/secretlint/secretlint/pull/1693\n* Update Minor updates by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1690\n* CI: wait for npm packages before building Docker image by @azu in\nhttps://github.com/secretlint/secretlint/pull/1697\n* Update github/codeql-action action to v3.38.1 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1700\n* Update github/codeql-action action to v3.38.2 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1705\n### Dependency Updates\n* Update Patch updates (patch) by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1689\n* Update dependency ignore to ^7.0.10 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1698\n* Update dependency turbo to ^2.11.3 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1699\n* Update dependency rollup to ^4.63.5 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1701\n* Update dependency turbo to ^2.11.4 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1702\n* Update dependency turbo to ^2.11.5 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1704\n* Update pnpm to v10.34.6 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1706\n\n\n**Full Changelog**:\nhttps://github.com/secretlint/secretlint/compare/v13.0.6...v13.0.7\n\nCo-authored-by: azu <azu@users.noreply.github.com>",
+          "timestamp": "2026-10-03T00:59:28Z",
+          "tree_id": "f98c092f50d26b81b2fec76313776f0e55f87149",
+          "url": "https://github.com/secretlint/secretlint/commit/333c530dc132ed886dfb1fb8c262a79de6ba3ad5"
+        },
+        "date": 1790989261160,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 3.03,
+            "range": "±0.46%",
+            "unit": "ops/sec",
+            "extra": "12 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 1.58,
+            "range": "±0.83%",
             "unit": "ops/sec",
             "extra": "8 samples"
           }
