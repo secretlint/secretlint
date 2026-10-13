@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1791751693454,
+  "lastUpdate": 1791867455683,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -59660,6 +59660,44 @@ window.BENCHMARK_DATA = {
             "range": "±0.95%",
             "unit": "ops/sec",
             "extra": "10 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "fd5161187aaf1de1c13d3e622fca93f9ab02bd8c",
+          "message": "Update dependency p-map to ^7.1.0 (#1720)\n\nThis PR contains the following updates:\n\n| Package | Change |\n[Age](https://docs.renovatebot.com/merge-confidence/) |\n[Confidence](https://docs.renovatebot.com/merge-confidence/) |\n|---|---|---|---|\n| [p-map](https://redirect.github.com/sindresorhus/p-map) | [`^7.0.8` →\n`^7.1.0`](https://renovatebot.com/diffs/npm/p-map/7.0.8/7.1.0) |\n![age](https://developer.mend.io/api/mc/badges/age/npm/p-map/7.1.0?slim=true)\n|\n![confidence](https://developer.mend.io/api/mc/badges/confidence/npm/p-map/7.0.8/7.1.0?slim=true)\n|\n\n⚠️ Renovate does not enforce Minimum Release Age for `bump`,\n`lockfileUpdate`, or `rollback` updates, so these are raised without a\nMinimum Release Age check. You will need to manually validate the\nMinimum Release Age for these package(s).\n\n---\n\n### Release Notes\n\n<details>\n<summary>sindresorhus/p-map (p-map)</summary>\n\n###\n[`v7.1.0`](https://redirect.github.com/sindresorhus/p-map/releases/tag/v7.1.0)\n\n[Compare\nSource](https://redirect.github.com/sindresorhus/p-map/compare/v7.0.8...v7.1.0)\n\n##### New\n\n- Add\n[`pMapSettled`](https://redirect.github.com/sindresorhus/p-map#pmapsettledinput-mapper-options),\n[`pMapKeyed`](https://redirect.github.com/sindresorhus/p-map#pmapkeyedinput-mapper-options),\nand\n[`pMapSettledKeyed`](https://redirect.github.com/sindresorhus/p-map#pmapsettledkeyedinput-mapper-options)\n([#&#8203;70](https://redirect.github.com/sindresorhus/p-map/issues/70))\n[`a05fd50`](https://redirect.github.com/sindresorhus/p-map/commit/a05fd50)\n- `pMapSettled` is like `Promise.allSettled()`, with a mapper and a\nconcurrency limit\n- `pMapKeyed` and `pMapSettledKeyed` map the values of an object or a\n`Map`, like `Promise.allKeyed()` and `Promise.allSettledKeyed()`\n- Add\n[`pMapStop`](https://redirect.github.com/sindresorhus/p-map#pmapstop) to\nstop iterating from the mapper, like `break` in a loop\n([#&#8203;31](https://redirect.github.com/sindresorhus/p-map/issues/31))\n[`27606f0`](https://redirect.github.com/sindresorhus/p-map/commit/27606f0)\n- Add\n[`preserveOrder`](https://redirect.github.com/sindresorhus/p-map#preserveorder)\noption to `pMapIterable`\n([#&#8203;72](https://redirect.github.com/sindresorhus/p-map/issues/72))\n[`2c0934b`](https://redirect.github.com/sindresorhus/p-map/commit/2c0934b)\n- Set it to `false` to get each result as soon as it is ready, instead\nof in input order\n- Make `pMapIterable` read ahead while the mappers run when\n[`backpressure`](https://redirect.github.com/sindresorhus/p-map#backpressure)\nis above `concurrency`\n([#&#8203;78](https://redirect.github.com/sindresorhus/p-map/issues/78))\n[`cada71d`](https://redirect.github.com/sindresorhus/p-map/commit/cada71d)\n- A slow `input` no longer leaves a mapper waiting for its next element.\nWith the default `backpressure`, nothing changes\n\n##### Improvements\n\n- Keep the caller in the stack trace of mapper errors\n([#&#8203;34](https://redirect.github.com/sindresorhus/p-map/issues/34))\n[`595754b`](https://redirect.github.com/sindresorhus/p-map/commit/595754b)\n- Make `pMapIterable` consume its results in linear time\n[`7d5b6e1`](https://redirect.github.com/sindresorhus/p-map/commit/7d5b6e1)\n- It was O(n²) when `backpressure` let many results wait, which is the\ndefault\n- Reduce the per-element promise overhead\n[`ef82ce6`](https://redirect.github.com/sindresorhus/p-map/commit/ef82ce6)\n- Give a nullish `input` the same `TypeError` as any other invalid\n`input`\n[`6f4643d`](https://redirect.github.com/sindresorhus/p-map/commit/6f4643d)\n\n##### Fixes\n\n- Fix handling of a source that settles its `next()` calls out of call\norder\n[`415a474`](https://redirect.github.com/sindresorhus/p-map/commit/415a474)\n- The `index` and the result position now follow the order of the\n`next()` calls\n- With `stopOnError: false`, the errors in the `AggregateError` are now\nin input order, not in the order they happened\n- Fix `pMapIterable` dropping earlier results when a mapper throws while\nthey are still being read\n[`27606f0`](https://redirect.github.com/sindresorhus/p-map/commit/27606f0)\n  - The results before the error are now yielded first, like in a loop\n- Fix `pMapSkip` results not counting toward `backpressure` in\n`pMapIterable`\n[`7d5b6e1`](https://redirect.github.com/sindresorhus/p-map/commit/7d5b6e1)\n- A mapper that skips most elements no longer reads further ahead than\n`backpressure` allows\n- Fix `pMapIterable` pulling and mapping input after `return()` or\n`throw()` while a `next()` call is pending\n[`5f2c01d`](https://redirect.github.com/sindresorhus/p-map/commit/5f2c01d)\n\n***\n\n</details>\n\n---\n\n### Configuration\n\n📅 **Schedule**: (in timezone Asia/Tokyo)\n\n- Branch creation\n  - At any time (no schedule defined)\n- Automerge\n  - At any time (no schedule defined)\n\n🚦 **Automerge**: Enabled.\n\n♻ **Rebasing**: Whenever PR is behind base branch, or you tick the\nrebase/retry checkbox.\n\n🔕 **Ignore**: Close this PR and you won't be reminded about this update\nagain.\n\n---\n\n- [ ] <!-- rebase-check -->If you want to rebase/retry this PR, check\nthis box\n\n---\n\nThis PR was generated by [Mend Renovate](https://mend.io/renovate/).\nView the [repository job\nlog](https://developer.mend.io/github/secretlint/secretlint).\n\n<!--renovate-debug:eyJjcmVhdGVkSW5WZXIiOiI0NC4xMzQuMSIsInVwZGF0ZWRJblZlciI6IjQ0LjEzNC4xIiwidGFyZ2V0QnJhbmNoIjoibWFzdGVyIiwibGFiZWxzIjpbImRlcGVuZGVuY2llcyJdfQ==-->\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2026-10-13T04:56:32Z",
+          "tree_id": "1bcf6386aca0ad67f350bf3f309e63f0f006ee7a",
+          "url": "https://github.com/secretlint/secretlint/commit/fd5161187aaf1de1c13d3e622fca93f9ab02bd8c"
+        },
+        "date": 1791867453105,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 4.81,
+            "range": "±1.50%",
+            "unit": "ops/sec",
+            "extra": "16 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 2.46,
+            "range": "±0.49%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
           }
         ]
       }
