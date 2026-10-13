@@ -30,6 +30,10 @@ export type SecretLintEngineOptionsBase = {
      */
     formatter: string;
     /**
+     * Version of the scanner producing the results, passed to the formatter.
+     */
+    secretlintVersion?: string;
+    /**
      * If terminalLink is true, some formatter will output that includes clickable click
      * Support Terminal: https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda
      * Default: false
@@ -122,6 +126,7 @@ const executeOnContent = async ({
     const formatter = await loadFormatter({
         color: options.color ?? true,
         formatterName: options.formatter,
+        secretlintVersion: options.secretlintVersion,
         terminalLink: options.terminalLink ?? false,
     });
     const output = formatter.format([result]);
@@ -161,6 +166,7 @@ const executeOnFiles = async ({
     const formatter = await loadFormatter({
         color: options.color ?? true,
         formatterName: options.formatter,
+        secretlintVersion: options.secretlintVersion,
         terminalLink: options.terminalLink ?? false,
     });
     const output = formatter.format(results);

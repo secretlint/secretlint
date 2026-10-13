@@ -72,6 +72,7 @@
         "read-pkg": "catalog:"
     },
     "devDependencies": {
+        "@secretlint/secretlint-formatter-sarif": "workspace:*",
         "@secretlint/secretlint-rule-example": "workspace:*",
         "@secretlint/secretlint-rule-preset-recommend": "workspace:*",
         "@secretlint/types": "workspace:*",

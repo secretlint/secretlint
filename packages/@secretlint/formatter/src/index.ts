@@ -41,6 +41,10 @@ export interface SecretLintFormatterConfig {
      * Default: false
      */
     terminalLink?: boolean;
+    /**
+     * Version of the scanner producing the results.
+     */
+    secretlintVersion?: string;
 }
 
 /**
