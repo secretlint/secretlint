@@ -179,9 +179,14 @@ const executeOnFiles = async ({
 /**
  * Create SecretLint Engine and return the instance.
  * The engine load config file(.secretlintrc) automatically
- * @param options
+ * @param engineOptions
  */
-export const createEngine = async (options: SecretLintEngineOptions) => {
+export const createEngine = async (engineOptions: SecretLintEngineOptions) => {
+    const options: SecretLintEngineOptions = {
+        ...engineOptions,
+        // mask secret values by default
+        maskSecrets: engineOptions.maskSecrets ?? true,
+    };
     secretLintProfiler.mark({
         type: "@node>load-config::start",
     });

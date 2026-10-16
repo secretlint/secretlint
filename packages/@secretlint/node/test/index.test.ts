@@ -16,7 +16,7 @@ describe("createEngine", () => {
                 configFilePath: "/not/found/config",
                 formatter: "stylish",
             }),
-            /secretlint config is not found/
+            /secretlint config is not found/,
         );
     });
     it("should create an Engine and execute on files", async () => {
@@ -24,6 +24,7 @@ describe("createEngine", () => {
             color: false,
             cwd: path.join(__dirname, "fixtures/valid-config"),
             formatter: "stylish",
+            maskSecrets: false,
         });
         const result = await engine.executeOnFiles({ filePathList: [path.join(__dirname, "fixtures/SECRET.txt")] });
         assert.strictEqual(result.ok, false);
@@ -35,7 +36,7 @@ describe("createEngine", () => {
   1:8  error  [EXAMPLE_MESSAGE] found secret: SECRET  @secretlint/secretlint-rule-example
 
 ✖ 1 problem (1 error, 0 warnings, 0 infos)
-`
+`,
         );
     });
     it("should create an Engine and execute on a content", async () => {
@@ -43,6 +44,7 @@ describe("createEngine", () => {
             color: false,
             cwd: path.join(__dirname, "fixtures/valid-config"),
             formatter: "stylish",
+            maskSecrets: false,
         });
         const filePath = path.join(__dirname, "fixtures/SECRET.txt");
         const content = fs.readFileSync(filePath, "utf-8");
@@ -59,7 +61,7 @@ describe("createEngine", () => {
   1:8  error  [EXAMPLE_MESSAGE] found secret: SECRET  @secretlint/secretlint-rule-example
 
 ✖ 1 problem (1 error, 0 warnings, 0 infos)
-`
+`,
         );
     });
     it("should hide secret values when enable maskSecrets", async () => {
@@ -84,7 +86,26 @@ describe("createEngine", () => {
   1:8  error  [EXAMPLE_MESSAGE] found secret: ******  @secretlint/secretlint-rule-example
 
 ✖ 1 problem (1 error, 0 warnings, 0 infos)
-`
+`,
+        );
+    });
+    it("should hide secret values by default", async () => {
+        const engine = await createEngine({
+            color: false,
+            cwd: path.join(__dirname, "fixtures/valid-config"),
+            formatter: "stylish",
+        });
+        const result = await engine.executeOnFiles({ filePathList: [path.join(__dirname, "fixtures/SECRET.txt")] });
+        assert.strictEqual(result.ok, false);
+        const normalizedOutput = normalizeFilePath(result.output);
+        assert.strictEqual(
+            normalizedOutput,
+            `
+[TEST_DIR]/fixtures/SECRET.txt
+  1:8  error  [EXAMPLE_MESSAGE] found secret: ******  @secretlint/secretlint-rule-example
+
+✖ 1 problem (1 error, 0 warnings, 0 infos)
+`,
         );
     });
 });
