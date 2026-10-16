@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1792155285778,
+  "lastUpdate": 1792155370518,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -59964,6 +59964,44 @@ window.BENCHMARK_DATA = {
             "range": "±0.96%",
             "unit": "ops/sec",
             "extra": "10 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "49ec32660313b3cd06e53c29e6436aff2bfc4bb8",
+          "message": "fix(rules): respect allows option in openai, anthropic, linear, secp256k1-privatekey, and gcp (#1734)\n\n<!-- claude-projects-attribution: {\"github_login\":\"azu\"} -->\n_Requested by **azu** · [project\nthread](https://claude.ai/code/project/chan_01ChfsKF1sN6vYsJMPZ7PuDt?thread=cmsg_01ChfsKF1sN6vYsJMPZ7PuDtH389ENx9rZs1KFrqhGuanQ)_\n\nBefore: The READMEs of `secretlint-rule-openai`, `-anthropic`,\n`-linear`, `-secp256k1-privatekey`, and `-gcp` documented an `allows`\noption, but the rules never applied it. A value listed in `allows` was\nstill reported.\n\nAfter: All five rules skip matches that `allows` matches, the same way\nthe other rules (github, figma, groq, etc.) already do.\n\nHow: Each text rule now calls `matchPatterns(matchString,\noptions.allows)` from `@textlint/regexp-string-matcher` before\nreporting, and declares an `Options` type. For gcp, which reports whole\nfiles, JSON key files are matched against the key-specific values\n`private_key_id` and `private_key`. They are not matched against\n`client_email`, because it stays the same across key rotations and\nallowing it would hide newly issued keys. `.p12` files are matched\nagainst the file name. The gcp README documents this. Each rule gets an\n`ok.allows` snapshot; gcp gets `ok.allows-json`, `ok.allows-p12`, and\n`ng.allows-client-email`. The `ok.allows` snapshots fail on the current\nmaster and pass with this change.\n\nUnrelated: Prettier reformatted one long regex line in the openai rule\nthat was already out of format on master.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nhttps://claude.ai/code/session_01WD4zFsWUJ8S62Jg9RgaYjP\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-10-16T21:54:36+09:00",
+          "tree_id": "44f5bd009bce0f060859aea90f365fcc39c7af92",
+          "url": "https://github.com/secretlint/secretlint/commit/49ec32660313b3cd06e53c29e6436aff2bfc4bb8"
+        },
+        "date": 1792155367364,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.91,
+            "range": "±1.67%",
+            "unit": "ops/sec",
+            "extra": "12 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 1.55,
+            "range": "±0.52%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
           }
         ]
       }
