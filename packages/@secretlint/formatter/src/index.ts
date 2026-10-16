@@ -113,7 +113,7 @@ export async function loadFormatter(formatterConfig: SecretLintFormatterConfig) 
     /**
      * Terminal Link is enabled when use human-readable format and option is enabled
      */
-    const enableTerminalLink = isHumanReadableFormat ?? formatterConfig.terminalLink ?? false;
+    const enableTerminalLink = isHumanReadableFormat && (formatterConfig.terminalLink ?? false);
     /**
      * pretty-error reads the file by `filePath`, so it needs the original path.
      * Instead, the path in its output is replaced with the sanitized path.
