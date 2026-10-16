@@ -108,7 +108,7 @@ export async function loadFormatter(formatterConfig: SecretLintFormatterConfig) 
     /**
      * Terminal Link is enabled when use human-readable format and option is enabled
      */
-    const enableTerminalLink = isHumanReadableFormat ?? formatterConfig.terminalLink ?? false;
+    const enableTerminalLink = isHumanReadableFormat && (formatterConfig.terminalLink ?? false);
     debug(`formatterName: ${formatterName}`);
 
     try {
