@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1792155370518,
+  "lastUpdate": 1792155418537,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -60000,6 +60000,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 1.55,
             "range": "±0.52%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "0a120fe17f7e27e48f0fde0a9e876db8f7bc0c25",
+          "message": "fix(node): mask secrets by default in createEngine (#1727)\n\n<!-- claude-projects-attribution: {\"github_login\":\"azu\"} -->\n_Requested by **azu** · [project\nthread](https://claude.ai/code/project/chan_01ChfsKF1sN6vYsJMPZ7PuDt?thread=cmsg_01ChfsKF1sN6vYsJMPZ7PuDtY4DVtihFX56K1fcH5XtYxw)_\n\nBefore: `createEngine()` from `@secretlint/node` returned raw secret\nvalues in messages and `data` when `maskSecrets` was not passed. The\nJSDoc of `SecretLintEngineOptions.maskSecrets` says \"Default: true\", but\nnothing set it, so `@secretlint/core` fell back to `options.maskSecrets\n?? false`. Only the CLI masked by default (`--maskSecrets` defaults to\ntrue).\n\nAfter: `createEngine()` defaults `maskSecrets` to `true`, matching the\nJSDoc and the CLI. Passing `maskSecrets: false` still returns raw\nvalues.\n\nHow: `createEngine` normalizes the options with `maskSecrets:\nengineOptions.maskSecrets ?? true` before using them. The existing tests\nthat asserted raw output now pass `maskSecrets: false` explicitly, and a\nnew test checks that output is masked when the option is omitted.\n\n## Compatibility\n\nThis is a bug fix: the behavior now matches the documented default.\n\n- CLI (`secretlint` command): no behavior change. The CLI always passes\n`maskSecrets` explicitly.\n- Programmatic API (`@secretlint/node` `createEngine`, and\n`runSecretLint` from `secretlint` when `maskSecrets` is omitted): output\nis now `***`-masked. Callers that need the raw values should pass\n`maskSecrets: false`.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nhttps://claude.ai/code/session_01TrB22qibFnTxKr86b8ee5Q\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-10-16T21:55:21+09:00",
+          "tree_id": "4b991b26b9f3da37e1f2c96706cb95b89cb76b21",
+          "url": "https://github.com/secretlint/secretlint/commit/0a120fe17f7e27e48f0fde0a9e876db8f7bc0c25"
+        },
+        "date": 1792155414272,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.97,
+            "range": "±1.29%",
+            "unit": "ops/sec",
+            "extra": "12 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 1.56,
+            "range": "±1.01%",
             "unit": "ops/sec",
             "extra": "8 samples"
           }
