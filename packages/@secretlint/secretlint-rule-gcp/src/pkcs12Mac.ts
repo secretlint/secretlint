@@ -9,7 +9,7 @@
  * SHA-1 (classic openssl default), SHA-256 (openssl 3 default), SHA-384,
  * and SHA-512.
  *
- * Runs in Node.js 20+ and any environment with a Web Crypto
+ * Uses `node:crypto` when available, otherwise any environment with a Web Crypto
  * implementation on `globalThis.crypto.subtle`.
  *
  * References:
@@ -123,7 +123,9 @@ type ParsedPkcs12 = {
     iterations: number;
 };
 
-const MAX_MAC_ITERATIONS = 1_000_000;
+// openssl and GCP service account keys use 2048. Java keytool uses 10000.
+// Anything above this is far outside real-world .p12 files.
+const MAX_MAC_ITERATIONS = 100_000;
 
 function parsePkcs12(buf: Uint8Array): ParsedPkcs12 {
     // PFX ::= SEQUENCE { version INTEGER, authSafe ContentInfo, macData MacData OPTIONAL }
@@ -186,9 +188,7 @@ function parsePkcs12(buf: Uint8Array): ParsedPkcs12 {
         iterations = readInteger(iter);
     }
     // Reject untrusted iteration counts that would let a crafted .p12 DoS the
-    // scanner: each iteration is one Web Crypto digest call. The cap is
-    // generous enough to cover openssl's default (2048) and pathological-but-
-    // plausible values (PKI.js tests up to 600k).
+    // scanner: each iteration is one digest call.
     if (iterations < 1 || iterations > MAX_MAC_ITERATIONS) {
         throw new Error("PKCS12: MAC iteration count out of range");
     }
@@ -211,8 +211,29 @@ function toBufferSource(data: Uint8Array): Uint8Array<ArrayBuffer> {
     return copy;
 }
 
-async function digest(hash: MacHash, data: Uint8Array): Promise<Uint8Array> {
-    return new Uint8Array(await globalThis.crypto.subtle.digest(hash.name, toBufferSource(data)));
+type DigestFn = (data: Uint8Array) => Uint8Array | Promise<Uint8Array>;
+
+const NODE_HASH_NAMES: Record<MacHash["name"], string> = {
+    "SHA-1": "sha1",
+    "SHA-256": "sha256",
+    "SHA-384": "sha384",
+    "SHA-512": "sha512",
+};
+
+/**
+ * Prefer the synchronous `node:crypto` hash when available: awaiting a Web
+ * Crypto digest per iteration is about 20x slower, which matters because the
+ * iteration count comes from the untrusted file.
+ * Falls back to Web Crypto in environments without `node:crypto`.
+ */
+async function createDigest(hash: MacHash): Promise<DigestFn> {
+    try {
+        const { createHash } = await import("node:crypto");
+        const algorithm = NODE_HASH_NAMES[hash.name];
+        return (data) => new Uint8Array(createHash(algorithm).update(data).digest());
+    } catch {
+        return async (data) => new Uint8Array(await globalThis.crypto.subtle.digest(hash.name, toBufferSource(data)));
+    }
 }
 
 function padToMultipleOf(src: Uint8Array, blockSize: number): Uint8Array {
@@ -265,9 +286,10 @@ async function deriveMacKey(
     DI.set(S, D.length);
     DI.set(P, D.length + S.length);
 
-    let A = await digest(hash, DI);
+    const digest = await createDigest(hash);
+    let A = await digest(DI);
     for (let i = 1; i < iterations; i++) {
-        A = await digest(hash, A);
+        A = await digest(A);
     }
     return A.subarray(0, u);
 }
