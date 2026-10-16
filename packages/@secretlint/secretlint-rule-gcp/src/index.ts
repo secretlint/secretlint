@@ -4,6 +4,7 @@ import {
     SecretLintRuleMessageTranslate,
     SecretLintSourceCode,
 } from "@secretlint/types";
+import { matchPatterns } from "@textlint/regexp-string-matcher";
 import path from "node:path";
 import { reportIfFoundPrivateKeyP12Format } from "./reportIfFoundPrivateKeyP12Format.js";
 
@@ -29,6 +30,7 @@ export type Options = {
 
 function reportIfFoundPrivateKeyJSONFormat({
     source,
+    options,
     context,
     t,
 }: {
@@ -46,6 +48,14 @@ function reportIfFoundPrivateKeyJSONFormat({
             "private_key" in credentialObject &&
             PRIVATE_KEY_PATTERN.test(credentialObject["private_key"]);
         if (!isGCPServiceAccountPrivateKeyJSON) {
+            return;
+        }
+        // allows matches against key-specific values only. client_email is not used because it stays the same
+        // across key rotations, so allowing it would hide newly issued keys for the same service account.
+        const allowCandidates = [credentialObject["private_key_id"], credentialObject["private_key"]].filter(
+            (value): value is string => typeof value === "string",
+        );
+        if (allowCandidates.some((value) => matchPatterns(value, options.allows).length > 0)) {
             return;
         }
         context.report({
@@ -73,7 +83,7 @@ export const creator: SecretLintRuleCreator<Options> = {
     create(context, options) {
         const t = context.createTranslator(messages);
         const normalizedOptions = {
-            allows: options.allows || [],
+            allows: options?.allows ?? [],
         };
         return {
             file(source: SecretLintSourceCode) {

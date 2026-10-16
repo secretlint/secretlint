@@ -5,8 +5,9 @@ import { SecretLintCoreResult, SecretLintCoreResultMessage, SecretLintFormatter 
 //------------------------------------------------------------------------------
 import chalk from "chalk";
 import { table } from "table";
-import stripAnsi from "strip-ansi";
+import { stripVTControlCharacters } from "node:util";
 import pluralize from "pluralize";
+import { sanitizeTerminalOutput } from "../sanitize-terminal-output.js";
 
 //------------------------------------------------------------------------------
 // Helpers
@@ -41,7 +42,13 @@ function drawTable(messages: SecretLintCoreResultMessage[]): string {
             messageType = chalk.yellow("warning");
         }
 
-        rows.push([message.loc.start.line, message.loc.start.column, messageType, message.message, message.ruleId]);
+        rows.push([
+            message.loc.start.line,
+            message.loc.start.column,
+            messageType,
+            sanitizeTerminalOutput(message.message),
+            sanitizeTerminalOutput(message.ruleId),
+        ]);
     });
 
     const output = table(rows, {
@@ -88,7 +95,7 @@ function drawReport(results: SecretLintCoreResult[]): string {
             return "";
         }
 
-        return "\n" + result.filePath + "\n\n" + drawTable(result.messages);
+        return "\n" + sanitizeTerminalOutput(result.filePath) + "\n\n" + drawTable(result.messages);
     });
 
     files = files.filter(function (content: string) {
@@ -139,11 +146,11 @@ const formatter: SecretLintFormatter = (results, options) => {
                 drawHorizontalLine: function () {
                     return true;
                 },
-            }
+            },
         );
 
     if (!useColor) {
-        return stripAnsi(output);
+        return stripVTControlCharacters(output);
     }
     return output;
 };

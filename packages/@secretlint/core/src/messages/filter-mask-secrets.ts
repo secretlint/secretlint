@@ -9,10 +9,10 @@ export type AllowMessage = {
 // These properties are object, array, or others
 const deepMask = (object: Record<string, any>, handler: (value: string) => string) => {
     for (const key of Object.keys(object)) {
-        if (typeof object[key] === "object") {
+        // typeof null === "object", so skip null explicitly
+        // arrays are also objects, and Object.keys returns their indexes
+        if (typeof object[key] === "object" && object[key] !== null) {
             object[key] = deepMask(object[key], handler);
-        } else if (Array.isArray(object[key])) {
-            object[key] = object[key].map((item: any) => deepMask(item, handler));
         } else if (typeof object[key] === "string") {
             object[key] = handler(object[key]);
         }

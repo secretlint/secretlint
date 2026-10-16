@@ -1,0 +1,32 @@
+{
+    "filePath": "[SNAPSHOT]/ng.leading-zero/input.txt",
+    "messages": [
+        {
+            "message": "found secp256k1 private key: 00a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f",
+            "range": [
+                12,
+                76
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-secp256k1",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 12
+                },
+                "end": {
+                    "line": 1,
+                    "column": 76
+                }
+            },
+            "severity": "error",
+            "messageId": "secp256k1Priv",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-secp256k1-privatekey/README.md#secp256k1Priv",
+            "data": {
+                "KEY": "00a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f"
+            }
+        }
+    ],
+    "sourceContent": "PRIVATE_KEY=00a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f\n",
+    "sourceContentType": "text"
+}
