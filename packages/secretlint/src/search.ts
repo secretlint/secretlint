@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { walk } from "@secretlint/walker";
 import debug0 from "debug";
 
@@ -21,6 +23,37 @@ const DEFAULT_IGNORE_PATTERNS = [
     "**/.secretlintignore*",
 ];
 
+/**
+ * A bare file name such as `.secretlintignore` is looked up in every
+ * directory the walker visits, like `.gitignore`. A path such as
+ * `/abs/path/.secretlintignore` or `config/.secretlintignore` names one
+ * file, so it must be read once instead: joining it onto each directory
+ * would point at a file that does not exist.
+ */
+const isIgnoreFileName = (ignoreFilePath: string): boolean => {
+    return !path.isAbsolute(ignoreFilePath) && !ignoreFilePath.includes("/") && !ignoreFilePath.includes(path.sep);
+};
+
+/**
+ * Read the ignore file at `ignoreFilePath` (resolved against `cwd`) and
+ * return its rules. The rules are anchored at `cwd`. A missing file is
+ * reported on stderr instead of being skipped silently, because the user
+ * named it explicitly.
+ */
+const readIgnoreFileRules = async (ignoreFilePath: string, cwd: string): Promise<string[]> => {
+    const absolutePath = path.resolve(cwd, ignoreFilePath);
+    try {
+        const content = await readFile(absolutePath, "utf8");
+        return content.split(/\r?\n/);
+    } catch (error) {
+        if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+            console.warn(`secretlint: ignore file not found: ${absolutePath}`);
+            return [];
+        }
+        throw new Error(`Failed to read ignore file: ${absolutePath}`, { cause: error });
+    }
+};
+
 export type SearchFilesOptions = {
     cwd: string;
     ignoreFilePath?: string;
@@ -43,18 +76,26 @@ export type SearchFilesOptions = {
  */
 export const searchFiles = async (patterns: string[], options: SearchFilesOptions) => {
     const ignoreFiles: string[] = [];
-    if (options.ignoreFilePath) ignoreFiles.push(options.ignoreFilePath);
+    const extraIgnorePatterns = [...DEFAULT_IGNORE_PATTERNS];
+    if (options.ignoreFilePath) {
+        if (isIgnoreFileName(options.ignoreFilePath)) {
+            ignoreFiles.push(options.ignoreFilePath);
+        } else {
+            extraIgnorePatterns.push(...(await readIgnoreFileRules(options.ignoreFilePath, options.cwd)));
+        }
+    }
     if (options.respectGitignore !== false) ignoreFiles.push(".gitignore");
 
     debug("search patterns: %o", patterns);
     debug("search DEFAULT_IGNORE_PATTERNS: %o", DEFAULT_IGNORE_PATTERNS);
     debug("search ignoreFiles: %o", ignoreFiles);
+    debug("search extraIgnorePatterns: %o", extraIgnorePatterns);
 
     const items = await walk({
         cwd: options.cwd,
         patterns,
         ignoreFiles,
-        extraIgnorePatterns: DEFAULT_IGNORE_PATTERNS,
+        extraIgnorePatterns,
         noGlob: options.noGlob,
         followSymlinks: false,
     });

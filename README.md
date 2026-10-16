@@ -306,7 +306,7 @@ Secretlint walks the file system the same way Git does, honouring nested `.gitig
 `.secretlintignore` works the same way as `.gitignore` and is consulted in addition. The resolution order is:
 
 1. Built-in ignores: `.git`, `node_modules`, and the `.secretlintrc*` family.
-2. The file pointed to by `--secretlintignore` (default: `.secretlintignore`).
+2. The file pointed to by `--secretlintignore` (default: `.secretlintignore`). A bare file name is looked up in every directory like `.gitignore`. A path such as `config/.secretlintignore` or `/abs/path/.secretlintignore` is read once and its patterns are anchored at the working directory. If that file does not exist, secretlint prints a warning and continues.
 3. Each directory's `.gitignore` (cascaded).
 
 Symlinks found while walking are not followed, like Prettier, gitleaks, and ripgrep. This prevents a symlink inside the project from pulling in files outside the working directory. To scan a symlink's target, pass the symlink path explicitly:
