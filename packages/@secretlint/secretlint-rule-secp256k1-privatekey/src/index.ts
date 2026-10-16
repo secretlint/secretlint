@@ -1,4 +1,5 @@
 import type { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
+import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 import secp256k1 from "secp256k1";
 import BN from "bn.js";
@@ -29,8 +30,11 @@ export const creator: SecretLintRuleCreator<Options> = {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-secp256k1-privatekey/README.md",
         },
     },
-    create(context) {
+    create(context, options) {
         const t = context.createTranslator(messages);
+        const normalizedOptions = {
+            allows: options?.allows ?? [],
+        };
         return {
             file(source: SecretLintSourceCode) {
                 // Require non-hex boundaries so substrings inside longer hex strings
@@ -41,6 +45,10 @@ export const creator: SecretLintRuleCreator<Options> = {
                 for (const match of matches) {
                     const index = match.index || 0;
                     const matchString = match[0] || "";
+                    const allowedResults = matchPatterns(matchString, normalizedOptions.allows);
+                    if (allowedResults.length > 0) {
+                        continue;
+                    }
                     const range = [index, index + matchString.length] as const;
                     try {
                         if (!secp256k1.privateKeyVerify(new BN(matchString, 16).toBuffer())) {

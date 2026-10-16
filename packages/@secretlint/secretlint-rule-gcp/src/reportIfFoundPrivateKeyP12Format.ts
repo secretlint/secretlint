@@ -1,4 +1,5 @@
 import type { messages, Options } from "./index.js";
+import { matchPatterns } from "@textlint/regexp-string-matcher";
 import type { SecretLintRuleContext, SecretLintRuleMessageTranslate, SecretLintSourceCode } from "@secretlint/types";
 import { verifyPkcs12Mac } from "./pkcs12Mac.js";
 
@@ -8,6 +9,7 @@ const GCP_SERVICE_ACCOUNT_P12_PASSWORD = "notasecret";
 
 export async function reportIfFoundPrivateKeyP12Format({
     source,
+    options,
     context,
     t,
 }: {
@@ -23,6 +25,11 @@ export async function reportIfFoundPrivateKeyP12Format({
         // lazy load fs/path; browser does not have fs module
         const fs = await import("node:fs");
         const path = await import("node:path");
+        // p12 is binary, so allows matches against the file name
+        const fileName = path.basename(source.filePath);
+        if (matchPatterns(fileName, options.allows).length > 0) {
+            return;
+        }
         const pfxBytes = new Uint8Array(fs.readFileSync(source.filePath));
         const isGcpServiceAccountP12 = await verifyPkcs12Mac(pfxBytes, GCP_SERVICE_ACCOUNT_P12_PASSWORD);
         if (!isGcpServiceAccountP12) {
@@ -30,7 +37,7 @@ export async function reportIfFoundPrivateKeyP12Format({
         }
         context.report({
             message: t("PrivateKeyP12", {
-                FILE_NAME: path.basename(source.filePath),
+                FILE_NAME: fileName,
             }),
             range: [0, source.content.length],
         });

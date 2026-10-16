@@ -1,4 +1,5 @@
 import type { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
+import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export const messages = {
     ANTHROPIC_API_KEY: {
@@ -7,7 +8,15 @@ export const messages = {
     },
 };
 
-export const creator: SecretLintRuleCreator = {
+export type Options = {
+    /**
+     * Define allow pattern written by RegReg-like strings
+     * See https://github.com/textlint/regexp-string-matcher#regexp-like-string
+     **/
+    allows?: string[];
+};
+
+export const creator: SecretLintRuleCreator<Options> = {
     messages,
     meta: {
         id: "@secretlint/secretlint-rule-anthropic",
@@ -18,8 +27,11 @@ export const creator: SecretLintRuleCreator = {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-anthropic/README.md",
         },
     },
-    create(context) {
+    create(context, options) {
         const t = context.createTranslator(messages);
+        const normalizedOptions = {
+            allows: options?.allows ?? [],
+        };
         return {
             file(source: SecretLintSourceCode) {
                 // Anthropic Claude API keys patterns:
@@ -36,6 +48,10 @@ export const creator: SecretLintRuleCreator = {
                 for (const match of matches) {
                     const index = match.index ?? 0;
                     const matchString = match[0] ?? "";
+                    const allowedResults = matchPatterns(matchString, normalizedOptions.allows);
+                    if (allowedResults.length > 0) {
+                        continue;
+                    }
                     const range = [index, index + matchString.length] as const;
                     context.report({
                         message: t("ANTHROPIC_API_KEY", {
