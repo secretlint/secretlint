@@ -43,6 +43,8 @@ This JSON file includes private key for GCP Service Account.
 
 - `allows: string[]`
     - Allows a list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string)
+    - For JSON key files, the patterns are matched against `private_key_id`, `client_email`, and `private_key`
+    - For `.p12` key files, the patterns are matched against the file name
 
 ## Changelog
 

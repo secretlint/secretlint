@@ -539,6 +539,9 @@ importers:
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
+      '@textlint/regexp-string-matcher':
+        specifier: 'catalog:'
+        version: 2.0.2
     devDependencies:
       '@secretlint/tester':
         specifier: workspace:*
@@ -1009,6 +1012,9 @@ importers:
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
+      '@textlint/regexp-string-matcher':
+        specifier: 'catalog:'
+        version: 2.0.2
     devDependencies:
       '@secretlint/tester':
         specifier: workspace:*
@@ -1159,6 +1165,9 @@ importers:
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
+      '@textlint/regexp-string-matcher':
+        specifier: 'catalog:'
+        version: 2.0.2
     devDependencies:
       '@secretlint/tester':
         specifier: workspace:*
@@ -1483,6 +1492,9 @@ importers:
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
+      '@textlint/regexp-string-matcher':
+        specifier: 'catalog:'
+        version: 2.0.2
       '@types/bn.js':
         specifier: 'catalog:'
         version: 5.2.0
