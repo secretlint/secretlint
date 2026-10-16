@@ -62,7 +62,6 @@
         "chalk": "catalog:",
         "debug": "catalog:",
         "pluralize": "catalog:",
-        "strip-ansi": "catalog:",
         "table": "catalog:",
         "terminal-link": "catalog:"
     },

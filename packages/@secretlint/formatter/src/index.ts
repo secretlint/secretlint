@@ -14,6 +14,7 @@ import { dynamicImport, tryResolve } from "@secretlint/resolver";
 import jsonFormatter from "./formatters/json.js";
 import maskResultFormatter from "./formatters/mask-result.js";
 import tableFormatter from "./formatters/table.js";
+import { sanitizeTerminalOutput } from "./sanitize-terminal-output.js";
 
 const BuiltInFormatters = ["json", "mask-result", "table"];
 const debug = debug0("@secretlint/formatter");
@@ -48,35 +49,39 @@ export interface SecretLintFormatterConfig {
  */
 const convertSecretLintResultToTextlintResult = (
     secretLintCoreResult: SecretLintCoreResult,
-    { enableTerminalLink }: { enableTerminalLink: boolean }
+    { enableTerminalLink, sanitizeFilePath }: { enableTerminalLink: boolean; sanitizeFilePath: boolean },
 ): TextlintResult => {
     return {
-        filePath: secretLintCoreResult.filePath,
+        filePath: sanitizeFilePath
+            ? sanitizeTerminalOutput(secretLintCoreResult.filePath)
+            : secretLintCoreResult.filePath,
         messages: secretLintCoreResult.messages.map((message) => {
             const severityLevel =
                 message.severity === "info"
                     ? 0
                     : message.severity === "warning"
-                    ? 1
-                    : message.severity === "error"
-                    ? 2
-                    : 0;
+                      ? 1
+                      : message.severity === "error"
+                        ? 2
+                        : 0;
 
             // If the message has docsUrl, try to link to docsUrl
             const messageId =
                 enableTerminalLink && message.docsUrl
-                    ? terminalLink(message.messageId, message.docsUrl, {
+                    ? terminalLink(sanitizeTerminalOutput(message.messageId), message.docsUrl, {
                           fallback: (text, _url) => {
                               return text;
                           },
                       })
-                    : message.messageId;
+                    : sanitizeTerminalOutput(message.messageId);
             return {
                 // Preset rule format
                 // {preset-id} > {rule-id}
                 // Single rule format
                 // {rule-id}
-                ruleId: message.ruleParentId ? `${message.ruleParentId} > ${message.ruleId}` : message.ruleId,
+                ruleId: sanitizeTerminalOutput(
+                    message.ruleParentId ? `${message.ruleParentId} > ${message.ruleId}` : message.ruleId,
+                ),
                 /**
                  * @deprecated backward compatibility - use range or loc
                  */
@@ -92,7 +97,7 @@ const convertSecretLintResultToTextlintResult = (
                 range: message.range,
                 loc: message.loc,
                 severity: severityLevel,
-                message: `[${messageId}] ${message.message}`,
+                message: `[${messageId}] ${sanitizeTerminalOutput(message.message)}`,
                 data: message.data,
                 // NO NEED - DUMMY DATA
                 fix: undefined,
@@ -109,6 +114,10 @@ export async function loadFormatter(formatterConfig: SecretLintFormatterConfig) 
      * Terminal Link is enabled when use human-readable format and option is enabled
      */
     const enableTerminalLink = isHumanReadableFormat ?? formatterConfig.terminalLink ?? false;
+    /**
+     * pretty-error reads the file by `filePath`, so it needs the original path
+     */
+    const sanitizeFilePath = formatterName !== "pretty-error";
     debug(`formatterName: ${formatterName}`);
 
     try {
@@ -126,8 +135,9 @@ export async function loadFormatter(formatterConfig: SecretLintFormatterConfig) 
                     results.map((result) =>
                         convertSecretLintResultToTextlintResult(result, {
                             enableTerminalLink,
-                        })
-                    )
+                            sanitizeFilePath,
+                        }),
+                    ),
                 );
             },
         };
@@ -206,7 +216,7 @@ export function getFormatterList(): SecretLintFormatterDetail[] {
     const secretlintFormatters = secretlintGetFormatterList();
     const secretlintFormatterNames = secretlintFormatters.map((formatter) => formatter.name);
     const externalFormatters = textlintFormatters.filter(
-        (formatter) => !secretlintFormatterNames.includes(formatter.name)
+        (formatter) => !secretlintFormatterNames.includes(formatter.name),
     );
     return [...externalFormatters, ...secretlintFormatters];
 }
