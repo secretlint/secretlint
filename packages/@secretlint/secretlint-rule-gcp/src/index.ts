@@ -50,12 +50,11 @@ function reportIfFoundPrivateKeyJSONFormat({
         if (!isGCPServiceAccountPrivateKeyJSON) {
             return;
         }
-        // allows matches against the key id, the service account email, or the private key itself
-        const allowCandidates = [
-            credentialObject["private_key_id"],
-            credentialObject["client_email"],
-            credentialObject["private_key"],
-        ].filter((value): value is string => typeof value === "string");
+        // allows matches against key-specific values only. client_email is not used because it stays the same
+        // across key rotations, so allowing it would hide newly issued keys for the same service account.
+        const allowCandidates = [credentialObject["private_key_id"], credentialObject["private_key"]].filter(
+            (value): value is string => typeof value === "string",
+        );
         if (allowCandidates.some((value) => matchPatterns(value, options.allows).length > 0)) {
             return;
         }
