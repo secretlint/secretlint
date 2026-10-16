@@ -51,7 +51,7 @@ export const creator: SecretLintRuleCreator<Options> = {
                     }
                     const range = [index, index + matchString.length] as const;
                     try {
-                        if (!secp256k1.privateKeyVerify(new BN(matchString, 16).toBuffer())) {
+                        if (!secp256k1.privateKeyVerify(new BN(matchString, 16).toBuffer("be", 32))) {
                             continue;
                         }
                         context.report({
