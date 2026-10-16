@@ -97,4 +97,30 @@ describe("filter-mask-secrets", function () {
             },
         });
     });
+    it("should not throw when data includes null", () => {
+        const message = createMessageFromRange({
+            range: [0, 1],
+            message: "found SECRET_VALUE",
+            data: {
+                key: "SECRET_VALUE",
+                empty: null,
+                nest: [null, { deep: null, value: "SECRET_VALUE" }],
+            },
+        });
+        const [filteredMessage] = filterMaskSecretsData([message]);
+        assert.deepStrictEqual(filteredMessage, {
+            range: [0, 1],
+            ruleId: "example",
+            severity: "error",
+            type: "message",
+            loc: { start: { line: 1, column: 0 }, end: { line: 1, column: 0 } },
+            message: "found ************",
+            messageId: "message-id",
+            data: {
+                key: "************",
+                empty: null,
+                nest: [null, { deep: null, value: "************" }],
+            },
+        });
+    });
 });
