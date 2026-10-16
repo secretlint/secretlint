@@ -68,7 +68,7 @@ const convertSecretLintResultToTextlintResult = (
             // If the message has docsUrl, try to link to docsUrl
             const messageId =
                 enableTerminalLink && message.docsUrl
-                    ? terminalLink(sanitizeTerminalOutput(message.messageId), message.docsUrl, {
+                    ? terminalLink(sanitizeTerminalOutput(message.messageId), sanitizeTerminalOutput(message.docsUrl), {
                           fallback: (text, _url) => {
                               return text;
                           },
@@ -115,7 +115,8 @@ export async function loadFormatter(formatterConfig: SecretLintFormatterConfig) 
      */
     const enableTerminalLink = isHumanReadableFormat ?? formatterConfig.terminalLink ?? false;
     /**
-     * pretty-error reads the file by `filePath`, so it needs the original path
+     * pretty-error reads the file by `filePath`, so it needs the original path.
+     * Instead, the path in its output is replaced with the sanitized path.
      */
     const sanitizeFilePath = formatterName !== "pretty-error";
     debug(`formatterName: ${formatterName}`);
@@ -131,7 +132,7 @@ export async function loadFormatter(formatterConfig: SecretLintFormatterConfig) 
         const formatter = await textlintCreateFormatter(formatterConfig);
         return {
             format: (results: SecretLintCoreResult[]) => {
-                return formatter.format(
+                const output = formatter.format(
                     results.map((result) =>
                         convertSecretLintResultToTextlintResult(result, {
                             enableTerminalLink,
@@ -139,6 +140,15 @@ export async function loadFormatter(formatterConfig: SecretLintFormatterConfig) 
                         }),
                     ),
                 );
+                if (sanitizeFilePath) {
+                    return output;
+                }
+                return results.reduce((text, result) => {
+                    const sanitizedFilePath = sanitizeTerminalOutput(result.filePath);
+                    return sanitizedFilePath === result.filePath
+                        ? text
+                        : text.split(result.filePath).join(sanitizedFilePath);
+                }, output);
             },
         };
     }

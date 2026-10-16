@@ -1,4 +1,7 @@
 import assert from "node:assert";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
 import { SecretLintCoreResult } from "@secretlint/types";
 import { loadFormatter } from "../src/index.js";
 import { sanitizeTerminalOutput } from "../src/sanitize-terminal-output.js";
@@ -52,4 +55,25 @@ describe("formatter output does not contain control characters from results", ()
             assert.ok(output.includes("found secret RED"), output);
         });
     }
+});
+
+describe("pretty-error formatter", () => {
+    // Windows can not create a file name that includes control characters
+    const it_ = process.platform === "win32" ? it.skip : it;
+    it_("reads the original file and prints the sanitized file path", async () => {
+        const dir = fs.mkdtempSync(path.join(os.tmpdir(), "secretlint-formatter-"));
+        try {
+            const filePath = path.join(dir, `evil${ESC}]0;title${BEL}.txt`);
+            fs.writeFileSync(filePath, "THIS IS SECRET SOURCE\n");
+            const results = createResults();
+            results[0].filePath = filePath;
+            const formatter = await loadFormatter({ color: false, formatterName: "pretty-error" });
+            const output = formatter.format(results);
+            assert.ok(!hasControlCharacter(output), JSON.stringify(output));
+            assert.ok(output.includes(path.join(dir, "evil.txt")), output);
+            assert.ok(output.includes("THIS IS SECRET SOURCE"), output);
+        } finally {
+            fs.rmSync(dir, { recursive: true, force: true });
+        }
+    });
 });
