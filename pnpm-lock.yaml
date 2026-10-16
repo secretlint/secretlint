@@ -129,9 +129,6 @@ catalogs:
     secp256k1:
       specifier: ^5.0.2
       version: 5.0.2
-    strip-ansi:
-      specifier: ^7.2.0
-      version: 7.2.0
     structured-source:
       specifier: ^4.0.0
       version: 4.0.0
@@ -335,9 +332,6 @@ importers:
       pluralize:
         specifier: 'catalog:'
         version: 8.0.0
-      strip-ansi:
-        specifier: 'catalog:'
-        version: 7.2.0
       table:
         specifier: 'catalog:'
         version: 6.9.0
