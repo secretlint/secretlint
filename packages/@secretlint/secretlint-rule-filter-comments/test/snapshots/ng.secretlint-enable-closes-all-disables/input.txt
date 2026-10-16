@@ -1,0 +1,12 @@
+// secretlint-disable @secretlint/secretlint-rule-secret-alphabet
+
+THIS IS SECRET A
+
+// secretlint-disable @secretlint/secretlint-rule-secret-number
+
+THIS IS SECRET 1
+
+// secretlint-enable
+
+THIS IS SECRET B
+THIS IS SECRET 2

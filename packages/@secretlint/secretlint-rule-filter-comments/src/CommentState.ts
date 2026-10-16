@@ -95,22 +95,17 @@ export class CommentState {
         if (rulesToEnable.length) {
             rulesToEnable.forEach(function (ruleId) {
                 for (let i = reportingConfig.length - 1; i >= 0; i--) {
-                    if (!reportingConfig[i].endIndex && reportingConfig[i].ruleId === ruleId) {
+                    if (reportingConfig[i].endIndex === null && reportingConfig[i].ruleId === ruleId) {
                         reportingConfig[i].endIndex = endIndex;
                         break;
                     }
                 }
             });
         } else {
-            // find all previous disabled locations if they was started as list of rules
-            let prevStart;
-            for (let i = reportingConfig.length - 1; i >= 0; i--) {
-                if (prevStart && prevStart !== reportingConfig[i].startIndex) {
-                    break;
-                }
-                if (!reportingConfig[i].endIndex) {
-                    reportingConfig[i].endIndex = endIndex;
-                    prevStart = reportingConfig[i].startIndex;
+            // bare enable closes every open disable, regardless of where it started
+            for (const config of reportingConfig) {
+                if (config.endIndex === null) {
+                    config.endIndex = endIndex;
                 }
             }
         }
