@@ -28,7 +28,7 @@ If you already have installed Node.js:
 
     npx @secretlint/quick-start "**/*"
 
-After running,
+After running, 
 If you got empty result and exit status is `0`, your project is secure.
 Otherwise, you got some error report, your project includes credential as raw data.
 
@@ -44,7 +44,7 @@ You want to get continuous security, Please see following installation guide and
 
 Use our [Docker container](https://hub.docker.com/r/secretlint/secretlint) to get an environment with Node.js and secretlint running as fast as you can download them.
 
-You can check all files under the current directory with secretlint by following command:
+You can check all files under the current directory with secretlint by following command: 
 
     docker run -v `pwd`:`pwd` -w `pwd` --rm -it secretlint/secretlint secretlint "**/*"
 
@@ -52,7 +52,7 @@ You can check all files under the current directory with secretlint by following
 
 This Docker Image has built-in packages:
 
-- [@secretlint/secretlint-rule-preset-recommend](https://www.npmjs.com/package/@secretlint/secretlint-rule-preset-recommend)
+- [@secretlint/secretlint-rule-preset-recommend](https://www.npmjs.com/package/@secretlint/secretlint-rule-preset-recommend) 
 - [@secretlint/secretlint-rule-pattern](https://www.npmjs.com/package/@secretlint/secretlint-rule-pattern)
 - [@secretlint/secretlint-formatter-sarif](https://www.npmjs.com/package/@secretlint/secretlint-formatter-sarif)
 
@@ -60,7 +60,7 @@ For more details, please see [secretlint's Dockerfile](./publish/docker).
 
 ### Using Node.js
 
-**Prerequisites:** Require [Node.js 22+](https://nodejs.org/).
+**Prerequisites:**  Require [Node.js 22+](https://nodejs.org/).
 
 Secretlint is written by JavaScript.
 You can install Secretlint using [npm](https://www.npmjs.com/):
@@ -91,7 +91,7 @@ It is also possible to install Secretlint globally using `npm install --global`.
 
 You can use `secretlint` command without Node.js by using a single-executable binary.
 
-1. Download the latest binary from [Releases page](https://github.com/secretlint/secretlint/releases)
+1. Download the latest binary from [Releases page](https://github.com/secretlint/secretlint/releases) 
 2. Change the file permission to executable: `chmod +x ./secretlint`
 3. Run `./secretlint --init` to create a configuration file
 4. Run `./secretlint "**/*"` to lint your project
@@ -103,15 +103,15 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
 `secretlint --help` shows Usage.
 
     Secretlint CLI that scan secret/credential data.
-
+    
     Usage
     $ secretlint [file|glob*]
-
+    
     Note
     supported glob syntax is based on picomatch (the engine used by micromatch)
     https://github.com/micromatch/picomatch#globbing-features
     https://github.com/micromatch/micromatch#matching-features
-
+    
     Options
     --init             setup config file. Create .secretlintrc.json file from your package.json
     --format           [String] formatter name. Default: "stylish". Available Formatter: checkstyle, compact, github, jslint-xml, junit, pretty-error, stylish, tap, unix, json, mask-result, table
@@ -125,14 +125,14 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
     --no-glob          disable glob pattern interpretation; treat all inputs as literal file paths.
     --no-gitignore     disable .gitignore cascade respect; .gitignore files are
                        respected by default (since v13).
-
+    
     Options for Developer
     --profile          Enable performance profile.
     --secretlintrcJSON [String] a JSON string of .secretlintrc. use JSON string instead of rc file.
-
+    
     Experimental Options
     --locale            [String] locale tag for translating message. Default: en
-
+    
     Examples
     # Scan a single file
     $ secretlint ./README.md
@@ -161,10 +161,10 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
 
     # Output GitHub Actions annotations in CI
     $ secretlint "**/*" --format=github
-
+    
     Exit Status
     Secretlint exits with the following values:
-
+    
         - 0:
           - Linting succeeded, no errors found.
           - Found lint error but --output is specified.
@@ -172,6 +172,7 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
           - Linting failed, errors found.
         - 2:
           - Unexpected error occurred, fatal error.
+
 
 ## Configuration
 
@@ -185,15 +186,15 @@ In it, you'll see some rules configured like this:
 
 ```json
 {
-    "rules": [
-        {
-            "id": "@secretlint/secretlint-rule-preset-recommend"
-        }
-    ]
+  "rules": [
+    {
+      "id": "@secretlint/secretlint-rule-preset-recommend"
+    }
+  ]
 }
 ```
 
-The `id` property is the name of secretlint rule package.
+The `id` property is the name of secretlint rule package. 
 
 Secretlint does not have built-in rule.
 You want to add some rule and You should **install** the package and **add** the rule to `.secretlintrc` file.
@@ -212,39 +213,41 @@ This `allows` option define a list of [RegExp-like String](https://github.com/te
 
 ```json
 {
-    "rules": [
-        {
-            "id": "@secretlint/secretlint-rule-example",
-            "options": {
-                "allows": ["/dummy_secret/i"]
-            }
-        }
-    ]
+  "rules": [
+    {
+      "id": "@secretlint/secretlint-rule-example",
+      "options": {
+        "allows": [
+          "/dummy_secret/i"
+        ]
+      }
+    }
+  ]
 }
 ```
 
 When you use a preset like `@secretlint/secretlint-rule-preset-recommend`, you need to put the option in `rules`.
 
-For example, an option for `@secretlint/secretlint-rule-preset-recommend > @secretlint/secretlint-rule-aws`
+For example, an option for `@secretlint/secretlint-rule-preset-recommend > @secretlint/secretlint-rule-aws` 
 
 ```json5
 {
-    rules: [
+  "rules": [
+    {
+      "id": "@secretlint/secretlint-rule-preset-recommend",
+      "rules": [
         {
-            id: "@secretlint/secretlint-rule-preset-recommend",
-            rules: [
-                {
-                    id: "@secretlint/secretlint-rule-aws",
-                    options: {
-                        allows: [
-                            // it will be ignored
-                            "xxxx-xxxx-xxxx-xxxx-xxxx"
-                        ]
-                    }
-                }
-            ]
+          "id": "@secretlint/secretlint-rule-aws",
+            "options": {
+              "allows": [
+	            // it will be ignored
+                "xxxx-xxxx-xxxx-xxxx-xxxx"
+              ]
+            }
         }
-    ]
+      ]
+    }
+  ]
 }
 ```
 
@@ -267,12 +270,12 @@ If you want to ignore this error, please use `allowMessageIds`.
 
 ```json
 {
-    "rules": [
-        {
-            "id": "@secretlint/secretlint-rule-example",
-            "allowMessageIds": ["EXAMPLE_MESSAGE"]
-        }
-    ]
+  "rules": [
+    {
+      "id": "@secretlint/secretlint-rule-example",
+      "allowMessageIds": ["EXAMPLE_MESSAGE"]
+    }
+  ]
 }
 ```
 
@@ -282,17 +285,17 @@ For example, If you want to ignore "AWSAccountID" and "AWSAccessKeyID" of "@secr
 
 ```json5
 {
-    rules: [
+  "rules": [
+    {
+      "id": "@secretlint/secretlint-rule-preset-recommend",
+      "rules": [
         {
-            id: "@secretlint/secretlint-rule-preset-recommend",
-            rules: [
-                {
-                    id: "@secretlint/secretlint-rule-aws",
-                    allowMessageIds: ["AWSAccountID", "AWSAccessKeyID"]
-                }
-            ]
+          "id": "@secretlint/secretlint-rule-aws",
+          "allowMessageIds": ["AWSAccountID", "AWSAccessKeyID"]
         }
-    ]
+      ]
+    }
+  ]
 }
 ```
 
@@ -346,7 +349,6 @@ secretlint --no-gitignore "**/*"
 ```
 
 > **Migrating to v13:**
->
 > - `.gitignore` is now respected by default. Previously, secretlint scanned all matching files regardless of `.gitignore`. Pass `--no-gitignore` to restore the previous behaviour.
 > - Include patterns follow picomatch glob syntax (brace expansion, `**`, character classes, …). The cascaded ignore stack (`.gitignore`, `.secretlintignore`, and the built-in ignore list) follows standard `.gitignore` semantics, which does NOT support brace expansion — write `**/.cache` rather than `**/{cache,tmp}` for ignore patterns.
 > - Patterns are interpreted as globs by default. When a pattern resolves to an existing on-disk path the walker treats it literally even if the name contains glob metacharacters (`[`, `(`, `{`, `?`), mirroring globby's old `convertPathToPattern` behaviour. Pass `--no-glob` to force literal handling for paths that don't yet exist on disk.
@@ -433,6 +435,7 @@ Secretlint rules has been implemented as separated modules.
 - [@secretlint/secretlint-rule-no-dotenv](./packages/%40secretlint/secretlint-rule-no-dotenv)
 - [@secretlint/secretlint-rule-filter-comments](./packages/%40secretlint/secretlint-rule-filter-comments)
 
+
 Also, Secretlint provides rule preset that includes recommended rule set.
 
 - [@secretlint/secretlint-rule-preset-recommend](./packages/@secretlint/secretlint-rule-preset-recommend)
@@ -476,16 +479,18 @@ Edit `package.json`:
 
 ```json5
 {
-    // add "lint-staged" field
-    "lint-staged": {
-        "*": ["secretlint --no-glob"]
-    }
+  // add "lint-staged" field
+  "lint-staged": {
+    "*": [
+      "secretlint --no-glob"
+    ]
+  }
 }
 ```
 
 > **Note:** The `--no-glob` flag is required because lint-staged passes literal file paths that may contain glob special characters (e.g., `(group)` or `[param]` routing patterns used by Next.js, SvelteKit, etc.).
 
-This means that check each staged file by Secretlint before commit.
+This means that check each staged file by Secretlint before commit. 
 
 #### [pre-commit](https://github.com/pre-commit/pre-commit)
 
@@ -554,7 +559,7 @@ cd git-hooks
 git config --global core.hooksPath $(pwd)/hooks
 ```
 
-After setup of `core.hooksPath`, secretlint check any file before you commit it.
+After setup of `core.hooksPath`, secretlint check any file before you commit it.  
 
 For more details, see [secretlint/git-hooks](https://github.com/secretlint/git-hooks) project.
 
@@ -573,22 +578,22 @@ Put `.github/workflows/secretlint.yml` in your repository.
 name: Secretlint
 on: [push, pull_request]
 permissions:
-    contents: read
+  contents: read
 jobs:
-    test:
-        name: "Secretlint"
-        runs-on: ubuntu-latest
-        steps:
-            - name: checkout
-              uses: actions/checkout@v3
-            - name: setup Node.js
-              uses: actions/setup-node@v3
-              with:
-                  node-version: 22
-            - name: Install
-              run: npm ci
-            - name: Lint with Secretlint
-              run: npx secretlint "**/*"
+  test:
+    name: "Secretlint"
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+      - name: Install
+        run: npm ci
+      - name: Lint with Secretlint
+        run: npx secretlint "**/*"
 ```
 
 ##### `--format github` for Pull Request annotations
@@ -597,8 +602,8 @@ You can use `--format github` to show lint errors as annotations on Pull Request
 This formatter outputs [GitHub Actions workflow commands](https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions) that display error annotations directly on the changed files in your Pull Request.
 
 ```yaml
-- name: Lint with Secretlint
-  run: npx secretlint --format github "**/*"
+      - name: Lint with Secretlint
+        run: npx secretlint --format github "**/*"
 ```
 
 This configuration integrates Pull Request review annotations.
@@ -613,37 +618,37 @@ If you want to only check diff files, please see following example:
 ```yaml
 name: test-diff
 on:
-    push:
-    pull_request:
+  push:
+  pull_request:
 jobs:
-    test-diff:
-        permissions:
-            contents: read
-        name: "Run secretlint to diff files"
-        runs-on: ubuntu-latest
-        steps:
-            - name: checkout
-              uses: actions/checkout@v4
-              with:
-                  # fetch history to get all changed files on push or pull_request event
-                  fetch-depth: 0
-            - name: Get changed files
-              id: changed-files
-              uses: tj-actions/changed-files@v44
-              with:
-                  quotepath: "false"
-            - name: setup Node ${{ matrix.node-version }}
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 22
-            - name: Show changed files
-              run: echo "${{ steps.changed-files.outputs.all_changed_files }}"
-            - name: Install
-              if: steps.changed-files.outputs.any_changed == 'true'
-              run: npm ci
-            - name: Run secretlint
-              if: steps.changed-files.outputs.any_changed == 'true'
-              run: npx secretlint --no-glob ${{ steps.changed-files.outputs.all_changed_files }}
+  test-diff:
+    permissions:
+      contents: read
+    name: "Run secretlint to diff files"
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          # fetch history to get all changed files on push or pull_request event
+          fetch-depth: 0
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          quotepath: "false"
+      - name: setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Show changed files
+        run: echo "${{ steps.changed-files.outputs.all_changed_files }}"
+      - name: Install
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: npm ci
+      - name: Run secretlint
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: npx secretlint --no-glob ${{ steps.changed-files.outputs.all_changed_files }}
 ```
 
 #### Mega-Linter
@@ -712,14 +717,14 @@ Secretlint project follows [Semantic Versioning](https://semver.org/ "Semantic V
 ## Motivation
 
 - [git-secrets](https://github.com/awslabs/git-secrets) is useful, but it is hard to setup per project.
-    - Its main use-case is global installation
-    - Secretlint wants to install for a project and customize setting per project.
+	- Its main use-case is global installation
+	- Secretlint wants to install for a project and customize setting per project.
 - [repo-security-scanner](https://github.com/UKHomeOffice/repo-security-scanner), [Gitleaks](https://github.com/zricethezav/gitleaks) and [truffleHog](https://github.com/dxa4481/truffleHog) is good scan tools
-    - Secretlint needs flexible customization that includes ignoring definitions, custom rules.
+	- Secretlint needs flexible customization that includes ignoring definitions, custom rules.
 - [detect-secrets](https://github.com/Yelp/detect-secrets) is similar tools, but it adopts opt-out approach
-    - Secretlint adopts opt-in approach
+    - Secretlint adopts opt-in approach  
     - We also need to custom rules by user
-        - See [Bring-your own-plugins (BYOP), via --custom-plugins option by KevinHock · Pull Request #255 · Yelp/detect-secrets](https://github.com/Yelp/detect-secrets/pull/255)
+		- See [Bring-your own-plugins (BYOP), via --custom-plugins option by KevinHock · Pull Request #255 · Yelp/detect-secrets](https://github.com/Yelp/detect-secrets/pull/255)
 - GitHub support [secret scanning](https://docs.github.com/en/code-security/secret-security/about-secret-scanning), but it only works after commit [~~push~~](https://docs.github.com/en/code-security/secret-scanning/push-protection-for-users)
     - Secretlint works on your local machine, Secretlint can prevent to commit
 
@@ -753,22 +758,22 @@ It means that you can jump to rule documentation from lint error message directl
 
 ![clickable link in output](./docs/assets/docsUrl.png)
 
-> Example on iTerm 2: Cmd + Click error's messageId and open [AWSSecretAccessKey](https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md#awssecretaccesskey) on your browser.
+> Example on iTerm 2: Cmd + Click error's messageId and open [AWSSecretAccessKey](https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md#awssecretaccesskey) on your browser. 
 
-If you want to know support terminal, please see [Hyperlinks in Terminal Emulators](https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda).
+If you want to know support terminal, please see [Hyperlinks in Terminal Emulators](https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda). 
 
 Also, Welcome to Contribution about secretlint documentation!
 
 ### Why Node.js?
 
 - Package Manager
-    - Require package manager to realize flexible pluggable system
-    - Node.js has npm and pnpm as package manager
-    - Package manager help to install custom plugin/rule by user
+	- Require package manager to realize flexible pluggable system
+	- Node.js has npm and pnpm as package manager
+	- Package manager help to install custom plugin/rule by user
 - Exist Reference Implementation
-    - Node.js already has pluggable linting tools like ESLint, textlint, stylelint etc
-    - So Node.js users are familiar with pluggable linting tools
-    - Previously, I created textlint with the same approach, so I am familiar with Node.js
+	- Node.js already has pluggable linting tools like ESLint, textlint, stylelint etc
+	- So Node.js users are familiar with pluggable linting tools
+	- Previously, I created textlint with the same approach, so I am familiar with Node.js
 - Users
     - JavaScript is a popular language
     - It empowers users to contribute
