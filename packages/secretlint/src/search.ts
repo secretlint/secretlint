@@ -24,21 +24,10 @@ const DEFAULT_IGNORE_PATTERNS = [
 ];
 
 /**
- * A bare file name such as `.secretlintignore` is looked up in every
- * directory the walker visits, like `.gitignore`. A path such as
- * `/abs/path/.secretlintignore` or `config/.secretlintignore` names one
- * file, so it must be read once instead: joining it onto each directory
- * would point at a file that does not exist.
- */
-const isIgnoreFileName = (ignoreFilePath: string): boolean => {
-    return !path.isAbsolute(ignoreFilePath) && !ignoreFilePath.includes("/") && !ignoreFilePath.includes(path.sep);
-};
-
-/**
  * Read the ignore file at `ignoreFilePath` (resolved against `cwd`) and
- * return its rules. The rules are anchored at `cwd`. A missing file is
- * reported on stderr instead of being skipped silently, because the user
- * named it explicitly.
+ * return its rules, anchored at `cwd` like Git's `core.excludesFile`.
+ * A missing file is reported on stderr instead of being skipped silently,
+ * because the user named it explicitly.
  */
 const readIgnoreFileRules = async (ignoreFilePath: string, cwd: string): Promise<string[]> => {
     const absolutePath = path.resolve(cwd, ignoreFilePath);
@@ -54,8 +43,16 @@ const readIgnoreFileRules = async (ignoreFilePath: string, cwd: string): Promise
     }
 };
 
+// Looked up in every directory the walker visits, like `.gitignore`.
+const DEFAULT_IGNORE_FILE_NAME = ".secretlintignore";
+
 export type SearchFilesOptions = {
     cwd: string;
+    /**
+     * Ignore file to use instead of the cascaded `.secretlintignore`.
+     * It is read once, relative to `cwd`, and nested `.secretlintignore`
+     * files are not consulted.
+     */
     ignoreFilePath?: string;
     noGlob?: boolean;
     respectGitignore?: boolean;
@@ -78,11 +75,9 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
     const ignoreFiles: string[] = [];
     const extraIgnorePatterns = [...DEFAULT_IGNORE_PATTERNS];
     if (options.ignoreFilePath) {
-        if (isIgnoreFileName(options.ignoreFilePath)) {
-            ignoreFiles.push(options.ignoreFilePath);
-        } else {
-            extraIgnorePatterns.push(...(await readIgnoreFileRules(options.ignoreFilePath, options.cwd)));
-        }
+        extraIgnorePatterns.push(...(await readIgnoreFileRules(options.ignoreFilePath, options.cwd)));
+    } else {
+        ignoreFiles.push(DEFAULT_IGNORE_FILE_NAME);
     }
     if (options.respectGitignore !== false) ignoreFiles.push(".gitignore");
 

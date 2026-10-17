@@ -25,7 +25,7 @@ Options
       .join(", ")}
   --output           [path:String] output file path that is written of reported result.
   --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
-  --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
+  --secretlintignore [path:String] path to an ignore file, relative to cwd. Default: .secretlintignore in each directory
   --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
   --no-color         disable ANSI-color of output.
   --no-terminalLink  disable terminalLink of output.
@@ -99,7 +99,6 @@ const options = {
     },
     secretlintignore: {
         type: OPTION_TYPE_STRING,
-        default: ".secretlintignore",
     },
     stdinFileName: {
         type: OPTION_TYPE_STRING,
