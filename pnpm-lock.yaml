@@ -410,6 +410,9 @@ importers:
         specifier: 'catalog:'
         version: 7.1.1
     devDependencies:
+      '@secretlint/secretlint-formatter-sarif':
+        specifier: workspace:*
+        version: link:../secretlint-formatter-sarif
       '@secretlint/secretlint-rule-example':
         specifier: workspace:*
         version: link:../secretlint-rule-example
@@ -1791,6 +1794,9 @@ importers:
         specifier: 'catalog:'
         version: 10.1.0
     devDependencies:
+      '@secretlint/secretlint-formatter-sarif':
+        specifier: workspace:*
+        version: link:../@secretlint/secretlint-formatter-sarif
       '@secretlint/secretlint-rule-example':
         specifier: workspace:*
         version: link:../@secretlint/secretlint-rule-example

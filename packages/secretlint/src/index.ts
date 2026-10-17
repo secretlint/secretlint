@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import { getPackageJson } from "@secretlint/resolver";
 import { createEngine, SecretLintEngineOptions } from "@secretlint/node";
 import { searchFiles } from "./search.js";
 
@@ -31,7 +32,10 @@ const lintFileOrText = async ({
     cliOptions: SecretLintOptions;
     engineOptions: SecretLintEngineOptions;
 }): Promise<{ ok: boolean; output: string }> => {
-    const engine = await createEngine(engineOptions);
+    const engine = await createEngine({
+        ...engineOptions,
+        secretlintVersion: engineOptions.secretlintVersion ?? getPackageJson(import.meta.url)?.version,
+    });
     if ("filePathOrGlobList" in cliOptions) {
         const { ok, items } = await searchFiles(cliOptions.filePathOrGlobList, {
             cwd: cliOptions.cwd,

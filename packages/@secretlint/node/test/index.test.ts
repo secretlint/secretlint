@@ -109,3 +109,22 @@ describe("createEngine", () => {
         );
     });
 });
+
+describe("scanner version", () => {
+    for (const target of ["files", "content"] as const) {
+        it(`passes the scanner version when scanning ${target}`, async () => {
+            const engine = await createEngine({
+                cwd: path.join(__dirname, "fixtures/valid-config"),
+                formatter: fileURLToPath(import.meta.resolve("@secretlint/secretlint-formatter-sarif")),
+                secretlintVersion: "2.3.4",
+            });
+            const filePath = path.join(__dirname, "fixtures/SECRET.txt");
+            const result =
+                target === "files"
+                    ? await engine.executeOnFiles({ filePathList: [filePath] })
+                    : await engine.executeOnContent({ content: fs.readFileSync(filePath, "utf-8"), filePath });
+            assert.strictEqual(result.ok, false);
+            assert.strictEqual(JSON.parse(result.output).runs[0].tool.driver.version, "2.3.4");
+        });
+    }
+});
