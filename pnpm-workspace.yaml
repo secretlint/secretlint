@@ -52,7 +52,7 @@ catalog:
   "tsx": "^4.23.15"
   "turbo": "^2.11.8"
   "typescript": "^6.0.3"
-  "vitest": "^4.1.11"
+  "vitest": "^4.1.12"
 
 onlyBuiltDependencies:
   - esbuild
