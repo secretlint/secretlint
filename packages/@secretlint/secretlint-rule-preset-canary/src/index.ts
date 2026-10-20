@@ -25,6 +25,7 @@ import { creator as ruleDatabricks } from "@secretlint/secretlint-rule-databrick
 import { creator as ruleDocker } from "@secretlint/secretlint-rule-docker";
 import { creator as ruleFigma } from "@secretlint/secretlint-rule-figma";
 import { creator as ruleCloudflare } from "@secretlint/secretlint-rule-cloudflare";
+import { creator as ruleSupabase } from "@secretlint/secretlint-rule-supabase";
 import { creator as ruleTailscale } from "@secretlint/secretlint-rule-tailscale";
 import { creator as ruleFilterComments } from "@secretlint/secretlint-rule-filter-comments";
 
@@ -56,6 +57,7 @@ export const rules = [
     ruleFigma,
     ruleCloudflare,
     ruleTailscale,
+    ruleSupabase,
     ruleFilterComments,
 ];
 export type Options = {};
