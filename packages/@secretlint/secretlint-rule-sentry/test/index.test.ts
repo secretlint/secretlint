@@ -72,6 +72,51 @@ test("supports URL-safe organization tokens and one padding character", async ()
     assert.equal(messages[0].messageId, "SENTRY_ORGANIZATION_TOKEN");
 });
 
+const invalidOrganizationPayloads = [
+    ["non-JSON bytes", "AAAAAAAAAA"],
+    ["impossible Base64 length", "AAAAAAAAAAA" + "AA"],
+    ["incorrect padding length", "eyJpYXQiOjF9IA="],
+    ["unnecessary padding", "eyJpYXQiOjF9="],
+    ["excess padding", "eyJpYXQiOjF9ICA=="],
+    ["non-canonical padding bits", "eyJpYXQiOjF9IB=="],
+    ["malformed JSON", "eyJpYXQiOjF9LH0="],
+    ["non-object JSON", "WzEsMiwzLDQsNV0="],
+    ["missing issued-at", "eyJvcmciOiJ0ZXN0In0="],
+    ["string issued-at", "eyJpYXQiOiIxIn0="],
+    ["non-finite issued-at", "eyJpYXQiOjFlOTk5fQ=="],
+] as const;
+
+for (const [name, payload] of invalidOrganizationPayloads) {
+    test(`ignores organization payload with ${name}`, async () => {
+        const { messages } = await lint(`sntrys_${payload}_` + "A".repeat(43));
+        assert.equal(messages.length, 0);
+    });
+}
+
+test("detects unpadded organization payloads of each valid Base64 length", async () => {
+    for (const payload of ["eyJpYXQiOjF9", "eyJpYXQiOjF9IA", "eyJpYXQiOjF9ICA"]) {
+        const { messages } = await lint(`sntrys_${payload}_` + "A".repeat(43));
+        assert.equal(messages.length, 1);
+    }
+});
+
+test("detects the payload structure emitted by Sentry's organization token generator", async () => {
+    const payload = btoa(
+        '{"iat": 1, "url": "https://sentry.io", "region_url": "https://us.sentry.io", "org": "example"}',
+    );
+    const token = `sntrys_${payload}_` + "A".repeat(43);
+    const { messages } = await lint(token);
+    assert.equal(messages.length, 1);
+    assert.deepEqual(messages[0].range, [0, token.length]);
+});
+
+test("detects standard and URL-safe Base64 organization payloads", async () => {
+    for (const payload of ["eyJpYXQiOjEsIm9yZyI6Ij4+Pj8/PyJ9", "eyJpYXQiOjEsIm9yZyI6Ij4-Pj8_PyJ9"]) {
+        const { messages } = await lint(`sntrys_${payload}_` + "A".repeat(43));
+        assert.equal(messages.length, 1);
+    }
+});
+
 test("reports every occurrence across lines", async () => {
     const { messages } = await lint(`${personal}\n${personal}\n${app}`);
     assert.deepEqual(

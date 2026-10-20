@@ -29,7 +29,9 @@ Add the rule to `.secretlintrc.json`:
 Detects `sntrys_` tokens with a Base64 payload and a 43-character Base64
 secret. Both padded and unpadded payloads are supported, as are standard
 and URL-safe Base64 characters. Payloads are limited to 10–300 characters
-before padding to keep scanning bounded.
+before padding to keep scanning bounded. The payload must decode to a JSON
+object with a finite numeric `iat` (issued-at) value. Invalid Base64 padding
+and non-canonical encodings are ignored.
 
 See Sentry's [organization token generation](https://github.com/getsentry/sentry/blob/master/src/sentry/utils/security/orgauthtoken_token.py).
 
