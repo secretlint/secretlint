@@ -16,6 +16,7 @@ import { creator as ruleShopify } from "@secretlint/secretlint-rule-shopify";
 import { creator as ruleStripe } from "@secretlint/secretlint-rule-stripe";
 import { creator as ruleGitHub } from "@secretlint/secretlint-rule-github";
 import { creator as ruleGitLab } from "@secretlint/secretlint-rule-gitlab";
+import { creator as ruleSentry } from "@secretlint/secretlint-rule-sentry";
 import { creator as ruleGrafana } from "@secretlint/secretlint-rule-grafana";
 import { creator as rule1Password } from "@secretlint/secretlint-rule-1password";
 import { creator as ruleDatabaseConnectionString } from "@secretlint/secretlint-rule-database-connection-string";
@@ -41,6 +42,7 @@ export const rules = [
     ruleGitHub,
     ruleGitLab,
     ruleGrafana,
+    ruleSentry,
     ruleOpenAi,
     ruleAnthropic,
     ruleGroq,
