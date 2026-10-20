@@ -142,7 +142,7 @@ catalogs:
       specifier: ^4.23.15
       version: 4.23.15
     turbo:
-      specifier: ^2.11.8
+      specifier: ^2.11.9
       version: 2.11.9
     typescript:
       specifier: ^6.0.3
