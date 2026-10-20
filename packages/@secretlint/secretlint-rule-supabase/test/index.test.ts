@@ -35,7 +35,16 @@ for (const prefix of ["sbp_", "sbp_oauth_", "sbp_v0_"]) {
     });
     test(`does not match ${prefix} inside longer identifiers`, async () => {
         const { messages } = await lint(
-            ["prefix" + token, "日" + token, token + "suffix", token + "_suffix", token + "日"].join("\n"),
+            [
+                "prefix" + token,
+                "日" + token,
+                "1" + token,
+                "_" + token,
+                "１" + token,
+                token + "suffix",
+                token + "_suffix",
+                token + "日",
+            ].join("\n"),
         );
         assert.equal(messages.length, 0);
     });

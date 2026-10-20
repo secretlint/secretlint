@@ -34,7 +34,7 @@ export const creator: SecretLintRuleCreator<Options> = {
         };
         return {
             file(source: SecretLintSourceCode) {
-                const pattern = /(?<!\p{L})sbp_(?:oauth_|v0_)?[a-f0-9]{40}(?![\p{L}\p{N}_])/gu;
+                const pattern = /(?<![\p{L}\p{N}_])sbp_(?:oauth_|v0_)?[a-f0-9]{40}(?![\p{L}\p{N}_])/gu;
                 const matches = source.content.matchAll(pattern);
                 for (const match of matches) {
                     const index = match.index ?? 0;
