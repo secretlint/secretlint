@@ -1630,9 +1630,6 @@ importers:
         specifier: 'catalog:'
         version: 2.0.2
     devDependencies:
-      '@secretlint/core':
-        specifier: workspace:*
-        version: link:../core
       '@secretlint/tester':
         specifier: workspace:*
         version: link:../tester
