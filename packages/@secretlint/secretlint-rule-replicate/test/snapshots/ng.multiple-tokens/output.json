@@ -1,0 +1,82 @@
+{
+    "filePath": "[SNAPSHOT]/ng.multiple-tokens/input.txt",
+    "messages": [
+        {
+            "message": "found replicate api token: r8_0000000000000000000000000000000000000",
+            "range": [
+                3,
+                43
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-replicate",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 3
+                },
+                "end": {
+                    "line": 1,
+                    "column": 43
+                }
+            },
+            "severity": "error",
+            "messageId": "REPLICATE_API_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-replicate/README.md#REPLICATE_API_TOKEN",
+            "data": {
+                "ID": "r8_0000000000000000000000000000000000000"
+            }
+        },
+        {
+            "message": "found replicate api token: r8_0000000000000000000000000000000000000",
+            "range": [
+                44,
+                84
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-replicate",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 44
+                },
+                "end": {
+                    "line": 1,
+                    "column": 84
+                }
+            },
+            "severity": "error",
+            "messageId": "REPLICATE_API_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-replicate/README.md#REPLICATE_API_TOKEN",
+            "data": {
+                "ID": "r8_0000000000000000000000000000000000000"
+            }
+        },
+        {
+            "message": "found replicate api token: r8_0000000000000000000000000000000000000",
+            "range": [
+                91,
+                131
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-replicate",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 6
+                },
+                "end": {
+                    "line": 2,
+                    "column": 46
+                }
+            },
+            "severity": "error",
+            "messageId": "REPLICATE_API_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-replicate/README.md#REPLICATE_API_TOKEN",
+            "data": {
+                "ID": "r8_0000000000000000000000000000000000000"
+            }
+        }
+    ],
+    "sourceContent": "😀 r8_0000000000000000000000000000000000000 r8_0000000000000000000000000000000000000\nTOKEN=r8_0000000000000000000000000000000000000\n",
+    "sourceContentType": "text"
+}
