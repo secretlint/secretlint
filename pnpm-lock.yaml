@@ -1290,6 +1290,9 @@ importers:
       '@secretlint/secretlint-rule-sendgrid':
         specifier: workspace:*
         version: link:../secretlint-rule-sendgrid
+      '@secretlint/secretlint-rule-sentry':
+        specifier: workspace:*
+        version: link:../secretlint-rule-sentry
       '@secretlint/secretlint-rule-shopify':
         specifier: workspace:*
         version: link:../secretlint-rule-shopify
@@ -1527,6 +1530,34 @@ importers:
         specifier: 'catalog:'
         version: 2.0.2
     devDependencies:
+      '@secretlint/tester':
+        specifier: workspace:*
+        version: link:../tester
+      '@types/node':
+        specifier: 'catalog:'
+        version: 25.9.9
+      prettier:
+        specifier: 'catalog:'
+        version: 3.8.3
+      tsx:
+        specifier: 'catalog:'
+        version: 4.23.15
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+
+  packages/@secretlint/secretlint-rule-sentry:
+    dependencies:
+      '@secretlint/types':
+        specifier: workspace:*
+        version: link:../types
+      '@textlint/regexp-string-matcher':
+        specifier: 'catalog:'
+        version: 2.0.2
+    devDependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/tester':
         specifier: workspace:*
         version: link:../tester

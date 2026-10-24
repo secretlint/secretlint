@@ -83,6 +83,7 @@
         "@secretlint/secretlint-rule-openai": "workspace:*",
         "@secretlint/secretlint-rule-privatekey": "workspace:*",
         "@secretlint/secretlint-rule-sendgrid": "workspace:*",
+        "@secretlint/secretlint-rule-sentry": "workspace:*",
         "@secretlint/secretlint-rule-shopify": "workspace:*",
         "@secretlint/secretlint-rule-slack": "workspace:*",
         "@secretlint/secretlint-rule-stripe": "workspace:*",
