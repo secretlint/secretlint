@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1792777293579,
+  "lastUpdate": 1792804660322,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -60572,6 +60572,44 @@ window.BENCHMARK_DATA = {
             "range": "±0.40%",
             "unit": "ops/sec",
             "extra": "8 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f28fc2f4b055f45acbee8f7ec5cd18457df34511",
+          "message": "Update dependency turbo to ^2.11.10 (#1753)\n\nThis PR contains the following updates:\n\n| Package | Change |\n[Age](https://docs.renovatebot.com/merge-confidence/) |\n[Confidence](https://docs.renovatebot.com/merge-confidence/) |\n|---|---|---|---|\n| [turbo](https://turborepo.dev)\n([source](https://redirect.github.com/vercel/turborepo)) | [`^2.11.9` →\n`^2.11.10`](https://renovatebot.com/diffs/npm/turbo/2.11.9/2.11.10) |\n![age](https://developer.mend.io/api/mc/badges/age/npm/turbo/2.11.10?slim=true)\n|\n![confidence](https://developer.mend.io/api/mc/badges/confidence/npm/turbo/2.11.9/2.11.10?slim=true)\n|\n\n⚠️ Renovate does not enforce Minimum Release Age for `bump`,\n`lockfileUpdate`, or `rollback` updates, so these are raised without a\nMinimum Release Age check. You will need to manually validate the\nMinimum Release Age for these package(s).\n\n---\n\n### Release Notes\n\n<details>\n<summary>vercel/turborepo (turbo)</summary>\n\n###\n[`v2.11.10`](https://redirect.github.com/vercel/turborepo/releases/tag/v2.11.10):\nTurborepo v2.11.10\n\n[Compare\nSource](https://redirect.github.com/vercel/turborepo/compare/v2.11.9...v2.11.10)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat v2.11.10 -->\n\n#### What's Changed\n\n##### Changelog\n\n- fix: Allow non-recursive Turbo commands in root tasks by\n[@&#8203;sahyl](https://redirect.github.com/sahyl) in\n[#&#8203;14814](https://redirect.github.com/vercel/turborepo/pull/14814)\n- chore: Release Turborepo 2.11.9 by\n[@&#8203;github-actions](https://redirect.github.com/github-actions)\\[bot]\nin\n[#&#8203;14824](https://redirect.github.com/vercel/turborepo/pull/14824)\n- chore(deps): Update dependency\n[@&#8203;vercel/geistdocs](https://redirect.github.com/vercel/geistdocs)\nto v2 by\n[@&#8203;vercel-gh-bot-4](https://redirect.github.com/vercel-gh-bot-4)\\[bot]\nin\n[#&#8203;14417](https://redirect.github.com/vercel/turborepo/pull/14417)\n- chore: Update with-gatsby example by\n[@&#8203;vercel-gh-bot-3](https://redirect.github.com/vercel-gh-bot-3)\\[bot]\nin\n[#&#8203;14796](https://redirect.github.com/vercel/turborepo/pull/14796)\n- fix: Avoid pnpm batch-shim shutdown hangs on Windows by\n[@&#8203;sahyl](https://redirect.github.com/sahyl) in\n[#&#8203;14819](https://redirect.github.com/vercel/turborepo/pull/14819)\n- chore(deps): Update dependency\n[@&#8203;vercel/geistdocs](https://redirect.github.com/vercel/geistdocs)\nto v2.11.0 by\n[@&#8203;vercel-gh-bot-3](https://redirect.github.com/vercel-gh-bot-3)\\[bot]\nin\n[#&#8203;14832](https://redirect.github.com/vercel/turborepo/pull/14832)\n- fix: Exclude tool-managed directories from local dependency inputs by\n[@&#8203;PedroRosalba](https://redirect.github.com/PedroRosalba) in\n[#&#8203;14696](https://redirect.github.com/vercel/turborepo/pull/14696)\n- fix: Match git's text=auto binary detection in file hashing by\n[@&#8203;PedroRosalba](https://redirect.github.com/PedroRosalba) in\n[#&#8203;14697](https://redirect.github.com/vercel/turborepo/pull/14697)\n- fix: Drop\n[@&#8203;react-router/dev](https://redirect.github.com/react-router/dev)\nfrom Remix match list by\n[@&#8203;Pcmhacker-piro](https://redirect.github.com/Pcmhacker-piro) in\n[#&#8203;14800](https://redirect.github.com/vercel/turborepo/pull/14800)\n- fix: Match package configuration files and directory inputs in\ntask-level affected detection by\n[@&#8203;PedroRosalba](https://redirect.github.com/PedroRosalba) in\n[#&#8203;14804](https://redirect.github.com/vercel/turborepo/pull/14804)\n- fix: Parse pnpm 8 single-project lockfiles by\n[@&#8203;PedroRosalba](https://redirect.github.com/PedroRosalba) in\n[#&#8203;14806](https://redirect.github.com/vercel/turborepo/pull/14806)\n- fix: Keep task env vars in the hash when globalEnv excludes inferred\nvars by [@&#8203;PedroRosalba](https://redirect.github.com/PedroRosalba)\nin\n[#&#8203;14805](https://redirect.github.com/vercel/turborepo/pull/14805)\n- docs: Generate the sitemap from Geistdocs sources by\n[@&#8203;molebox](https://redirect.github.com/molebox) in\n[#&#8203;14865](https://redirect.github.com/vercel/turborepo/pull/14865)\n- fix: Restore cached symlinks when outputs are already on disk by\n[@&#8203;PedroRosalba](https://redirect.github.com/PedroRosalba) in\n[#&#8203;14807](https://redirect.github.com/vercel/turborepo/pull/14807)\n- chore: Remove CODEOWNERS file by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) with\n[@&#8203;Copilot](https://redirect.github.com/Copilot) in\n[#&#8203;14810](https://redirect.github.com/vercel/turborepo/pull/14810)\n- feat: Enable WebMCP for Turborepo docs by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;14828](https://redirect.github.com/vercel/turborepo/pull/14828)\n- fix: Exit quietly when `turbo ls` output is piped to a closed reader\nby [@&#8203;drakeo338](https://redirect.github.com/drakeo338) in\n[#&#8203;14868](https://redirect.github.com/vercel/turborepo/pull/14868)\n- fix: Distrust compromised eMudhra intermediate certificates by\n[@&#8203;anthonyshew](https://redirect.github.com/anthonyshew) in\n[#&#8203;14876](https://redirect.github.com/vercel/turborepo/pull/14876)\n\n**Full Changelog**:\n<https://github.com/vercel/turborepo/compare/v2.11.9...v2.11.10>\n\n</details>\n\n---\n\n### Configuration\n\n📅 **Schedule**: (in timezone Asia/Tokyo)\n\n- Branch creation\n  - At any time (no schedule defined)\n- Automerge\n  - At any time (no schedule defined)\n\n🚦 **Automerge**: Enabled.\n\n♻ **Rebasing**: Whenever PR is behind base branch, or you tick the\nrebase/retry checkbox.\n\n🔕 **Ignore**: Close this PR and you won't be reminded about this update\nagain.\n\n---\n\n- [ ] <!-- rebase-check -->If you want to rebase/retry this PR, check\nthis box\n\n---\n\nThis PR was generated by [Mend Renovate](https://mend.io/renovate/).\nView the [repository job\nlog](https://developer.mend.io/github/secretlint/secretlint).\n\n<!--renovate-debug:eyJjcmVhdGVkSW5WZXIiOiI0NC4xODAuMCIsInVwZGF0ZWRJblZlciI6IjQ0LjE4MC4wIiwidGFyZ2V0QnJhbmNoIjoibWFzdGVyIiwibGFiZWxzIjpbImRlcGVuZGVuY2llcyJdfQ==-->\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2026-10-24T01:16:30Z",
+          "tree_id": "7f24273a79e45acbca8727415d7cdffb5979e4ca",
+          "url": "https://github.com/secretlint/secretlint/commit/f28fc2f4b055f45acbee8f7ec5cd18457df34511"
+        },
+        "date": 1792804657483,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 4.45,
+            "range": "±1.46%",
+            "unit": "ops/sec",
+            "extra": "16 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 2.34,
+            "range": "±2.05%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
           }
         ]
       }
