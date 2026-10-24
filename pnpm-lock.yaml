@@ -1299,6 +1299,9 @@ importers:
       '@secretlint/secretlint-rule-stripe':
         specifier: workspace:*
         version: link:../secretlint-rule-stripe
+      '@secretlint/secretlint-rule-supabase':
+        specifier: workspace:*
+        version: link:../secretlint-rule-supabase
       '@secretlint/secretlint-rule-tailscale':
         specifier: workspace:*
         version: link:../secretlint-rule-tailscale
@@ -1594,6 +1597,31 @@ importers:
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-stripe:
+    dependencies:
+      '@secretlint/types':
+        specifier: workspace:*
+        version: link:../types
+      '@textlint/regexp-string-matcher':
+        specifier: 'catalog:'
+        version: 2.0.2
+    devDependencies:
+      '@secretlint/tester':
+        specifier: workspace:*
+        version: link:../tester
+      '@types/node':
+        specifier: 'catalog:'
+        version: 25.9.9
+      prettier:
+        specifier: 'catalog:'
+        version: 3.8.3
+      tsx:
+        specifier: 'catalog:'
+        version: 4.23.15
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+
+  packages/@secretlint/secretlint-rule-supabase:
     dependencies:
       '@secretlint/types':
         specifier: workspace:*
