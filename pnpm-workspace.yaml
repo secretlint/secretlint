@@ -7,7 +7,7 @@ packages:
 catalog:
   "@rollup/plugin-commonjs": "^29.0.3"
   "@rollup/plugin-node-resolve": "^16.0.3"
-  "@rollup/plugin-typescript": "^12.3.0"
+  "@rollup/plugin-typescript": "^12.3.1"
   "@textlint/linter-formatter": "^15.7.0"
   "@textlint/module-interop": "^15.7.0"
   "@textlint/regexp-string-matcher": "^2.0.2"
