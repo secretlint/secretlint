@@ -399,6 +399,7 @@ Secretlint rules has been implemented as separated modules.
 - [@secretlint/secretlint-rule-figma](./packages/%40secretlint/secretlint-rule-figma)
 - [@secretlint/secretlint-rule-cloudflare](./packages/%40secretlint/secretlint-rule-cloudflare)
 - [@secretlint/secretlint-rule-tailscale](./packages/%40secretlint/secretlint-rule-tailscale)
+- [@secretlint/secretlint-rule-telegram](./packages/%40secretlint/secretlint-rule-telegram)
 - [@secretlint/secretlint-rule-huggingface](./packages/%40secretlint/secretlint-rule-huggingface)
 - [@secretlint/secretlint-rule-notion](./packages/%40secretlint/secretlint-rule-notion)
 - [@secretlint/secretlint-rule-secp256k1-privatekey](./packages/@secretlint/secretlint-rule-secp256k1-privatekey)
