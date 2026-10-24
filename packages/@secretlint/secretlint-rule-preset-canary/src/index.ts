@@ -28,6 +28,8 @@ import { creator as ruleCloudflare } from "@secretlint/secretlint-rule-cloudflar
 import { creator as ruleTailscale } from "@secretlint/secretlint-rule-tailscale";
 import { creator as ruleFilterComments } from "@secretlint/secretlint-rule-filter-comments";
 
+import { creator as rulePostman } from "@secretlint/secretlint-rule-postman";
+
 export const rules = [
     ruleAWS,
     ruleGCP,
@@ -56,6 +58,7 @@ export const rules = [
     ruleFigma,
     ruleCloudflare,
     ruleTailscale,
+    rulePostman,
     ruleFilterComments,
 ];
 export type Options = {};

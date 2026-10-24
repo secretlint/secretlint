@@ -1,0 +1,59 @@
+{
+    "filePath": "[SNAPSHOT]/ng.delimiters/input.txt",
+    "messages": [
+        {
+            "message": "found Postman API key: PMAK-000000000000000000000000-0000000000000000000000000000000000",
+            "range": [
+                4,
+                68
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-postman",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 4
+                },
+                "end": {
+                    "line": 1,
+                    "column": 68
+                }
+            },
+            "severity": "error",
+            "messageId": "POSTMAN_API_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-postman/README.md#POSTMAN_API_KEY",
+            "data": {
+                "ID": "PMAK-000000000000000000000000-0000000000000000000000000000000000"
+            }
+        },
+        {
+            "message": "found Postman API key: PMAK-000000000000000000000000-0000000000000000000000000000000000",
+            "range": [
+                74,
+                138
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-postman",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 4
+                },
+                "end": {
+                    "line": 2,
+                    "column": 68
+                }
+            },
+            "severity": "error",
+            "messageId": "POSTMAN_API_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-postman/README.md#POSTMAN_API_KEY",
+            "data": {
+                "ID": "PMAK-000000000000000000000000-0000000000000000000000000000000000"
+            }
+        }
+    ],
+    "sourceContent": "key=PMAK-000000000000000000000000-0000000000000000000000000000000000,\nkey=PMAK-000000000000000000000000-0000000000000000000000000000000000;\n",
+    "sourceContentType": "text"
+}

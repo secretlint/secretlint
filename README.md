@@ -391,6 +391,7 @@ Secretlint rules has been implemented as separated modules.
 - [@secretlint/secretlint-rule-linear](./packages/%40secretlint/secretlint-rule-linear)
 - [@secretlint/secretlint-rule-1password](./packages/%40secretlint/secretlint-rule-1password)
 - [@secretlint/secretlint-rule-database-connection-string](./packages/%40secretlint/secretlint-rule-database-connection-string)
+- [@secretlint/secretlint-rule-postman](./packages/%40secretlint/secretlint-rule-postman)
 - [@secretlint/secretlint-rule-databricks](./packages/%40secretlint/secretlint-rule-databricks)
 - [@secretlint/secretlint-rule-hashicorp-vault](./packages/%40secretlint/secretlint-rule-hashicorp-vault)
 - [@secretlint/secretlint-rule-vercel](./packages/%40secretlint/secretlint-rule-vercel)
