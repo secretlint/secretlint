@@ -20,6 +20,10 @@ export type Options = {
      * See https://github.com/textlint/regexp-string-matcher#regexp-like-string
      **/
     allows?: string[];
+    /**
+     * Validate CRC32 checksums for classic Base62 tokens. Disabled by default.
+     */
+    checkChecksum?: boolean;
 };
 
 type GITHUB_TOKEN_TYPE = "ghp" | "gho" | "ghu" | "ghs" | "ghr" | "github_pat";
@@ -38,11 +42,26 @@ const typeMap = new Map<GITHUB_TOKEN_TYPE, string>([
     ["github_pat", "fine-grained personal access tokens"],
 ]);
 
-// FIXME: GitHub Token implement CRC-32 checksum
-// We need to check it
-// https://github.blog/2021-04-05-behind-githubs-new-authentication-token-formats/
-const validChecksum = (_token: string): boolean => {
-    return true;
+const BASE62_ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+const validChecksum = (token: string): boolean => {
+    const match = /^gh[pousr]_([A-Za-z0-9]{30})([A-Za-z0-9]{6})$/.exec(token);
+    if (!match) {
+        return true;
+    }
+    const [, entropy, encodedChecksum] = match;
+    let crc = 0xffffffff;
+    for (const character of entropy) {
+        crc ^= character.charCodeAt(0);
+        for (let bit = 0; bit < 8; bit++) {
+            crc = crc & 1 ? (crc >>> 1) ^ 0xedb88320 : crc >>> 1;
+        }
+    }
+    let checksum = 0;
+    for (const character of encodedChecksum) {
+        checksum = checksum * 62 + BASE62_ALPHABET.indexOf(character);
+    }
+    return (crc ^ 0xffffffff) >>> 0 === checksum;
 };
 
 function reportIfFoundKey({
@@ -67,7 +86,7 @@ function reportIfFoundKey({
             throw new Error("Unknown type:" + typeName);
         }
         const match = result[0] || "";
-        if (!validChecksum(match)) {
+        if (options.checkChecksum && !validChecksum(match)) {
             continue;
         }
         const range = [index, index + match.length] as const;
@@ -116,6 +135,7 @@ export const creator: SecretLintRuleCreator<Options> = {
         const t = context.createTranslator(messages);
         const normalizedOptions = {
             allows: options.allows || [],
+            checkChecksum: options.checkChecksum ?? false,
         };
         return {
             file(source: SecretLintSourceCode) {
