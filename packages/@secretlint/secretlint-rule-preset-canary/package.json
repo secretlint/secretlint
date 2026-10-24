@@ -82,6 +82,7 @@
         "@secretlint/secretlint-rule-npm": "workspace:*",
         "@secretlint/secretlint-rule-openai": "workspace:*",
         "@secretlint/secretlint-rule-privatekey": "workspace:*",
+        "@secretlint/secretlint-rule-rubygems": "workspace:*",
         "@secretlint/secretlint-rule-sendgrid": "workspace:*",
         "@secretlint/secretlint-rule-shopify": "workspace:*",
         "@secretlint/secretlint-rule-slack": "workspace:*",

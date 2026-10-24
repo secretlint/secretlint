@@ -1,0 +1,32 @@
+{
+    "filePath": "[SNAPSHOT]/ng.credentials/input.txt",
+    "messages": [
+        {
+            "message": "found RubyGems API token: rubygems_000000000000000000000000000000000000000000000000",
+            "range": [
+                19,
+                76
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-rubygems",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 19
+                },
+                "end": {
+                    "line": 1,
+                    "column": 76
+                }
+            },
+            "severity": "error",
+            "messageId": "RUBYGEMS_API_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-rubygems/README.md#RUBYGEMS_API_TOKEN",
+            "data": {
+                "TOKEN": "rubygems_000000000000000000000000000000000000000000000000"
+            }
+        }
+    ],
+    "sourceContent": ":rubygems_api_key: rubygems_000000000000000000000000000000000000000000000000\n",
+    "sourceContentType": "text"
+}
