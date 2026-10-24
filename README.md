@@ -386,6 +386,7 @@ Secretlint rules has been implemented as separated modules.
 - [@secretlint/secretlint-rule-stripe](./packages/%40secretlint/secretlint-rule-stripe)
 - [@secretlint/secretlint-rule-openai](./packages/%40secretlint/secretlint-rule-openai)
 - [@secretlint/secretlint-rule-anthropic](./packages/%40secretlint/secretlint-rule-anthropic)
+- [@secretlint/secretlint-rule-sentry](./packages/%40secretlint/secretlint-rule-sentry)
 - [@secretlint/secretlint-rule-grafana](./packages/%40secretlint/secretlint-rule-grafana)
 - [@secretlint/secretlint-rule-groq](./packages/%40secretlint/secretlint-rule-groq)
 - [@secretlint/secretlint-rule-linear](./packages/%40secretlint/secretlint-rule-linear)
