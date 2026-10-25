@@ -1,0 +1,59 @@
+{
+    "filePath": "[SNAPSHOT]/ng.token/input.txt",
+    "messages": [
+        {
+            "message": "found PyPI API token: pypi-AgEIcHlwaS5vcmcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "range": [
+                56,
+                156
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-pypi",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 11
+                },
+                "end": {
+                    "line": 2,
+                    "column": 111
+                }
+            },
+            "severity": "error",
+            "messageId": "PYPI_API_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-pypi/README.md#PYPI_API_TOKEN",
+            "data": {
+                "ID": "pypi-AgEIcHlwaS5vcmcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            }
+        },
+        {
+            "message": "found PyPI API token: pypi-AgEIcHlwaS5vcmcBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+            "range": [
+                169,
+                269
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-pypi",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 3,
+                    "column": 12
+                },
+                "end": {
+                    "line": 3,
+                    "column": 112
+                }
+            },
+            "severity": "error",
+            "messageId": "PYPI_API_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-pypi/README.md#PYPI_API_TOKEN",
+            "data": {
+                "ID": "pypi-AgEIcHlwaS5vcmcBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
+            }
+        }
+    ],
+    "sourceContent": "Synthetic test values, never issued by PyPI.\nPYPI_TOKEN=pypi-AgEIcHlwaS5vcmcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\npassword = \"pypi-AgEIcHlwaS5vcmcBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB\"\n",
+    "sourceContentType": "text"
+}

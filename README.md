@@ -374,6 +374,7 @@ $ secretlint .zsh_history --format=mask-result --output=.zsh_history
 Secretlint rules has been implemented as separated modules.
 
 - [@secretlint/secretlint-rule-npm](./packages/@secretlint/secretlint-rule-npm)
+- [@secretlint/secretlint-rule-pypi](./packages/@secretlint/secretlint-rule-pypi)
 - [@secretlint/secretlint-rule-aws](./packages/@secretlint/secretlint-rule-aws)
 - [@secretlint/secretlint-rule-gcp](./packages/@secretlint/secretlint-rule-gcp)
 - [@secretlint/secretlint-rule-github](./packages/@secretlint/secretlint-rule-github)
