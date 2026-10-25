@@ -1,0 +1,3 @@
+https://discord.com/developers/applications
+Discord Bot TOKEN=example
+eyJhbGciOiJIUzI1NiJ9.AAAAAA.AAAAAAAAAAAAAAAAAAAAAAAAAAA
