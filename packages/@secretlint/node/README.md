@@ -15,23 +15,34 @@ Install with [npm](https://www.npmjs.com/):
 
 ## Usage
 
+Install the rules you want to use and create a `.secretlintrc.json` in the working directory. For example:
+
+```sh
+npm install @secretlint/secretlint-rule-preset-recommend
+```
+
+```json
+{
+    "rules": [{ "id": "@secretlint/secretlint-rule-preset-recommend" }]
+}
+```
+
+Save the following as `lint.mjs` and run `node lint.mjs path/to/file.txt`:
+
 ```js
 import { createEngine } from "@secretlint/node";
-(async () => {
-    const engine = await createEngine({
-        color: false,
-        cwd: path.join(__dirname, "fixtures/valid-config"),
-        formatter: "stylish"
-    });
-    const output = await engine.executeOnFiles({ filePathList: [path.join(__dirname, "fixtures/SECRET.txt")] });
-    console.log(output); /*
-[TEST_DIR]/fixtures/SECRET.txt
-1:8  warning  found secret: SECRET  example
 
-✖ 1 problem (0 errors, 1 warning)
-*/
-})();
+const engine = await createEngine({
+    color: false,
+    cwd: process.cwd(),
+    formatter: "stylish"
+});
+const result = await engine.executeOnFiles({ filePathList: process.argv.slice(2) });
+console.log(result.output);
+process.exitCode = result.ok ? 0 : 1;
 ```
+
+`executeOnFiles` returns an object with the formatted `output` string and an `ok` flag. `ok` is `false` if any file has a lint message. Configuration and file-reading errors reject the promise.
 
 ## Changelog
 
