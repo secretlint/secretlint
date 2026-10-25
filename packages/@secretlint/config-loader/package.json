@@ -27,7 +27,8 @@
             },
             "default": "./module/index.js"
         },
-        "./package.json": "./package.json"
+        "./package.json": "./package.json",
+        "./schema.json": "./schema.json"
     },
     "main": "./module/index.js",
     "types": "./module/index.d.ts",
@@ -38,18 +39,20 @@
     "files": [
         "bin/",
         "module/",
-        "src/"
+        "src/",
+        "schema.json"
     ],
     "scripts": {
         "build": "tsc --build",
         "clean": "tsc --build --clean",
-        "create-validation": "create-validator-ts src/descriptor-types.ts --additionalProperties",
+        "create-validation": "create-validator-ts src/descriptor-types.ts --additionalProperties && npm run create-schema",
         "prepublishOnly": "npm run clean && npm run build",
         "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
         "prepublish": "npm run --if-present build",
         "test": "vitest run",
         "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
-        "watch": "tsc --build --watch"
+        "watch": "tsc --build --watch",
+        "create-schema": "node --import tsx scripts/create-schema.ts"
     },
     "prettier": {
         "printWidth": 120,

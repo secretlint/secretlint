@@ -28,6 +28,25 @@ Each rule has common configuration patterns:
 - `allowMessageIds`: `allowMessageIds` is an array of message id that you want to suppress error report
     - message id is defined in each rule and please see the rule documentation
 
+### Editor support with JSON Schema
+
+Add `$schema` to a JSON configuration to enable completion and structural validation in editors that support JSON Schema:
+
+```json
+{
+  "$schema": "https://raw.githubusercontent.com/secretlint/secretlint/master/packages/%40secretlint/config-loader/schema.json",
+  "rules": [
+    {
+      "id": "@secretlint/secretlint-rule-preset-recommend"
+    }
+  ]
+}
+```
+
+The schema is also included in `@secretlint/config-loader` at the `@secretlint/config-loader/schema.json` package export. You can configure your editor to use that local file when the package is installed.
+
+The schema checks the configuration structure and common rule fields. It does not check whether rule packages are installed or validate rule-specific options. See each rule's documentation for its options; missing packages are reported when Secretlint loads the configuration.
+
 ### `options`
 
 For example, `@secretlint/secretlint-rule-example` has `allows` in `options`.

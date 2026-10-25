@@ -179,6 +179,7 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
 Secretlint has a configuration file `.secretlintrc.{json,yml,js}`.
 
 - Document: [Configuring Secretlint](./docs/configuration.md)
+- [JSON Schema for editor completion and validation](./docs/configuration.md#editor-support-with-json-schema)
 
 After running `secretlint --init`, you'll have a `.secretlintrc.json` file in your directory.
 
