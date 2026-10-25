@@ -1806,6 +1806,9 @@ importers:
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
+      ajv:
+        specifier: 'catalog:'
+        version: 8.20.0
       prettier:
         specifier: 'catalog:'
         version: 3.8.3

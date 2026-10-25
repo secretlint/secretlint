@@ -42,6 +42,8 @@ describe("create-secretlintrc", () => {
             }
             assert.match(actual.stdout, /Create .*\.secretlintrc\.json/);
             assert.strictEqual(actual.stderr, null);
+            const config = JSON.parse(await fs.readFile(path.join(tmpConfigDir, ".secretlintrc.json"), "utf-8"));
+            assert.strictEqual(config.$schema, "./node_modules/secretlint/configuration_schema.json");
         });
     });
 

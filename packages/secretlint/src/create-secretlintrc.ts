@@ -27,7 +27,12 @@ export const runConfigCreator = async (
         cwd: options.cwd,
     });
     const configDescriptor = createConfig({ packageJSON: pkg });
-    fs.writeFileSync(configFilePath, JSON.stringify(configDescriptor, null, 2) + "\n", "utf-8");
+    const config = {
+        // editors resolve this path relative to .secretlintrc.json
+        $schema: "./node_modules/secretlint/configuration_schema.json",
+        ...configDescriptor,
+    };
+    fs.writeFileSync(configFilePath, JSON.stringify(config, null, 2) + "\n", "utf-8");
     return {
         exitStatus: 0,
         stdout: `Create ${configFilePath}`,

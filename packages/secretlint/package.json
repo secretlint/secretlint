@@ -32,6 +32,7 @@
             },
             "default": "./module/cli.js"
         },
+        "./configuration_schema.json": "./configuration_schema.json",
         "./package.json": "./package.json"
     },
     "main": "./module/index.js",
@@ -44,7 +45,8 @@
     "files": [
         "bin/",
         "module/",
-        "src/"
+        "src/",
+        "configuration_schema.json"
     ],
     "scripts": {
         "build": "tsc --build",
@@ -77,6 +79,7 @@
         "@secretlint/types": "workspace:*",
         "@types/debug": "catalog:",
         "@types/node": "catalog:",
+        "ajv": "catalog:",
         "prettier": "catalog:",
         "tsx": "catalog:",
         "typescript": "catalog:"

@@ -1,0 +1,97 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Secretlint configuration",
+    "description": "Configuration file for secretlint (.secretlintrc.json). See https://github.com/secretlint/secretlint/blob/master/docs/configuration.md",
+    "type": "object",
+    "properties": {
+        "$schema": {
+            "type": "string",
+            "description": "JSON Schema for this configuration file."
+        },
+        "rules": {
+            "type": "array",
+            "description": "Rules and rule presets to use. Each rule package must be installed.",
+            "items": {
+                "if": {
+                    "type": "object",
+                    "required": ["rules"]
+                },
+                "then": {
+                    "$ref": "#/definitions/rulePreset"
+                },
+                "else": {
+                    "$ref": "#/definitions/rule"
+                }
+            }
+        },
+        "sharedOptions": {
+            "type": "object",
+            "description": "Options shared by all rules. Rules can read them via `context.sharedOptions`."
+        }
+    },
+    "required": ["rules"],
+    "additionalProperties": false,
+    "definitions": {
+        "ruleId": {
+            "type": "string",
+            "minLength": 1
+        },
+        "rule": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "$ref": "#/definitions/ruleId",
+                    "description": "Rule package name or its short name. For example, \"@scope/secretlint-rule-example\" or \"@scope/example\", \"secretlint-rule-example\" or \"example\"."
+                },
+                "options": {
+                    "type": "object",
+                    "description": "Options for the rule. See the rule documentation. Default: {}"
+                },
+                "disabled": {
+                    "type": "boolean",
+                    "description": "If true, disable the rule. Default: false"
+                },
+                "allowMessageIds": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Message ids to suppress. Message ids are defined in each rule."
+                },
+                "severity": {
+                    "type": "string",
+                    "enum": ["info", "warning", "error"],
+                    "description": "Severity level for the rule. Default: \"error\""
+                }
+            },
+            "required": ["id"],
+            "additionalProperties": false
+        },
+        "rulePreset": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "$ref": "#/definitions/ruleId",
+                    "description": "Rule preset package name or its short name. For example, \"@secretlint/secretlint-rule-preset-recommend\" or \"@secretlint/preset-recommend\"."
+                },
+                "options": {
+                    "type": "object",
+                    "description": "Options for the rule preset. See the preset documentation. Default: {}"
+                },
+                "disabled": {
+                    "type": "boolean",
+                    "description": "If true, disable the rule preset. Default: false"
+                },
+                "rules": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/rule"
+                    },
+                    "description": "Configuration for rules in the preset. Each id must be a rule in the preset."
+                }
+            },
+            "required": ["id"],
+            "additionalProperties": false
+        }
+    }
+}
