@@ -42,6 +42,17 @@ const createSnapshotReplacer = () => {
  *   - snapshot result
  */
 describe("cli snapshot testing", () => {
+    it("rejects an empty inline rules array", async () => {
+        await assert.rejects(
+            () =>
+                run([path.join(__dirname, "cli.test.ts")], {
+                    ...cli.flags,
+                    cwd: __dirname,
+                    secretlintrcJSON: JSON.stringify({ rules: [] }),
+                }),
+            /secretlintrc must contain at least one rule or preset in 'rules'/,
+        );
+    });
     it("--version should return version", async () => {
         const actual = await run([], {
             ...cli.flags,

@@ -20,7 +20,7 @@ function invariant(condition: any, message: string): asserts condition {
 }
 
 const isPreset = (
-    value: SecretLintConfigDescriptorRule | SecretLintConfigDescriptorRulePreset
+    value: SecretLintConfigDescriptorRule | SecretLintConfigDescriptorRulePreset,
 ): value is SecretLintCoreConfigRulePreset => {
     return "rules" in value; // TODO: it is loose detection
 };
@@ -29,7 +29,7 @@ const isPreset = (
  * @param configDescriptor
  */
 export const validateConfigDescriptor = (
-    configDescriptor: SecretLintConfigDescriptor
+    configDescriptor: SecretLintConfigDescriptor,
 ): { ok: true } | { ok: false; error: Error | AggregationError } => {
     const errors: Error[] = [];
     if (!Array.isArray(configDescriptor.rules)) {
@@ -45,6 +45,12 @@ export const validateConfigDescriptor = (
     ]
 }
 `),
+        };
+    }
+    if (configDescriptor.rules.length === 0) {
+        return {
+            ok: false,
+            error: new Error("secretlintrc must contain at least one rule or preset in 'rules'."),
         };
     }
     // Validate Descriptor
@@ -133,7 +139,7 @@ validateConfigOption): { ok: true } | { ok: false; error: Error } => {
 Following config is invalid because the preset(${preset.id}) does not have id: "${ruleCreatorOption.id}".
 
 ${JSON.stringify(ruleCreatorOption)}
-`)
+`),
                     );
                 }
             });
@@ -153,7 +159,7 @@ ${JSON.stringify(ruleCreatorOption)}
 Following config is invalid because the rule(${rule.id}) does not have messageId: "${allowMessageId}".
 
 ${JSON.stringify({ allowMessageIds: rule.allowMessageIds })}
-`)
+`),
                         );
                     }
                 });

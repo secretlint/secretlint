@@ -2,6 +2,7 @@ import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import { symlink, mkdir, writeFile, rm, mkdtemp } from "node:fs/promises";
 import path from "node:path";
 import os from "node:os";
+import { fileURLToPath } from "node:url";
 import { searchFiles } from "../src/search.js";
 import { cli, run } from "../src/cli.js";
 
@@ -79,7 +80,18 @@ describe.skipIf(!canSymlink)("searchFiles - symlinks", () => {
             cwd,
             color: false,
             format: "json",
-            secretlintrcJSON: JSON.stringify({ rules: [] }),
+            secretlintrcJSON: JSON.stringify({
+                rules: [
+                    {
+                        id: fileURLToPath(
+                            new URL(
+                                "../../@secretlint/secretlint-rule-preset-recommend/module/index.js",
+                                import.meta.url,
+                            ),
+                        ),
+                    },
+                ],
+            }),
         });
         const report = JSON.parse(result.stdout) as { filePath: string }[];
         expect(relative(report.map((r) => r.filePath))).toEqual(["real/in-real.txt", "top.txt"]);

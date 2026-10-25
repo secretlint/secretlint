@@ -1,0 +1,1 @@
+secretlintrc must contain at least one rule or preset in 'rules'.
