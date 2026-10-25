@@ -3,6 +3,30 @@ import { readdir } from "node:fs/promises";
 import path from "node:path";
 import { createConfig } from "@secretlint/config-creator";
 
+const SCHEMA_PATH_IN_NODE_MODULES = "node_modules/secretlint/configuration_schema.json";
+/**
+ * Editors resolve `$schema` relative to the config file, not via Node's module resolution.
+ * Find the nearest installed schema from cwd so that a workspace root install also works.
+ */
+const findSchemaRelativePath = (cwd: string): string => {
+    let dir = path.resolve(cwd);
+    while (true) {
+        if (fs.existsSync(path.join(dir, SCHEMA_PATH_IN_NODE_MODULES))) {
+            const relativePath = path
+                .relative(path.resolve(cwd), path.join(dir, SCHEMA_PATH_IN_NODE_MODULES))
+                .split(path.sep)
+                .join("/");
+            return relativePath.startsWith(".") ? relativePath : `./${relativePath}`;
+        }
+        const parentDir = path.dirname(dir);
+        if (parentDir === dir) {
+            // not installed yet: point to the default location
+            return `./${SCHEMA_PATH_IN_NODE_MODULES}`;
+        }
+        dir = parentDir;
+    }
+};
+
 export type runConfigCreatorOptions = {
     cwd: string;
 };
@@ -28,8 +52,7 @@ export const runConfigCreator = async (
     });
     const configDescriptor = createConfig({ packageJSON: pkg });
     const config = {
-        // editors resolve this path relative to .secretlintrc.json
-        $schema: "./node_modules/secretlint/configuration_schema.json",
+        $schema: findSchemaRelativePath(options.cwd),
         ...configDescriptor,
     };
     fs.writeFileSync(configFilePath, JSON.stringify(config, null, 2) + "\n", "utf-8");

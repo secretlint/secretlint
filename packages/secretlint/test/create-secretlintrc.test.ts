@@ -47,6 +47,30 @@ describe("create-secretlintrc", () => {
         });
     });
 
+    describe("$schema", () => {
+        const readConfig = async (dir: string) =>
+            JSON.parse(await fs.readFile(path.join(dir, ".secretlintrc.json"), "utf-8"));
+        const installSchema = async (dir: string) => {
+            await fs.mkdir(path.join(dir, "node_modules/secretlint"), { recursive: true });
+            await fs.writeFile(path.join(dir, "node_modules/secretlint/configuration_schema.json"), "{}");
+        };
+        it("points to the local install", async () => {
+            await installSchema(tmpConfigDir);
+            await runConfigCreator({ cwd: tmpConfigDir });
+            const config = await readConfig(tmpConfigDir);
+            assert.strictEqual(config.$schema, "./node_modules/secretlint/configuration_schema.json");
+        });
+        it("points to the workspace root install", async () => {
+            await installSchema(tmpConfigDir);
+            const packageDir = path.join(tmpConfigDir, "packages", "app");
+            await fs.mkdir(packageDir, { recursive: true });
+            await fs.copyFile(path.join(tmpConfigDir, "package.json"), path.join(packageDir, "package.json"));
+            await runConfigCreator({ cwd: packageDir });
+            const config = await readConfig(packageDir);
+            assert.strictEqual(config.$schema, "../../node_modules/secretlint/configuration_schema.json");
+        });
+    });
+
     describe("when .secretlintrc.json is already existed", () => {
         it("should be an error", async () => {
             const actual = await runConfigCreator({ cwd: tmpConfigDir });

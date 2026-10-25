@@ -45,7 +45,7 @@ Add `$schema` to the config file to get completion and validation in editors tha
 ```
 
 The path is relative to the config file, so adjust it if `secretlint` is installed in another `node_modules` directory.
-`secretlint --init` adds `$schema` to the generated `.secretlintrc.json`.
+`secretlint --init` adds `$schema` to the generated `.secretlintrc.json`. It points to the nearest `node_modules/secretlint` from the current directory, so it also works when secretlint is installed in the workspace root.
 
 The schema checks the structure of the config file and the common rule properties.
 It does not check whether each rule package is installed, or the `options` of each rule.
