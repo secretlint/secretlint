@@ -34,6 +34,7 @@ import { createEngine } from "@secretlint/node";
 
 const engine = await createEngine({
     color: false,
+    maskSecrets: true,
     cwd: process.cwd(),
     formatter: "stylish"
 });
@@ -41,6 +42,8 @@ const result = await engine.executeOnFiles({ filePathList: process.argv.slice(2)
 console.log(result.output);
 process.exitCode = result.ok ? 0 : 1;
 ```
+
+`maskSecrets: true` hides detected secret values in lint messages.
 
 `executeOnFiles` returns an object with the formatted `output` string and an `ok` flag. `ok` is `false` if any file has a lint message. Configuration and file-reading errors reject the promise.
 
