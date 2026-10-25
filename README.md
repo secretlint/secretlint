@@ -381,6 +381,7 @@ Secretlint rules has been implemented as separated modules.
 - [@secretlint/secretlint-rule-privatekey](./packages/@secretlint/secretlint-rule-privatekey)
 - [@secretlint/secretlint-rule-basicauth](./packages/@secretlint/secretlint-rule-basicauth)
 - [@secretlint/secretlint-rule-slack](./packages/@secretlint/secretlint-rule-slack)
+- [@secretlint/secretlint-rule-digitalocean](./packages/@secretlint/secretlint-rule-digitalocean)
 - [@secretlint/secretlint-rule-sendgrid](./packages/%40secretlint/secretlint-rule-sendgrid)
 - [@secretlint/secretlint-rule-shopify](./packages/%40secretlint/secretlint-rule-shopify)
 - [@secretlint/secretlint-rule-stripe](./packages/%40secretlint/secretlint-rule-stripe)

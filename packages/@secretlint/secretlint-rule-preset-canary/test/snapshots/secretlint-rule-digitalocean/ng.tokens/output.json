@@ -1,0 +1,85 @@
+{
+    "filePath": "[SNAPSHOT]/ng.tokens/input.txt",
+    "messages": [
+        {
+            "message": "found DigitalOcean personal access token: dop_v1_0000000000000000000000000000000000000000000000000000000000000000",
+            "range": [
+                53,
+                124
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-digitalocean",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 0
+                },
+                "end": {
+                    "line": 2,
+                    "column": 71
+                }
+            },
+            "severity": "error",
+            "messageId": "DIGITALOCEAN_PAT",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-digitalocean/README.md#DIGITALOCEAN_PAT",
+            "data": {
+                "ID": "dop_v1_0000000000000000000000000000000000000000000000000000000000000000"
+            }
+        },
+        {
+            "message": "found DigitalOcean OAuth access token: doo_v1_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "range": [
+                125,
+                196
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-digitalocean",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 3,
+                    "column": 0
+                },
+                "end": {
+                    "line": 3,
+                    "column": 71
+                }
+            },
+            "severity": "error",
+            "messageId": "DIGITALOCEAN_OAUTH_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-digitalocean/README.md#DIGITALOCEAN_OAUTH_TOKEN",
+            "data": {
+                "ID": "doo_v1_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            }
+        },
+        {
+            "message": "found DigitalOcean OAuth refresh token: dor_v1_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "range": [
+                197,
+                268
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-digitalocean",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 4,
+                    "column": 0
+                },
+                "end": {
+                    "line": 4,
+                    "column": 71
+                }
+            },
+            "severity": "error",
+            "messageId": "DIGITALOCEAN_OAUTH_REFRESH_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-digitalocean/README.md#DIGITALOCEAN_OAUTH_REFRESH_TOKEN",
+            "data": {
+                "ID": "dor_v1_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+            }
+        }
+    ],
+    "sourceContent": "Synthetic test values, never issued by DigitalOcean.\ndop_v1_0000000000000000000000000000000000000000000000000000000000000000\ndoo_v1_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\ndor_v1_bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n",
+    "sourceContentType": "text"
+}
