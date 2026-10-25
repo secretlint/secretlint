@@ -1,0 +1,107 @@
+{
+    "filePath": "[SNAPSHOT]/ng.service-environments/input.txt",
+    "messages": [
+        {
+            "message": "found doppler service token: dp.st.de.0000000000000000000000000000000000000000000",
+            "range": [
+                0,
+                52
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-doppler",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 52
+                }
+            },
+            "severity": "error",
+            "messageId": "DOPPLER_SERVICE_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-doppler/README.md#DOPPLER_SERVICE_TOKEN",
+            "data": {
+                "ID": "dp.st.de.0000000000000000000000000000000000000000000"
+            }
+        },
+        {
+            "message": "found doppler service token: dp.st.dev.0000000000000000000000000000000000000000000",
+            "range": [
+                53,
+                106
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-doppler",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 0
+                },
+                "end": {
+                    "line": 2,
+                    "column": 53
+                }
+            },
+            "severity": "error",
+            "messageId": "DOPPLER_SERVICE_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-doppler/README.md#DOPPLER_SERVICE_TOKEN",
+            "data": {
+                "ID": "dp.st.dev.0000000000000000000000000000000000000000000"
+            }
+        },
+        {
+            "message": "found doppler service token: dp.st.pr-123_test.0000000000000000000000000000000000000000000",
+            "range": [
+                107,
+                168
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-doppler",
+            "loc": {
+                "start": {
+                    "line": 3,
+                    "column": 0
+                },
+                "end": {
+                    "line": 3,
+                    "column": 61
+                }
+            },
+            "severity": "error",
+            "messageId": "DOPPLER_SERVICE_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-doppler/README.md#DOPPLER_SERVICE_TOKEN",
+            "data": {
+                "ID": "dp.st.pr-123_test.0000000000000000000000000000000000000000000"
+            }
+        },
+        {
+            "message": "found doppler service token: dp.st.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.0000000000000000000000000000000000000000000",
+            "range": [
+                169,
+                254
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-doppler",
+            "loc": {
+                "start": {
+                    "line": 4,
+                    "column": 0
+                },
+                "end": {
+                    "line": 4,
+                    "column": 85
+                }
+            },
+            "severity": "error",
+            "messageId": "DOPPLER_SERVICE_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-doppler/README.md#DOPPLER_SERVICE_TOKEN",
+            "data": {
+                "ID": "dp.st.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.0000000000000000000000000000000000000000000"
+            }
+        }
+    ],
+    "sourceContent": "dp.st.de.0000000000000000000000000000000000000000000\ndp.st.dev.0000000000000000000000000000000000000000000\ndp.st.pr-123_test.0000000000000000000000000000000000000000000\ndp.st.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.0000000000000000000000000000000000000000000\n",
+    "sourceContentType": "text"
+}

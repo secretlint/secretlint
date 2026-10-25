@@ -1,0 +1,182 @@
+{
+    "filePath": "[SNAPSHOT]/ng.token-types/input.txt",
+    "messages": [
+        {
+            "message": "found doppler personal token: dp.pt.0000000000000000000000000000000000000000000",
+            "range": [
+                0,
+                49
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-doppler",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 49
+                }
+            },
+            "severity": "error",
+            "messageId": "DOPPLER_PERSONAL_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-doppler/README.md#DOPPLER_PERSONAL_TOKEN",
+            "data": {
+                "ID": "dp.pt.0000000000000000000000000000000000000000000"
+            }
+        },
+        {
+            "message": "found doppler service token: dp.st.0000000000000000000000000000000000000000000",
+            "range": [
+                50,
+                99
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-doppler",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 0
+                },
+                "end": {
+                    "line": 2,
+                    "column": 49
+                }
+            },
+            "severity": "error",
+            "messageId": "DOPPLER_SERVICE_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-doppler/README.md#DOPPLER_SERVICE_TOKEN",
+            "data": {
+                "ID": "dp.st.0000000000000000000000000000000000000000000"
+            }
+        },
+        {
+            "message": "found doppler service account token: dp.sa.0000000000000000000000000000000000000000000",
+            "range": [
+                100,
+                149
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-doppler",
+            "loc": {
+                "start": {
+                    "line": 3,
+                    "column": 0
+                },
+                "end": {
+                    "line": 3,
+                    "column": 49
+                }
+            },
+            "severity": "error",
+            "messageId": "DOPPLER_SERVICE_ACCOUNT_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-doppler/README.md#DOPPLER_SERVICE_ACCOUNT_TOKEN",
+            "data": {
+                "ID": "dp.sa.0000000000000000000000000000000000000000000"
+            }
+        },
+        {
+            "message": "found doppler CLI token: dp.ct.0000000000000000000000000000000000000000000",
+            "range": [
+                150,
+                199
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-doppler",
+            "loc": {
+                "start": {
+                    "line": 4,
+                    "column": 0
+                },
+                "end": {
+                    "line": 4,
+                    "column": 49
+                }
+            },
+            "severity": "error",
+            "messageId": "DOPPLER_CLI_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-doppler/README.md#DOPPLER_CLI_TOKEN",
+            "data": {
+                "ID": "dp.ct.0000000000000000000000000000000000000000000"
+            }
+        },
+        {
+            "message": "found doppler service account identity token: dp.said.0000000000000000000000000000000000000000000",
+            "range": [
+                200,
+                251
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-doppler",
+            "loc": {
+                "start": {
+                    "line": 5,
+                    "column": 0
+                },
+                "end": {
+                    "line": 5,
+                    "column": 51
+                }
+            },
+            "severity": "error",
+            "messageId": "DOPPLER_SERVICE_ACCOUNT_IDENTITY_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-doppler/README.md#DOPPLER_SERVICE_ACCOUNT_IDENTITY_TOKEN",
+            "data": {
+                "ID": "dp.said.0000000000000000000000000000000000000000000"
+            }
+        },
+        {
+            "message": "found doppler SCIM token: dp.scim.0000000000000000000000000000000000000000000",
+            "range": [
+                252,
+                303
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-doppler",
+            "loc": {
+                "start": {
+                    "line": 6,
+                    "column": 0
+                },
+                "end": {
+                    "line": 6,
+                    "column": 51
+                }
+            },
+            "severity": "error",
+            "messageId": "DOPPLER_SCIM_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-doppler/README.md#DOPPLER_SCIM_TOKEN",
+            "data": {
+                "ID": "dp.scim.0000000000000000000000000000000000000000000"
+            }
+        },
+        {
+            "message": "found doppler audit token: dp.audit.0000000000000000000000000000000000000000000",
+            "range": [
+                304,
+                356
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-doppler",
+            "loc": {
+                "start": {
+                    "line": 7,
+                    "column": 0
+                },
+                "end": {
+                    "line": 7,
+                    "column": 52
+                }
+            },
+            "severity": "error",
+            "messageId": "DOPPLER_AUDIT_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-doppler/README.md#DOPPLER_AUDIT_TOKEN",
+            "data": {
+                "ID": "dp.audit.0000000000000000000000000000000000000000000"
+            }
+        }
+    ],
+    "sourceContent": "dp.pt.0000000000000000000000000000000000000000000\ndp.st.0000000000000000000000000000000000000000000\ndp.sa.0000000000000000000000000000000000000000000\ndp.ct.0000000000000000000000000000000000000000000\ndp.said.0000000000000000000000000000000000000000000\ndp.scim.0000000000000000000000000000000000000000000\ndp.audit.0000000000000000000000000000000000000000000\n",
+    "sourceContentType": "text"
+}
