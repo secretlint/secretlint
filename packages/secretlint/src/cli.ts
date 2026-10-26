@@ -240,6 +240,7 @@ const readCliOptions = async ({ input = cli.input, flags = cli.flags }): Promise
 export const run = async (
     input = cli.input,
     flags = cli.flags,
+    secretlintVersion?: string,
 ): Promise<{ exitStatus: number; stdout: string | null; stderr: Error | null }> => {
     if (flags.help) {
         return {
@@ -288,6 +289,7 @@ export const run = async (
                   configFileJSON: JSON.parse(flags.secretlintrcJSON),
                   cwd: cwd,
                   formatter: flags.format,
+                  secretlintVersion,
                   color: flags.color,
                   terminalLink: flags.terminalLink,
                   locale: flags.locale,
@@ -297,6 +299,7 @@ export const run = async (
                   configFilePath: flags.secretlintrc,
                   cwd: cwd,
                   formatter: flags.format,
+                  secretlintVersion,
                   color: flags.color,
                   terminalLink: flags.terminalLink,
                   locale: flags.locale,
