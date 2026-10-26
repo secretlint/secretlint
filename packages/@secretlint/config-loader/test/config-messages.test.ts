@@ -6,7 +6,7 @@ describe("getConfigMessages", () => {
         const messages = getConfigMessages({ rules: [] });
         assert.deepStrictEqual(
             messages.map((message) => [message.messageId, message.severity]),
-            [["NO_RULES", "warning"]],
+            [["EMPTY_RULES", "warning"]],
         );
     });
     it("should not report when rules are configured", () => {

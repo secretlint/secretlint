@@ -104,7 +104,8 @@ const createConfigResult = ({
         messages: messages.map((message) => {
             return {
                 type: "message",
-                ruleId: "@secretlint/config-loader",
+                // config messages are documented in the secretlint package README
+                ruleId: "secretlint",
                 messageId: message.messageId,
                 message: message.message,
                 docsUrl: message.docsUrl,
