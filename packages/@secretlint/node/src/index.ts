@@ -1,5 +1,5 @@
 import { lintSource } from "@secretlint/core";
-import { loadConfig, loadPackagesFromConfigDescriptor, SecretLintConfigWarning } from "@secretlint/config-loader";
+import { loadConfig, loadPackagesFromConfigDescriptor, SecretLintConfigMessage } from "@secretlint/config-loader";
 import { createRawSource } from "@secretlint/source-creator";
 import { loadFormatter } from "@secretlint/formatter";
 import {
@@ -88,31 +88,31 @@ const lintFile = async ({
 };
 
 /**
- * Report config problems as warning messages for the config file, like lint results.
+ * Report config problems as messages for the config file, like lint results.
  */
-const createConfigWarningResult = ({
+const createConfigResult = ({
     configFilePath,
-    warnings,
+    messages,
 }: {
     configFilePath: string;
-    warnings: SecretLintConfigWarning[];
+    messages: SecretLintConfigMessage[];
 }): SecretLintCoreResult => {
     return {
         filePath: configFilePath,
         sourceContent: undefined,
         sourceContentType: "text",
-        messages: warnings.map((warning) => {
+        messages: messages.map((message) => {
             return {
                 type: "message",
                 ruleId: "@secretlint/config-loader",
-                messageId: warning.messageId,
-                message: warning.message,
+                messageId: message.messageId,
+                message: message.message,
                 range: [0, 0],
                 loc: {
                     start: { line: 1, column: 0 },
                     end: { line: 1, column: 0 },
                 },
-                severity: "warning",
+                severity: message.severity,
             };
         }),
     };
@@ -234,7 +234,7 @@ export const createEngine = async (engineOptions: SecretLintEngineOptions) => {
             const result = await loadPackagesFromConfigDescriptor({
                 configDescriptor: options.configFileJSON,
             });
-            // config JSON has no file path to report warnings for
+            // config JSON has no file path to report messages for
             return { ...result, configFilePath: undefined };
         }
         const loadConfigResult = await loadConfig({
@@ -254,12 +254,12 @@ export const createEngine = async (engineOptions: SecretLintEngineOptions) => {
     // mask-result outputs the content of the linted file, so config results can not be mixed into it
     const configResults =
         loadedResult.configFilePath !== undefined &&
-        loadedResult.warnings.length > 0 &&
+        loadedResult.messages.length > 0 &&
         options.formatter !== "mask-result"
             ? [
-                  createConfigWarningResult({
+                  createConfigResult({
                       configFilePath: loadedResult.configFilePath,
-                      warnings: loadedResult.warnings,
+                      messages: loadedResult.messages,
                   }),
               ]
             : [];
