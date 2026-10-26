@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1792974396161,
+  "lastUpdate": 1792975254991,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -60724,6 +60724,44 @@ window.BENCHMARK_DATA = {
             "range": "±1.15%",
             "unit": "ops/sec",
             "extra": "11 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "f6c4f5de7f89744d32baa33ff6028ae977d22cd9",
+          "message": "feat(config-loader): report config problems as warning messages (#1764)\n\n<!-- claude-projects-attribution: {\"github_login\":\"azu\"} -->\n_Requested by **azu** · [project\nthread](https://claude.ai/code/project/chan_01ChfsKF1sN6vYsJMPZ7PuDt?thread=cmsg_01ChfsKF1sN6vYsJMPZ7PuDt8NzF1UWwMk5Rihu79hAynA)_\n\nFixes #1688\n\nBuilds on #1765: only `error` severity messages fail the lint, so a\nconfig warning keeps exit status `0`.\n\n## What\n\nConfig problems are reported like lint results: a message for the config\nfile path. Like ESLint's \"File ignored because no matching configuration\nwas supplied\", they show up in every formatter (stylish, json, sarif,\n...), and are tested with the CLI e2e snapshots.\n\nThe first (and only) one is a `warning` for an empty `rules` array:\n\n```\n/path/to/.secretlintrc.json\n  1:0  warning  [EMPTY_RULES] No rules are configured. secretlint does not detect any secrets. Add rules to \"rules\" in the config file  secretlint\n```\n\n`rules: []` is still a valid config and the exit status stays `0`.\n\n## Design\n\n- `@secretlint/config-loader`: new `getConfigMessages(configDescriptor)`\n(`src/config-messages.ts`). `loadConfig()` and\n`loadPackagesFromConfigDescriptor()` return `messages:\nSecretLintConfigMessage[]` (`{ messageId, message, severity, docsUrl\n}`). A config error can be added later without a new field.\n- `@secretlint/node`: `createEngine()` turns the messages into a\n`SecretLintCoreResult` for the config file (`ruleId: \"secretlint\"`, each\nmessage's `severity` and `docsUrl`, position 1:0, no `sourceContent`)\nand passes it to the formatter before the linted files. It prints\nnothing by itself.\n- Docs: `packages/secretlint/README.md` has a `MessageIDs` section, and\n`docsUrl` links to `#EMPTY_RULES`, the same way rule messages link to\ntheir README.\n- Not reported when:\n- `--secretlintrcJSON` is used, because there is no config file path to\nreport on.\n- `--format=mask-result` is used, because that formatter outputs the\ncontent of the linted file.\n\n## Tests\n\n- New CLI e2e snapshot `packages/secretlint/test/snapshots/empty-rules`.\n- `packages/@secretlint/config-loader/test/config-messages.test.ts`.\n- The snapshot replacer normalizes `\\` in `[SNAPSHOT]` paths, because\nthe config file path is a native path on Windows.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nhttps://claude.ai/code/session_01EUKb3RS4xYy2nN2pDfp4kZ\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-10-26T09:39:20+09:00",
+          "tree_id": "fef4ff12369ad870eca03c9088c88f2cb4d2d25b",
+          "url": "https://github.com/secretlint/secretlint/commit/f6c4f5de7f89744d32baa33ff6028ae977d22cd9"
+        },
+        "date": 1792975250627,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.98,
+            "range": "±0.99%",
+            "unit": "ops/sec",
+            "extra": "12 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 1.56,
+            "range": "±0.50%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
           }
         ]
       }
