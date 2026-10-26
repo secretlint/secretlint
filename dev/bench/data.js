@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1792975843845,
+  "lastUpdate": 1792991163274,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -60836,6 +60836,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 1.57,
             "range": "±0.75%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "75811924+awais-ur-rehman@users.noreply.github.com",
+            "name": "Awais Ur Rehman",
+            "username": "awais-ur-rehman"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "de319f6cc47221e05fef29b9cd97f3d33b92ef37",
+          "message": "docs(api): fix config loading and linting examples (#1761)\n\n## Summary\n\nThe config-loader example has invalid import syntax and describes a\nsynchronous API with error results, although the current API returns\npromises and rejects on errors. Update its API notes and example, and\nreplace the Node client's undefined fixture paths and object logging\nwith a runnable ES module that prints formatted lint output, explicitly\nmasks detected secret values in messages, and sets an exit status.\n\n## Breaking changes\n\nNone.\n\n## Testing\n\n- `pnpm run ci` — 109 tasks passed.\n- `pnpm --filter @secretlint/config-loader test` — 17 tests passed.\n- `pnpm --filter @secretlint/node test` — 5 tests passed.\n- Extracted the JavaScript blocks from both updated READMEs and executed\nthem against the built packages. Checked loader success, missing\nconfiguration, and missing rule modules; checked the Node example with\nthe documented preset configuration, clean input, and the existing\nprivate-key fixture.\n- Installed `@secretlint/node@13.0.7` and the recommended preset in a\nfresh npm project, then executed the exact documented code and\nconfiguration. Checked clean input, missing files, lint output, exit\nstatuses, and absence of the private-key fixture body in messages;\nrepeated these checks against the current source build.\n- To check the Node example manually, install the package and preset,\nsave the documented configuration and `lint.mjs`, then run `node\nlint.mjs path/to/file.txt`. Clean input should exit 0; input with a lint\nmessage should print formatted output and exit 1.\n- `git diff --check` and a Secretlint scan of both changed READMEs\npassed.",
+          "timestamp": "2026-10-26T14:04:34+09:00",
+          "tree_id": "d1619c6519318c83f2db22a39b44b97e781d212c",
+          "url": "https://github.com/secretlint/secretlint/commit/de319f6cc47221e05fef29b9cd97f3d33b92ef37"
+        },
+        "date": 1792991160037,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.99,
+            "range": "±0.90%",
+            "unit": "ops/sec",
+            "extra": "12 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 1.55,
+            "range": "±1.01%",
             "unit": "ops/sec",
             "extra": "8 samples"
           }
