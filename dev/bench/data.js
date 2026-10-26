@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1792975254991,
+  "lastUpdate": 1792975524622,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -60760,6 +60760,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 1.56,
             "range": "±0.50%",
+            "unit": "ops/sec",
+            "extra": "8 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "41898282+github-actions[bot]@users.noreply.github.com",
+            "name": "github-actions[bot]",
+            "username": "github-actions[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "49dcc4146297133137f193d4d3c2827a9d075016",
+          "message": "v13.1.0 (#1766)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat master -->\n\n## What's Changed\n### Security Fixes\n* fix(formatter): strip terminal control characters from file paths and\nmessages by @azu in https://github.com/secretlint/secretlint/pull/1735\n* fix(gcp): lower PKCS#12 MAC iteration cap and hash with node:crypto by\n@azu in https://github.com/secretlint/secretlint/pull/1728\n### Features\n* feat(config-loader): report config problems as warning messages by\n@azu in https://github.com/secretlint/secretlint/pull/1764\n### Bug Fixes\n* fix(rules): respect allows option in openai, anthropic, linear,\nsecp256k1-privatekey, and gcp by @azu in\nhttps://github.com/secretlint/secretlint/pull/1734\n* fix(node): mask secrets by default in createEngine by @azu in\nhttps://github.com/secretlint/secretlint/pull/1727\n* fix(core): do not throw when rule data contains null by @azu in\nhttps://github.com/secretlint/secretlint/pull/1729\n* fix(secp256k1-privatekey): detect private keys with a leading zero\nbyte by @azu in https://github.com/secretlint/secretlint/pull/1730\n* fix(filter-comments): make bare secretlint-enable close all open\ndisables by @azu in https://github.com/secretlint/secretlint/pull/1731\n* fix(formatter): respect --no-terminalLink option by @azu in\nhttps://github.com/secretlint/secretlint/pull/1732\n* fix(node): exit with 0 when only warning or info messages are found by\n@azu in https://github.com/secretlint/secretlint/pull/1765\n### CI\n* Update Patch updates by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1723\n* Update github/codeql-action action to v3.38.3 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1726\n* Update github/codeql-action action to v3.39.0 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1749\n### Dependency Updates\n* Update dependency ignore to ^7.0.11 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1712\n* Update dependency rollup to ^4.63.6 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1713\n* Update dependency turbo to ^2.11.6 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1714\n* Update dependency @types/node to ^25.9.9 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1715\n* Update dependency turbo to ^2.11.7 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1716\n* Update Patch updates (patch) by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1717\n* Update dependency rollup to ^4.64.1 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1718\n* Update dependency rollup to ^4.64.3 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1719\n* Update dependency p-map to ^7.1.0 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1720\n* Update dependency rollup to ^4.64.5 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1722\n* Update dependency p-map to ^7.1.1 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1724\n* Update Patch updates (patch) by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1725\n* Update dependency rollup to ^4.64.6 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1736\n* Update dependency turbo to ^2.11.8 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1737\n* Update dependency rollup to ^4.64.7 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1738\n* Update dependency vitest to ^4.1.12 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1739\n* Update dependency turbo to ^2.11.9 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1743\n* Update dependency rollup to ^4.64.9 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1744\n* Update dependency rollup to ^4.64.10 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1747\n* Update dependency ignore to ^7.0.13 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1750\n* Update dependency rollup to ^4.64.12 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1752\n* Update dependency turbo to ^2.11.10 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1753\n* Update dependency @rollup/plugin-typescript to ^12.3.1 by\n@renovate[bot] in https://github.com/secretlint/secretlint/pull/1756\n* Update dependency rollup to ^4.65.0 by @renovate[bot] in\nhttps://github.com/secretlint/secretlint/pull/1759\n\n\n**Full Changelog**:\nhttps://github.com/secretlint/secretlint/compare/v13.0.7...v13.1.0\n\nCo-authored-by: azu <azu@users.noreply.github.com>",
+          "timestamp": "2026-10-26T00:43:55Z",
+          "tree_id": "ee3739178e7cf8b105129707d9e4698b4548d08d",
+          "url": "https://github.com/secretlint/secretlint/commit/49dcc4146297133137f193d4d3c2827a9d075016"
+        },
+        "date": 1792975520226,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 2.98,
+            "range": "±0.90%",
+            "unit": "ops/sec",
+            "extra": "12 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 1.57,
+            "range": "±0.60%",
             "unit": "ops/sec",
             "extra": "8 samples"
           }
