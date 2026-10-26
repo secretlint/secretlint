@@ -87,8 +87,12 @@ const lintFile = async ({
     });
 };
 
+/**
+ * Only "error" severity messages fail the lint.
+ * "warning" and "info" messages are reported, but do not change the exit status.
+ */
 const hasErrorMessage = (result: SecretLintCoreResult): boolean => {
-    return result.messages.length > 0;
+    return result.messages.some((message) => message.severity === "error");
 };
 const executeOnContent = async ({
     content,
