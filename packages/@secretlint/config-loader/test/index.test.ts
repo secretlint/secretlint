@@ -42,6 +42,7 @@ describe("@secretlint/config-loader", () => {
                     ],
                 },
                 configFilePath: path.join(__dirname, "fixtures/valid-config-cjs/.secretlintrc.json"),
+                messages: [],
                 configDescriptor: JSON.parse(
                     fs.readFileSync(path.join(__dirname, "fixtures/valid-config-cjs/.secretlintrc.json"), "utf-8")
                 ),

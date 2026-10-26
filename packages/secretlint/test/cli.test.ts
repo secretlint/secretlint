@@ -11,16 +11,16 @@ const SNAPSHOT_DIR = path.join(__dirname, "snapshots");
 const createSnapshotReplacer = () => {
     return (_key: string, value: any) => {
         if (typeof value === "string") {
-            return (
-                value
-                    .replace(SNAPSHOT_DIR, "[SNAPSHOT]")
-                    // glob use / , but Windows use \
-                    .replace(SNAPSHOT_DIR.replaceAll(path.sep, path.posix.sep), "[SNAPSHOT]")
-                    // normalize path separator for Windows
-                    .replace(/\\\\/g, "/")
-                    // normalize CRLF to LF
-                    .replace(/\r\n/g, "\n")
-            );
+            const replaced = value
+                .replace(SNAPSHOT_DIR, "[SNAPSHOT]")
+                // glob use / , but Windows use \
+                .replace(SNAPSHOT_DIR.replaceAll(path.sep, path.posix.sep), "[SNAPSHOT]")
+                // normalize path separator for Windows
+                .replace(/\\\\/g, "/")
+                // normalize CRLF to LF
+                .replace(/\r\n/g, "\n");
+            // a native file path like the config file path uses \ on Windows
+            return replaced.startsWith("[SNAPSHOT]") ? replaced.replace(/\\/g, "/") : replaced;
         }
         return value;
     };

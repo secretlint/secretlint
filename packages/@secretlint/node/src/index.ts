@@ -1,5 +1,5 @@
 import { lintSource } from "@secretlint/core";
-import { loadConfig, loadPackagesFromConfigDescriptor } from "@secretlint/config-loader";
+import { loadConfig, loadPackagesFromConfigDescriptor, SecretLintConfigMessage } from "@secretlint/config-loader";
 import { createRawSource } from "@secretlint/source-creator";
 import { loadFormatter } from "@secretlint/formatter";
 import {
@@ -88,6 +88,38 @@ const lintFile = async ({
 };
 
 /**
+ * Report config problems as messages for the config file, like lint results.
+ */
+const createConfigResult = ({
+    configFilePath,
+    messages,
+}: {
+    configFilePath: string;
+    messages: SecretLintConfigMessage[];
+}): SecretLintCoreResult => {
+    return {
+        filePath: configFilePath,
+        sourceContent: undefined,
+        sourceContentType: "text",
+        messages: messages.map((message) => {
+            return {
+                type: "message",
+                // config messages are documented in the secretlint package README
+                ruleId: "secretlint",
+                messageId: message.messageId,
+                message: message.message,
+                docsUrl: message.docsUrl,
+                range: [0, 0],
+                loc: {
+                    start: { line: 1, column: 0 },
+                    end: { line: 1, column: 0 },
+                },
+                severity: message.severity,
+            };
+        }),
+    };
+};
+/**
  * Only "error" severity messages fail the lint.
  * "warning" and "info" messages are reported, but do not change the exit status.
  */
@@ -98,11 +130,13 @@ const executeOnContent = async ({
     content,
     filePath,
     config,
+    configResults,
     options,
 }: {
     content: string;
     filePath: string;
     config: SecretLintCoreConfig;
+    configResults: SecretLintCoreResult[];
     options: SecretLintEngineOptions;
 }) => {
     debug("executeOnContent content: %s", `${content.slice(0, 24)}...`);
@@ -128,7 +162,7 @@ const executeOnContent = async ({
         formatterName: options.formatter,
         terminalLink: options.terminalLink ?? false,
     });
-    const output = formatter.format([result]);
+    const output = formatter.format([...configResults, result]);
     secretLintProfiler.mark({
         type: "@node>format::end",
     });
@@ -141,10 +175,12 @@ const executeOnContent = async ({
 const executeOnFiles = async ({
     filePathList,
     config,
+    configResults,
     options,
 }: {
     filePathList: string[];
     config: SecretLintCoreConfig;
+    configResults: SecretLintCoreResult[];
     options: SecretLintEngineOptions;
 }) => {
     const mapper = async (filePath: string) => {
@@ -167,7 +203,7 @@ const executeOnFiles = async ({
         formatterName: options.formatter,
         terminalLink: options.terminalLink ?? false,
     });
-    const output = formatter.format(results);
+    const output = formatter.format([...configResults, ...results]);
     secretLintProfiler.mark({
         type: "@node>format::end",
     });
@@ -197,9 +233,11 @@ export const createEngine = async (engineOptions: SecretLintEngineOptions) => {
     const loadedResult = await (async () => {
         if (isConfigFileJSON(options)) {
             debug("Load ConfigFileJSON: %s", options.configFileJSON);
-            return loadPackagesFromConfigDescriptor({
+            const result = await loadPackagesFromConfigDescriptor({
                 configDescriptor: options.configFileJSON,
             });
+            // config JSON has no file path to report messages for
+            return { ...result, configFilePath: undefined };
         }
         const loadConfigResult = await loadConfig({
             cwd: options.cwd,
@@ -215,6 +253,18 @@ export const createEngine = async (engineOptions: SecretLintEngineOptions) => {
         throw new Error("Fail to load secretlint config");
     }
     debug("Config: %O", loadedResult.config);
+    // mask-result outputs the content of the linted file, so config results can not be mixed into it
+    const configResults =
+        loadedResult.configFilePath !== undefined &&
+        loadedResult.messages.length > 0 &&
+        options.formatter !== "mask-result"
+            ? [
+                  createConfigResult({
+                      configFilePath: loadedResult.configFilePath,
+                      messages: loadedResult.messages,
+                  }),
+              ]
+            : [];
     return {
         /**
          * Lint a content and return the formatted results
@@ -231,6 +281,7 @@ export const createEngine = async (engineOptions: SecretLintEngineOptions) => {
                 content,
                 filePath,
                 config: loadedResult.config,
+                configResults,
                 options: options,
             }).finally(() => {
                 secretLintProfiler.mark({
@@ -250,6 +301,7 @@ export const createEngine = async (engineOptions: SecretLintEngineOptions) => {
             return executeOnFiles({
                 filePathList,
                 config: loadedResult.config,
+                configResults,
                 options: options,
             }).finally(() => {
                 secretLintProfiler.mark({

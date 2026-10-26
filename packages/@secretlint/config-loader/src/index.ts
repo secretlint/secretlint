@@ -13,6 +13,9 @@ import { SecretLintModuleResolver } from "./SecretLintModuleResolver.js";
 import { validateConfigDescriptor, validateConfigWithDescriptor } from "./validator.js";
 import { AggregationError } from "./AggregationError.js";
 import { dynamicImport } from "@secretlint/resolver";
+import { getConfigMessages, SecretLintConfigMessage } from "./config-messages.js";
+
+export type { SecretLintConfigMessage };
 
 export function importSecretlintCreator(
     moduleExports?: SecretLintRuleModule | Record<string, unknown>
@@ -56,6 +59,10 @@ export type SecretLintConfigLoaderResult = {
      */
     configDescriptor: SecretLintConfigDescriptor;
     configFilePath: string;
+    /**
+     * Problems in the config file that are reported like lint messages
+     */
+    messages: SecretLintConfigMessage[];
 };
 
 export type SecretLintConfigLoaderRawResult = {
@@ -87,6 +94,10 @@ export type SecretLintLoadPackagesFromRawConfigOptions = {
 export type SecretLintLoadPackagesFromRawConfigResult = {
     ok: true;
     config: SecretLintCoreConfig; // Core Option object
+    /**
+     * Problems in the config that are reported like lint messages
+     */
+    messages: SecretLintConfigMessage[];
 };
 
 /**
@@ -204,6 +215,7 @@ Error: ${String(error)}`);
     return {
         ok: true,
         config: loadedConfig,
+        messages: getConfigMessages(options.configDescriptor),
     };
 };
 /**
@@ -234,6 +246,7 @@ export const loadConfig = async (options: SecretLintConfigLoaderOptions): Promis
         config: configLoadResult.config,
         configDescriptor,
         configFilePath,
+        messages: configLoadResult.messages,
     };
 };
 /**
