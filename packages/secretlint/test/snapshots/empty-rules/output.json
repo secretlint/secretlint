@@ -1,0 +1,39 @@
+{
+    "exitStatus": 0,
+    "stdout": [
+        {
+            "filePath": "[SNAPSHOT]/empty-rules/.secretlintrc.json",
+            "sourceContentType": "text",
+            "messages": [
+                {
+                    "type": "message",
+                    "ruleId": "@secretlint/config-loader",
+                    "messageId": "NO_RULES",
+                    "message": "No rules are configured. secretlint does not detect any secrets. Add rules to \"rules\" in the config file.",
+                    "range": [
+                        0,
+                        0
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 0
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 0
+                        }
+                    },
+                    "severity": "warning"
+                }
+            ]
+        },
+        {
+            "filePath": "[SNAPSHOT]/empty-rules/input.txt",
+            "sourceContent": "THIS IS PUBLIC DATA ONLY!\n",
+            "sourceContentType": "text",
+            "messages": []
+        }
+    ],
+    "stderr": null
+}
