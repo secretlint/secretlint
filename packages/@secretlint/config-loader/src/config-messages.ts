@@ -7,7 +7,13 @@ export type SecretLintConfigMessage = {
     messageId: string;
     message: string;
     severity: SecretLintRuleSeverityLevel;
+    /**
+     * Documentation url for the message
+     */
+    docsUrl: string;
 };
+
+const DOCS_URL = "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/config-loader/README.md";
 
 /**
  * Find problems in the config file that should be reported as lint messages
@@ -19,6 +25,7 @@ export const getConfigMessages = (configDescriptor: SecretLintConfigDescriptor):
             messageId: "NO_RULES",
             message: `No rules are configured. secretlint does not detect any secrets. Add rules to "rules" in the config file.`,
             severity: "warning",
+            docsUrl: `${DOCS_URL}#NO_RULES`,
         });
     }
     return messages;

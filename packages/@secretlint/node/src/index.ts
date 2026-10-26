@@ -107,6 +107,7 @@ const createConfigResult = ({
                 ruleId: "@secretlint/config-loader",
                 messageId: message.messageId,
                 message: message.message,
+                docsUrl: message.docsUrl,
                 range: [0, 0],
                 loc: {
                     start: { line: 1, column: 0 },
