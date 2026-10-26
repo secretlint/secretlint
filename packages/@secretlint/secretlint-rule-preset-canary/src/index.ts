@@ -23,6 +23,7 @@ import { creator as ruleHashiCorpVault } from "@secretlint/secretlint-rule-hashi
 import { creator as ruleVercel } from "@secretlint/secretlint-rule-vercel";
 import { creator as ruleDatabricks } from "@secretlint/secretlint-rule-databricks";
 import { creator as ruleDocker } from "@secretlint/secretlint-rule-docker";
+import { creator as ruleDiscord } from "@secretlint/secretlint-rule-discord";
 import { creator as ruleFigma } from "@secretlint/secretlint-rule-figma";
 import { creator as ruleCloudflare } from "@secretlint/secretlint-rule-cloudflare";
 import { creator as ruleTailscale } from "@secretlint/secretlint-rule-tailscale";
@@ -53,6 +54,7 @@ export const rules = [
     ruleVercel,
     ruleDatabricks,
     ruleDocker,
+    ruleDiscord,
     ruleFigma,
     ruleCloudflare,
     ruleTailscale,
