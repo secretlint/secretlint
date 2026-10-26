@@ -10,50 +10,35 @@ Install with [npm](https://www.npmjs.com/):
 
 ## Usage
 
-### API Interface
+### API
 
-```ts 
-import { SecretLintConfigDescriptor, SecretLintCoreDescriptor } from "@secretlint/types";
-export declare type SecretLintConfigLoaderOptions = {
-    cwd?: string;
-};
-export declare type SecretLintConfigLoaderResult = {
-    ok: true;
-    configFilePath: string;
-    config: SecretLintCoreDescriptor;
-} | {
-    ok: false;
-    configFilePath: null;
-    config: null;
-    errors: Error[];
-};
-export declare type SecretLintConfigLoaderRawResult = {
-    ok: true;
-    configFilePath: string;
-    config: SecretLintConfigDescriptor;
-} | {
-    ok: false;
-    errors: Error[];
-};
-/**
- * Load config file and return config object that is loaded rule instance. 
- * @param options
- */
-export declare const loadConfig: (options: SecretLintConfigLoaderOptions) => SecretLintConfigLoaderResult;
-export declare const loadConfigRaw: (options: SecretLintConfigLoaderOptions) => SecretLintConfigLoaderRawResult;
-```
+`loadConfig(options)` returns a promise for an object containing:
+
+- `ok`: `true` when loading succeeds.
+- `configFilePath`: the path of the loaded config file.
+- `configDescriptor`: the config file contents before rule modules are loaded.
+- `config`: the validated config with loaded rule modules.
+
+`loadConfigDescriptor(options)` returns a promise for `{ ok, configFilePath, configDescriptor }` without loading or validating rule modules.
+
+Both functions accept `cwd` to choose the directory in which to search for a config file, or `configFilePath` to select a config file explicitly. See the exported `SecretLintConfigLoaderOptions`, `SecretLintConfigLoaderResult`, and `SecretLintConfigLoaderRawResult` types for the complete interfaces.
+
+If the config file cannot be found or read, the promise rejects. `loadConfig` also rejects if the config is invalid or a rule module cannot be loaded. Handle these errors with `try`/`catch`.
 
 ### Example
 
-```js 
-impor { loadConfig } from "@secretlint/config-loader";
-// Load <CurrentDir>/.secretlintrc.{json,yml,js}
-const { ok, config, configFilePath, errors } = loadConfig({ cwd: process.cwd() });
-if(ok) {
-  console.log("load from configFile:" + configFilePath);
-  console.log("config", config);
-} else{
-  console.error(errors);
+Use an ES module (`.mjs`, or `.js` with `"type": "module"` in `package.json`):
+
+```js
+import { loadConfig } from "@secretlint/config-loader";
+
+try {
+    // Load a config file such as <CurrentDir>/.secretlintrc.json
+    const { config, configFilePath } = await loadConfig({ cwd: process.cwd() });
+    console.log("load from configFile:" + configFilePath);
+    console.log("config", config);
+} catch (error) {
+    console.error(error);
 }
 ```
 
