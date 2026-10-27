@@ -79,8 +79,8 @@ catalogs:
       specifier: ^5.0.0
       version: 5.0.0
     ignore:
-      specifier: ^7.0.13
-      version: 7.0.13
+      specifier: ^7.0.14
+      version: 7.0.14
     istextorbinary:
       specifier: ^9.5.0
       version: 9.5.0
@@ -1740,7 +1740,7 @@ importers:
     dependencies:
       ignore:
         specifier: 'catalog:'
-        version: 7.0.13
+        version: 7.0.14
       picomatch:
         specifier: 'catalog:'
         version: 4.0.7
@@ -3085,12 +3085,12 @@ packages:
   ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
 
-  ignore@7.0.12:
-    resolution: {integrity: sha512-/8UvqAPU9DGTI9k4mxtf49U37Isfwr8Uts96+SBHIkFxPJnHS0Ew4f00sM4Scd8V8EjM0jUNtVDdv1kPdt35lg==}
-    engines: {node: '>= 4'}
-
   ignore@7.0.13:
     resolution: {integrity: sha512-2E8Q6rh+1RRSq/YdaGsNfXsEZy9FVqv6BSSrkmZJP7BnaoPnRfKL+YaofPvP+5rzdk144qSm6i4+hvPgUcbV4Q==}
+    engines: {node: '>= 4'}
+
+  ignore@7.0.14:
+    resolution: {integrity: sha512-wCBiZ77u1tuWde6G/nfOtLaCTYcFDU5yCzARzK10y+rLhzYoL7a7yEemcopcc2Mzow7gZOIjnV2ym1NYmdiJOQ==}
     engines: {node: '>= 4'}
 
   indent-string@5.0.0:
@@ -5173,7 +5173,7 @@ snapshots:
     dependencies:
       '@sindresorhus/merge-streams': 2.3.0
       fast-glob: 3.3.3
-      ignore: 7.0.12
+      ignore: 7.0.13
       path-type: 6.0.0
       slash: 5.1.0
       unicorn-magic: 0.3.0
@@ -5211,9 +5211,9 @@ snapshots:
 
   ieee754@1.2.1: {}
 
-  ignore@7.0.12: {}
-
   ignore@7.0.13: {}
+
+  ignore@7.0.14: {}
 
   indent-string@5.0.0: {}
 
