@@ -1,0 +1,32 @@
+{
+    "filePath": "[SNAPSHOT]/ng.personal/input.txt",
+    "messages": [
+        {
+            "message": "found Supabase personal access token: sbp_0000000000000000000000000000000000000000",
+            "range": [
+                0,
+                44
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-supabase",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 44
+                }
+            },
+            "severity": "error",
+            "messageId": "SUPABASE_PERSONAL_ACCESS_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-supabase/README.md#SUPABASE_PERSONAL_ACCESS_TOKEN",
+            "data": {
+                "TOKEN": "sbp_0000000000000000000000000000000000000000"
+            }
+        }
+    ],
+    "sourceContent": "sbp_0000000000000000000000000000000000000000\n",
+    "sourceContentType": "text"
+}
