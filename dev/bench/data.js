@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1793231417876,
+  "lastUpdate": 1793231510188,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -60952,6 +60952,44 @@ window.BENCHMARK_DATA = {
             "range": "±1.15%",
             "unit": "ops/sec",
             "extra": "8 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "a84645b003338d715b265e641b4b44087b66305a",
+          "message": "Update pnpm to v10.34.9 (#1770)\n\nThis PR contains the following updates:\n\n| Package | Change |\n[Age](https://docs.renovatebot.com/merge-confidence/) |\n[Confidence](https://docs.renovatebot.com/merge-confidence/) |\n|---|---|---|---|\n| [pnpm](https://pnpm.io)\n([source](https://redirect.github.com/pnpm/pnpm/tree/HEAD/pnpm/npm/pnpm))\n|\n[`10.34.8+sha512.f627a8e971343afe49dfd0f63d028234201dfa831d5cb588733e1e5f8db26bf16989a32161ab5c1b4db3b1fdbc373160606b5b89e002df6dd19a85adf91fc5a8`\n→ `10.34.9`](https://renovatebot.com/diffs/npm/pnpm/10.34.8/10.34.9) |\n![age](https://developer.mend.io/api/mc/badges/age/npm/pnpm/10.34.9?slim=true)\n|\n![confidence](https://developer.mend.io/api/mc/badges/confidence/npm/pnpm/10.34.8/10.34.9?slim=true)\n|\n\n---\n\n### Release Notes\n\n<details>\n<summary>pnpm/pnpm (pnpm)</summary>\n\n###\n[`v10.34.9`](https://redirect.github.com/pnpm/pnpm/releases/tag/v10.34.9):\npnpm 10.34.9\n\n[Compare\nSource](https://redirect.github.com/pnpm/pnpm/compare/v10.34.8...v10.34.9)\n\n##### Patch Changes\n\n- [`0bff20d`](https://redirect.github.com/pnpm/pnpm/commit/0bff20d): The\npnpm version that `packageManager` pins now records that pin in a fresh\n`pnpm-lock.yaml` when pnpm 10 switched to it. A later `pnpm install\n--frozen-lockfile` then succeeds\n[#&#8203;17303](https://redirect.github.com/pnpm/pnpm/issues/17303).\n\n<!-- sponsors -->\n\n#### Platinum Sponsors\n\n<table>\n  <tbody>\n    <tr>\n      <td align=\"center\" valign=\"middle\">\n<a href=\"https://bit.cloud/?utm_source=pnpm&utm_medium=release_notes\"\ntarget=\"_blank\"><img src=\"https://pnpm.io/img/users/bit.svg\" width=\"80\"\nalt=\"Bit\"></a>\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n#### Gold Sponsors\n\n<table>\n  <tbody>\n    <tr>\n      <td align=\"center\" valign=\"middle\">\n<a href=\"https://sanity.io/?utm_source=pnpm&utm_medium=release_notes\"\ntarget=\"_blank\">\n          <picture>\n<source media=\"(prefers-color-scheme: light)\"\nsrcset=\"https://pnpm.io/img/users/sanity.svg\" />\n<source media=\"(prefers-color-scheme: dark)\"\nsrcset=\"https://pnpm.io/img/users/sanity_light.svg\" />\n<img src=\"https://pnpm.io/img/users/sanity.svg\" width=\"120\" alt=\"Sanity\"\n/>\n          </picture>\n        </a>\n      </td>\n      <td align=\"center\" valign=\"middle\">\n<a href=\"https://discord.com/?utm_source=pnpm&utm_medium=release_notes\"\ntarget=\"_blank\">\n          <picture>\n<source media=\"(prefers-color-scheme: light)\"\nsrcset=\"https://pnpm.io/img/users/discord.svg\" />\n<source media=\"(prefers-color-scheme: dark)\"\nsrcset=\"https://pnpm.io/img/users/discord_light.svg\" />\n<img src=\"https://pnpm.io/img/users/discord.svg\" width=\"220\"\nalt=\"Discord\" />\n          </picture>\n        </a>\n      </td>\n      <td align=\"center\" valign=\"middle\">\n<a href=\"https://vite.dev/?utm_source=pnpm&utm_medium=release_notes\"\ntarget=\"_blank\"><img src=\"https://pnpm.io/img/users/vitejs.svg\"\nwidth=\"42\" alt=\"Vite\"></a>\n      </td>\n    </tr>\n    <tr>\n      <td align=\"center\" valign=\"middle\">\n<a href=\"https://serpapi.com/?utm_source=pnpm&utm_medium=release_notes\"\ntarget=\"_blank\">\n          <picture>\n<source media=\"(prefers-color-scheme: light)\"\nsrcset=\"https://pnpm.io/img/users/serpapi_dark.svg\" />\n<source media=\"(prefers-color-scheme: dark)\"\nsrcset=\"https://pnpm.io/img/users/serpapi_light.svg\" />\n<img src=\"https://pnpm.io/img/users/serpapi_dark.svg\" width=\"160\"\nalt=\"SerpApi\" />\n          </picture>\n        </a>\n      </td>\n      <td align=\"center\" valign=\"middle\">\n<a\nhref=\"https://coderabbit.ai/?utm_source=pnpm&utm_medium=release_notes\"\ntarget=\"_blank\">\n          <picture>\n<source media=\"(prefers-color-scheme: light)\"\nsrcset=\"https://pnpm.io/img/users/coderabbit.svg\" />\n<source media=\"(prefers-color-scheme: dark)\"\nsrcset=\"https://pnpm.io/img/users/coderabbit_light.svg\" />\n<img src=\"https://pnpm.io/img/users/coderabbit.svg\" width=\"220\"\nalt=\"CodeRabbit\" />\n          </picture>\n        </a>\n      </td>\n      <td align=\"center\" valign=\"middle\">\n<a\nhref=\"https://stackblitz.com/?utm_source=pnpm&utm_medium=release_notes\"\ntarget=\"_blank\">\n          <picture>\n<source media=\"(prefers-color-scheme: light)\"\nsrcset=\"https://pnpm.io/img/users/stackblitz.svg\" />\n<source media=\"(prefers-color-scheme: dark)\"\nsrcset=\"https://pnpm.io/img/users/stackblitz_light.svg\" />\n<img src=\"https://pnpm.io/img/users/stackblitz.svg\" width=\"190\"\nalt=\"Stackblitz\" />\n          </picture>\n        </a>\n      </td>\n    </tr>\n    <tr>\n      <td align=\"center\" valign=\"middle\">\n<a href=\"https://workleap.com/?utm_source=pnpm&utm_medium=release_notes\"\ntarget=\"_blank\">\n          <picture>\n<source media=\"(prefers-color-scheme: light)\"\nsrcset=\"https://pnpm.io/img/users/workleap.svg\" />\n<source media=\"(prefers-color-scheme: dark)\"\nsrcset=\"https://pnpm.io/img/users/workleap_light.svg\" />\n<img src=\"https://pnpm.io/img/users/workleap.svg\" width=\"190\"\nalt=\"Workleap\" />\n          </picture>\n        </a>\n      </td>\n      <td align=\"center\" valign=\"middle\">\n<a href=\"https://nx.dev/?utm_source=pnpm&utm_medium=release_notes\"\ntarget=\"_blank\">\n          <picture>\n<source media=\"(prefers-color-scheme: light)\"\nsrcset=\"https://pnpm.io/img/users/nx.svg\" />\n<source media=\"(prefers-color-scheme: dark)\"\nsrcset=\"https://pnpm.io/img/users/nx_light.svg\" />\n<img src=\"https://pnpm.io/img/users/nx.svg\" width=\"50\" alt=\"Nx\" />\n          </picture>\n        </a>\n      </td>\n    </tr>\n  </tbody>\n</table>\n\n<!-- sponsors end -->\n\n</details>\n\n---\n\n### Configuration\n\n📅 **Schedule**: (in timezone Asia/Tokyo)\n\n- Branch creation\n  - At any time (no schedule defined)\n- Automerge\n  - At any time (no schedule defined)\n\n🚦 **Automerge**: Enabled.\n\n♻ **Rebasing**: Whenever PR is behind base branch, or you tick the\nrebase/retry checkbox.\n\n🔕 **Ignore**: Close this PR and you won't be reminded about this update\nagain.\n\n---\n\n- [ ] <!-- rebase-check -->If you want to rebase/retry this PR, check\nthis box\n\n---\n\nThis PR was generated by [Mend Renovate](https://mend.io/renovate/).\nView the [repository job\nlog](https://developer.mend.io/github/secretlint/secretlint).\n\n<!--renovate-debug:eyJjcmVhdGVkSW5WZXIiOiI0NC4xODguMiIsInVwZGF0ZWRJblZlciI6IjQ0LjE4OC4yIiwidGFyZ2V0QnJhbmNoIjoibWFzdGVyIiwibGFiZWxzIjpbImRlcGVuZGVuY2llcyJdfQ==-->\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2026-10-28T23:50:23Z",
+          "tree_id": "d42fddd4d7e19777b5c8e916285fed1973d29722",
+          "url": "https://github.com/secretlint/secretlint/commit/a84645b003338d715b265e641b4b44087b66305a"
+        },
+        "date": 1793231506204,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 3.33,
+            "range": "±0.82%",
+            "unit": "ops/sec",
+            "extra": "13 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 1.69,
+            "range": "±0.61%",
+            "unit": "ops/sec",
+            "extra": "9 samples"
           }
         ]
       }
