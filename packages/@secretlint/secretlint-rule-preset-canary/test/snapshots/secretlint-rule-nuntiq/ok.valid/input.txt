@@ -1,0 +1,5 @@
+This text has no Nuntiq keys.
+Display form of a key: nuntiq_ck_live_1a2b3c4d...wXyZ
+Unknown kind: nuntiq_xk_live_1787e770_Cx3BT1zw4XhBmOwTNnTzqXVssmZWnD8n-XosQLWqXJI0fil7C
+Unknown environment: nuntiq_ck_prod_1787e770_Cx3BT1zw4XhBmOwTNnTzqXVssmZWnD8n-XosQLWqXJI0fil7C
+Uppercase key id: nuntiq_ck_live_1787E770_Cx3BT1zw4XhBmOwTNnTzqXVssmZWnD8n-XosQLWqXJI0fil7C

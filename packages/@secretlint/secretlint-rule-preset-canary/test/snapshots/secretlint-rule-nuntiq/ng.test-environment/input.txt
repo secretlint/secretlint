@@ -1,0 +1,1 @@
+curl -H "X-API-Key: nuntiq_ck_test_e8bcfd3f_IwlPImwzSnmfIZ7hFLDQea4xhIznzZvKRPzBU5D0WSQ457xL8" https://test-api.apreceiving.com/api/v1/ping

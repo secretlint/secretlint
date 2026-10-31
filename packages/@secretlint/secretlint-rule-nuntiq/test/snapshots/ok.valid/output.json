@@ -1,0 +1,6 @@
+{
+    "filePath": "[SNAPSHOT]/ok.valid/input.txt",
+    "messages": [],
+    "sourceContent": "This text has no Nuntiq keys.\nDisplay form of a key: nuntiq_ck_live_1a2b3c4d...wXyZ\nUnknown kind: nuntiq_xk_live_1787e770_Cx3BT1zw4XhBmOwTNnTzqXVssmZWnD8n-XosQLWqXJI0fil7C\nUnknown environment: nuntiq_ck_prod_1787e770_Cx3BT1zw4XhBmOwTNnTzqXVssmZWnD8n-XosQLWqXJI0fil7C\nUppercase key id: nuntiq_ck_live_1787E770_Cx3BT1zw4XhBmOwTNnTzqXVssmZWnD8n-XosQLWqXJI0fil7C\n",
+    "sourceContentType": "text"
+}
