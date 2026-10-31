@@ -1,0 +1,33 @@
+{
+    "filePath": "[SNAPSHOT]/ng.partner-api-key/input.txt",
+    "messages": [
+        {
+            "message": "found Nuntiq partner API key: nuntiq_pk_live_326e932b_pcvLCgsshxMD84d2YyG8mqrkXIcXBG0-YhknB7Q6zDU3ggTr8",
+            "range": [
+                15,
+                88
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-nuntiq",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 15
+                },
+                "end": {
+                    "line": 1,
+                    "column": 88
+                }
+            },
+            "severity": "error",
+            "messageId": "NUNTIQ_PARTNER_API_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-nuntiq/README.md#NUNTIQ_PARTNER_API_KEY",
+            "data": {
+                "KEY": "nuntiq_pk_live_326e932b_pcvLCgsshxMD84d2YyG8mqrkXIcXBG0-YhknB7Q6zDU3ggTr8"
+            }
+        }
+    ],
+    "sourceContent": "{\"X-API-Key\": \"nuntiq_pk_live_326e932b_pcvLCgsshxMD84d2YyG8mqrkXIcXBG0-YhknB7Q6zDU3ggTr8\"}\n",
+    "sourceContentType": "text"
+}

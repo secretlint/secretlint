@@ -80,6 +80,7 @@
         "@secretlint/secretlint-rule-linear": "workspace:*",
         "@secretlint/secretlint-rule-notion": "workspace:*",
         "@secretlint/secretlint-rule-npm": "workspace:*",
+        "@secretlint/secretlint-rule-nuntiq": "workspace:*",
         "@secretlint/secretlint-rule-openai": "workspace:*",
         "@secretlint/secretlint-rule-privatekey": "workspace:*",
         "@secretlint/secretlint-rule-sendgrid": "workspace:*",
