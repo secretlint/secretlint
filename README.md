@@ -177,7 +177,8 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
 
 ## Configuration
 
-Secretlint has a configuration file `.secretlintrc.{json,yml,js}`.
+Secretlint supports `.secretlintrc.{json,yml,yaml,js,cjs}` configuration files. JSON is recommended.
+JavaScript configuration files use CommonJS; see [JavaScript configuration files](./docs/configuration.md#javascript-configuration-files) for an example, including use in ESM projects.
 
 - Document: [Configuring Secretlint](./docs/configuration.md)
 
