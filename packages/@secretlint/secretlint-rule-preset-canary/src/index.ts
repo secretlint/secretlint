@@ -28,7 +28,10 @@ import { creator as ruleCloudflare } from "@secretlint/secretlint-rule-cloudflar
 import { creator as ruleTailscale } from "@secretlint/secretlint-rule-tailscale";
 import { creator as ruleFilterComments } from "@secretlint/secretlint-rule-filter-comments";
 
+import { creator as ruleDoppler } from "@secretlint/secretlint-rule-doppler";
+
 export const rules = [
+    ruleDoppler,
     ruleAWS,
     ruleGCP,
     rulePrivateKey,

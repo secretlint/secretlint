@@ -1,0 +1,57 @@
+{
+    "filePath": "[SNAPSHOT]/ng.alphabet/input.txt",
+    "messages": [
+        {
+            "message": "found doppler personal token: dp.pt.00000000000000AAAAAAAAAAAAAzzzzzzzzzzzzz",
+            "range": [
+                0,
+                46
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-doppler",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 46
+                }
+            },
+            "severity": "error",
+            "messageId": "DOPPLER_PERSONAL_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-doppler/README.md#DOPPLER_PERSONAL_TOKEN",
+            "data": {
+                "ID": "dp.pt.00000000000000AAAAAAAAAAAAAzzzzzzzzzzzzz"
+            }
+        },
+        {
+            "message": "found doppler service token: dp.st.env_1-2.AAAAAAAAAAAAAAAAAAAAaaaaaaaaaaaaaaaaaaaa",
+            "range": [
+                47,
+                101
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-doppler",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 0
+                },
+                "end": {
+                    "line": 2,
+                    "column": 54
+                }
+            },
+            "severity": "error",
+            "messageId": "DOPPLER_SERVICE_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-doppler/README.md#DOPPLER_SERVICE_TOKEN",
+            "data": {
+                "ID": "dp.st.env_1-2.AAAAAAAAAAAAAAAAAAAAaaaaaaaaaaaaaaaaaaaa"
+            }
+        }
+    ],
+    "sourceContent": "dp.pt.00000000000000AAAAAAAAAAAAAzzzzzzzzzzzzz\ndp.st.env_1-2.AAAAAAAAAAAAAAAAAAAAaaaaaaaaaaaaaaaaaaaa\n",
+    "sourceContentType": "text"
+}
