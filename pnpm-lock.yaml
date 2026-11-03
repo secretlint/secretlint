@@ -1287,6 +1287,9 @@ importers:
       '@secretlint/secretlint-rule-privatekey':
         specifier: workspace:*
         version: link:../secretlint-rule-privatekey
+      '@secretlint/secretlint-rule-replicate':
+        specifier: workspace:*
+        version: link:../secretlint-rule-replicate
       '@secretlint/secretlint-rule-sendgrid':
         specifier: workspace:*
         version: link:../secretlint-rule-sendgrid
@@ -1468,6 +1471,31 @@ importers:
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
+      '@types/node':
+        specifier: 'catalog:'
+        version: 25.9.9
+      prettier:
+        specifier: 'catalog:'
+        version: 3.8.3
+      tsx:
+        specifier: 'catalog:'
+        version: 4.23.15
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+
+  packages/@secretlint/secretlint-rule-replicate:
+    dependencies:
+      '@secretlint/types':
+        specifier: workspace:*
+        version: link:../types
+      '@textlint/regexp-string-matcher':
+        specifier: 'catalog:'
+        version: 2.0.2
+    devDependencies:
+      '@secretlint/tester':
+        specifier: workspace:*
+        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
