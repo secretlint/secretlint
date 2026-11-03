@@ -46,6 +46,31 @@ This rule can detect a new format of GitHub Token.
 - `allows: string[]`
     - Allows a list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string)
 
+- `checkChecksum: boolean` (default: `false`)
+    - Validate the CRC32 checksum of classic 40-character tokens with the
+      `ghp_`, `gho_`, `ghu_`, `ghs_`, or `ghr_` prefix and a Base62 body.
+      Matches with invalid checksums are ignored when this option is enabled.
+    - Fine-grained PATs, JWT-style installation tokens, and other token shapes
+      retain their existing detection behavior. Their checksums are not checked.
+
+```json
+{
+    "rules": [
+        {
+            "id": "@secretlint/secretlint-rule-github",
+            "options": {
+                "checkChecksum": true
+            }
+        }
+    ]
+}
+```
+
+The classic format has 30 Base62 characters of random data followed by a
+six-character Base62-encoded CRC32 checksum of that data, excluding the prefix.
+See [GitHub's token format description](https://github.blog/engineering/platform-security/behind-githubs-new-authentication-token-formats/).
+Checksum validation runs locally and does not establish whether a token is active.
+
 ## Changelog
 
 See [Releases page](https://github.com/secretlint/secretlint/releases).
