@@ -1,0 +1,85 @@
+{
+    "filePath": "[SNAPSHOT]/ng.delimiters-and-locations/input.txt",
+    "messages": [
+        {
+            "message": "found discord bot token: MTAwMDAwMDAwMDAwMDAwMDAw.AAAAAA.AAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "range": [
+                4,
+                63
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-discord",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 4
+                },
+                "end": {
+                    "line": 1,
+                    "column": 63
+                }
+            },
+            "severity": "error",
+            "messageId": "DISCORD_BOT_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-discord/README.md#DISCORD_BOT_TOKEN",
+            "data": {
+                "ID": "MTAwMDAwMDAwMDAwMDAwMDAw.AAAAAA.AAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            }
+        },
+        {
+            "message": "found discord bot token: MTAwMDAwMDAwMDAwMDAwMDAw.DN9r_A.A0_-A0_-A0_-A0_-A0_-A0_-A0_-A0_-A0_-AA",
+            "range": [
+                66,
+                136
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-discord",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 1
+                },
+                "end": {
+                    "line": 2,
+                    "column": 71
+                }
+            },
+            "severity": "error",
+            "messageId": "DISCORD_BOT_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-discord/README.md#DISCORD_BOT_TOKEN",
+            "data": {
+                "ID": "MTAwMDAwMDAwMDAwMDAwMDAw.DN9r_A.A0_-A0_-A0_-A0_-A0_-A0_-A0_-A0_-A0_-AA"
+            }
+        },
+        {
+            "message": "found discord bot token: MTAwMDAwMDAwMDAwMDAwMDAw.AAAAAA.AAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "range": [
+                139,
+                198
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-discord",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 74
+                },
+                "end": {
+                    "line": 2,
+                    "column": 133
+                }
+            },
+            "severity": "error",
+            "messageId": "DISCORD_BOT_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-discord/README.md#DISCORD_BOT_TOKEN",
+            "data": {
+                "ID": "MTAwMDAwMDAwMDAwMDAwMDAw.AAAAAA.AAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            }
+        }
+    ],
+    "sourceContent": "😀 \"MTAwMDAwMDAwMDAwMDAwMDAw.AAAAAA.AAAAAAAAAAAAAAAAAAAAAAAAAAA\"\n(MTAwMDAwMDAwMDAwMDAwMDAw.DN9r_A.A0_-A0_-A0_-A0_-A0_-A0_-A0_-A0_-A0_-AA). MTAwMDAwMDAwMDAwMDAwMDAw.AAAAAA.AAAAAAAAAAAAAAAAAAAAAAAAAAA\n",
+    "sourceContentType": "text"
+}
