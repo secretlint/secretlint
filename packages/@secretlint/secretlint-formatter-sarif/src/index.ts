@@ -1,17 +1,18 @@
-import { SecretLintCoreResult, SecretLintFormatter } from "@secretlint/types";
+import { SecretLintCoreResult, SecretLintFormatterOptions } from "@secretlint/types";
 import { SarifBuilder, SarifResultBuilder, SarifRuleBuilder, SarifRunBuilder } from "node-sarif-builder";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
-function buildSarifResult(lintResults: SecretLintCoreResult[]) {
+function buildSarifResult(lintResults: SecretLintCoreResult[], secretlintVersion?: string) {
     // SARIF builder
     const sarifBuilder = new SarifBuilder();
     // SARIF Run builder
-    const sarifRunBuilder = new SarifRunBuilder().initSimple({
-        toolDriverName: "secretlint",
-        toolDriverVersion: "1.0.0", // TODO: currently can not get secretlint's version from formatter
-        url: "https://github.com/secretlint/secretlint"
-    });
+    const sarifRunBuilder = new SarifRunBuilder();
+    sarifRunBuilder.setToolDriverName("secretlint");
+    if (secretlintVersion !== undefined) {
+        sarifRunBuilder.setToolDriverVersion(secretlintVersion);
+    }
+    sarifRunBuilder.setToolDriverUri("https://github.com/secretlint/secretlint");
     // SARIF rules
     const addedRuleSet = new Set<string>();
     lintResults.forEach((result) => {
@@ -68,7 +69,7 @@ function fixCol(val: number) {
     return val === 0 ? 1 : val + 1;
 }
 
-const formatter: SecretLintFormatter = (results) => {
-    return buildSarifResult(results);
+const formatter = (results: SecretLintCoreResult[], options: SecretLintFormatterOptions = {}) => {
+    return buildSarifResult(results, options.secretlintVersion);
 };
 export default formatter;

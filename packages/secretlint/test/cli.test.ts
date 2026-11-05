@@ -149,3 +149,35 @@ describe("--profile", () => {
         );
     });
 });
+
+describe("SARIF scanner version", () => {
+    for (const config of ["file", "inline"] as const) {
+        for (const suppliedVersion of [undefined, "2.3.4"]) {
+            it(`reports ${suppliedVersion ?? "the CLI version"} with ${config} config`, async () => {
+                const cwd = path.join(SNAPSHOT_DIR, "--format=json");
+                const filePath = path.join(cwd, "input.txt");
+                const actual = await run(
+                    [filePath],
+                    {
+                        ...cli.flags,
+                        cwd,
+                        color: false,
+                        format: fileURLToPath(import.meta.resolve("@secretlint/secretlint-formatter-sarif")),
+                        // Exercise config-file and inline-JSON engine options.
+                        secretlintrcJSON:
+                            config === "inline"
+                                ? fs.readFileSync(path.join(cwd, ".secretlintrc.json"), "utf-8")
+                                : undefined,
+                    },
+                    suppliedVersion,
+                );
+                assert.ok(actual.stdout);
+                const packageJson = JSON.parse(fs.readFileSync(new URL("../package.json", import.meta.url), "utf-8"));
+                assert.strictEqual(
+                    JSON.parse(actual.stdout).runs[0].tool.driver.version,
+                    suppliedVersion ?? packageJson.version,
+                );
+            });
+        }
+    }
+});

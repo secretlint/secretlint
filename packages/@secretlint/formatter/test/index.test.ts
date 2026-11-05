@@ -50,3 +50,24 @@ describe("@secretlint/formatter", () => {
         });
     }
 });
+
+describe("scanner version options", () => {
+    it("passes the scanner version to an external formatter", async () => {
+        const formatter = await loadFormatter({
+            formatterName: path.join(__dirname, "fixtures/version-formatter.ts"),
+            secretlintVersion: "2.3.4",
+        });
+        assert.strictEqual(JSON.parse(formatter.format(results)).secretlintVersion, "2.3.4");
+    });
+
+    it("loads an external formatter with legacy options", async () => {
+        const formatter = await loadFormatter({
+            formatterName: path.join(__dirname, "fixtures/version-formatter.ts"),
+            color: false,
+        });
+        assert.deepStrictEqual(JSON.parse(formatter.format(results)), {
+            formatterName: path.join(__dirname, "fixtures/version-formatter.ts"),
+            color: false,
+        });
+    });
+});

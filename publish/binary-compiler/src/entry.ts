@@ -60,7 +60,7 @@ if (cli.flags.version) {
 }
 // secretlint CLI wrapper
 try {
-    const { exitStatus, stderr, stdout } = await run(cli.input, cli.flags);
+    const { exitStatus, stderr, stdout } = await run(cli.input, cli.flags, process.env.SECRETLINT_VERSION);
     if (stdout) {
         await writeOutput(`${stdout}\n`, "stdout");
     }

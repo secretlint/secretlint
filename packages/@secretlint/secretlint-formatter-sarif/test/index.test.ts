@@ -25,7 +25,8 @@ test("@secretlint/secretlint-formatter-sarif", (t) => {
         const fixtureDir = snapshotsDir;
         const actual = snapshotReplace(
             formatter(results, {
-                color: true
+                color: true,
+                secretlintVersion: "2.3.4"
             })
         );
         const expectedFilePath = path.join(fixtureDir, `output.sarif`);
@@ -40,4 +41,28 @@ test("@secretlint/secretlint-formatter-sarif", (t) => {
         const expected = snapshotReplace(fs.readFileSync(expectedFilePath, "utf-8"));
         assert.strictEqual(actual, expected);
     });
+});
+
+test("uses the supplied scanner version", () => {
+    const report = JSON.parse(formatter(results, { secretlintVersion: "2.3.4" }));
+    assert.strictEqual(report.runs[0].tool.driver.version, "2.3.4");
+});
+
+test("omits the version for legacy formatter options", () => {
+    const report = JSON.parse(formatter(results, { color: true }));
+    assert.strictEqual(Object.hasOwn(report.runs[0].tool.driver, "version"), false);
+    assert.strictEqual(report.runs[0].tool.driver.name, "secretlint");
+    assert.strictEqual(
+        report.runs[0].results.length,
+        results.reduce((count, result) => count + result.messages.length, 0)
+    );
+});
+
+test("accepts a direct call without formatter options", () => {
+    const report = JSON.parse(formatter(results));
+    assert.strictEqual(Object.hasOwn(report.runs[0].tool.driver, "version"), false);
+    assert.strictEqual(
+        report.runs[0].results.length,
+        results.reduce((count, result) => count + result.messages.length, 0)
+    );
 });
