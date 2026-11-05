@@ -1,0 +1,33 @@
+{
+    "filePath": "[SNAPSHOT]/ng.user-app/input.txt",
+    "messages": [
+        {
+            "message": "found Sentry user app auth token: sntrya_0000000000000000000000000000000000000000000000000000000000000000",
+            "range": [
+                0,
+                71
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-sentry",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 71
+                }
+            },
+            "severity": "error",
+            "messageId": "SENTRY_USER_APP_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-sentry/README.md#SENTRY_USER_APP_TOKEN",
+            "data": {
+                "TOKEN": "sntrya_0000000000000000000000000000000000000000000000000000000000000000"
+            }
+        }
+    ],
+    "sourceContent": "sntrya_0000000000000000000000000000000000000000000000000000000000000000\n",
+    "sourceContentType": "text"
+}
