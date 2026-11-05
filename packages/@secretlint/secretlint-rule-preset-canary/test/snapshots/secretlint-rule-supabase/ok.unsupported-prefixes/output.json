@@ -1,0 +1,6 @@
+{
+    "filePath": "[SNAPSHOT]/ok.unsupported-prefixes/input.txt",
+    "messages": [],
+    "sourceContent": "SBP_0000000000000000000000000000000000000000\nsb_publishable_0000000000000000000000000000000000000000\nsb_secret_0000000000000000000000000000000000000000\nsbp_oauth_v0_0000000000000000000000000000000000000000\nsbp_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nsbp_gggggggggggggggggggggggggggggggggggggggg\nsbp_oauth_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nsbp_oauth_gggggggggggggggggggggggggggggggggggggggg\nsbp_v0_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nsbp_v0_gggggggggggggggggggggggggggggggggggggggg\n",
+    "sourceContentType": "text"
+}
