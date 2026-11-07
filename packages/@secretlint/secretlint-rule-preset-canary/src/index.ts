@@ -26,6 +26,7 @@ import { creator as ruleDocker } from "@secretlint/secretlint-rule-docker";
 import { creator as ruleFigma } from "@secretlint/secretlint-rule-figma";
 import { creator as ruleCloudflare } from "@secretlint/secretlint-rule-cloudflare";
 import { creator as ruleTailscale } from "@secretlint/secretlint-rule-tailscale";
+import { creator as ruleTelegram } from "@secretlint/secretlint-rule-telegram";
 import { creator as ruleFilterComments } from "@secretlint/secretlint-rule-filter-comments";
 
 export const rules = [
@@ -56,6 +57,7 @@ export const rules = [
     ruleFigma,
     ruleCloudflare,
     ruleTailscale,
+    ruleTelegram,
     ruleFilterComments,
 ];
 export type Options = {};

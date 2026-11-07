@@ -1,0 +1,32 @@
+{
+    "filePath": "[SNAPSHOT]/ng.partial-allows/input.txt",
+    "messages": [
+        {
+            "message": "found Telegram bot token: 987654321:ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+            "range": [
+                46,
+                91
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-telegram",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 0
+                },
+                "end": {
+                    "line": 2,
+                    "column": 45
+                }
+            },
+            "severity": "error",
+            "messageId": "TELEGRAM_BOT_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-telegram/README.md#TELEGRAM_BOT_TOKEN",
+            "data": {
+                "ID": "987654321:ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+            }
+        }
+    ],
+    "sourceContent": "123456789:ABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB\n987654321:ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n",
+    "sourceContentType": "text"
+}

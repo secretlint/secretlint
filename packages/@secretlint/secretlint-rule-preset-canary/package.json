@@ -87,6 +87,7 @@
         "@secretlint/secretlint-rule-slack": "workspace:*",
         "@secretlint/secretlint-rule-stripe": "workspace:*",
         "@secretlint/secretlint-rule-tailscale": "workspace:*",
+        "@secretlint/secretlint-rule-telegram": "workspace:*",
         "@secretlint/secretlint-rule-vercel": "workspace:*",
         "@secretlint/tester": "workspace:*",
         "@secretlint/types": "workspace:*",
