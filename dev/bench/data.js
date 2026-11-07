@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794008468132,
+  "lastUpdate": 1794060538748,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -61180,6 +61180,44 @@ window.BENCHMARK_DATA = {
             "range": "±2.25%",
             "unit": "ops/sec",
             "extra": "8 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "29139614+renovate[bot]@users.noreply.github.com",
+            "name": "renovate[bot]",
+            "username": "renovate[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "115e0f07044705c55c900c14983d640d83706875",
+          "message": "Update Patch updates (#1779)\n\nThis PR contains the following updates:\n\n| Package | Change |\n[Age](https://docs.renovatebot.com/merge-confidence/) |\n[Confidence](https://docs.renovatebot.com/merge-confidence/) |\n|---|---|---|---|\n| [rollup](https://rollupjs.org/)\n([source](https://redirect.github.com/rollup/rollup)) | [`^4.67.4` →\n`^4.67.5`](https://renovatebot.com/diffs/npm/rollup/4.67.4/4.67.5) |\n![age](https://developer.mend.io/api/mc/badges/age/npm/rollup/4.67.5?slim=true)\n|\n![confidence](https://developer.mend.io/api/mc/badges/confidence/npm/rollup/4.67.4/4.67.5?slim=true)\n|\n| [table](https://redirect.github.com/gajus/table) | [`^6.9.0` →\n`^6.9.6`](https://renovatebot.com/diffs/npm/table/6.9.0/6.9.6) |\n![age](https://developer.mend.io/api/mc/badges/age/npm/table/6.9.6?slim=true)\n|\n![confidence](https://developer.mend.io/api/mc/badges/confidence/npm/table/6.9.0/6.9.6?slim=true)\n|\n\n⚠️ Renovate does not enforce Minimum Release Age for `bump`,\n`lockfileUpdate`, or `rollback` updates, so these are raised without a\nMinimum Release Age check. You will need to manually validate the\nMinimum Release Age for these package(s).\n\n---\n\n### Release Notes\n\n<details>\n<summary>rollup/rollup (rollup)</summary>\n\n###\n[`v4.67.5`](https://redirect.github.com/rollup/rollup/blob/HEAD/CHANGELOG.md#4675)\n\n[Compare\nSource](https://redirect.github.com/rollup/rollup/compare/v4.67.4...v4.67.5)\n\n*2026-11-04*\n\n##### Bug Fixes\n\n- Do not ignore `output.sourcemapFile` when the `output.file` option is\nnot used\n([#&#8203;6623](https://redirect.github.com/rollup/rollup/issues/6623))\n- Change chunk hash when debug IDs are enabled/disabled\n([#&#8203;6625](https://redirect.github.com/rollup/rollup/issues/6625))\n- Avoid an unnecessary optional dependency on Linux system\n([#&#8203;6627](https://redirect.github.com/rollup/rollup/issues/6627))\n\n##### Pull Requests\n\n- [#&#8203;6623](https://redirect.github.com/rollup/rollup/pull/6623):\nHonor `output.sourcemapFile` when `output.file` is not set\n([@&#8203;simpleqt](https://redirect.github.com/simpleqt))\n- [#&#8203;6625](https://redirect.github.com/rollup/rollup/pull/6625):\nInclude debug ID comments in chunk hashes\n([@&#8203;clean99](https://redirect.github.com/clean99),\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n- [#&#8203;6627](https://redirect.github.com/rollup/rollup/pull/6627):\nDo not publish the build-only\n[@&#8203;napi-rs/lzma-linux-x64-gnu](https://redirect.github.com/napi-rs/lzma-linux-x64-gnu)\noptional dependency\n([@&#8203;christophehurpeau](https://redirect.github.com/christophehurpeau),\n[@&#8203;lukastaegert](https://redirect.github.com/lukastaegert))\n\n</details>\n\n<details>\n<summary>gajus/table (table)</summary>\n\n###\n[`v6.9.6`](https://redirect.github.com/gajus/table/releases/tag/v6.9.6)\n\n[Compare\nSource](https://redirect.github.com/gajus/table/compare/v6.9.5...v6.9.6)\n\n##### Bug Fixes\n\n- preserve terminal hyperlinks when measuring, wrapping and truncating\ncells (fixes\n[#&#8203;113](https://redirect.github.com/gajus/table/issues/113), fixes\n[#&#8203;82](https://redirect.github.com/gajus/table/issues/82))\n([0259054](https://redirect.github.com/gajus/table/commit/0259054fd61f0e10351048aaa6797729c6f5a2f2))\n\n###\n[`v6.9.5`](https://redirect.github.com/gajus/table/releases/tag/v6.9.5)\n\n[Compare\nSource](https://redirect.github.com/gajus/table/compare/v6.9.4...v6.9.5)\n\n##### Bug Fixes\n\n- keep ANSI escape codes intact when truncating cell content (fixes\n[#&#8203;220](https://redirect.github.com/gajus/table/issues/220))\n([67809de](https://redirect.github.com/gajus/table/commit/67809de302827b60cf2ce92b872a0f94d7984db8))\n\n###\n[`v6.9.4`](https://redirect.github.com/gajus/table/releases/tag/v6.9.4)\n\n[Compare\nSource](https://redirect.github.com/gajus/table/compare/v6.9.3...v6.9.4)\n\n##### Bug Fixes\n\n- account for hidden horizontal lines when drawing borders through\nspanning cells (fixes\n[#&#8203;232](https://redirect.github.com/gajus/table/issues/232))\n([3e496f7](https://redirect.github.com/gajus/table/commit/3e496f7dddc4e4d66c2ee4577a50f7c543b796a4))\n\n###\n[`v6.9.3`](https://redirect.github.com/gajus/table/releases/tag/v6.9.3)\n\n[Compare\nSource](https://redirect.github.com/gajus/table/compare/v6.9.2...v6.9.3)\n\n##### Bug Fixes\n\n- measure emoji by display width when wrapping text (fixes\n[#&#8203;210](https://redirect.github.com/gajus/table/issues/210))\n([05e5c6b](https://redirect.github.com/gajus/table/commit/05e5c6b9fe87d05392928377be58a6634d51e95f))\n\n###\n[`v6.9.2`](https://redirect.github.com/gajus/table/releases/tag/v6.9.2)\n\n[Compare\nSource](https://redirect.github.com/gajus/table/compare/v6.9.1...v6.9.2)\n\n##### Bug Fixes\n\n- wrap words by display width so emoji and wide characters are not\ndropped (fixes\n[#&#8203;180](https://redirect.github.com/gajus/table/issues/180))\n([dd71b17](https://redirect.github.com/gajus/table/commit/dd71b17f4b57455ac4c5cad5515e78ed00ef0cad))\n\n###\n[`v6.9.1`](https://redirect.github.com/gajus/table/releases/tag/v6.9.1)\n\n[Compare\nSource](https://redirect.github.com/gajus/table/compare/v6.9.0...v6.9.1)\n\n##### Bug Fixes\n\n- include single-column spans in automatic column widths\n([#&#8203;239](https://redirect.github.com/gajus/table/issues/239))\n([429feb0](https://redirect.github.com/gajus/table/commit/429feb0ea345e3fb21679fff92c9cb1b65d94ec0))\n\n</details>\n\n---\n\n### Configuration\n\n📅 **Schedule**: (in timezone Asia/Tokyo)\n\n- Branch creation\n  - At any time (no schedule defined)\n- Automerge\n  - At any time (no schedule defined)\n\n🚦 **Automerge**: Enabled.\n\n♻ **Rebasing**: Whenever PR is behind base branch, or you tick the\nrebase/retry checkbox.\n\n👻 **Immortal**: This PR will be recreated if closed unmerged. Get\n[config\nhelp](https://redirect.github.com/renovatebot/renovate/discussions) if\nthat's undesired.\n\n---\n\n- [ ] <!-- rebase-check -->If you want to rebase/retry this PR, check\nthis box\n\n---\n\nThis PR was generated by [Mend Renovate](https://mend.io/renovate/).\nView the [repository job\nlog](https://developer.mend.io/github/secretlint/secretlint).\n\n<!--renovate-debug:eyJjcmVhdGVkSW5WZXIiOiI0NC4yMjAuMCIsInVwZGF0ZWRJblZlciI6IjQ0LjIyMC4wIiwidGFyZ2V0QnJhbmNoIjoibWFzdGVyIiwibGFiZWxzIjpbImRlcGVuZGVuY2llcyJdfQ==-->\n\nCo-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>",
+          "timestamp": "2026-11-07T14:07:51Z",
+          "tree_id": "46786451918673fefbe43161bf918f123309937d",
+          "url": "https://github.com/secretlint/secretlint/commit/115e0f07044705c55c900c14983d640d83706875"
+        },
+        "date": 1794060535783,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 4.61,
+            "range": "±1.21%",
+            "unit": "ops/sec",
+            "extra": "16 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 2.31,
+            "range": "±3.17%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
           }
         ]
       }
