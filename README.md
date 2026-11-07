@@ -402,6 +402,7 @@ Secretlint rules has been implemented as separated modules.
 - [@secretlint/secretlint-rule-tailscale](./packages/%40secretlint/secretlint-rule-tailscale)
 - [@secretlint/secretlint-rule-huggingface](./packages/%40secretlint/secretlint-rule-huggingface)
 - [@secretlint/secretlint-rule-notion](./packages/%40secretlint/secretlint-rule-notion)
+- [@secretlint/secretlint-rule-nuntiq](./packages/%40secretlint/secretlint-rule-nuntiq)
 - [@secretlint/secretlint-rule-secp256k1-privatekey](./packages/@secretlint/secretlint-rule-secp256k1-privatekey)
 - [@secretlint/secretlint-rule-no-k8s-kind-secret](./packages/@secretlint/secretlint-rule-no-k8s-kind-secret)
 - [@secretlint/secretlint-rule-pattern](./packages/@secretlint/secretlint-rule-pattern)
