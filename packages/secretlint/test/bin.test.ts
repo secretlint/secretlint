@@ -1,4 +1,5 @@
 import assert from "node:assert";
+import fs from "node:fs/promises";
 import { spawn } from "node:child_process";
 import { once } from "node:events";
 import path from "node:path";
@@ -41,4 +42,25 @@ describe("secretlint bin", () => {
         assert.strictEqual(results[0].sourceContent, input);
         assert.strictEqual(results[0].messages.length, 1);
     });
+});
+
+it("reports the CLI version in SARIF when scanning stdin", async () => {
+    const child = spawn(
+        process.execPath,
+        [
+            binPath,
+            "--stdinFileName=input.txt",
+            `--format=${fileURLToPath(import.meta.resolve("@secretlint/secretlint-formatter-sarif"))}`,
+            `--secretlintrcJSON=${JSON.stringify({ rules: [{ id: "@secretlint/secretlint-rule-example" }] })}`,
+        ],
+        { cwd: packageDirectory, stdio: "pipe" },
+    );
+    const closePromise = once(child, "close");
+    const stdoutPromise = text(child.stdout);
+    const stderrPromise = text(child.stderr);
+    child.stdin.end("SECRET");
+    const [[exitCode], stdout, stderr] = await Promise.all([closePromise, stdoutPromise, stderrPromise]);
+    assert.strictEqual(exitCode, 1, stderr);
+    const packageJson = JSON.parse(await fs.readFile(path.join(packageDirectory, "package.json"), "utf-8"));
+    assert.strictEqual(JSON.parse(stdout).runs[0].tool.driver.version, packageJson.version);
 });

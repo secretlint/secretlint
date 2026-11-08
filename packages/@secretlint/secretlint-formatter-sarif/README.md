@@ -16,6 +16,12 @@ secretlint --format @secretlint/secretlint-formatter-sarif "**/*"
 # output as sarif format
 ```
 
+The CLI passes its scanner version to the formatter as `secretlintVersion`.
+When using `@secretlint/node` or calling the formatter directly, pass the scanner's
+version in the options to include `runs[].tool.driver.version`. If no version is
+provided, the report omits this optional field rather than reporting an incorrect
+version. The formatter package version is not used as the scanner version.
+
 ## Changelog
 
 See [Releases page](https://github.com/secretlint/secretlint/releases).
