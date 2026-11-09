@@ -11,13 +11,14 @@ import { invariant } from "./helper/invariant.js";
  * This class represent of source code.
  */
 export class SecretLintSourceCodeImpl implements SecretLintSourceCode {
-    readonly hasBOM: boolean;
-    readonly content: string;
     readonly filePath: string | undefined;
     readonly physicalFilePath: string | undefined;
     readonly contentType: "binary" | "text" | "unknown";
     readonly ext: string;
-    private structuredSource: StructuredSource;
+    private _getRawContent: (() => string) | undefined;
+    private _rawContent: string | undefined;
+    private _content: string | undefined;
+    private _structuredSource: StructuredSource | undefined;
 
     constructor({
         content = "",
@@ -26,20 +27,56 @@ export class SecretLintSourceCodeImpl implements SecretLintSourceCode {
         physicalFilePath,
         contentType,
     }: {
-        content: string;
+        /**
+         * Content string or a function that returns the content.
+         * The function is called lazily when the content is accessed at first.
+         */
+        content: string | (() => string);
         ext: string;
         filePath: string;
         physicalFilePath: string | undefined;
         contentType: "binary" | "text" | "unknown";
     }) {
         invariant(ext || filePath, "should be set either of fileExt or filePath.");
-        this.hasBOM = content.charCodeAt(0) === 0xfeff;
-        this.content = this.hasBOM ? content.slice(1) : content;
-        this.structuredSource = new StructuredSource(this.content);
+        if (typeof content === "function") {
+            this._getRawContent = content;
+        } else {
+            this._rawContent = content;
+        }
         this.filePath = filePath;
         this.physicalFilePath = physicalFilePath;
         this.contentType = contentType;
         this.ext = ext;
+    }
+
+    private get rawContent(): string {
+        if (this._rawContent === undefined) {
+            this._rawContent = this._getRawContent?.() ?? "";
+            this._getRawContent = undefined;
+        }
+        return this._rawContent;
+    }
+
+    get hasBOM(): boolean {
+        return this.rawContent.charCodeAt(0) === 0xfeff;
+    }
+
+    get content(): string {
+        if (this._content === undefined) {
+            this._content = this.hasBOM ? this.rawContent.slice(1) : this.rawContent;
+        }
+        return this._content;
+    }
+
+    /**
+     * StructuredSource builds the line index of the content.
+     * It is created lazily because most files do not have any report and do not need location info.
+     */
+    private get structuredSource(): StructuredSource {
+        if (this._structuredSource === undefined) {
+            this._structuredSource = new StructuredSource(this.content);
+        }
+        return this._structuredSource;
     }
 
     /**

@@ -71,7 +71,8 @@ export const lintSource = ({ source, options }: SecretLintSourceOptions): Promis
     });
     // Create a SourceCode for linting
     const sourceCode = new SecretLintSourceCodeImpl({
-        content: source.content,
+        // Defer reading non-text content, because it may be decoded lazily and most rules do not read it
+        content: source.contentType === "text" ? source.content : () => source.content,
         filePath: source.filePath,
         physicalFilePath: options.noPhysicFilePath ? undefined : source.filePath,
         ext: source.ext || "",
@@ -129,7 +130,7 @@ export const lintSource = ({ source, options }: SecretLintSourceOptions): Promis
 };
 
 const isRulePreset = (
-    ruleDescriptor: SecretLintCoreConfigUnionRule
+    ruleDescriptor: SecretLintCoreConfigUnionRule,
 ): ruleDescriptor is SecretLintCoreConfigRulePreset => {
     return ruleDescriptor.rule.meta.type === "preset";
 };

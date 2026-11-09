@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import ignore, { type Ignore } from "ignore";
+import { relativeFrom } from "./relative.js";
 
 /**
  * One level of the cascade ignore stack. Each level holds the rules from a
@@ -103,7 +104,7 @@ export const isIgnoredByChain = (chain: IgnoreChain, fullPath: string, isDirecto
     // verdict, so the first level whose verdict is non-empty wins overall.
     // Avoids the buffer + reverse() the root → leaf form needed.
     for (let cur: IgnoreChain | null = chain; cur !== null; cur = cur.parent) {
-        const rel = path.relative(cur.dir, fullPath);
+        const rel = relativeFrom(cur.dir, fullPath);
         // Skip levels whose dir does not contain fullPath. The path leaves
         // the level only when the relative result IS the literal `..`
         // directive or starts with `..` followed by a separator, never

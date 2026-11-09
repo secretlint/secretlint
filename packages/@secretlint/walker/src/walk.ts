@@ -4,6 +4,7 @@ import type { Dirent } from "node:fs";
 import picomatch from "picomatch";
 import { createRootIgnore, extendIgnore, isIgnoredByChain, type IgnoreChain } from "./ignore-stack.js";
 import { isDynamicPattern, splitGlobRoot } from "./glob-root.js";
+import { relativeFrom } from "./relative.js";
 
 /** Public options for {@link walk}. */
 export type WalkOptions = {
@@ -342,7 +343,7 @@ const processEntries = async (
             } else if (ctx.matcher === null) {
                 ctx.results.add(toPosix(full));
             } else {
-                const relFromPatternRoot = toPosix(path.relative(ctx.patternRoot, full));
+                const relFromPatternRoot = toPosix(relativeFrom(ctx.patternRoot, full));
                 if (ctx.matcher(relFromPatternRoot)) ctx.results.add(toPosix(full));
             }
         }),

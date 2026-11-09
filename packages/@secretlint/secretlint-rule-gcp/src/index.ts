@@ -39,6 +39,11 @@ function reportIfFoundPrivateKeyJSONFormat({
     context: SecretLintRuleContext;
     t: SecretLintRuleMessageTranslate<typeof messages>;
 }) {
+    // Skip parsing JSON if the content can not be a service account key
+    // JSON.parse is costly for large json files
+    if (!source.content.includes("private_key_id")) {
+        return;
+    }
     try {
         const credentialObject = JSON.parse(source.content);
         // Private Key Pattern
