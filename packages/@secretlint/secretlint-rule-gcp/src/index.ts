@@ -5,7 +5,7 @@ import {
     SecretLintSourceCode,
 } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
-import path from "node:path";
+import { basename } from "./basename.js";
 import { reportIfFoundPrivateKeyP12Format } from "./reportIfFoundPrivateKeyP12Format.js";
 
 export const messages = {
@@ -60,7 +60,7 @@ function reportIfFoundPrivateKeyJSONFormat({
         }
         context.report({
             message: t("PrivateKeyJSON", {
-                FILE_NAME: source.filePath ? path.basename(source.filePath) : "",
+                FILE_NAME: source.filePath ? basename(source.filePath) : "",
             }),
             range: [0, source.content.length],
         });
