@@ -1,7 +1,15 @@
 import { readdirSync, realpathSync, statSync, type Dirent } from "node:fs";
 import path from "node:path";
 import picomatch from "picomatch";
-import { createRootIgnore, extendIgnore, isIgnoredByChain, type IgnoreChain } from "./ignore-stack.js";
+import {
+    createDirIgnoreState,
+    createRootIgnore,
+    extendIgnore,
+    isIgnoredByChain,
+    isIgnoredInDir,
+    type DirIgnoreState,
+    type IgnoreChain,
+} from "./ignore-stack.js";
 import { isDynamicPattern, splitGlobRoot } from "./glob-root.js";
 import { relativeFrom } from "./relative.js";
 
@@ -79,8 +87,12 @@ type CompiledMatcher = ((relPath: string) => boolean) | null;
  * Returns `null` when there are no patterns so the caller can skip the
  * matcher call entirely on the hot path.
  */
+// Patterns that match every file path, so the matcher can be skipped.
+const MATCH_ALL_PATTERNS = new Set(["**", "**/*"]);
+
 const compileMatcher = (patterns: readonly string[]): CompiledMatcher => {
     if (patterns.length === 0) return null;
+    if (patterns.every((pattern) => MATCH_ALL_PATTERNS.has(pattern))) return null;
     const positives: ((p: string) => boolean)[] = [];
     const negatives: ((p: string) => boolean)[] = [];
     for (const pattern of patterns) {
@@ -253,7 +265,7 @@ const seedAncestorIgnore = (options: {
 const walkSeeded = (absDir: string, chain: IgnoreChain, ctx: WalkContext): void => {
     const entries = safeReaddir(absDir);
     if (entries === null) return;
-    processEntries(absDir, entries, chain, ctx);
+    processEntries(absDir, entries, chain, createDirIgnoreState(chain, absDir, null), ctx);
 };
 
 /**
@@ -261,12 +273,17 @@ const walkSeeded = (absDir: string, chain: IgnoreChain, ctx: WalkContext): void 
  * extend the ignore chain with that directory's ignore file (if any), then
  * process entries.
  */
-const walkSubdir = (absDir: string, parentChain: IgnoreChain, ctx: WalkContext): void => {
+const walkSubdir = (
+    absDir: string,
+    parentChain: IgnoreChain,
+    parentState: DirIgnoreState | null,
+    ctx: WalkContext,
+): void => {
     const entries = safeReaddir(absDir);
     if (entries === null) return;
     const present = presentIgnoreNames(entries, ctx.ignoreFiles);
     const chain = extendIgnore(parentChain, absDir, ctx.ignoreFiles, present);
-    processEntries(absDir, entries, chain, ctx);
+    processEntries(absDir, entries, chain, createDirIgnoreState(chain, absDir, parentState), ctx);
 };
 
 /**
@@ -308,14 +325,22 @@ const resolveEntryKind = (
  * `vendor/` excludes a `vendor → /shared/lib` symlink without us having
  * to consult `/shared/lib`'s rules). Cycles are detected via realpath.
  */
-const processEntries = (absDir: string, entries: readonly Dirent[], chain: IgnoreChain, ctx: WalkContext): void => {
+const processEntries = (
+    absDir: string,
+    entries: readonly Dirent[],
+    chain: IgnoreChain,
+    state: DirIgnoreState,
+    ctx: WalkContext,
+): void => {
+    // `absDir` is normalized, so joining with the separator is the same as `path.join`.
+    const prefix = absDir.endsWith(path.sep) ? absDir : absDir + path.sep;
     for (const entry of entries) {
-        const full = path.join(absDir, entry.name);
+        const full = prefix + entry.name;
         const resolved = resolveEntryKind(full, entry, ctx.followSymlinks, ctx.listSymlinks);
         if (resolved === null) continue;
         const isDir = resolved.kind === "dir";
         // Ignore evaluation always uses the symlink's path, never the resolved target.
-        if (isIgnoredByChain(chain, full, isDir)) continue;
+        if (isIgnoredInDir(state, entry.name, isDir)) continue;
         if (isDir) {
             if (resolved.isSymlink) {
                 let real;
@@ -329,7 +354,7 @@ const processEntries = (absDir: string, entries: readonly Dirent[], chain: Ignor
                 if (ctx.visitedRealPaths.has(real)) continue;
                 ctx.visitedRealPaths.add(real);
             }
-            walkSubdir(full, chain, ctx);
+            walkSubdir(full, chain, state, ctx);
         } else if (ctx.matcher === null) {
             ctx.results.add(toPosix(full));
         } else {
@@ -371,7 +396,7 @@ const handleStaticPath = (options: {
         // to the cascade, so we don't descend into e.g. `node_modules`
         // when the caller asked us to walk it directly.
         if (isIgnoredByChain(parentChain, absPath, true)) return;
-        walkSubdir(absPath, parentChain, {
+        walkSubdir(absPath, parentChain, null, {
             ignoreFiles,
             patternRoot: absPath,
             matcher: null,

@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
-import ignore, { type Ignore } from "ignore";
+import ignore from "ignore";
+import { compileFastIgnore, type FastIgnore, type FastIgnoreResult } from "./fast-ignore.js";
 import { relativeFrom } from "./relative.js";
 
 /**
@@ -18,10 +19,53 @@ import { relativeFrom } from "./relative.js";
 export type IgnoreChain = {
     /** Absolute directory the matcher is rooted at (native separators). */
     dir: string;
-    /** node-ignore matcher carrying ONLY this dir's rules. */
-    matcher: Ignore;
+    /**
+     * Matcher carrying ONLY this dir's rules. Like node-ignore's `test()`,
+     * it also tests the parent directories of the path within this level.
+     */
+    matcher: IgnoreMatcher;
+    /**
+     * The fast matcher that tests only the path, without its parent directories.
+     * undefined when the level uses node-ignore. See {@link createDirIgnoreState}.
+     */
+    leafMatcher: FastIgnore | undefined;
     /** Parent level, or null at the root. */
     parent: IgnoreChain | null;
+};
+
+type IgnoreMatcher = { test(relPosixPath: string): FastIgnoreResult };
+
+const IGNORED: FastIgnoreResult = { ignored: true, unignored: false };
+
+/**
+ * Test the parent directories of the path first, like node-ignore's `test()`.
+ * If a parent directory is ignored, the path is ignored.
+ */
+const withParents = (leafMatcher: FastIgnore): IgnoreMatcher => {
+    return {
+        test(relPosixPath) {
+            for (let index = relPosixPath.indexOf("/"); index !== -1 && index < relPosixPath.length - 1; ) {
+                if (leafMatcher.test(relPosixPath.slice(0, index + 1)).ignored) return IGNORED;
+                index = relPosixPath.indexOf("/", index + 1);
+            }
+            return leafMatcher.test(relPosixPath);
+        },
+    };
+};
+
+/**
+ * Create the matchers of a level for the content of ignore files.
+ * Simple rules are matched without regular expressions by {@link compileFastIgnore}.
+ * When a rule is not supported by it, node-ignore matches all the rules of the level.
+ */
+const createMatchers = (contents: readonly string[]): Pick<IgnoreChain, "matcher" | "leafMatcher"> => {
+    const leafMatcher = compileFastIgnore(contents);
+    if (leafMatcher) {
+        return { matcher: withParents(leafMatcher), leafMatcher };
+    }
+    const matcher = ignore();
+    for (const content of contents) matcher.add(content);
+    return { matcher, leafMatcher: undefined };
 };
 
 /**
@@ -32,7 +76,7 @@ export type IgnoreChain = {
 export const createRootIgnore = (cwd: string, extraPatterns: readonly string[]): IgnoreChain => {
     return {
         dir: cwd,
-        matcher: ignore().add(extraPatterns as string[]),
+        ...createMatchers(extraPatterns),
         parent: null,
     };
 };
@@ -75,9 +119,91 @@ export const extendIgnore = (
     const contents = reads.filter((c): c is string => c !== null && c.trim().length > 0);
     if (contents.length === 0) return parent;
 
-    const matcher = ignore();
-    for (const content of contents) matcher.add(content);
-    return { dir, matcher, parent };
+    return { dir, ...createMatchers(contents), parent };
+};
+
+/**
+ * Return the path of `fullPath` relative to the level's directory in POSIX form,
+ * or null when the path is not inside the directory.
+ */
+const relativeInLevel = (level: IgnoreChain, fullPath: string): string | null => {
+    const rel = relativeFrom(level.dir, fullPath);
+    // Skip levels whose dir does not contain fullPath. The path leaves
+    // the level only when the relative result IS the literal `..`
+    // directive or starts with `..` followed by a separator, never
+    // when it merely starts with two dots in a directory name like
+    // `..config/file`.
+    if (rel === "" || rel === ".." || rel.startsWith(`..${path.sep}`) || path.isAbsolute(rel)) return null;
+    return path.sep === "\\" ? rel.replaceAll("\\", "/") : rel;
+};
+
+/**
+ * The ignore state of a directory that the walker reads.
+ * The entries of the directory are tested by {@link isIgnoredInDir}.
+ */
+export type DirIgnoreState = {
+    /** The levels of the chain that contain the directory, leaf → root */
+    levels: {
+        level: IgnoreChain;
+        /** The directory relative to the level's directory in POSIX form, with a trailing `/`. "" for the level's directory itself. */
+        relDir: string;
+        /**
+         * true if this level ignores the directory or one of its parent directories within the level.
+         * Always false for a node-ignore level, because node-ignore tests the parent directories itself.
+         */
+        parentIgnored: boolean;
+    }[];
+};
+
+/**
+ * Create the ignore state of `absDir` whose entries are tested with `chain`.
+ *
+ * The fast matcher tests only the path. To keep the result of
+ * {@link isIgnoredByChain}, which also tests the parent directories, this
+ * remembers for each level whether the level ignores a parent directory.
+ * With `parent` (the state of the parent directory), it tests only `absDir`
+ * for each level, so the walker tests each directory once per level.
+ */
+export const createDirIgnoreState = (
+    chain: IgnoreChain,
+    absDir: string,
+    parent: DirIgnoreState | null,
+): DirIgnoreState => {
+    const levels: DirIgnoreState["levels"] = [];
+    for (let cur: IgnoreChain | null = chain; cur !== null; cur = cur.parent) {
+        let relDir: string;
+        if (cur.dir === absDir) {
+            relDir = "";
+        } else {
+            const rel = relativeInLevel(cur, absDir);
+            // The entries of the directory are not in this level
+            if (rel === null) continue;
+            relDir = `${rel}/`;
+        }
+        let parentIgnored = false;
+        if (cur.leafMatcher && relDir !== "") {
+            const parentLevel = parent?.levels.find((item) => item.level === cur);
+            parentIgnored = parentLevel
+                ? parentLevel.parentIgnored || cur.leafMatcher.test(relDir).ignored
+                : cur.matcher.test(relDir).ignored;
+        }
+        levels.push({ level: cur, relDir, parentIgnored });
+    }
+    return { levels };
+};
+
+/**
+ * Same as {@link isIgnoredByChain} for the entry `name` of the directory of `state`.
+ */
+export const isIgnoredInDir = (state: DirIgnoreState, name: string, isDirectory: boolean): boolean => {
+    for (const { level, relDir, parentIgnored } of state.levels) {
+        if (parentIgnored) return true;
+        const target = isDirectory ? `${relDir}${name}/` : relDir + name;
+        const r = (level.leafMatcher ?? level.matcher).test(target);
+        if (r.ignored) return true;
+        if (r.unignored) return false;
+    }
+    return false;
 };
 
 /**
@@ -104,14 +230,8 @@ export const isIgnoredByChain = (chain: IgnoreChain, fullPath: string, isDirecto
     // verdict, so the first level whose verdict is non-empty wins overall.
     // Avoids the buffer + reverse() the root → leaf form needed.
     for (let cur: IgnoreChain | null = chain; cur !== null; cur = cur.parent) {
-        const rel = relativeFrom(cur.dir, fullPath);
-        // Skip levels whose dir does not contain fullPath. The path leaves
-        // the level only when the relative result IS the literal `..`
-        // directive or starts with `..` followed by a separator, never
-        // when it merely starts with two dots in a directory name like
-        // `..config/file`.
-        if (rel === "" || rel === ".." || rel.startsWith(`..${path.sep}`) || path.isAbsolute(rel)) continue;
-        const relPosix = path.sep === "\\" ? rel.replaceAll("\\", "/") : rel;
+        const relPosix = relativeInLevel(cur, fullPath);
+        if (relPosix === null) continue;
         const target = isDirectory ? `${relPosix}/` : relPosix;
         const r = cur.matcher.test(target);
         if (r.ignored) return true;
