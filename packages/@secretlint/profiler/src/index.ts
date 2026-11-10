@@ -103,7 +103,8 @@ export type SecretLintProfilerOptions = {
     /**
      * If `enabled` is `false`, the profiler does not do anything.
      * `mark()` becomes no-op and `PerformanceObserver` is not started.
-     * Default: true
+     * Profiling costs performance, so it is opt-in.
+     * Default: false
      */
     enabled?: boolean;
 };
@@ -131,7 +132,7 @@ export class SecretLintProfiler {
     constructor(options: SecretLintProfilerOptions) {
         this.perf = options.perf;
         this.PerformanceObserver = options.PerformanceObserver;
-        this.enabled = options.enabled ?? true;
+        this.enabled = options.enabled ?? false;
     }
 
     get isEnabled(): boolean {

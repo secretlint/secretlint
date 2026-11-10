@@ -45,6 +45,21 @@ process.exitCode = result.ok ? 0 : 1;
 
 `maskSecrets: true` hides detected secret values in lint messages.
 
+`profile: true` enables the profiler of [`@secretlint/profiler`](../profiler). The profiler is disabled by default because profiling costs performance.
+
+```js
+import { createEngine } from "@secretlint/node";
+import { secretLintProfiler } from "@secretlint/profiler";
+
+const engine = await createEngine({
+    cwd: process.cwd(),
+    formatter: "stylish",
+    profile: true
+});
+await engine.executeOnFiles({ filePathList: process.argv.slice(2) });
+const measures = await secretLintProfiler.getMeasures();
+```
+
 `executeOnFiles` returns an object with the formatted `output` string and an `ok` flag. `ok` is `false` if any file has a lint message. Configuration and file-reading errors reject the promise.
 
 ## Changelog
