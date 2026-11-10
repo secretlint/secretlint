@@ -24,7 +24,7 @@ describe("extendIgnore (chain) and isIgnoredByChain", () => {
         // .gitignore (also `*.log`). Both layers contribute.
         const root = createRootIgnore(fixtureDir, ["*.log"]);
         const parentDir = path.join(fixtureDir, "parent");
-        const child = await extendIgnore(root, parentDir, [".gitignore"]);
+        const child = extendIgnore(root, parentDir, [".gitignore"]);
         expect(isIgnoredByChain(child, path.join(parentDir, "debug.log"), false)).toBe(true);
     });
 
@@ -34,8 +34,8 @@ describe("extendIgnore (chain) and isIgnoredByChain", () => {
         const parentDir = path.join(fixtureDir, "parent");
         const childDir = path.join(parentDir, "child");
         const root = createRootIgnore(parentDir, []);
-        const parent = await extendIgnore(root, parentDir, [".gitignore"]);
-        const chain = await extendIgnore(parent, childDir, [".gitignore"]);
+        const parent = extendIgnore(root, parentDir, [".gitignore"]);
+        const chain = extendIgnore(parent, childDir, [".gitignore"]);
 
         // Parent's `*.log` matches anywhere under parent.
         expect(isIgnoredByChain(chain, path.join(parentDir, "debug.log"), false)).toBe(true);
@@ -57,14 +57,14 @@ describe("extendIgnore (chain) and isIgnoredByChain", () => {
     it("returns parent unchanged when no ignore file present", async () => {
         const root = createRootIgnore(fixtureDir, ["*.log"]);
         const childDir = path.join(fixtureDir, "parent", "child");
-        const child = await extendIgnore(root, childDir, [".no-such-file"]);
+        const child = extendIgnore(root, childDir, [".no-such-file"]);
         expect(child).toBe(root);
     });
 
     it("supports multiple ignore file names", async () => {
         const parentDir = path.join(fixtureDir, "parent");
         const root = createRootIgnore(parentDir, []);
-        const chain = await extendIgnore(root, parentDir, [".secretlintignore", ".gitignore"]);
+        const chain = extendIgnore(root, parentDir, [".secretlintignore", ".gitignore"]);
         expect(isIgnoredByChain(chain, path.join(parentDir, "debug.log"), false)).toBe(true);
     });
 

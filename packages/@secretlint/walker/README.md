@@ -1,6 +1,6 @@
 # @secretlint/walker
 
-Promise-based file system walker with nested `.gitignore` cascade support.
+File system walker with nested `.gitignore` cascade support.
 
 ## Install
 
@@ -36,6 +36,12 @@ const files = await walk({
 | `listSymlinks` | `boolean` | `false` | Only when `followSymlinks` is `false`: return symlink entries by their own path, like regular files, without resolving or reading the target. |
 
 Returns absolute paths with POSIX-form separators.
+
+### `walkSync(options): string[]`
+
+Synchronous version of `walk()`. It takes the same options.
+
+`walk()` runs the same synchronous walk internally and returns the result as a promise, because reading directories with the promise-based `fs` API is much slower when walking many files. I/O errors are reported as a rejected promise.
 
 ## Pattern syntax
 
