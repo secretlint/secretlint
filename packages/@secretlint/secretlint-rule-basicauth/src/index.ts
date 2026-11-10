@@ -108,7 +108,8 @@ export const creator = defineRule<Options>({
             // Using possessive quantifiers to prevent ReDoS
             pattern:
                 /(?<protocol>(?:https?|ftp|ftps)):\/\/(?<user>[-a-zA-Z0-9_]{1,256}):(?<password>[-a-zA-Z0-9_]{1,256})@[-a-zA-Z0-9%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b/g,
-            keywords: ["://"],
+            // every match starts with one of the protocols
+            keywords: ["http://", "https://", "ftp://", "ftps://"],
             scope: "line",
             report(match, context) {
                 const username = match.groups?.user;
