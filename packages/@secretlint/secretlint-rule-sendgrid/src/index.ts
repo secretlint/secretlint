@@ -31,6 +31,8 @@ export const creator = defineRule<Options>({
         {
             pattern: /(?<!\p{L})SG\.\w{1,128}\.\w{1,128}([-_]?)\w{1,128}(?!\w)/gu,
             keywords: ["SG."],
+            // "sg." appears often in lower case, such as "msg."
+            caseSensitiveKeywords: true,
             scope: "line",
             report(match, context) {
                 // send grid api key is 69 characters long

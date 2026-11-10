@@ -136,6 +136,40 @@ describe("lintSource with patterns", () => {
         assert.deepStrictEqual(result.messages, []);
         assert.strictEqual(state.contentReads, 0);
     });
+    it("should match keywords case-sensitively if caseSensitiveKeywords is true", async () => {
+        const createRule = (caseSensitiveKeywords: boolean) => {
+            return createPatternRule([
+                tokenPattern({ pattern: /SG\.[a-z0-9]{4}/g, keywords: ["SG."], caseSensitiveKeywords }),
+                // the same keyword text of another pattern stays case-insensitive
+                tokenPattern({ pattern: /sg\.[A-Z]{4}/gi, keywords: ["sg."] }),
+            ]);
+        };
+        const content = "msg.x()\nkey = SG.ab12\nsg.WXYZ\n";
+        for (const caseSensitiveKeywords of [true, false]) {
+            const { messages } = await lintBoth(content, toConfig(createRule(caseSensitiveKeywords)));
+            assert.deepStrictEqual(toRangeTexts(content, messages), ["SG.ab12", "sg.WXYZ"]);
+        }
+        // a file that has the keyword only in another case is not read
+        const rule = createPatternRule([
+            tokenPattern({
+                pattern: /SG\.[a-z0-9]{4}/g,
+                keywords: ["SG."],
+                scope: "file",
+                caseSensitiveKeywords: true,
+            }),
+        ]);
+        const { bytesSource, state } = createSources("msg.send()\nsg.ab12\n");
+        const result = await lintSource({ source: bytesSource, options: { config: toConfig(rule) } });
+        assert.deepStrictEqual(result.messages, []);
+        assert.strictEqual(state.contentReads, 0);
+        // without the option, the "file" scope pattern needs the content
+        const insensitiveRule = createPatternRule([
+            tokenPattern({ pattern: /SG\.[a-z0-9]{4}/g, keywords: ["SG."], scope: "file" }),
+        ]);
+        const insensitive = createSources("msg.send()\nsg.ab12\n");
+        await lintSource({ source: insensitive.bytesSource, options: { config: toConfig(insensitiveRule) } });
+        assert.ok(insensitive.state.contentReads > 0);
+    });
     it("should run a 'line' scope pattern on each line", async () => {
         // `^` and `$` are the start and the end of a line in the "line" scope
         const rule = createPatternRule([tokenPattern({ pattern: /^tok_[a-z0-9]{4}$/ })]);

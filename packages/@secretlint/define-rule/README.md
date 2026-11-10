@@ -58,6 +58,8 @@ So a rule does not cost for the files that do not have its keywords.
 - `pattern`: the regular expression that finds the secret. Secretlint finds all matches, regardless of the "g" flag.
 - `keywords`: every match of the pattern must contain one of the keywords. Keywords are matched ASCII case-insensitively.
   If `keywords` is not defined, the pattern runs for all content.
+- `caseSensitiveKeywords`: if `true`, the keywords are matched case-sensitively. Use it when the pattern is case-sensitive
+  and the keywords appear often in another case. For example, `["SG."]` should not run the pattern for `msg.`.
 - `scope`:
     - `"file"` (default): the pattern runs on the whole content.
     - `"line"`: the pattern runs on each line that contains a keyword. A line includes its line break.

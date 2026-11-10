@@ -80,6 +80,10 @@ type CompiledPattern = {
     regex: RegExp;
     scope: "line" | "file";
     keywords: string[] | undefined;
+    /**
+     * true if the keywords are matched case-sensitively
+     */
+    caseSensitiveKeywords: boolean;
 };
 /**
  * A rule in a view
@@ -145,13 +149,13 @@ const isRule = (ruleDescriptor: SecretLintCoreConfigUnionRule): ruleDescriptor i
  * Normalize keywords.
  * Return undefined if the pre-filter can not be used: no keywords, empty keywords, or an invalid keyword.
  */
-const normalizeKeywords = (keywords: unknown): string[] | undefined => {
+const normalizeKeywords = (keywords: unknown, caseSensitive: boolean = false): string[] | undefined => {
     if (!Array.isArray(keywords) || keywords.length === 0) {
         return undefined;
     }
     const normalized: string[] = [];
     for (const keyword of keywords) {
-        const normalizedKeyword = normalizeKeyword(keyword);
+        const normalizedKeyword = normalizeKeyword(keyword, caseSensitive);
         if (normalizedKeyword === undefined) {
             return undefined;
         }
@@ -174,7 +178,8 @@ const compilePatterns = (rule: SecretLintRuleCreator<any>): CompiledPattern[] | 
         return undefined;
     }
     return patterns.map((pattern) => {
-        const keywords = normalizeKeywords(pattern.keywords);
+        const caseSensitiveKeywords = pattern.caseSensitiveKeywords === true;
+        const keywords = normalizeKeywords(pattern.keywords, caseSensitiveKeywords);
         // A line is found by its keyword, so "line" needs keywords.
         // A keyword with a line break does not tell which line the pattern should run on.
         const canUseLineScope =
@@ -184,6 +189,7 @@ const compilePatterns = (rule: SecretLintRuleCreator<any>): CompiledPattern[] | 
             regex: toGlobalRegExp(pattern.pattern),
             scope: canUseLineScope ? "line" : "file",
             keywords,
+            caseSensitiveKeywords,
         };
     });
 };
@@ -368,18 +374,32 @@ const createView = (plan: LintPlan, contentType: ContentType): PlanView => {
     const keywordsOfRule = (rule: PlanRule): string[] | undefined => {
         return contentType === "text" ? rule.keywords : undefined;
     };
-    const allKeywords = new Set<string>();
+    // A keyword is identified by its text and whether it is case-sensitive
+    const keywordKey = (keyword: string, caseSensitive: boolean) => `${caseSensitive ? "S" : "I"}${keyword}`;
+    const allKeywords = new Map<string, { keyword: string; caseSensitive: boolean }>();
+    const addKeywords = (keywords: string[] | undefined, caseSensitive: boolean) => {
+        keywords?.forEach((keyword) => {
+            allKeywords.set(keywordKey(keyword, caseSensitive), { keyword, caseSensitive });
+        });
+    };
     for (const rule of targets) {
         if (rule.patterns) {
-            rule.patterns.forEach((pattern) => pattern.keywords?.forEach((keyword) => allKeywords.add(keyword)));
+            rule.patterns.forEach((pattern) => addKeywords(pattern.keywords, pattern.caseSensitiveKeywords));
         } else {
-            keywordsOfRule(rule)?.forEach((keyword) => allKeywords.add(keyword));
+            addKeywords(keywordsOfRule(rule), false);
         }
     }
-    const matcher = allKeywords.size > 0 ? getKeywordMatcher([...allKeywords].sort()) : undefined;
-    const indexOf = new Map((matcher?.keywords ?? []).map((keyword, index) => [keyword, index]));
-    const toIndexes = (keywords: string[] | undefined): number[] | undefined => {
-        return keywords?.map((keyword) => indexOf.get(keyword) as number);
+    const sortedKeys = [...allKeywords.keys()].sort();
+    const matcher =
+        sortedKeys.length > 0
+            ? getKeywordMatcher(
+                  sortedKeys.map((key) => (allKeywords.get(key) as { keyword: string }).keyword),
+                  sortedKeys.map((key) => (allKeywords.get(key) as { caseSensitive: boolean }).caseSensitive),
+              )
+            : undefined;
+    const indexOf = new Map(sortedKeys.map((key, index) => [key, index]));
+    const toIndexes = (keywords: string[] | undefined, caseSensitive: boolean = false): number[] | undefined => {
+        return keywords?.map((keyword) => indexOf.get(keywordKey(keyword, caseSensitive)) as number);
     };
     const keywordPatterns: PlanPattern[] = [];
     const linePatternsOfKeyword: PlanPattern[][] = (matcher?.keywords ?? []).map(() => []);
@@ -397,7 +417,7 @@ const createView = (plan: LintPlan, contentType: ContentType): PlanView => {
             const planPattern: PlanPattern = {
                 regex: pattern.regex,
                 scope: pattern.scope,
-                keywordIndexes: toIndexes(pattern.keywords),
+                keywordIndexes: toIndexes(pattern.keywords, pattern.caseSensitiveKeywords),
                 report: pattern.source.report,
                 lines: [],
                 lastLineEnd: -1,

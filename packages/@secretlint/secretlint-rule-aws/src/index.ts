@@ -88,6 +88,8 @@ export const creator = defineRule<Options>({
         {
             pattern: AWSAccessKeyIDPattern,
             keywords: ["A3T", "AKIA", "AGPA", "AIDA", "AROA", "AIPA", "ANPA", "ANVA", "ASIA"],
+            // the prefixes are upper case only. "asia" and "aida" appear often in lower case
+            caseSensitiveKeywords: true,
             scope: "line",
             report(match, context) {
                 if (!context.options.enableIDScanRule) {
@@ -113,7 +115,8 @@ export const creator = defineRule<Options>({
         {
             // The connector between the name and the value may include line breaks, so the scope is "file"
             pattern: AWSAccountIDPattern,
-            keywords: ["account"],
+            keywords: ["ACCOUNT", "account", "Account"],
+            caseSensitiveKeywords: true,
             scope: "file",
             report(match, context) {
                 if (!context.options.enableIDScanRule) {

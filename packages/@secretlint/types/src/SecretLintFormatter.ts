@@ -8,5 +8,5 @@ export type SecretLintFormatterOptions = {
 };
 export type SecretLintFormatter = (
     results: SecretLintCoreResult[],
-    formatterConfig: SecretLintFormatterOptions
+    formatterConfig: SecretLintFormatterOptions,
 ) => string;

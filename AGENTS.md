@@ -150,7 +150,7 @@ A rule that needs code other than regular expressions (e.g. checks the file name
 - **Always export `creator` and `messages`** from `src/index.ts`
 - **`meta.id`** must match the npm package name exactly
 - **`meta.type`** is `"scanner"` for detection rules, `"filter"` for rules that suppress other rules' reports
-- **`keywords`** of a pattern lists ASCII strings that every match of the pattern contains, such as a token prefix (ASCII case-insensitive). Every string the pattern can report must contain at least one keyword, or the rule misses it. Omit `keywords` if no such string exists; the pattern then runs for all content
+- **`keywords`** of a pattern lists ASCII strings that every match of the pattern contains, such as a token prefix (ASCII case-insensitive). Every string the pattern can report must contain at least one keyword, or the rule misses it. Omit `keywords` if no such string exists; the pattern then runs for all content. Make keywords as specific as the pattern allows (`"http://"` instead of `"://"`), and set `caseSensitiveKeywords: true` if the pattern is case-sensitive and the keyword is common in another case (`"SG."` vs `"msg."`)
 - **`scope: "line"`** runs the pattern only on the lines that contain a keyword. Use it only if a match never includes a line break and the result does not depend on other lines. Otherwise use `"file"` (default)
 - **`@secretlint/tester` checks `keywords` and `scope`**: for each snapshot it compares the result with the result of running the patterns on the whole content, and fails if they differ
 - **`meta.keywords`** (optional, for rules with `create()`) skips the rule if the text content contains none of the keywords. Keywords are not checked for binary content. `defineRule()` sets it from the patterns

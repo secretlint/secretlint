@@ -124,7 +124,7 @@ export type SecretLintRulePattern<Options = SecretLintRuleCreatorOptions> = {
      * Keywords for pre-filtering.
      * Secretlint runs the pattern only when the content contains at least one of the keywords.
      *
-     * - Keywords are matched ASCII case-insensitively.
+     * - Keywords are matched ASCII case-insensitively, unless `caseSensitiveKeywords` is true.
      * - Every match of the pattern must contain one of the keywords.
      *   If `scope` is "line", the line of the match must contain one of the keywords.
      * - Empty keywords and non-ASCII keywords disable the pre-filter for the pattern.
@@ -132,6 +132,14 @@ export type SecretLintRulePattern<Options = SecretLintRuleCreatorOptions> = {
      * Default: undefined (the pattern runs for all content)
      */
     keywords?: string[];
+    /**
+     * If true, the keywords are matched case-sensitively.
+     * Use it when the pattern is case-sensitive and the keywords appear often in another case.
+     * For example, `/SG\.\w+/` with `["SG."]` should not run for "msg.".
+     *
+     * Default: false (ASCII case-insensitive)
+     */
+    caseSensitiveKeywords?: boolean;
     /**
      * The scope that the pattern needs to see.
      *

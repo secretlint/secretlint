@@ -129,4 +129,102 @@ describe("keyword-matcher", () => {
             assert.deepStrictEqual(scanPositions([], "abc"), { found: false, positions: [], flags: [] });
         });
     });
+    describe("case-sensitive keywords", () => {
+        const scanKeywords = (keywords: string[], caseSensitive: boolean[], input: string | Uint8Array) => {
+            const matcher = createKeywordMatcher(keywords, caseSensitive);
+            const hits = matcher.createHits();
+            const found = matcher.scan(input, hits);
+            const positions: [string[], number][] = [];
+            for (let i = 0; i < hits.count; i++) {
+                positions.push([
+                    matcher.keywordsOfState(hits.positions[i * 2] as number).map((index) => keywords[index] as string),
+                    hits.positions[i * 2 + 1] as number,
+                ]);
+            }
+            return { found, positions, flags: [...hits.found] };
+        };
+        const forTextAndBytes = (text: string, test: (input: string | Uint8Array) => void) => {
+            test(text);
+            test(new TextEncoder().encode(text));
+        };
+        it("finds a case-sensitive keyword only in the same case", () => {
+            forTextAndBytes("msg.x sg.y SG.z Sg.", (input) => {
+                assert.deepStrictEqual(scanKeywords(["SG."], [true], input), {
+                    found: true,
+                    positions: [[["SG."], 13]],
+                    flags: [1],
+                });
+            });
+            forTextAndBytes("msg.x sg.y", (input) => {
+                assert.deepStrictEqual(scanKeywords(["SG."], [true], input), {
+                    found: false,
+                    positions: [],
+                    flags: [0],
+                });
+            });
+        });
+        it("finds case-insensitive keywords as before", () => {
+            forTextAndBytes("AKIA akia GHP_ ghp_", (input) => {
+                assert.deepStrictEqual(scanKeywords(["AKIA", "ghp_"], [true, false], input), {
+                    found: true,
+                    positions: [
+                        [["AKIA"], 3],
+                        [["ghp_"], 13],
+                        [["ghp_"], 18],
+                    ],
+                    flags: [1, 1],
+                });
+            });
+        });
+        it("keeps the other keywords that end at the same index", () => {
+            // "abc" (case-sensitive), "ABC" (case-sensitive), "bc" (case-insensitive) end at the same index
+            const keywords = ["abc", "ABC", "bc"];
+            const caseSensitive = [true, true, false];
+            forTextAndBytes("abc ABC aBc Abc", (input) => {
+                assert.deepStrictEqual(scanKeywords(keywords, caseSensitive, input).positions, [
+                    [["abc", "bc"], 2],
+                    [["ABC", "bc"], 6],
+                    [["bc"], 10],
+                    [["bc"], 14],
+                ]);
+            });
+        });
+        it("resets the hits for each scan", () => {
+            const matcher = createKeywordMatcher(["SG."], [true]);
+            const hits = matcher.createHits();
+            assert.strictEqual(matcher.scan("SG. SG.", hits), true);
+            assert.strictEqual(hits.count, 2);
+            assert.strictEqual(matcher.scan("sg. sg.", hits), false);
+            assert.strictEqual(hits.count, 0);
+            assert.deepStrictEqual([...hits.found], [0]);
+        });
+        it("caches the matcher by the keywords and their case-sensitivity", () => {
+            assert.strictEqual(getKeywordMatcher(["x"], [true]), getKeywordMatcher(["x"], [true]));
+            assert.notStrictEqual(getKeywordMatcher(["x"], [true]), getKeywordMatcher(["x"]));
+            assert.strictEqual(getKeywordMatcher(["x"], [false]), getKeywordMatcher(["x"]));
+        });
+        it("matches the same as String#includes on random texts", () => {
+            const alphabet = "abAB_.";
+            const random = (length: number) =>
+                Array.from({ length }, () => alphabet[Math.floor(Math.random() * alphabet.length)]).join("");
+            for (let i = 0; i < 300; i++) {
+                const keywords = Array.from(new Set(Array.from({ length: 5 }, () => random(1 + (i % 4)))));
+                const caseSensitive = keywords.map(() => Math.random() < 0.5);
+                const normalized = keywords.map((keyword, index) =>
+                    caseSensitive[index] ? keyword : keyword.toLowerCase(),
+                );
+                const text = random(Math.floor(Math.random() * 40));
+                const expected = normalized.map((keyword, index) =>
+                    (caseSensitive[index] ? text.includes(keyword) : text.toLowerCase().includes(keyword)) ? 1 : 0,
+                );
+                forTextAndBytes(text, (input) => {
+                    assert.deepStrictEqual(
+                        scanKeywords(normalized, caseSensitive, input).flags,
+                        expected,
+                        JSON.stringify({ normalized, caseSensitive, text }),
+                    );
+                });
+            }
+        });
+    });
 });
