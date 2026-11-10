@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794269442012,
+  "lastUpdate": 1794269576600,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -61294,6 +61294,44 @@ window.BENCHMARK_DATA = {
             "range": "±0.62%",
             "unit": "ops/sec",
             "extra": "10 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "94c586246b4d86a387a864f240cf377d4f67f9dd",
+          "message": "fix(profiler): disable the profiler by default and add `profile` option to createEngine (#1784)\n\n<!-- claude-projects-attribution: {\"github_login\":\"azu\"} -->\n_Requested by **azu** · [project\nthread](https://claude.ai/code/project/chan_01ChfsKF1sN6vYsJMPZ7PuDt?thread=cmsg_01ChfsKF1sN6vYsJMPZ7PuDtANAacwyGzs1HA1tXUWLNQi)_\n\n## Summary\n\n#1673 made the CLI enable the profiler only with `--profile`, but the\nAPI default stayed `enabled: true`. So library users\n(`@secretlint/node`, `@secretlint/core`) still pay for\n`performance.mark()` on every rule and file unless they call\n`secretLintProfiler.setEnabled(false)` themselves. Profiling that nobody\nasked for is a bug, the same one as #1633 on the API side.\n\nThis PR makes profiling opt-in for the API too.\n\n- `@secretlint/profiler`: `enabled` is `false` by default\n- `@secretlint/node`: add `profile?: boolean` to `createEngine()`\n    - `true`: enable the profiler, `false`: disable it\n- not defined: the engine does not touch the shared profiler state, so\n`secretLintProfiler.setEnabled(true)` before `createEngine()` still\nworks\n- The CLI is unchanged (`--profile` already controls it)\n\n## Behavior change\n\n`secretLintProfiler.getMeasures()` / `getEntries()` return an empty\narray unless the profiler is enabled. To get the profiling result:\n\n```js\nconst engine = await createEngine({ formatter: \"stylish\", profile: true });\n// or\nsecretLintProfiler.setEnabled(true);\n```\n\n## Benchmark\n\n`createEngine()` + `executeOnFiles()` without touching the profiler,\nNode.js 22.23.4, 4 CPUs, `@secretlint/secretlint-rule-preset-recommend`,\nmedian of 5 runs. Both sides are measured on `master` (without #1783).\n\n| Target | Files | Before | After | |\n| --- | ---: | ---: | ---: | ---: |\n| textlint repo (git archive) | 1,443 | 938ms | 597ms | -36% |\n| textlint repo × 10 | 14,431 | 7,905ms | 4,638ms | -41% |\n\nCLI time does not change.\n\n## Test\n\n- `pnpm run build && pnpm test` pass\n- `@secretlint/profiler`: default state test updated; tests that need\nmarks pass `enabled: true`\n- `@secretlint/node`: added tests for `profile` (default, `true`,\n`false`, not defined)\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nhttps://claude.ai/code/session_01TSdrAJ9qBGarEw5h5SNwvz\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-11-10T09:11:19+09:00",
+          "tree_id": "753299447abf44a51c3436a5bb0e04f3520c67be",
+          "url": "https://github.com/secretlint/secretlint/commit/94c586246b4d86a387a864f240cf377d4f67f9dd"
+        },
+        "date": 1794269571893,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 3.78,
+            "range": "±1.87%",
+            "unit": "ops/sec",
+            "extra": "14 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 2.7,
+            "range": "±1.33%",
+            "unit": "ops/sec",
+            "extra": "11 samples"
           }
         ]
       }
