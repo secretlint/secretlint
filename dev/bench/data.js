@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794088319960,
+  "lastUpdate": 1794269442012,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -61254,6 +61254,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 2.22,
             "range": "±21.81%",
+            "unit": "ops/sec",
+            "extra": "10 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "28ce146e00dd26b93f0bfa5cc40b4cb586065b4c",
+          "message": "perf: speed up linting many files (#1783)\n\n<!-- claude-projects-attribution: {\"github_login\":\"azu\"} -->\n_Requested by **azu** · [project\nthread](https://claude.ai/code/project/chan_01ChfsKF1sN6vYsJMPZ7PuDt?thread=cmsg_01ChfsKF1sN6vYsJMPZ7PuDtANAacwyGzs1HA1tXUWLNQi)_\n\n## Summary\n\nProfiled `secretlint \"**/*\"` with `--cpu-prof` and fixed the largest hot\nspots. Lint results are unchanged.\n\n| Change | Why |\n| --- | --- |\n| `source-creator`: `fs.readFileSync` instead of `fs/promises`\n`readFile` | `fs/promises` `readFile` needs several thread-pool round\ntrips (open/fstat/read/close) per file; it was the biggest cost (~1.6s\nof 4.3s). See https://github.com/nodejs/node/issues/37583 |\n| `source-creator` + `core`: decode non-text content lazily | UTF-8\ndecoding binary files (png etc.) was ~370ms; only rules that support\nbinary (`gcp` for `.p12`) read it |\n| `core`: create `StructuredSource` lazily | Line index is only needed\nwhen a message is reported |\n| `secretlint-rule-gcp`: skip `JSON.parse` when content has neither\n`private_key_id` nor `\\u` | Every `.json` file was parsed. `\\u` keeps\nescaped keys such as `private_key_id` detected |\n| `walker`: prefix-check fast path instead of `path.relative` |\n`path.relative` (resolve/normalize) was called for every entry × ignore\nlevel |\n\n## Benchmark\n\nNode.js 22.23.4, 4 CPUs, `.secretlintrc.json` with\n`@secretlint/secretlint-rule-preset-recommend`, default formatter,\nmedian wall time of 5–7 runs.\n\n| Target | Files | Before | After | |\n| --- | ---: | ---: | ---: | ---: |\n| textlint repo (git archive) | 1,443 | 639ms | 404ms | -37% |\n| textlint repo × 10 | 14,431 | 4,315ms | 1,971ms | -54% |\n| secretlint repo (`pnpm lint` target) | — | 334ms | 272ms | -19% |\n\n## Compatibility\n\n- `--format json --no-maskSecrets` output was compared before/after on\nthe textlint corpus and on ~400 rule snapshot inputs + binary files + a\nBOM file: identical (after sorting by file path; file order is already\nnon-deterministic because of the walker).\n- `SecretLintSourceCodeImpl` constructor now also accepts `content: ()\n=> string` (internal class). `content` / `hasBOM` became getters with\nthe same values.\n- `createRawSource` now blocks the event loop while reading each file.\nFor a CLI this is faster; for very slow file systems it could matter.\n\n## Test\n\n- `pnpm run build && pnpm test` pass\n- Added tests: `walker/test/relative.test.ts`,\n`core/test/SecretLintSourceCodeImpl.test.ts`, source-creator content\ntests, gcp `ng.privatekey-json-escaped-key` snapshot\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nhttps://claude.ai/code/session_01TSdrAJ9qBGarEw5h5SNwvz\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-11-10T09:09:10+09:00",
+          "tree_id": "b6dec2e0d5950134d4b18f3d1254e8f9f9ad3111",
+          "url": "https://github.com/secretlint/secretlint/commit/28ce146e00dd26b93f0bfa5cc40b4cb586065b4c"
+        },
+        "date": 1794269437948,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 3.43,
+            "range": "±0.65%",
+            "unit": "ops/sec",
+            "extra": "13 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 2.36,
+            "range": "±0.62%",
             "unit": "ops/sec",
             "extra": "10 samples"
           }
