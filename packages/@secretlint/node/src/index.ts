@@ -277,11 +277,9 @@ export const createEngine = async (engineOptions: SecretLintEngineOptions) => {
         throw new Error("Fail to load secretlint config");
     }
     debug("Config: %O", loadedResult.config);
-    // Workers load the config file that the main thread found
-    const configSource: ConfigSource =
-        initialConfigSource.type === "file" && loadedResult.configFilePath !== undefined
-            ? { type: "file", cwd: options.cwd, configFilePath: loadedResult.configFilePath }
-            : initialConfigSource;
+    // Workers load the same config descriptor that the main thread loaded,
+    // so a config file changed after createEngine() does not change the rules of workers
+    const configSource: ConfigSource = { type: "json", configFileJSON: loadedResult.configDescriptor };
     // mask-result outputs the content of the linted file, so config results can not be mixed into it
     const configResults =
         loadedResult.configFilePath !== undefined &&

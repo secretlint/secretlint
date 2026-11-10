@@ -142,8 +142,18 @@ export const lintFilesInWorkers = async ({
         notifyMainThread?.();
         notifyMainThread = undefined;
     };
+    // Terminate all workers when the main thread stops, including when it throws
+    const stopWorkers: (() => void)[] = [];
     const startWorker = () => {
-        const worker = new Worker(workerURL, { workerData });
+        let worker: Worker;
+        try {
+            worker = new Worker(workerURL, { workerData });
+        } catch (error) {
+            // e.g. DataCloneError: a rule option in the config is a function
+            debug("Fail to start a worker, lint in the main thread: %o", error);
+            workerFailed = true;
+            return;
+        }
         runningWorkers++;
         const inFlightBatchIds = new Set<number>();
         let finished = false;
@@ -158,6 +168,7 @@ export const lintFilesInWorkers = async ({
             worker.terminate().catch(() => {});
             notify();
         };
+        stopWorkers.push(finish);
         const fail = (reason: string) => {
             debug("Worker failed, lint the rest in the main thread: %s", reason);
             workerFailed = true;
@@ -196,7 +207,7 @@ export const lintFilesInWorkers = async ({
         });
         sendBatches();
     };
-    for (let i = 0; i < workerCount; i++) {
+    for (let i = 0; i < workerCount && !workerFailed; i++) {
         startWorker();
     }
     // The main thread lints batches too
@@ -209,22 +220,26 @@ export const lintFilesInWorkers = async ({
         }
         return undefined;
     };
-    while (true) {
-        const batchId = takeBatchId();
-        if (batchId !== undefined) {
-            const batch = batches[batchId] as Batch;
-            setResults(batchId, await lintInMainThread(filePathList.slice(batch.start, batch.end)));
-            // Let workers receive the next batches
-            await new Promise<void>((resolve) => setImmediate(resolve));
-            continue;
+    try {
+        while (true) {
+            const batchId = takeBatchId();
+            if (batchId !== undefined) {
+                const batch = batches[batchId] as Batch;
+                setResults(batchId, await lintInMainThread(filePathList.slice(batch.start, batch.end)));
+                // Let workers receive the next batches
+                await new Promise<void>((resolve) => setImmediate(resolve));
+                continue;
+            }
+            if (runningWorkers === 0) {
+                break;
+            }
+            // Wait for workers. A failed worker may return its batches to retry.
+            await new Promise<void>((resolve) => {
+                notifyMainThread = resolve;
+            });
         }
-        if (runningWorkers === 0) {
-            break;
-        }
-        // Wait for workers. A failed worker may return its batches to retry.
-        await new Promise<void>((resolve) => {
-            notifyMainThread = resolve;
-        });
+    } finally {
+        stopWorkers.forEach((stop) => stop());
     }
     return results as SecretLintCoreResult[];
 };

@@ -141,7 +141,8 @@ const matcherCache = new Map<string, KeywordMatcher>();
  * `lintSource()` registers rules for each file, so the matcher is cached by its keywords.
  */
 export const getKeywordMatcher = (keywords: readonly string[]): KeywordMatcher => {
-    const key = keywords.join("\n");
+    // keywords may contain "\n", so join() is ambiguous
+    const key = JSON.stringify(keywords);
     const cached = matcherCache.get(key);
     if (cached) {
         return cached;

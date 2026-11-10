@@ -38,7 +38,7 @@ export const loadConfigFromSource = async (configSource: ConfigSource) => {
             configDescriptor: configSource.configFileJSON,
         });
         // config JSON has no file path to report messages for
-        return { ...result, configFilePath: undefined };
+        return { ...result, configDescriptor: configSource.configFileJSON, configFilePath: undefined };
     }
     return loadConfig({
         cwd: configSource.cwd,

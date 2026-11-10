@@ -79,6 +79,41 @@ describe("parallel", () => {
         assert.deepStrictEqual([...mainThreadFiles].sort(), [...filePathList].sort());
     });
 
+    it("lints all files in the main thread if worker data can not be cloned", async () => {
+        const { lintInMainThread, mainThreadFiles } = await createMainThreadLinter();
+        const expected = await lintInMainThread(filePathList);
+        mainThreadFiles.length = 0;
+        const actual = await lintFilesInWorkers({
+            filePathList,
+            workerCount: 2,
+            workerData: {
+                configSource: {
+                    type: "json",
+                    // a function can not be sent to a worker
+                    configFileJSON: { rules: [{ id: "example", options: { fn: () => {} } }] } as never,
+                },
+                lintOptions,
+            },
+            lintInMainThread,
+        });
+        assert.deepStrictEqual(actual, expected);
+        assert.deepStrictEqual([...mainThreadFiles].sort(), [...filePathList].sort());
+    });
+
+    it("rejects if the main thread fails to lint", async () => {
+        await assert.rejects(
+            lintFilesInWorkers({
+                filePathList,
+                workerCount: 2,
+                workerData: { configSource, lintOptions },
+                lintInMainThread: async () => {
+                    throw new Error("main thread error");
+                },
+            }),
+            /main thread error/,
+        );
+    });
+
     describe("getWorkerCount", () => {
         afterEach(() => {
             clearHooks();
