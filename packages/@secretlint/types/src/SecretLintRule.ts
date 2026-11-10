@@ -59,6 +59,8 @@ export type SecretLintRuleCreator<Options = SecretLintRuleCreatorOptions> = {
          * - Do not define keywords if the rule can report without a fixed string,
          *   for example a rule that checks the file name or uses a pattern from the options.
          * - Empty keywords and non-ASCII keywords disable the pre-filter for the rule.
+         * - Keywords are checked only for text content. The rule's handlers are always called for binary content,
+         *   if the rule supports it.
          *
          * Default: undefined (the rule's handlers are always called)
          */

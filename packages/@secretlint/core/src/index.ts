@@ -1,3 +1,4 @@
+import type { KeywordHits } from "./helper/keyword-matcher.js";
 import type {
     SecretLintCoreConfig,
     SecretLintCoreIgnoreMessage,
@@ -213,6 +214,39 @@ type RuleToRun =
           handler: SecretLintRuleReportHandler;
       };
 
+/**
+ * Create the result of the lint.
+ * `bytes` is `contentBytes` of the source at the start of the lint.
+ */
+const createResult = (
+    source: SecretLintRawSource,
+    bytes: Uint8Array | undefined,
+    messages: SecretLintCoreResultMessage[],
+): SecretLintCoreResult => {
+    const contentType = source.contentType;
+    if (contentType !== "text") {
+        // binary content should be skipped
+        return { filePath: source.filePath, sourceContent: undefined, sourceContentType: contentType, messages };
+    }
+    if (bytes === undefined) {
+        return {
+            filePath: source.filePath,
+            sourceContent: source.content,
+            sourceContentType: contentType,
+            messages,
+        };
+    }
+    // `source.content` may decode the bytes lazily. Do not read it until the result is used
+    return {
+        filePath: source.filePath,
+        get sourceContent() {
+            return source.content;
+        },
+        sourceContentType: contentType,
+        messages,
+    };
+};
+
 const lintWithPlan = (
     plan: LintPlan,
     source: SecretLintRawSource,
@@ -220,6 +254,36 @@ const lintWithPlan = (
 ): Promise<SecretLintCoreResult> => {
     const contentType = source.contentType;
     const view = getPlanView(plan, contentType);
+    // The bytes may be available only at the start of the lint. See createFileSourceReader() of source-creator
+    const bytes = source.contentBytes;
+    // 1. Scan the content once for the keywords of all rules.
+    //    Scan the bytes if the source has them, because decoding the content costs more than scanning it.
+    const { matcher, hits } = view;
+    let isTextScanned = false;
+    let found: Uint8Array | undefined;
+    let runsPatterns = view.hasAlwaysPattern;
+    let hasKeywordInBytes = false;
+    if (bytes !== undefined) {
+        const contentStart = hasUtf8BOM(bytes) ? 3 : 0;
+        hasKeywordInBytes = matcher !== undefined && hits !== undefined && matcher.scan(bytes, hits, contentStart);
+        if (!hasKeywordInBytes && !view.hasAlwaysPattern && !view.hasAlwaysRule) {
+            // Most files end here: no rule runs, and nothing is created for the file except the result
+            return Promise.resolve(createResult(source, bytes, []));
+        }
+        if (hasKeywordInBytes && !runsPatterns) {
+            // 2. Check the patterns on the lines that have a keyword, without decoding the whole content
+            for (const pattern of view.keywordPatterns) {
+                if (
+                    pattern.scope === "file" &&
+                    isKeywordFound(pattern.keywordIndexes as number[], (hits as KeywordHits).found)
+                ) {
+                    runsPatterns = true;
+                    break;
+                }
+            }
+            runsPatterns = runsPatterns || hasLineMatchInBytes(view, bytes, contentStart);
+        }
+    }
     // Create a SourceCode for linting.
     // Defer reading the content, because it may be decoded lazily and most files do not need it
     const sourceCode = new SecretLintSourceCodeImpl({
@@ -229,52 +293,9 @@ const lintWithPlan = (
         ext: source.ext || "",
         contentType,
     });
-    // The bytes may be available only at the start of the lint. See createFileSourceReader() of source-creator
-    const bytes = source.contentBytes;
-    const createResult = (messages: SecretLintCoreResultMessage[]): SecretLintCoreResult => {
-        if (contentType !== "text") {
-            // binary content should be skipped
-            return { filePath: source.filePath, sourceContent: undefined, sourceContentType: contentType, messages };
-        }
-        if (bytes === undefined) {
-            return {
-                filePath: source.filePath,
-                sourceContent: source.content,
-                sourceContentType: contentType,
-                messages,
-            };
-        }
-        // `source.content` may decode the bytes lazily. Do not read it until the result is used
-        return {
-            filePath: source.filePath,
-            get sourceContent() {
-                return source.content;
-            },
-            sourceContentType: contentType,
-            messages,
-        };
-    };
-    // 1. Scan the content once for the keywords of all rules.
-    //    Scan the bytes if the source has them, because decoding the content costs more than scanning it.
-    const { matcher, hits } = view;
-    let isTextScanned = false;
-    let found: Uint8Array | undefined;
-    let runsPatterns = view.hasAlwaysPattern;
     if (matcher && hits) {
         found = hits.found;
-        if (bytes !== undefined) {
-            const contentStart = hasUtf8BOM(bytes) ? 3 : 0;
-            if (matcher.scan(bytes, hits, contentStart) && !runsPatterns) {
-                // 2. Check the patterns on the lines that have a keyword, without decoding the whole content
-                for (const pattern of view.keywordPatterns) {
-                    if (pattern.scope === "file" && isKeywordFound(pattern.keywordIndexes as number[], found)) {
-                        runsPatterns = true;
-                        break;
-                    }
-                }
-                runsPatterns = runsPatterns || hasLineMatchInBytes(view, bytes, contentStart);
-            }
-        } else {
+        if (bytes === undefined) {
             runsPatterns = matcher.scan(sourceCode.content, hits) || runsPatterns;
             isTextScanned = true;
         }
@@ -326,7 +347,7 @@ const lintWithPlan = (
         });
     }
     if (rulesToRun.length === 0) {
-        return Promise.resolve(createResult([]));
+        return Promise.resolve(createResult(source, bytes, []));
     }
     // 3. Run the rules in the registered order
     const promises: Promise<void>[] = [];
@@ -406,9 +427,11 @@ const lintWithPlan = (
     }
     const finish = (): SecretLintCoreResult => {
         if (reportedMessages.length === 0) {
-            return createResult([]);
+            return createResult(source, bytes, []);
         }
         return createResult(
+            source,
+            bytes,
             cleanupMessages({
                 reportedMessages,
                 ignoredMessages,

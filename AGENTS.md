@@ -153,7 +153,7 @@ A rule that needs code other than regular expressions (e.g. checks the file name
 - **`keywords`** of a pattern lists ASCII strings that every match of the pattern contains, such as a token prefix (ASCII case-insensitive). Every string the pattern can report must contain at least one keyword, or the rule misses it. Omit `keywords` if no such string exists; the pattern then runs for all content
 - **`scope: "line"`** runs the pattern only on the lines that contain a keyword. Use it only if a match never includes a line break and the result does not depend on other lines. Otherwise use `"file"` (default)
 - **`@secretlint/tester` checks `keywords` and `scope`**: for each snapshot it compares the result with the result of running the patterns on the whole content, and fails if they differ
-- **`meta.keywords`** (optional, for rules with `create()`) skips the rule if the content contains none of the keywords. `defineRule()` sets it from the patterns
+- **`meta.keywords`** (optional, for rules with `create()`) skips the rule if the text content contains none of the keywords. Keywords are not checked for binary content. `defineRule()` sets it from the patterns
 - **Messages must have at least `en` locale**; `ja` is strongly recommended
 - **Always support `allows` option** using `@textlint/regexp-string-matcher` for user-defined exclusions
 - **Regex boundary conventions**:

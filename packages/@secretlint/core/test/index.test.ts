@@ -285,4 +285,50 @@ describe("lintSource with meta.keywords", () => {
         assert.strictEqual(contentAccessed, false);
         assert.deepStrictEqual(calls, []);
     });
+    it("should always call the rule for binary content, because keywords are for text content", async () => {
+        const calls: string[] = [];
+        const rule: SecretLintRuleCreator = {
+            ...createRule(["ghp_"], calls),
+        };
+        rule.meta = { ...rule.meta, supportedContentTypes: ["all"] };
+        const lintAs = (contentType: "text" | "binary", contentBytes?: Uint8Array) => {
+            return lintSource({
+                source: { content: "no keyword", contentBytes, filePath: "/path/to/file.p12", contentType },
+                options: {
+                    config: { rules: [{ id: rule.meta.id, rule, options: {} }] },
+                },
+            });
+        };
+        await lintAs("text");
+        await lintAs("text", new TextEncoder().encode("no keyword"));
+        assert.deepStrictEqual(calls, []);
+        await lintAs("binary");
+        await lintAs("binary", new TextEncoder().encode("no keyword"));
+        assert.deepStrictEqual(calls, [rule.meta.id, rule.meta.id]);
+    });
+    it("should not read the content of bytes without keywords", async () => {
+        const calls: string[] = [];
+        const rule = createRule(["ghp_"], calls);
+        let contentAccessed = false;
+        const result = await lintSource({
+            source: {
+                get content() {
+                    contentAccessed = true;
+                    return "nothing here";
+                },
+                contentBytes: new TextEncoder().encode("nothing here"),
+                filePath: "/path/to/file.txt",
+                contentType: "text",
+            },
+            options: {
+                config: { rules: [{ id: rule.meta.id, rule, options: {} }] },
+            },
+        });
+        assert.deepStrictEqual(calls, []);
+        assert.deepStrictEqual(result.messages, []);
+        assert.strictEqual(contentAccessed, false);
+        // sourceContent is read lazily
+        assert.strictEqual(result.sourceContent, "nothing here");
+        assert.strictEqual(contentAccessed, true);
+    });
 });

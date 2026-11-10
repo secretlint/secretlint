@@ -115,6 +115,10 @@ export type PlanView = {
      * true if a pattern has no keywords and runs for all content
      */
     hasAlwaysPattern: boolean;
+    /**
+     * true if a rule without patterns has no keywords and runs for all content
+     */
+    hasAlwaysRule: boolean;
 };
 export type LintPlan = {
     config: SecretLintCoreConfig;
@@ -359,12 +363,17 @@ const supportContentType = (rule: PlanRule, contentType: ContentType): boolean =
 
 const createView = (plan: LintPlan, contentType: ContentType): PlanView => {
     const targets = plan.rules.filter((rule) => supportContentType(rule, contentType));
+    // `meta.keywords` is for text content. A rule that supports other content always runs for it,
+    // because such a rule checks the structure of the content or the file name, not the keywords.
+    const keywordsOfRule = (rule: PlanRule): string[] | undefined => {
+        return contentType === "text" ? rule.keywords : undefined;
+    };
     const allKeywords = new Set<string>();
     for (const rule of targets) {
         if (rule.patterns) {
             rule.patterns.forEach((pattern) => pattern.keywords?.forEach((keyword) => allKeywords.add(keyword)));
         } else {
-            rule.keywords?.forEach((keyword) => allKeywords.add(keyword));
+            keywordsOfRule(rule)?.forEach((keyword) => allKeywords.add(keyword));
         }
     }
     const matcher = allKeywords.size > 0 ? getKeywordMatcher([...allKeywords].sort()) : undefined;
@@ -375,9 +384,14 @@ const createView = (plan: LintPlan, contentType: ContentType): PlanView => {
     const keywordPatterns: PlanPattern[] = [];
     const linePatternsOfKeyword: PlanPattern[][] = (matcher?.keywords ?? []).map(() => []);
     let hasAlwaysPattern = false;
+    let hasAlwaysRule = false;
     const rules = targets.map((rule): ViewRule => {
         if (!rule.patterns) {
-            return { rule, keywordIndexes: toIndexes(rule.keywords), patterns: undefined };
+            const keywordIndexes = toIndexes(keywordsOfRule(rule));
+            if (keywordIndexes === undefined) {
+                hasAlwaysRule = true;
+            }
+            return { rule, keywordIndexes, patterns: undefined };
         }
         const patterns = rule.patterns.map((pattern): PlanPattern => {
             const planPattern: PlanPattern = {
@@ -409,6 +423,7 @@ const createView = (plan: LintPlan, contentType: ContentType): PlanView => {
         keywordPatterns,
         linePatternsOfKeyword,
         hasAlwaysPattern,
+        hasAlwaysRule,
     };
 };
 
