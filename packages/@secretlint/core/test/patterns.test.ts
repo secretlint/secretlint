@@ -125,9 +125,9 @@ describe("lintSource with patterns", () => {
         const result = await lintSource({ source: bytesSource, options: { config: toConfig(rule) } });
         assert.deepStrictEqual(result.messages, []);
         assert.strictEqual(state.contentReads, 0);
-        // the result reads the content lazily
-        assert.strictEqual(result.sourceContent, "no keyword here\n".repeat(10));
-        assert.strictEqual(state.contentReads, 1);
+        // the result of the bytes has no sourceContent, so the content is never read
+        assert.strictEqual(result.sourceContent, undefined);
+        assert.strictEqual(state.contentReads, 0);
     });
     it("should not read the content when a line has a keyword but the pattern does not match the line", async () => {
         const rule = createPatternRule([tokenPattern()]);
@@ -411,11 +411,22 @@ describe("lintSource with patterns", () => {
             /The rule "pattern-rule" has a pattern with unknown scope: "lines"\nThe scope should be "line" or "file"/,
         );
     });
+    it("should return sourceContent of the bytes only if the result has messages", async () => {
+        const rule = createPatternRule([tokenPattern()]);
+        const content = "key = tok_ab12";
+        const found = await lintBoth(content, toConfig(rule));
+        assert.strictEqual(found.messages.length, 1);
+        assert.strictEqual(found.bytesResult.sourceContent, content);
+        // the keyword is found but the pattern does not match
+        const notFound = await lintBoth("key = tok_", toConfig(rule));
+        assert.deepStrictEqual(notFound.messages, []);
+        assert.strictEqual(notFound.bytesResult.sourceContent, undefined);
+    });
     it("should lint empty content", async () => {
         const rule = createPatternRule([tokenPattern()]);
         const { messages, bytesResult } = await lintBoth("", toConfig(rule));
         assert.deepStrictEqual(messages, []);
-        assert.strictEqual(bytesResult.sourceContent, "");
+        assert.strictEqual(bytesResult.sourceContent, undefined);
     });
     it("should lint the bytes of a view of a larger buffer", async () => {
         const rule = createPatternRule([tokenPattern()]);

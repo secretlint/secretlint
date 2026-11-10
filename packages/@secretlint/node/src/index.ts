@@ -1,11 +1,12 @@
 import { lintSource } from "@secretlint/core";
 import { loadConfig, loadPackagesFromConfigDescriptor, SecretLintConfigMessage } from "@secretlint/config-loader";
-import { createFileSourceReader } from "@secretlint/source-creator";
+import { createFileSourceReader, createRawSource } from "@secretlint/source-creator";
 import { loadFormatter } from "@secretlint/formatter";
 import {
     SecretLintConfigDescriptor,
     SecretLintCoreConfig,
     SecretLintCoreResult,
+    SecretLintRawSource,
     SecretLintRuleLocaleTag,
 } from "@secretlint/types";
 import path from "node:path";
@@ -78,6 +79,18 @@ const isConfigFileJSON = (v: any): v is SecretLintEngineOptionsConfigFileJSON =>
 };
 // The engine lints a file at a time, so files are read into one buffer
 const readFileSource = createFileSourceReader();
+/**
+ * Read a file for linting.
+ * The result of a source with `contentBytes` has `sourceContent` only if it has messages.
+ * "mask-result" formatter outputs the content of all files, so it gets a source without `contentBytes`.
+ */
+const readSource = async (filePath: string, options: SecretLintEngineOptions): Promise<SecretLintRawSource> => {
+    if (options.formatter !== "mask-result") {
+        return readFileSource(filePath);
+    }
+    const { content, ext, contentType } = await createRawSource(filePath);
+    return { filePath, content, ext, contentType };
+};
 const lintFile = async ({
     filePath,
     config,
@@ -87,7 +100,7 @@ const lintFile = async ({
     config: SecretLintCoreConfig;
     options: SecretLintEngineOptions;
 }) => {
-    const rawSource = readFileSource(filePath);
+    const rawSource = await readSource(filePath, options);
     return lintSource({
         source: rawSource,
         options: {
@@ -195,7 +208,7 @@ const executeOnFiles = async ({
 }) => {
     // Lint a file at a time.
     // lintFile() reads the file synchronously into a shared buffer, so linting files concurrently has no gain,
-    // and the file is read again if another file is read before the lint uses the content.
+    // and the buffer has the file only until the next file is read.
     const results: SecretLintCoreResult[] = [];
     for (const filePath of filePathList) {
         debug("executeOnFiles file: %s", filePath);

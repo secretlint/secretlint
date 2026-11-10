@@ -14,6 +14,7 @@ export type SecretLintRawSource = {
      * and reads `content` only when a rule needs it.
      * So `content` can be a getter that decodes the bytes lazily.
      * `contentBytes` must be the UTF-8 encoding of `content`. A byte order mark at the start is allowed.
+     * The result of a source with `contentBytes` has `sourceContent` only if it has messages.
      */
     contentBytes?: Uint8Array;
     filePath: string;

@@ -40,6 +40,40 @@ describe("createEngine", () => {
 `,
         );
     });
+    it("should output sourceContent only for the files that have messages", async () => {
+        const engine = await createEngine({
+            color: false,
+            cwd: path.join(__dirname, "fixtures/valid-config"),
+            formatter: "json",
+            maskSecrets: false,
+        });
+        const secretFilePath = path.join(__dirname, "fixtures/SECRET.txt");
+        const cleanFilePath = path.join(__dirname, "fixtures/valid-config/.secretlintrc.json");
+        const result = await engine.executeOnFiles({ filePathList: [secretFilePath, cleanFilePath] });
+        const results: { filePath: string; sourceContent?: string; messages: unknown[] }[] = JSON.parse(result.output);
+        assert.deepStrictEqual(
+            results.map((fileResult) => [fileResult.messages.length, fileResult.sourceContent]),
+            [
+                [1, fs.readFileSync(secretFilePath, "utf-8")],
+                [0, undefined],
+            ],
+        );
+    });
+    it("should output the content of the files without messages with mask-result formatter", async () => {
+        const engine = await createEngine({
+            color: false,
+            cwd: path.join(__dirname, "fixtures/valid-config"),
+            formatter: "mask-result",
+        });
+        const secretFilePath = path.join(__dirname, "fixtures/SECRET.txt");
+        const cleanFilePath = path.join(__dirname, "fixtures/valid-config/.secretlintrc.json");
+        const cleanResult = await engine.executeOnFiles({ filePathList: [cleanFilePath] });
+        assert.strictEqual(cleanResult.ok, true);
+        assert.strictEqual(cleanResult.output, fs.readFileSync(cleanFilePath, "utf-8"));
+        const secretResult = await engine.executeOnFiles({ filePathList: [secretFilePath] });
+        assert.strictEqual(secretResult.ok, false);
+        assert.strictEqual(secretResult.output, fs.readFileSync(secretFilePath, "utf-8").replace("SECRET", "******"));
+    });
     it("should create an Engine and execute on a content", async () => {
         const engine = await createEngine({
             color: false,

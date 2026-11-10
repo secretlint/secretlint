@@ -255,6 +255,11 @@ type RuleToRun =
 /**
  * Create the result of the lint.
  * `bytes` is `contentBytes` of the source at the start of the lint.
+ *
+ * A source that has `contentBytes` gets `sourceContent` only if it has messages.
+ * Most files have no message, and their bytes are never decoded: decoding them only for the result
+ * would cost more than the lint, and keeping the bytes of all files would need the memory for all files.
+ * A source without `contentBytes` already has the content as a string, so its result always has it.
  */
 const createResult = (
     source: SecretLintRawSource,
@@ -262,24 +267,11 @@ const createResult = (
     messages: SecretLintCoreResultMessage[],
 ): SecretLintCoreResult => {
     const contentType = source.contentType;
-    if (contentType !== "text") {
-        // binary content should be skipped
-        return { filePath: source.filePath, sourceContent: undefined, sourceContentType: contentType, messages };
-    }
-    if (bytes === undefined) {
-        return {
-            filePath: source.filePath,
-            sourceContent: source.content,
-            sourceContentType: contentType,
-            messages,
-        };
-    }
-    // `source.content` may decode the bytes lazily. Do not read it until the result is used
+    // binary content should be skipped
+    const hasSourceContent = contentType === "text" && (bytes === undefined || messages.length > 0);
     return {
         filePath: source.filePath,
-        get sourceContent() {
-            return source.content;
-        },
+        sourceContent: hasSourceContent ? source.content : undefined,
         sourceContentType: contentType,
         messages,
     };
@@ -388,6 +380,11 @@ const lintWithPlan = (
         });
     if (rulesToRun.length === 0) {
         return Promise.resolve(createResult(source, bytes, []));
+    }
+    if (contentType === "text" && bytes !== undefined) {
+        // A rule runs, so decode the text now: the bytes may be available only at the start of the lint,
+        // and a handler may read the content later. Binary content is decoded only if a rule reads it.
+        void sourceCode.content;
     }
     /**
      * Return where the pattern runs: the whole content, some lines, or nowhere

@@ -3,13 +3,11 @@
     "stdout": [
         {
             "filePath": "[SNAPSHOT]/gitignore-default/fixtures/.gitignore",
-            "sourceContent": "*.log\n",
             "sourceContentType": "text",
             "messages": []
         },
         {
             "filePath": "[SNAPSHOT]/gitignore-default/fixtures/src/main.ts",
-            "sourceContent": "plain content\n",
             "sourceContentType": "text",
             "messages": []
         }

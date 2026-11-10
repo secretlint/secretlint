@@ -232,7 +232,7 @@ export const snapshot = (options: SnapshotOptions) => {
                             : undefined);
                         const config = loadedConfig && loadedConfig.ok ? loadedConfig.config : options.defaultConfig;
                         const rawSource = await createRawSource(actualFilePath);
-                        const actualResult = await lintSource({
+                        const bytesResult = await lintSource({
                             source: rawSource,
                             options: {
                                 config,
@@ -251,13 +251,17 @@ export const snapshot = (options: SnapshotOptions) => {
                             options: { config: toUnoptimizedConfig(config) },
                         });
                         const normalizeResult = (result: unknown) => JSON.parse(JSON.stringify(result));
+                        // The result of the bytes has `sourceContent` only if it has messages.
+                        // The result of the string always has it, and it is the result of the snapshot.
+                        const expectedBytesResult =
+                            textResult.messages.length > 0 ? textResult : { ...textResult, sourceContent: undefined };
                         assert.deepStrictEqual(
-                            normalizeResult(textResult),
-                            normalizeResult(actualResult),
-                            "The result of the content string should be the same as the result of the content bytes",
+                            normalizeResult(bytesResult),
+                            normalizeResult(expectedBytesResult),
+                            "The result of the content bytes should be the same as the result of the content string",
                         );
                         assert.deepStrictEqual(
-                            normalizeResult(actualResult),
+                            normalizeResult(textResult),
                             normalizeResult(unoptimizedResult),
                             "The result with `patterns` and `meta.keywords` should be the same as the result of the whole content without them. Check keywords and scope of the rule.",
                         );
@@ -268,13 +272,13 @@ export const snapshot = (options: SnapshotOptions) => {
                             // Sort Object by keys before Store JSON
                             fs.writeFileSync(
                                 expectedFilePath,
-                                JSON.stringify(sortObject(actualResult), snapshotReplacer, 4),
+                                JSON.stringify(sortObject(textResult), snapshotReplacer, 4),
                             );
                             return "skip";
                         }
                         // compare input and output
                         const expected = JSON.parse(fs.readFileSync(expectedFilePath, "utf-8"));
-                        assert.deepStrictEqual(JSON.parse(JSON.stringify(actualResult, snapshotReplacer)), expected);
+                        assert.deepStrictEqual(JSON.parse(JSON.stringify(textResult, snapshotReplacer)), expected);
                         return "done";
                     });
                 });

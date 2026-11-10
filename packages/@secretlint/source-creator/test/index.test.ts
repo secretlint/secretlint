@@ -101,19 +101,19 @@ describe("createFileSourceReader", () => {
             assert.deepStrictEqual({ ...actual }, { ...expected });
         }
     });
-    it("keeps content available after reading the next file, but not contentBytes", () => {
+    it("keeps the decoded content after reading the next file, but not contentBytes", () => {
         const readFileSource = createFileSourceReader();
         const filePaths = listInputFiles();
         const sources = filePaths.map((filePath) => {
             const source = readFileSource(filePath);
             assert.ok(source.contentBytes !== undefined);
+            // decode the content while the reader has the file
+            assert.strictEqual(source.content, fs.readFileSync(filePath).toString());
             return source;
         });
         sources.forEach((source, index) => {
             const filePath = filePaths[index] as string;
-            const isLast = index === sources.length - 1;
-            assert.strictEqual(source.contentBytes === undefined, !isLast);
-            assert.strictEqual(source.content, fs.readFileSync(filePath).toString());
+            assert.strictEqual(source.contentBytes, undefined);
             // content is cached
             assert.strictEqual(source.content, fs.readFileSync(filePath).toString());
         });
@@ -144,22 +144,19 @@ describe("createFileSourceReader", () => {
         const readFileSource = createFileSourceReader();
         assert.throws(() => readFileSource(path.join(fixturesDir, "not-found.txt")), /ENOENT/);
     });
-    it("throws if the file was changed before the content is read again", () => {
+    it("throws if the content is read first after reading the next file", () => {
         const readFileSource = createFileSourceReader();
         const dir = fs.mkdtempSync(path.join(fixturesDir, "..", ".tmp-reader-"));
         try {
-            const filePath = path.join(dir, "changed.txt");
+            const filePath = path.join(dir, "first.txt");
             const otherFilePath = path.join(dir, "other.txt");
-            fs.writeFileSync(filePath, "clean content");
+            fs.writeFileSync(filePath, "first content");
             fs.writeFileSync(otherFilePath, "other");
             const source = readFileSource(filePath);
-            const unchanged = readFileSource(filePath);
-            readFileSource(otherFilePath);
-            // the content of an unchanged file is read again
-            assert.strictEqual(unchanged.content, "clean content");
-            // the content that was not linted is never returned
-            fs.writeFileSync(filePath, "new content with a secret");
-            assert.throws(() => source.content, /The file was changed while linting/);
+            const other = readFileSource(otherFilePath);
+            // the reader does not read the file again: the file may have been changed after the lint
+            assert.throws(() => source.content, /The content is not available after the reader has read the next file/);
+            assert.strictEqual(other.content, "other");
         } finally {
             fs.rmSync(dir, { recursive: true, force: true });
         }
