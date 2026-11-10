@@ -1,4 +1,9 @@
-import { SecretLintRuleContext, SecretLintRuleCreator, SecretLintSourceCode, SecretLintRuleMessageTranslate} from "@secretlint/types";
+import {
+    SecretLintRuleContext,
+    SecretLintRuleCreator,
+    SecretLintSourceCode,
+    SecretLintRuleMessageTranslate,
+} from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export interface Options {
@@ -102,12 +107,12 @@ const reportAWSSecretAccessKey = ({
     // This Pattern match only `AWS?_SECRET_ACCESS_KEY=XXX`
     const AWSSecretPatten = new RegExp(
         String.raw`${QUOTE}${AWS}(?:SECRET|secret|Secret)_?(?:ACCESS|access|Access)_?(?:KEY|key|Key)${QUOTE}${CONNECT}${QUOTE}([A-Za-z0-9/\+=]{40})${QUOTE}\b`,
-        "g"
+        "g",
     );
     const results = source.content.matchAll(AWSSecretPatten);
     for (const result of results) {
-        const index = result.index || 0;
         const match = result[1] || "";
+        const index = (result.index || 0) + result[0].lastIndexOf(match);
         const range = [index, index + match.length] as const;
         // Built-in ignored
         if (BUILTIN_IGNORED.AWSSecretAccessKey.includes(match)) {
@@ -142,7 +147,7 @@ const reportAWSAccountID = ({
     const CONNECT = "\\s*(:|=>|=)\\s*";
     const AWSSecretPatten = new RegExp(
         String.raw`${QUOTE}${AWS}(ACCOUNT|account|Account)_?(ID|id|Id)?${QUOTE}${CONNECT}${QUOTE}[0-9]{4}\-?[0-9]{4}\-?[0-9]{4}${QUOTE}\b`,
-        "g"
+        "g",
     );
     const results = source.content.matchAll(AWSSecretPatten);
     for (const result of results) {
