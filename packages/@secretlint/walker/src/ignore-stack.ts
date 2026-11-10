@@ -172,7 +172,8 @@ export const createDirIgnoreState = (
     const levels: DirIgnoreState["levels"] = [];
     for (let cur: IgnoreChain | null = chain; cur !== null; cur = cur.parent) {
         let relDir: string;
-        if (cur.dir === absDir) {
+        // `cur.dir` and `absDir` can use different separators on Windows, so compare them with `path.relative`.
+        if (cur.dir === absDir || relativeFrom(cur.dir, absDir) === "") {
             relDir = "";
         } else {
             const rel = relativeInLevel(cur, absDir);

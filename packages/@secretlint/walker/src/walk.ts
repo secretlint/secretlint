@@ -332,8 +332,8 @@ const processEntries = (
     state: DirIgnoreState,
     ctx: WalkContext,
 ): void => {
-    // `absDir` is normalized, so joining with the separator is the same as `path.join`.
-    const prefix = absDir.endsWith(path.sep) ? absDir : absDir + path.sep;
+    // Normalize the directory once, so `prefix + name` is the same as `path.join(absDir, name)`.
+    const prefix = path.join(absDir, path.sep);
     for (const entry of entries) {
         const full = prefix + entry.name;
         const resolved = resolveEntryKind(full, entry, ctx.followSymlinks, ctx.listSymlinks);
