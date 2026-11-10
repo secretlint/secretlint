@@ -59,8 +59,7 @@
         "@secretlint/profiler": "workspace:*",
         "@secretlint/source-creator": "workspace:*",
         "@secretlint/types": "workspace:*",
-        "debug": "catalog:",
-        "p-map": "catalog:"
+        "debug": "catalog:"
     },
     "devDependencies": {
         "@secretlint/secretlint-rule-example": "workspace:*",
