@@ -46,6 +46,9 @@ describe("keyword-matcher", () => {
     it("caches the matcher by keywords", () => {
         assert.strictEqual(getKeywordMatcher(["a", "b"]), getKeywordMatcher(["a", "b"]));
         assert.notStrictEqual(getKeywordMatcher(["a", "b"]), getKeywordMatcher(["a", "c"]));
+        // keywords may contain "\n"
+        assert.deepStrictEqual(getKeywordMatcher(["a\nb"]).keywords, ["a\nb"]);
+        assert.deepStrictEqual(getKeywordMatcher(["a", "b"]).match("a"), Uint8Array.from([1, 0]));
     });
     it("matches the same as String#includes on random texts", () => {
         const alphabet = "abAB_-.";
