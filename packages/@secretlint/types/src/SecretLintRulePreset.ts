@@ -7,7 +7,7 @@ export type SecretLintRulePresetContext = {
     sharedOptions: SecretlintCoreSharedOptions;
     registerRule<Options extends SecretLintRuleCreatorOptions = SecretLintRuleCreatorOptions>(
         rule: SecretLintRuleCreator<Options>,
-        defaultValue?: Omit<SecretLintCoreConfigRule<Options>, "id" | "rule">,
+        defaultValue?: Omit<SecretLintCoreConfigRule<Options>, "id" | "rule">
     ): void;
 };
 export type SecretLintRulePresetCreatorOptions = {};
