@@ -60,4 +60,70 @@ describe("keyword-matcher", () => {
             assert.deepStrictEqual(found(keywords, text), expected, JSON.stringify({ keywords, text }));
         }
     });
+    describe("scan", () => {
+        const scanPositions = (keywords: string[], input: string | Uint8Array, start?: number) => {
+            const matcher = createKeywordMatcher(keywords);
+            const hits = matcher.createHits();
+            const found = matcher.scan(input, hits, start);
+            const positions: [string[], number][] = [];
+            for (let i = 0; i < hits.count; i++) {
+                positions.push([
+                    matcher.keywordsOfState(hits.positions[i * 2] as number).map((index) => keywords[index] as string),
+                    hits.positions[i * 2 + 1] as number,
+                ]);
+            }
+            return { found, positions, flags: [...hits.found] };
+        };
+        it("returns the keywords and the index of their last character", () => {
+            assert.deepStrictEqual(scanPositions(["ghp_", "npm_"], "a ghp_x NPM_y ghp_"), {
+                found: true,
+                positions: [
+                    [["ghp_"], 5],
+                    [["npm_"], 11],
+                    [["ghp_"], 17],
+                ],
+                flags: [1, 1],
+            });
+        });
+        it("returns all keywords that end at the same index", () => {
+            assert.deepStrictEqual(scanPositions(["abc", "bc", "c"], "xabc").positions, [[["abc", "bc", "c"], 3]]);
+        });
+        it("finds the same keywords in a string and in its UTF-8 bytes", () => {
+            const text = "日本語 ghp_x\n𠮷 npm_y é ghp_";
+            const bytes = new TextEncoder().encode(text);
+            const ofText = scanPositions(["ghp_", "npm_"], text);
+            const ofBytes = scanPositions(["ghp_", "npm_"], bytes);
+            assert.deepStrictEqual(ofBytes.flags, ofText.flags);
+            assert.deepStrictEqual(
+                ofBytes.positions.map(([keywords]) => keywords),
+                ofText.positions.map(([keywords]) => keywords),
+            );
+            // indexes are bytes for bytes
+            const decoder = new TextDecoder();
+            ofBytes.positions.forEach(([keywords, index]) => {
+                assert.strictEqual(decoder.decode(bytes.subarray(index - 3, index + 1)), keywords[0]);
+            });
+        });
+        it("scans from the start index", () => {
+            assert.deepStrictEqual(scanPositions(["ab"], "ab ab", 1).positions, [[["ab"], 4]]);
+            assert.deepStrictEqual(scanPositions(["ab"], new TextEncoder().encode("ab ab"), 1).positions, [
+                [["ab"], 4],
+            ]);
+        });
+        it("resets the hits for each scan, and keeps many hits", () => {
+            const matcher = createKeywordMatcher(["a", "b"]);
+            const hits = matcher.createHits();
+            assert.strictEqual(matcher.scan("a".repeat(1000), hits), true);
+            assert.strictEqual(hits.count, 1000);
+            assert.deepStrictEqual([...hits.found], [1, 0]);
+            assert.strictEqual(matcher.scan("xxb", hits), true);
+            assert.strictEqual(hits.count, 1);
+            assert.deepStrictEqual([...hits.found], [0, 1]);
+            assert.strictEqual(matcher.scan("xx", hits), false);
+            assert.strictEqual(hits.count, 0);
+        });
+        it("finds nothing without keywords", () => {
+            assert.deepStrictEqual(scanPositions([], "abc"), { found: false, positions: [], flags: [] });
+        });
+    });
 });
