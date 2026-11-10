@@ -60,6 +60,8 @@ await engine.executeOnFiles({ filePathList: process.argv.slice(2) });
 const measures = await secretLintProfiler.getMeasures();
 ```
 
+`executeOnFiles` lints files in [worker threads](https://nodejs.org/api/worker_threads.html) when there are many files (2,500 files or more per worker). The main thread lints files too, and each worker loads the config by itself. Workers are not used when the profiler is enabled, on Bun, or when [`@secretlint/resolver`](../resolver) hooks are registered. If a worker fails, the main thread lints the rest of the files. `parallel: false` lints all files in the main thread.
+
 `executeOnFiles` returns an object with the formatted `output` string and an `ok` flag. `ok` is `false` if any file has a lint message. Configuration and file-reading errors reject the promise.
 
 ## Changelog

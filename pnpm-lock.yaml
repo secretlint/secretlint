@@ -397,6 +397,9 @@ importers:
       '@secretlint/profiler':
         specifier: workspace:*
         version: link:../profiler
+      '@secretlint/resolver':
+        specifier: workspace:*
+        version: link:../resolver
       '@secretlint/source-creator':
         specifier: workspace:*
         version: link:../source-creator

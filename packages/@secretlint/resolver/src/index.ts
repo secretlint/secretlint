@@ -14,7 +14,7 @@ type ResolverSkipResult = undefined;
  */
 export type ResolveHook = (
     specifier: string,
-    context: ResolverContext
+    context: ResolverContext,
 ) =>
     | {
           url: string | undefined;
@@ -25,7 +25,7 @@ export type ResolveHook = (
  */
 export type ImportHook = (
     specifier: string,
-    context: ResolverContext
+    context: ResolverContext,
 ) => Promise<
     | {
           exports: Record<string, unknown>;
@@ -96,7 +96,7 @@ const convertToFileUrl = (filePath: string) => {
  */
 export const dynamicImport = async (
     specifier: string,
-    context: ResolverContext
+    context: ResolverContext,
 ): Promise<{
     exports: Record<string, unknown> | undefined;
 }> => {
@@ -115,6 +115,14 @@ export const dynamicImport = async (
     return {
         exports: await import(convertToFileUrl(specifier)),
     };
+};
+
+/**
+ * Return true if any resolve hook or import hook is registered.
+ * Hooks are registered in the current thread only, so a worker thread can not use them.
+ */
+export const hasHooks = (): boolean => {
+    return resolveHooks.length > 0 || importHooks.length > 0;
 };
 
 /**

@@ -33,6 +33,8 @@ Options
   --no-glob          disable glob pattern interpretation; treat all inputs as literal file paths.
   --no-gitignore     disable .gitignore cascade respect; .gitignore files are
                      respected by default (since v13).
+  --no-parallel      lint files in the main thread; files are linted in worker
+                     threads by default when there are many files.
 
 Options for Developer
   --profile          Enable performance profile. 
@@ -146,6 +148,14 @@ const options = {
      * If you want to disable .gitignore cascade, use --no-gitignore option.
      */
     gitignore: {
+        type: OPTION_TYPE_BOOLEAN,
+        default: true,
+    },
+    /**
+     * CLI lints files in worker threads when there are enough files.
+     * If you want to lint files in the main thread, use --no-parallel option.
+     */
+    parallel: {
         type: OPTION_TYPE_BOOLEAN,
         default: true,
     },
@@ -292,6 +302,7 @@ export const run = async (
                   terminalLink: flags.terminalLink,
                   locale: flags.locale,
                   maskSecrets: flags.maskSecrets,
+                  parallel: flags.parallel,
               }
             : {
                   configFilePath: flags.secretlintrc,
@@ -301,6 +312,7 @@ export const run = async (
                   terminalLink: flags.terminalLink,
                   locale: flags.locale,
                   maskSecrets: flags.maskSecrets,
+                  parallel: flags.parallel,
               },
     }).finally(async () => {
         secretLintProfiler.mark({

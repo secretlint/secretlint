@@ -33,6 +33,8 @@ Install with [npm](https://www.npmjs.com/):
       --no-glob          disable glob pattern interpretation; treat all inputs as literal file paths.
       --no-gitignore     disable .gitignore cascade respect; .gitignore files are
                          respected by default (since v13).
+      --no-parallel      lint files in the main thread; files are linted in worker
+                         threads by default when there are many files.
 
     Options for Developer
       --profile          Enable performance profile. 

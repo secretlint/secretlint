@@ -1,6 +1,5 @@
 import { lintSource } from "@secretlint/core";
-import { loadConfig, loadPackagesFromConfigDescriptor, SecretLintConfigMessage } from "@secretlint/config-loader";
-import { createRawSource } from "@secretlint/source-creator";
+import type { SecretLintConfigMessage } from "@secretlint/config-loader";
 import { loadFormatter } from "@secretlint/formatter";
 import {
     SecretLintConfigDescriptor,
@@ -13,6 +12,8 @@ import path from "node:path";
 import { secretLintProfiler } from "@secretlint/profiler";
 import pMap from "p-map";
 import debug0 from "debug";
+import { ConfigSource, lintFile, LintFileOptions, loadConfigFromSource } from "./lint-file.js";
+import { getWorkerCount, lintFilesInWorkers } from "./parallel.js";
 
 const debug = debug0("@secretlint/node");
 export type SecretLintEngineOptionsBase = {
@@ -58,6 +59,14 @@ export type SecretLintEngineOptionsBase = {
      * Default: undefined (the profiler is disabled by default)
      */
     profile?: boolean;
+
+    /**
+     * If parallel is true, lint files in worker threads when there are enough files.
+     * If parallel is false, lint files in the main thread.
+     * Workers are not used when the profiler is enabled, on Bun, or when resolver hooks are registered.
+     * Default: true
+     */
+    parallel?: boolean;
 };
 export type SecretLintEngineOptionsConfigFilePath = SecretLintEngineOptionsBase & {
     /**
@@ -78,25 +87,6 @@ export type SecretLintEngineOptions = SecretLintEngineOptionsConfigFilePath | Se
 const isConfigFileJSON = (v: any): v is SecretLintEngineOptionsConfigFileJSON => {
     return "configFileJSON" in v && v.configFileJSON !== undefined;
 };
-const lintFile = async ({
-    filePath,
-    config,
-    options,
-}: {
-    filePath: string;
-    config: SecretLintCoreConfig;
-    options: SecretLintEngineOptions;
-}) => {
-    const rawSource = await createRawSource(filePath);
-    return lintSource({
-        source: rawSource,
-        options: {
-            ...options,
-            config: config,
-        },
-    });
-};
-
 /**
  * Report config problems as messages for the config file, like lint results.
  */
@@ -182,28 +172,58 @@ const executeOnContent = async ({
     };
 };
 
+const lintFilesInMainThread = ({
+    filePathList,
+    config,
+    lintOptions,
+}: {
+    filePathList: string[];
+    config: SecretLintCoreConfig;
+    lintOptions: LintFileOptions;
+}) => {
+    const mapper = async (filePath: string) => {
+        debug("executeOnFiles file: %s", filePath);
+        const result = await lintFile({ filePath: filePath, config: config, options: lintOptions });
+        debug("executeOnFiles result: %o", result);
+        return result;
+    };
+    return pMap(filePathList, mapper, {
+        // Avoid: EMFILE: too many open files, uv_cwd
+        // https://github.com/secretlint/secretlint/issues/72
+        concurrency: os.cpus().length,
+    });
+};
+
 const executeOnFiles = async ({
     filePathList,
     config,
+    configSource,
     configResults,
     options,
 }: {
     filePathList: string[];
     config: SecretLintCoreConfig;
+    configSource: ConfigSource;
     configResults: SecretLintCoreResult[];
     options: SecretLintEngineOptions;
 }) => {
-    const mapper = async (filePath: string) => {
-        debug("executeOnFiles file: %s", filePath);
-        const result = await lintFile({ filePath: filePath, config: config, options: options });
-        debug("executeOnFiles result: %o", result);
-        return result;
+    const lintOptions: LintFileOptions = {
+        locale: options.locale,
+        maskSecrets: options.maskSecrets,
     };
-    const results = await pMap(filePathList, mapper, {
-        // Avoid: EMFILE: too many open files, uv_cwd
-        // https://github.com/secretlint/secretlint/issues/72
-        concurrency: os.cpus().length,
-    });
+    const lintInMainThread = (filePathList: string[]) => {
+        return lintFilesInMainThread({ filePathList, config, lintOptions });
+    };
+    const workerCount = options.parallel === false ? 0 : getWorkerCount(filePathList.length);
+    const results =
+        workerCount > 0
+            ? await lintFilesInWorkers({
+                  filePathList,
+                  workerCount,
+                  workerData: { configSource, lintOptions },
+                  lintInMainThread,
+              })
+            : await lintInMainThread(filePathList);
     debug("executeOnFiles result counts: %s", results.length);
     secretLintProfiler.mark({
         type: "@node>format::start",
@@ -244,22 +264,12 @@ export const createEngine = async (engineOptions: SecretLintEngineOptions) => {
     secretLintProfiler.mark({
         type: "@node>load-config::start",
     });
-    const loadedResult = await (async () => {
-        if (isConfigFileJSON(options)) {
-            debug("Load ConfigFileJSON: %s", options.configFileJSON);
-            const result = await loadPackagesFromConfigDescriptor({
-                configDescriptor: options.configFileJSON,
-            });
-            // config JSON has no file path to report messages for
-            return { ...result, configFilePath: undefined };
-        }
-        const loadConfigResult = await loadConfig({
-            cwd: options.cwd,
-            configFilePath: options.configFilePath,
-        });
-        debug("Loaded ConfigFilePath: %s", loadConfigResult.configFilePath);
-        return loadConfigResult;
-    })();
+    const initialConfigSource: ConfigSource = isConfigFileJSON(options)
+        ? { type: "json", configFileJSON: options.configFileJSON }
+        : { type: "file", cwd: options.cwd, configFilePath: options.configFilePath };
+    debug("Load config: %o", initialConfigSource);
+    const loadedResult = await loadConfigFromSource(initialConfigSource);
+    debug("Loaded ConfigFilePath: %s", loadedResult.configFilePath);
     secretLintProfiler.mark({
         type: "@node>load-config::end",
     });
@@ -267,6 +277,11 @@ export const createEngine = async (engineOptions: SecretLintEngineOptions) => {
         throw new Error("Fail to load secretlint config");
     }
     debug("Config: %O", loadedResult.config);
+    // Workers load the config file that the main thread found
+    const configSource: ConfigSource =
+        initialConfigSource.type === "file" && loadedResult.configFilePath !== undefined
+            ? { type: "file", cwd: options.cwd, configFilePath: loadedResult.configFilePath }
+            : initialConfigSource;
     // mask-result outputs the content of the linted file, so config results can not be mixed into it
     const configResults =
         loadedResult.configFilePath !== undefined &&
@@ -315,6 +330,7 @@ export const createEngine = async (engineOptions: SecretLintEngineOptions) => {
             return executeOnFiles({
                 filePathList,
                 config: loadedResult.config,
+                configSource,
                 configResults,
                 options: options,
             }).finally(() => {

@@ -57,6 +57,7 @@
         "@secretlint/core": "workspace:*",
         "@secretlint/formatter": "workspace:*",
         "@secretlint/profiler": "workspace:*",
+        "@secretlint/resolver": "workspace:*",
         "@secretlint/source-creator": "workspace:*",
         "@secretlint/types": "workspace:*",
         "debug": "catalog:",
