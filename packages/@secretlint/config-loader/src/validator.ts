@@ -20,7 +20,7 @@ function invariant(condition: any, message: string): asserts condition {
 }
 
 const isPreset = (
-    value: SecretLintConfigDescriptorRule | SecretLintConfigDescriptorRulePreset
+    value: SecretLintConfigDescriptorRule | SecretLintConfigDescriptorRulePreset,
 ): value is SecretLintCoreConfigRulePreset => {
     return "rules" in value; // TODO: it is loose detection
 };
@@ -29,7 +29,7 @@ const isPreset = (
  * @param configDescriptor
  */
 export const validateConfigDescriptor = (
-    configDescriptor: SecretLintConfigDescriptor
+    configDescriptor: SecretLintConfigDescriptor,
 ): { ok: true } | { ok: false; error: Error | AggregationError } => {
     const errors: Error[] = [];
     if (!Array.isArray(configDescriptor.rules)) {
@@ -133,7 +133,7 @@ validateConfigOption): { ok: true } | { ok: false; error: Error } => {
 Following config is invalid because the preset(${preset.id}) does not have id: "${ruleCreatorOption.id}".
 
 ${JSON.stringify(ruleCreatorOption)}
-`)
+`),
                     );
                 }
             });
@@ -141,7 +141,10 @@ ${JSON.stringify(ruleCreatorOption)}
             // Validate rule
             const rule = ruleOrPreset as SecretLintCoreConfigRule;
             invariant(typeof rule.rule.meta === "object", "rule should have `meta` property");
-            invariant(typeof rule.rule.create === "function", "rule should have `create` function");
+            invariant(
+                typeof rule.rule.create === "function" || Array.isArray(rule.rule.patterns),
+                "rule should have `create` function or `patterns`",
+            );
             // `allowMessageIds` validation
             if (Array.isArray(rule.allowMessageIds)) {
                 const messageIds: string[] = Object.keys(rule.rule.messages);
@@ -153,7 +156,7 @@ ${JSON.stringify(ruleCreatorOption)}
 Following config is invalid because the rule(${rule.id}) does not have messageId: "${allowMessageId}".
 
 ${JSON.stringify({ allowMessageIds: rule.allowMessageIds })}
-`)
+`),
                         );
                     }
                 });

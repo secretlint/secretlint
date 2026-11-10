@@ -1,4 +1,4 @@
-import { defineRule } from "@secretlint/define-rule";
+import type { SecretLintRuleCreator } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export const messages = {
@@ -57,7 +57,7 @@ const messageIdMap: Record<STRIPE_KEY_PREFIX, keyof typeof messages> = {
 //   up to ~99 chars after the prefix. Matches gitleaks' upper bound.
 const STRIPE_KEY_PATTERN = /(?<!\p{L})(?<prefix>sk_live|sk_test|rk_live|rk_test)_[a-zA-Z0-9]{24,99}(?![a-zA-Z0-9])/gu;
 
-export const creator = defineRule<Options>({
+export const creator: SecretLintRuleCreator<Options> = {
     messages,
     meta: {
         id: "@secretlint/secretlint-rule-stripe",
@@ -92,4 +92,4 @@ export const creator = defineRule<Options>({
             },
         },
     ],
-});
+};

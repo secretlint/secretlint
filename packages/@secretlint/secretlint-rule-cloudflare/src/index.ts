@@ -1,4 +1,4 @@
-import { defineRule } from "@secretlint/define-rule";
+import type { SecretLintRuleCreator } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export const messages = {
@@ -37,7 +37,7 @@ const messageIdMap: Record<CLOUDFLARE_TOKEN_TYPE, keyof typeof messages> = {
 // https://developers.cloudflare.com/fundamentals/api/get-started/token-formats/
 const CLOUDFLARE_TOKEN_PATTERN = /(?<!\p{L})(?<prefix>cfk|cfut|cfat)_[A-Za-z0-9]{40}[0-9a-f]{8}(?![A-Za-z0-9])/gu;
 
-export const creator = defineRule<Options>({
+export const creator: SecretLintRuleCreator<Options> = {
     messages,
     meta: {
         id: "@secretlint/secretlint-rule-cloudflare",
@@ -72,4 +72,4 @@ export const creator = defineRule<Options>({
             },
         },
     ],
-});
+};

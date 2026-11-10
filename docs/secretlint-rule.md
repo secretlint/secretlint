@@ -315,17 +315,17 @@ For more details, please see following:
 ## Declarative patterns
 
 If your rule finds secrets with regular expressions, you can define the rule with `patterns` instead of `create()`.
-`defineRule()` of [@secretlint/define-rule](../packages/@secretlint/define-rule) creates such a rule.
+A rule needs `patterns` or `create()`. If it has `patterns`, secretlint does not call `create()`.
 
 ```ts
-import { defineRule } from "@secretlint/define-rule";
+import type { SecretLintRuleCreator } from "@secretlint/types";
 
 export const messages = {
     EXAMPLE_TOKEN: {
         en: (props: { TOKEN: string }) => `found example token: ${props.TOKEN}`,
     },
 };
-export const creator = defineRule({
+export const creator: SecretLintRuleCreator = {
     messages,
     meta: {
         id: "secretlint-rule-example",
@@ -349,12 +349,12 @@ export const creator = defineRule({
             },
         },
     ],
-});
+};
 ```
 
 Secretlint scans the content once for the keywords of all rules, and runs a pattern only where its keywords are found.
 A rule with `patterns` costs almost nothing for the files that do not contain its keywords.
-The rule also works on older secretlint, because `defineRule()` creates `create()` and `meta.keywords` from the patterns.
+A rule that has only `patterns` needs secretlint that supports `patterns`. An older secretlint reports that the rule should have `create` function.
 
 `@secretlint/tester` checks `keywords` and `scope` of your patterns: it fails if the result differs from running the patterns on the whole content.
 

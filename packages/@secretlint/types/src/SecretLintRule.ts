@@ -68,17 +68,21 @@ export type SecretLintRuleCreator<Options = SecretLintRuleCreatorOptions> = {
     };
     /**
      * Declarative patterns of the rule.
-     * If patterns are defined, secretlint runs the patterns instead of calling `create()`.
+     * If patterns are defined, secretlint runs the patterns and does not call `create()`.
      * Secretlint scans the content once for the keywords of all patterns,
      * runs the regular expression of a pattern only where its keywords are found,
      * and calls `report()` of the pattern for each match.
      *
-     * `create()` is still required, because an older secretlint does not know `patterns` and calls `create()`.
-     * `defineRule()` of `@secretlint/define-rule` creates `create()` and `meta.keywords` from the patterns.
+     * A rule needs `patterns` or `create()`.
+     * A rule that has only `patterns` does not work on secretlint that does not support `patterns`.
      */
     patterns?: SecretLintRulePattern<Options>[];
-
-    create(context: SecretLintRuleContext, options: Options): SecretLintRuleReportHandler;
+    /**
+     * Create the handlers of the rule.
+     * It is for a rule that can not be written as `patterns`, for example a rule that parses the content.
+     * It is not called if the rule has `patterns`.
+     */
+    create?(context: SecretLintRuleContext, options: Options): SecretLintRuleReportHandler;
 };
 /**
  * A match of {@link SecretLintRulePattern}

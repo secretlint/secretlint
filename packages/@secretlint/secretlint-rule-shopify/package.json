@@ -57,7 +57,6 @@
         "trailingComma": "none"
     },
     "dependencies": {
-        "@secretlint/define-rule": "workspace:*",
         "@secretlint/types": "workspace:*",
         "@textlint/regexp-string-matcher": "catalog:"
     },

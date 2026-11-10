@@ -1,5 +1,4 @@
-import type { SecretLintRulePattern } from "@secretlint/types";
-import { defineRule } from "@secretlint/define-rule";
+import type { SecretLintRuleCreator, SecretLintRulePattern } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export const messages = {
@@ -119,7 +118,7 @@ const createReport = (messageId: keyof typeof messages): SecretLintRulePattern<O
     };
 };
 
-export const creator = defineRule<Options>({
+export const creator: SecretLintRuleCreator<Options> = {
     messages,
     meta: {
         id: "@secretlint/secretlint-rule-database-connection-string",
@@ -160,4 +159,4 @@ export const creator = defineRule<Options>({
             report: createReport("PostgreSQLConnection"),
         },
     ],
-});
+};

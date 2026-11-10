@@ -55,7 +55,6 @@
         "tabWidth": 4
     },
     "dependencies": {
-        "@secretlint/define-rule": "workspace:*",
         "@textlint/regexp-string-matcher": "catalog:"
     },
     "devDependencies": {

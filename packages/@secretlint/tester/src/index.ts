@@ -103,8 +103,10 @@ const loadSecretlintTestCaseOptions: (testCaseDir: string) => Promise<SecretLint
 };
 
 /**
- * Return the rule without `patterns` and `meta.keywords`.
- * secretlint calls `create()` of the returned rule for all content, and the rule checks the whole content.
+ * Return the rule that does not use keywords and scopes.
+ * secretlint runs the returned rule for all content, and the rule checks the whole content:
+ * - `meta.keywords` is removed, so `create()` is called for all content
+ * - `keywords` of the patterns are removed, and the scope of the patterns is "file"
  */
 const toUnoptimizedRule = <T>(rule: SecretLintRuleCreator<T>): SecretLintRuleCreator<T> => {
     if (rule.patterns === undefined && rule.meta.keywords === undefined) {
@@ -113,7 +115,9 @@ const toUnoptimizedRule = <T>(rule: SecretLintRuleCreator<T>): SecretLintRuleCre
     return {
         ...rule,
         meta: { ...rule.meta, keywords: undefined },
-        patterns: undefined,
+        patterns: rule.patterns?.map((pattern) => {
+            return { pattern: pattern.pattern, scope: "file", report: pattern.report };
+        }),
     };
 };
 const toUnoptimizedRulePreset = <T>(preset: SecretLintRulePresetCreator<T>): SecretLintRulePresetCreator<T> => {

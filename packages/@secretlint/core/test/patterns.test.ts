@@ -378,6 +378,20 @@ describe("lintSource with patterns", () => {
         config.rules = [{ id: rule.meta.id, rule, disabled: true }];
         assert.deepStrictEqual(toRangeTexts(content, (await lintBoth(content, config)).messages), []);
     });
+    it("should run a rule that has only patterns", async () => {
+        const { create: _create, created: _created, ...rule } = createPatternRule([tokenPattern()]);
+        const content = "key = tok_ab12";
+        const { messages } = await lintBoth(content, toConfig(rule));
+        assert.deepStrictEqual(toRangeTexts(content, messages), ["tok_ab12"]);
+    });
+    it("should throw if a rule has no patterns and no create()", async () => {
+        const { create: _create, created: _created, patterns: _patterns, ...rule } = createPatternRule([]);
+        const { textSource } = createSources("content");
+        await assert.rejects(
+            async () => lintSource({ source: textSource, options: { config: toConfig(rule) } }),
+            /The rule should have `create` function or `patterns`: pattern-rule/,
+        );
+    });
     it("should lint empty content", async () => {
         const rule = createPatternRule([tokenPattern()]);
         const { messages, bytesResult } = await lintBoth("", toConfig(rule));

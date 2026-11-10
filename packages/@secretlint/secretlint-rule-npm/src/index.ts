@@ -1,4 +1,4 @@
-import { defineRule } from "@secretlint/define-rule";
+import type { SecretLintRuleCreator } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export const messages = {
@@ -41,7 +41,7 @@ const isNpmrc = (filePath?: string): boolean => {
     }
     return filePath.endsWith(".npmrc");
 };
-export const creator = defineRule<Options>({
+export const creator: SecretLintRuleCreator<Options> = {
     messages,
     meta: {
         id: "@secretlint/secretlint-rule-npm",
@@ -133,4 +133,4 @@ export const creator = defineRule<Options>({
             },
         },
     ],
-});
+};

@@ -1,4 +1,4 @@
-import { defineRule } from "@secretlint/define-rule";
+import type { SecretLintRuleCreator } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export const messages = {
@@ -90,7 +90,7 @@ function isLikelyRealPassword(password: string): boolean {
     return true;
 }
 
-export const creator = defineRule<Options>({
+export const creator: SecretLintRuleCreator<Options> = {
     messages,
     meta: {
         id: "@secretlint/secretlint-rule-basicauth",
@@ -138,4 +138,4 @@ export const creator = defineRule<Options>({
             },
         },
     ],
-});
+};

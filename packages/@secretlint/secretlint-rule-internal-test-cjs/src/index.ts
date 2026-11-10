@@ -11,7 +11,7 @@ export const messages = {
  * @param override
  */
 export const createCreator = (
-    override: Partial<Pick<SecretLintRuleCreator, "messages" | "meta">>
+    override: Partial<Pick<SecretLintRuleCreator, "messages" | "meta">>,
 ): SecretLintRuleCreator => {
     return {
         ...creator,

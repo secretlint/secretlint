@@ -1,4 +1,4 @@
-import { defineRule } from "@secretlint/define-rule";
+import type { SecretLintRuleCreator } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export const messages = {
@@ -37,7 +37,7 @@ const serviceTokenPattern = /(?<!\p{L})hvs\.[A-Za-z0-9_-]{90,120}(?![A-Za-z0-9_-
 const batchTokenPattern = /(?<!\p{L})hvb\.[A-Za-z0-9_-]{138,300}(?![A-Za-z0-9_-])/gu;
 const recoveryTokenPattern = /(?<!\p{L})hvr\.[A-Za-z0-9_-]{90,120}(?![A-Za-z0-9_-])/gu;
 
-export const creator = defineRule<Options>({
+export const creator: SecretLintRuleCreator<Options> = {
     messages,
     meta: {
         id: "@secretlint/secretlint-rule-hashicorp-vault",
@@ -104,4 +104,4 @@ export const creator = defineRule<Options>({
             },
         },
     ],
-});
+};

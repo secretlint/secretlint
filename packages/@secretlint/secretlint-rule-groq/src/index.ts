@@ -1,4 +1,4 @@
-import { defineRule } from "@secretlint/define-rule";
+import type { SecretLintRuleCreator } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export const messages = {
@@ -16,7 +16,7 @@ export type Options = {
     allows?: string[];
 };
 
-export const creator = defineRule<Options>({
+export const creator: SecretLintRuleCreator<Options> = {
     messages,
     meta: {
         id: "@secretlint/secretlint-rule-groq",
@@ -53,4 +53,4 @@ export const creator = defineRule<Options>({
             },
         },
     ],
-});
+};

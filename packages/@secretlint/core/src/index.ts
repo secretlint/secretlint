@@ -1,6 +1,7 @@
 import type { KeywordHits } from "./helper/keyword-matcher.js";
 import type {
     SecretLintCoreConfig,
+    SecretLintCoreConfigRule,
     SecretLintCoreIgnoreMessage,
     SecretLintCoreResult,
     SecretLintCoreResultMessage,
@@ -284,6 +285,21 @@ const createResult = (
     };
 };
 
+/**
+ * Call `create()` of the rule that has no patterns.
+ */
+const createHandler = (
+    descriptorRule: SecretLintCoreConfigRule,
+    context: SecretLintRuleContext,
+): SecretLintRuleReportHandler => {
+    const create = descriptorRule.rule.create;
+    if (typeof create !== "function") {
+        throw new Error(`The rule should have \`create\` function or \`patterns\`: ${descriptorRule.id}`);
+    }
+    // If option is not defined Options is {} by default
+    return create.call(descriptorRule.rule, context, descriptorRule.options || {});
+};
+
 const lintWithPlan = (
     plan: LintPlan,
     source: SecretLintRawSource,
@@ -367,7 +383,7 @@ const lintWithPlan = (
                 type: "handler",
                 viewRule,
                 // If option is not defined Options is {} by default
-                handler: descriptorRule.rule.create(createContext(viewRule), descriptorRule.options || {}),
+                handler: createHandler(descriptorRule, createContext(viewRule)),
             };
         });
     if (rulesToRun.length === 0) {

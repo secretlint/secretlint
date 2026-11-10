@@ -1,4 +1,4 @@
-import { defineRule } from "@secretlint/define-rule";
+import type { SecretLintRuleCreator } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export const messages = {
@@ -37,7 +37,7 @@ const prefixToMessageId: Record<VercelTokenPrefix, keyof typeof messages> = {
 export type Options = {
     allows?: string[];
 };
-export const creator = defineRule<Options>({
+export const creator: SecretLintRuleCreator<Options> = {
     messages,
     meta: {
         id: "@secretlint/secretlint-rule-vercel",
@@ -70,4 +70,4 @@ export const creator = defineRule<Options>({
             },
         },
     ],
-});
+};

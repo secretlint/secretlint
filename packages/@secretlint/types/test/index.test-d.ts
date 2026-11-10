@@ -5,8 +5,9 @@ import type { SecretLintCreateRuleMessageTranslator } from "../src/SecretLintRul
 declare var creator: SecretLintRuleCreator;
 declare var context: SecretLintRuleContext;
 declare var source: SecretLintSourceCode;
-const rule = creator.create(context, {});
-if (rule.file) {
+// `create` is optional: a rule that has `patterns` does not need it
+const rule = creator.create?.(context, {});
+if (rule?.file) {
     expectTypeOf(rule.file(source)).toEqualTypeOf<void | Promise<void>>();
 }
 

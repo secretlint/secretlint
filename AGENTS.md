@@ -93,10 +93,10 @@ This uses scaffdog (`.scaffdog/new-rule.md`) to generate the rule package struct
 ### Step 2: Implement the Rule
 
 Every rule must export a `creator` object and `messages`.
-A rule that finds secrets with regular expressions is defined with `defineRule()` of `@secretlint/define-rule`. The canonical structure:
+A rule that finds secrets with regular expressions is defined with `patterns`, and it has no `create()`. The canonical structure:
 
 ```typescript
-import { defineRule } from "@secretlint/define-rule";
+import type { SecretLintRuleCreator } from "@secretlint/types";
 
 // 1. Define messages with at least `en` locale (ja is recommended)
 export const messages = {
@@ -112,7 +112,7 @@ export type Options = {
 };
 
 // 3. Export creator
-export const creator = defineRule<Options>({
+export const creator: SecretLintRuleCreator<Options> = {
     messages,
     meta: {
         id: "@secretlint/secretlint-rule-<name>",
@@ -138,7 +138,7 @@ export const creator = defineRule<Options>({
             },
         },
     ],
-});
+};
 ```
 
 The core scans the content once for the keywords of all rules (as UTF-8 bytes if the source has `contentBytes`),
@@ -153,7 +153,7 @@ A rule that needs code other than regular expressions (e.g. checks the file name
 - **`keywords`** of a pattern lists ASCII strings that every match of the pattern contains, such as a token prefix (ASCII case-insensitive). Every string the pattern can report must contain at least one keyword, or the rule misses it. Omit `keywords` if no such string exists; the pattern then runs for all content. Make keywords as specific as the pattern allows (`"http://"` instead of `"://"`), and set `caseSensitiveKeywords: true` if the pattern is case-sensitive and the keyword is common in another case (`"SG."` vs `"msg."`)
 - **`scope: "line"`** runs the pattern only on the lines that contain a keyword. Use it only if a match never includes a line break and the result does not depend on other lines. Otherwise use `"file"` (default)
 - **`@secretlint/tester` checks `keywords` and `scope`**: for each snapshot it compares the result with the result of running the patterns on the whole content, and fails if they differ
-- **`meta.keywords`** (optional, for rules with `create()`) skips the rule if the text content contains none of the keywords. Keywords are not checked for binary content. `defineRule()` sets it from the patterns
+- **`meta.keywords`** (optional, for rules with `create()`) skips the rule if the text content contains none of the keywords. Keywords are not checked for binary content. A rule with `patterns` does not need it
 - **Messages must have at least `en` locale**; `ja` is strongly recommended
 - **Always support `allows` option** using `@textlint/regexp-string-matcher` for user-defined exclusions
 - **Regex boundary conventions**:

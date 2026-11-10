@@ -14,7 +14,7 @@ const multiplatformPath = (dirPath: string): RegExp => {
             .split(/[\/¥]/)
             .map((pathinfo) => escapeStringRegexp(pathinfo))
             .join("[/¥]"),
-        "g"
+        "g",
     );
 };
 export const messages = {
