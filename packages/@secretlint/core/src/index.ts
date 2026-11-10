@@ -379,25 +379,32 @@ const lintWithPlan = (
                 });
             } else {
                 const file = ruleToRun.handler.file;
-                // A handler may throw synchronously or return a rejected promise
-                const promise = file ? (async () => file(sourceCode))() : Promise.resolve();
-                promises.push(
-                    promise.then(() => {
-                        secretLintProfiler.mark({
-                            type: "@core>rule-handler::end",
-                            id: ruleId,
-                        });
-                    }),
-                );
+                // Most handlers are synchronous. Do not create a promise for them, because it costs for each file
+                const returned: unknown = file ? file(sourceCode) : undefined;
+                if (returned !== undefined && typeof (returned as PromiseLike<void>).then === "function") {
+                    promises.push(
+                        Promise.resolve(returned as PromiseLike<void>).then(() => {
+                            secretLintProfiler.mark({
+                                type: "@core>rule-handler::end",
+                                id: ruleId,
+                            });
+                        }),
+                    );
+                } else {
+                    secretLintProfiler.mark({
+                        type: "@core>rule-handler::end",
+                        id: ruleId,
+                    });
+                }
             }
         }
     } catch (error) {
-        // wait for the started handlers, then report the error of the pattern
+        // wait for the started handlers, then report the error of the pattern or the handler
         return Promise.allSettled(promises).then(() => {
             throw error;
         });
     }
-    return Promise.all(promises).then(() => {
+    const finish = (): SecretLintCoreResult => {
         if (reportedMessages.length === 0) {
             return createResult([]);
         }
@@ -409,7 +416,11 @@ const lintWithPlan = (
                 maskSecrets: options.maskSecrets,
             }),
         );
-    });
+    };
+    if (promises.length === 0) {
+        return Promise.resolve(finish());
+    }
+    return Promise.all(promises).then(finish);
 };
 
 export const lintSource = ({ source, options }: SecretLintSourceOptions): Promise<SecretLintCoreResult> => {

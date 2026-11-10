@@ -89,11 +89,13 @@ export const createFileSourceReader = (): FileSourceReader => {
                     buffer.copy(grown, 0, 0, length);
                     buffer = grown;
                 }
-                const bytesRead = fs.readSync(fd, buffer, length, buffer.length - length, null);
-                if (bytesRead === 0) {
+                const requested = buffer.length - length;
+                const bytesRead = fs.readSync(fd, buffer, length, requested, null);
+                length += bytesRead;
+                // A short read is the end of a regular file. It saves a system call for each file
+                if (bytesRead < requested) {
                     break;
                 }
-                length += bytesRead;
             }
             if (buffer.length <= MAX_SHARED_BUFFER_SIZE) {
                 sharedBuffer = buffer;
