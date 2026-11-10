@@ -7,7 +7,7 @@ import { clearHooks, registerResolveHook } from "@secretlint/resolver";
 import { secretLintProfiler } from "@secretlint/profiler";
 // Workers run the built worker.js, so this test uses the built module.
 // `pnpm test` builds the package before running the tests.
-import { getWorkerCount, lintFilesInWorkers } from "../module/parallel.js";
+import { getWorkerCount, isPlainJSONValue, lintFilesInWorkers } from "../module/parallel.js";
 import { lintFile, loadConfigFromSource } from "../module/lint-file.js";
 import type { ConfigSource } from "../src/lint-file.js";
 
@@ -112,6 +112,21 @@ describe("parallel", () => {
             }),
             /main thread error/,
         );
+    });
+
+    describe("isPlainJSONValue", () => {
+        it("returns true for JSON values", () => {
+            assert.ok(isPlainJSONValue({ rules: [{ id: "a", options: { allows: ["x"], n: 1, b: true, z: null } }] }));
+            assert.ok(isPlainJSONValue(Object.create(null)));
+        });
+        it("returns false for values that structured clone changes", () => {
+            class Matcher {}
+            assert.ok(!isPlainJSONValue({ options: { matcher: new Matcher() } }));
+            assert.ok(!isPlainJSONValue({ options: { fn: () => {} } }));
+            assert.ok(!isPlainJSONValue({ options: { re: /a/ } }));
+            assert.ok(!isPlainJSONValue({ options: { u: undefined } }));
+            assert.ok(!isPlainJSONValue([new Date()]));
+        });
     });
 
     describe("getWorkerCount", () => {

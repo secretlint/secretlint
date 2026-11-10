@@ -65,6 +65,31 @@ const IN_FLIGHT_BATCHES = 2;
 const workerURL = new URL("./worker.js", import.meta.url);
 
 /**
+ * Return true if the value is made of JSON values only: null, boolean, number, string, array, and plain object.
+ * A worker gets a structured clone of the config, which drops functions and class prototypes of rule options.
+ * Workers are used only if the clone works the same as the original.
+ */
+export const isPlainJSONValue = (value: unknown): boolean => {
+    if (value === null || typeof value === "string" || typeof value === "boolean") {
+        return true;
+    }
+    if (typeof value === "number") {
+        return Number.isFinite(value);
+    }
+    if (Array.isArray(value)) {
+        return value.every(isPlainJSONValue);
+    }
+    if (typeof value === "object") {
+        const prototype = Object.getPrototypeOf(value);
+        if (prototype !== Object.prototype && prototype !== null) {
+            return false;
+        }
+        return Object.values(value).every(isPlainJSONValue);
+    }
+    return false;
+};
+
+/**
  * Return the number of workers to lint the files, or 0 if the main thread lints all files.
  */
 export const getWorkerCount = (fileCount: number): number => {

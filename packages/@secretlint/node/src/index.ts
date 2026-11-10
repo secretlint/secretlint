@@ -13,7 +13,7 @@ import { secretLintProfiler } from "@secretlint/profiler";
 import pMap from "p-map";
 import debug0 from "debug";
 import { ConfigSource, lintFile, LintFileOptions, loadConfigFromSource } from "./lint-file.js";
-import { getWorkerCount, lintFilesInWorkers } from "./parallel.js";
+import { getWorkerCount, isPlainJSONValue, lintFilesInWorkers } from "./parallel.js";
 
 const debug = debug0("@secretlint/node");
 export type SecretLintEngineOptionsBase = {
@@ -203,7 +203,7 @@ const executeOnFiles = async ({
 }: {
     filePathList: string[];
     config: SecretLintCoreConfig;
-    configSource: ConfigSource;
+    configSource: ConfigSource | undefined;
     configResults: SecretLintCoreResult[];
     options: SecretLintEngineOptions;
 }) => {
@@ -214,13 +214,14 @@ const executeOnFiles = async ({
     const lintInMainThread = (filePathList: string[]) => {
         return lintFilesInMainThread({ filePathList, config, lintOptions });
     };
-    const workerCount = options.parallel === false ? 0 : getWorkerCount(filePathList.length);
+    const workerCount =
+        options.parallel === false || configSource === undefined ? 0 : getWorkerCount(filePathList.length);
     const results =
         workerCount > 0
             ? await lintFilesInWorkers({
                   filePathList,
                   workerCount,
-                  workerData: { configSource, lintOptions },
+                  workerData: { configSource: configSource as ConfigSource, lintOptions },
                   lintInMainThread,
               })
             : await lintInMainThread(filePathList);
@@ -279,7 +280,10 @@ export const createEngine = async (engineOptions: SecretLintEngineOptions) => {
     debug("Config: %O", loadedResult.config);
     // Workers load the same config descriptor that the main thread loaded,
     // so a config file changed after createEngine() does not change the rules of workers
-    const configSource: ConfigSource = { type: "json", configFileJSON: loadedResult.configDescriptor };
+    // Rule options with functions or class instances can not be sent to workers, so use the main thread only
+    const configSource: ConfigSource | undefined = isPlainJSONValue(loadedResult.configDescriptor)
+        ? { type: "json", configFileJSON: loadedResult.configDescriptor }
+        : undefined;
     // mask-result outputs the content of the linted file, so config results can not be mixed into it
     const configResults =
         loadedResult.configFilePath !== undefined &&
