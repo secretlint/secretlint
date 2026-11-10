@@ -312,6 +312,52 @@ For more details, please see following:
 
 - [package.json | npm Documentation](https://docs.npmjs.com/files/package.json "package.json | npm Documentation")
 
+## Declarative patterns
+
+If your rule finds secrets with regular expressions, you can define the rule with `patterns` instead of `create()`.
+`defineRule()` of [@secretlint/define-rule](../packages/@secretlint/define-rule) creates such a rule.
+
+```ts
+import { defineRule } from "@secretlint/define-rule";
+
+export const messages = {
+    EXAMPLE_TOKEN: {
+        en: (props: { TOKEN: string }) => `found example token: ${props.TOKEN}`,
+    },
+};
+export const creator = defineRule({
+    messages,
+    meta: {
+        id: "secretlint-rule-example",
+        recommended: true,
+        type: "scanner",
+        supportedContentTypes: ["text"],
+    },
+    patterns: [
+        {
+            pattern: /example_[A-Za-z0-9]{32}/g,
+            // every match contains one of the keywords
+            keywords: ["example_"],
+            // a match never includes a line break
+            scope: "line",
+            report(match, context) {
+                const t = context.createTranslator(messages);
+                context.report({
+                    message: t("EXAMPLE_TOKEN", { TOKEN: match.text }),
+                    range: match.range,
+                });
+            },
+        },
+    ],
+});
+```
+
+Secretlint scans the content once for the keywords of all rules, and runs a pattern only where its keywords are found.
+A rule with `patterns` costs almost nothing for the files that do not contain its keywords.
+The rule also works on older secretlint, because `defineRule()` creates `create()` and `meta.keywords` from the patterns.
+
+`@secretlint/tester` checks `keywords` and `scope` of your patterns: it fails if the result differs from running the patterns on the whole content.
+
 ## Performance
 
 Use `--profile` option for checking performance of your rule .
