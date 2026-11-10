@@ -59,9 +59,12 @@ const supportSourceCode = (descriptorRule: SecretLintCoreConfigRule, sourceCode:
 type KeywordPlan = {
     matcher: KeywordMatcher;
     /**
-     * Indexes of `matcher.keywords` for each rule creator
+     * The keywords and the indexes of `matcher.keywords` for each rule creator
      */
-    keywordIndexes: Map<SecretLintCoreConfigRule["rule"], number[]>;
+    keywordIndexes: Map<SecretLintCoreConfigRule["rule"], { keywords: string[]; indexes: number[] }>;
+};
+const isSameKeywords = (a: string[], b: string[] | undefined): boolean => {
+    return b !== undefined && a.length === b.length && a.every((keyword, index) => keyword === b[index]);
 };
 const MAX_PLAN_CACHE_SIZE = 32;
 const planCache = new Map<string, KeywordPlan>();
@@ -70,13 +73,21 @@ const planCache = new Map<string, KeywordPlan>();
  * `lintSource()` registers the same rules for each file, so the plan is cached by the rule ids.
  */
 const getKeywordPlan = (entries: RuleEntry[]): KeywordPlan => {
-    // A rule id does not contain "\0". The same rule creator has the same keywords.
+    // A rule id does not contain "\0".
     let key = "";
     for (const entry of entries) {
         key += entry.descriptorRule.rule.meta.id + "\0";
     }
     const cached = planCache.get(key);
-    if (cached && entries.every((entry) => cached.keywordIndexes.has(entry.descriptorRule.rule))) {
+    // Reuse the plan only when each rule creator and its keywords are the same.
+    // `meta.keywords` of a rule creator can be changed between `lintSource()` calls.
+    if (
+        cached &&
+        entries.every((entry) => {
+            const item = cached.keywordIndexes.get(entry.descriptorRule.rule);
+            return item !== undefined && isSameKeywords(item.keywords, entry.keywords);
+        })
+    ) {
         return cached;
     }
     const allKeywords = new Set<string>();
@@ -85,12 +96,13 @@ const getKeywordPlan = (entries: RuleEntry[]): KeywordPlan => {
     }
     const matcher = getKeywordMatcher([...allKeywords].sort());
     const indexOf = new Map(matcher.keywords.map((keyword, index) => [keyword, index]));
-    const keywordIndexes = new Map<SecretLintCoreConfigRule["rule"], number[]>();
+    const keywordIndexes: KeywordPlan["keywordIndexes"] = new Map();
     for (const entry of entries) {
-        keywordIndexes.set(
-            entry.descriptorRule.rule,
-            (entry.keywords ?? []).map((keyword) => indexOf.get(keyword) as number),
-        );
+        const keywords = entry.keywords ?? [];
+        keywordIndexes.set(entry.descriptorRule.rule, {
+            keywords,
+            indexes: keywords.map((keyword) => indexOf.get(keyword) as number),
+        });
     }
     if (planCache.size >= MAX_PLAN_CACHE_SIZE) {
         planCache.clear();
@@ -114,7 +126,7 @@ const createKeywordFilter = (targets: RuleEntry[], sourceCode: SecretLintSourceC
         if (entry.keywords === undefined) {
             return true;
         }
-        const indexes = plan.keywordIndexes.get(entry.descriptorRule.rule) ?? [];
+        const indexes = plan.keywordIndexes.get(entry.descriptorRule.rule)?.indexes ?? [];
         return indexes.some((index) => found[index] === 1);
     };
 };
@@ -139,29 +151,33 @@ export const createRunningEvents = (): RunningEvents => {
         runLint({ sourceCode }: { sourceCode: SecretLintSourceCode }): Promise<Array<void>> {
             const targets = entries.filter((entry) => supportSourceCode(entry.descriptorRule, sourceCode));
             const isRuleToRun = createKeywordFilter(targets, sourceCode);
-            const promises: Promise<void>[] = [];
+            // Create all rules before starting their handlers.
+            // If `create()` of a rule throws, no handler has started and runLint throws synchronously.
+            const rules: { ruleId: string; rule: SecretLintRule }[] = [];
             for (const entry of targets) {
                 if (!isRuleToRun(entry)) {
                     continue;
                 }
-                const ruleId = entry.descriptorRule.rule.meta.id;
+                rules.push({
+                    ruleId: entry.descriptorRule.rule.meta.id,
+                    rule: new SecretLintRule({
+                        descriptorRule: entry.descriptorRule,
+                        context: entry.context,
+                    }),
+                });
+            }
+            const promises = rules.map(({ ruleId, rule }) => {
                 secretLintProfiler.mark({
                     type: "@core>rule-handler::start",
                     id: ruleId,
                 });
-                const rule = new SecretLintRule({
-                    descriptorRule: entry.descriptorRule,
-                    context: entry.context,
+                return rule.file(sourceCode).then(() => {
+                    secretLintProfiler.mark({
+                        type: "@core>rule-handler::end",
+                        id: ruleId,
+                    });
                 });
-                promises.push(
-                    rule.file(sourceCode).then(() => {
-                        secretLintProfiler.mark({
-                            type: "@core>rule-handler::end",
-                            id: ruleId,
-                        });
-                    }),
-                );
-            }
+            });
             return Promise.all(promises);
         },
         registerRule({
