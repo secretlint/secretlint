@@ -15,7 +15,7 @@ CLI (secretlint) → SecretLintEngine (@secretlint/node) → config-loader → c
 ```
 
 1. **CLI** (`packages/secretlint/src/cli.ts`) parses arguments, calls `runSecretLint()`
-2. **SecretLintEngine** (`packages/@secretlint/node`) loads config, discovers files via glob, processes files in parallel with `p-map`
+2. **SecretLintEngine** (`packages/@secretlint/node`) loads config, discovers files via glob, lints files one by one
 3. **config-loader** searches for `.secretlintrc.*`, validates with AJV schema, dynamically imports rule modules
 4. **core** (`packages/@secretlint/core/src/index.ts` - `lintSource()`) builds a lint plan per config (`LintPlan.ts`), scans the content once for the keywords of all rules, runs the matching `patterns` and rules, collects messages
 5. **RuleContext** (`packages/@secretlint/core/src/RuleContext.ts`) provides `report()`, `ignore()`, `createTranslator()` to each rule
