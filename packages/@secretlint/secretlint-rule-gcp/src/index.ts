@@ -39,6 +39,11 @@ function reportIfFoundPrivateKeyJSONFormat({
     context: SecretLintRuleContext;
     t: SecretLintRuleMessageTranslate<typeof messages>;
 }) {
+    // Skip parsing JSON if the content can not be a service account key, because JSON.parse is costly for large json files.
+    // A key may be written with unicode escapes like "\u0070rivate_key_id", so parse the content when it includes "\u".
+    if (!source.content.includes("private_key_id") && !source.content.includes("\\u")) {
+        return;
+    }
     try {
         const credentialObject = JSON.parse(source.content);
         // Private Key Pattern

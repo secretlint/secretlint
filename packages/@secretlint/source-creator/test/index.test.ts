@@ -51,3 +51,21 @@ describe("@secretlint/source-creator", () => {
             });
         });
 });
+
+describe("createRawSource content", () => {
+    it("decodes binary content as UTF-8 when it is accessed", async () => {
+        const filePath = path.join(fixturesDir, "image", "input.png");
+        const rawSource = await createRawSource(filePath);
+        assert.strictEqual(rawSource.contentType, "binary");
+        assert.strictEqual(rawSource.content, fs.readFileSync(filePath).toString());
+    });
+    it("decodes text content as UTF-8", async () => {
+        const fixtureDir = path.join(fixturesDir, "txt");
+        const inputFile = fs.readdirSync(fixtureDir).find((filePath) => filePath.startsWith("input"));
+        assert.ok(inputFile);
+        const filePath = path.join(fixtureDir, inputFile);
+        const rawSource = await createRawSource(filePath);
+        assert.strictEqual(rawSource.contentType, "text");
+        assert.strictEqual(rawSource.content, fs.readFileSync(filePath, "utf-8"));
+    });
+});
