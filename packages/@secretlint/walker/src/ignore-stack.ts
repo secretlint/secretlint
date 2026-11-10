@@ -1,4 +1,4 @@
-import { readFile } from "node:fs/promises";
+import { readFileSync } from "node:fs";
 import path from "node:path";
 import ignore, { type Ignore } from "ignore";
 import { relativeFrom } from "./relative.js";
@@ -43,9 +43,9 @@ export const createRootIgnore = (cwd: string, extraPatterns: readonly string[]):
  * or locked ignore file does not abort the entire walk; other errors are
  * wrapped and rethrown with the original error preserved on `cause`.
  */
-const tryReadIgnoreFile = async (filePath: string): Promise<string | null> => {
+const tryReadIgnoreFile = (filePath: string): string | null => {
     try {
-        return await readFile(filePath, "utf8");
+        return readFileSync(filePath, "utf8");
     } catch (error) {
         const code = (error as NodeJS.ErrnoException).code;
         if (code === "ENOENT" || code === "EACCES") return null;
@@ -62,16 +62,16 @@ const tryReadIgnoreFile = async (filePath: string): Promise<string | null> => {
  * of the ignore-file names that actually exist in `dir`; when provided we
  * skip the readFile ENOENT round-trip for missing files entirely.
  */
-export const extendIgnore = async (
+export const extendIgnore = (
     parent: IgnoreChain,
     dir: string,
     ignoreFiles: readonly string[],
     presentNames?: ReadonlySet<string>,
-): Promise<IgnoreChain> => {
+): IgnoreChain => {
     const candidates = presentNames ? ignoreFiles.filter((name) => presentNames.has(name)) : ignoreFiles;
     if (candidates.length === 0) return parent;
 
-    const reads = await Promise.all(candidates.map((name) => tryReadIgnoreFile(path.join(dir, name))));
+    const reads = candidates.map((name) => tryReadIgnoreFile(path.join(dir, name)));
     const contents = reads.filter((c): c is string => c !== null && c.trim().length > 0);
     if (contents.length === 0) return parent;
 

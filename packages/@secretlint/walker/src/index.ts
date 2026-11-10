@@ -1,1 +1,1 @@
-export { walk, type WalkOptions } from "./walk.js";
+export { walk, walkSync, type WalkOptions } from "./walk.js";
