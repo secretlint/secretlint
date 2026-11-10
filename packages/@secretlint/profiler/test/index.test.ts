@@ -82,6 +82,21 @@ describe("profile", () => {
             `should have a measure for the marked pair: ${measures.map((measure) => measure.name).join(", ")}`,
         );
     });
+    it("should return measures for marks made just before getMeasures() without waiting", async () => {
+        const profiler = new SecretLintProfiler({
+            perf: perf_hooks.performance,
+            PerformanceObserver: perf_hooks.PerformanceObserver,
+            enabled: true,
+        });
+        profiler.mark({ type: "@core>lint::start", id: "sync-test" });
+        profiler.mark({ type: "@core>lint::end", id: "sync-test" });
+        // no wait: PerformanceObserver has not delivered the entries yet
+        const measures = await profiler.getMeasures();
+        assert.ok(
+            measures.some((measure) => measure.name === "@core>lint||sync-test"),
+            `should have a measure: ${measures.map((measure) => measure.name).join(", ")}`,
+        );
+    });
     it("should be disabled by default", () => {
         const { SpyPerformanceObserver } = createSpyPerformanceObserver();
         const { perf } = createSpyPerformance();
