@@ -118,6 +118,7 @@ export const creator: SecretLintRuleCreator<Options> = {
         recommended: true,
         type: "scanner",                // "scanner" or "filter"
         supportedContentTypes: ["text"], // "text", "binary", or "all"
+        keywords: ["YOUR_PREFIX_"],      // the rule runs only if the content contains one of them
         docs: {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-<name>/README.md",
         },
@@ -152,6 +153,7 @@ export const creator: SecretLintRuleCreator<Options> = {
 - **Always export `creator` and `messages`** from `src/index.ts`
 - **`meta.id`** must match the npm package name exactly
 - **`meta.type`** is `"scanner"` for detection rules, `"filter"` for rules that suppress other rules' reports
+- **`meta.keywords`** (optional) lists ASCII strings that every match contains, such as a token prefix. The core finds all keywords in one pass and skips the rule if the content contains none of them (ASCII case-insensitive). Every string the rule can report must contain at least one keyword, or the rule misses it. Omit `keywords` if no such string exists (e.g. rules that check the file name)
 - **Messages must have at least `en` locale**; `ja` is strongly recommended
 - **Always support `allows` option** using `@textlint/regexp-string-matcher` for user-defined exclusions
 - **Use `matchAll` with global regex** for pattern scanning
@@ -228,11 +230,12 @@ When creating a new rule, verify every item:
 3. Options type has `allows?: string[]`
 4. `meta.id` exactly matches package name `@secretlint/secretlint-rule-<name>`
 5. `meta.type` is `"scanner"` (detection) or `"filter"` (suppression)
-6. Detection uses `matchAll` with global regex, reports via `context.report({ message, range })`
-7. Allow list integrates `@textlint/regexp-string-matcher`
-8. Tests have `ng.*` (error cases) and `ok.*` (valid cases) in `test/snapshots/`
-9. Snapshots generated with `UPDATE_SNAPSHOT=1 pnpm test`
-10. README.md documents the rule's purpose, detected patterns, and options
+6. `meta.keywords` (if set) is contained in every string the rule reports
+7. Detection uses `matchAll` with global regex, reports via `context.report({ message, range })`
+8. Allow list integrates `@textlint/regexp-string-matcher`
+9. Tests have `ng.*` (error cases) and `ok.*` (valid cases) in `test/snapshots/`
+10. Snapshots generated with `UPDATE_SNAPSHOT=1 pnpm test`
+11. README.md documents the rule's purpose, detected patterns, and options
 
 **Common pitfalls:**
 - Regex must use the `g` flag for `matchAll`
