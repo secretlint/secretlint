@@ -38,7 +38,7 @@ export const createRulePresetContext = ({
         sharedOptions,
         registerRule<Options extends SecretLintRuleCreatorOptions>(
             rule: SecretLintRuleCreator<Options>,
-            defaultValue?: Omit<SecretLintCoreConfigRule<Options>, "id" | "rule">
+            defaultValue?: Omit<SecretLintCoreConfigRule<Options>, "id" | "rule">,
         ): void {
             const descriptorRule = presetRules.find((descriptorRule) => {
                 return descriptorRule.id === rule.meta.id;

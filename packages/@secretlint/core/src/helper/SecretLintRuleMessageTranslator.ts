@@ -13,7 +13,7 @@ import {
 const DEFAULT_LOCAL = "en";
 const formatMessage = <Props extends SecretLintRuleLocalizeMessageProps>(
     messageHandler: SecretLintRuleLocalizeMessageHandler<Props>,
-    props?: Props
+    props?: Props,
 ): string => {
     if (typeof props !== "object" || props === null) {
         return messageHandler();
@@ -23,7 +23,7 @@ const formatMessage = <Props extends SecretLintRuleLocalizeMessageProps>(
 
 const getMatchedLocaleMessage = <Props extends SecretLintRuleLocalizeMessageProps>(
     locale: SecretLintRuleLocaleTag,
-    locales: SecretLintRuleLocalizeMessageMulti<Props>
+    locales: SecretLintRuleLocalizeMessageMulti<Props>,
 ) => {
     const localKeys = Object.keys(locales);
     const matchLocale = localKeys.find((key) => {
@@ -50,11 +50,11 @@ export const createTranslator = <T extends SecretLintRuleLocalizeMessages>(
     messages: T,
     options: {
         defaultLocale: SecretLintRuleLocaleTag;
-    }
+    },
 ) => {
     return <MessageId extends keyof T, Props extends SecretLintRuleLocalizeMessageProps = T[MessageId]>(
         messageId: MessageId,
-        props?: Props
+        props?: Props,
     ): SecretLintRuleMessageTranslateResult<Props> => {
         const messageHandler:
             | SecretLintRuleLocalizeMessageMulti<Props>
