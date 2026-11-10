@@ -1,4 +1,9 @@
-import { SecretLintRuleContext, SecretLintRuleCreator, SecretLintSourceCode, SecretLintRuleMessageTranslate} from "@secretlint/types";
+import {
+    SecretLintRuleContext,
+    SecretLintRuleCreator,
+    SecretLintSourceCode,
+    SecretLintRuleMessageTranslate,
+} from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export interface Options {
@@ -102,7 +107,7 @@ const reportAWSSecretAccessKey = ({
     // This Pattern match only `AWS?_SECRET_ACCESS_KEY=XXX`
     const AWSSecretPatten = new RegExp(
         String.raw`${QUOTE}${AWS}(?:SECRET|secret|Secret)_?(?:ACCESS|access|Access)_?(?:KEY|key|Key)${QUOTE}${CONNECT}${QUOTE}([A-Za-z0-9/\+=]{40})${QUOTE}\b`,
-        "g"
+        "g",
     );
     const results = source.content.matchAll(AWSSecretPatten);
     for (const result of results) {
@@ -142,7 +147,7 @@ const reportAWSAccountID = ({
     const CONNECT = "\\s*(:|=>|=)\\s*";
     const AWSSecretPatten = new RegExp(
         String.raw`${QUOTE}${AWS}(ACCOUNT|account|Account)_?(ID|id|Id)?${QUOTE}${CONNECT}${QUOTE}[0-9]{4}\-?[0-9]{4}\-?[0-9]{4}${QUOTE}\b`,
-        "g"
+        "g",
     );
     const results = source.content.matchAll(AWSSecretPatten);
     for (const result of results) {
@@ -169,6 +174,7 @@ export const creator: SecretLintRuleCreator<Options> = {
         recommended: true,
         type: "scanner",
         supportedContentTypes: ["text"],
+        keywords: ["A3T", "AKIA", "AGPA", "AIDA", "AROA", "AIPA", "ANPA", "ANVA", "ASIA", "secret", "account"],
         docs: {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md",
         },

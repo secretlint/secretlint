@@ -77,6 +77,7 @@ export const creator: SecretLintRuleCreator<Options> = {
         recommended: true,
         type: "scanner",
         supportedContentTypes: ["text"],
+        keywords: ["shppa_", "shpca_", "shpat_", "shpss_"],
         docs: {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-shopify/README.md"
         }

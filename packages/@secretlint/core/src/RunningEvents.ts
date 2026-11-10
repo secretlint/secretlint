@@ -9,6 +9,7 @@ import { PromiseEventEmitter } from "./helper/promise-event-emitter.js";
 import { SecretLintRule } from "./SecretLintRuleImpl.js";
 import { secretLintProfiler } from "@secretlint/profiler";
 import { AllowMessage } from "./messages/filter-message-id.js";
+import { getKeywordMatcher, normalizeKeyword } from "./helper/keyword-matcher.js";
 
 export type RunningEvents = {
     collectAllowMessageIds(): AllowMessage[];
@@ -40,6 +41,41 @@ export const createRunningEvents = (): RunningEvents => {
     const registerSet = new Set<string>();
     const LINT_HANDLE = Symbol("lint:start");
     const rules: SecretLintRule[] = [];
+    /**
+     * Normalized keywords of each rule. A rule without keywords is not in this map.
+     */
+    const ruleKeywords = new Map<SecretLintRule, string[]>();
+    /**
+     * Return a function that tells whether the rule should run for the source code.
+     * The content is scanned once for the keywords of all rules, and only when a rule with keywords supports the source.
+     */
+    const createKeywordFilter = (sourceCode: SecretLintSourceCode): ((rule: SecretLintRule) => boolean) => {
+        let foundKeywords: Set<string> | undefined;
+        const getFoundKeywords = (): Set<string> => {
+            if (foundKeywords) {
+                return foundKeywords;
+            }
+            const allKeywords = new Set<string>();
+            for (const [rule, keywords] of ruleKeywords) {
+                if (rule.supportSourceCode(sourceCode)) {
+                    keywords.forEach((keyword) => allKeywords.add(keyword));
+                }
+            }
+            const matcher = getKeywordMatcher([...allKeywords].sort());
+            const flags = matcher.match(sourceCode.content);
+            foundKeywords = new Set(matcher.keywords.filter((_, index) => flags[index] === 1));
+            return foundKeywords;
+        };
+        return (rule) => {
+            const keywords = ruleKeywords.get(rule);
+            if (!keywords) {
+                return true;
+            }
+            const found = getFoundKeywords();
+            return keywords.some((keyword) => found.has(keyword));
+        };
+    };
+    let keywordFilter: ((rule: SecretLintRule) => boolean) | undefined;
     return {
         collectAllowMessageIds(): AllowMessage[] {
             const allowMessageIds: AllowMessage[] = [];
@@ -53,6 +89,7 @@ export const createRunningEvents = (): RunningEvents => {
          * @param options
          */
         runLint(options: { sourceCode: SecretLintSourceCode }): Promise<Array<void>> {
+            keywordFilter = createKeywordFilter(options.sourceCode);
             return contextEvents.emit(LINT_HANDLE, options);
         },
         registerRule({
@@ -75,6 +112,11 @@ Duplicated rule.id is something wrong in .secretlintrc.
                 context,
             });
             rules.push(rule);
+            const keywords = descriptorRule.rule.meta.keywords?.map((keyword) => normalizeKeyword(keyword));
+            // Use the pre-filter only when all keywords are valid. Otherwise, the rule always runs.
+            if (keywords && keywords.length > 0 && keywords.every((keyword) => keyword !== undefined)) {
+                ruleKeywords.set(rule, keywords as string[]);
+            }
             contextEvents.on(LINT_HANDLE, async ({ sourceCode }: { sourceCode: SecretLintSourceCode }) => {
                 // TODO: add more handler
                 // Call O￿￿rder?
@@ -84,7 +126,8 @@ Duplicated rule.id is something wrong in .secretlintrc.
                     id: descriptorRule.rule.meta.id,
                 });
                 // if this rule support the content type
-                if (rule.supportSourceCode(sourceCode)) {
+                // and the content contains the rule's keywords
+                if (rule.supportSourceCode(sourceCode) && (keywordFilter === undefined || keywordFilter(rule))) {
                     await rule.file(sourceCode);
                 }
                 secretLintProfiler.mark({

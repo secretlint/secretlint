@@ -238,6 +238,7 @@ export const creator: SecretLintRuleCreator<Options> = {
         recommended: true,
         type: "scanner",
         supportedContentTypes: ["text"],
+        keywords: ["mongodb", "mysql", "postgres"],
         docs: {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md",
         },

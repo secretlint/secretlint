@@ -26,6 +26,7 @@ export const creator: SecretLintRuleCreator<Options> = {
         recommended: true,
         type: "scanner",
         supportedContentTypes: ["text"],
+        keywords: ["ops_"],
         docs: {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-1password/README.md",
         },

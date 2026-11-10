@@ -62,6 +62,7 @@ export const creator: SecretLintRuleCreator<Options> = {
         recommended: true,
         type: "scanner",
         supportedContentTypes: ["text"],
+        keywords: ["SG."],
         docs: {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-sendgrid/README.md",
         },
