@@ -183,6 +183,41 @@ describe("lintSource with meta.keywords", () => {
         await lint("token: gho_xxxx", [rule]);
         assert.deepStrictEqual(calls, [rule.meta.id]);
     });
+    it("should not create the rule when the content does not contain the keywords", async () => {
+        const created: string[] = [];
+        const rule: SecretLintRuleCreator = {
+            messages: {},
+            meta: {
+                id: "keyword-rule-create",
+                recommended: true,
+                type: "scanner",
+                supportedContentTypes: ["text"],
+                keywords: ["ghp_"],
+            },
+            create() {
+                created.push("create");
+                return { file() {} };
+            },
+        };
+        await lint("nothing here", [rule]);
+        assert.deepStrictEqual(created, []);
+        await lint("ghp_xxxx", [rule]);
+        await lint("ghp_yyyy", [rule]);
+        // create() is called for each file that the rule runs for
+        assert.deepStrictEqual(created, ["create", "create"]);
+    });
+    it("should use the keywords of each rule set even if rule ids are the same", async () => {
+        const calls: string[] = [];
+        const ruleA = createRule(["aaa_"], calls);
+        const ruleB = {
+            ...createRule(["bbb_"], calls),
+            meta: { ...createRule(["bbb_"], calls).meta, id: ruleA.meta.id },
+        };
+        await lint("aaa_", [ruleA]);
+        await lint("aaa_", [ruleB]);
+        await lint("bbb_", [ruleB]);
+        assert.deepStrictEqual(calls, [ruleA.meta.id, `keyword-rule-${JSON.stringify(["bbb_"])}`]);
+    });
     it("should match keywords ASCII case-insensitively", async () => {
         const calls: string[] = [];
         const rule = createRule(["Secret"], calls);

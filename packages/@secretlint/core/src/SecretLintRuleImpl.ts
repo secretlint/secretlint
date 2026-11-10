@@ -12,6 +12,19 @@ export type SecretLintRuleOptions = {
     descriptorRule: SecretLintCoreConfigRule;
 };
 
+export const getAllowMessageIds = (descriptorRule: SecretLintCoreConfigRule): AllowMessage[] => {
+    if (!descriptorRule.allowMessageIds) {
+        return [];
+    }
+    const ruleId = descriptorRule.rule.meta.id;
+    return descriptorRule.allowMessageIds.map((allowMessageId) => {
+        return {
+            messageId: allowMessageId,
+            ruleId,
+        };
+    });
+};
+
 export class SecretLintRule {
     private ruleReportHandle: SecretLintRuleReportHandler;
     private ruleCreator: SecretLintRuleCreator;
@@ -26,16 +39,7 @@ export class SecretLintRule {
     }
 
     allowMessageIds(): AllowMessage[] {
-        if (!this.descriptorRule.allowMessageIds) {
-            return [];
-        }
-        const ruleId = this.ruleCreator.meta.id;
-        return this.descriptorRule.allowMessageIds.map((allowMessageId) => {
-            return {
-                messageId: allowMessageId,
-                ruleId,
-            };
-        });
+        return getAllowMessageIds(this.descriptorRule);
     }
 
     supportSourceCode(sourceCode: SecretLintSourceCode) {
