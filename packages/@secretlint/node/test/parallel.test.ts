@@ -118,6 +118,9 @@ describe("parallel", () => {
         it("returns true for JSON values", () => {
             assert.ok(isPlainJSONValue({ rules: [{ id: "a", options: { allows: ["x"], n: 1, b: true, z: null } }] }));
             assert.ok(isPlainJSONValue(Object.create(null)));
+            // the same object in two places is not a cycle
+            const allows = ["x"];
+            assert.ok(isPlainJSONValue({ a: allows, b: allows }));
         });
         it("returns false for values that structured clone changes", () => {
             class Matcher {}
@@ -126,6 +129,20 @@ describe("parallel", () => {
             assert.ok(!isPlainJSONValue({ options: { re: /a/ } }));
             assert.ok(!isPlainJSONValue({ options: { u: undefined } }));
             assert.ok(!isPlainJSONValue([new Date()]));
+            const circular: Record<string, unknown> = {};
+            circular.self = circular;
+            assert.ok(!isPlainJSONValue({ options: circular }));
+            const hidden = {};
+            Object.defineProperty(hidden, "patterns", { value: ["TOKEN"] });
+            assert.ok(!isPlainJSONValue({ options: hidden }));
+            assert.ok(!isPlainJSONValue({ [Symbol("s")]: 1 }));
+            assert.ok(
+                !isPlainJSONValue({
+                    get value() {
+                        return 1;
+                    },
+                }),
+            );
         });
     });
 

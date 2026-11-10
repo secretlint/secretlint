@@ -69,24 +69,43 @@ const workerURL = new URL("./worker.js", import.meta.url);
  * A worker gets a structured clone of the config, which drops functions and class prototypes of rule options.
  * Workers are used only if the clone works the same as the original.
  */
-export const isPlainJSONValue = (value: unknown): boolean => {
+export const isPlainJSONValue = (value: unknown, visited: Set<object> = new Set()): boolean => {
     if (value === null || typeof value === "string" || typeof value === "boolean") {
         return true;
     }
     if (typeof value === "number") {
         return Number.isFinite(value);
     }
-    if (Array.isArray(value)) {
-        return value.every(isPlainJSONValue);
+    if (typeof value !== "object") {
+        return false;
     }
-    if (typeof value === "object") {
+    // A cycle can not be written in JSON. `visited` holds the ancestors of the value
+    if (visited.has(value)) {
+        return false;
+    }
+    visited.add(value);
+    const isArray = Array.isArray(value);
+    if (!isArray) {
         const prototype = Object.getPrototypeOf(value);
         if (prototype !== Object.prototype && prototype !== null) {
             return false;
         }
-        return Object.values(value).every(isPlainJSONValue);
     }
-    return false;
+    // Structured clone drops non-enumerable and symbol-keyed properties, and calls getters
+    for (const key of Reflect.ownKeys(value)) {
+        if (isArray && key === "length") {
+            continue;
+        }
+        const descriptor = Object.getOwnPropertyDescriptor(value, key);
+        if (typeof key === "symbol" || !descriptor || !descriptor.enumerable || !("value" in descriptor)) {
+            return false;
+        }
+        if (!isPlainJSONValue(descriptor.value, visited)) {
+            return false;
+        }
+    }
+    visited.delete(value);
+    return true;
 };
 
 /**
