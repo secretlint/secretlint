@@ -59,6 +59,7 @@
         "@textlint/regexp-string-matcher": "catalog:"
     },
     "devDependencies": {
+        "@secretlint/core": "workspace:*",
         "@secretlint/tester": "workspace:*",
         "@types/node": "catalog:",
         "prettier": "catalog:",
