@@ -94,9 +94,7 @@ function isLikelyRealCredential(username: string, password: string): boolean {
     return true;
 }
 
-const createReport = (
-    messageId: "MongoDBConnection" | "MySQLConnection" | "PostgreSQLConnection",
-): SecretLintRulePattern<Options>["report"] => {
+const createReport = (messageId: keyof typeof messages): SecretLintRulePattern<Options>["report"] => {
     return (match, context) => {
         const username = match.groups?.username;
         const password = match.groups?.password;
