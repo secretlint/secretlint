@@ -218,6 +218,27 @@ describe("lintSource with meta.keywords", () => {
         await lint("bbb_", [ruleB]);
         assert.deepStrictEqual(calls, [ruleA.meta.id, `keyword-rule-${JSON.stringify(["bbb_"])}`]);
     });
+    it("should use the changed keywords of the same rule creator", async () => {
+        const calls: string[] = [];
+        const rule = createRule(["aaa_"], calls);
+        await lint("bbb_", [rule]);
+        rule.meta.keywords = ["bbb_"];
+        await lint("bbb_", [rule]);
+        assert.deepStrictEqual(calls, [rule.meta.id]);
+    });
+    it("should not start any rule handler if create() of a rule throws", async () => {
+        const calls: string[] = [];
+        const okRule = createRule(["ghp_"], calls);
+        const throwRule: SecretLintRuleCreator = {
+            ...createRule(["ghp_"], calls),
+            meta: { ...createRule(["ghp_"], calls).meta, id: "keyword-rule-throw" },
+            create() {
+                throw new Error("create error");
+            },
+        };
+        await assert.rejects(lint("ghp_xxxx", [okRule, throwRule]), /create error/);
+        assert.deepStrictEqual(calls, []);
+    });
     it("should match keywords ASCII case-insensitively", async () => {
         const calls: string[] = [];
         const rule = createRule(["Secret"], calls);
