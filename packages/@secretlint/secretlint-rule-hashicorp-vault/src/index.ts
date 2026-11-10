@@ -44,6 +44,7 @@ export const creator: SecretLintRuleCreator<Options> = {
         recommended: true,
         type: "scanner",
         supportedContentTypes: ["text"],
+        keywords: ["hvs.", "hvb.", "hvr."],
         docs: {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-hashicorp-vault/README.md",
         },
@@ -59,7 +60,7 @@ export const creator: SecretLintRuleCreator<Options> = {
             messageId:
                 | "HASHICORP_VAULT_SERVICE_TOKEN"
                 | "HASHICORP_VAULT_BATCH_TOKEN"
-                | "HASHICORP_VAULT_RECOVERY_TOKEN"
+                | "HASHICORP_VAULT_RECOVERY_TOKEN",
         ) => {
             const matches = source.content.matchAll(pattern);
             for (const match of matches) {
