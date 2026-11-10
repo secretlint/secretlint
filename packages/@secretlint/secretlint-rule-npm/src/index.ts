@@ -57,7 +57,7 @@ export const creator = defineRule<Options>({
             // https://github.blog/2012-09-21-easier-builds-and-deployments-using-git-over-https-and-oauth/
             // https://stackoverflow.com/questions/14402407/maximum-length-of-a-domain-name-without-the-http-www-com-parts
             pattern: /https?:\/\/(.{1,256}):x-oauth-basic@github.com\//g,
-            keywords: ["x-oauth-basic"],
+            keywords: [":x-oauth-basic@github"],
             scope: "line",
             report(match, context) {
                 // package.json and package-lock.json only
@@ -85,7 +85,7 @@ export const creator = defineRule<Options>({
             // https://github.com/secretlint/secretlint/issues/302
             // `[^$]` may match a line break, so the scope is "file"
             pattern: /_authToken=([^$].*)/g,
-            keywords: ["_authToken"],
+            keywords: ["_authToken="],
             scope: "file",
             report(match, context) {
                 // .npmrc only

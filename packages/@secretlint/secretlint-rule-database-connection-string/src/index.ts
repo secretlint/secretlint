@@ -137,7 +137,7 @@ export const creator = defineRule<Options>({
             // Using possessive quantifiers to prevent ReDoS
             pattern:
                 /mongodb(?:\+srv)?:\/\/(?:(?<username>[^:\/\s]{1,100}):(?<password>[^@\/\s]{1,200})@)?(?<host>[^\/\s?]{1,100})(?:\/(?<database>[^?\s]{0,100}))?(?:\?(?<options>[^\s]{0,500}))?/gi,
-            keywords: ["mongodb"],
+            keywords: ["mongodb://", "mongodb+srv://"],
             scope: "line",
             report: createReport("MongoDBConnection"),
         },
@@ -146,7 +146,7 @@ export const creator = defineRule<Options>({
             // Using possessive quantifiers to prevent ReDoS
             pattern:
                 /(?:jdbc:)?mysql(?:x)?:\/\/(?:(?<username>[^:\/\s]{1,100}):(?<password>[^@\/\s]{1,200})@)?(?<host>[^\/\s?]{1,100})(?:\/(?<database>[^?\s]{0,100}))?(?:\?(?<options>[^\s]{0,500}))?/gi,
-            keywords: ["mysql"],
+            keywords: ["mysql://", "mysqlx://"],
             scope: "line",
             report: createReport("MySQLConnection"),
         },
@@ -155,7 +155,7 @@ export const creator = defineRule<Options>({
             // Using possessive quantifiers to prevent ReDoS
             pattern:
                 /postgres(?:ql)?:\/\/(?:(?<username>[^:\/\s]{1,100}):(?<password>[^@\/\s]{1,200})@)?(?<host>[^\/\s?]{1,100})(?:\/(?<database>[^?\s]{0,100}))?(?:\?(?<options>[^\s]{0,500}))?/gi,
-            keywords: ["postgres"],
+            keywords: ["postgres://", "postgresql://"],
             scope: "line",
             report: createReport("PostgreSQLConnection"),
         },

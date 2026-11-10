@@ -64,7 +64,7 @@ export const creator = defineRule<Options>({
             // https://api.slack.com/messaging/webhooks
             pattern:
                 /https:\/\/hooks\.slack\.com\/services\/T[a-zA-Z0-9]{1,40}\/B[a-zA-Z0-9]{1,40}\/[a-zA-Z0-9]{1,40}/gi,
-            keywords: ["hooks.slack.com"],
+            keywords: ["hooks.slack.com/services/"],
             scope: "line",
             report(match, context) {
                 const allowedResults = matchPatterns(match.text, context.options.allows ?? []);

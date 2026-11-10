@@ -135,7 +135,8 @@ export const creator = defineRule<Options>({
         {
             // The connector between the name and the value may include line breaks, so the scope is "file"
             pattern: AWSSecretAccessKeyPattern,
-            keywords: ["secret"],
+            // SECRET_?ACCESS of the pattern
+            keywords: ["secret_access", "secretaccess"],
             scope: "file",
             report(match, context) {
                 const key = match.captures[1] || "";
