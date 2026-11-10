@@ -57,6 +57,7 @@ export const createRawSource = async (filePath: string): Promise<SecretLintRawSo
  * Read a file and return the source for linting. See {@link createFileSourceReader}.
  */
 export type FileSourceReader = (filePath: string) => SecretLintRawSource;
+type FileStamp = { size: number; mtimeMs: number; ctimeMs: number };
 const INITIAL_BUFFER_SIZE = 64 * 1024;
 /**
  * A file larger than this size is read into its own buffer, and the shared buffer does not grow for it.
@@ -78,9 +79,13 @@ export const createFileSourceReader = (): FileSourceReader => {
     let sharedBuffer = Buffer.allocUnsafe(INITIAL_BUFFER_SIZE);
     // the number of files that the reader has read. It tells whether the shared buffer still has a file.
     let generation = 0;
+    // size and times of the file that `readFile()` has read last
+    let lastStat: FileStamp = { size: 0, mtimeMs: 0, ctimeMs: 0 };
     const readFile = (filePath: string): Buffer => {
         const fd = fs.openSync(filePath, "r");
         try {
+            const stat = fs.fstatSync(fd);
+            lastStat = { size: stat.size, mtimeMs: stat.mtimeMs, ctimeMs: stat.ctimeMs };
             let buffer = sharedBuffer;
             let length = 0;
             while (true) {
@@ -89,11 +94,16 @@ export const createFileSourceReader = (): FileSourceReader => {
                     buffer.copy(grown, 0, 0, length);
                     buffer = grown;
                 }
-                const requested = buffer.length - length;
-                const bytesRead = fs.readSync(fd, buffer, length, requested, null);
+                // Only a read of 0 bytes is the end of the file.
+                // A short read is not: files such as /proc/* return less than requested before the end
+                const bytesRead = fs.readSync(fd, buffer, length, buffer.length - length, null);
+                if (bytesRead === 0) {
+                    break;
+                }
                 length += bytesRead;
-                // A short read is the end of a regular file. It saves a system call for each file
-                if (bytesRead < requested) {
+                // The file has `stat.size` bytes, so do not call read again only to get 0.
+                // Files such as /proc/* have the size 0, and they are read to the end.
+                if (length === stat.size) {
                     break;
                 }
             }
@@ -109,15 +119,35 @@ export const createFileSourceReader = (): FileSourceReader => {
         generation++;
         const sourceGeneration = generation;
         let bytes: Buffer | undefined = readFile(filePath);
+        const stamp = lastStat;
+        const scannedLength = bytes.length;
         const contentType = detectContentType(filePath, bytes);
         let decodedContent: string | undefined;
+        // Read the file again, because the shared buffer has another file.
+        // The content must be the content that was linted. If the file has been changed, it is an error:
+        // a formatter such as "mask-result" would output the new content that no rule has checked.
+        const readAgain = (): Buffer => {
+            const fd = fs.openSync(filePath, "r");
+            try {
+                const stat = fs.fstatSync(fd);
+                if (stat.size !== stamp.size || stat.mtimeMs !== stamp.mtimeMs || stat.ctimeMs !== stamp.ctimeMs) {
+                    throw new Error(`The file was changed while linting: ${filePath}`);
+                }
+                const buffer = fs.readFileSync(fd);
+                if (buffer.length !== scannedLength) {
+                    throw new Error(`The file was changed while linting: ${filePath}`);
+                }
+                return buffer;
+            } finally {
+                fs.closeSync(fd);
+            }
+        };
         const source: SecretLintRawSource = {
             filePath,
             get content(): string {
                 if (decodedContent === undefined) {
-                    // Read the file again if the shared buffer has another file
                     decodedContent = (
-                        bytes !== undefined && generation === sourceGeneration ? bytes : fs.readFileSync(filePath)
+                        bytes !== undefined && generation === sourceGeneration ? bytes : readAgain()
                     ).toString();
                     bytes = undefined;
                 }

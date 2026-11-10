@@ -144,4 +144,24 @@ describe("createFileSourceReader", () => {
         const readFileSource = createFileSourceReader();
         assert.throws(() => readFileSource(path.join(fixturesDir, "not-found.txt")), /ENOENT/);
     });
+    it("throws if the file was changed before the content is read again", () => {
+        const readFileSource = createFileSourceReader();
+        const dir = fs.mkdtempSync(path.join(fixturesDir, "..", ".tmp-reader-"));
+        try {
+            const filePath = path.join(dir, "changed.txt");
+            const otherFilePath = path.join(dir, "other.txt");
+            fs.writeFileSync(filePath, "clean content");
+            fs.writeFileSync(otherFilePath, "other");
+            const source = readFileSource(filePath);
+            const unchanged = readFileSource(filePath);
+            readFileSource(otherFilePath);
+            // the content of an unchanged file is read again
+            assert.strictEqual(unchanged.content, "clean content");
+            // the content that was not linted is never returned
+            fs.writeFileSync(filePath, "new content with a secret");
+            assert.throws(() => source.content, /The file was changed while linting/);
+        } finally {
+            fs.rmSync(dir, { recursive: true, force: true });
+        }
+    });
 });
