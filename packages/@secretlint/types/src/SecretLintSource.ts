@@ -8,6 +8,14 @@
  */
 export type SecretLintRawSource = {
     content: string;
+    /**
+     * The content as UTF-8 bytes.
+     * If it is defined, secretlint scans the bytes for the keywords of the rules,
+     * and reads `content` only when a rule needs it.
+     * So `content` can be a getter that decodes the bytes lazily.
+     * `contentBytes` must be the UTF-8 encoding of `content`. A byte order mark at the start is allowed.
+     */
+    contentBytes?: Uint8Array;
     filePath: string;
     /**
      * Prefer ext than filePath

@@ -24,6 +24,9 @@ export type {
     SecretLintRuleReportDescriptor,
     SecretLintRuleReportHandler,
     SecretLintRuleContentType,
+    SecretLintRulePattern,
+    SecretLintRulePatternMatch,
+    SecretLintRulePatternContext,
 } from "./SecretLintRule.js";
 // Rule Preset
 export type {
