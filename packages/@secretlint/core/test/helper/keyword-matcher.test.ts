@@ -66,8 +66,8 @@ describe("keyword-matcher", () => {
     describe("scan", () => {
         const scanPositions = (keywords: string[], input: string | Uint8Array, start?: number) => {
             const matcher = createKeywordMatcher(keywords);
-            const hits = matcher.createHits();
-            const found = matcher.scan(input, hits, start);
+            const hits = matcher.scan(input, start);
+            const found = hits.count > 0;
             const positions: [string[], number][] = [];
             for (let i = 0; i < hits.count; i++) {
                 positions.push([
@@ -113,17 +113,21 @@ describe("keyword-matcher", () => {
                 [["ab"], 4],
             ]);
         });
-        it("resets the hits for each scan, and keeps many hits", () => {
+        it("returns new hits for each scan, and keeps many hits", () => {
             const matcher = createKeywordMatcher(["a", "b"]);
-            const hits = matcher.createHits();
-            assert.strictEqual(matcher.scan("a".repeat(1000), hits), true);
-            assert.strictEqual(hits.count, 1000);
-            assert.deepStrictEqual([...hits.found], [1, 0]);
-            assert.strictEqual(matcher.scan("xxb", hits), true);
-            assert.strictEqual(hits.count, 1);
-            assert.deepStrictEqual([...hits.found], [0, 1]);
-            assert.strictEqual(matcher.scan("xx", hits), false);
-            assert.strictEqual(hits.count, 0);
+            const many = matcher.scan("a".repeat(1000));
+            const one = matcher.scan("xxb");
+            const none = matcher.scan("xx");
+            // the next scan does not change the hits of the previous scan
+            assert.strictEqual(many.count, 1000);
+            assert.strictEqual(many.positions.length, 2000);
+            assert.strictEqual(many.positions[1999], 999);
+            assert.deepStrictEqual([...many.found], [1, 0]);
+            assert.strictEqual(one.count, 1);
+            assert.deepStrictEqual([...one.positions], [...matcher.scan("xxb").positions]);
+            assert.deepStrictEqual([...one.found], [0, 1]);
+            assert.strictEqual(none.count, 0);
+            assert.deepStrictEqual([...none.found], [0, 0]);
         });
         it("finds nothing without keywords", () => {
             assert.deepStrictEqual(scanPositions([], "abc"), { found: false, positions: [], flags: [] });
@@ -132,8 +136,8 @@ describe("keyword-matcher", () => {
     describe("case-sensitive keywords", () => {
         const scanKeywords = (keywords: string[], caseSensitive: boolean[], input: string | Uint8Array) => {
             const matcher = createKeywordMatcher(keywords, caseSensitive);
-            const hits = matcher.createHits();
-            const found = matcher.scan(input, hits);
+            const hits = matcher.scan(input);
+            const found = hits.count > 0;
             const positions: [string[], number][] = [];
             for (let i = 0; i < hits.count; i++) {
                 positions.push([
@@ -189,14 +193,14 @@ describe("keyword-matcher", () => {
                 ]);
             });
         });
-        it("resets the hits for each scan", () => {
+        it("returns new hits for each scan", () => {
             const matcher = createKeywordMatcher(["SG."], [true]);
-            const hits = matcher.createHits();
-            assert.strictEqual(matcher.scan("SG. SG.", hits), true);
-            assert.strictEqual(hits.count, 2);
-            assert.strictEqual(matcher.scan("sg. sg.", hits), false);
-            assert.strictEqual(hits.count, 0);
-            assert.deepStrictEqual([...hits.found], [0]);
+            const sameCase = matcher.scan("SG. SG.");
+            const differentCase = matcher.scan("sg. sg.");
+            assert.strictEqual(sameCase.count, 2);
+            assert.deepStrictEqual([...sameCase.found], [1]);
+            assert.strictEqual(differentCase.count, 0);
+            assert.deepStrictEqual([...differentCase.found], [0]);
         });
         it("caches the matcher by the keywords and their case-sensitivity", () => {
             assert.strictEqual(getKeywordMatcher(["x"], [true]), getKeywordMatcher(["x"], [true]));

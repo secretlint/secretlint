@@ -11,43 +11,42 @@
  * instead of running each rule's regular expressions over the whole content.
  * Secret scanners such as gitleaks and TruffleHog use the same keyword pre-filter.
  */
+/**
+ * The result of a scan. It is not changed after the scan.
+ */
 export type KeywordHits = {
     /**
      * `found[i] === 1` if `keywords[i]` appears in the input
      */
-    readonly found: Uint8Array;
+    readonly found: Readonly<Uint8Array>;
     /**
      * Pairs of [state, index]. `index` is the index of the last character of a keyword in the input.
      * `matcher.keywordsOfState(state)` returns the keywords that end at the index.
      * `state` is an id for a set of keywords. It is not always a state of the automaton.
      * Pairs are sorted by the index.
      */
-    positions: Int32Array;
+    readonly positions: Readonly<Int32Array>;
     /**
      * The number of the pairs in `positions`
      */
-    count: number;
+    readonly count: number;
 };
 export type KeywordMatcher = {
     /**
-     * The keywords. `match()` returns flags in this order.
+     * The keywords. `found` of the hits is in this order.
      * A case-insensitive keyword is lower-cased.
      */
     readonly keywords: readonly string[];
     /**
      * Return `found[i] === 1` if `keywords[i]` appears in the text.
      */
-    match(text: string): Uint8Array;
+    match(text: string): Readonly<Uint8Array>;
     /**
-     * Create a result holder for `scan()`. A holder can be reused for many scans.
-     */
-    createHits(): KeywordHits;
-    /**
-     * Find the keywords in the input from the `start` index, and write the result to `hits`.
+     * Find the keywords in the input from the `start` index.
      * The input is a string or UTF-8 bytes. Indexes are UTF-16 code units for a string, and bytes for bytes.
-     * Return true if any keyword is found.
+     * It returns a new result for each scan. `count` is 0 if no keyword is found.
      */
-    scan(input: string | Uint8Array, hits: KeywordHits, start?: number): boolean;
+    scan(input: string | Uint8Array, start?: number): KeywordHits;
     /**
      * Return the indexes of the keywords that end at the state
      */
@@ -208,121 +207,119 @@ export const createKeywordMatcher = (
      */
     const verify = (input: string | Uint8Array, state: number, lastIndex: number): number => {
         const output = outputs[state] as number[];
-        let matched: number[] | undefined;
-        for (let i = 0; i < output.length; i++) {
-            const keywordIndex = output[i] as number;
-            const isMatched =
-                caseSensitive[keywordIndex] !== true || isSameCase(input, lastIndex, keywords[keywordIndex] as string);
-            if (!isMatched && matched === undefined) {
-                matched = output.slice(0, i);
-            } else if (isMatched && matched !== undefined) {
-                matched.push(keywordIndex);
-            }
-        }
-        if (matched === undefined) {
+        const matched = output.filter((keywordIndex) => {
+            return (
+                caseSensitive[keywordIndex] !== true || isSameCase(input, lastIndex, keywords[keywordIndex] as string)
+            );
+        });
+        if (matched.length === output.length) {
             return state;
         }
         if (matched.length === 0) {
             return -1;
         }
         const key = `${state}:${matched.join(",")}`;
-        let id = subsetIds.get(key);
-        if (id === undefined) {
-            id = outputs.length;
-            outputs.push(matched);
-            subsetIds.set(key, id);
+        const knownId = subsetIds.get(key);
+        if (knownId !== undefined) {
+            return knownId;
         }
+        const id = outputs.length;
+        outputs.push(matched);
+        subsetIds.set(key, id);
         return id;
     };
-
-    const pushPosition = (hits: KeywordHits, offset: number, index: number): void => {
-        const at = hits.count * 2;
-        if (at >= hits.positions.length) {
-            const positions = new Int32Array(hits.positions.length * 2);
-            positions.set(hits.positions);
-            hits.positions = positions;
-        }
-        hits.positions[at] = offset / classCount;
-        hits.positions[at + 1] = index;
-        hits.count++;
+    // The scan loops write the hits to this buffer, and `scan()` returns a copy of the used part.
+    // It is the only state of the matcher that changes, and it is not visible from outside:
+    // a scan runs to the end synchronously, so two scans never use the buffer at the same time.
+    let buffer = new Int32Array(INITIAL_POSITIONS_SIZE);
+    const growBuffer = (): void => {
+        const grown = new Int32Array(buffer.length * 2);
+        grown.set(buffer);
+        buffer = grown;
     };
-    const scanBytes = (bytes: Uint8Array, hits: KeywordHits, start: number): void => {
+    /**
+     * Write [state, index] of the hits to the buffer, and return the length of the written part
+     */
+    const scanBytes = (bytes: Uint8Array, start: number): number => {
         let offset = 0;
+        let written = 0;
         for (let i = start, length = bytes.length; i < length; i++) {
             offset = transitions[offset + (charClass[bytes[i] as number] as number)] as number;
             if (offset >= firstOutputOffset) {
-                pushPosition(hits, offset, i);
+                if (written >= buffer.length) {
+                    growBuffer();
+                }
+                buffer[written] = offset / classCount;
+                buffer[written + 1] = i;
+                written += 2;
             }
         }
+        return written;
     };
-    const scanText = (text: string, hits: KeywordHits, start: number): void => {
+    const scanText = (text: string, start: number): number => {
         let offset = 0;
+        let written = 0;
         for (let i = start, length = text.length; i < length; i++) {
             const code = text.charCodeAt(i);
             offset = transitions[offset + (code < ASCII_SIZE ? (charClass[code] as number) : 0)] as number;
             if (offset >= firstOutputOffset) {
-                pushPosition(hits, offset, i);
+                if (written >= buffer.length) {
+                    growBuffer();
+                }
+                buffer[written] = offset / classCount;
+                buffer[written + 1] = i;
+                written += 2;
             }
         }
+        return written;
     };
-    const createHits = (): KeywordHits => {
-        return {
-            found: new Uint8Array(keywords.length),
-            positions: new Int32Array(INITIAL_POSITIONS_SIZE),
-            count: 0,
-        };
+    /**
+     * Drop the hits of the case-sensitive keywords that differ in case, and return the length of the kept part
+     */
+    const dropDifferentCase = (input: string | Uint8Array, written: number): number => {
+        let kept = 0;
+        for (let i = 0; i < written; i += 2) {
+            const state = buffer[i] as number;
+            const index = buffer[i + 1] as number;
+            const id = needsVerify[state] === 1 ? verify(input, state, index) : state;
+            if (id >= 0) {
+                buffer[kept] = id;
+                buffer[kept + 1] = index;
+                kept += 2;
+            }
+        }
+        return kept;
     };
-    const scan = (input: string | Uint8Array, hits: KeywordHits, start: number = 0): boolean => {
-        hits.count = 0;
-        hits.found.fill(0);
+    const noHits: KeywordHits = {
+        found: new Uint8Array(keywords.length),
+        positions: new Int32Array(0),
+        count: 0,
+    };
+    const scan = (input: string | Uint8Array, start: number = 0): KeywordHits => {
         if (keywords.length === 0) {
-            return false;
+            return noHits;
         }
-        if (typeof input === "string") {
-            scanText(input, hits, start);
-        } else {
-            scanBytes(input, hits, start);
+        const written = typeof input === "string" ? scanText(input, start) : scanBytes(input, start);
+        const length = hasCaseSensitive ? dropDifferentCase(input, written) : written;
+        if (length === 0) {
+            // Most inputs have no keyword. Nothing is created for them
+            return noHits;
         }
-        const { found, positions } = hits;
-        if (!hasCaseSensitive) {
-            for (let i = 0, end = hits.count * 2; i < end; i += 2) {
-                const output = outputs[positions[i] as number] as number[];
-                for (let j = 0; j < output.length; j++) {
-                    found[output[j] as number] = 1;
-                }
-            }
-            return hits.count > 0;
-        }
-        // Drop the hits of the case-sensitive keywords that differ in case
-        let write = 0;
-        for (let i = 0, end = hits.count * 2; i < end; i += 2) {
-            let id = positions[i] as number;
-            const index = positions[i + 1] as number;
-            if (needsVerify[id] === 1) {
-                id = verify(input, id, index);
-                if (id < 0) {
-                    continue;
-                }
-            }
-            positions[write] = id;
-            positions[write + 1] = index;
-            write += 2;
-            const output = outputs[id] as number[];
+        const positions = buffer.slice(0, length);
+        const found = new Uint8Array(keywords.length);
+        for (let i = 0; i < length; i += 2) {
+            const output = outputs[positions[i] as number] as number[];
             for (let j = 0; j < output.length; j++) {
                 found[output[j] as number] = 1;
             }
         }
-        hits.count = write / 2;
-        return hits.count > 0;
+        return { found, positions, count: length / 2 };
     };
     return {
         keywords,
-        match(text: string): Uint8Array {
-            const hits = createHits();
-            scan(text, hits);
-            return hits.found;
+        match(text: string): Readonly<Uint8Array> {
+            return scan(text).found;
         },
-        createHits,
         scan,
         keywordsOfState(state: number): readonly number[] {
             return outputs[state] ?? [];

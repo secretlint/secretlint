@@ -52,7 +52,8 @@ const LINE_FEED = 0x0a;
 const hasUtf8BOM = (bytes: Uint8Array): boolean => {
     return bytes.length >= 3 && bytes[0] === 0xef && bytes[1] === 0xbb && bytes[2] === 0xbf;
 };
-let textDecoder: TextDecoder | undefined;
+// TextDecoder is in browsers and Node.js. `ignoreBOM: true` keeps a BOM as a character, as `Buffer#toString` does
+const textDecoder = new TextDecoder("utf-8", { ignoreBOM: true });
 /**
  * Decode a part of UTF-8 bytes.
  * The part is a line: it starts after a line feed and ends with a line feed,
@@ -64,15 +65,62 @@ const decodeBytes = (bytes: Uint8Array, start: number, end: number): string => {
     if (typeof utf8Slice === "function") {
         return utf8Slice.call(bytes, start, end);
     }
-    if (textDecoder === undefined) {
-        textDecoder = new TextDecoder("utf-8", { ignoreBOM: true });
-    }
     return textDecoder.decode(bytes.subarray(start, end));
 };
 
-const isKeywordFound = (keywordIndexes: number[], found: Uint8Array): boolean => {
-    for (let i = 0; i < keywordIndexes.length; i++) {
-        if (found[keywordIndexes[i] as number] === 1) {
+const isKeywordFound = (keywordIndexes: readonly number[], found: Readonly<Uint8Array>): boolean => {
+    return keywordIndexes.some((keywordIndex) => found[keywordIndex] === 1);
+};
+
+/**
+ * Call `visit` for each line that has a keyword of a "line" scope pattern, with the patterns of the keywords.
+ * A line is [start, end), and it includes its line feed.
+ * Stop and return true if `visit` returns true.
+ */
+const someKeywordLine = (
+    view: PlanView,
+    hits: KeywordHits,
+    lineStartOf: (index: number) => number,
+    lineEndOf: (index: number) => number,
+    visit: (lineStart: number, lineEnd: number, patterns: readonly PlanPattern[]) => boolean,
+): boolean => {
+    const { matcher, linePatternsOfKeyword } = view;
+    if (!matcher) {
+        return false;
+    }
+    const positions = hits.positions;
+    const end = hits.count * 2;
+    // Add the "line" scope patterns of the keywords of the state to `patterns` of a line.
+    // It is written with loops because it runs for each hit.
+    const addLinePatterns = (patterns: PlanPattern[], state: number): void => {
+        const keywordIndexes = matcher.keywordsOfState(state);
+        for (let i = 0; i < keywordIndexes.length; i++) {
+            const linePatterns = linePatternsOfKeyword[keywordIndexes[i] as number] as readonly PlanPattern[];
+            for (let j = 0; j < linePatterns.length; j++) {
+                const pattern = linePatterns[j] as PlanPattern;
+                if (!patterns.includes(pattern)) {
+                    patterns.push(pattern);
+                }
+            }
+        }
+    };
+    // `cursor` is the first hit of a line. Each turn takes all hits of the line.
+    for (let cursor = 0; cursor < end; ) {
+        const patterns: PlanPattern[] = [];
+        addLinePatterns(patterns, positions[cursor] as number);
+        if (patterns.length === 0) {
+            // the keyword is not for a "line" scope pattern
+            cursor += 2;
+            continue;
+        }
+        const index = positions[cursor + 1] as number;
+        const lineStart = lineStartOf(index);
+        const lineEnd = lineEndOf(index);
+        cursor += 2;
+        for (; cursor < end && (positions[cursor + 1] as number) < lineEnd; cursor += 2) {
+            addLinePatterns(patterns, positions[cursor] as number);
+        }
+        if (visit(lineStart, lineEnd, patterns)) {
             return true;
         }
     }
@@ -82,88 +130,49 @@ const isKeywordFound = (keywordIndexes: number[], found: Uint8Array): boolean =>
 /**
  * Return true if a "line" scope pattern matches a line that has its keyword.
  * It decodes only the lines that have a keyword, so the whole content is not decoded for the files without secrets.
- * `view.hits` is the result of scanning the bytes.
+ * `hits` is the result of scanning the bytes.
  */
-const hasLineMatchInBytes = (view: PlanView, bytes: Uint8Array, contentStart: number): boolean => {
-    const { matcher, hits, linePatternsOfKeyword } = view;
-    if (!matcher || !hits) {
-        return false;
-    }
-    for (const pattern of view.keywordPatterns) {
-        pattern.lastLineEnd = -1;
-    }
-    const positions = hits.positions;
-    let lineStart = 0;
-    let lineEnd = -1;
-    let line: string | undefined;
-    for (let i = 0, end = hits.count * 2; i < end; i += 2) {
-        const index = positions[i + 1] as number;
-        const keywordIndexes = matcher.keywordsOfState(positions[i] as number);
-        for (let j = 0; j < keywordIndexes.length; j++) {
-            const patterns = linePatternsOfKeyword[keywordIndexes[j] as number] as PlanPattern[];
-            for (let k = 0; k < patterns.length; k++) {
-                const pattern = patterns[k] as PlanPattern;
-                if (index < pattern.lastLineEnd) {
-                    // the pattern is already checked for the line
-                    continue;
-                }
-                if (index >= lineEnd) {
-                    const previousLineFeed = index === 0 ? -1 : bytes.lastIndexOf(LINE_FEED, index - 1);
-                    lineStart = Math.max(previousLineFeed + 1, contentStart);
-                    const nextLineFeed = bytes.indexOf(LINE_FEED, index);
-                    lineEnd = nextLineFeed < 0 ? bytes.length : nextLineFeed + 1;
-                    line = undefined;
-                }
-                pattern.lastLineEnd = lineEnd;
-                if (line === undefined) {
-                    line = decodeBytes(bytes, lineStart, lineEnd);
-                }
-                pattern.regex.lastIndex = 0;
-                if (pattern.regex.test(line)) {
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
+const hasLineMatchInBytes = (view: PlanView, hits: KeywordHits, bytes: Uint8Array, contentStart: number): boolean => {
+    return someKeywordLine(
+        view,
+        hits,
+        (index) => Math.max((index === 0 ? -1 : bytes.lastIndexOf(LINE_FEED, index - 1)) + 1, contentStart),
+        (index) => {
+            const nextLineFeed = bytes.indexOf(LINE_FEED, index);
+            return nextLineFeed < 0 ? bytes.length : nextLineFeed + 1;
+        },
+        (lineStart, lineEnd, patterns) => {
+            const line = decodeBytes(bytes, lineStart, lineEnd);
+            return patterns.some((pattern) => pattern.tester.test(line));
+        },
+    );
 };
 
 /**
- * Collect the lines that have a keyword of each "line" scope pattern into `pattern.lines`.
- * `view.hits` is the result of scanning the text.
+ * Lines to run each "line" scope pattern on: `lines[pattern.index]` is pairs of [start, end] in the text.
  */
-const collectKeywordLines = (view: PlanView, text: string): void => {
-    const { matcher, hits, linePatternsOfKeyword } = view;
-    for (const pattern of view.keywordPatterns) {
-        pattern.lastLineEnd = -1;
-        pattern.lines.length = 0;
-    }
-    if (!matcher || !hits) {
-        return;
-    }
-    const positions = hits.positions;
-    let lineStart = 0;
-    let lineEnd = -1;
-    for (let i = 0, end = hits.count * 2; i < end; i += 2) {
-        const index = positions[i + 1] as number;
-        const keywordIndexes = matcher.keywordsOfState(positions[i] as number);
-        for (let j = 0; j < keywordIndexes.length; j++) {
-            const patterns = linePatternsOfKeyword[keywordIndexes[j] as number] as PlanPattern[];
-            for (let k = 0; k < patterns.length; k++) {
-                const pattern = patterns[k] as PlanPattern;
-                if (index < pattern.lastLineEnd) {
-                    continue;
-                }
-                if (index >= lineEnd) {
-                    lineStart = index === 0 ? 0 : text.lastIndexOf("\n", index - 1) + 1;
-                    const nextLineFeed = text.indexOf("\n", index);
-                    lineEnd = nextLineFeed < 0 ? text.length : nextLineFeed + 1;
-                }
-                pattern.lastLineEnd = lineEnd;
-                pattern.lines.push(lineStart, lineEnd);
-            }
-        }
-    }
+type KeywordLines = readonly (readonly number[])[];
+const NO_KEYWORD_LINES: KeywordLines = [];
+/**
+ * Return the lines that have a keyword of each "line" scope pattern.
+ * `hits` is the result of scanning the text.
+ */
+const collectKeywordLines = (view: PlanView, hits: KeywordHits, text: string): KeywordLines => {
+    const lines: number[][] = view.keywordPatterns.map(() => []);
+    someKeywordLine(
+        view,
+        hits,
+        (index) => (index === 0 ? 0 : text.lastIndexOf("\n", index - 1) + 1),
+        (index) => {
+            const nextLineFeed = text.indexOf("\n", index);
+            return nextLineFeed < 0 ? text.length : nextLineFeed + 1;
+        },
+        (lineStart, lineEnd, patterns) => {
+            patterns.forEach((pattern) => (lines[pattern.index] as number[]).push(lineStart, lineEnd));
+            return false;
+        },
+    );
+    return lines;
 };
 
 /**
@@ -176,14 +185,10 @@ const runPattern = (
     offset: number,
     context: SecretLintRulePatternContext<any>,
 ): void => {
-    const regex = pattern.regex;
-    regex.lastIndex = 0;
-    let match: RegExpExecArray | null;
-    while ((match = regex.exec(text)) !== null) {
+    // matchAll works on its own copy of the regular expression, so `pattern.regex` is never changed
+    for (const match of text.matchAll(pattern.regex)) {
         const matchedText = match[0];
         const startIndex = offset + match.index;
-        // `report()` may run another regular expression, but it does not use this copy
-        const nextIndex = regex.lastIndex;
         pattern.report(
             {
                 text: matchedText,
@@ -193,20 +198,52 @@ const runPattern = (
             },
             context,
         );
-        if (matchedText.length === 0) {
-            // an empty match does not advance lastIndex. Advance by a character, as String#matchAll does
-            const code = text.codePointAt(nextIndex);
-            regex.lastIndex = nextIndex + (regex.unicode && code !== undefined && code > 0xffff ? 2 : 1);
-        } else {
-            regex.lastIndex = nextIndex;
-        }
     }
+};
+
+/**
+ * The result of checking UTF-8 bytes without decoding the whole content
+ */
+type BytesCheck = {
+    /**
+     * `found[i] === 1` if the keyword of the index is in the bytes
+     */
+    readonly found: Readonly<Uint8Array>;
+    readonly hasKeyword: boolean;
+    /**
+     * true if a pattern may match, so the patterns should run on the decoded content
+     */
+    readonly runsPatterns: boolean;
+};
+/**
+ * 1. Scan the bytes once for the keywords of all rules.
+ * 2. Check the patterns on the lines that have a keyword, without decoding the whole content.
+ */
+const checkBytes = (view: PlanView, bytes: Uint8Array): BytesCheck | undefined => {
+    const matcher = view.matcher;
+    if (!matcher) {
+        return undefined;
+    }
+    const contentStart = hasUtf8BOM(bytes) ? 3 : 0;
+    const hits = matcher.scan(bytes, contentStart);
+    const hasKeyword = hits.count > 0;
+    const hasFilePatternKeyword = (): boolean => {
+        return view.keywordPatterns.some((pattern) => {
+            return pattern.scope === "file" && isKeywordFound(pattern.keywordIndexes as readonly number[], hits.found);
+        });
+    };
+    const runsPatterns =
+        view.hasAlwaysPattern ||
+        (hasKeyword &&
+            ((view.hasFilePattern && hasFilePatternKeyword()) || hasLineMatchInBytes(view, hits, bytes, contentStart)));
+    return { found: hits.found, hasKeyword, runsPatterns };
 };
 
 type RuleToRun =
     | {
           type: "patterns";
           viewRule: ViewRule;
+          patterns: readonly PlanPattern[];
       }
     | {
           type: "handler";
@@ -254,35 +291,14 @@ const lintWithPlan = (
 ): Promise<SecretLintCoreResult> => {
     const contentType = source.contentType;
     const view = getPlanView(plan, contentType);
+    const matcher = view.matcher;
     // The bytes may be available only at the start of the lint. See createFileSourceReader() of source-creator
     const bytes = source.contentBytes;
-    // 1. Scan the content once for the keywords of all rules.
-    //    Scan the bytes if the source has them, because decoding the content costs more than scanning it.
-    const { matcher, hits } = view;
-    let isTextScanned = false;
-    let found: Uint8Array | undefined;
-    let runsPatterns = view.hasAlwaysPattern;
-    let hasKeywordInBytes = false;
-    if (bytes !== undefined) {
-        const contentStart = hasUtf8BOM(bytes) ? 3 : 0;
-        hasKeywordInBytes = matcher !== undefined && hits !== undefined && matcher.scan(bytes, hits, contentStart);
-        if (!hasKeywordInBytes && !view.hasAlwaysPattern && !view.hasAlwaysRule) {
-            // Most files end here: no rule runs, and nothing is created for the file except the result
-            return Promise.resolve(createResult(source, bytes, []));
-        }
-        if (hasKeywordInBytes && !runsPatterns) {
-            // 2. Check the patterns on the lines that have a keyword, without decoding the whole content
-            for (const pattern of view.keywordPatterns) {
-                if (
-                    pattern.scope === "file" &&
-                    isKeywordFound(pattern.keywordIndexes as number[], (hits as KeywordHits).found)
-                ) {
-                    runsPatterns = true;
-                    break;
-                }
-            }
-            runsPatterns = runsPatterns || hasLineMatchInBytes(view, bytes, contentStart);
-        }
+    // Check the bytes if the source has them, because decoding the content costs more than scanning it.
+    const bytesCheck = bytes === undefined ? undefined : checkBytes(view, bytes);
+    if (bytes !== undefined && !bytesCheck?.hasKeyword && !view.hasAlwaysPattern && !view.hasAlwaysRule) {
+        // Most files end here: no rule runs, and nothing is created for the file except the result
+        return Promise.resolve(createResult(source, bytes, []));
     }
     // Create a SourceCode for linting.
     // Defer reading the content, because it may be decoded lazily and most files do not need it
@@ -293,16 +309,18 @@ const lintWithPlan = (
         ext: source.ext || "",
         contentType,
     });
-    if (matcher && hits) {
-        found = hits.found;
-        if (bytes === undefined) {
-            runsPatterns = matcher.scan(sourceCode.content, hits) || runsPatterns;
-            isTextScanned = true;
-        }
-    }
-    // Create the rules without patterns that run for the source code.
-    // The rules that do not run are not created, so `create()` of the rule is not called for the source code.
-    // If `create()` of a rule throws, no handler has started and lintSource throws synchronously.
+    // Scan the text if the source has no bytes, or if the patterns run:
+    // the patterns need the indexes in the text, which are different from the indexes in the bytes.
+    const needsTextHits = bytes === undefined || bytesCheck?.runsPatterns === true || view.hasAlwaysPattern;
+    const textHits = matcher !== undefined && needsTextHits ? matcher.scan(sourceCode.content) : undefined;
+    const found = textHits?.found ?? bytesCheck?.found;
+    const runsPatterns =
+        view.hasAlwaysPattern ||
+        (bytes === undefined ? textHits !== undefined && textHits.count > 0 : bytesCheck?.runsPatterns === true);
+    const keywordLines =
+        runsPatterns && textHits !== undefined
+            ? collectKeywordLines(view, textHits, sourceCode.content)
+            : NO_KEYWORD_LINES;
     const reportedMessages: SecretLintCoreResultMessage[] = [];
     const ignoredMessages: SecretLintCoreIgnoreMessage[] = [];
     const contextEvents: ContextEvents = {
@@ -327,38 +345,49 @@ const lintWithPlan = (
             locale: plan.locale,
         });
     };
-    const rulesToRun: RuleToRun[] = [];
-    for (const viewRule of view.rules) {
-        if (viewRule.patterns) {
-            if (runsPatterns) {
-                rulesToRun.push({ type: "patterns", viewRule });
+    const isKeywordInContent = (keywordIndexes: readonly number[]): boolean => {
+        return found !== undefined && isKeywordFound(keywordIndexes, found);
+    };
+    // Create the rules without patterns that run for the source code.
+    // The rules that do not run are not created, so `create()` of the rule is not called for the source code.
+    // If `create()` of a rule throws, no handler has started and lintSource throws synchronously.
+    const rulesToRun = view.rules
+        .filter((viewRule) => {
+            if (viewRule.patterns) {
+                return runsPatterns;
             }
-            continue;
-        }
-        if (viewRule.keywordIndexes !== undefined && !(found && isKeywordFound(viewRule.keywordIndexes, found))) {
-            continue;
-        }
-        const descriptorRule = viewRule.rule.descriptorRule;
-        rulesToRun.push({
-            type: "handler",
-            viewRule,
-            // If option is not defined Options is {} by default
-            handler: descriptorRule.rule.create(createContext(viewRule), descriptorRule.options || {}),
+            return viewRule.keywordIndexes === undefined || isKeywordInContent(viewRule.keywordIndexes);
+        })
+        .map((viewRule): RuleToRun => {
+            if (viewRule.patterns) {
+                return { type: "patterns", viewRule, patterns: viewRule.patterns };
+            }
+            const descriptorRule = viewRule.rule.descriptorRule;
+            return {
+                type: "handler",
+                viewRule,
+                // If option is not defined Options is {} by default
+                handler: descriptorRule.rule.create(createContext(viewRule), descriptorRule.options || {}),
+            };
         });
-    }
     if (rulesToRun.length === 0) {
         return Promise.resolve(createResult(source, bytes, []));
     }
+    /**
+     * Return where the pattern runs: the whole content, some lines, or nowhere
+     */
+    const targetsOfPattern = (pattern: PlanPattern): "content" | readonly number[] => {
+        if (pattern.keywordIndexes === undefined) {
+            return "content";
+        }
+        if (pattern.scope === "file") {
+            return isKeywordInContent(pattern.keywordIndexes) ? "content" : [];
+        }
+        return keywordLines[pattern.index] ?? [];
+    };
     // 3. Run the rules in the registered order
     const promises: Promise<void>[] = [];
     try {
-        if (runsPatterns && matcher && hits) {
-            if (!isTextScanned) {
-                // Indexes of the hits in the bytes are different from the indexes in the text
-                matcher.scan(sourceCode.content, hits);
-            }
-            collectKeywordLines(view, sourceCode.content);
-        }
         for (const ruleToRun of rulesToRun) {
             const viewRule = ruleToRun.viewRule;
             const ruleId = viewRule.rule.descriptorRule.rule.meta.id;
@@ -367,30 +396,24 @@ const lintWithPlan = (
                 id: ruleId,
             });
             if (ruleToRun.type === "patterns") {
-                let context: SecretLintRulePatternContext<any> | undefined;
-                const getContext = () => {
-                    if (context === undefined) {
-                        context = {
-                            ...createContext(viewRule),
-                            options: viewRule.rule.descriptorRule.options || {},
-                            source: sourceCode,
-                        };
-                    }
-                    return context;
-                };
-                for (const pattern of viewRule.patterns as PlanPattern[]) {
-                    if (pattern.keywordIndexes === undefined) {
-                        runPattern(pattern, sourceCode.content, 0, getContext());
-                    } else if (pattern.scope === "file") {
-                        if (found && isKeywordFound(pattern.keywordIndexes, found)) {
-                            runPattern(pattern, sourceCode.content, 0, getContext());
+                const targets = ruleToRun.patterns
+                    .map((pattern) => ({ pattern, target: targetsOfPattern(pattern) }))
+                    .filter(({ target }) => target.length > 0);
+                if (targets.length > 0) {
+                    const content = sourceCode.content;
+                    const context: SecretLintRulePatternContext<any> = {
+                        ...createContext(viewRule),
+                        options: viewRule.rule.descriptorRule.options || {},
+                        source: sourceCode,
+                    };
+                    for (const { pattern, target } of targets) {
+                        if (target === "content") {
+                            runPattern(pattern, content, 0, context);
+                            continue;
                         }
-                    } else {
-                        const lines = pattern.lines;
-                        for (let i = 0; i < lines.length; i += 2) {
-                            const lineStart = lines[i] as number;
-                            const line = sourceCode.content.slice(lineStart, lines[i + 1] as number);
-                            runPattern(pattern, line, lineStart, getContext());
+                        for (let i = 0; i < target.length; i += 2) {
+                            const lineStart = target[i] as number;
+                            runPattern(pattern, content.slice(lineStart, target[i + 1] as number), lineStart, context);
                         }
                     }
                 }

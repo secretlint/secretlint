@@ -21,7 +21,7 @@ import type {
 } from "@secretlint/types";
 import { secretLintProfiler } from "@secretlint/profiler";
 import debug0 from "debug";
-import { getKeywordMatcher, KeywordHits, KeywordMatcher, normalizeKeyword } from "./helper/keyword-matcher.js";
+import { getKeywordMatcher, KeywordMatcher, normalizeKeyword } from "./helper/keyword-matcher.js";
 import { AllowMessage } from "./messages/filter-message-id.js";
 
 const debug = debug0("@secretlint/core");
@@ -33,23 +33,23 @@ type ContentType = SecretLintRawSource["contentType"];
  */
 export type PlanPattern = {
     /**
-     * A copy of the pattern with the "g" flag. The plan owns `lastIndex` of the copy.
+     * The index of the pattern in `keywordPatterns` of the view. -1 if the pattern has no keywords.
      */
-    regex: RegExp;
-    scope: "line" | "file";
+    readonly index: number;
+    /**
+     * A copy of the pattern with the "g" flag, for `String#matchAll`. `matchAll` does not change it.
+     */
+    readonly regex: RegExp;
+    /**
+     * A copy of the pattern without the "g" and "y" flags, for `RegExp#test`. `test` does not change it.
+     */
+    readonly tester: RegExp;
+    readonly scope: "line" | "file";
     /**
      * Indexes of the keywords in the matcher. undefined if the pattern runs for all content.
      */
-    keywordIndexes: number[] | undefined;
-    report: SecretLintRulePattern["report"];
-    /**
-     * Scratch data for a lint: pairs of [start, end] of the lines to run the pattern on
-     */
-    lines: number[];
-    /**
-     * Scratch data for a lint: the end of the last line that is checked for the pattern
-     */
-    lastLineEnd: number;
+    readonly keywordIndexes: readonly number[] | undefined;
+    readonly report: SecretLintRulePattern["report"];
 };
 /**
  * A registered rule
@@ -78,6 +78,7 @@ export type PlanRule = {
 type CompiledPattern = {
     source: SecretLintRulePattern;
     regex: RegExp;
+    tester: RegExp;
     scope: "line" | "file";
     keywords: string[] | undefined;
     /**
@@ -89,40 +90,43 @@ type CompiledPattern = {
  * A rule in a view
  */
 export type ViewRule = {
-    rule: PlanRule;
+    readonly rule: PlanRule;
     /**
      * Indexes of `meta.keywords` in the matcher, for a rule without patterns.
      * undefined if the rule always runs.
      */
-    keywordIndexes: number[] | undefined;
-    patterns: PlanPattern[] | undefined;
+    readonly keywordIndexes: readonly number[] | undefined;
+    readonly patterns: readonly PlanPattern[] | undefined;
 };
 /**
  * The rules that support a content type, and the matcher for their keywords
  */
 export type PlanView = {
-    rules: ViewRule[];
+    readonly rules: readonly ViewRule[];
     /**
      * undefined if no rule has keywords
      */
-    matcher: KeywordMatcher | undefined;
-    hits: KeywordHits | undefined;
+    readonly matcher: KeywordMatcher | undefined;
     /**
      * Patterns with keywords, in the order of the rules
      */
-    keywordPatterns: PlanPattern[];
+    readonly keywordPatterns: readonly PlanPattern[];
     /**
      * "line" scope patterns for each keyword index
      */
-    linePatternsOfKeyword: PlanPattern[][];
+    readonly linePatternsOfKeyword: readonly (readonly PlanPattern[])[];
     /**
      * true if a pattern has no keywords and runs for all content
      */
-    hasAlwaysPattern: boolean;
+    readonly hasAlwaysPattern: boolean;
     /**
      * true if a rule without patterns has no keywords and runs for all content
      */
-    hasAlwaysRule: boolean;
+    readonly hasAlwaysRule: boolean;
+    /**
+     * true if a pattern with keywords needs the whole content ("file" scope)
+     */
+    readonly hasFilePattern: boolean;
 };
 export type LintPlan = {
     config: SecretLintCoreConfig;
@@ -171,6 +175,13 @@ const normalizeKeywords = (keywords: unknown, caseSensitive: boolean = false): s
 export const toGlobalRegExp = (pattern: RegExp): RegExp => {
     return new RegExp(pattern.source, pattern.flags.includes("g") ? pattern.flags : `${pattern.flags}g`);
 };
+/**
+ * Return a copy of the regular expression without the "g" and "y" flags.
+ * `test()` of the copy does not read or write `lastIndex`, so it has no state.
+ */
+export const toStatelessRegExp = (pattern: RegExp): RegExp => {
+    return new RegExp(pattern.source, pattern.flags.replace(/[gy]/g, ""));
+};
 
 const compilePatterns = (rule: SecretLintRuleCreator<any>): CompiledPattern[] | undefined => {
     const patterns = rule.patterns;
@@ -187,6 +198,7 @@ const compilePatterns = (rule: SecretLintRuleCreator<any>): CompiledPattern[] | 
         return {
             source: pattern,
             regex: toGlobalRegExp(pattern.pattern),
+            tester: toStatelessRegExp(pattern.pattern),
             scope: canUseLineScope ? "line" : "file",
             keywords,
             caseSensitiveKeywords,
@@ -401,58 +413,54 @@ const createView = (plan: LintPlan, contentType: ContentType): PlanView => {
     const toIndexes = (keywords: string[] | undefined, caseSensitive: boolean = false): number[] | undefined => {
         return keywords?.map((keyword) => indexOf.get(keywordKey(keyword, caseSensitive)) as number);
     };
-    const keywordPatterns: PlanPattern[] = [];
-    const linePatternsOfKeyword: PlanPattern[][] = (matcher?.keywords ?? []).map(() => []);
-    let hasAlwaysPattern = false;
-    let hasAlwaysRule = false;
+    // Number the patterns with keywords in the order of the rules
+    const patternIndexes = new Map(
+        targets
+            .flatMap((rule) => rule.patterns ?? [])
+            .filter((pattern) => pattern.keywords !== undefined)
+            .map((pattern, index) => [pattern, index]),
+    );
     const rules = targets.map((rule): ViewRule => {
         if (!rule.patterns) {
-            const keywordIndexes = toIndexes(keywordsOfRule(rule));
-            if (keywordIndexes === undefined) {
-                hasAlwaysRule = true;
-            }
-            return { rule, keywordIndexes, patterns: undefined };
+            return { rule, keywordIndexes: toIndexes(keywordsOfRule(rule)), patterns: undefined };
         }
         const patterns = rule.patterns.map((pattern): PlanPattern => {
-            const planPattern: PlanPattern = {
+            return {
+                index: patternIndexes.get(pattern) ?? -1,
                 regex: pattern.regex,
+                tester: pattern.tester,
                 scope: pattern.scope,
                 keywordIndexes: toIndexes(pattern.keywords, pattern.caseSensitiveKeywords),
                 report: pattern.source.report,
-                lines: [],
-                lastLineEnd: -1,
             };
-            if (planPattern.keywordIndexes === undefined) {
-                hasAlwaysPattern = true;
-            } else {
-                keywordPatterns.push(planPattern);
-                if (planPattern.scope === "line") {
-                    for (const index of planPattern.keywordIndexes) {
-                        (linePatternsOfKeyword[index] as PlanPattern[]).push(planPattern);
-                    }
-                }
-            }
-            return planPattern;
         });
         return { rule, keywordIndexes: undefined, patterns };
+    });
+    const allPatterns = rules.flatMap((rule) => rule.patterns ?? []);
+    const keywordPatterns = allPatterns.filter((pattern) => pattern.keywordIndexes !== undefined);
+    const linePatternsOfKeyword = (matcher?.keywords ?? []).map((_, keywordIndex) => {
+        return keywordPatterns.filter((pattern) => {
+            return pattern.scope === "line" && (pattern.keywordIndexes as readonly number[]).includes(keywordIndex);
+        });
     });
     return {
         rules,
         matcher,
-        hits: matcher?.createHits(),
         keywordPatterns,
         linePatternsOfKeyword,
-        hasAlwaysPattern,
-        hasAlwaysRule,
+        hasAlwaysPattern: allPatterns.some((pattern) => pattern.keywordIndexes === undefined),
+        hasAlwaysRule: rules.some((rule) => rule.patterns === undefined && rule.keywordIndexes === undefined),
+        hasFilePattern: keywordPatterns.some((pattern) => pattern.scope === "file"),
     };
 };
 
 export const getPlanView = (plan: LintPlan, contentType: ContentType): PlanView => {
-    let view = plan.views.get(contentType);
-    if (!view) {
-        view = createView(plan, contentType);
-        plan.views.set(contentType, view);
+    const cached = plan.views.get(contentType);
+    if (cached) {
+        return cached;
     }
+    const view = createView(plan, contentType);
+    plan.views.set(contentType, view);
     return view;
 };
 
@@ -462,16 +470,16 @@ const planCache = new WeakMap<SecretLintCoreConfig, Map<SecretLintRuleLocaleTag,
  * The plan is cached by the config object, and it is created again if the config or a rule is changed.
  */
 export const getLintPlan = (config: SecretLintCoreConfig, locale: SecretLintRuleLocaleTag): LintPlan => {
-    let plans = planCache.get(config);
+    const plans = planCache.get(config);
     const cached = plans?.get(locale);
     if (cached && isFreshPlan(cached, config)) {
         return cached;
     }
     const plan = createLintPlan(config, locale);
-    if (!plans) {
-        plans = new Map();
-        planCache.set(config, plans);
+    if (plans) {
+        plans.set(locale, plan);
+    } else {
+        planCache.set(config, new Map([[locale, plan]]));
     }
-    plans.set(locale, plan);
     return plan;
 };
