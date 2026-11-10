@@ -39,6 +39,7 @@ describe("profile", () => {
         const profiler = new SecretLintProfiler({
             perf: perf_hooks.performance,
             PerformanceObserver: perf_hooks.PerformanceObserver,
+            enabled: true,
         });
         profiler.mark({
             type: "@config-loader>load-config-file::start",
@@ -63,6 +64,7 @@ describe("profile", () => {
         const profiler = new SecretLintProfiler({
             perf: perf_hooks.performance,
             PerformanceObserver: perf_hooks.PerformanceObserver,
+            enabled: true,
         });
         profiler.mark({
             type: "@core>lint::start",
@@ -80,14 +82,14 @@ describe("profile", () => {
             `should have a measure for the marked pair: ${measures.map((measure) => measure.name).join(", ")}`,
         );
     });
-    it("should be enabled by default", () => {
+    it("should be disabled by default", () => {
         const { SpyPerformanceObserver } = createSpyPerformanceObserver();
         const { perf } = createSpyPerformance();
         const profiler = new SecretLintProfiler({
             perf,
             PerformanceObserver: SpyPerformanceObserver,
         });
-        assert.strictEqual(profiler.isEnabled, true);
+        assert.strictEqual(profiler.isEnabled, false);
     });
     it("should not mark and not observe if the profiler is disabled", async () => {
         const { state, SpyPerformanceObserver } = createSpyPerformanceObserver();
@@ -123,6 +125,7 @@ describe("profile", () => {
         const profiler = new SecretLintProfiler({
             perf,
             PerformanceObserver: SpyPerformanceObserver,
+            enabled: true,
         });
         profiler.setEnabled(false);
         profiler.mark({
@@ -137,6 +140,7 @@ describe("profile", () => {
         const profiler = new SecretLintProfiler({
             perf,
             PerformanceObserver: SpyPerformanceObserver,
+            enabled: true,
         });
         profiler.mark({
             type: "secretlint>cli::start",

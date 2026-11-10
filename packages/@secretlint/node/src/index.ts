@@ -48,6 +48,16 @@ export type SecretLintEngineOptionsBase = {
      * Default: true
      */
     maskSecrets?: boolean;
+
+    /**
+     * If profile is true, enable the profiler of `@secretlint/profiler`.
+     * If profile is false, disable the profiler.
+     * You can get the result via `secretLintProfiler.getMeasures()` of `@secretlint/profiler`.
+     * Profiling costs performance, so enable it only when you need the profiling result.
+     * If profile is not defined, the engine does not change the state of the profiler.
+     * Default: undefined (the profiler is disabled by default)
+     */
+    profile?: boolean;
 };
 export type SecretLintEngineOptionsConfigFilePath = SecretLintEngineOptionsBase & {
     /**
@@ -227,6 +237,10 @@ export const createEngine = async (engineOptions: SecretLintEngineOptions) => {
         // mask secret values by default
         maskSecrets: engineOptions.maskSecrets ?? true,
     };
+    // The profiler is a shared instance, so change the state only when `profile` is specified explicitly
+    if (options.profile !== undefined) {
+        secretLintProfiler.setEnabled(options.profile);
+    }
     secretLintProfiler.mark({
         type: "@node>load-config::start",
     });
