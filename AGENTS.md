@@ -62,10 +62,13 @@ packages/
     core/                  # Linting engine
       src/builtin/rules/<name>/  # Built-in rules (code of the official rules)
       src/builtin/index.ts       # Built-in table: rule id -> rule, and the rules of the presets
-    tester/                # Snapshot testing utilities
+      src/testing/               # Snapshot test runner (`@secretlint/core/testing`)
+      test/builtin/rules/<name>/snapshots/      # Snapshot tests of each built-in rule
+      test/builtin/presets/<preset>/snapshots/  # Snapshot tests of the presets
+    tester/                # Snapshot testing for rules outside core (wraps `@secretlint/core/testing`)
     config-loader/         # .secretlintrc loader
     node/                  # Node.js integration
-    secretlint-rule-*/     # Compatibility packages that re-export a built-in rule (+ its snapshot tests),
+    secretlint-rule-*/     # Compatibility packages that re-export a built-in rule (no tests),
                            # and the rules that are not built in (no-dotenv, no-homedir, no-k8s-kind-secret, secp256k1-privatekey)
     secretlint-rule-preset-recommend/  # Stable preset (re-exports the built-in preset)
     secretlint-rule-preset-canary/     # Experimental preset (re-exports the built-in preset)
@@ -80,8 +83,8 @@ examples/                  # Example projects
 - **Language**: TypeScript (strict mode)
 - **Module system**: ESM (`"type": "module"`)
 - **Formatter**: Prettier (printWidth: 120, tabWidth: 4, singleQuote: false, trailingComma: none)
-- **Test framework**: Node.js native `test` module + `@secretlint/tester` for snapshots (`@secretlint/core` and `@secretlint/node` use vitest)
-- **Single package test**: `pnpm test --filter="@secretlint/secretlint-rule-<name>"`
+- **Test framework**: vitest for `@secretlint/core` (including the built-in rules) and `@secretlint/node`; Node.js native `test` module + `@secretlint/tester` for the rules outside core
+- **Single package test**: `pnpm test --filter="@secretlint/core"`; one built-in rule: `cd packages/@secretlint/core && npx vitest run test/builtin/rules.test.ts -t "secretlint-rule-<name>"`
 - **Commit messages**: Angular Convention (`type(component): description`)
   - Types: `feat`, `fix`, `docs`, `style`, `perf`, `test`, `chore`, `refactor`
 
@@ -96,7 +99,7 @@ pnpm run gen:rule
 This uses scaffdog (`.scaffdog/new-rule.md`) to generate a built-in rule:
 
 - `packages/@secretlint/core/src/builtin/rules/<name>/index.ts` and `README.md`
-- `packages/@secretlint/secretlint-rule-preset-canary/test/snapshots/secretlint-rule-<name>/` (snapshot tests)
+- `packages/@secretlint/core/test/builtin/rules/<name>/snapshots/` (snapshot tests)
 
 **Do not add a new npm package for a rule.** Official rules are built into `@secretlint/core`, and a new package needs a manual npm trusted publishing setup.
 The rule id stays `@secretlint/secretlint-rule-<name>`, and the config loader resolves it from core without a package.
@@ -166,7 +169,7 @@ A rule that needs code other than regular expressions (e.g. checks the file name
 - **`keywords`** of a pattern lists ASCII strings that every match of the pattern contains, such as a token prefix (ASCII case-insensitive). Every string the pattern can report must contain at least one keyword, or the rule misses it. Omit `keywords` if no such string exists; the pattern then runs for all content. Make keywords as specific as the pattern allows (`"http://"` instead of `"://"`), and set `caseSensitiveKeywords: true` if the pattern is case-sensitive and the keyword is common in another case (`"SG."` vs `"msg."`)
 - **`scope: "line"`** runs the pattern only on the lines that contain a keyword. Use it only if a match never includes a line break and the result does not depend on other lines. Otherwise use `"file"` (default)
 - **A pattern has only the properties that `SecretLintRulePattern` defines.** The core throws on an unknown property, so an older secretlint never runs a newer rule with a different result. When adding a property to the pattern format, add it with a new name and never change the meaning of an existing property
-- **`@secretlint/tester` checks `keywords` and `scope`**: for each snapshot it compares the result with the result of running the patterns on the whole content, and fails if they differ
+- **The snapshot test runner checks `keywords` and `scope`**: for each snapshot it compares the result with the result of running the patterns on the whole content, and fails if they differ
 - **`meta.keywords`** (optional, for rules with `create()`) skips the rule if the text content contains none of the keywords. Keywords are not checked for binary content. A rule with `patterns` does not need it
 - **Messages must have at least `en` locale**; `ja` is strongly recommended
 - **Always support `allows` option** using `@textlint/regexp-string-matcher` for user-defined exclusions
@@ -182,26 +185,30 @@ A rule that needs code other than regular expressions (e.g. checks the file name
 
 ### Step 3: Write Tests
 
-Tests use snapshot testing with `@secretlint/tester`. The tests of a new built-in rule are snapshot directories in the canary preset (`secretlint-rule-preset-canary/test/snapshots/secretlint-rule-<name>/`), run with `pnpm test --filter="@secretlint/secretlint-rule-preset-canary"`.
-Existing rules keep their tests in their compatibility package (`secretlint-rule-<name>/test/`), which has this layout:
+The tests of the built-in rules are in `@secretlint/core`, like the rules (the same layout as oxlint and ESLint: the engine, the rules, and the test runner in one package).
+`@secretlint/tester` depends on `@secretlint/core`, so core uses its own runner `@secretlint/core/testing`, and `@secretlint/tester` wraps it for the rules outside core.
+
+`packages/@secretlint/core/test/builtin/rules.test.ts` runs the snapshot directory of each built-in rule:
 
 ```
-test/
-  index.test.ts
+packages/@secretlint/core/test/builtin/rules/<name>/
   snapshots/
     ng.secret-found/       # Test case expecting errors
       input.txt            # Input content
       output.json          # Expected output (auto-generated)
+      .secretlintrc.json   # (optional) config of the case. Rule ids are resolved from the built-in rules
     ok.valid-content/      # Test case expecting no errors
       input.txt
       output.json
 ```
 
 - **Naming convention**: `ok.*` for valid (no errors), `ng.*` for invalid (errors expected)
-- **Generate snapshots**: `UPDATE_SNAPSHOT=1 pnpm test`
-- **Optional files**: `options.json` or `options.ts` for per-case rule options
+- **Generate snapshots**: `cd packages/@secretlint/core && npm run updateSnapshot`
+- **Optional files**: `.secretlintrc.json` for per-case rule options, and `options.json` or `options.ts` for `{ inputFilePath }`
+- **A rule that needs other rules in the test** (like `filter-comments`): add them to `additionalRules` in `rules.test.ts`
+- **Preset snapshots**: `test/builtin/presets/<preset>/snapshots/secretlint-rule-<name>/` run each rule's cases through the preset. Copy the cases of the rules with `npm run sync-preset-snapshots` in `packages/@secretlint/core` after adding the rule to a preset
 
-Test file pattern:
+Tests of a rule outside core use `@secretlint/tester`:
 
 ```typescript
 import test from "node:test";
@@ -256,8 +263,8 @@ When creating a new rule, verify every item:
 
 ### Bug Fixer
 
-1. **Reproduce**: Create a minimal `input.txt` in the relevant rule's `test/snapshots/`
-2. **Debug**: Run single package test: `cd packages/@secretlint/secretlint-rule-<name> && pnpm test` (a built-in rule without a compatibility package: the canary preset)
+1. **Reproduce**: Create a minimal `input.txt` in the rule's snapshot directory (`packages/@secretlint/core/test/builtin/rules/<name>/snapshots/` for a built-in rule)
+2. **Debug**: Run the tests of the rule: `cd packages/@secretlint/core && npx vitest run test/builtin/rules.test.ts -t "secretlint-rule-<name>"` (a rule outside core: `cd packages/@secretlint/secretlint-rule-<name> && pnpm test`)
 3. **Fix**: Modify the rule (`packages/@secretlint/core/src/builtin/rules/<name>/` for a built-in rule), update snapshots if output changes
 4. **Verify**: Run `pnpm test` from root to check for regressions
 

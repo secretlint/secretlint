@@ -61,8 +61,8 @@ Via `.secretlintrc.json`
 
 ## Notes
 
-This preset module is bundled by [Rollup](https://rollupjs.org).
-It is performance reason. Bundled file will reduce loading cost.
+The rules of this preset are built into `@secretlint/core`, and this package re-exports the preset of `@secretlint/core`.
+secretlint resolves the id of this preset from `@secretlint/core`, so the config works without installing this package.
 
 ## Changelog
 
@@ -70,8 +70,9 @@ See [Releases page](https://github.com/secretlint/secretlint/releases).
 
 ## Running tests
 
-Install devDependencies and Run `npm test`:
+The rules of this preset are built into `@secretlint/core`, and their tests are in `@secretlint/core` (`test/builtin/`):
 
+    cd packages/@secretlint/core
     npm test
 
 ## Contributing

@@ -21,13 +21,13 @@ questions:
 {{ read "new-rule/src/index.ts" }}
 ```
 
-# `@secretlint/secretlint-rule-preset-canary/test/snapshots/secretlint-rule-{{ inputs.name }}/ng.secret/input.txt`
+# `@secretlint/core/test/builtin/rules/{{ inputs.name }}/snapshots/ng.secret/input.txt`
 
 ```
 {{ read "new-rule/test/snapshots/ng.secret/input.txt" }}
 ```
 
-# `@secretlint/secretlint-rule-preset-canary/test/snapshots/secretlint-rule-{{ inputs.name }}/ok.valid/input.txt`
+# `@secretlint/core/test/builtin/rules/{{ inputs.name }}/snapshots/ok.valid/input.txt`
 
 ```
 {{ read "new-rule/test/snapshots/ok.valid/input.txt" }}

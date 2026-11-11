@@ -302,6 +302,9 @@ importers:
         specifier: 'catalog:'
         version: 4.0.0
     devDependencies:
+      '@secretlint/source-creator':
+        specifier: workspace:*
+        version: link:../source-creator
       '@types/debug':
         specifier: 'catalog:'
         version: 4.1.13
@@ -527,18 +530,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -552,18 +549,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -577,18 +568,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -602,18 +587,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -627,18 +606,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -652,18 +625,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -677,18 +644,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -702,18 +663,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -727,18 +682,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -774,18 +723,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -802,18 +745,12 @@ importers:
       '@secretlint/secretlint-rule-pattern':
         specifier: workspace:*
         version: link:../secretlint-rule-pattern
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -827,18 +764,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -852,18 +783,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -877,18 +802,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -902,18 +821,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -927,18 +840,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -952,18 +859,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -977,18 +878,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1028,18 +923,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1131,18 +1020,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1156,18 +1039,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1181,18 +1058,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1206,18 +1077,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1231,9 +1096,6 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
@@ -1243,9 +1105,6 @@ importers:
       rimraf:
         specifier: 'catalog:'
         version: 6.1.4
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1259,9 +1118,6 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
@@ -1271,9 +1127,6 @@ importers:
       rimraf:
         specifier: 'catalog:'
         version: 6.1.4
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1284,9 +1137,6 @@ importers:
         specifier: workspace:*
         version: link:../core
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
@@ -1296,9 +1146,6 @@ importers:
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1349,18 +1196,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1374,18 +1215,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1399,18 +1234,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1424,18 +1253,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1449,18 +1272,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1474,18 +1291,12 @@ importers:
         specifier: workspace:*
         version: link:../types
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3

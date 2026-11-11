@@ -46,8 +46,6 @@
         "clean": "tsc --build --clean",
         "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
         "prepublishOnly": "npm run clean && npm run build",
-        "test": "node --import tsx --test test/index.test.ts",
-        "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
         "watch": "tsc --build --watch"
     },
     "prettier": {
@@ -61,10 +59,8 @@
         "@secretlint/types": "workspace:*"
     },
     "devDependencies": {
-        "@secretlint/tester": "workspace:*",
         "@types/node": "catalog:",
         "prettier": "catalog:",
-        "tsx": "catalog:",
         "typescript": "catalog:"
     },
     "publishConfig": {

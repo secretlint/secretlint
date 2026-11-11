@@ -38,6 +38,13 @@
             },
             "default": "./module/builtin/rules/*/index.js"
         },
+        "./testing": {
+            "import": {
+                "types": "./module/testing/index.d.ts",
+                "default": "./module/testing/index.js"
+            },
+            "default": "./module/testing/index.js"
+        },
         "./package.json": "./package.json"
     },
     "main": "./module/index.js",
@@ -58,6 +65,8 @@
         "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
         "prepublish": "npm run --if-present build",
         "test": "vitest run",
+        "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
+        "sync-preset-snapshots": "npm run build && node scripts/sync-preset-snapshots.mjs && npm run updateSnapshot",
         "watch": "tsc --build --watch"
     },
     "prettier": {
@@ -74,6 +83,7 @@
         "structured-source": "catalog:"
     },
     "devDependencies": {
+        "@secretlint/source-creator": "workspace:*",
         "@types/debug": "catalog:",
         "@types/node": "catalog:",
         "@types/picomatch": "catalog:",
