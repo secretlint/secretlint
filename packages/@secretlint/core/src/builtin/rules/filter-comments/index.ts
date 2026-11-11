@@ -4,8 +4,8 @@ import { CommentState } from "./CommentState.js";
 
 export const messages = {
     IGNORE_MESSAGE: {
-        en: () => `disable by secretlint-disable comment`
-    }
+        en: () => `disable by secretlint-disable comment`,
+    },
 };
 export const creator: SecretLintRuleCreator = {
     messages,
@@ -16,8 +16,8 @@ export const creator: SecretLintRuleCreator = {
         supportedContentTypes: ["text"],
         keywords: ["secretlint-"],
         docs: {
-            url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-filter-comments/README.md"
-        }
+            url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-filter-comments/README.md",
+        },
     },
     create(context) {
         const t = context.createTranslator(messages);
@@ -40,10 +40,10 @@ export const creator: SecretLintRuleCreator = {
                     context.ignore({
                         message: t("IGNORE_MESSAGE"),
                         range: [message.startIndex, message.endIndex],
-                        targetRuleId: message.ruleId
+                        targetRuleId: message.ruleId,
                     });
                 });
-            }
+            },
         };
-    }
+    },
 };

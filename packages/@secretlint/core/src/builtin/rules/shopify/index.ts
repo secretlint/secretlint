@@ -4,8 +4,8 @@ import { matchPatterns } from "@textlint/regexp-string-matcher";
 export const messages = {
     SHOPIFY_KEY: {
         en: (props: { KEY: string }) => `found Shopify api key: ${props.KEY}`,
-        ja: (props: { KEY: string }) => `Shopify APIキーが見つかりました： ${props.KEY}`
-    }
+        ja: (props: { KEY: string }) => `Shopify APIキーが見つかりました： ${props.KEY}`,
+    },
 };
 
 export type Options = {
@@ -24,8 +24,8 @@ export const creator: SecretLintRuleCreator<Options> = {
         type: "scanner",
         supportedContentTypes: ["text"],
         docs: {
-            url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-shopify/README.md"
-        }
+            url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-shopify/README.md",
+        },
     },
     patterns: [
         {
@@ -59,11 +59,11 @@ export const creator: SecretLintRuleCreator<Options> = {
                 const t = context.createTranslator(messages);
                 context.report({
                     message: t("SHOPIFY_KEY", {
-                        KEY: match.text
+                        KEY: match.text,
                     }),
-                    range: match.range
+                    range: match.range,
                 });
-            }
-        }
-    ]
+            },
+        },
+    ],
 };

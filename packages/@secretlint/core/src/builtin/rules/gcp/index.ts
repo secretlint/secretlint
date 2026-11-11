@@ -5,8 +5,8 @@ import {
     SecretLintSourceCode,
 } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
-import { basename } from "./path-util.js";
 import { reportIfFoundPrivateKeyP12Format } from "./reportIfFoundPrivateKeyP12Format.js";
+import { basename } from "../../path-util.js";
 
 export const messages = {
     PrivateKeyP12: {

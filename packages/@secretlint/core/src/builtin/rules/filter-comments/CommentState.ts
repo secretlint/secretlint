@@ -17,7 +17,7 @@ export class CommentState {
 
     getIgnoringMessages(): { startIndex: number; endIndex: number; ruleId: string }[] {
         const isFilledMessage = (
-            message: IgnoringCommentObject
+            message: IgnoringCommentObject,
         ): message is { startIndex: number; endIndex: number; ruleId: string } => {
             return message.startIndex !== null && message.endIndex !== null && message.ruleId !== null;
         };
@@ -38,26 +38,26 @@ export class CommentState {
         const range = this.source.locationToRange({
             start: {
                 line: lineNumber,
-                column: 0
+                column: 0,
             },
             end: {
                 line: lineNumber + 1,
-                column: 0
-            }
+                column: 0,
+            },
         });
         if (rulesToDisable.length) {
             rulesToDisable.forEach((ruleId) => {
                 reportingConfig.push({
                     startIndex: range[0],
                     endIndex: range[1] - 1,
-                    ruleId: ruleId
+                    ruleId: ruleId,
                 });
             });
         } else {
             reportingConfig.push({
                 startIndex: range[0],
                 endIndex: range[1] - 1,
-                ruleId: "*"
+                ruleId: "*",
             });
         }
     }
@@ -74,14 +74,14 @@ export class CommentState {
                 reportingConfig.push({
                     startIndex: startIndex,
                     endIndex: null,
-                    ruleId: ruleId
+                    ruleId: ruleId,
                 });
             });
         } else {
             reportingConfig.push({
                 startIndex: startIndex,
                 endIndex: null,
-                ruleId: "*"
+                ruleId: "*",
             });
         }
     }

@@ -16,20 +16,20 @@ export const parseComments = (source: SecretLintSourceCode) => {
             return {
                 type: type,
                 options: parseComment(match.groups?.options),
-                line: source.indexToPosition(index).line
+                line: source.indexToPosition(index).line,
             };
         }
         if (type === "secretlint-disable-next-line") {
             return {
                 type: type,
                 options: parseComment(match.groups?.options),
-                line: source.indexToPosition(index).line + 1
+                line: source.indexToPosition(index).line + 1,
             };
         }
         return {
             type: type,
             options: parseComment(match.groups?.options),
-            index: index
+            index: index,
         };
     });
 };

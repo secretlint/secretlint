@@ -2,7 +2,7 @@ import type { messages, Options } from "./index.js";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 import type { SecretLintRuleContext, SecretLintRuleMessageTranslate, SecretLintSourceCode } from "@secretlint/types";
 import { verifyPkcs12Mac } from "./pkcs12Mac.js";
-import { basename } from "./path-util.js";
+import { basename } from "../../path-util.js";
 
 // The PKCS#12 password for GCP Service Account private key files.
 // https://cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys#serviceaccountprivatekeytype
