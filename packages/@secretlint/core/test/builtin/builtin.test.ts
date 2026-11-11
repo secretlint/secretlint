@@ -52,7 +52,7 @@ describe("builtin", () => {
             );
             assert.deepStrictEqual(
                 registered,
-                recommendedRules.map((rule) => rule.meta.id),
+                rules.map((rule) => rule.meta.id),
             );
         }
     });
