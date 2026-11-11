@@ -183,12 +183,38 @@ export const toStatelessRegExp = (pattern: RegExp): RegExp => {
     return new RegExp(pattern.source, pattern.flags.replace(/[gy]/g, ""));
 };
 
+/**
+ * The properties of a pattern that this version of secretlint knows.
+ */
+const KNOWN_PATTERN_PROPERTIES: ReadonlySet<string> = new Set([
+    "pattern",
+    "keywords",
+    "caseSensitiveKeywords",
+    "scope",
+    "report",
+] satisfies (keyof SecretLintRulePattern<any>)[]);
+/**
+ * Throw if the pattern has a property that this version of secretlint does not know.
+ * A rule is data, and a newer rule may use a property that changes what the pattern matches.
+ * Ignoring the property would change the result silently, so it is an error.
+ * A new property must have a new name: the meaning of a known property is never changed.
+ */
+const assertKnownPatternProperties = (rule: SecretLintRuleCreator<any>, pattern: object): void => {
+    const unknownProperties = Object.keys(pattern).filter((property) => !KNOWN_PATTERN_PROPERTIES.has(property));
+    if (unknownProperties.length > 0) {
+        throw new Error(
+            `The rule "${rule.meta.id}" has a pattern with unknown properties: ${unknownProperties.join(", ")}
+This version of secretlint does not support the properties. Please update secretlint.`,
+        );
+    }
+};
 const compilePatterns = (rule: SecretLintRuleCreator<any>): CompiledPattern[] | undefined => {
     const patterns = rule.patterns;
     if (!Array.isArray(patterns)) {
         return undefined;
     }
     return patterns.map((pattern) => {
+        assertKnownPatternProperties(rule, pattern);
         const caseSensitiveKeywords = pattern.caseSensitiveKeywords === true;
         const keywords = normalizeKeywords(pattern.keywords, caseSensitiveKeywords);
         // A line is found by its keyword, so "line" needs keywords.

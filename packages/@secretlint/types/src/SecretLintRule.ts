@@ -118,6 +118,13 @@ export type SecretLintRulePatternContext<Options = SecretLintRuleCreatorOptions>
      */
     source: SecretLintSourceCode;
 };
+/**
+ * A pattern of a rule.
+ *
+ * Secretlint throws an error if a pattern has a property that it does not know.
+ * So a rule that uses a property of a newer secretlint does not run on an older secretlint with a different result.
+ * The meaning of a property is never changed: a change is added as a property with a new name.
+ */
 export type SecretLintRulePattern<Options = SecretLintRuleCreatorOptions> = {
     /**
      * The regular expression that finds the secret.

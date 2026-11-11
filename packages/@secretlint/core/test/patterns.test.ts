@@ -392,6 +392,17 @@ describe("lintSource with patterns", () => {
             /The rule should have `create` function or `patterns`: pattern-rule/,
         );
     });
+    it("should throw if a pattern has a property that this version does not know", async () => {
+        const futurePattern = { ...tokenPattern(), futureCondition: true };
+        const rule = createPatternRule([futurePattern]);
+        const { textSource, bytesSource } = createSources("key = tok_ab12");
+        for (const source of [textSource, bytesSource]) {
+            await assert.rejects(
+                async () => lintSource({ source, options: { config: toConfig(rule) } }),
+                /The rule "pattern-rule" has a pattern with unknown properties: futureCondition\nThis version of secretlint does not support the properties. Please update secretlint./,
+            );
+        }
+    });
     it("should lint empty content", async () => {
         const rule = createPatternRule([tokenPattern()]);
         const { messages, bytesResult } = await lintBoth("", toConfig(rule));

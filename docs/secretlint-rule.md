@@ -355,6 +355,7 @@ export const creator: SecretLintRuleCreator = {
 Secretlint scans the content once for the keywords of all rules, and runs a pattern only where its keywords are found.
 A rule with `patterns` costs almost nothing for the files that do not contain its keywords.
 A rule that has only `patterns` needs secretlint that supports `patterns`. An older secretlint reports that the rule should have `create` function.
+Secretlint also throws an error if a pattern has a property that it does not know, so a rule that uses a newer property never runs with a different result on an older secretlint.
 
 `@secretlint/tester` checks `keywords` and `scope` of your patterns: it fails if the result differs from running the patterns on the whole content.
 
