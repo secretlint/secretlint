@@ -70,7 +70,8 @@ export const creator: SecretLintRuleCreator<Options> = {
                     return;
                 }
                 const t = context.createTranslator(messages);
-                const startIndex = match.range[0];
+                // The match is `https://<token>:x-oauth-basic@github.com/`. Report the range of the token
+                const startIndex = match.range[0] + match.text.indexOf("://") + "://".length;
                 context.report({
                     message: t("PackageJSON_xOauthToken", {
                         TOKEN: token,
@@ -99,7 +100,8 @@ export const creator: SecretLintRuleCreator<Options> = {
                     return;
                 }
                 const t = context.createTranslator(messages);
-                const startIndex = match.range[0];
+                // The match is `_authToken=<token>`. Report the range of the token
+                const startIndex = match.range[0] + "_authToken=".length;
                 context.report({
                     message: t("Npmrc_authToken", {
                         TOKEN: token,

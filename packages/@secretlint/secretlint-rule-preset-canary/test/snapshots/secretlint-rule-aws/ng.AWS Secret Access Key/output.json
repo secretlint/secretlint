@@ -4,8 +4,8 @@
         {
             "message": "found AWS Secret Access Key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYSECRETSKEY",
             "range": [
-                0,
-                40
+                24,
+                64
             ],
             "type": "message",
             "ruleId": "@secretlint/secretlint-rule-aws",
@@ -13,11 +13,11 @@
             "loc": {
                 "start": {
                     "line": 1,
-                    "column": 0
+                    "column": 24
                 },
                 "end": {
                     "line": 1,
-                    "column": 40
+                    "column": 64
                 }
             },
             "severity": "error",
