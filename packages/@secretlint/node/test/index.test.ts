@@ -59,6 +59,38 @@ describe("createEngine", () => {
             ],
         );
     });
+    it("should lint files in concurrent executeOnFiles calls", async () => {
+        const engine = await createEngine({
+            color: false,
+            cwd: path.join(__dirname, "fixtures/valid-config"),
+            formatter: "json",
+            maskSecrets: false,
+        });
+        const secretFilePath = path.join(__dirname, "fixtures/SECRET.txt");
+        const cleanFilePath = path.join(__dirname, "fixtures/valid-config/.secretlintrc.json");
+        // The calls do not share the buffer of the file reader
+        const outputs = await Promise.all(
+            [[secretFilePath, cleanFilePath], [cleanFilePath, secretFilePath], [secretFilePath]].map(
+                async (filePathList) => {
+                    const result = await engine.executeOnFiles({ filePathList });
+                    const results: { sourceContent?: string; messages: unknown[] }[] = JSON.parse(result.output);
+                    return results.map((fileResult) => [fileResult.messages.length, fileResult.sourceContent]);
+                },
+            ),
+        );
+        const secretContent = fs.readFileSync(secretFilePath, "utf-8");
+        assert.deepStrictEqual(outputs, [
+            [
+                [1, secretContent],
+                [0, undefined],
+            ],
+            [
+                [0, undefined],
+                [1, secretContent],
+            ],
+            [[1, secretContent]],
+        ]);
+    });
     it("should output the content of the files without messages with mask-result formatter", async () => {
         const engine = await createEngine({
             color: false,

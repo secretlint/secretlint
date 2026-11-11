@@ -381,11 +381,6 @@ const lintWithPlan = (
     if (rulesToRun.length === 0) {
         return Promise.resolve(createResult(source, bytes, []));
     }
-    if (contentType === "text" && bytes !== undefined) {
-        // A rule runs, so decode the text now: the bytes may be available only at the start of the lint,
-        // and a handler may read the content later. Binary content is decoded only if a rule reads it.
-        void sourceCode.content;
-    }
     /**
      * Return where the pattern runs: the whole content, some lines, or nowhere
      */

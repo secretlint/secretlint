@@ -74,7 +74,7 @@ const MAX_SHARED_BUFFER_SIZE = 16 * 1024 * 1024;
  * - `contentBytes` of the source is the shared buffer. It is available until the reader reads the next file,
  *   and it is `undefined` after that. `lintSource()` scans it at the start of the call.
  * - `content` of the source decodes the bytes when it is accessed first, and it is cached.
- *   `lintSource()` reads it while linting if a rule runs for the file.
+ *   `lintSource()` reads it while linting only if a rule needs the content or the result has messages.
  *   If it is accessed first after the reader has read the next file, it throws:
  *   the reader does not read the file again, because the file may have been changed after the lint.
  */

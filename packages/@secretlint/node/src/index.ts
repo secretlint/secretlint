@@ -77,37 +77,30 @@ export type SecretLintEngineOptions = SecretLintEngineOptionsConfigFilePath | Se
 const isConfigFileJSON = (v: any): v is SecretLintEngineOptionsConfigFileJSON => {
     return "configFileJSON" in v && v.configFileJSON !== undefined;
 };
-// The engine lints a file at a time, so files are read into one buffer
-const readFileSource = createFileSourceReader();
 /**
- * Read a file for linting.
+ * Create a function that reads and lints a file.
+ *
+ * The files are read into one buffer, and the buffer has a file only until the next file is read.
+ * So the returned function lints a file at a time: wait for the result before linting the next file.
+ * Each `executeOnFiles()` call creates its own function, so concurrent calls do not share the buffer.
+ *
  * The result of a source with `contentBytes` has `sourceContent` only if it has messages.
  * "mask-result" formatter outputs the content of all files, so it gets a source without `contentBytes`.
  */
-const readSource = async (filePath: string, options: SecretLintEngineOptions): Promise<SecretLintRawSource> => {
-    if (options.formatter !== "mask-result") {
-        return readFileSource(filePath);
-    }
-    const { content, ext, contentType } = await createRawSource(filePath);
-    return { filePath, content, ext, contentType };
-};
-const lintFile = async ({
-    filePath,
-    config,
-    options,
-}: {
-    filePath: string;
-    config: SecretLintCoreConfig;
-    options: SecretLintEngineOptions;
-}) => {
-    const rawSource = await readSource(filePath, options);
-    return lintSource({
-        source: rawSource,
-        options: {
-            ...options,
-            config: config,
-        },
-    });
+const createFileLinter = ({ config, options }: { config: SecretLintCoreConfig; options: SecretLintEngineOptions }) => {
+    const readFileSource = createFileSourceReader();
+    const readSource = async (filePath: string): Promise<SecretLintRawSource> => {
+        const { content, ext, contentType } = await createRawSource(filePath);
+        return { filePath, content, ext, contentType };
+    };
+    const lintOptions = { ...options, config };
+    return (filePath: string): Promise<SecretLintCoreResult> => {
+        if (options.formatter === "mask-result") {
+            return readSource(filePath).then((source) => lintSource({ source, options: lintOptions }));
+        }
+        // Read and start the lint in the same turn: `lintSource()` scans the bytes at the start of the call
+        return lintSource({ source: readFileSource(filePath), options: lintOptions });
+    };
 };
 
 /**
@@ -207,12 +200,13 @@ const executeOnFiles = async ({
     options: SecretLintEngineOptions;
 }) => {
     // Lint a file at a time.
-    // lintFile() reads the file synchronously into a shared buffer, so linting files concurrently has no gain,
+    // lintFile() reads the file synchronously into a buffer, so linting files concurrently has no gain,
     // and the buffer has the file only until the next file is read.
     const results: SecretLintCoreResult[] = [];
+    const lintFile = createFileLinter({ config, options });
     for (const filePath of filePathList) {
         debug("executeOnFiles file: %s", filePath);
-        const result = await lintFile({ filePath: filePath, config: config, options: options });
+        const result = await lintFile(filePath);
         debug("executeOnFiles result: %o", result);
         results.push(result);
     }
