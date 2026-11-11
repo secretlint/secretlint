@@ -403,6 +403,14 @@ describe("lintSource with patterns", () => {
             );
         }
     });
+    it("should throw if a pattern has an unknown scope", async () => {
+        const rule = createPatternRule([{ ...tokenPattern(), scope: "lines" as "line" }]);
+        const { textSource } = createSources("key = tok_ab12");
+        await assert.rejects(
+            async () => lintSource({ source: textSource, options: { config: toConfig(rule) } }),
+            /The rule "pattern-rule" has a pattern with unknown scope: "lines"\nThe scope should be "line" or "file"/,
+        );
+    });
     it("should lint empty content", async () => {
         const rule = createPatternRule([tokenPattern()]);
         const { messages, bytesResult } = await lintBoth("", toConfig(rule));

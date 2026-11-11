@@ -199,12 +199,20 @@ const KNOWN_PATTERN_PROPERTIES: ReadonlySet<string> = new Set([
  * Ignoring the property would change the result silently, so it is an error.
  * A new property must have a new name: the meaning of a known property is never changed.
  */
-const assertKnownPatternProperties = (rule: SecretLintRuleCreator<any>, pattern: object): void => {
+const assertKnownPatternProperties = (rule: SecretLintRuleCreator<any>, pattern: { scope?: unknown }): void => {
     const unknownProperties = Object.keys(pattern).filter((property) => !KNOWN_PATTERN_PROPERTIES.has(property));
     if (unknownProperties.length > 0) {
         throw new Error(
             `The rule "${rule.meta.id}" has a pattern with unknown properties: ${unknownProperties.join(", ")}
 This version of secretlint does not support the properties. Please update secretlint.`,
+        );
+    }
+    // A wrong scope is a mistake of the rule, or a scope of a newer secretlint
+    const scope = pattern.scope;
+    if (scope !== undefined && scope !== "line" && scope !== "file") {
+        throw new Error(
+            `The rule "${rule.meta.id}" has a pattern with unknown scope: ${JSON.stringify(scope)}
+The scope should be "line" or "file". If it is a scope of a newer secretlint, please update secretlint.`,
         );
     }
 };
