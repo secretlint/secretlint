@@ -1,0 +1,32 @@
+{
+    "filePath": "[SNAPSHOT]/ng.AWS Secret Access Key quoted/input",
+    "messages": [
+        {
+            "message": "found AWS Secret Access Key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYSECRETSKEY",
+            "range": [
+                30,
+                70
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-aws",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 28
+                },
+                "end": {
+                    "line": 2,
+                    "column": 68
+                }
+            },
+            "severity": "error",
+            "messageId": "AWSSecretAccessKey",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md#AWSSecretAccessKey",
+            "data": {
+                "KEY": "wJalrXUtnFEMI/K7MDENG/bPxRfiCYSECRETSKEY"
+            }
+        }
+    ],
+    "sourceContent": "{\n  \"aws_secret_access_key\": \"wJalrXUtnFEMI/K7MDENG/bPxRfiCYSECRETSKEY\"\n}\n",
+    "sourceContentType": "text"
+}

@@ -152,7 +152,8 @@ export const creator: SecretLintRuleCreator<Options> = {
                     return;
                 }
                 const t = context.createTranslator(messages);
-                const startIndex = match.range[0];
+                // The match starts with the name of the variable. Report the range of the key
+                const startIndex = match.range[0] + match.text.lastIndexOf(key);
                 context.report({
                     message: t("AWSSecretAccessKey", {
                         KEY: key,
