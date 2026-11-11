@@ -19,6 +19,8 @@ export type { SecretLintRuleSeverityLevel } from "./SecretLintRuleSeverityLevel.
 export type {
     SecretLintRuleIgnoreDescriptor,
     SecretLintRuleCreator,
+    SecretLintRuleHandlerCreator,
+    SecretLintRulePatternCreator,
     SecretLintRuleContext,
     SecretLintRuleCreatorOptions,
     SecretLintRuleReportDescriptor,

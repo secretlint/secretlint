@@ -22,3 +22,10 @@ const t = createTranslator(messages);
 t("key", {
     k1: "str",
 });
+
+// a rule is defined with `create()` or with `patterns`
+const meta = { id: "rule", type: "scanner", recommended: true, supportedContentTypes: ["text"] } as const;
+const baseRule = { messages, meta: { ...meta, supportedContentTypes: [...meta.supportedContentTypes] } };
+expectTypeOf({ ...baseRule, create: () => ({}) }).toExtend<SecretLintRuleCreator>();
+expectTypeOf({ ...baseRule, patterns: [] }).toExtend<SecretLintRuleCreator>();
+expectTypeOf(baseRule).not.toExtend<SecretLintRuleCreator>();

@@ -34,7 +34,7 @@ export type SecretLintRuleContext = {
 };
 export type SecretLintRuleCreatorOptions = {};
 export type SecretLintRuleContentType = "binary" | "text" | "all";
-export type SecretLintRuleCreator<Options = SecretLintRuleCreatorOptions> = {
+type SecretLintRuleCreatorBase = {
     messages: SecretLintRuleLocalizeMessages;
     meta: {
         id: string;
@@ -66,24 +66,39 @@ export type SecretLintRuleCreator<Options = SecretLintRuleCreatorOptions> = {
          */
         keywords?: string[];
     };
-    /**
-     * Declarative patterns of the rule.
-     * If patterns are defined, secretlint runs the patterns and does not call `create()`.
-     * Secretlint scans the content once for the keywords of all patterns,
-     * runs the regular expression of a pattern only where its keywords are found,
-     * and calls `report()` of the pattern for each match.
-     *
-     * A rule needs `patterns` or `create()`.
-     * A rule that has only `patterns` does not work on secretlint that does not support `patterns`.
-     */
-    patterns?: SecretLintRulePattern<Options>[];
+};
+/**
+ * A rule that is defined with code.
+ * It is for a rule that can not be written as `patterns`, for example a rule that parses the content.
+ */
+export type SecretLintRuleHandlerCreator<Options = SecretLintRuleCreatorOptions> = SecretLintRuleCreatorBase & {
     /**
      * Create the handlers of the rule.
-     * It is for a rule that can not be written as `patterns`, for example a rule that parses the content.
-     * It is not called if the rule has `patterns`.
+     */
+    create(context: SecretLintRuleContext, options: Options): SecretLintRuleReportHandler;
+    patterns?: undefined;
+};
+/**
+ * A rule that is defined with declarative patterns.
+ * Secretlint scans the content once for the keywords of all patterns,
+ * runs the regular expression of a pattern only where its keywords are found,
+ * and calls `report()` of the pattern for each match.
+ */
+export type SecretLintRulePatternCreator<Options = SecretLintRuleCreatorOptions> = SecretLintRuleCreatorBase & {
+    patterns: SecretLintRulePattern<Options>[];
+    /**
+     * Secretlint that supports `patterns` does not call `create()` of a rule that has `patterns`.
+     * Define it only if the rule should also work on secretlint that does not support `patterns`:
+     * such a secretlint requires `create()`, and it ignores `patterns`.
      */
     create?(context: SecretLintRuleContext, options: Options): SecretLintRuleReportHandler;
 };
+/**
+ * A rule is defined with `create()` or with `patterns`.
+ */
+export type SecretLintRuleCreator<Options = SecretLintRuleCreatorOptions> =
+    | SecretLintRuleHandlerCreator<Options>
+    | SecretLintRulePatternCreator<Options>;
 /**
  * A match of {@link SecretLintRulePattern}
  */
