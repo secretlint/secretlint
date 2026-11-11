@@ -327,8 +327,7 @@ describe("lintSource with meta.keywords", () => {
         assert.deepStrictEqual(calls, []);
         assert.deepStrictEqual(result.messages, []);
         assert.strictEqual(contentAccessed, false);
-        // the content of a source with contentBytes is not decoded if the result has no messages
-        assert.strictEqual(result.sourceContent, undefined);
-        assert.strictEqual(contentAccessed, false);
+        // the result does not have the content of the source
+        assert.strictEqual("sourceContent" in result, false);
     });
 });

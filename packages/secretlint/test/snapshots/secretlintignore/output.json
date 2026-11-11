@@ -3,7 +3,6 @@
     "stdout": [
         {
             "filePath": "[SNAPSHOT]/secretlintignore/input.txt",
-            "sourceContent": "THIS IS SECRET DATA!!\n",
             "sourceContentType": "text",
             "messages": [
                 {

@@ -88,13 +88,6 @@ export type SecretLintCoreConfig = {
 
 export type SecretLintCoreResult = {
     filePath: string;
-    /**
-     * The content of the source.
-     * It is `undefined` for binary content.
-     * It is also `undefined` if the source has `contentBytes` and the result has no messages,
-     * because secretlint does not decode the bytes of the content that has no secret.
-     */
-    sourceContent: string | undefined;
     sourceContentType: SecretLintRawSource["contentType"];
     messages: SecretLintCoreResultMessage[];
 };

@@ -13,7 +13,6 @@ const createResults = (): SecretLintCoreResult[] => [
     {
         // file name that clears the screen, sets the window title, and inserts a fake hyperlink
         filePath: `evil${ESC}[2J${ESC}]0;title${BEL}${ESC}]8;;https://example.com${ESC}\\link${ESC}]8;;${ESC}\\\r.txt`,
-        sourceContent: "THIS IS SECRET SOURCE\n",
         sourceContentType: "text",
         messages: [
             {

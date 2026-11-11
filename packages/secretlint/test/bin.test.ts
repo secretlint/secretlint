@@ -9,7 +9,7 @@ const packageDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url
 const binPath = path.join(packageDirectory, "bin", "secretlint.js");
 
 describe("secretlint bin", () => {
-    it("does not truncate large JSON output piped to another process", async () => {
+    it("does not truncate large output piped to another process", async () => {
         const input = `SECRET\n${"a".repeat(2 * 1024 * 1024)}`;
         const secretlintrcJSON = JSON.stringify({
             rules: [
@@ -20,7 +20,7 @@ describe("secretlint bin", () => {
         });
         const child = spawn(
             process.execPath,
-            [binPath, "--stdinFileName=input.txt", "--format=json", `--secretlintrcJSON=${secretlintrcJSON}`],
+            [binPath, "--stdinFileName=input.txt", "--format=mask-result", `--secretlintrcJSON=${secretlintrcJSON}`],
             {
                 cwd: packageDirectory,
                 stdio: "pipe",
@@ -36,9 +36,7 @@ describe("secretlint bin", () => {
         assert.strictEqual(signal, null);
         assert.strictEqual(exitCode, 1, stderr);
         assert.ok(Buffer.byteLength(stdout) > 1024 * 1024, "stdout should contain more than 1 MiB");
-        const results = JSON.parse(stdout);
-        assert.strictEqual(results.length, 1);
-        assert.strictEqual(results[0].sourceContent, input);
-        assert.strictEqual(results[0].messages.length, 1);
+        // mask-result outputs the whole content, and the secret is masked
+        assert.strictEqual(stdout, `${input.replace("SECRET", "******")}\n`);
     });
 });

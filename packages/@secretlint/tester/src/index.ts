@@ -251,13 +251,9 @@ export const snapshot = (options: SnapshotOptions) => {
                             options: { config: toUnoptimizedConfig(config) },
                         });
                         const normalizeResult = (result: unknown) => JSON.parse(JSON.stringify(result));
-                        // The result of the bytes has `sourceContent` only if it has messages.
-                        // The result of the string always has it, and it is the result of the snapshot.
-                        const expectedBytesResult =
-                            textResult.messages.length > 0 ? textResult : { ...textResult, sourceContent: undefined };
                         assert.deepStrictEqual(
                             normalizeResult(bytesResult),
-                            normalizeResult(expectedBytesResult),
+                            normalizeResult(textResult),
                             "The result of the content bytes should be the same as the result of the content string",
                         );
                         assert.deepStrictEqual(
@@ -265,6 +261,12 @@ export const snapshot = (options: SnapshotOptions) => {
                             normalizeResult(unoptimizedResult),
                             "The result with `patterns` and `meta.keywords` should be the same as the result of the whole content without them. Check keywords and scope of the rule.",
                         );
+                        // The result does not have the content of the source.
+                        // The snapshot has it as `sourceContent` to show what the ranges of the messages point to.
+                        const snapshotResult = {
+                            ...textResult,
+                            sourceContent: textSource.contentType === "text" ? textSource.content : undefined,
+                        };
                         const expectedFilePath = path.join(testCaseDir, "output.json");
                         // Usage: update snapshots
                         // UPDATE_SNAPSHOT=1 npm test
@@ -272,13 +274,13 @@ export const snapshot = (options: SnapshotOptions) => {
                             // Sort Object by keys before Store JSON
                             fs.writeFileSync(
                                 expectedFilePath,
-                                JSON.stringify(sortObject(textResult), snapshotReplacer, 4),
+                                JSON.stringify(sortObject(snapshotResult), snapshotReplacer, 4),
                             );
                             return "skip";
                         }
                         // compare input and output
                         const expected = JSON.parse(fs.readFileSync(expectedFilePath, "utf-8"));
-                        assert.deepStrictEqual(JSON.parse(JSON.stringify(textResult, snapshotReplacer)), expected);
+                        assert.deepStrictEqual(JSON.parse(JSON.stringify(snapshotResult, snapshotReplacer)), expected);
                         return "done";
                     });
                 });

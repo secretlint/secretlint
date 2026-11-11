@@ -6,6 +6,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// A formatter that outputs the content of the sources via `getSource()`
+const sourceFormatterPath = path.join(__dirname, "fixtures/formatter/source-formatter.mjs");
 const normalizeFilePath = (content: string): string => {
     return content.replace(__dirname, "[TEST_DIR]").replace(/\\/g, "/");
 };
@@ -40,7 +42,7 @@ describe("createEngine", () => {
 `,
         );
     });
-    it("should output sourceContent only for the files that have messages", async () => {
+    it("should not output the content of the files with json formatter", async () => {
         const engine = await createEngine({
             color: false,
             cwd: path.join(__dirname, "fixtures/valid-config"),
@@ -50,20 +52,48 @@ describe("createEngine", () => {
         const secretFilePath = path.join(__dirname, "fixtures/SECRET.txt");
         const cleanFilePath = path.join(__dirname, "fixtures/valid-config/.secretlintrc.json");
         const result = await engine.executeOnFiles({ filePathList: [secretFilePath, cleanFilePath] });
-        const results: { filePath: string; sourceContent?: string; messages: unknown[] }[] = JSON.parse(result.output);
+        const results: { messages: unknown[] }[] = JSON.parse(result.output);
         assert.deepStrictEqual(
-            results.map((fileResult) => [fileResult.messages.length, fileResult.sourceContent]),
+            results.map((fileResult) => [fileResult.messages.length, Object.keys(fileResult).sort()]),
             [
-                [1, fs.readFileSync(secretFilePath, "utf-8")],
-                [0, undefined],
+                [1, ["filePath", "messages", "sourceContentType"]],
+                [0, ["filePath", "messages", "sourceContentType"]],
             ],
         );
+    });
+    it("should pass getSource to the formatter, and it returns the content of the files that have messages", async () => {
+        const engine = await createEngine({
+            color: false,
+            cwd: path.join(__dirname, "fixtures/valid-config"),
+            formatter: sourceFormatterPath,
+            maskSecrets: false,
+        });
+        const secretFilePath = path.join(__dirname, "fixtures/SECRET.txt");
+        const cleanFilePath = path.join(__dirname, "fixtures/valid-config/.secretlintrc.json");
+        const result = await engine.executeOnFiles({ filePathList: [secretFilePath, cleanFilePath] });
+        assert.deepStrictEqual(JSON.parse(result.output), [
+            { filePath: secretFilePath, messageCount: 1, source: fs.readFileSync(secretFilePath, "utf-8") },
+            // the content of the file without messages is not decoded
+            { filePath: cleanFilePath, messageCount: 0, source: null },
+        ]);
+    });
+    it("should pass getSource to the formatter on executeOnContent", async () => {
+        const engine = await createEngine({
+            color: false,
+            cwd: path.join(__dirname, "fixtures/valid-config"),
+            formatter: sourceFormatterPath,
+            maskSecrets: false,
+        });
+        const result = await engine.executeOnContent({ content: "no secret", filePath: "/path/to/stdin.txt" });
+        assert.deepStrictEqual(JSON.parse(result.output), [
+            { filePath: "/path/to/stdin.txt", messageCount: 0, source: "no secret" },
+        ]);
     });
     it("should lint files in concurrent executeOnFiles calls", async () => {
         const engine = await createEngine({
             color: false,
             cwd: path.join(__dirname, "fixtures/valid-config"),
-            formatter: "json",
+            formatter: sourceFormatterPath,
             maskSecrets: false,
         });
         const secretFilePath = path.join(__dirname, "fixtures/SECRET.txt");
@@ -73,8 +103,8 @@ describe("createEngine", () => {
             [[secretFilePath, cleanFilePath], [cleanFilePath, secretFilePath], [secretFilePath]].map(
                 async (filePathList) => {
                     const result = await engine.executeOnFiles({ filePathList });
-                    const results: { sourceContent?: string; messages: unknown[] }[] = JSON.parse(result.output);
-                    return results.map((fileResult) => [fileResult.messages.length, fileResult.sourceContent]);
+                    const results: { messageCount: number; source: string | null }[] = JSON.parse(result.output);
+                    return results.map((fileResult) => [fileResult.messageCount, fileResult.source]);
                 },
             ),
         );
@@ -82,10 +112,10 @@ describe("createEngine", () => {
         assert.deepStrictEqual(outputs, [
             [
                 [1, secretContent],
-                [0, undefined],
+                [0, null],
             ],
             [
-                [0, undefined],
+                [0, null],
                 [1, secretContent],
             ],
             [[1, secretContent]],
