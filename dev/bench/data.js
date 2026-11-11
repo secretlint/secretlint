@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794350101990,
+  "lastUpdate": 1794357042641,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -61408,6 +61408,44 @@ window.BENCHMARK_DATA = {
             "range": "±0.78%",
             "unit": "ops/sec",
             "extra": "12 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "0caca194f11a7ca46e27a7dc7a1b6e9674e18282",
+          "message": "feat: declarative rule patterns, and a single-thread scan pipeline that works on bytes (#1794)\n\nBased on `master`. This PR contains the single-thread parts of #1786,\n#1787 and #1788 (sync walker, profiler fix, `meta.keywords`, lazy rule\ncreation, fast ignore matching), and adds declarative rule patterns on\ntop. **Worker threads are not included.**\n\n## Architecture change\n\nBefore: secretlint runs the code of all rules for all files.\n\nAfter: secretlint scans the bytes of a file once for the keywords of all\nrules, runs a regular expression only on the lines that have its\nkeyword, and runs the code of a rule only for what remains.\n\nMost files have no secret. The goal is to drop them at the first stage,\nwhere the cost is the lowest. It still runs on a single thread.\n\n| | Before | After |\n| --- | --- | --- |\n| Rule | code (`create()`), opaque to the core | data (`patterns`:\nregular expression + keywords + scope + `report()`), or code |\n| Per config | nothing is prepared | a lint plan is built once: one\nkeyword table for all rules, and which keyword belongs to which pattern\n|\n| Per file | register all rules, call `create()` of each rule, decode\nthe file, run every regular expression | scan the bytes for keywords. No\nkeyword: return the result, and nothing else is created |\n| File read | one buffer and one string per file | one reused buffer,\ndecoded only when a rule needs the content |\n\n## Summary\n\nA rule can define `patterns` (regular expression + keywords + scope +\n`report()`) instead of `create()`.\nThe core uses this data to do less work per file:\n\n1. Scan the content once for the keywords of all rules. If the source\nhas `contentBytes`, the core scans the UTF-8 bytes and does not decode\nthe file. A file without keywords ends here, and nothing is created for\nit except the result.\n2. For `scope: \"line\"` patterns, decode and test only the lines that\ncontain a keyword.\n3. Only if a pattern may match (or a rule with `create()` needs the\ncontent), decode the whole content and run the patterns and rules as\nbefore.\n\n## Changes\n\nFrom the stack (#1786 – #1788), without workers:\n\n- **walker**: walk synchronously, and match simple ignore rules without\nregular expressions\n- **profiler**: include entries that `PerformanceObserver` has not\ndelivered yet\n- **core**: `meta.keywords` pre-filter\n\nNew in this PR:\n\n- **types**: `SecretLintRulePattern` (with `caseSensitiveKeywords`),\n`SecretLintRawSource.contentBytes`. `SecretLintRuleCreator` is a union\nof `SecretLintRuleHandlerCreator` (`create()` is required) and\n`SecretLintRulePatternCreator` (`patterns` is required), so a rule\nwithout both is a type error.\n- **core**: build a lint plan once per config (`LintPlan.ts`) instead of\nregistering rules for each file. The keyword matcher (Aho-Corasick)\naccepts a string or `Uint8Array`. No Node.js only API is used.\nSynchronous rule handlers do not create promises. The core runs the\npatterns of a rule itself and does not call `create()` for it.\n- **core**: throw if a pattern has a property or a scope that this\nversion does not know. A rule is data, so a newer rule on an older\nsecretlint stops with \"Please update secretlint\" instead of running with\na different result. Convention: the meaning of a property is never\nchanged, a change is added as a property with a new name.\n- **`meta.keywords` is checked only for text content.** A rule that\nsupports binary content always runs for it. So `gcp` has keywords for\nthe JSON key and still runs for `.p12` files.\n- **config-loader**: accept a rule that has `patterns` and no `create`\n- **rules**: 26 rules of the recommend preset are rewritten as `{\nmessages, meta, patterns }`. They have no `create()` and need no helper\npackage. Snapshots are not changed.\n- **tester**: for each snapshot, compare the results of bytes, string,\nand the rule without keywords and with the \"file\" scope. A wrong keyword\nor scope fails the test.\n- **source-creator / node**: `createFileSourceReader()` reads a file\ninto a reused buffer and decodes `content` lazily. The engine lints\nfiles one by one (`p-map` is removed).\n- **docs**: `docs/secretlint-rule.md`, `AGENTS.md`\n\nNo new npm package is added.\n\n## Compatibility\n\n- Rules with `create()` work as before. `patterns` is optional.\n- **A rule that has only `patterns` does not work on secretlint that\ndoes not support `patterns`.** An older secretlint reports \"rule should\nhave `create` function\". The official rules are bundled in the presets\nand are released with secretlint, so they are updated together.\n- **Type change**: `SecretLintRuleCreator` is a union, and `create` is\noptional for a rule with `patterns`. Code that calls\n`creator.create(...)` directly needs `creator.create?.(...)`.\n- A source without `contentBytes` (API users, browsers) is scanned as a\nstring.\n- `sourceContent` of the result is a lazy getter when the source has\n`contentBytes`. If the content is read after the engine has read another\nfile, the file is read again. If the file was changed in the meantime\n(size or times differ), it throws instead of returning content that no\nrule has checked.\n- Removed internal files in core: `RunningEvents.ts`,\n`SecretLintRuleImpl.ts`, `RulePresetContext.ts`,\n`helper/promise-event-emitter.ts` (not exported).\n\n## Measurements\n\nOne host (4 vCPU, noisy), min of runs, in ms, single thread. Corpus:\ntextlint repository x10 (14,431 files) and x70 (101k files), recommend\npreset.\n\n| | 14k files | 101k files |\n| --- | --- | --- |\n| master CLI (Node 24) | 2,361 | 14,772 |\n| #1788 CLI `--no-parallel` | 1,237 | 7,136 |\n| this PR CLI | 712 - 739 | 3,874 |\n| master single executable (bun 1.4.4) | 1,835 | - |\n| this PR single executable | 595 | - |\n\nThe single executable and the 101k files were measured before the last\ncommits (file change check, case-sensitive keywords, rules without\n`create()`).\n\n- The messages of the JSON output for the secretlint repository itself\nare identical to #1788 (392 files, 1,273 messages).\n- Browser: a bundle of core + 7 rewritten rules (esbuild\n`--platform=browser`) run in Chromium returns the same messages as Node\nfor all 50 snapshot inputs, for both a string source and a\n`contentBytes` source. (Measured on an earlier version of this PR.)\n\nWhat remains at 14k files: startup and config loading (about 215ms, of\nwhich ajv is about 40ms), the walker (about 160ms), and the keyword scan\n(about 150-190ms).\n\n## Test plan\n\n- [x] `turbo run build test` (109 tasks pass)\n- [x] new tests: `core/test/patterns.test.ts`, keyword matcher `scan`,\n`source-creator`, type test of the rule union\n- [x] output comparison as above\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nhttps://claude.ai/code/session_01TSdrAEtdYrJ3gH5zbHUC4Y\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-11-11T09:29:39+09:00",
+          "tree_id": "f6b5504a6941bc955ae25806f5955aafbaaa3650",
+          "url": "https://github.com/secretlint/secretlint/commit/0caca194f11a7ca46e27a7dc7a1b6e9674e18282"
+        },
+        "date": 1794357039770,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 6.18,
+            "range": "±1.36%",
+            "unit": "ops/sec",
+            "extra": "20 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 5.21,
+            "range": "±4.50%",
+            "unit": "ops/sec",
+            "extra": "18 samples"
           }
         ]
       }
