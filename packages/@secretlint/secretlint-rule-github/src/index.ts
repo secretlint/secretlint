@@ -1,9 +1,4 @@
-import {
-    SecretLintRuleContext,
-    SecretLintRuleCreator,
-    SecretLintRuleMessageTranslate,
-    SecretLintSourceCode,
-} from "@secretlint/types";
+import type { SecretLintRuleCreator, SecretLintRulePattern } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export const messages = {
@@ -45,45 +40,28 @@ const validChecksum = (_token: string): boolean => {
     return true;
 };
 
-function reportIfFoundKey({
-    pattern,
-    source,
-    options,
-    context,
-    t,
-}: {
-    pattern: RegExp;
-    source: SecretLintSourceCode;
-    options: Required<Options>;
-    context: SecretLintRuleContext;
-    t: SecretLintRuleMessageTranslate<typeof messages>;
-}) {
-    const results = source.content.matchAll(pattern);
-    for (const result of results) {
-        const index = result.index || 0;
-        const type = result.groups?.type as GITHUB_TOKEN_TYPE;
-        const typeName = typeMap.get(type);
-        if (!typeName) {
-            throw new Error("Unknown type:" + typeName);
-        }
-        const match = result[0] || "";
-        if (!validChecksum(match)) {
-            continue;
-        }
-        const range = [index, index + match.length] as const;
-        const allowedResults = matchPatterns(match, options.allows);
-        if (allowedResults.length > 0) {
-            continue;
-        }
-        context.report({
-            message: t("GITHUB_TOKEN", {
-                KEY: match,
-                typeName,
-            }),
-            range,
-        });
+const reportGitHubToken: SecretLintRulePattern<Options>["report"] = (match, context) => {
+    const type = match.groups?.type as GITHUB_TOKEN_TYPE;
+    const typeName = typeMap.get(type);
+    if (!typeName) {
+        throw new Error("Unknown type:" + typeName);
     }
-}
+    if (!validChecksum(match.text)) {
+        return;
+    }
+    const allowedResults = matchPatterns(match.text, context.options.allows ?? []);
+    if (allowedResults.length > 0) {
+        return;
+    }
+    const t = context.createTranslator(messages);
+    context.report({
+        message: t("GITHUB_TOKEN", {
+            KEY: match.text,
+            typeName,
+        }),
+        range: match.range,
+    });
+};
 
 export const creator: SecretLintRuleCreator<Options> = {
     messages,
@@ -96,33 +74,31 @@ export const creator: SecretLintRuleCreator<Options> = {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-github/README.md",
         },
     },
-    create(context, options) {
-        // token length should be 40
-        // https://github.blog/2021-04-05-behind-githubs-new-authentication-token-formats/
-        const CLASSIC_GITHUB_TOKEN_PATTERN =
-            /(?<!\p{L})(?<type>ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9_]{36}(?![A-Za-z0-9_])/gu;
-        // fine-grained personal access tokens. FIXME: Format of the token is unclear
-        // https://github.com/community/community/discussions/36441#discussioncomment-4014190
-        const FINE_GRAINED_GITHUB_TOKEN_PATTERN = /(?<!\p{L})(?<type>github_pat)_[A-Za-z0-9_]{82}(?![A-Za-z0-9_])/gu;
-        // new format: ghs_<AppID>_<JWT> (~520 chars, JWT contains three base64url segments separated by dots)
-        // https://github.blog/changelog/2026-04-24-notice-about-upcoming-new-format-for-github-app-installation-tokens/
-        const GITHUB_APP_INSTALLATION_TOKEN_PATTERN =
-            /(?<!\p{L})(?<type>ghs)_[0-9]{1,20}_[A-Za-z0-9_-]{1,1000}\.[A-Za-z0-9_-]{1,10000}\.[A-Za-z0-9_-]{1,1000}(?![A-Za-z0-9_-])/gu;
-        const patterns = [
-            CLASSIC_GITHUB_TOKEN_PATTERN,
-            FINE_GRAINED_GITHUB_TOKEN_PATTERN,
-            GITHUB_APP_INSTALLATION_TOKEN_PATTERN,
-        ];
-        const t = context.createTranslator(messages);
-        const normalizedOptions = {
-            allows: options.allows || [],
-        };
-        return {
-            file(source: SecretLintSourceCode) {
-                for (const pattern of patterns) {
-                    reportIfFoundKey({ pattern, source, options: normalizedOptions, context, t });
-                }
-            },
-        };
-    },
+    patterns: [
+        {
+            // token length should be 40
+            // https://github.blog/2021-04-05-behind-githubs-new-authentication-token-formats/
+            pattern: /(?<!\p{L})(?<type>ghp|gho|ghu|ghs|ghr)_[A-Za-z0-9_]{36}(?![A-Za-z0-9_])/gu,
+            keywords: ["ghp_", "gho_", "ghu_", "ghs_", "ghr_"],
+            scope: "line",
+            report: reportGitHubToken,
+        },
+        {
+            // fine-grained personal access tokens. FIXME: Format of the token is unclear
+            // https://github.com/community/community/discussions/36441#discussioncomment-4014190
+            pattern: /(?<!\p{L})(?<type>github_pat)_[A-Za-z0-9_]{82}(?![A-Za-z0-9_])/gu,
+            keywords: ["github_pat_"],
+            scope: "line",
+            report: reportGitHubToken,
+        },
+        {
+            // new format: ghs_<AppID>_<JWT> (~520 chars, JWT contains three base64url segments separated by dots)
+            // https://github.blog/changelog/2026-04-24-notice-about-upcoming-new-format-for-github-app-installation-tokens/
+            pattern:
+                /(?<!\p{L})(?<type>ghs)_[0-9]{1,20}_[A-Za-z0-9_-]{1,1000}\.[A-Za-z0-9_-]{1,10000}\.[A-Za-z0-9_-]{1,1000}(?![A-Za-z0-9_-])/gu,
+            keywords: ["ghs_"],
+            scope: "line",
+            report: reportGitHubToken,
+        },
+    ],
 };

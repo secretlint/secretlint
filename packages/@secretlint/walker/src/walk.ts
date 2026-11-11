@@ -1,8 +1,15 @@
-import { readdir, realpath, stat } from "node:fs/promises";
+import { readdirSync, realpathSync, statSync, type Dirent } from "node:fs";
 import path from "node:path";
-import type { Dirent } from "node:fs";
 import picomatch from "picomatch";
-import { createRootIgnore, extendIgnore, isIgnoredByChain, type IgnoreChain } from "./ignore-stack.js";
+import {
+    createDirIgnoreState,
+    createRootIgnore,
+    extendIgnore,
+    isIgnoredByChain,
+    isIgnoredInDir,
+    type DirIgnoreState,
+    type IgnoreChain,
+} from "./ignore-stack.js";
 import { isDynamicPattern, splitGlobRoot } from "./glob-root.js";
 import { relativeFrom } from "./relative.js";
 
@@ -80,8 +87,12 @@ type CompiledMatcher = ((relPath: string) => boolean) | null;
  * Returns `null` when there are no patterns so the caller can skip the
  * matcher call entirely on the hot path.
  */
+// Patterns that match every file path, so the matcher can be skipped.
+const MATCH_ALL_PATTERNS = new Set(["**", "**/*"]);
+
 const compileMatcher = (patterns: readonly string[]): CompiledMatcher => {
     if (patterns.length === 0) return null;
+    if (patterns.every((pattern) => MATCH_ALL_PATTERNS.has(pattern))) return null;
     const positives: ((p: string) => boolean)[] = [];
     const negatives: ((p: string) => boolean)[] = [];
     for (const pattern of patterns) {
@@ -126,29 +137,26 @@ type PatternGroup = {
  * - Otherwise, {@link splitGlobRoot} pulls the static prefix off the front
  *   of the pattern and the remainder is stored as the per-group match pattern.
  */
-const groupPatterns = async (
+const groupPatterns = (
     cwd: string,
     patterns: readonly string[] | undefined,
     noGlob: boolean | undefined,
-): Promise<PatternGroup[]> => {
+): PatternGroup[] => {
     if (patterns === undefined || patterns.length === 0) {
         return [{ rootDir: cwd, matchPatterns: [] }];
     }
     // Probe the disk for any pattern that has glob metacharacters but might
-    // also be a real file the user wants treated literally. Done in parallel
-    // so the cost is one stat round-trip per glob-shaped input, not N.
-    const probedLiteral = await Promise.all(
-        patterns.map(async (raw) => {
-            const normalized = raw.replaceAll("\\", "/");
-            if (noGlob || !isDynamicPattern(normalized)) return true;
-            try {
-                await stat(path.resolve(cwd, normalized));
-                return true;
-            } catch {
-                return false;
-            }
-        }),
-    );
+    // also be a real file the user wants treated literally.
+    const probedLiteral = patterns.map((raw) => {
+        const normalized = raw.replaceAll("\\", "/");
+        if (noGlob || !isDynamicPattern(normalized)) return true;
+        try {
+            statSync(path.resolve(cwd, normalized));
+            return true;
+        } catch {
+            return false;
+        }
+    });
     const byRoot = new Map<string, PatternGroup>();
     const upsert = (rootDir: string, pattern: string): void => {
         let group = byRoot.get(rootDir);
@@ -171,9 +179,9 @@ const groupPatterns = async (
     return [...byRoot.values()];
 };
 
-const safeReaddir = async (absDir: string): Promise<Dirent[] | null> => {
+const safeReaddir = (absDir: string): Dirent[] | null => {
     try {
-        return await readdir(absDir, { withFileTypes: true });
+        return readdirSync(absDir, { withFileTypes: true });
     } catch (error) {
         const code = (error as NodeJS.ErrnoException).code;
         if (code === "ENOENT" || code === "EACCES") return null;
@@ -230,22 +238,22 @@ type WalkContext = {
  * (because of a glob's static prefix) still respect ancestor `.gitignore`
  * files.
  */
-const seedAncestorIgnore = async (options: {
+const seedAncestorIgnore = (options: {
     rootIg: IgnoreChain;
     cwd: string;
     targetDir: string;
     ignoreFiles: readonly string[];
-}): Promise<IgnoreChain> => {
+}): IgnoreChain => {
     const { rootIg, cwd, targetDir, ignoreFiles } = options;
     const relative = path.relative(cwd, targetDir);
     if (relative === "" || relative.startsWith("..") || path.isAbsolute(relative)) {
-        return await extendIgnore(rootIg, cwd, ignoreFiles);
+        return extendIgnore(rootIg, cwd, ignoreFiles);
     }
-    let chain = await extendIgnore(rootIg, cwd, ignoreFiles);
+    let chain = extendIgnore(rootIg, cwd, ignoreFiles);
     let current = cwd;
     for (const segment of relative.split(path.sep).filter(Boolean)) {
         current = path.join(current, segment);
-        chain = await extendIgnore(chain, current, ignoreFiles);
+        chain = extendIgnore(chain, current, ignoreFiles);
     }
     return chain;
 };
@@ -254,10 +262,10 @@ const seedAncestorIgnore = async (options: {
  * Walk a directory whose ignore stack has already been seeded for the
  * directory itself. Reads `absDir` once and processes entries.
  */
-const walkSeeded = async (absDir: string, chain: IgnoreChain, ctx: WalkContext): Promise<void> => {
-    const entries = await safeReaddir(absDir);
+const walkSeeded = (absDir: string, chain: IgnoreChain, ctx: WalkContext): void => {
+    const entries = safeReaddir(absDir);
     if (entries === null) return;
-    await processEntries(absDir, entries, chain, ctx);
+    processEntries(absDir, entries, chain, createDirIgnoreState(chain, absDir, null), ctx);
 };
 
 /**
@@ -265,12 +273,17 @@ const walkSeeded = async (absDir: string, chain: IgnoreChain, ctx: WalkContext):
  * extend the ignore chain with that directory's ignore file (if any), then
  * process entries.
  */
-const walkSubdir = async (absDir: string, parentChain: IgnoreChain, ctx: WalkContext): Promise<void> => {
-    const entries = await safeReaddir(absDir);
+const walkSubdir = (
+    absDir: string,
+    parentChain: IgnoreChain,
+    parentState: DirIgnoreState | null,
+    ctx: WalkContext,
+): void => {
+    const entries = safeReaddir(absDir);
     if (entries === null) return;
     const present = presentIgnoreNames(entries, ctx.ignoreFiles);
-    const chain = await extendIgnore(parentChain, absDir, ctx.ignoreFiles, present);
-    await processEntries(absDir, entries, chain, ctx);
+    const chain = extendIgnore(parentChain, absDir, ctx.ignoreFiles, present);
+    processEntries(absDir, entries, chain, createDirIgnoreState(chain, absDir, parentState), ctx);
 };
 
 /**
@@ -279,19 +292,19 @@ const walkSubdir = async (absDir: string, parentChain: IgnoreChain, ctx: WalkCon
  * out what to do with it. Returns null when the symlink is dangling /
  * inaccessible / points to something we don't care about (sockets etc.).
  */
-const resolveEntryKind = async (
+const resolveEntryKind = (
     full: string,
     entry: Dirent,
     followSymlinks: boolean,
     listSymlinks: boolean,
-): Promise<{ kind: "file" | "dir"; isSymlink: boolean } | null> => {
+): { kind: "file" | "dir"; isSymlink: boolean } | null => {
     if (entry.isDirectory()) return { kind: "dir", isSymlink: false };
     if (entry.isFile()) return { kind: "file", isSymlink: false };
     if (!entry.isSymbolicLink()) return null;
     if (!followSymlinks) return listSymlinks ? { kind: "file", isSymlink: true } : null;
     let info;
     try {
-        info = await stat(full);
+        info = statSync(full);
     } catch (error) {
         const code = (error as NodeJS.ErrnoException).code;
         if (code === "ENOENT" || code === "EACCES") return null;
@@ -312,49 +325,50 @@ const resolveEntryKind = async (
  * `vendor/` excludes a `vendor → /shared/lib` symlink without us having
  * to consult `/shared/lib`'s rules). Cycles are detected via realpath.
  */
-const processEntries = async (
+const processEntries = (
     absDir: string,
     entries: readonly Dirent[],
     chain: IgnoreChain,
+    state: DirIgnoreState,
     ctx: WalkContext,
-): Promise<void> => {
-    await Promise.all(
-        entries.map(async (entry) => {
-            const full = path.join(absDir, entry.name);
-            const resolved = await resolveEntryKind(full, entry, ctx.followSymlinks, ctx.listSymlinks);
-            if (resolved === null) return;
-            const isDir = resolved.kind === "dir";
-            // Ignore evaluation always uses the symlink's path, never the resolved target.
-            if (isIgnoredByChain(chain, full, isDir)) return;
-            if (isDir) {
-                if (resolved.isSymlink) {
-                    let real;
-                    try {
-                        real = await realpath(full);
-                    } catch (error) {
-                        const code = (error as NodeJS.ErrnoException).code;
-                        if (code === "ENOENT" || code === "EACCES") return;
-                        throw error;
-                    }
-                    if (ctx.visitedRealPaths.has(real)) return;
-                    ctx.visitedRealPaths.add(real);
+): void => {
+    // Normalize the directory once, so `prefix + name` is the same as `path.join(absDir, name)`.
+    const prefix = path.join(absDir, path.sep);
+    for (const entry of entries) {
+        const full = prefix + entry.name;
+        const resolved = resolveEntryKind(full, entry, ctx.followSymlinks, ctx.listSymlinks);
+        if (resolved === null) continue;
+        const isDir = resolved.kind === "dir";
+        // Ignore evaluation always uses the symlink's path, never the resolved target.
+        if (isIgnoredInDir(state, entry.name, isDir)) continue;
+        if (isDir) {
+            if (resolved.isSymlink) {
+                let real;
+                try {
+                    real = realpathSync(full);
+                } catch (error) {
+                    const code = (error as NodeJS.ErrnoException).code;
+                    if (code === "ENOENT" || code === "EACCES") continue;
+                    throw error;
                 }
-                await walkSubdir(full, chain, ctx);
-            } else if (ctx.matcher === null) {
-                ctx.results.add(toPosix(full));
-            } else {
-                const relFromPatternRoot = toPosix(relativeFrom(ctx.patternRoot, full));
-                if (ctx.matcher(relFromPatternRoot)) ctx.results.add(toPosix(full));
+                if (ctx.visitedRealPaths.has(real)) continue;
+                ctx.visitedRealPaths.add(real);
             }
-        }),
-    );
+            walkSubdir(full, chain, state, ctx);
+        } else if (ctx.matcher === null) {
+            ctx.results.add(toPosix(full));
+        } else {
+            const relFromPatternRoot = toPosix(relativeFrom(ctx.patternRoot, full));
+            if (ctx.matcher(relFromPatternRoot)) ctx.results.add(toPosix(full));
+        }
+    }
 };
 
 /**
  * Resolve a literal user-supplied path: stat once, then walk if it's a
  * directory or add directly if it's a file (after a final ignore check).
  */
-const handleStaticPath = async (options: {
+const handleStaticPath = (options: {
     absPath: string;
     parentChain: IgnoreChain;
     ignoreFiles: readonly string[];
@@ -362,7 +376,7 @@ const handleStaticPath = async (options: {
     followSymlinks: boolean;
     listSymlinks: boolean;
     visitedRealPaths: Set<string>;
-}): Promise<void> => {
+}): void => {
     const { absPath, parentChain, ignoreFiles, results, followSymlinks, listSymlinks, visitedRealPaths } = options;
     // `stat` resolves symlinks. A literal user-supplied path is treated
     // permissively: if it points at a directory (real or via symlink) we
@@ -370,7 +384,7 @@ const handleStaticPath = async (options: {
     // never the resolved target.
     let info;
     try {
-        info = await stat(absPath);
+        info = statSync(absPath);
     } catch (error) {
         const code = (error as NodeJS.ErrnoException).code;
         if (code === "ENOENT" || code === "EACCES") return;
@@ -382,7 +396,7 @@ const handleStaticPath = async (options: {
         // to the cascade, so we don't descend into e.g. `node_modules`
         // when the caller asked us to walk it directly.
         if (isIgnoredByChain(parentChain, absPath, true)) return;
-        await walkSubdir(absPath, parentChain, {
+        walkSubdir(absPath, parentChain, null, {
             ignoreFiles,
             patternRoot: absPath,
             matcher: null,
@@ -403,7 +417,7 @@ const handleStaticPath = async (options: {
  * `patterns` is omitted), with `.gitignore`-style cascade applied per the
  * given `ignoreFiles`.
  */
-export const walk = async (options: WalkOptions): Promise<string[]> => {
+export const walkSync = (options: WalkOptions): string[] => {
     const cwd = path.resolve(options.cwd);
     const ignoreFiles = options.ignoreFiles ?? [];
     const rootChain = createRootIgnore(cwd, options.extraIgnorePatterns ?? []);
@@ -413,54 +427,65 @@ export const walk = async (options: WalkOptions): Promise<string[]> => {
     // Shared across all groups so two patterns under the same job don't
     // re-enter the same symlinked directory twice.
     const visitedRealPaths = new Set<string>();
-    const groups = await groupPatterns(cwd, options.patterns, options.noGlob);
-    await Promise.all(
-        groups.map(async (group) => {
-            const literalEntries = group.matchPatterns.filter((p) => p === "");
-            const globPatterns = group.matchPatterns.filter((p) => p !== "");
-            if (literalEntries.length > 0 && globPatterns.length === 0) {
-                const parentDir = path.dirname(group.rootDir);
-                const seededChain = await seedAncestorIgnore({
-                    rootIg: rootChain,
-                    cwd,
-                    targetDir: parentDir,
-                    ignoreFiles,
-                });
-                await handleStaticPath({
-                    absPath: group.rootDir,
-                    parentChain: seededChain,
-                    ignoreFiles,
-                    results,
-                    followSymlinks,
-                    listSymlinks,
-                    visitedRealPaths,
-                });
-                return;
-            }
-            const seededChain = await seedAncestorIgnore({
+    const groups = groupPatterns(cwd, options.patterns, options.noGlob);
+    for (const group of groups) {
+        const literalEntries = group.matchPatterns.filter((p) => p === "");
+        const globPatterns = group.matchPatterns.filter((p) => p !== "");
+        if (literalEntries.length > 0 && globPatterns.length === 0) {
+            const parentDir = path.dirname(group.rootDir);
+            const seededChain = seedAncestorIgnore({
                 rootIg: rootChain,
                 cwd,
-                targetDir: group.rootDir,
+                targetDir: parentDir,
                 ignoreFiles,
             });
-            // A `""` sentinel in matchPatterns means the user supplied a
-            // literal directory whose intent is "include every file under
-            // here". When mixed with sibling glob patterns at the same root,
-            // the literal subsumes them — so collapse the matcher to null
-            // (= match every file). Without this, a call like
-            // `walk({ patterns: ["src", "src/**/*.ini"] })` would silently
-            // drop `src/c.ts` because only the glob ran.
-            const matcher = literalEntries.length > 0 ? null : compileMatcher(globPatterns);
-            await walkSeeded(group.rootDir, seededChain, {
+            handleStaticPath({
+                absPath: group.rootDir,
+                parentChain: seededChain,
                 ignoreFiles,
-                patternRoot: group.rootDir,
-                matcher,
                 results,
                 followSymlinks,
                 listSymlinks,
                 visitedRealPaths,
             });
-        }),
-    );
+            continue;
+        }
+        const seededChain = seedAncestorIgnore({
+            rootIg: rootChain,
+            cwd,
+            targetDir: group.rootDir,
+            ignoreFiles,
+        });
+        // A `""` sentinel in matchPatterns means the user supplied a
+        // literal directory whose intent is "include every file under
+        // here". When mixed with sibling glob patterns at the same root,
+        // the literal subsumes them — so collapse the matcher to null
+        // (= match every file). Without this, a call like
+        // `walk({ patterns: ["src", "src/**/*.ini"] })` would silently
+        // drop `src/c.ts` because only the glob ran.
+        const matcher = literalEntries.length > 0 ? null : compileMatcher(globPatterns);
+        walkSeeded(group.rootDir, seededChain, {
+            ignoreFiles,
+            patternRoot: group.rootDir,
+            matcher,
+            results,
+            followSymlinks,
+            listSymlinks,
+            visitedRealPaths,
+        });
+    }
     return [...results];
+};
+
+/**
+ * Promise-based version of {@link walkSync}.
+ *
+ * The walk itself runs synchronously. Reading directories with the
+ * promise-based `fs` API costs a thread-pool round trip and a promise per
+ * directory and entry, which made the walk around 10x slower than the
+ * synchronous one on a repository with ten thousand files.
+ * I/O errors are reported as a rejected promise.
+ */
+export const walk = async (options: WalkOptions): Promise<string[]> => {
+    return walkSync(options);
 };

@@ -1,9 +1,4 @@
-import {
-    SecretLintRuleContext,
-    SecretLintRuleCreator,
-    SecretLintRuleMessageTranslate,
-    SecretLintSourceCode,
-} from "@secretlint/types";
+import type { SecretLintRuleCreator, SecretLintRulePattern } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export const messages = {
@@ -98,138 +93,30 @@ function isLikelyRealCredential(username: string, password: string): boolean {
     return true;
 }
 
-function reportMongoDBConnectionString({
-    source,
-    options,
-    context,
-    t,
-}: {
-    source: SecretLintSourceCode;
-    options: Required<Options>;
-    context: SecretLintRuleContext;
-    t: SecretLintRuleMessageTranslate<typeof messages>;
-}) {
-    // MongoDB URI patterns: mongodb:// and mongodb+srv://
-    // Captures: mongodb://[username:password@]host[:port][/database][?options]
-    // Using possessive quantifiers to prevent ReDoS
-    const MONGODB_PATTERN =
-        /mongodb(?:\+srv)?:\/\/(?:(?<username>[^:\/\s]{1,100}):(?<password>[^@\/\s]{1,200})@)?(?<host>[^\/\s?]{1,100})(?:\/(?<database>[^?\s]{0,100}))?(?:\?(?<options>[^\s]{0,500}))?/gi;
-
-    const results = source.content.matchAll(MONGODB_PATTERN);
-    for (const result of results) {
-        const index = result.index || 0;
-        const match = result[0] || "";
-        const username = result.groups?.username;
-        const password = result.groups?.password;
+const createReport = (messageId: keyof typeof messages): SecretLintRulePattern<Options>["report"] => {
+    return (match, context) => {
+        const username = match.groups?.username;
+        const password = match.groups?.password;
 
         // Skip if no credentials found
-        if (!username || !password) continue;
+        if (!username || !password) return;
 
         // Skip if the credentials look like an example
-        if (!isLikelyRealCredential(username, password)) continue;
+        if (!isLikelyRealCredential(username, password)) return;
 
-        const range = [index, index + match.length] as const;
-        const allowedResults = matchPatterns(match, options.allows);
+        const allowedResults = matchPatterns(match.text, context.options.allows ?? []);
         if (allowedResults.length > 0) {
-            continue;
+            return;
         }
-
+        const t = context.createTranslator(messages);
         context.report({
-            message: t("MongoDBConnection", {
-                URI: match,
+            message: t(messageId, {
+                URI: match.text,
             }),
-            range,
+            range: match.range,
         });
-    }
-}
-
-function reportMySQLConnectionString({
-    source,
-    options,
-    context,
-    t,
-}: {
-    source: SecretLintSourceCode;
-    options: Required<Options>;
-    context: SecretLintRuleContext;
-    t: SecretLintRuleMessageTranslate<typeof messages>;
-}) {
-    // MySQL URI patterns: jdbc:mysql://, mysql://, mysqlx://
-    // Using possessive quantifiers to prevent ReDoS
-    const MYSQL_URI_PATTERN =
-        /(?:jdbc:)?mysql(?:x)?:\/\/(?:(?<username>[^:\/\s]{1,100}):(?<password>[^@\/\s]{1,200})@)?(?<host>[^\/\s?]{1,100})(?:\/(?<database>[^?\s]{0,100}))?(?:\?(?<options>[^\s]{0,500}))?/gi;
-
-    const results = source.content.matchAll(MYSQL_URI_PATTERN);
-    for (const result of results) {
-        const index = result.index || 0;
-        const match = result[0] || "";
-        const username = result.groups?.username;
-        const password = result.groups?.password;
-
-        // Skip if no credentials found
-        if (!username || !password) continue;
-
-        // Skip if the credentials look like an example
-        if (!isLikelyRealCredential(username, password)) continue;
-
-        const range = [index, index + match.length] as const;
-        const allowedResults = matchPatterns(match, options.allows);
-        if (allowedResults.length > 0) {
-            continue;
-        }
-
-        context.report({
-            message: t("MySQLConnection", {
-                URI: match,
-            }),
-            range,
-        });
-    }
-}
-
-function reportPostgreSQLConnectionString({
-    source,
-    options,
-    context,
-    t,
-}: {
-    source: SecretLintSourceCode;
-    options: Required<Options>;
-    context: SecretLintRuleContext;
-    t: SecretLintRuleMessageTranslate<typeof messages>;
-}) {
-    // PostgreSQL URI patterns: postgresql://, postgres://
-    // Using possessive quantifiers to prevent ReDoS
-    const POSTGRESQL_URI_PATTERN =
-        /postgres(?:ql)?:\/\/(?:(?<username>[^:\/\s]{1,100}):(?<password>[^@\/\s]{1,200})@)?(?<host>[^\/\s?]{1,100})(?:\/(?<database>[^?\s]{0,100}))?(?:\?(?<options>[^\s]{0,500}))?/gi;
-
-    const results = source.content.matchAll(POSTGRESQL_URI_PATTERN);
-    for (const result of results) {
-        const index = result.index || 0;
-        const match = result[0] || "";
-        const username = result.groups?.username;
-        const password = result.groups?.password;
-
-        // Skip if no credentials found
-        if (!username || !password) continue;
-
-        // Skip if the credentials look like an example
-        if (!isLikelyRealCredential(username, password)) continue;
-
-        const range = [index, index + match.length] as const;
-        const allowedResults = matchPatterns(match, options.allows);
-        if (allowedResults.length > 0) {
-            continue;
-        }
-
-        context.report({
-            message: t("PostgreSQLConnection", {
-                URI: match,
-            }),
-            range,
-        });
-    }
-}
+    };
+};
 
 export const creator: SecretLintRuleCreator<Options> = {
     messages,
@@ -242,17 +129,34 @@ export const creator: SecretLintRuleCreator<Options> = {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md",
         },
     },
-    create(context, options) {
-        const normalizedOptions: Required<Options> = {
-            allows: options.allows || [],
-        };
-        const t = context.createTranslator(messages);
-        return {
-            file(source: SecretLintSourceCode) {
-                reportMongoDBConnectionString({ source, options: normalizedOptions, context, t });
-                reportMySQLConnectionString({ source, options: normalizedOptions, context, t });
-                reportPostgreSQLConnectionString({ source, options: normalizedOptions, context, t });
-            },
-        };
-    },
+    patterns: [
+        {
+            // MongoDB URI patterns: mongodb:// and mongodb+srv://
+            // Captures: mongodb://[username:password@]host[:port][/database][?options]
+            // Using possessive quantifiers to prevent ReDoS
+            pattern:
+                /mongodb(?:\+srv)?:\/\/(?:(?<username>[^:\/\s]{1,100}):(?<password>[^@\/\s]{1,200})@)?(?<host>[^\/\s?]{1,100})(?:\/(?<database>[^?\s]{0,100}))?(?:\?(?<options>[^\s]{0,500}))?/gi,
+            keywords: ["mongodb://", "mongodb+srv://"],
+            scope: "line",
+            report: createReport("MongoDBConnection"),
+        },
+        {
+            // MySQL URI patterns: jdbc:mysql://, mysql://, mysqlx://
+            // Using possessive quantifiers to prevent ReDoS
+            pattern:
+                /(?:jdbc:)?mysql(?:x)?:\/\/(?:(?<username>[^:\/\s]{1,100}):(?<password>[^@\/\s]{1,200})@)?(?<host>[^\/\s?]{1,100})(?:\/(?<database>[^?\s]{0,100}))?(?:\?(?<options>[^\s]{0,500}))?/gi,
+            keywords: ["mysql://", "mysqlx://"],
+            scope: "line",
+            report: createReport("MySQLConnection"),
+        },
+        {
+            // PostgreSQL URI patterns: postgresql://, postgres://
+            // Using possessive quantifiers to prevent ReDoS
+            pattern:
+                /postgres(?:ql)?:\/\/(?:(?<username>[^:\/\s]{1,100}):(?<password>[^@\/\s]{1,200})@)?(?<host>[^\/\s?]{1,100})(?:\/(?<database>[^?\s]{0,100}))?(?:\?(?<options>[^\s]{0,500}))?/gi,
+            keywords: ["postgres://", "postgresql://"],
+            scope: "line",
+            report: createReport("PostgreSQLConnection"),
+        },
+    ],
 };

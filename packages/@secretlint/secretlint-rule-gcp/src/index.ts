@@ -81,6 +81,9 @@ export const creator: SecretLintRuleCreator<Options> = {
         recommended: true,
         type: "scanner",
         supportedContentTypes: ["all"],
+        // For text content: a service account key JSON has "private_key_id". It may be escaped as "\\uXXXX".
+        // Keywords are not checked for binary content, so the rule always runs for a .p12 file.
+        keywords: ["private_key_id", "\\u"],
         docs: {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-gcp/README.md",
         },

@@ -1,4 +1,4 @@
-import type { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
+import type { SecretLintRuleCreator } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export const messages = {
@@ -48,42 +48,60 @@ export const creator: SecretLintRuleCreator<Options> = {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-hashicorp-vault/README.md",
         },
     },
-    create(context, options) {
-        const t = context.createTranslator(messages);
-        const normalizedOptions = {
-            allows: options?.allows ?? [],
-        };
-        const reportMatches = (
-            source: SecretLintSourceCode,
-            pattern: RegExp,
-            messageId:
-                | "HASHICORP_VAULT_SERVICE_TOKEN"
-                | "HASHICORP_VAULT_BATCH_TOKEN"
-                | "HASHICORP_VAULT_RECOVERY_TOKEN"
-        ) => {
-            const matches = source.content.matchAll(pattern);
-            for (const match of matches) {
-                const index = match.index ?? 0;
-                const matchString = match[0] ?? "";
-                const allowedResults = matchPatterns(matchString, normalizedOptions.allows);
+    patterns: [
+        {
+            pattern: serviceTokenPattern,
+            keywords: ["hvs."],
+            scope: "line",
+            report(match, context) {
+                const allowedResults = matchPatterns(match.text, context.options.allows ?? []);
                 if (allowedResults.length > 0) {
-                    continue;
+                    return;
                 }
-                const range = [index, index + matchString.length] as const;
+                const t = context.createTranslator(messages);
                 context.report({
-                    message: t(messageId, {
-                        TOKEN: matchString,
+                    message: t("HASHICORP_VAULT_SERVICE_TOKEN", {
+                        TOKEN: match.text,
                     }),
-                    range,
+                    range: match.range,
                 });
-            }
-        };
-        return {
-            file(source: SecretLintSourceCode) {
-                reportMatches(source, serviceTokenPattern, "HASHICORP_VAULT_SERVICE_TOKEN");
-                reportMatches(source, batchTokenPattern, "HASHICORP_VAULT_BATCH_TOKEN");
-                reportMatches(source, recoveryTokenPattern, "HASHICORP_VAULT_RECOVERY_TOKEN");
             },
-        };
-    },
+        },
+        {
+            pattern: batchTokenPattern,
+            keywords: ["hvb."],
+            scope: "line",
+            report(match, context) {
+                const allowedResults = matchPatterns(match.text, context.options.allows ?? []);
+                if (allowedResults.length > 0) {
+                    return;
+                }
+                const t = context.createTranslator(messages);
+                context.report({
+                    message: t("HASHICORP_VAULT_BATCH_TOKEN", {
+                        TOKEN: match.text,
+                    }),
+                    range: match.range,
+                });
+            },
+        },
+        {
+            pattern: recoveryTokenPattern,
+            keywords: ["hvr."],
+            scope: "line",
+            report(match, context) {
+                const allowedResults = matchPatterns(match.text, context.options.allows ?? []);
+                if (allowedResults.length > 0) {
+                    return;
+                }
+                const t = context.createTranslator(messages);
+                context.report({
+                    message: t("HASHICORP_VAULT_RECOVERY_TOKEN", {
+                        TOKEN: match.text,
+                    }),
+                    range: match.range,
+                });
+            },
+        },
+    ],
 };

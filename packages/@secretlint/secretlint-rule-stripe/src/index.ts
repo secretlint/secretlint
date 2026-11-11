@@ -1,9 +1,4 @@
-import type {
-    SecretLintRuleContext,
-    SecretLintRuleCreator,
-    SecretLintRuleMessageTranslate,
-    SecretLintSourceCode,
-} from "@secretlint/types";
+import type { SecretLintRuleCreator } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export const messages = {
@@ -62,39 +57,6 @@ const messageIdMap: Record<STRIPE_KEY_PREFIX, keyof typeof messages> = {
 //   up to ~99 chars after the prefix. Matches gitleaks' upper bound.
 const STRIPE_KEY_PATTERN = /(?<!\p{L})(?<prefix>sk_live|sk_test|rk_live|rk_test)_[a-zA-Z0-9]{24,99}(?![a-zA-Z0-9])/gu;
 
-function reportIfFound({
-    source,
-    options,
-    context,
-    t,
-}: {
-    source: SecretLintSourceCode;
-    options: Required<Options>;
-    context: SecretLintRuleContext;
-    t: SecretLintRuleMessageTranslate<typeof messages>;
-}) {
-    const results = source.content.matchAll(STRIPE_KEY_PATTERN);
-    for (const result of results) {
-        const index = result.index ?? 0;
-        const match = result[0] ?? "";
-        const prefix = result.groups?.["prefix"] as STRIPE_KEY_PREFIX | undefined;
-        if (!prefix) {
-            continue;
-        }
-        const range = [index, index + match.length] as const;
-        const allowedResults = matchPatterns(match, options.allows);
-        if (allowedResults.length > 0) {
-            continue;
-        }
-        context.report({
-            message: t(messageIdMap[prefix], {
-                KEY: match,
-            }),
-            range,
-        });
-    }
-}
-
 export const creator: SecretLintRuleCreator<Options> = {
     messages,
     meta: {
@@ -106,15 +68,28 @@ export const creator: SecretLintRuleCreator<Options> = {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-stripe/README.md",
         },
     },
-    create(context, options) {
-        const t = context.createTranslator(messages);
-        const normalizedOptions: Required<Options> = {
-            allows: options.allows ?? [],
-        };
-        return {
-            file(source: SecretLintSourceCode) {
-                reportIfFound({ source, options: normalizedOptions, context, t });
+    patterns: [
+        {
+            pattern: STRIPE_KEY_PATTERN,
+            keywords: ["sk_live_", "sk_test_", "rk_live_", "rk_test_"],
+            scope: "line",
+            report(match, context) {
+                const prefix = match.groups?.["prefix"] as STRIPE_KEY_PREFIX | undefined;
+                if (!prefix) {
+                    return;
+                }
+                const allowedResults = matchPatterns(match.text, context.options.allows ?? []);
+                if (allowedResults.length > 0) {
+                    return;
+                }
+                const t = context.createTranslator(messages);
+                context.report({
+                    message: t(messageIdMap[prefix], {
+                        KEY: match.text,
+                    }),
+                    range: match.range,
+                });
             },
-        };
-    },
+        },
+    ],
 };

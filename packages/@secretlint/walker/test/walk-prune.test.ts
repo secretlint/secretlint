@@ -8,14 +8,14 @@ const fixtureDir = path.join(__dirname, "fixtures", "prune");
 // Track readdir calls via a wrapper module mock
 const readdirCalls: string[] = [];
 
-vi.mock("node:fs/promises", async (importActual) => {
-    const actual = await importActual<typeof import("node:fs/promises")>();
+vi.mock("node:fs", async (importActual) => {
+    const actual = await importActual<typeof import("node:fs")>();
     return {
         ...actual,
-        readdir: vi.fn(async (...args: Parameters<typeof actual.readdir>) => {
+        readdirSync: vi.fn((...args: Parameters<typeof actual.readdirSync>) => {
             readdirCalls.push(String(args[0]));
             // @ts-expect-error overloaded function
-            return actual.readdir(...args);
+            return actual.readdirSync(...args);
         }),
     };
 });

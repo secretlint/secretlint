@@ -19,11 +19,16 @@ export type { SecretLintRuleSeverityLevel } from "./SecretLintRuleSeverityLevel.
 export type {
     SecretLintRuleIgnoreDescriptor,
     SecretLintRuleCreator,
+    SecretLintRuleHandlerCreator,
+    SecretLintRulePatternCreator,
     SecretLintRuleContext,
     SecretLintRuleCreatorOptions,
     SecretLintRuleReportDescriptor,
     SecretLintRuleReportHandler,
     SecretLintRuleContentType,
+    SecretLintRulePattern,
+    SecretLintRulePatternMatch,
+    SecretLintRulePatternContext,
 } from "./SecretLintRule.js";
 // Rule Preset
 export type {

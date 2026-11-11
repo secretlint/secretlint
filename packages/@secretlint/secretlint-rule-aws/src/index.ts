@@ -1,4 +1,4 @@
-import { SecretLintRuleContext, SecretLintRuleCreator, SecretLintSourceCode, SecretLintRuleMessageTranslate} from "@secretlint/types";
+import type { SecretLintRuleCreator } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export interface Options {
@@ -48,119 +48,30 @@ export const messages = {
 
   https://docs.cribl.io/docs/regexesyml
  */
-const reportAWSAccessKey = ({
-    t,
-    source,
-    context,
-    options,
-}: {
-    t: SecretLintRuleMessageTranslate<typeof messages>;
-    source: SecretLintSourceCode;
-    context: SecretLintRuleContext;
-    options: Required<Options>;
-}) => {
-    // AWS Access Key ID
-    // Example) AKIAIOSFODNN7EXAMPLE
-    const AWSAccessKeyIDPattern = /\b(A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}\b/g;
-    const results = source.content.matchAll(AWSAccessKeyIDPattern);
-    for (const result of results) {
-        const index = result.index || 0;
-        const match = result[0] || "";
-        const range = [index, index + match.length] as const;
-        // Built-in ignore
-        if (BUILTIN_IGNORED.AWSAccountID.includes(match)) {
-            continue;
-        }
-        const allowedResults = matchPatterns(match, options.allows);
-        if (allowedResults.length > 0) {
-            continue;
-        }
-        context.report({
-            message: t("AWSAccessKeyID", {
-                ID: match,
-            }),
-            range,
-        });
-    }
-};
-const reportAWSSecretAccessKey = ({
-    t,
-    source,
-    context,
-    options,
-}: {
-    t: SecretLintRuleMessageTranslate<typeof messages>;
-    source: SecretLintSourceCode;
-    context: SecretLintRuleContext;
-    options: Required<Options>;
-}) => {
+// AWS Access Key ID
+// Example) AKIAIOSFODNN7EXAMPLE
+const AWSAccessKeyIDPattern = /\b(A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}\b/g;
+// git-secrets implementation match _KEY=XXX, but it is false-positive
+// https://github.com/awslabs/git-secrets/blob/5e28df337746db4f070c84f7069d365bfd0d72a8/git-secrets#L239
+// This Pattern match only `AWS?_SECRET_ACCESS_KEY=XXX`
+const AWSSecretAccessKeyPattern = (() => {
     const AWS = "(?:AWS|aws|Aws)?_?";
     const QUOTE = `["']?`;
     const CONNECT = "\\s*(?::|=>|=)\\s*";
-    // git-secrets implementation match _KEY=XXX, but it is false-positive
-    // https://github.com/awslabs/git-secrets/blob/5e28df337746db4f070c84f7069d365bfd0d72a8/git-secrets#L239
-    // This Pattern match only `AWS?_SECRET_ACCESS_KEY=XXX`
-    const AWSSecretPatten = new RegExp(
+    return new RegExp(
         String.raw`${QUOTE}${AWS}(?:SECRET|secret|Secret)_?(?:ACCESS|access|Access)_?(?:KEY|key|Key)${QUOTE}${CONNECT}${QUOTE}([A-Za-z0-9/\+=]{40})${QUOTE}\b`,
-        "g"
+        "g",
     );
-    const results = source.content.matchAll(AWSSecretPatten);
-    for (const result of results) {
-        const index = result.index || 0;
-        const match = result[1] || "";
-        const range = [index, index + match.length] as const;
-        // Built-in ignored
-        if (BUILTIN_IGNORED.AWSSecretAccessKey.includes(match)) {
-            continue;
-        }
-        const allowedResults = matchPatterns(match, options.allows);
-        if (allowedResults.length > 0) {
-            continue;
-        }
-        context.report({
-            message: t("AWSSecretAccessKey", {
-                KEY: match,
-            }),
-            range,
-        });
-    }
-};
-
-const reportAWSAccountID = ({
-    t,
-    source,
-    context,
-    options,
-}: {
-    t: SecretLintRuleMessageTranslate<typeof messages>;
-    source: SecretLintSourceCode;
-    context: SecretLintRuleContext;
-    options: Required<Options>;
-}) => {
+})();
+const AWSAccountIDPattern = (() => {
     const AWS = "(AWS|aws|Aws)?_?";
     const QUOTE = `("|')?`;
     const CONNECT = "\\s*(:|=>|=)\\s*";
-    const AWSSecretPatten = new RegExp(
+    return new RegExp(
         String.raw`${QUOTE}${AWS}(ACCOUNT|account|Account)_?(ID|id|Id)?${QUOTE}${CONNECT}${QUOTE}[0-9]{4}\-?[0-9]{4}\-?[0-9]{4}${QUOTE}\b`,
-        "g"
+        "g",
     );
-    const results = source.content.matchAll(AWSSecretPatten);
-    for (const result of results) {
-        const index = result.index || 0;
-        const match = result[0] || "";
-        const range = [index, index + match.length] as const;
-        const allowedResults = matchPatterns(match, options.allows);
-        if (allowedResults.length > 0) {
-            continue;
-        }
-        context.report({
-            message: t("AWSAccountID", {
-                ID: match,
-            }),
-            range,
-        });
-    }
-};
+})();
 
 export const creator: SecretLintRuleCreator<Options> = {
     messages,
@@ -173,20 +84,82 @@ export const creator: SecretLintRuleCreator<Options> = {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md",
         },
     },
-    create(context, options) {
-        const normalizedOptions: Required<Options> = {
-            allows: options.allows || [],
-            enableIDScanRule: options.enableIDScanRule ?? false,
-        };
-        const t = context.createTranslator(messages);
-        return {
-            file(source: SecretLintSourceCode) {
-                if (normalizedOptions.enableIDScanRule) {
-                    reportAWSAccessKey({ t, source: source, context: context, options: normalizedOptions });
-                    reportAWSAccountID({ t, source: source, context: context, options: normalizedOptions });
+    patterns: [
+        {
+            pattern: AWSAccessKeyIDPattern,
+            keywords: ["A3T", "AKIA", "AGPA", "AIDA", "AROA", "AIPA", "ANPA", "ANVA", "ASIA"],
+            // the prefixes are upper case only. "asia" and "aida" appear often in lower case
+            caseSensitiveKeywords: true,
+            scope: "line",
+            report(match, context) {
+                if (!context.options.enableIDScanRule) {
+                    return;
                 }
-                reportAWSSecretAccessKey({ t, source: source, context: context, options: normalizedOptions });
+                // Built-in ignore
+                if (BUILTIN_IGNORED.AWSAccountID.includes(match.text)) {
+                    return;
+                }
+                const allowedResults = matchPatterns(match.text, context.options.allows ?? []);
+                if (allowedResults.length > 0) {
+                    return;
+                }
+                const t = context.createTranslator(messages);
+                context.report({
+                    message: t("AWSAccessKeyID", {
+                        ID: match.text,
+                    }),
+                    range: match.range,
+                });
             },
-        };
-    },
+        },
+        {
+            // The connector between the name and the value may include line breaks, so the scope is "file"
+            pattern: AWSAccountIDPattern,
+            keywords: ["ACCOUNT", "account", "Account"],
+            caseSensitiveKeywords: true,
+            scope: "file",
+            report(match, context) {
+                if (!context.options.enableIDScanRule) {
+                    return;
+                }
+                const allowedResults = matchPatterns(match.text, context.options.allows ?? []);
+                if (allowedResults.length > 0) {
+                    return;
+                }
+                const t = context.createTranslator(messages);
+                context.report({
+                    message: t("AWSAccountID", {
+                        ID: match.text,
+                    }),
+                    range: match.range,
+                });
+            },
+        },
+        {
+            // The connector between the name and the value may include line breaks, so the scope is "file"
+            pattern: AWSSecretAccessKeyPattern,
+            // SECRET_?ACCESS of the pattern
+            keywords: ["secret_access", "secretaccess"],
+            scope: "file",
+            report(match, context) {
+                const key = match.captures[1] || "";
+                // Built-in ignored
+                if (BUILTIN_IGNORED.AWSSecretAccessKey.includes(key)) {
+                    return;
+                }
+                const allowedResults = matchPatterns(key, context.options.allows ?? []);
+                if (allowedResults.length > 0) {
+                    return;
+                }
+                const t = context.createTranslator(messages);
+                const startIndex = match.range[0];
+                context.report({
+                    message: t("AWSSecretAccessKey", {
+                        KEY: key,
+                    }),
+                    range: [startIndex, startIndex + key.length],
+                });
+            },
+        },
+    ],
 };

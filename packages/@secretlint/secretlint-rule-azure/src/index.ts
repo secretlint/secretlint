@@ -1,4 +1,9 @@
-import { SecretLintRuleContext, SecretLintRuleCreator, SecretLintSourceCode, SecretLintRuleMessageTranslate } from "@secretlint/types";
+import {
+    SecretLintRuleContext,
+    SecretLintRuleCreator,
+    SecretLintSourceCode,
+    SecretLintRuleMessageTranslate,
+} from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 // Sources:
@@ -39,7 +44,7 @@ const reportAzureTenantId = ({
 }) => {
     const pattern = new RegExp(
         String.raw`${QUOTE}(?:azure|ad)_?tenant_?id${QUOTE}${CONNECT}${QUOTE}(${GUID})${QUOTE}\b`,
-        "gi"
+        "gi",
     );
     const results = source.content.matchAll(pattern);
     for (const result of results) {
@@ -72,7 +77,7 @@ const reportAzureClientId = ({
 }) => {
     const pattern = new RegExp(
         String.raw`${QUOTE}(?:azure)?_?client_?id${QUOTE}${CONNECT}${QUOTE}(${GUID})${QUOTE}\b`,
-        "gi"
+        "gi",
     );
     const results = source.content.matchAll(pattern);
     for (const result of results) {
@@ -105,7 +110,7 @@ const reportAzureClientSecret = ({
 }) => {
     const pattern = new RegExp(
         String.raw`${QUOTE}(?:azure)?_?client_?secret${QUOTE}${CONNECT}${QUOTE}(${SECRET})${QUOTE}\b`,
-        "gi"
+        "gi",
     );
 
     const results = source.content.matchAll(pattern);
@@ -133,6 +138,7 @@ export const creator: SecretLintRuleCreator<Options> = {
         recommended: true,
         type: "scanner",
         supportedContentTypes: ["text"],
+        keywords: ["tenant", "client"],
         docs: {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-azure/README.md",
         },

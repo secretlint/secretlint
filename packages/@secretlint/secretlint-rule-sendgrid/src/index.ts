@@ -1,9 +1,4 @@
-import {
-    SecretLintRuleContext,
-    SecretLintRuleCreator,
-    SecretLintRuleMessageTranslate,
-    SecretLintSourceCode,
-} from "@secretlint/types";
+import type { SecretLintRuleCreator } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export const messages = {
@@ -21,40 +16,6 @@ export type Options = {
     allows?: string[];
 };
 
-function reportIfFoundKey({
-    source,
-    options,
-    context,
-    t,
-}: {
-    source: SecretLintSourceCode;
-    options: Required<Options>;
-    context: SecretLintRuleContext;
-    t: SecretLintRuleMessageTranslate<typeof messages>;
-}) {
-    const SENDGRID_KEY_PATTERN = /(?<!\p{L})SG\.\w{1,128}\.\w{1,128}([-_]?)\w{1,128}(?!\w)/gu;
-    const results = source.content.matchAll(SENDGRID_KEY_PATTERN);
-    for (const result of results) {
-        const index = result.index || 0;
-        const match = result[0] || "";
-        if (match.length !== 69) {
-            // send grid api key is 69 characters long
-            continue;
-        }
-        const range = [index, index + match.length] as const;
-        const allowedResults = matchPatterns(match, options.allows);
-        if (allowedResults.length > 0) {
-            continue;
-        }
-        context.report({
-            message: t("SENDGRID_KEY", {
-                KEY: match,
-            }),
-            range,
-        });
-    }
-}
-
 export const creator: SecretLintRuleCreator<Options> = {
     messages,
     meta: {
@@ -66,15 +27,30 @@ export const creator: SecretLintRuleCreator<Options> = {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-sendgrid/README.md",
         },
     },
-    create(context, options) {
-        const t = context.createTranslator(messages);
-        const normalizedOptions = {
-            allows: options.allows || [],
-        };
-        return {
-            file(source: SecretLintSourceCode) {
-                reportIfFoundKey({ source, options: normalizedOptions, context, t });
+    patterns: [
+        {
+            pattern: /(?<!\p{L})SG\.\w{1,128}\.\w{1,128}([-_]?)\w{1,128}(?!\w)/gu,
+            keywords: ["SG."],
+            // "sg." appears often in lower case, such as "msg."
+            caseSensitiveKeywords: true,
+            scope: "line",
+            report(match, context) {
+                // send grid api key is 69 characters long
+                if (match.text.length !== 69) {
+                    return;
+                }
+                const allowedResults = matchPatterns(match.text, context.options.allows ?? []);
+                if (allowedResults.length > 0) {
+                    return;
+                }
+                const t = context.createTranslator(messages);
+                context.report({
+                    message: t("SENDGRID_KEY", {
+                        KEY: match.text,
+                    }),
+                    range: match.range,
+                });
             },
-        };
-    },
+        },
+    ],
 };

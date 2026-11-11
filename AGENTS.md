@@ -15,9 +15,9 @@ CLI (secretlint) → SecretLintEngine (@secretlint/node) → config-loader → c
 ```
 
 1. **CLI** (`packages/secretlint/src/cli.ts`) parses arguments, calls `runSecretLint()`
-2. **SecretLintEngine** (`packages/@secretlint/node`) loads config, discovers files via glob, processes files in parallel with `p-map`
+2. **SecretLintEngine** (`packages/@secretlint/node`) loads config, discovers files via glob, lints files one by one
 3. **config-loader** searches for `.secretlintrc.*`, validates with AJV schema, dynamically imports rule modules
-4. **core** (`packages/@secretlint/core/src/index.ts` - `lintSource()`) creates `SecretLintSourceCode`, registers scanner/filter rules, runs them, collects messages
+4. **core** (`packages/@secretlint/core/src/index.ts` - `lintSource()`) builds a lint plan per config (`LintPlan.ts`), scans the content once for the keywords of all rules, runs the matching `patterns` and rules, collects messages
 5. **RuleContext** (`packages/@secretlint/core/src/RuleContext.ts`) provides `report()`, `ignore()`, `createTranslator()` to each rule
 6. **formatter** converts results to textlint-compatible format, applies selected formatter (stylish, json, sarif, table, mask-result)
 
@@ -92,10 +92,11 @@ This uses scaffdog (`.scaffdog/new-rule.md`) to generate the rule package struct
 
 ### Step 2: Implement the Rule
 
-Every rule must export a `creator` object and `messages`. The canonical structure:
+Every rule must export a `creator` object and `messages`.
+A rule that finds secrets with regular expressions is defined with `patterns`, and it has no `create()`. The canonical structure:
 
 ```typescript
-import type { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
+import type { SecretLintRuleCreator } from "@secretlint/types";
 
 // 1. Define messages with at least `en` locale (ja is recommended)
 export const messages = {
@@ -122,39 +123,40 @@ export const creator: SecretLintRuleCreator<Options> = {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-<name>/README.md",
         },
     },
-    create(context, options) {
-        const t = context.createTranslator(messages);
-        const normalizedOptions = {
-            allows: options.allows || [],
-        };
-        return {
-            file(source: SecretLintSourceCode) {
-                const pattern = /(?<!\p{L})YOUR_PREFIX_[A-Za-z0-9]{20,60}(?![A-Za-z0-9])/gu;
-                const matches = source.content.matchAll(pattern);
-                for (const match of matches) {
-                    const index = match.index || 0;
-                    const matchString = match[0] || "";
-                    const range = [index, index + matchString.length] as const;
-                    // Check allows list using @textlint/regexp-string-matcher
-                    context.report({
-                        message: t("MESSAGE_ID", { ID: matchString }),
-                        range,
-                    });
-                }
+    patterns: [
+        {
+            pattern: /(?<!\p{L})YOUR_PREFIX_[A-Za-z0-9]{20,60}(?![A-Za-z0-9])/gu,
+            keywords: ["YOUR_PREFIX_"], // every match contains one of them
+            scope: "line",              // a match never includes a line break
+            report(match, context) {
+                // Check allows list using @textlint/regexp-string-matcher with context.options.allows
+                const t = context.createTranslator(messages);
+                context.report({
+                    message: t("MESSAGE_ID", { ID: match.text }),
+                    range: match.range,
+                });
             },
-        };
-    },
+        },
+    ],
 };
 ```
+
+The core scans the content once for the keywords of all rules (as UTF-8 bytes if the source has `contentBytes`),
+runs `pattern` only where its keywords are found, and calls `report()` for each match.
+A rule that needs code other than regular expressions (e.g. checks the file name or parses a binary) defines `create(context, options)` that returns `{ file(source) {} }` instead of `patterns`.
 
 ### Key Rules for Rule Implementation
 
 - **Always export `creator` and `messages`** from `src/index.ts`
 - **`meta.id`** must match the npm package name exactly
 - **`meta.type`** is `"scanner"` for detection rules, `"filter"` for rules that suppress other rules' reports
+- **`keywords`** of a pattern lists ASCII strings that every match of the pattern contains, such as a token prefix (ASCII case-insensitive). Every string the pattern can report must contain at least one keyword, or the rule misses it. Omit `keywords` if no such string exists; the pattern then runs for all content. Make keywords as specific as the pattern allows (`"http://"` instead of `"://"`), and set `caseSensitiveKeywords: true` if the pattern is case-sensitive and the keyword is common in another case (`"SG."` vs `"msg."`)
+- **`scope: "line"`** runs the pattern only on the lines that contain a keyword. Use it only if a match never includes a line break and the result does not depend on other lines. Otherwise use `"file"` (default)
+- **A pattern has only the properties that `SecretLintRulePattern` defines.** The core throws on an unknown property, so an older secretlint never runs a newer rule with a different result. When adding a property to the pattern format, add it with a new name and never change the meaning of an existing property
+- **`@secretlint/tester` checks `keywords` and `scope`**: for each snapshot it compares the result with the result of running the patterns on the whole content, and fails if they differ
+- **`meta.keywords`** (optional, for rules with `create()`) skips the rule if the text content contains none of the keywords. Keywords are not checked for binary content. A rule with `patterns` does not need it
 - **Messages must have at least `en` locale**; `ja` is strongly recommended
 - **Always support `allows` option** using `@textlint/regexp-string-matcher` for user-defined exclusions
-- **Use `matchAll` with global regex** for pattern scanning
 - **Regex boundary conventions**:
   - Leading: use `(?<!\p{L})` to prevent matching mid-word
   - Trailing: add a negative lookahead matching the pattern's character class (e.g., `(?![A-Za-z0-9])` or `(?![a-f0-9])`). Without this, greedy quantifiers over-match into adjacent content, causing incorrect `range` and breaking `allows` list matching
@@ -228,11 +230,12 @@ When creating a new rule, verify every item:
 3. Options type has `allows?: string[]`
 4. `meta.id` exactly matches package name `@secretlint/secretlint-rule-<name>`
 5. `meta.type` is `"scanner"` (detection) or `"filter"` (suppression)
-6. Detection uses `matchAll` with global regex, reports via `context.report({ message, range })`
-7. Allow list integrates `@textlint/regexp-string-matcher`
-8. Tests have `ng.*` (error cases) and `ok.*` (valid cases) in `test/snapshots/`
-9. Snapshots generated with `UPDATE_SNAPSHOT=1 pnpm test`
-10. README.md documents the rule's purpose, detected patterns, and options
+6. `meta.keywords` (if set) is contained in every string the rule reports
+7. Detection uses `matchAll` with global regex, reports via `context.report({ message, range })`
+8. Allow list integrates `@textlint/regexp-string-matcher`
+9. Tests have `ng.*` (error cases) and `ok.*` (valid cases) in `test/snapshots/`
+10. Snapshots generated with `UPDATE_SNAPSHOT=1 pnpm test`
+11. README.md documents the rule's purpose, detected patterns, and options
 
 **Common pitfalls:**
 - Regex must use the `g` flag for `matchAll`

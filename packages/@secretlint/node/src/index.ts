@@ -1,6 +1,6 @@
 import { lintSource } from "@secretlint/core";
 import { loadConfig, loadPackagesFromConfigDescriptor, SecretLintConfigMessage } from "@secretlint/config-loader";
-import { createRawSource } from "@secretlint/source-creator";
+import { createFileSourceReader } from "@secretlint/source-creator";
 import { loadFormatter } from "@secretlint/formatter";
 import {
     SecretLintConfigDescriptor,
@@ -8,10 +8,8 @@ import {
     SecretLintCoreResult,
     SecretLintRuleLocaleTag,
 } from "@secretlint/types";
-import os from "node:os";
 import path from "node:path";
 import { secretLintProfiler } from "@secretlint/profiler";
-import pMap from "p-map";
 import debug0 from "debug";
 
 const debug = debug0("@secretlint/node");
@@ -78,6 +76,8 @@ export type SecretLintEngineOptions = SecretLintEngineOptionsConfigFilePath | Se
 const isConfigFileJSON = (v: any): v is SecretLintEngineOptionsConfigFileJSON => {
     return "configFileJSON" in v && v.configFileJSON !== undefined;
 };
+// The engine lints a file at a time, so files are read into one buffer
+const readFileSource = createFileSourceReader();
 const lintFile = async ({
     filePath,
     config,
@@ -87,7 +87,7 @@ const lintFile = async ({
     config: SecretLintCoreConfig;
     options: SecretLintEngineOptions;
 }) => {
-    const rawSource = await createRawSource(filePath);
+    const rawSource = readFileSource(filePath);
     return lintSource({
         source: rawSource,
         options: {
@@ -193,17 +193,16 @@ const executeOnFiles = async ({
     configResults: SecretLintCoreResult[];
     options: SecretLintEngineOptions;
 }) => {
-    const mapper = async (filePath: string) => {
+    // Lint a file at a time.
+    // lintFile() reads the file synchronously into a shared buffer, so linting files concurrently has no gain,
+    // and the file is read again if another file is read before the lint uses the content.
+    const results: SecretLintCoreResult[] = [];
+    for (const filePath of filePathList) {
         debug("executeOnFiles file: %s", filePath);
         const result = await lintFile({ filePath: filePath, config: config, options: options });
         debug("executeOnFiles result: %o", result);
-        return result;
-    };
-    const results = await pMap(filePathList, mapper, {
-        // Avoid: EMFILE: too many open files, uv_cwd
-        // https://github.com/secretlint/secretlint/issues/72
-        concurrency: os.cpus().length,
-    });
+        results.push(result);
+    }
     debug("executeOnFiles result counts: %s", results.length);
     secretLintProfiler.mark({
         type: "@node>format::start",

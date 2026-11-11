@@ -1,4 +1,4 @@
-import type { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
+import type { SecretLintRuleCreator } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export const messages = {
@@ -55,39 +55,31 @@ export const creator: SecretLintRuleCreator<Options> = {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-tailscale/README.md",
         },
     },
-    create(context, options) {
-        const t = context.createTranslator(messages);
-        const normalizedOptions: Required<Options> = {
-            allows: options.allows ?? [],
-        };
-        return {
-            file(source: SecretLintSourceCode) {
-                // Tailscale keys: tskey-{type}-{identifier}-{secret}
-                // Documented types: api, auth, client, scim, webhook
-                // https://tailscale.com/docs/reference/key-prefixes
-                // GitHub Secret Scanning supports these as Push Protection targets.
-                // TruffleHog uses the equivalent pattern: \btskey-[a-z]+-[0-9A-Za-z_]+-[0-9A-Za-z_]+\b
-                const pattern =
-                    /(?<!\p{L})tskey-(?<type>[a-z]{2,20})-[0-9A-Za-z_]{8,40}-[0-9A-Za-z_]{16,60}(?![0-9A-Za-z_])/gu;
-                const matches = source.content.matchAll(pattern);
-                for (const match of matches) {
-                    const index = match.index ?? 0;
-                    const matchString = match[0] ?? "";
-                    const type = match.groups?.type ?? "";
-                    const range = [index, index + matchString.length] as const;
-                    const allowedResults = matchPatterns(matchString, normalizedOptions.allows);
-                    if (allowedResults.length > 0) {
-                        continue;
-                    }
-                    const messageId = messageIdByType[type] ?? "TAILSCALE_KEY";
-                    context.report({
-                        message: t(messageId, {
-                            KEY: matchString,
-                        }),
-                        range,
-                    });
+    patterns: [
+        {
+            // Tailscale keys: tskey-{type}-{identifier}-{secret}
+            // Documented types: api, auth, client, scim, webhook
+            // https://tailscale.com/docs/reference/key-prefixes
+            // GitHub Secret Scanning supports these as Push Protection targets.
+            // TruffleHog uses the equivalent pattern: \btskey-[a-z]+-[0-9A-Za-z_]+-[0-9A-Za-z_]+\b
+            pattern: /(?<!\p{L})tskey-(?<type>[a-z]{2,20})-[0-9A-Za-z_]{8,40}-[0-9A-Za-z_]{16,60}(?![0-9A-Za-z_])/gu,
+            keywords: ["tskey-"],
+            scope: "line",
+            report(match, context) {
+                const type = match.groups?.type ?? "";
+                const allowedResults = matchPatterns(match.text, context.options.allows ?? []);
+                if (allowedResults.length > 0) {
+                    return;
                 }
+                const messageId = messageIdByType[type] ?? "TAILSCALE_KEY";
+                const t = context.createTranslator(messages);
+                context.report({
+                    message: t(messageId, {
+                        KEY: match.text,
+                    }),
+                    range: match.range,
+                });
             },
-        };
-    },
+        },
+    ],
 };

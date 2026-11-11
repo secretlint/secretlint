@@ -14,6 +14,7 @@ export const creator: SecretLintRuleCreator = {
         recommended: true,
         type: "scanner",
         supportedContentTypes: ["text"],
+        keywords: ["secretlint-"],
         docs: {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-filter-comments/README.md"
         }

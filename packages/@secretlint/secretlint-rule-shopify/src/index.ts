@@ -1,9 +1,4 @@
-import {
-    SecretLintRuleContext,
-    SecretLintRuleCreator,
-    SecretLintRuleMessageTranslate,
-    SecretLintSourceCode
-} from "@secretlint/types";
+import type { SecretLintRuleCreator } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export const messages = {
@@ -21,55 +16,6 @@ export type Options = {
     allows?: string[];
 };
 
-function reportIfFoundKey({
-    source,
-    options,
-    context,
-    t
-}: {
-    source: SecretLintSourceCode;
-    options: Required<Options>;
-    context: SecretLintRuleContext;
-    t: SecretLintRuleMessageTranslate<typeof messages>;
-}) {
-    /**
-     * Source: https://shopify.dev/changelog/app-secret-key-length-has-increased
-     * for app secret keys
-     * shpss_[a-zA-Z0-9]{32,64}
-     * e.g.) shpss_QlRSJy5AXX1cILNjVatTsEIhFxuPF5ex
-     *
-     * Source: https://shopify.dev/changelog/length-of-the-shopify-access-token-is-increasing
-     * for public apps
-     * shpat_[a-zA-Z0-9]{32,64}
-     * e.g.) shpat_r8TRc9ZXAvcVvcrmtr7qoVw69WeeY1ex
-     *
-     * for custom apps
-     * shpca_[a-zA-Z0-9]{32,64}
-     * e.g.) shpca_7jqbg9cupMkZRxJKXWz3v8BvS8QBa7hMdJfAex
-     *
-     * for legacy private apps
-     * shppa_[a-zA-Z0-9]{32,64}
-     * e.g.) shppa_7jqbg9cupMkZRxJKXWz3v8BvS8QBa7hMdJfAex
-     */
-    const SHOPIFY_KEY_PATTERN = /(?<!\p{L})(shppa|shpca|shpat|shpss)_[a-zA-Z0-9]{32,64}(?![a-zA-Z0-9])/gu;
-    const results = source.content.matchAll(SHOPIFY_KEY_PATTERN);
-    for (const result of results) {
-        const index = result.index || 0;
-        const match = result[0] || "";
-        const range = [index, index + match.length] as const;
-        const allowedResults = matchPatterns(match, options.allows);
-        if (allowedResults.length > 0) {
-            continue;
-        }
-        context.report({
-            message: t("SHOPIFY_KEY", {
-                KEY: match
-            }),
-            range
-        });
-    }
-}
-
 export const creator: SecretLintRuleCreator<Options> = {
     messages,
     meta: {
@@ -81,15 +27,43 @@ export const creator: SecretLintRuleCreator<Options> = {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-shopify/README.md"
         }
     },
-    create(context, options) {
-        const t = context.createTranslator(messages);
-        const normalizedOptions = {
-            allows: options.allows || []
-        };
-        return {
-            file(source: SecretLintSourceCode) {
-                reportIfFoundKey({ source, options: normalizedOptions, context, t });
+    patterns: [
+        {
+            /**
+             * Source: https://shopify.dev/changelog/app-secret-key-length-has-increased
+             * for app secret keys
+             * shpss_[a-zA-Z0-9]{32,64}
+             * e.g.) shpss_QlRSJy5AXX1cILNjVatTsEIhFxuPF5ex
+             *
+             * Source: https://shopify.dev/changelog/length-of-the-shopify-access-token-is-increasing
+             * for public apps
+             * shpat_[a-zA-Z0-9]{32,64}
+             * e.g.) shpat_r8TRc9ZXAvcVvcrmtr7qoVw69WeeY1ex
+             *
+             * for custom apps
+             * shpca_[a-zA-Z0-9]{32,64}
+             * e.g.) shpca_7jqbg9cupMkZRxJKXWz3v8BvS8QBa7hMdJfAex
+             *
+             * for legacy private apps
+             * shppa_[a-zA-Z0-9]{32,64}
+             * e.g.) shppa_7jqbg9cupMkZRxJKXWz3v8BvS8QBa7hMdJfAex
+             */
+            pattern: /(?<!\p{L})(shppa|shpca|shpat|shpss)_[a-zA-Z0-9]{32,64}(?![a-zA-Z0-9])/gu,
+            keywords: ["shppa_", "shpca_", "shpat_", "shpss_"],
+            scope: "line",
+            report(match, context) {
+                const allowedResults = matchPatterns(match.text, context.options.allows ?? []);
+                if (allowedResults.length > 0) {
+                    return;
+                }
+                const t = context.createTranslator(messages);
+                context.report({
+                    message: t("SHOPIFY_KEY", {
+                        KEY: match.text
+                    }),
+                    range: match.range
+                });
             }
-        };
-    }
+        }
+    ]
 };

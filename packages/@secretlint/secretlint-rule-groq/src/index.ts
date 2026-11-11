@@ -1,4 +1,4 @@
-import type { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
+import type { SecretLintRuleCreator } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export const messages = {
@@ -27,37 +27,30 @@ export const creator: SecretLintRuleCreator<Options> = {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-groq/README.md",
         },
     },
-    create(context, options) {
-        const t = context.createTranslator(messages);
-        const normalizedOptions = {
-            allows: options?.allows ?? [],
-        };
-        return {
-            file(source: SecretLintSourceCode) {
-                // Groq API keys format:
-                // - Prefix "gsk_" followed by exactly 52 alphanumeric characters
-                // References:
-                // - https://console.groq.com/docs/quickstart
-                // - https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns
-                // - https://github.com/trufflesecurity/trufflehog/blob/main/pkg/detectors/groq/groq.go
-                const pattern = /(?<!\p{L})gsk_[a-zA-Z0-9]{52}(?![a-zA-Z0-9])/gu;
-                const matches = source.content.matchAll(pattern);
-                for (const match of matches) {
-                    const index = match.index ?? 0;
-                    const matchString = match[0] ?? "";
-                    const allowedResults = matchPatterns(matchString, normalizedOptions.allows);
-                    if (allowedResults.length > 0) {
-                        continue;
-                    }
-                    const range = [index, index + matchString.length] as const;
-                    context.report({
-                        message: t("GROQ_API_KEY", {
-                            KEY: matchString,
-                        }),
-                        range,
-                    });
+    patterns: [
+        {
+            // Groq API keys format:
+            // - Prefix "gsk_" followed by exactly 52 alphanumeric characters
+            // References:
+            // - https://console.groq.com/docs/quickstart
+            // - https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns
+            // - https://github.com/trufflesecurity/trufflehog/blob/main/pkg/detectors/groq/groq.go
+            pattern: /(?<!\p{L})gsk_[a-zA-Z0-9]{52}(?![a-zA-Z0-9])/gu,
+            keywords: ["gsk_"],
+            scope: "line",
+            report(match, context) {
+                const allowedResults = matchPatterns(match.text, context.options.allows ?? []);
+                if (allowedResults.length > 0) {
+                    return;
                 }
+                const t = context.createTranslator(messages);
+                context.report({
+                    message: t("GROQ_API_KEY", {
+                        KEY: match.text,
+                    }),
+                    range: match.range,
+                });
             },
-        };
-    },
+        },
+    ],
 };

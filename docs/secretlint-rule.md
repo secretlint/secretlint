@@ -312,6 +312,53 @@ For more details, please see following:
 
 - [package.json | npm Documentation](https://docs.npmjs.com/files/package.json "package.json | npm Documentation")
 
+## Declarative patterns
+
+If your rule finds secrets with regular expressions, you can define the rule with `patterns` instead of `create()`.
+A rule needs `patterns` or `create()`. If it has `patterns`, secretlint does not call `create()`.
+
+```ts
+import type { SecretLintRuleCreator } from "@secretlint/types";
+
+export const messages = {
+    EXAMPLE_TOKEN: {
+        en: (props: { TOKEN: string }) => `found example token: ${props.TOKEN}`,
+    },
+};
+export const creator: SecretLintRuleCreator = {
+    messages,
+    meta: {
+        id: "secretlint-rule-example",
+        recommended: true,
+        type: "scanner",
+        supportedContentTypes: ["text"],
+    },
+    patterns: [
+        {
+            pattern: /example_[A-Za-z0-9]{32}/g,
+            // every match contains one of the keywords
+            keywords: ["example_"],
+            // a match never includes a line break
+            scope: "line",
+            report(match, context) {
+                const t = context.createTranslator(messages);
+                context.report({
+                    message: t("EXAMPLE_TOKEN", { TOKEN: match.text }),
+                    range: match.range,
+                });
+            },
+        },
+    ],
+};
+```
+
+Secretlint scans the content once for the keywords of all rules, and runs a pattern only where its keywords are found.
+A rule with `patterns` costs almost nothing for the files that do not contain its keywords.
+A rule that has only `patterns` needs secretlint that supports `patterns`. An older secretlint reports that the rule should have `create` function.
+Secretlint also throws an error if a pattern has a property that it does not know, so a rule that uses a newer property never runs with a different result on an older secretlint.
+
+`@secretlint/tester` checks `keywords` and `scope` of your patterns: it fails if the result differs from running the patterns on the whole content.
+
 ## Performance
 
 Use `--profile` option for checking performance of your rule .

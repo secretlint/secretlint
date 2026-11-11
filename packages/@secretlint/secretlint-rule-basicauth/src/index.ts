@@ -1,9 +1,4 @@
-import {
-    SecretLintRuleContext,
-    SecretLintRuleCreator,
-    SecretLintRuleMessageTranslate,
-    SecretLintSourceCode,
-} from "@secretlint/types";
+import type { SecretLintRuleCreator } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export const messages = {
@@ -95,52 +90,6 @@ function isLikelyRealPassword(password: string): boolean {
     return true;
 }
 
-function reportIfFoundBasicAuth({
-    source,
-    options,
-    context,
-    t,
-}: {
-    source: SecretLintSourceCode;
-    options: Required<Options>;
-    context: SecretLintRuleContext;
-    t: SecretLintRuleMessageTranslate<typeof messages>;
-}) {
-    // https://developer.mozilla.org/docs/Web/HTTP/Authentication
-    // https://ihateregex.io/expr/url
-    // Using possessive quantifiers to prevent ReDoS
-    const URL_PATTERN =
-        /(?<protocol>(?:https?|ftp|ftps)):\/\/(?<user>[-a-zA-Z0-9_]{1,256}):(?<password>[-a-zA-Z0-9_]{1,256})@[-a-zA-Z0-9%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b/g;
-    const results = source.content.matchAll(URL_PATTERN);
-    for (const result of results) {
-        const index = result.index || 0;
-        const match = result[0] || "";
-        const username = result.groups?.user;
-        const password = result.groups?.password;
-
-        // Skip if no credentials found
-        if (!username || !password) continue;
-
-        // Skip if username doesn't look real
-        if (!isLikelyRealUsername(username)) continue;
-
-        // Skip if password doesn't look real
-        if (!isLikelyRealPassword(password)) continue;
-
-        const range = [index, index + match.length] as const;
-        const allowedResults = matchPatterns(match, options.allows);
-        if (allowedResults.length > 0) {
-            continue;
-        }
-        context.report({
-            message: t("BasicAuth", {
-                CREDENTIAL: match,
-            }),
-            range,
-        });
-    }
-}
-
 export const creator: SecretLintRuleCreator<Options> = {
     messages,
     meta: {
@@ -152,15 +101,41 @@ export const creator: SecretLintRuleCreator<Options> = {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-basicauth/README.md",
         },
     },
-    create(context, options) {
-        const t = context.createTranslator(messages);
-        const normalizedOptions = {
-            allows: options.allows || [],
-        };
-        return {
-            file(source: SecretLintSourceCode) {
-                reportIfFoundBasicAuth({ source, options: normalizedOptions, context, t });
+    patterns: [
+        {
+            // https://developer.mozilla.org/docs/Web/HTTP/Authentication
+            // https://ihateregex.io/expr/url
+            // Using possessive quantifiers to prevent ReDoS
+            pattern:
+                /(?<protocol>(?:https?|ftp|ftps)):\/\/(?<user>[-a-zA-Z0-9_]{1,256}):(?<password>[-a-zA-Z0-9_]{1,256})@[-a-zA-Z0-9%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b/g,
+            // every match starts with one of the protocols
+            keywords: ["http://", "https://", "ftp://", "ftps://"],
+            scope: "line",
+            report(match, context) {
+                const username = match.groups?.user;
+                const password = match.groups?.password;
+
+                // Skip if no credentials found
+                if (!username || !password) return;
+
+                // Skip if username doesn't look real
+                if (!isLikelyRealUsername(username)) return;
+
+                // Skip if password doesn't look real
+                if (!isLikelyRealPassword(password)) return;
+
+                const allowedResults = matchPatterns(match.text, context.options.allows ?? []);
+                if (allowedResults.length > 0) {
+                    return;
+                }
+                const t = context.createTranslator(messages);
+                context.report({
+                    message: t("BasicAuth", {
+                        CREDENTIAL: match.text,
+                    }),
+                    range: match.range,
+                });
             },
-        };
-    },
+        },
+    ],
 };

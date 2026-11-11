@@ -1,9 +1,4 @@
-import {
-    SecretLintRuleContext,
-    SecretLintRuleCreator,
-    SecretLintRuleMessageTranslate,
-    SecretLintSourceCode,
-} from "@secretlint/types";
+import type { SecretLintRuleCreator } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export const messages = {
@@ -89,43 +84,6 @@ function validateBase64KeyContent(base64Content: string): boolean {
     return true;
 }
 
-function reportIfFoundRawPrivateKey({
-    source,
-    options,
-    context,
-    t,
-}: {
-    source: SecretLintSourceCode;
-    options: Required<Options>;
-    context: SecretLintRuleContext;
-    t: SecretLintRuleMessageTranslate<typeof messages>;
-}) {
-    // Use PEM_CONTENT_PATTERN to extract both full match and Base64 content in one pass
-    const results = source.content.matchAll(PEM_CONTENT_PATTERN);
-    for (const result of results) {
-        const index = result.index || 0;
-        const match = result[0] || "";
-        const base64Raw = result[1] || "";
-        const range = [index, index + match.length] as const;
-        const allowedResults = matchPatterns(match, options.allows);
-        if (allowedResults.length > 0) {
-            continue;
-        }
-        // Remove whitespace and escaped newlines (from JSON strings)
-        const base64Content = base64Raw.replace(/\s|\\n/g, "");
-        // Validate if the Base64 content is a real private key
-        if (!validateBase64KeyContent(base64Content)) {
-            continue;
-        }
-        context.report({
-            message: t("PrivateKey", {
-                KEY: match,
-            }),
-            range,
-        });
-    }
-}
-
 export const creator: SecretLintRuleCreator<Options> = {
     messages,
     meta: {
@@ -137,15 +95,32 @@ export const creator: SecretLintRuleCreator<Options> = {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-privatekey/README.md",
         },
     },
-    create(context, options) {
-        const t = context.createTranslator(messages);
-        const normalizedOptions = {
-            allows: options.allows || [],
-        };
-        return {
-            file(source: SecretLintSourceCode) {
-                reportIfFoundRawPrivateKey({ source, options: normalizedOptions, context, t });
+    patterns: [
+        {
+            // A private key has multiple lines, so the scope is "file"
+            pattern: PEM_CONTENT_PATTERN,
+            keywords: ["PRIVATE KEY"],
+            scope: "file",
+            report(match, context) {
+                const base64Raw = match.captures[1] || "";
+                const allowedResults = matchPatterns(match.text, context.options.allows ?? []);
+                if (allowedResults.length > 0) {
+                    return;
+                }
+                // Remove whitespace and escaped newlines for validation
+                const base64Content = base64Raw.replace(/\s|\\n/g, "");
+                // Validate if it's a real private key or a placeholder
+                if (!validateBase64KeyContent(base64Content)) {
+                    return;
+                }
+                const t = context.createTranslator(messages);
+                context.report({
+                    message: t("PrivateKey", {
+                        KEY: match.text,
+                    }),
+                    range: match.range,
+                });
             },
-        };
-    },
+        },
+    ],
 };

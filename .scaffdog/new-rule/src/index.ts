@@ -14,6 +14,8 @@ export const creator: SecretLintRuleCreator = {
         recommended: true,
         type: "scanner",
         supportedContentTypes: ["text"],
+        // The rule runs only if the content contains one of the keywords. Every reported string must contain one.
+        keywords: ["SECRET"],
         docs: {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-{{ inputs.name }}/README.md",
         },

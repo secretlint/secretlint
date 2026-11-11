@@ -4,7 +4,13 @@ import * as assert from "node:assert";
 import { lintSource } from "@secretlint/core";
 import { loadConfig } from "@secretlint/config-loader";
 import { createRawSource } from "@secretlint/source-creator";
-import { SecretLintCoreConfig, SecretLintUnionRuleCreator } from "@secretlint/types";
+import {
+    SecretLintCoreConfig,
+    SecretLintCoreConfigUnionRule,
+    SecretLintRuleCreator,
+    SecretLintRulePresetCreator,
+    SecretLintUnionRuleCreator,
+} from "@secretlint/types";
 import { pathToFileURL } from "node:url";
 import { fileURLToPath } from "url";
 
@@ -84,7 +90,7 @@ const defaultInterop = (module: any) => {
     return "default" in module ? module.default : module;
 };
 const loadSecretlintTestCaseOptions: (testCaseDir: string) => Promise<SecretLintTestCaseOptions> = async (
-    testCaseDir: string
+    testCaseDir: string,
 ) => {
     if (canResolve(path.join(testCaseDir, "options.js"))) {
         return defaultInterop(await import(pathToFileURL(path.join(testCaseDir, "options.js")).href)).options;
@@ -94,6 +100,59 @@ const loadSecretlintTestCaseOptions: (testCaseDir: string) => Promise<SecretLint
         return defaultInterop(await import(pathToFileURL(path.join(testCaseDir, "options.ts")).href)).options;
     }
     return {};
+};
+
+/**
+ * Return the rule that does not use keywords and scopes.
+ * secretlint runs the returned rule for all content, and the rule checks the whole content:
+ * - `meta.keywords` is removed, so `create()` is called for all content
+ * - `keywords` of the patterns are removed, and the scope of the patterns is "file"
+ */
+const toUnoptimizedRule = <T>(rule: SecretLintRuleCreator<T>): SecretLintRuleCreator<T> => {
+    const meta = { ...rule.meta, keywords: undefined };
+    if (rule.patterns === undefined) {
+        return rule.meta.keywords === undefined ? rule : { ...rule, meta };
+    }
+    return {
+        ...rule,
+        meta,
+        patterns: rule.patterns.map((pattern) => {
+            return { pattern: pattern.pattern, scope: "file", report: pattern.report };
+        }),
+    };
+};
+const toUnoptimizedRulePreset = <T>(preset: SecretLintRulePresetCreator<T>): SecretLintRulePresetCreator<T> => {
+    return {
+        ...preset,
+        create(context, options) {
+            return preset.create(
+                {
+                    ...context,
+                    registerRule(rule, defaultValue) {
+                        return context.registerRule(toUnoptimizedRule(rule), defaultValue);
+                    },
+                },
+                options,
+            );
+        },
+    };
+};
+/**
+ * Return the config that does not use `patterns` and `meta.keywords` of the rules.
+ */
+const toUnoptimizedConfig = (config: SecretLintCoreConfig): SecretLintCoreConfig => {
+    return {
+        ...config,
+        rules: config.rules.map((descriptor) => {
+            return {
+                ...descriptor,
+                rule:
+                    descriptor.rule.meta.type === "preset"
+                        ? toUnoptimizedRulePreset(descriptor.rule as SecretLintRulePresetCreator)
+                        : toUnoptimizedRule(descriptor.rule as SecretLintRuleCreator),
+            } as SecretLintCoreConfigUnionRule;
+        }),
+    };
 };
 
 /**
@@ -179,6 +238,29 @@ export const snapshot = (options: SnapshotOptions) => {
                                 config,
                             },
                         });
+                        // `patterns` and `meta.keywords` are optimizations. They should not change the result.
+                        // - Lint the content as a string. A browser does not pass the bytes of the content.
+                        // - Lint without `patterns` and `meta.keywords`: the rule checks the whole content.
+                        // A difference means that keywords or the scope of a pattern are wrong.
+                        // For example, a secret that does not include any keyword, or a "line" scope pattern
+                        // that needs to see other lines.
+                        const { contentBytes: _contentBytes, ...textSource } = rawSource;
+                        const textResult = await lintSource({ source: textSource, options: { config } });
+                        const unoptimizedResult = await lintSource({
+                            source: textSource,
+                            options: { config: toUnoptimizedConfig(config) },
+                        });
+                        const normalizeResult = (result: unknown) => JSON.parse(JSON.stringify(result));
+                        assert.deepStrictEqual(
+                            normalizeResult(textResult),
+                            normalizeResult(actualResult),
+                            "The result of the content string should be the same as the result of the content bytes",
+                        );
+                        assert.deepStrictEqual(
+                            normalizeResult(actualResult),
+                            normalizeResult(unoptimizedResult),
+                            "The result with `patterns` and `meta.keywords` should be the same as the result of the whole content without them. Check keywords and scope of the rule.",
+                        );
                         const expectedFilePath = path.join(testCaseDir, "output.json");
                         // Usage: update snapshots
                         // UPDATE_SNAPSHOT=1 npm test
@@ -186,7 +268,7 @@ export const snapshot = (options: SnapshotOptions) => {
                             // Sort Object by keys before Store JSON
                             fs.writeFileSync(
                                 expectedFilePath,
-                                JSON.stringify(sortObject(actualResult), snapshotReplacer, 4)
+                                JSON.stringify(sortObject(actualResult), snapshotReplacer, 4),
                             );
                             return "skip";
                         }
