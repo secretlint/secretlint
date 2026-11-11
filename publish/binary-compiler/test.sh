@@ -67,22 +67,21 @@ fi
 # run "**/*" test
 ./secretlint "**/*"
 
-# Verify that large JSON output is fully flushed before the process exits.
+# Verify that large output is fully flushed before the process exits.
+# mask-result outputs the whole content of the file. JSON output does not have the content.
 node -e 'process.stdout.write("AWS_SECRET_ACCESS_KEY = wJalrXUtnFEMI/K7MDENG/bPxRfiCYSECRETSKEY\n" + "a".repeat(2 * 1024 * 1024))' > large-input.txt
 set +e
-./secretlint large-input.txt --format=json | node -e '
+./secretlint large-input.txt --format=mask-result | node -e '
 const fs = require("node:fs");
 const chunks = [];
 process.stdin.on("data", (chunk) => chunks.push(chunk));
 process.stdin.on("end", () => {
-    try {
-        const results = JSON.parse(Buffer.concat(chunks).toString("utf8"));
-        const expectedSource = fs.readFileSync("large-input.txt", "utf8");
-        if (results.length !== 1 || results[0].sourceContent !== expectedSource) {
-            throw new Error("source content does not match");
-        }
-    } catch {
-        console.error("secretlint JSON output was truncated");
+    const output = Buffer.concat(chunks).toString("utf8");
+    const expectedSource = fs.readFileSync("large-input.txt", "utf8");
+    // The secret is masked, and the length of the content is not changed
+    const outputContent = output.endsWith("\n") ? output.slice(0, -1) : output;
+    if (outputContent.length !== expectedSource.length || !outputContent.endsWith("a".repeat(2 * 1024 * 1024))) {
+        console.error("secretlint output was truncated");
         process.exitCode = 1;
     }
 });
@@ -90,7 +89,7 @@ process.stdin.on("end", () => {
 pipeline_status=("${PIPESTATUS[@]}")
 set -e
 if [ "${pipeline_status[0]}" -ne 1 ] || [ "${pipeline_status[1]}" -ne 0 ]; then
-    echo "❌ Large piped JSON output test failed"
+    echo "❌ Large piped output test failed"
     exit 1
 fi
 cd -
