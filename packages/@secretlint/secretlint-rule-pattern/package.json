@@ -55,13 +55,11 @@
         "tabWidth": 4
     },
     "dependencies": {
-        "@secretlint/tester": "workspace:*",
-        "@secretlint/types": "workspace:*",
-        "@textlint/regexp-string-matcher": "catalog:",
-        "micromatch": "catalog:"
+        "@secretlint/core": "workspace:*",
+        "@secretlint/types": "workspace:*"
     },
     "devDependencies": {
-        "@types/micromatch": "catalog:",
+        "@secretlint/tester": "workspace:*",
         "@types/node": "catalog:",
         "prettier": "catalog:",
         "tsx": "catalog:",

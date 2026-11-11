@@ -28,6 +28,7 @@ import { creator as ruleCloudflare } from "./rules/cloudflare/index.js";
 import { creator as ruleTailscale } from "./rules/tailscale/index.js";
 import { creator as ruleFilterComments } from "./rules/filter-comments/index.js";
 import { creator as ruleAzure } from "./rules/azure/index.js";
+import { creator as rulePattern } from "./rules/pattern/index.js";
 
 /**
  * Built-in rules of secretlint.
@@ -66,6 +67,7 @@ export const builtinRules: readonly SecretLintRuleCreator<unknown>[] = [
     ruleTailscale,
     ruleFilterComments,
     ruleAzure,
+    rulePattern,
 ];
 
 /**

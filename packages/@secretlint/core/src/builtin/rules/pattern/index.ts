@@ -5,8 +5,40 @@ import {
     SecretLintSourceCode,
 } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
-import path from "node:path";
-import micromatch from "micromatch";
+import picomatch from "picomatch";
+import { basename } from "../../path-util.js";
+
+/**
+ * Return true if the file path matches the globs, in the same way as `micromatch([filePath], globs).length > 0`.
+ * A negated glob (starting with "!") excludes the path, and a later positive glob includes it again.
+ * If all globs are negated, any path that none of them excludes matches.
+ * This is the algorithm of micromatch() with picomatch, so that the rule does not need micromatch.
+ */
+const matchFilePathGlobs = (filePath: string, globs: string[]): boolean => {
+    let kept = false;
+    let omitted = false;
+    let negatives = 0;
+    for (const glob of globs) {
+        const isMatch = picomatch(glob, { dot: true }, true);
+        const negated = Boolean(isMatch.state?.negated || isMatch.state?.negatedExtglob);
+        if (negated) {
+            negatives++;
+        }
+        // For a negated glob, picomatch returns true if the path does NOT match the glob without "!"
+        const matched = isMatch(filePath);
+        const match = negated ? !matched : matched;
+        if (!match) {
+            continue;
+        }
+        if (negated) {
+            omitted = true;
+        } else {
+            omitted = false;
+            kept = true;
+        }
+    }
+    return (negatives === globs.length || kept) && !omitted;
+};
 
 export const messages = {
     PATTERN: {
@@ -67,13 +99,12 @@ function reportIfFoundPattern({
 }) {
     for (const p of options.patterns) {
         // Check filePathGlobs if specified
-        // Use micromatch() to support negation patterns (e.g., "!**/excluded/**")
+        // Negation patterns (e.g., "!**/excluded/**") are supported in the same way as micromatch().
         // `dot: true` is required so that `**` traverses segments that start with `.`
         // (e.g., `.github`, `.ai`); otherwise negation patterns like `!**/excluded/**`
         // fail to match files located under a dot-directory.
         if (p.filePathGlobs && p.filePathGlobs.length > 0 && source.filePath) {
-            const matchedPaths = micromatch([source.filePath], p.filePathGlobs, { dot: true });
-            if (matchedPaths.length === 0) {
+            if (!matchFilePathGlobs(source.filePath, p.filePathGlobs)) {
                 continue; // Skip if file path doesn't match any glob pattern
             }
         }
@@ -105,7 +136,7 @@ function reportIfFoundPattern({
             context.report({
                 message: t("PATTERN", {
                     PATTERN_NAME: p.name,
-                    CREDENTIAL: path.basename(source.filePath || ""),
+                    CREDENTIAL: basename(source.filePath || ""),
                 }),
                 range: [0, source.content.length],
             });

@@ -12,7 +12,6 @@
         "@secretlint/formatter": "workspace:*",
         "@secretlint/secretlint-formatter-sarif": "workspace:*",
         "@secretlint/resolver": "workspace:*",
-        "@secretlint/secretlint-rule-pattern": "workspace:*",
         "secretlint": "workspace:*"
     },
     "peerDependencies": {

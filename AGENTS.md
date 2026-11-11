@@ -66,7 +66,7 @@ packages/
     config-loader/         # .secretlintrc loader
     node/                  # Node.js integration
     secretlint-rule-*/     # Compatibility packages that re-export a built-in rule (+ its snapshot tests),
-                           # and the rules that are not built in (pattern, no-dotenv, no-homedir, ...)
+                           # and the rules that are not built in (no-dotenv, no-homedir, no-k8s-kind-secret, secp256k1-privatekey)
     secretlint-rule-preset-recommend/  # Stable preset (re-exports the built-in preset)
     secretlint-rule-preset-canary/     # Experimental preset (re-exports the built-in preset)
 e2e/core-browser/          # Browser test of core + recommend preset (Playwright)

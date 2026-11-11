@@ -70,11 +70,13 @@
         "@secretlint/types": "workspace:*",
         "@textlint/regexp-string-matcher": "catalog:",
         "debug": "catalog:",
+        "picomatch": "catalog:",
         "structured-source": "catalog:"
     },
     "devDependencies": {
         "@types/debug": "catalog:",
         "@types/node": "catalog:",
+        "@types/picomatch": "catalog:",
         "assert-json-equal": "catalog:",
         "prettier": "catalog:",
         "tsx": "catalog:",

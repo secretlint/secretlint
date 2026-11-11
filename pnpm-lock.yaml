@@ -33,9 +33,6 @@ catalogs:
     '@types/js-yaml':
       specifier: ^4.0.9
       version: 4.0.9
-    '@types/micromatch':
-      specifier: ^4.0.10
-      version: 4.0.10
     '@types/node':
       specifier: ^25.9.9
       version: 25.9.9
@@ -84,9 +81,6 @@ catalogs:
     lint-staged:
       specifier: ^16.4.0
       version: 16.4.0
-    micromatch:
-      specifier: ^4.0.8
-      version: 4.0.8
     node-sarif-builder:
       specifier: ^4.1.0
       version: 4.1.0
@@ -301,6 +295,9 @@ importers:
       debug:
         specifier: 'catalog:'
         version: 4.4.3
+      picomatch:
+        specifier: 'catalog:'
+        version: 4.0.7
       structured-source:
         specifier: 'catalog:'
         version: 4.0.0
@@ -311,6 +308,9 @@ importers:
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
+      '@types/picomatch':
+        specifier: 'catalog:'
+        version: 4.0.3
       assert-json-equal:
         specifier: 'catalog:'
         version: 2.0.0
@@ -1199,22 +1199,16 @@ importers:
 
   packages/@secretlint/secretlint-rule-pattern:
     dependencies:
-      '@secretlint/tester':
+      '@secretlint/core':
         specifier: workspace:*
-        version: link:../tester
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
-      micromatch:
-        specifier: 'catalog:'
-        version: 4.0.8
     devDependencies:
-      '@types/micromatch':
-        specifier: 'catalog:'
-        version: 4.0.10
+      '@secretlint/tester':
+        specifier: workspace:*
+        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
@@ -1659,9 +1653,6 @@ importers:
       '@secretlint/secretlint-formatter-sarif':
         specifier: workspace:*
         version: link:../../packages/@secretlint/secretlint-formatter-sarif
-      '@secretlint/secretlint-rule-pattern':
-        specifier: workspace:*
-        version: link:../../packages/@secretlint/secretlint-rule-pattern
       '@types/bun':
         specifier: 'catalog:'
         version: 1.4.4
@@ -2277,9 +2268,6 @@ packages:
   '@types/bn.js@5.2.0':
     resolution: {integrity: sha512-DLbJ1BPqxvQhIGbeu8VbUC1DiAiahHtAYvA0ZEAa4P31F7IaArc8z3C3BRQdWX4mtLQuABG4yzp76ZrS02Ui1Q==}
 
-  '@types/braces@3.0.5':
-    resolution: {integrity: sha512-SQFof9H+LXeWNz8wDe7oN5zu7ket0qwMu5vZubW4GCJ8Kkeh6nBWUz87+KTz/G3Kqsrp0j/W253XJb3KMEeg3w==}
-
   '@types/bun@1.4.4':
     resolution: {integrity: sha512-9wkRDXUXK124pEnAutE6n/l18j+i9GC5IAHK8TmX/2nlySETmky0OU6yL5U8pW1AoKh++AN9auDCr647BfurjQ==}
 
@@ -2306,9 +2294,6 @@ packages:
 
   '@types/mdast@4.0.4':
     resolution: {integrity: sha512-kGaNbPh1k7AFzgpud/gMdvIm5xuECykRR+JnWKQno9TAXVa6WIVCGTPvYGekIDL4uwCZQSYbUxNBSb1aUo79oA==}
-
-  '@types/micromatch@4.0.10':
-    resolution: {integrity: sha512-5jOhFDElqr4DKTrTEbnW8DZ4Hz5LRUEmyrGpCMrD/NphYv3nUnaF08xmSLx1rGGnyEs/kFnhiw6dCgcDqMr5PQ==}
 
   '@types/ms@2.1.0':
     resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
@@ -4316,8 +4301,6 @@ snapshots:
     dependencies:
       '@types/node': 25.9.9
 
-  '@types/braces@3.0.5': {}
-
   '@types/bun@1.4.4':
     dependencies:
       bun-types: 1.4.4
@@ -4346,10 +4329,6 @@ snapshots:
   '@types/mdast@4.0.4':
     dependencies:
       '@types/unist': 3.0.3
-
-  '@types/micromatch@4.0.10':
-    dependencies:
-      '@types/braces': 3.0.5
 
   '@types/ms@2.1.0': {}
 
