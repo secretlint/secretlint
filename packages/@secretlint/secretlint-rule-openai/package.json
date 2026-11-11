@@ -51,8 +51,8 @@
         "tabWidth": 4
     },
     "dependencies": {
-        "@secretlint/types": "workspace:*",
-        "@textlint/regexp-string-matcher": "catalog:"
+        "@secretlint/core": "workspace:*",
+        "@secretlint/types": "workspace:*"
     },
     "devDependencies": {
         "@secretlint/tester": "workspace:*",

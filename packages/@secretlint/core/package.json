@@ -24,6 +24,20 @@
             },
             "default": "./module/index.js"
         },
+        "./builtin": {
+            "import": {
+                "types": "./module/builtin/index.d.ts",
+                "default": "./module/builtin/index.js"
+            },
+            "default": "./module/builtin/index.js"
+        },
+        "./builtin/rules/*": {
+            "import": {
+                "types": "./module/builtin/rules/*/index.d.ts",
+                "default": "./module/builtin/rules/*/index.js"
+            },
+            "default": "./module/builtin/rules/*/index.js"
+        },
         "./package.json": "./package.json"
     },
     "main": "./module/index.js",
@@ -54,6 +68,7 @@
     "dependencies": {
         "@secretlint/profiler": "workspace:*",
         "@secretlint/types": "workspace:*",
+        "@textlint/regexp-string-matcher": "catalog:",
         "debug": "catalog:",
         "structured-source": "catalog:"
     },

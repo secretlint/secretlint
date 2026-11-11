@@ -57,6 +57,7 @@
         "tabWidth": 4
     },
     "dependencies": {
+        "@secretlint/core": "workspace:*",
         "@secretlint/profiler": "workspace:*",
         "@secretlint/resolver": "workspace:*",
         "@secretlint/types": "workspace:*",

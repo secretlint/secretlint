@@ -16,7 +16,7 @@ CLI (secretlint) → SecretLintEngine (@secretlint/node) → config-loader → c
 
 1. **CLI** (`packages/secretlint/src/cli.ts`) parses arguments, calls `runSecretLint()`
 2. **SecretLintEngine** (`packages/@secretlint/node`) loads config, discovers files via glob, lints files one by one
-3. **config-loader** searches for `.secretlintrc.*`, validates with AJV schema, dynamically imports rule modules
+3. **config-loader** searches for `.secretlintrc.*`, validates with AJV schema, resolves each rule id from the built-in rules of core (`@secretlint/core/builtin`) first, and dynamically imports rule modules only for other ids
 4. **core** (`packages/@secretlint/core/src/index.ts` - `lintSource()`) builds a lint plan per config (`LintPlan.ts`), scans the content once for the keywords of all rules, runs the matching `patterns` and rules, collects messages
 5. **RuleContext** (`packages/@secretlint/core/src/RuleContext.ts`) provides `report()`, `ignore()`, `createTranslator()` to each rule
 6. **formatter** converts results to textlint-compatible format, applies selected formatter (stylish, json, sarif, table, mask-result)
@@ -60,12 +60,15 @@ packages/
   @secretlint/
     types/                 # Core TypeScript type definitions
     core/                  # Linting engine
+      src/builtin/rules/<name>/  # Built-in rules (code of the official rules)
+      src/builtin/index.ts       # Built-in table: rule id -> rule, and the rules of the presets
     tester/                # Snapshot testing utilities
     config-loader/         # .secretlintrc loader
     node/                  # Node.js integration
-    secretlint-rule-*/     # Individual rule packages (30+)
-    secretlint-rule-preset-recommend/  # Stable preset
-    secretlint-rule-preset-canary/     # Experimental preset
+    secretlint-rule-*/     # Compatibility packages that re-export a built-in rule (+ its snapshot tests),
+                           # and the rules that are not built in (pattern, no-dotenv, no-homedir, ...)
+    secretlint-rule-preset-recommend/  # Stable preset (re-exports the built-in preset)
+    secretlint-rule-preset-canary/     # Experimental preset (re-exports the built-in preset)
 e2e/core-browser/          # Browser test of core + recommend preset (Playwright)
 docs/                      # Documentation
 examples/                  # Example projects
@@ -90,7 +93,15 @@ examples/                  # Example projects
 pnpm run gen:rule
 ```
 
-This uses scaffdog (`.scaffdog/new-rule.md`) to generate the rule package structure.
+This uses scaffdog (`.scaffdog/new-rule.md`) to generate a built-in rule:
+
+- `packages/@secretlint/core/src/builtin/rules/<name>/index.ts` and `README.md`
+- `packages/@secretlint/secretlint-rule-preset-canary/test/snapshots/secretlint-rule-<name>/` (snapshot tests)
+
+**Do not add a new npm package for a rule.** Official rules are built into `@secretlint/core`, and a new package needs a manual npm trusted publishing setup.
+The rule id stays `@secretlint/secretlint-rule-<name>`, and the config loader resolves it from core without a package.
+
+Then register the rule in `packages/@secretlint/core/src/builtin/index.ts`: import it, and add it to `builtinRules` and `canaryRules`.
 
 ### Step 2: Implement the Rule
 
@@ -171,7 +182,8 @@ A rule that needs code other than regular expressions (e.g. checks the file name
 
 ### Step 3: Write Tests
 
-Tests use snapshot testing with `@secretlint/tester`:
+Tests use snapshot testing with `@secretlint/tester`. The tests of a new built-in rule are snapshot directories in the canary preset (`secretlint-rule-preset-canary/test/snapshots/secretlint-rule-<name>/`), run with `pnpm test --filter="@secretlint/secretlint-rule-preset-canary"`.
+Existing rules keep their tests in their compatibility package (`secretlint-rule-<name>/test/`), which has this layout:
 
 ```
 test/
@@ -214,12 +226,9 @@ test("@secretlint/secretlint-rule-<name>", async (t) => {
 
 ### Step 4: Add to Canary Preset
 
-- Add dependency to `secretlint-rule-preset-canary/package.json`
-- Import and register in `secretlint-rule-preset-canary/src/index.ts`
-- Run: `pnpm run -r --filter "@secretlint/secretlint-rule-preset-canary" import-test`
+- Add the rule to `canaryRules` in `packages/@secretlint/core/src/builtin/index.ts` (done in Step 1)
 
-> **Note**: Syncing to the **recommend** preset is a separate task done at major release time.
-> Run: `pnpm run -r --filter "@secretlint/secretlint-rule-preset-recommend" sync-canary`
+> **Note**: Adding the rule to the **recommend** preset (`recommendedRules`) is a separate task done at major release time.
 
 ## Agent Workflows
 
@@ -227,15 +236,15 @@ test("@secretlint/secretlint-rule-<name>", async (t) => {
 
 When creating a new rule, verify every item:
 
-1. `src/index.ts` exports `creator` (SecretLintRuleCreator) and `messages`
+1. `core/src/builtin/rules/<name>/index.ts` exports `creator` (SecretLintRuleCreator) and `messages`, and is registered in `core/src/builtin/index.ts`
 2. Messages include `en` and `ja` locales
 3. Options type has `allows?: string[]`
-4. `meta.id` exactly matches package name `@secretlint/secretlint-rule-<name>`
+4. `meta.id` is exactly `@secretlint/secretlint-rule-<name>` (`<name>` is the directory name)
 5. `meta.type` is `"scanner"` (detection) or `"filter"` (suppression)
 6. `meta.keywords` (if set) is contained in every string the rule reports
 7. Detection uses `matchAll` with global regex, reports via `context.report({ message, range })`
 8. Allow list integrates `@textlint/regexp-string-matcher`
-9. Tests have `ng.*` (error cases) and `ok.*` (valid cases) in `test/snapshots/`
+9. Tests have `ng.*` (error cases) and `ok.*` (valid cases) in the snapshot directory
 10. Snapshots generated with `UPDATE_SNAPSHOT=1 pnpm test`
 11. README.md documents the rule's purpose, detected patterns, and options
 
@@ -248,8 +257,8 @@ When creating a new rule, verify every item:
 ### Bug Fixer
 
 1. **Reproduce**: Create a minimal `input.txt` in the relevant rule's `test/snapshots/`
-2. **Debug**: Run single package test: `cd packages/@secretlint/secretlint-rule-<name> && pnpm test`
-3. **Fix**: Modify `src/index.ts`, update snapshots if output changes
+2. **Debug**: Run single package test: `cd packages/@secretlint/secretlint-rule-<name> && pnpm test` (a built-in rule without a compatibility package: the canary preset)
+3. **Fix**: Modify the rule (`packages/@secretlint/core/src/builtin/rules/<name>/` for a built-in rule), update snapshots if output changes
 4. **Verify**: Run `pnpm test` from root to check for regressions
 
 ### Code Reviewer
@@ -258,7 +267,7 @@ When creating a new rule, verify every item:
 - Check that `allows` option is properly supported
 - Ensure messages have both `en` and `ja` locales
 - Confirm test cases cover both detection and non-detection scenarios
-- Verify `meta.id` matches the package name
+- Verify `meta.id` is `@secretlint/secretlint-rule-<name>` and matches the directory name
 - Check Prettier formatting (printWidth: 120, tabWidth: 4)
 
 ## Important Notes

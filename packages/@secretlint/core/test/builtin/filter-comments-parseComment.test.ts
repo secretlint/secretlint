@@ -1,29 +1,29 @@
-import { parseComment } from "../src/parse-comment.js";
+import { parseComment } from "../../src/builtin/rules/filter-comments/parse-comment.js";
 import * as assert from "node:assert";
-import test from "node:test";
+import { describe, it } from "vitest";
 
-test("parseComment", async (t) => {
-    await t.test("should return [] when no option ", () => {
+describe("parseComment", () => {
+    it("should return [] when no option ", () => {
         const results = parseComment("");
         assert.deepStrictEqual(results, []);
     });
-    await t.test("should parse rule id: a ", () => {
+    it("should parse rule id: a ", () => {
         const results = parseComment("secretlint-rule-a");
         assert.deepStrictEqual(results, ["secretlint-rule-a"]);
     });
-    await t.test("should parse rule ids: a,b,c ", () => {
+    it("should parse rule ids: a,b,c ", () => {
         const results = parseComment(" a, b,c ");
         assert.deepStrictEqual(results, ["a", "b", "c"]);
     });
-    await t.test("should ignore comment: -- ", () => {
+    it("should ignore comment: -- ", () => {
         const results = parseComment(" -- comment ");
         assert.deepStrictEqual(results, []);
     });
-    await t.test("should parse rule ids + comment : a,b,c -- comment", () => {
+    it("should parse rule ids + comment : a,b,c -- comment", () => {
         const results = parseComment(" a,  b,   c ");
         assert.deepStrictEqual(results, ["a", "b", "c"]);
     });
-    await t.test("should parse markdown comment : a,b,c -->", () => {
+    it("should parse markdown comment : a,b,c -->", () => {
         const results = parseComment("a, b,   c ");
         assert.deepStrictEqual(results, ["a", "b", "c"]);
     });

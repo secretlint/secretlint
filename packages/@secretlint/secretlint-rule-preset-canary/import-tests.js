@@ -3,12 +3,11 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, "package.json"), "utf-8"));
 const PRESET_ID = "@secretlint/secretlint-rule-preset-canary";
 
-const ruleDependencies = Object.keys(pkg.devDependencies).filter((name) => {
-    return name.startsWith("@secretlint/secretlint-rule-");
-});
+// The rules of the preset are built into @secretlint/core. Read their ids from the built preset.
+const { rules } = await import("./module/index.js");
+const ruleDependencies = rules.map((rule) => rule.meta.id);
 const packagesDir = path.join(__dirname, "../");
 const ruleDirs = fs
     .readdirSync(packagesDir, {
