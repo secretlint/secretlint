@@ -109,13 +109,14 @@ const loadSecretlintTestCaseOptions: (testCaseDir: string) => Promise<SecretLint
  * - `keywords` of the patterns are removed, and the scope of the patterns is "file"
  */
 const toUnoptimizedRule = <T>(rule: SecretLintRuleCreator<T>): SecretLintRuleCreator<T> => {
-    if (rule.patterns === undefined && rule.meta.keywords === undefined) {
-        return rule;
+    const meta = { ...rule.meta, keywords: undefined };
+    if (rule.patterns === undefined) {
+        return rule.meta.keywords === undefined ? rule : { ...rule, meta };
     }
     return {
         ...rule,
-        meta: { ...rule.meta, keywords: undefined },
-        patterns: rule.patterns?.map((pattern) => {
+        meta,
+        patterns: rule.patterns.map((pattern) => {
             return { pattern: pattern.pattern, scope: "file", report: pattern.report };
         }),
     };
