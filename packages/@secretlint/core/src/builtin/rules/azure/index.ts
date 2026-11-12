@@ -4,7 +4,7 @@ import {
     SecretLintSourceCode,
     SecretLintRuleMessageTranslate,
 } from "@secretlint/types";
-import { matchPatterns } from "@textlint/regexp-string-matcher";
+import { matchPatterns } from "../../../helper/regexp-string-matcher.js";
 
 // Sources:
 // - https://learn.microsoft.com/en-us/dotnet/api/azure.identity.environmentcredential

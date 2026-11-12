@@ -76,10 +76,8 @@
     "dependencies": {
         "@secretlint/profiler": "workspace:*",
         "@secretlint/types": "workspace:*",
-        "@textlint/regexp-string-matcher": "catalog:",
         "debug": "catalog:",
-        "picomatch": "catalog:",
-        "structured-source": "catalog:"
+        "picomatch": "catalog:"
     },
     "devDependencies": {
         "@secretlint/source-creator": "workspace:*",

@@ -1,5 +1,5 @@
 import type { SecretLintRuleCreator } from "@secretlint/types";
-import { matchPatterns } from "@textlint/regexp-string-matcher";
+import { matchPatterns } from "../../../helper/regexp-string-matcher.js";
 
 export const messages = {
     ANTHROPIC_API_KEY: {

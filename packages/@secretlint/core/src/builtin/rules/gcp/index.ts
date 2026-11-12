@@ -4,7 +4,7 @@ import {
     SecretLintRuleMessageTranslate,
     SecretLintSourceCode,
 } from "@secretlint/types";
-import { matchPatterns } from "@textlint/regexp-string-matcher";
+import { matchPatterns } from "../../../helper/regexp-string-matcher.js";
 import { reportIfFoundPrivateKeyP12Format } from "./reportIfFoundPrivateKeyP12Format.js";
 import { basename } from "../../path-util.js";
 

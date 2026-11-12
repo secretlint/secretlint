@@ -1,4 +1,3 @@
-import { StructuredSource } from "structured-source";
 import {
     SecretLintSourceCode,
     SecretLintSourceNodeLocation,
@@ -6,6 +5,7 @@ import {
     SecretLintSourceNodeRange,
 } from "@secretlint/types";
 import { invariant } from "./helper/invariant.js";
+import { SourceLineIndex } from "./helper/SourceLineIndex.js";
 
 /**
  * This class represent of source code.
@@ -19,7 +19,7 @@ export class SecretLintSourceCodeImpl implements SecretLintSourceCode {
     private _getRawContent: (() => string) | undefined;
     private _rawContent: string | undefined;
     private _content: string | undefined;
-    private _structuredSource: StructuredSource | undefined;
+    private _lineIndex: SourceLineIndex | undefined;
 
     constructor({
         content = "",
@@ -76,14 +76,14 @@ export class SecretLintSourceCodeImpl implements SecretLintSourceCode {
     }
 
     /**
-     * StructuredSource builds the line index of the content.
+     * The line index of the content.
      * It is created lazily because most files do not have any report and do not need location info.
      */
-    private get structuredSource(): StructuredSource {
-        if (this._structuredSource === undefined) {
-            this._structuredSource = new StructuredSource(this.content);
+    private get lineIndex(): SourceLineIndex {
+        if (this._lineIndex === undefined) {
+            this._lineIndex = new SourceLineIndex(this.content);
         }
-        return this._structuredSource;
+        return this._lineIndex;
     }
 
     /**
@@ -115,7 +115,7 @@ export class SecretLintSourceCodeImpl implements SecretLintSourceCode {
      * @return {[ number, number ]} range.
      */
     locationToRange(loc: SecretLintSourceNodeLocation): SecretLintSourceNodeRange {
-        return this.structuredSource.locationToRange(loc);
+        return [this.lineIndex.positionToIndex(loc.start), this.lineIndex.positionToIndex(loc.end)];
     }
 
     /**
@@ -123,17 +123,9 @@ export class SecretLintSourceCodeImpl implements SecretLintSourceCode {
      * @return {SecretLintSourceNodeLocation} location.
      */
     rangeToLocation(range: SecretLintSourceNodeRange): SecretLintSourceNodeLocation {
-        const location = this.structuredSource.rangeToLocation(range as [number, number]);
-        // Note: unwrap class instance to get plain object
         return {
-            start: {
-                line: location.start.line,
-                column: location.start.column,
-            },
-            end: {
-                line: location.end.line,
-                column: location.end.column,
-            },
+            start: this.lineIndex.indexToPosition(range[0]),
+            end: this.lineIndex.indexToPosition(range[1]),
         };
     }
 
@@ -142,7 +134,7 @@ export class SecretLintSourceCodeImpl implements SecretLintSourceCode {
      * @return {number} index.
      */
     positionToIndex(pos: SecretLintSourceNodePosition): number {
-        return this.structuredSource.positionToIndex(pos);
+        return this.lineIndex.positionToIndex(pos);
     }
 
     /**
@@ -150,11 +142,6 @@ export class SecretLintSourceCodeImpl implements SecretLintSourceCode {
      * @return {Position} position.
      */
     indexToPosition(index: number): SecretLintSourceNodePosition {
-        const position = this.structuredSource.indexToPosition(index);
-        // Note: unwrap class instance to get plain object
-        return {
-            line: position.line,
-            column: position.column,
-        };
+        return this.lineIndex.indexToPosition(index);
     }
 }
