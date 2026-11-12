@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794483480838,
+  "lastUpdate": 1794490010509,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -61672,6 +61672,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 3.06,
             "range": "±1.33%",
+            "unit": "ops/sec",
+            "extra": "12 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "b0c1a365b36475e69d037485a1482ce9080174fc",
+          "message": "feat(core)!: pass the bytes of the source to rules, and check .p12 files without node:fs (#1804)\n\n<!-- claude-projects-attribution: {\"github_login\":\"azu\"} -->\n_Requested by **azu** · [project\nthread](https://claude.ai/code/project/chan_01ChfsKF1sN6vYsJMPZ7PuDt?thread=cmsg_01ChfsKF1sN6vYsJMPZ7PuDtMy2awTziq8RBEdLqMaUSTX)_\n\n## Summary\n\nThe gcp rule checked `.p12` files by reading the file again with\n`node:fs`, so in browsers it silently reported nothing (found in #1803).\nRules now receive the bytes of the source as\n`SecretLintSourceCode.contentBytes`, and the gcp rule checks `.p12` from\nthose bytes without reading any file.\n\nThe specs (sdev) come first: \"Secret scanning\" gets its first\nRequirements/Design, limited to what the change touches (sources,\ncontent types, which rules run for each content type, what a rule\nreceives).\n\n## Commits\n\n1. `e1dcd15` current state on `master` (Requirements + Design, en + ja).\nThe Product feature list links them.\n2. spec commits: the change and review follow-ups.\n3. `5de04ab` the implementation.\n\n## Changes\n\n- **types**: `SecretLintSourceCode.contentBytes: Uint8Array |\nundefined`. The doc of `SecretLintRawSource.contentBytes` now also says\nwhat it already is for binary (the raw file bytes). `\"all\"` is removed\nfrom `SecretLintRuleContentType` (**breaking for TypeScript rules that\ndeclare `all`**); the core still treats `\"all\"` as text + binary at\nruntime.\n- **core**: passes the bytes that the caller gave to the source code\nobject.\n- **gcp**: `supportedContentTypes: [\"text\", \"binary\"]`; `.p12` uses\n`contentBytes`, and reports nothing without them; no `node:fs` /\n`node:path` import (same `basename` helper as #1803).\n- **tester**: compares the results with and without bytes only for\nnon-binary content; the snapshot of a binary file is the result with\nbytes.\n- **node**: the `mask-result` path passes the source with its bytes.\n\n## Merge order\n\nThe Design says this change follows the built-in rules move. Expected\norder: #1803 → #1798 → this PR; the gcp files conflict with both and\nwill be merged in then.\n\n## Basis\n\n- **Code (master 0f332a9)**: see the current-state docs.\n- **azu's decisions (2026-11-12)**: bytes to rules (not a browser preset\nthat disables rules); no `node:fs` fallback; a change that only reports\nless is not breaking; remove `all`; describe binary rules in general in\nthe Design.\n\n## Test plan\n\n- [x] `pnpm test` (turbo): 109 tasks pass\n- [x] new tests: core gives `contentBytes` to the rule (also after\n`await`), `\"all\"` of an older rule still runs for text and binary; gcp\nreports a `.p12` from `contentBytes` and reports nothing without them\n(this test fails on the old `src`, which read the file)\n- [x] existing gcp `.p12` snapshots pass through the bytes path\n- [x] `sdev lint`: 0 violations\n- [x] before/after on 15,090 files (textlint repo x10 + 650 `.p12`\ncopies of the gcp fixtures), preset-recommend, 4 vCPU, json output:\nidentical messages (300, all `PrivateKeyP12`). Time, 5 runs each,\nmin/median: text only (14,440 files) before 747/786 ms, after 741/833 ms\n(noise); `.p12` only (650 files) before 10,534/11,061 ms, after\n10,607/10,792 ms. The `.p12` time is the PKCS#12 MAC itself, unchanged\nby this PR.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nhttps://claude.ai/code/session_01TSdrAGWkiWHzpEtvde56PB\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-11-12T22:25:21+09:00",
+          "tree_id": "f069863cf613e7957c4a1cd3a10c8821ed30c3b3",
+          "url": "https://github.com/secretlint/secretlint/commit/b0c1a365b36475e69d037485a1482ce9080174fc"
+        },
+        "date": 1794490006963,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 3.71,
+            "range": "±1.26%",
+            "unit": "ops/sec",
+            "extra": "14 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 3.08,
+            "range": "±0.98%",
             "unit": "ops/sec",
             "extra": "12 samples"
           }
