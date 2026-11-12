@@ -11,7 +11,6 @@ import type {
     SecretLintCoreConfigRule,
     SecretLintCoreConfigRulePreset,
     SecretLintCoreConfigUnionRule,
-    SecretLintRuleContentType,
     SecretLintRuleCreator,
     SecretLintRuleCreatorOptions,
     SecretLintRuleLocaleTag,
@@ -414,7 +413,8 @@ const supportContentType = (rule: PlanRule, contentType: ContentType): boolean =
     if (contentType === "unknown") {
         return true;
     }
-    const supportedContentTypes: SecretLintRuleContentType[] = rule.descriptorRule.rule.meta.supportedContentTypes;
+    // "all" is not in the type now, but older rules declare it. It means both text and binary.
+    const supportedContentTypes: readonly string[] = rule.descriptorRule.rule.meta.supportedContentTypes;
     return supportedContentTypes.includes("all") || supportedContentTypes.includes(contentType);
 };
 

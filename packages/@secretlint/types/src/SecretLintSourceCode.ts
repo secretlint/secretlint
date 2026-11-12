@@ -14,6 +14,16 @@ export interface SecretLintSourceCode {
     readonly physicalFilePath: string | undefined;
     readonly contentType: "binary" | "text" | "unknown";
     readonly ext: string;
+    /**
+     * The bytes of the source, or `undefined` when the caller does not give them.
+     * For binary content, they are the original bytes of the file, which `content` has lost in the decoding.
+     * For text, they are the UTF-8 encoding of the content, including the byte order mark if the file has one.
+     *
+     * The bytes are available until the lint of the source ends.
+     * Do not change them, and copy them if the rule keeps them after the lint,
+     * because the caller may reuse the buffer for the next file.
+     */
+    readonly contentBytes: Uint8Array | undefined;
 
     /**
      * get file path

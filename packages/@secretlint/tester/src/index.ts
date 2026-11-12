@@ -251,20 +251,25 @@ export const snapshot = (options: SnapshotOptions) => {
                             options: { config: toUnoptimizedConfig(config) },
                         });
                         const normalizeResult = (result: unknown) => JSON.parse(JSON.stringify(result));
-                        assert.deepStrictEqual(
-                            normalizeResult(bytesResult),
-                            normalizeResult(textResult),
-                            "The result of the content bytes should be the same as the result of the content string",
-                        );
-                        assert.deepStrictEqual(
-                            normalizeResult(textResult),
-                            normalizeResult(unoptimizedResult),
-                            "The result with `patterns` and `meta.keywords` should be the same as the result of the whole content without them. Check keywords and scope of the rule.",
-                        );
+                        // For text (and unknown), the bytes are only for speed, so the results should be the same without them.
+                        // For binary, a rule needs the bytes: the decoded string has lost them.
+                        const isText = rawSource.contentType !== "binary";
+                        if (isText) {
+                            assert.deepStrictEqual(
+                                normalizeResult(bytesResult),
+                                normalizeResult(textResult),
+                                "The result of the content bytes should be the same as the result of the content string",
+                            );
+                            assert.deepStrictEqual(
+                                normalizeResult(textResult),
+                                normalizeResult(unoptimizedResult),
+                                "The result with `patterns` and `meta.keywords` should be the same as the result of the whole content without them. Check keywords and scope of the rule.",
+                            );
+                        }
                         // The result does not have the content of the source.
                         // The snapshot has it as `sourceContent` to show what the ranges of the messages point to.
                         const snapshotResult = {
-                            ...textResult,
+                            ...(isText ? textResult : bytesResult),
                             sourceContent: textSource.contentType === "text" ? textSource.content : undefined,
                         };
                         const expectedFilePath = path.join(testCaseDir, "output.json");
