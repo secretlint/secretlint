@@ -103,6 +103,7 @@ GitHubのsecret scanningはコミットやpushの後にGitHub側で動きます�
 - **無視ファイル（`.secretlintignore`）:** lintの対象からファイルを外すファイル。書き方は`.gitignore`と同じ。`.gitignore`も既定で考慮する。
 - **無効化コメント（disable comment）:** `secretlint-disable`のように、ファイルの範囲を指定して報告を抑えるコメント。
 - **フォーマッター（formatter）:** `stylish`、`json`、`github`、`mask-result`、SARIFなどの結果の出力形式。
+- **組み込みルール（built-in rules）:** Dockerイメージ、単一実行ファイル、quick startに同梱したルールとフォーマッター。ルールのパッケージを導入せずに使える。
 - **マスク（mask）:** 結果やファイルの出力で、秘密情報の値を隠す文字に置き換えること。
 
 ## 機能の一覧
@@ -121,7 +122,10 @@ GitHubのsecret scanningはコミットやpushの後にGitHub側で動きます�
 | メッセージの翻訳 | 選んだロケールでメッセージを表示する（`--locale`、実験的） | 未作成 |
 | 独自ルール | ルールをnpmパッケージとして作り、テストし、公開する | 未作成 |
 | Node.jsのAPI | `@secretlint/node`で、ほかのプログラムから内容をlintする | 未作成 |
-| 配布 | npmパッケージ、quick startのコマンド、Dockerイメージ、単一実行ファイルを提供する | 未作成 |
+| npmパッケージ | CLI、ルール、フォーマッターをnpmパッケージとして導入し、Node.jsで実行する | 未作成 |
+| quick start | `npx @secretlint/quick-start`で、設定ファイルなしにrecommendプリセットで一度だけ実行する | 未作成 |
+| Dockerイメージ | Node.jsや設定なしで`secretlint/secretlint`を実行する。recommendプリセット、patternルール、SARIFフォーマッターを組み込んでいる | 未作成 |
+| 単一実行ファイル | GitHub ReleasesのLinux、macOS、Windows向けの実行ファイルを、Node.jsなしで実行する。組み込みのルールとフォーマッターはDockerイメージと同じ | 未作成 |
 | 性能プロファイル | `--profile`で時間のかかった処理を表示する | 未作成 |
 
 ## 成功の定義

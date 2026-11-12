@@ -103,6 +103,7 @@ GitHub secret scanning works on the GitHub side, after a commit is made or pushe
 - **Ignore file (`.secretlintignore`):** A file that excludes files from linting, with the same syntax as `.gitignore`. `.gitignore` files are also respected by default.
 - **Disable comment:** A comment such as `secretlint-disable` that suppresses reports in a range of a file.
 - **Formatter:** The output format of results, such as `stylish`, `json`, `github`, `mask-result`, and SARIF.
+- **Built-in rules:** Rules and formatters bundled in the Docker image, the single-executable binary, and the quick start command, which run without installing rule packages.
 - **Mask:** Replacing a secret value with characters that hide it, in results or in the output of a file.
 
 ## Feature list
@@ -121,7 +122,10 @@ GitHub secret scanning works on the GitHub side, after a commit is made or pushe
 | Message localization | Show messages in a chosen locale (`--locale`, experimental) | Not written |
 | Custom rules | Create, test, and publish a rule as an npm package | Not written |
 | Node.js API | Lint content from other programs with `@secretlint/node` | Not written |
-| Distribution | Provide npm packages, the quick start command, a Docker image, and a single-executable binary | Not written |
+| npm packages | Install the CLI, rules, and formatters as npm packages and run them with Node.js | Not written |
+| Quick start | Run once with `npx @secretlint/quick-start` and the recommended preset, without a configuration file | Not written |
+| Docker image | Run `secretlint/secretlint` without Node.js or configuration, with the recommended preset, the pattern rule, and the SARIF formatter built in | Not written |
+| Single-executable binary | Run a binary from GitHub Releases for Linux, macOS, and Windows without Node.js, with the same built-in rules and formatter as the Docker image | Not written |
 | Performance profile | Show where time is spent with `--profile` | Not written |
 
 ## Definition of success
