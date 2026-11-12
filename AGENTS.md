@@ -170,6 +170,7 @@ A rule that needs code other than regular expressions (e.g. checks the file name
 - **A pattern has only the properties that `SecretLintRulePattern` defines.** The core throws on an unknown property, so an older secretlint never runs a newer rule with a different result. When adding a property to the pattern format, add it with a new name and never change the meaning of an existing property
 - **The snapshot test runner checks `keywords` and `scope`**: for each snapshot it compares the result with the result of running the patterns on the whole content, and fails if they differ
 - **`meta.keywords`** (optional, for rules with `create()`) skips the rule if the text content contains none of the keywords. Keywords are not checked for binary content. A rule with `patterns` does not need it
+- **`meta.files`** (optional) declares the extensions (`[".json"]`, compared with `source.ext`) and exact file names (`[".env"]`) that the rule checks. The core skips the rule for other files without creating it, for text and binary content. Use it for a rule that decides by the file name, especially one that checks binary content or has no keywords. Keep the check of the file name in the rule too, because an older secretlint ignores `meta.files`
 - **Messages must have at least `en` locale**; `ja` is strongly recommended
 - **Always support `allows` option** using `@textlint/regexp-string-matcher` for user-defined exclusions
 - **Regex boundary conventions**:

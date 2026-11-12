@@ -71,7 +71,38 @@ type SecretLintRuleCreatorBase = {
          * Default: undefined (the rule's handlers are always called)
          */
         keywords?: string[];
+        /**
+         * The files that the rule checks, for pre-filtering by the file name.
+         * If it is defined, secretlint creates and runs the rule only for a source whose `ext` is in `extensions`
+         * or whose file name (the last part of `filePath`) is in `names`.
+         * Secretlint decides it without creating the rule, so the rule costs nothing for other files.
+         * It is used for text and binary content, and with `meta.keywords` (both must match).
+         *
+         * - `extensions` are compared with `source.ext`, which includes the dot: `[".json", ".p12"]`.
+         * - `names` are compared with the whole file name: `[".env", "package.json"]`.
+         * - Both are compared case-sensitively.
+         * - The rule must not report for a file that does not match. Otherwise the rule misses it.
+         * - Each value must be a non-empty string without "/" and "\\", and an extension must start with ".".
+         *   An invalid value, or no value, disables the pre-filter for the rule.
+         * - Secretlint that does not support it ignores it, so the rule should still check the file name itself.
+         *
+         * Default: undefined (the rule runs for all files)
+         */
+        files?: SecretLintRuleFiles;
     };
+};
+/**
+ * The files that a rule checks. See `meta.files` of {@link SecretLintRuleCreator}.
+ */
+export type SecretLintRuleFiles = {
+    /**
+     * File extensions with the dot, such as ".json"
+     */
+    extensions?: string[];
+    /**
+     * Exact file names, such as "package.json"
+     */
+    names?: string[];
 };
 /**
  * A rule that is defined with code.

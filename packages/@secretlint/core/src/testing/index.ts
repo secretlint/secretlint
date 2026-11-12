@@ -115,13 +115,13 @@ const sortObject = <T extends { [index: string]: any }>(object: T) => {
 };
 
 /**
- * Return the rule that does not use keywords and scopes.
- * secretlint runs the returned rule for all content, and the rule checks the whole content.
+ * Return the rule that does not use keywords, files, and scopes.
+ * secretlint runs the returned rule for all content and all files, and the rule checks the whole content.
  */
 const toUnoptimizedRule = <T>(rule: SecretLintRuleCreator<T>): SecretLintRuleCreator<T> => {
-    const meta = { ...rule.meta, keywords: undefined };
+    const meta = { ...rule.meta, keywords: undefined, files: undefined };
     if (rule.patterns === undefined) {
-        return rule.meta.keywords === undefined ? rule : { ...rule, meta };
+        return rule.meta.keywords === undefined && rule.meta.files === undefined ? rule : { ...rule, meta };
     }
     return {
         ...rule,
@@ -227,7 +227,7 @@ export const createSnapshotTestCases = (options: SnapshotOptions): SnapshotTestC
                         assert.deepStrictEqual(
                             normalizeResult(textResult),
                             normalizeResult(unoptimizedResult),
-                            "The result with `patterns` and `meta.keywords` should be the same as the result of the whole content without them. Check keywords and scope of the rule.",
+                            "The result with `patterns`, `meta.keywords`, and `meta.files` should be the same as the result of the whole content without them. Check keywords, files, and scope of the rule.",
                         );
                     }
                     // The result does not have the content of the source.

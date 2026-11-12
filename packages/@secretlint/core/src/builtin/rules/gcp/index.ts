@@ -82,8 +82,12 @@ export const creator: SecretLintRuleCreator<Options> = {
         type: "scanner",
         supportedContentTypes: ["text", "binary"],
         // For text content: a service account key JSON has "private_key_id". It may be escaped as "\\uXXXX".
-        // Keywords are not checked for binary content, so the rule always runs for a binary file.
         keywords: ["private_key_id", "\\u"],
+        // The rule checks only these files. Keywords are not checked for binary content,
+        // so this lets secretlint skip the rule for other binary files without creating it.
+        files: {
+            extensions: [".json", ".p12"],
+        },
         docs: {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-gcp/README.md",
         },

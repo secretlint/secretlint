@@ -359,6 +359,41 @@ Secretlint also throws an error if a pattern has a property that it does not kno
 
 `@secretlint/tester` checks `keywords` and `scope` of your patterns: it fails if the result differs from running the patterns on the whole content.
 
+### Files that a rule checks
+
+A rule that checks only some files can declare them in `meta.files`, with `extensions` (compared with `source.ext`, including the dot) and `names` (exact file names such as `".env"`, compared with the last part of `source.filePath`):
+
+```js
+export const creator = {
+    messages,
+    meta: {
+        id: "secretlint-rule-example-yaml",
+        recommended: true,
+        type: "scanner",
+        supportedContentTypes: ["text"],
+        files: {
+            extensions: [".yaml", ".yml"]
+        }
+    },
+    create(context) {
+        return {
+            file(source) {
+                // An older secretlint ignores `meta.files`, so keep checking the file here too
+                if (source.ext !== ".yaml" && source.ext !== ".yml") {
+                    return;
+                }
+                // ...
+            }
+        };
+    }
+};
+```
+
+Secretlint creates and runs the rule only for the matching files, for text and binary content. Values are compared case-sensitively.
+It matters most for a rule that checks binary content or has no keywords, because such a rule runs for every file otherwise.
+An invalid value (an empty string, a path separator, or an extension without the leading dot) disables the pre-filter for the rule.
+`@secretlint/tester` also lints each case without `meta.files`, so a test fails if the declaration excludes an input file that the rule reports.
+
 ## Performance
 
 Use `--profile` option for checking performance of your rule .

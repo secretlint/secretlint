@@ -22,6 +22,7 @@ import { secretLintProfiler } from "@secretlint/profiler";
 import debug0 from "debug";
 import { getKeywordMatcher, KeywordMatcher, normalizeKeyword } from "./helper/keyword-matcher.js";
 import { AllowMessage } from "./messages/filter-message-id.js";
+import { basename } from "./builtin/path-util.js";
 
 const debug = debug0("@secretlint/core");
 
@@ -65,14 +66,26 @@ export type PlanRule = {
      */
     keywords: string[] | undefined;
     /**
+     * Normalized `meta.files`. undefined if the rule runs for all files.
+     */
+    files: PlanFiles | undefined;
+    /**
      * Declarative patterns. If it is defined, `create()` of the rule is not called.
      */
     patterns: CompiledPattern[] | undefined;
     /**
-     * `meta.keywords` and `patterns` of the rule when the plan is created
+     * `meta.keywords`, `meta.files`, and `patterns` of the rule when the plan is created
      */
     metaKeywords: unknown;
+    metaFiles: unknown;
     metaPatterns: unknown;
+};
+/**
+ * Normalized `meta.files` of a rule
+ */
+type PlanFiles = {
+    readonly extensions: ReadonlySet<string>;
+    readonly names: ReadonlySet<string>;
 };
 type CompiledPattern = {
     source: SecretLintRulePattern;
@@ -132,7 +145,16 @@ export type LintPlan = {
     locale: SecretLintRuleLocaleTag;
     rules: PlanRule[];
     allowMessageIds: AllowMessage[];
-    views: Map<ContentType, PlanView>;
+    /**
+     * The extensions and the file names in `meta.files` of all rules.
+     * A view depends on the file only by these, so the views are cached by the content type and these.
+     */
+    fileExtensions: ReadonlySet<string>;
+    fileNames: ReadonlySet<string>;
+    /**
+     * Views by the key of {@link getPlanView}
+     */
+    views: Map<string, PlanView>;
     /**
      * What the plan is made from. If it is changed, the plan is created again.
      */
@@ -165,6 +187,44 @@ const normalizeKeywords = (keywords: unknown, caseSensitive: boolean = false): s
         normalized.push(normalizedKeyword);
     }
     return normalized;
+};
+
+/**
+ * Normalize `meta.files`.
+ * Return undefined if the pre-filter can not be used: no files, no value, or an invalid value.
+ * Like keywords, an invalid value disables the pre-filter, so a mistake never makes the rule miss a file.
+ */
+const normalizeFiles = (files: unknown): PlanFiles | undefined => {
+    if (typeof files !== "object" || files === null) {
+        return undefined;
+    }
+    // A file name has no path separator, so a value with a separator never matches
+    const hasSeparator = (value: string) => value.includes("/") || value.includes("\\");
+    const isValidName = (value: unknown): value is string => {
+        return typeof value === "string" && value.length > 0 && !hasSeparator(value);
+    };
+    const isValidExtension = (value: unknown): value is string => {
+        return isValidName(value) && value.length > 1 && value.startsWith(".");
+    };
+    const valuesOf = (values: unknown, isValid: (value: unknown) => value is string): Set<string> | undefined => {
+        if (values === undefined) {
+            return new Set();
+        }
+        if (!Array.isArray(values) || !values.every(isValid)) {
+            return undefined;
+        }
+        return new Set(values);
+    };
+    const { extensions, names } = files as { extensions?: unknown; names?: unknown };
+    const normalizedExtensions = valuesOf(extensions, isValidExtension);
+    const normalizedNames = valuesOf(names, isValidName);
+    if (normalizedExtensions === undefined || normalizedNames === undefined) {
+        return undefined;
+    }
+    if (normalizedExtensions.size === 0 && normalizedNames.size === 0) {
+        return undefined;
+    }
+    return { extensions: normalizedExtensions, names: normalizedNames };
 };
 
 /**
@@ -281,7 +341,11 @@ const isFreshPlan = (plan: LintPlan, config: SecretLintCoreConfig): boolean => {
     for (let i = 0; i < rules.length; i++) {
         const planRule = rules[i] as PlanRule;
         const creator = planRule.descriptorRule.rule;
-        if (creator.meta.keywords !== planRule.metaKeywords || creator.patterns !== planRule.metaPatterns) {
+        if (
+            creator.meta.keywords !== planRule.metaKeywords ||
+            creator.meta.files !== planRule.metaFiles ||
+            creator.patterns !== planRule.metaPatterns
+        ) {
             return false;
         }
     }
@@ -317,8 +381,10 @@ Duplicated rule.id is something wrong in .secretlintrc.
             descriptorRule,
             ruleParentId,
             keywords: normalizeKeywords(descriptorRule.rule.meta.keywords),
+            files: normalizeFiles(descriptorRule.rule.meta.files),
             patterns: compilePatterns(descriptorRule.rule),
             metaKeywords: descriptorRule.rule.meta.keywords,
+            metaFiles: descriptorRule.rule.meta.files,
             metaPatterns: descriptorRule.rule.patterns,
         });
     };
@@ -399,11 +465,19 @@ Duplicated rule.id is something wrong in .secretlintrc.
             allowMessageIds.push({ messageId, ruleId });
         });
     }
+    const fileExtensions = new Set<string>();
+    const fileNames = new Set<string>();
+    for (const { files } of rules) {
+        files?.extensions.forEach((extension) => fileExtensions.add(extension));
+        files?.names.forEach((name) => fileNames.add(name));
+    }
     return {
         config,
         locale,
         rules,
         allowMessageIds,
+        fileExtensions,
+        fileNames,
         views: new Map(),
         snapshot: createConfigSnapshot(config),
     };
@@ -418,8 +492,21 @@ const supportContentType = (rule: PlanRule, contentType: ContentType): boolean =
     return supportedContentTypes.includes("all") || supportedContentTypes.includes(contentType);
 };
 
-const createView = (plan: LintPlan, contentType: ContentType): PlanView => {
-    const targets = plan.rules.filter((rule) => supportContentType(rule, contentType));
+/**
+ * Return true if the rule checks the file.
+ * `fileName` and `ext` are "" if no rule declares them in `meta.files`.
+ */
+const supportFile = (rule: PlanRule, fileName: string, ext: string): boolean => {
+    const files = rule.files;
+    if (files === undefined) {
+        return true;
+    }
+    return files.extensions.has(ext) || files.names.has(fileName);
+};
+
+const createView = (plan: LintPlan, contentType: ContentType, fileName: string, ext: string): PlanView => {
+    const rulesOfContentType = plan.rules.filter((rule) => supportContentType(rule, contentType));
+    const targets = rulesOfContentType.filter((rule) => supportFile(rule, fileName, ext));
     // `meta.keywords` is for text content. A rule that supports other content always runs for it,
     // because such a rule checks the structure of the content or the file name, not the keywords.
     const keywordsOfRule = (rule: PlanRule): string[] | undefined => {
@@ -433,7 +520,10 @@ const createView = (plan: LintPlan, contentType: ContentType): PlanView => {
             allKeywords.set(keywordKey(keyword, caseSensitive), { keyword, caseSensitive });
         });
     };
-    for (const rule of targets) {
+    // The matcher has the keywords of all rules of the content type, including the rules that do not check the file.
+    // So the views of a content type share one matcher (see getKeywordMatcher), and the scan loop stays monomorphic:
+    // a matcher for each set of files would make V8 run the scan loop of different matchers as one slower function.
+    for (const rule of rulesOfContentType) {
         if (rule.patterns) {
             rule.patterns.forEach((pattern) => addKeywords(pattern.keywords, pattern.caseSensitiveKeywords));
         } else {
@@ -493,13 +583,37 @@ const createView = (plan: LintPlan, contentType: ContentType): PlanView => {
     };
 };
 
-export const getPlanView = (plan: LintPlan, contentType: ContentType): PlanView => {
-    const cached = plan.views.get(contentType);
+/**
+ * Return the view for the content type and the file.
+ * The rules of a view depend on the file only by the extensions and the file names in `meta.files` of the rules.
+ * So the views are cached by them, and the cost for each file is a few lookups.
+ */
+export const getPlanView = (
+    plan: LintPlan,
+    contentType: ContentType,
+    filePath: string | undefined,
+    ext: string | undefined,
+): PlanView => {
+    let fileName = "";
+    let fileExt = "";
+    let key: string = contentType;
+    if (plan.fileExtensions.size > 0 || plan.fileNames.size > 0) {
+        if (filePath && plan.fileNames.size > 0) {
+            const name = basename(filePath);
+            fileName = plan.fileNames.has(name) ? name : "";
+        }
+        if (ext && plan.fileExtensions.has(ext)) {
+            fileExt = ext;
+        }
+        // The file name and the extension are values of `meta.files`, which have no "/", so the key is not ambiguous
+        key = `${contentType}/${fileName}/${fileExt}`;
+    }
+    const cached = plan.views.get(key);
     if (cached) {
         return cached;
     }
-    const view = createView(plan, contentType);
-    plan.views.set(contentType, view);
+    const view = createView(plan, contentType, fileName, fileExt);
+    plan.views.set(key, view);
     return view;
 };
 

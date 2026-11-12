@@ -50,10 +50,10 @@ Secretlintが公開するカスタムルールも、この構成になってい�
 1. ケースのオプション（`options.js`、`options.json`、`options.ts`）を読み、入力ファイルを決める。
 2. ケースに`.secretlintrc.json`があれば、テストするルールを`testReplaceDefinitions`として渡し、`@secretlint/config-loader`の`loadConfig()`で読み込む。なければ既定の設定を使う。
 3. `@secretlint/source-creator`の`createRawSource()`で入力ファイルを読み込み（バイト列と内容の種類が得られる）、`@secretlint/core`の`lintSource()`でlintする。
-4. バイト列を除いて内容を文字列として渡した場合と、各ルールの`meta.keywords`と各パターンのキーワードを除き、スコープを`file`にした設定の場合で、もう一度lintする。どちらの結果も`assert.deepStrictEqual`で最初の結果と比較する。
+4. バイト列を除いて内容を文字列として渡した場合と、各ルールの`meta.keywords`と`meta.files`、各パターンのキーワードを除き、スコープを`file`にした設定の場合で、もう一度lintする。どちらの結果も`assert.deepStrictEqual`で最初の結果と比較する。
 5. lintの結果にはソースの内容が含まれないため、テキストのソースの内容を`sourceContent`として結果に加える。`output.json`がない場合やスナップショットを更新する場合は、キーを並べ替え、パスを`[SNAPSHOT]`に置き換えた結果を書き出して`"skip"`を返す。それ以外の場合は、結果を`output.json`と比較する。
 
-手順4があるため、キーワードが間違っている場合や、ほかの行も見る必要があるパターンに`line`スコープを指定した場合には、最適化した結果が見逃した秘密情報を最適化しない結果が報告し、テストが失敗します。
+手順4があるため、キーワードが間違っている場合や、`meta.files`が入力のファイルを除いている場合、ほかの行も見る必要があるパターンに`line`スコープを指定した場合には、最適化した結果が見逃した秘密情報を最適化しない結果が報告し、テストが失敗します。
 
 ### プリセット
 

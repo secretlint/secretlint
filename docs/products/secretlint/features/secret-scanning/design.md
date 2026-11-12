@@ -44,9 +44,16 @@ A program that calls `lintSource()` directly, such as a tool in a browser, creat
 
 ### Choosing the rules
 
-The core builds a plan from the configuration once, and keeps a view of the plan for each content type.
+The core builds a plan from the configuration once, and keeps a view of the plan for each content type and file kind.
 A view has the rules whose `meta.supportedContentTypes` include the content type or `all`. For `unknown`, it has all rules.
-`meta.keywords` are used only for text. A rule that runs for binary content always runs, because it checks the structure of the content or the file name, not keywords.
+`meta.keywords` are used only for text. A rule that runs for binary content always runs for it, unless `meta.files` excludes the file, because it checks the structure of the content or the file name, not keywords.
+
+A rule that checks only some files declares them in `meta.files`: extensions (compared with `ext`, such as `.json`) and exact file names (compared with the last part of `filePath`, such as `.env`).
+A view has such a rule only for a file that matches, so the core skips the rule without creating it, for text and binary content. A rule with both `meta.files` and `meta.keywords` runs only when both match.
+The file kind of a view is the file name and the extension, kept only when some rule declares them. Other files share one view, so the plan has a few views, and choosing the view costs a few lookups for each file.
+All views of a content type use one keyword matcher with the keywords of all rules of the content type, including rules that the file excludes. A matcher for each view would make V8 treat the scan loops of the matchers as one function that is slower for all of them (the text corpus took about 30% longer in the measurement).
+An invalid value in `meta.files` (not a non-empty string, a path separator, or an extension without the leading dot) disables the pre-filter for the rule, as for keywords, so a mistake makes the rule run for more files, never fewer.
+A secretlint without `meta.files` ignores it, so a rule keeps its own check of the file name.
 
 ### What a rule receives
 
@@ -71,7 +78,7 @@ For binary, it is the bytes of the file, and `content` is those bytes decoded as
 ### Rules that check binary content
 
 A rule that checks binary content lists `binary` in `meta.supportedContentTypes`, and also `text` when it checks text files too. Listing the types, instead of `all`, states in the declaration which content the rule checks.
-Keywords are not used for binary content, so the rule runs for every binary file. It decides from `filePath` or `ext` whether the file is one it checks, and returns quickly for other files.
+Keywords are not used for binary content, so the rule declares the files it checks in `meta.files`, and the core runs it only for them. The rule still decides from `filePath` or `ext` whether the file is one it checks, because a secretlint without `meta.files` runs it for every binary file.
 
 The rule reads the bytes from `contentBytes` of the source code object, not from `content` and not from a file.
 When `contentBytes` is `undefined`, the rule skips only the checks that need the bytes and reports nothing for them. Checks of text that use `content`, such as a JSON key file, run as before. It does not fall back to reading the file, because the command always gives the bytes, and reading the file would ignore `noPhysicFilePath` and make the result depend on the environment.
@@ -184,6 +191,17 @@ It was not chosen because source-creator already gives the bytes of the file as 
 
 A rule that checks binary content would read the file when `contentBytes` is `undefined`, as the gcp rule did.
 It was not chosen by the maintainer: the command always gives the bytes, the rules are released with the core, and reading the file ignores `noPhysicFilePath` and keeps a Node.js import in the rule.
+
+### Globs in `meta.files`
+
+`meta.files` would take globs, like the `filePathGlobs` option of the pattern rule.
+It was not chosen because a glob needs a match for each file and each glob, while extensions and file names let the core choose a cached view with a few lookups. The rules that Secretlint provides need only extensions and file names.
+The `filePathGlobs` option of the pattern rule is not covered, because it is an option of the user and not data of the rule.
+
+### `files` for each pattern
+
+A pattern of a declarative rule would have its own files, as the npm rule checks some patterns only in `package.json` and `.npmrc`.
+It is not added now. The npm rule matches the end of the path (`foo-package.json` is also checked), which `meta.files` can not express without a change of results, and its patterns already run only where their keywords are found.
 
 ## Open questions
 

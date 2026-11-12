@@ -59,6 +59,9 @@ export const creator: SecretLintRuleCreator<Options> = {
         recommended: false,
         type: "scanner",
         supportedContentTypes: ["text"],
+        files: {
+            extensions: [".yaml", ".yml"],
+        },
         docs: {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-no-k8s-kind-secret/README.md",
         },

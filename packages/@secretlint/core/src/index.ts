@@ -288,7 +288,7 @@ const lintWithPlan = (
     options: { maskSecrets: boolean; noPhysicFilePath: boolean },
 ): Promise<SecretLintCoreResult> => {
     const contentType = source.contentType;
-    const view = getPlanView(plan, contentType);
+    const view = getPlanView(plan, contentType, source.filePath, source.ext);
     const matcher = view.matcher;
     // The bytes may be available only at the start of the lint. See createFileSourceReader() of source-creator
     const bytes = source.contentBytes;

@@ -26,6 +26,7 @@ export type {
     SecretLintRuleReportDescriptor,
     SecretLintRuleReportHandler,
     SecretLintRuleContentType,
+    SecretLintRuleFiles,
     SecretLintRulePattern,
     SecretLintRulePatternMatch,
     SecretLintRulePatternContext,

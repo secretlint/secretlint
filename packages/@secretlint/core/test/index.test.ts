@@ -375,3 +375,173 @@ describe("lintSource with meta.keywords", () => {
         assert.strictEqual("sourceContent" in result, false);
     });
 });
+describe("lintSource with meta.files", () => {
+    type Files = { extensions?: unknown; names?: unknown } | undefined;
+    const createRule = (
+        id: string,
+        files: Files,
+        calls: string[],
+        meta: Partial<SecretLintRuleCreator["meta"]> = {},
+    ): SecretLintRuleCreator => {
+        return {
+            messages: {},
+            meta: {
+                id,
+                recommended: true,
+                type: "scanner",
+                supportedContentTypes: ["text", "binary"],
+                files: files as SecretLintRuleCreator["meta"]["files"],
+                ...meta,
+            },
+            create() {
+                calls.push(`create:${id}`);
+                return {
+                    file() {
+                        calls.push(id);
+                    },
+                };
+            },
+        };
+    };
+    const lint = async (
+        source: Partial<SecretLintRawSource>,
+        rules: SecretLintRuleCreator[],
+        config?: { rules: { id: string; rule: SecretLintRuleCreator; options: {} }[] },
+    ) => {
+        await lintSource({
+            source: { content: "content", contentType: "text", ...source },
+            options: {
+                config: config ?? { rules: rules.map((rule) => ({ id: rule.meta.id, rule, options: {} })) },
+            },
+        });
+    };
+    it("should create and run the rule only for the declared extensions and file names", async () => {
+        const calls: string[] = [];
+        const rule = createRule("files", { extensions: [".json", ".p12"], names: [".env"] }, calls);
+        const config = { rules: [{ id: rule.meta.id, rule, options: {} }] };
+        await lint({ filePath: "/path/to/key.json", ext: ".json" }, [], config);
+        await lint({ filePath: "/path/to/key.p12", ext: ".p12", contentType: "binary" }, [], config);
+        await lint({ filePath: "C:\\path\\to\\.env", ext: "" }, [], config);
+        assert.deepStrictEqual(calls, ["create:files", "files", "create:files", "files", "create:files", "files"]);
+        calls.length = 0;
+        await lint({ filePath: "/path/to/image.png", ext: ".png", contentType: "binary" }, [], config);
+        await lint({ filePath: "/path/to/key.JSON", ext: ".JSON" }, [], config);
+        await lint({ filePath: "/path/to/.env.local", ext: ".local" }, [], config);
+        await lint({ filePath: "/path/to/.env/file.txt", ext: ".txt" }, [], config);
+        await lint({ ext: ".txt" }, [], config);
+        assert.deepStrictEqual(calls, []);
+    });
+    it("should not read the content of a binary file that no rule checks", async () => {
+        const calls: string[] = [];
+        const rule = createRule("p12", { extensions: [".p12"] }, calls);
+        let contentAccessed = false;
+        await lintSource({
+            source: {
+                get content() {
+                    contentAccessed = true;
+                    return "binary";
+                },
+                contentBytes: new Uint8Array([0, 1, 2]),
+                filePath: "/path/to/image.png",
+                ext: ".png",
+                contentType: "binary",
+            },
+            options: { config: { rules: [{ id: rule.meta.id, rule, options: {} }] } },
+        });
+        assert.deepStrictEqual(calls, []);
+        assert.strictEqual(contentAccessed, false);
+    });
+    it("should filter each rule by its own files", async () => {
+        const calls: string[] = [];
+        const json = createRule("json", { extensions: [".json"] }, calls);
+        const yaml = createRule("yaml", { extensions: [".yaml", ".yml"] }, calls);
+        const npmrc = createRule("npmrc", { names: [".npmrc", "package.json"] }, calls);
+        const all = createRule("all", undefined, calls);
+        const rules = [json, yaml, npmrc, all];
+        await lint({ filePath: "/a/package.json", ext: ".json" }, rules);
+        assert.deepStrictEqual(
+            calls.filter((call) => !call.startsWith("create:")),
+            ["json", "npmrc", "all"],
+        );
+        calls.length = 0;
+        await lint({ filePath: "/a/b.yml", ext: ".yml" }, rules);
+        assert.deepStrictEqual(
+            calls.filter((call) => !call.startsWith("create:")),
+            ["yaml", "all"],
+        );
+        calls.length = 0;
+        await lint({ filePath: "/a/.npmrc", ext: "" }, rules);
+        assert.deepStrictEqual(
+            calls.filter((call) => !call.startsWith("create:")),
+            ["npmrc", "all"],
+        );
+    });
+    it("should run the rule only if both the files and the keywords match", async () => {
+        const calls: string[] = [];
+        const rule = createRule("both", { extensions: [".json"] }, calls, {
+            supportedContentTypes: ["text"],
+            keywords: ["private_key_id"],
+        });
+        await lint({ filePath: "/a/key.json", ext: ".json", content: "no keyword" }, [rule]);
+        await lint({ filePath: "/a/key.txt", ext: ".txt", content: "private_key_id" }, [rule]);
+        assert.deepStrictEqual(calls, []);
+        await lint({ filePath: "/a/key.json", ext: ".json", content: "private_key_id" }, [rule]);
+        assert.deepStrictEqual(calls, ["create:both", "both"]);
+    });
+    it("should always run the rule if the files are empty or include an invalid value", async () => {
+        const invalidFiles: Files[] = [
+            {},
+            { extensions: [] },
+            { extensions: [], names: [] },
+            { extensions: ["json"] },
+            { extensions: [".json", "p12"] },
+            { extensions: ["."] },
+            { extensions: [".json"], names: [""] },
+            { names: ["dir/.env"] },
+            { names: ["dir\\.env"] },
+            { names: [1] },
+            { extensions: ".json" },
+        ];
+        for (const files of invalidFiles) {
+            const calls: string[] = [];
+            const rule = createRule("invalid", files, calls);
+            await lint({ filePath: "/a/image.png", ext: ".png" }, [rule]);
+            assert.deepStrictEqual(calls, ["create:invalid", "invalid"], JSON.stringify(files));
+        }
+    });
+    it("should run the patterns of a rule only for the declared files", async () => {
+        const reported: string[] = [];
+        const rule: SecretLintRuleCreator = {
+            messages: {},
+            meta: {
+                id: "pattern-files",
+                recommended: true,
+                type: "scanner",
+                supportedContentTypes: ["text"],
+                files: { names: ["package.json"] },
+            },
+            patterns: [
+                {
+                    pattern: /secret_\w+/,
+                    keywords: ["secret_"],
+                    report(match, context) {
+                        reported.push(`${context.source.filePath}:${match.text}`);
+                    },
+                },
+            ],
+        };
+        await lint({ filePath: "/a/package.json", content: "secret_a" }, [rule]);
+        await lint({ filePath: "/a/other.json", content: "secret_b" }, [rule]);
+        assert.deepStrictEqual(reported, ["/a/package.json:secret_a"]);
+    });
+    it("should use the changed files of the same rule creator", async () => {
+        const calls: string[] = [];
+        const rule = createRule("changed", { extensions: [".json"] }, calls);
+        const config = { rules: [{ id: rule.meta.id, rule, options: {} }] };
+        await lint({ filePath: "/a/b.yaml", ext: ".yaml" }, [], config);
+        assert.deepStrictEqual(calls, []);
+        rule.meta.files = { extensions: [".yaml"] };
+        await lint({ filePath: "/a/b.yaml", ext: ".yaml" }, [], config);
+        assert.deepStrictEqual(calls, ["create:changed", "changed"]);
+    });
+});

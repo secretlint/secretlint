@@ -76,7 +76,7 @@ Scenario: When a match does not contain any keyword, the test fails
 
 - Given: A pattern of the rule has a keyword that one input of the tests does not contain, and the pattern matches that input.
 - When: The rule author runs the tests.
-- Then: The test case fails with a message that the result with `patterns` and `meta.keywords` differs from the result of the whole content, and asks to check the keywords and scope.
+- Then: The test case fails with a message that the result with `patterns`, `meta.keywords`, and `meta.files` differs from the result of the whole content, and asks to check the keywords, files, and scope.
 
 ## KPIs
 
