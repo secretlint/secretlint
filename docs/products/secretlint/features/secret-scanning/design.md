@@ -74,6 +74,7 @@ The gcp rule supports `all` content types. For `.json` it parses `content`, and 
 The MAC check uses `contentBytes` of the source code object. When `contentBytes` is `undefined`, the rule does not check the `.p12` file and reports nothing.
 The rule does not import `node:fs` or read any file, so it gives the same result in Node.js, in browsers, and in the single-executable binary, and it no longer reads a file when the caller set `noPhysicFilePath`.
 The MAC check itself uses `node:crypto` when it is available and Web Crypto otherwise, as before.
+The rule takes the file name for its messages from `filePath` with a small `basename` helper instead of `node:path`, so no module of the rule imports a Node.js module statically, and the recommended preset loads in a browser without Node.js polyfills. `node:crypto` is imported only dynamically, and its failure falls back to Web Crypto.
 
 ### Rule tests
 
@@ -145,7 +146,9 @@ The bytes and the content can have secrets. They stay in memory and are not writ
 
 Adding `contentBytes` to the source code object does not change existing rules.
 A program that calls `lintSource()` for a `.p12` file with only the string gets no report after this change, while the gcp rule read the file before. The release notes tell such a caller to pass `contentBytes`. Whether the release is a breaking change is an open question of the Requirements.
-The rules are released with the core, so a newer gcp rule never runs on a core that does not give `contentBytes`.
+This change is made after the built-in rules move into `@secretlint/core`. Then the gcp rule is a file of the core, and the package `@secretlint/secretlint-rule-gcp` only re-exports it and depends on the core of the same release.
+So the configuration resolves the gcp rule from the core that also runs `lintSource()`, and the rule and `contentBytes` always come from the same core.
+A program that imports the rule object from a newer package and passes it to `lintSource()` of an older core is not supported, as the rules ship with the core. In that case the `.p12` check sees no bytes and reports nothing, without reading the file.
 
 ## Alternatives considered
 

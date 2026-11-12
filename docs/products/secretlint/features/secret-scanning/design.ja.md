@@ -74,6 +74,7 @@ gcpルールは`all`に対応している。`.json`では`content`をパース�
 MACの検証には、ソースコードのオブジェクトの`contentBytes`を使う。`contentBytes`が`undefined`の場合、ルールは`.p12`ファイルを確かめず、何も報告しない。
 ルールは`node:fs`をimportせず、ファイルも読まない。そのためNode.js、ブラウザ、単一実行ファイルで同じ結果になり、呼び出し元が`noPhysicFilePath`を指定したときにファイルを読むこともなくなる。
 MACの検証そのものは、これまでどおり`node:crypto`があればそれを使い、なければWeb Cryptoを使う。
+メッセージに使うファイル名は、`node:path`ではなく小さな`basename`ヘルパーで`filePath`から取る。そのためルールのどのモジュールもNode.jsのモジュールを静的にimportせず、recommendプリセットはNode.jsのpolyfillなしでブラウザに読み込める。`node:crypto`は動的にだけimportし、失敗したらWeb Cryptoを使う。
 
 ### ルールのテスト
 
@@ -145,7 +146,9 @@ coreの入口である。ソースと設定を受け取り、内容を含まな�
 
 ソースコードのオブジェクトに`contentBytes`を足しても、既存のルールは変わらない。
 バイト列なしで`.p12`ファイルの`lintSource()`を呼ぶプログラムは、これまではgcpルールがファイルを読んで報告していたが、この変更のあとは報告されない。リリースノートで、そうした呼び出し元に`contentBytes`を渡すよう案内する。破壊的変更として扱うかはRequirementsの未決事項である。
-ルールはcoreと一緒にリリースされるので、新しいgcpルールが`contentBytes`を渡さない古いcoreで動くことはない。
+この変更は、ビルトインルールを`@secretlint/core`に移したあとに行う。そうするとgcpルールはcoreのファイルになり、`@secretlint/secretlint-rule-gcp`パッケージはそれを再exportするだけで、同じリリースのcoreに依存する。
+そのため設定は、`lintSource()`を動かすのと同じcoreからgcpルールを解決し、ルールと`contentBytes`は常に同じcoreから来る。
+新しいパッケージからルールのオブジェクトをimportして、古いcoreの`lintSource()`に渡すプログラムは、ルールはcoreと一緒に配布するという方針のとおりサポートしない。その場合、`.p12`の確認にはバイト列がないので、ファイルを読まずに何も報告しない。
 
 ## 検討した代替手段
 
