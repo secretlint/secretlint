@@ -197,7 +197,7 @@ And setting to `.secretlintrc.json`:
 ```
 
 [@secretlint/secretlint-rule-preset-recommend](https://www.npmjs.com/package/@secretlint/secretlint-rule-preset-recommend) includes [@secretlint/secretlint-rule-filter-comments](https://www.npmjs.com/package/@secretlint/secretlint-rule-filter-comments).
-If you have used [@secretlint/secretlint-rule-preset-recommend](./packages/@secretlint/secretlint-rule-preset-recommend), you not need to setup `@secretlint/secretlint-rule-filter-comments`.
+If you have used [@secretlint/secretlint-rule-preset-recommend](../packages/@secretlint/secretlint-rule-preset-recommend), you not need to setup `@secretlint/secretlint-rule-filter-comments`.
 
 ```json
 {
