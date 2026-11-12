@@ -306,6 +306,7 @@ const lintWithPlan = (
         physicalFilePath: options.noPhysicFilePath ? undefined : source.filePath,
         ext: source.ext || "",
         contentType,
+        contentBytes: bytes,
     });
     // Scan the text if the source has no bytes, or if the patterns run:
     // the patterns need the indexes in the text, which are different from the indexes in the bytes.

@@ -33,7 +33,11 @@ export type SecretLintRuleContext = {
     ignore(descriptor: SecretLintRuleIgnoreDescriptor): void;
 };
 export type SecretLintRuleCreatorOptions = {};
-export type SecretLintRuleContentType = "binary" | "text" | "all";
+/**
+ * The content types that a rule checks.
+ * A rule that checks both text and binary content lists both: `["text", "binary"]`.
+ */
+export type SecretLintRuleContentType = "binary" | "text";
 type SecretLintRuleCreatorBase = {
     messages: SecretLintRuleLocalizeMessages;
     meta: {
@@ -43,9 +47,11 @@ type SecretLintRuleCreatorBase = {
         docs?: {
             url: string;
         };
-        // meta information for optimizing
-        // If supportedContentTypes is only "text", secretlint does not pass a binary to this rule
-        // Default: all
+        /**
+         * The content types that the rule checks.
+         * If it is only "text", secretlint does not pass a binary to this rule.
+         * Note: secretlint still treats "all" of older rules as both text and binary.
+         */
         supportedContentTypes: SecretLintRuleContentType[];
         /**
          * Keywords for pre-filtering.

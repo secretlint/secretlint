@@ -110,7 +110,7 @@ GitHubのsecret scanningはコミットやpushの後にGitHub側で動きます�
 
 | 機能 | 説明 | 仕様 |
 | --- | --- | --- |
-| 秘密情報の検査 | ファイル、glob、STDINの内容を設定したルールでlintし、見つかった秘密情報を報告する | 未作成 |
+| 秘密情報の検査 | ファイル、glob、STDINの内容を設定したルールでlintし、見つかった秘密情報を報告する | [Requirements](features/secret-scanning/requirements.ja.md) |
 | 対象ファイルの選択 | globとパスからlintするファイルを選び、`.gitignore`、`.secretlintignore`、組み込みの除外を考慮する | 未作成 |
 | 設定の読み込み | 設定ファイルを探して検証し、ルール、オプション、重大度、許可するメッセージを決める | 未作成 |
 | 設定ファイルの作成 | `--init`で`.secretlintrc.json`を作る | 未作成 |

@@ -15,6 +15,7 @@ export class SecretLintSourceCodeImpl implements SecretLintSourceCode {
     readonly physicalFilePath: string | undefined;
     readonly contentType: "binary" | "text" | "unknown";
     readonly ext: string;
+    readonly contentBytes: Uint8Array | undefined;
     private _getRawContent: (() => string) | undefined;
     private _rawContent: string | undefined;
     private _content: string | undefined;
@@ -26,6 +27,7 @@ export class SecretLintSourceCodeImpl implements SecretLintSourceCode {
         filePath,
         physicalFilePath,
         contentType,
+        contentBytes,
     }: {
         /**
          * Content string or a function that returns the content.
@@ -36,6 +38,10 @@ export class SecretLintSourceCodeImpl implements SecretLintSourceCode {
         filePath: string;
         physicalFilePath: string | undefined;
         contentType: "binary" | "text" | "unknown";
+        /**
+         * The bytes of the source. See `SecretLintSourceCode#contentBytes`.
+         */
+        contentBytes?: Uint8Array;
     }) {
         invariant(ext || filePath, "should be set either of fileExt or filePath.");
         if (typeof content === "function") {
@@ -47,6 +53,7 @@ export class SecretLintSourceCodeImpl implements SecretLintSourceCode {
         this.physicalFilePath = physicalFilePath;
         this.contentType = contentType;
         this.ext = ext;
+        this.contentBytes = contentBytes;
     }
 
     private get rawContent(): string {

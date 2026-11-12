@@ -290,7 +290,7 @@ describe("lintSource with meta.keywords", () => {
         const rule: SecretLintRuleCreator = {
             ...createRule(["ghp_"], calls),
         };
-        rule.meta = { ...rule.meta, supportedContentTypes: ["all"] };
+        rule.meta = { ...rule.meta, supportedContentTypes: ["text", "binary"] };
         const lintAs = (contentType: "text" | "binary", contentBytes?: Uint8Array) => {
             return lintSource({
                 source: { content: "no keyword", contentBytes, filePath: "/path/to/file.p12", contentType },
@@ -305,6 +305,50 @@ describe("lintSource with meta.keywords", () => {
         await lintAs("binary");
         await lintAs("binary", new TextEncoder().encode("no keyword"));
         assert.deepStrictEqual(calls, [rule.meta.id, rule.meta.id]);
+    });
+    it('should treat "all" of an older rule as text and binary', async () => {
+        const calls: string[] = [];
+        const rule: SecretLintRuleCreator = { ...createRule([], calls) };
+        // "all" is not in the type now, but a published rule may declare it
+        rule.meta = { ...rule.meta, supportedContentTypes: ["all"] as unknown as ["text", "binary"] };
+        for (const contentType of ["text", "binary"] as const) {
+            await lintSource({
+                source: { content: "content", filePath: "/path/to/file", contentType },
+                options: { config: { rules: [{ id: rule.meta.id, rule, options: {} }] } },
+            });
+        }
+        assert.deepStrictEqual(calls, [rule.meta.id, rule.meta.id]);
+    });
+    it("should give the bytes of the source to the rule as contentBytes", async () => {
+        const received: (Uint8Array | undefined)[] = [];
+        const rule: SecretLintRuleCreator = {
+            messages: {},
+            meta: {
+                id: "receive-bytes",
+                recommended: false,
+                type: "scanner",
+                supportedContentTypes: ["text", "binary"],
+            },
+            create() {
+                return {
+                    async file(source: SecretLintSourceCode) {
+                        // the bytes are still available after an await in the handler
+                        await Promise.resolve();
+                        received.push(source.contentBytes);
+                    },
+                };
+            },
+        };
+        const bytes = new Uint8Array([0x30, 0x82, 0x00, 0xff]);
+        const lint = (contentBytes: Uint8Array | undefined) =>
+            lintSource({
+                source: { content: "binary", contentBytes, filePath: "/path/to/key.p12", contentType: "binary" },
+                options: { config: { rules: [{ id: rule.meta.id, rule, options: {} }] } },
+            });
+        await lint(bytes);
+        await lint(undefined);
+        assert.deepStrictEqual(received, [bytes, undefined]);
+        assert.strictEqual(received[0], bytes);
     });
     it("should not read the content of bytes without keywords", async () => {
         const calls: string[] = [];

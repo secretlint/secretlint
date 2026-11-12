@@ -5,7 +5,7 @@ import {
     SecretLintSourceCode,
 } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
-import path from "node:path";
+import { basename } from "./path-util.js";
 import { reportIfFoundPrivateKeyP12Format } from "./reportIfFoundPrivateKeyP12Format.js";
 
 export const messages = {
@@ -65,7 +65,7 @@ function reportIfFoundPrivateKeyJSONFormat({
         }
         context.report({
             message: t("PrivateKeyJSON", {
-                FILE_NAME: source.filePath ? path.basename(source.filePath) : "",
+                FILE_NAME: source.filePath ? basename(source.filePath) : "",
             }),
             range: [0, source.content.length],
         });
@@ -80,9 +80,9 @@ export const creator: SecretLintRuleCreator<Options> = {
         id: "@secretlint/secretlint-rule-gcp",
         recommended: true,
         type: "scanner",
-        supportedContentTypes: ["all"],
+        supportedContentTypes: ["text", "binary"],
         // For text content: a service account key JSON has "private_key_id". It may be escaped as "\\uXXXX".
-        // Keywords are not checked for binary content, so the rule always runs for a .p12 file.
+        // Keywords are not checked for binary content, so the rule always runs for a binary file.
         keywords: ["private_key_id", "\\u"],
         docs: {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-gcp/README.md",

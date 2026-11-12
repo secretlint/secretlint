@@ -2,6 +2,7 @@ import type { messages, Options } from "./index.js";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 import type { SecretLintRuleContext, SecretLintRuleMessageTranslate, SecretLintSourceCode } from "@secretlint/types";
 import { verifyPkcs12Mac } from "./pkcs12Mac.js";
+import { basename } from "./path-util.js";
 
 // The PKCS#12 password for GCP Service Account private key files.
 // https://cloud.google.com/iam/docs/reference/rest/v1/projects.serviceAccounts.keys#serviceaccountprivatekeytype
@@ -18,19 +19,19 @@ export async function reportIfFoundPrivateKeyP12Format({
     context: SecretLintRuleContext;
     t: SecretLintRuleMessageTranslate<typeof messages>;
 }) {
-    if (!source.filePath) {
+    // A .p12 file is binary, and the MAC check needs its original bytes.
+    // The caller gives them as `contentBytes`. Without them, the file is not checked:
+    // the rule does not read the file, so it works the same in Node.js and in browsers.
+    const pfxBytes = source.contentBytes;
+    if (pfxBytes === undefined) {
+        return;
+    }
+    // p12 is binary, so allows matches against the file name
+    const fileName = source.filePath ? basename(source.filePath) : "";
+    if (matchPatterns(fileName, options.allows).length > 0) {
         return;
     }
     try {
-        // lazy load fs/path; browser does not have fs module
-        const fs = await import("node:fs");
-        const path = await import("node:path");
-        // p12 is binary, so allows matches against the file name
-        const fileName = path.basename(source.filePath);
-        if (matchPatterns(fileName, options.allows).length > 0) {
-            return;
-        }
-        const pfxBytes = new Uint8Array(fs.readFileSync(source.filePath));
         const isGcpServiceAccountP12 = await verifyPkcs12Mac(pfxBytes, GCP_SERVICE_ACCOUNT_P12_PASSWORD);
         if (!isGcpServiceAccountP12) {
             return;

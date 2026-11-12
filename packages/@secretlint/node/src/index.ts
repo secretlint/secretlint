@@ -101,9 +101,10 @@ const createFileLinter = ({ config, options }: { config: SecretLintCoreConfig; o
     const lintOptions = { ...options, config };
     return async (filePath: string): Promise<LintedFile> => {
         if (options.formatter === "mask-result") {
-            const { content, ext, contentType } = await createRawSource(filePath);
-            const result = await lintSource({ source: { filePath, content, ext, contentType }, options: lintOptions });
-            return { result, content: contentType === "text" ? content : undefined };
+            // The source has its own buffer, and it has the bytes for the rules that check binary content
+            const source = await createRawSource(filePath);
+            const result = await lintSource({ source, options: lintOptions });
+            return { result, content: source.contentType === "text" ? source.content : undefined };
         }
         // Read and start the lint in the same turn: `lintSource()` scans the bytes at the start of the call
         const source = readFileSource(filePath);
