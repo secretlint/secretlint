@@ -43,6 +43,35 @@ describe("create-secretlintrc", () => {
             assert.match(actual.stdout, /Create .*\.secretlintrc\.json/);
             assert.strictEqual(actual.stderr, null);
         });
+        it("writes the secretlint rule packages in package.json to .secretlintrc.json", async () => {
+            await fs.writeFile(
+                path.join(tmpConfigDir, "package.json"),
+                JSON.stringify({
+                    dependencies: { "secretlint-rule-a": "1.0.0", other: "1.0.0" },
+                    devDependencies: { "@scope/secretlint-rule-b": "1.0.0" },
+                }),
+            );
+            await runConfigCreator({ cwd: tmpConfigDir });
+            const config = JSON.parse(await fs.readFile(path.join(tmpConfigDir, ".secretlintrc.json"), "utf-8"));
+            assert.deepStrictEqual(config, {
+                rules: [{ id: "secretlint-rule-a" }, { id: "@scope/secretlint-rule-b" }],
+            });
+        });
+    });
+
+    describe("when package.json is not found", () => {
+        it("should throw an error, and not create .secretlintrc.json", async () => {
+            await fs.rm(path.join(tmpConfigDir, "package.json"));
+            await assert.rejects(runConfigCreator({ cwd: tmpConfigDir }), /ENOENT/);
+            await assert.rejects(fs.access(path.join(tmpConfigDir, ".secretlintrc.json")));
+        });
+    });
+
+    describe("when package.json is invalid JSON", () => {
+        it("should throw an error", async () => {
+            await fs.writeFile(path.join(tmpConfigDir, "package.json"), "{ invalid");
+            await assert.rejects(runConfigCreator({ cwd: tmpConfigDir }), SyntaxError);
+        });
     });
 
     describe("when .secretlintrc.json is already existed", () => {

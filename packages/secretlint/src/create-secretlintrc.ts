@@ -22,10 +22,8 @@ export const runConfigCreator = async (
         };
     }
     const configFilePath = path.join(options.cwd, ".secretlintrc.json");
-    const { readPackage } = await import("read-pkg");
-    const pkg = await readPackage({
-        cwd: options.cwd,
-    });
+    // Throw an error if package.json is not found or it is invalid JSON
+    const pkg = JSON.parse(fs.readFileSync(path.join(options.cwd, "package.json"), "utf-8"));
     const configDescriptor = createConfig({ packageJSON: pkg });
     fs.writeFileSync(configFilePath, JSON.stringify(configDescriptor, null, 2) + "\n", "utf-8");
     return {

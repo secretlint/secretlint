@@ -68,8 +68,7 @@
         "@secretlint/profiler": "workspace:*",
         "@secretlint/resolver": "workspace:*",
         "@secretlint/walker": "workspace:*",
-        "debug": "catalog:",
-        "read-pkg": "catalog:"
+        "debug": "catalog:"
     },
     "devDependencies": {
         "@secretlint/secretlint-rule-example": "workspace:*",
