@@ -6,15 +6,16 @@
     "license": "MIT",
     "type": "module",
     "scripts": {
-        "build": "rollup --config",
-        "test:browser": "playwright test"
+        "build": "vite build",
+        "test:browser": "tsc -p . && playwright test"
     },
     "devDependencies": {
         "@playwright/test": "catalog:",
-        "@rollup/plugin-commonjs": "catalog:",
-        "@rollup/plugin-node-resolve": "catalog:",
         "@secretlint/core": "workspace:*",
         "@secretlint/secretlint-rule-preset-recommend": "workspace:*",
-        "rollup": "catalog:"
+        "@secretlint/types": "workspace:*",
+        "@types/node": "catalog:",
+        "typescript": "catalog:",
+        "vite": "catalog:"
     }
 }

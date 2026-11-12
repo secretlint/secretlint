@@ -1,12 +1,22 @@
 import { lintSource } from "@secretlint/core";
 import { creator as presetRecommend } from "@secretlint/secretlint-rule-preset-recommend";
+import type { SecretLintCoreResult } from "@secretlint/types";
+
+export type LintOptions = {
+    filePath?: string;
+    /**
+     * Pass the content as UTF-8 bytes (`contentBytes`) too
+     */
+    useBytes?: boolean;
+};
 
 /**
  * Lint the content with the recommend preset.
- * @param {string} content
- * @param {{ filePath?: string, useBytes?: boolean }} [options]
  */
-export const lint = (content, { filePath = "/virtual/test.txt", useBytes = false } = {}) => {
+export const lint = (
+    content: string,
+    { filePath = "/virtual/test.txt", useBytes = false }: LintOptions = {}
+): Promise<SecretLintCoreResult> => {
     return lintSource({
         source: {
             content,
@@ -26,3 +36,9 @@ export const lint = (content, { filePath = "/virtual/test.txt", useBytes = false
         }
     });
 };
+
+declare global {
+    interface Window {
+        secretlint: { lint: typeof lint };
+    }
+}

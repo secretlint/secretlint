@@ -1,20 +1,22 @@
 import { test, expect } from "@playwright/test";
+// `window.secretlint` type
+import type {} from "../src/index.js";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const rootDir = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const ORIGIN = "http://secretlint.test";
-const contentTypes = {
+const contentTypes: Record<string, string> = {
     ".html": "text/html",
     ".js": "text/javascript"
 };
 
 test.beforeEach(async ({ page }) => {
-    // Serve test/index.html and dist/ from the disk, without a web server
+    // Serve dist/ (the build of Vite) from the disk, without a web server
     await page.route(`${ORIGIN}/**`, async (route) => {
         const { pathname } = new URL(route.request().url());
-        const filePath = pathname === "/" ? path.join(rootDir, "test/index.html") : path.join(rootDir, pathname);
+        const filePath = path.join(rootDir, "dist", pathname === "/" ? "index.html" : pathname);
         try {
             await route.fulfill({
                 body: await fs.readFile(filePath),
@@ -25,7 +27,7 @@ test.beforeEach(async ({ page }) => {
         }
     });
     // A module that can not be loaded in browsers (e.g. a static import of `node:path`) is a console error
-    const errors = [];
+    const errors: string[] = [];
     page.on("pageerror", (error) => errors.push(error.message));
     page.on("console", (message) => {
         if (message.type() === "error") {

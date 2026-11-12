@@ -147,6 +147,9 @@ catalogs:
     typescript:
       specifier: ^6.0.3
       version: 6.0.3
+    vite:
+      specifier: ^7.1.1
+      version: 7.1.1
     vitest:
       specifier: ^4.1.12
       version: 4.1.12
@@ -176,21 +179,24 @@ importers:
       '@playwright/test':
         specifier: 'catalog:'
         version: 1.65.0
-      '@rollup/plugin-commonjs':
-        specifier: 'catalog:'
-        version: 29.0.3(rollup@4.68.2)
-      '@rollup/plugin-node-resolve':
-        specifier: 'catalog:'
-        version: 16.0.3(rollup@4.68.2)
       '@secretlint/core':
         specifier: workspace:*
         version: link:../../packages/@secretlint/core
       '@secretlint/secretlint-rule-preset-recommend':
         specifier: workspace:*
         version: link:../../packages/@secretlint/secretlint-rule-preset-recommend
-      rollup:
+      '@secretlint/types':
+        specifier: workspace:*
+        version: link:../../packages/@secretlint/types
+      '@types/node':
         specifier: 'catalog:'
-        version: 4.68.2
+        version: 25.9.9
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+      vite:
+        specifier: 'catalog:'
+        version: 7.1.1(@types/node@25.9.9)(jiti@1.21.7)(tsx@4.23.15)(yaml@2.8.3)
 
   examples/benchmark:
     dependencies:
