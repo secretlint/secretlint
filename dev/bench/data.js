@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794445666800,
+  "lastUpdate": 1794482706498,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -61560,6 +61560,44 @@ window.BENCHMARK_DATA = {
             "range": "±1.61%",
             "unit": "ops/sec",
             "extra": "16 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "0ab526ffec4e9ca7754731b22940f25080d100bd",
+          "message": "feat!: remove sourceContent from the result, and add getSource to formatters (#1797)\n\n## Summary\n\nThe result of `lintSource()` no longer has `sourceContent`. A formatter\nthat needs the content of the linted source gets it from\n`getSource(filePath)`.\n\nBefore this PR, every result carried the whole content of the file, and\n`--format=json` printed the unmasked content of every text file into the\nreport, even when the secrets in the messages were masked. Most files\nhave no secret, and their bytes are never decoded during the lint, so\nfilling the result also added work that the lint avoids.\n\n## Specifications (sdev)\n\nThis PR adds Requirements and Design for the two features it touches, in\nEnglish and Japanese.\n\n- Result output:\n[Requirements](https://github.com/secretlint/secretlint/blob/claude/project-thread-hw6c2o/docs/products/secretlint/features/result-output/requirements.md),\n[Design](https://github.com/secretlint/secretlint/blob/claude/project-thread-hw6c2o/docs/products/secretlint/features/result-output/design.md)\n- mask-result formatter:\n[Requirements](https://github.com/secretlint/secretlint/blob/claude/project-thread-hw6c2o/docs/products/secretlint/features/mask-result-formatter/requirements.md),\n[Design](https://github.com/secretlint/secretlint/blob/claude/project-thread-hw6c2o/docs/products/secretlint/features/mask-result-formatter/design.md)\n\nThe documents are in separate commits, so the change of behavior can be\nread from the diff.\n\n1. `9a02236f`: the current state on master, before this change\n2. `8b210214`: the getSource change as an update of those documents\n3. Later commits: the table of behavior for each kind of content, the\nreason why `mask-result` treats a binary file as an error, and the\nrename of the feature \"File masking\" to \"mask-result formatter\"\n\nBasis of the current-state documents:\n\n- **Confirmed from code or tests:** formatter loading order, the\nformatters that come with Secretlint, the content of the JSON output,\n`--output` and the exit status, removal of terminal control characters,\nthe behavior of `mask-result` including the errors for binary and empty\nfiles, re-reading a file from the disk with the size and time stamp\ncheck\n- **Taken from existing documents:** the examples and the exit status in\n`secretlint --help`\n- **Based on the maintainer's answers:** the direction of the change\n(remove the source from JSON and use `getSource`), an empty file is not\nan error for `mask-result`, and a binary file stays an error for\n`mask-result` because the formatter is basically used for one file\n- **Left unknown:** why the content was carried in the lint result, and\nwhy the JSON output included it\n\nFeatures not written in this PR: the lint result as a return value of\nthe library API (`@secretlint/core`, `@secretlint/node`), and the\nsnapshots of rule tests (`@secretlint/tester`, part of \"Custom rules\").\nThe Design of Result output mentions them only where this change needs\nit.\n\n## Changes\n\n- **core**: the result is `{ filePath, sourceContentType, messages }`.\nThe bytes of a file are decoded only when a rule needs the content.\n- **types**: add `SecretLintFormatterGetSource` and the `getSource`\noption to `SecretLintFormatterOptions`.\n- **formatter**: `loadFormatter()` accepts `getSource` and passes it to\nthe formatter as part of the second argument. `mask-result` uses\n`getSource()` instead of `result.sourceContent`.\n- **node**: the engine keeps the content of the text files that have\nmessages, and passes it via `getSource()`. `mask-result` outputs all\nfiles, so the engine reads all files as strings for it.\n`executeOnContent()` passes the given content.\n- **source-creator**: the file reader no longer re-reads a file from\ndisk. It throws if the content is read after the next file has been\nread.\n- **node**: each `executeOnFiles()` call creates its own file reader, so\nconcurrent calls do not share the buffer.\n- **tester**: snapshots still have `sourceContent`. The tester adds it\nto the snapshot, so the snapshots of rules do not change.\n\n```js\n// custom formatter\nexport default (results, { getSource }) => {\n    return results\n        .map((result) => {\n            // `undefined` if the content is not available\n            const content = getSource?.(result.filePath);\n            return `${result.filePath}: ${result.messages.length} messages`;\n        })\n        .join(\"\\n\");\n};\n```\n\n`getSource()` returns `undefined` if the content is not available:\nbinary content, a config result, or a file without messages (except for\n`mask-result`).\n\n## Breaking Changes\n\n- `SecretLintCoreResult.sourceContent` is removed.\n- `--format=json` does not output `sourceContent`.\n- A custom formatter that reads `result.sourceContent` should use\n`getSource(result.filePath)`.\n- `mask-result` formatter throws if `getSource` is not passed to\n`loadFormatter()`.\n\n## Behavior change of mask-result\n\n- An empty file is no longer an error. It adds nothing to the output.\n\n## Test plan\n\n- `turbo run build test --force`: 109 tasks successful (before the\ndocuments were added)\n- `tsc --noEmit --incremental false` for types, core, node, formatter,\ntester, source-creator, secretlint\n- `sdev lint`: no violations\n- New tests: json output has no content, `getSource()` returns the\ncontent of the files that have messages, `executeOnContent()` passes the\ncontent, concurrent `executeOnFiles()` calls, `mask-result` with an\nempty file and with a binary file\n- The large stdout tests of `secretlint`, `quick-start`, and the binary\nuse `mask-result`, because json output is no longer large\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nhttps://claude.ai/code/session_01TSdrAEtdYrJ3gH5zbHUC4Y\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-11-12T20:24:02+09:00",
+          "tree_id": "fb0a89ab6195fa52d92caee2f3e086ca329a00a8",
+          "url": "https://github.com/secretlint/secretlint/commit/0ab526ffec4e9ca7754731b22940f25080d100bd"
+        },
+        "date": 1794482703666,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 6.16,
+            "range": "±1.50%",
+            "unit": "ops/sec",
+            "extra": "20 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 5.08,
+            "range": "±1.80%",
+            "unit": "ops/sec",
+            "extra": "17 samples"
           }
         ]
       }
