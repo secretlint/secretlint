@@ -43,6 +43,10 @@ const isFullwidthCodePoint = (codePoint: number): boolean => {
  * Get the number of the columns that the string uses in a terminal.
  * It is based on https://github.com/sindresorhus/string-width v4
  *
+ * Node.js has the same function internally, but it is not a public API yet.
+ * Replace this file with `util.getStringWidth` when it is available in the supported versions of Node.js.
+ * https://github.com/nodejs/node/pull/66642
+ *
  * - An escape sequence, a control character and a combining character use no column
  * - A fullwidth character and an emoji use two columns
  */
