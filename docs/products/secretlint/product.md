@@ -56,7 +56,7 @@ GitHub secret scanning works on the GitHub side, after a commit is made or pushe
 
 - **Characteristics:** Developers who build other tools on Secretlint, such as Secretlint WebExtension and SecureClipboard.
 - **Problems:** They need to scan content that is not a file in a repository, such as HTTP traffic or the clipboard.
-- **Usage context:** They call Secretlint from their own code as a library.
+- **Usage context:** They call Secretlint from their own code as a library, in Node.js or in a browser.
 
 ## Value provided
 
@@ -141,6 +141,7 @@ Not decided yet. See [Open questions](#open-questions).
 - **Rule as documentation.** Each rule documents why it reports a value.
 - **Semantic Versioning.** Releases follow Semantic Versioning, except for `@secretlint/secretlint-rule-preset-canary`. A change that makes Secretlint report more errors by default, such as adding a rule to a preset, is a major release.
 - **Keep the meaning of the pattern format.** A new property of a rule's declarative pattern gets a new name, and the meaning of an existing property does not change, so an older Secretlint never runs a newer rule with a different result.
+- **Run `@secretlint/core` and the recommended preset in browsers.** They do not depend on Node.js, so that tools such as Secretlint WebExtension can use them. File access and configuration loading belong to the Node.js packages.
 - **Read text as UTF-8 only.** Supporting other encodings is desirable, but Secretlint currently limits text to UTF-8 because of the realistic cost of supporting them.
 
 ## SLA, SLI, and SLO
