@@ -74,7 +74,7 @@ A rule that checks binary content lists `binary` in `meta.supportedContentTypes`
 Keywords are not used for binary content, so the rule runs for every binary file. It decides from `filePath` or `ext` whether the file is one it checks, and returns quickly for other files.
 
 The rule reads the bytes from `contentBytes` of the source code object, not from `content` and not from a file.
-When `contentBytes` is `undefined`, the rule does not check the file and reports nothing. It does not fall back to reading the file, because the command always gives the bytes, and reading the file would ignore `noPhysicFilePath` and make the result depend on the environment.
+When `contentBytes` is `undefined`, the rule skips only the checks that need the bytes and reports nothing for them. Checks of text that use `content`, such as a JSON key file, run as before. It does not fall back to reading the file, because the command always gives the bytes, and reading the file would ignore `noPhysicFilePath` and make the result depend on the environment.
 
 The rule does not import a Node.js module statically, because a preset imports its rules statically and one such import stops the preset from loading in a browser. A file name for a message is taken from `filePath` with a small helper instead of `node:path`.
 An API that is faster in Node.js but has a standard alternative, such as `node:crypto` for Web Crypto, is imported dynamically and falls back to the standard API when the import fails.
