@@ -146,6 +146,7 @@ The bytes and the content can have secrets. They stay in memory and are not writ
 ## Deployment notes
 
 Removing `all` from the type makes a TypeScript rule that declares `all` fail to compile until it lists `text` and `binary`. Its behavior does not change, because the core still accepts `all`.
+Removing a value from a public type is an incompatible change of the public API, so this part is released in a major version, following the versioning rules of the contributing guide.
 
 Adding `contentBytes` to the source code object does not change existing rules.
 A program that calls `lintSource()` for a `.p12` file with only the string gets no report after this change, while the gcp rule read the file before. The release notes tell such a caller to pass `contentBytes`. It is not a breaking change: by the versioning principle of the Product, a major release is for a change that reports more by default, and this change only reports less for such a caller.
