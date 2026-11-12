@@ -1,0 +1,201 @@
+# Secret scanning
+
+[日本語](requirements.ja.md)
+
+## About this document
+
+Secret scanning lints the content of files, of STDIN, or of a source given by a program with the configured rules, and reports the secrets that the rules find.
+The parent Product is [Secretlint](../../product.md).
+
+This document is written for the part of the feature that a change needs: what content is linted, how text and binary content are told apart, which rules run for each kind of content, and what a rule receives.
+
+### Scope
+
+- The sources that are linted: files, the STDIN content, and a source that a program passes to `@secretlint/core`
+- The content type of a source: text, binary, or unknown
+- Which rules run for each content type
+- The content and the information about the source that a rule receives
+- The same results in Node.js and in browsers
+
+### Out of scope
+
+- Choosing files from globs and ignore files. It belongs to the feature "File selection".
+- Loading the configuration. It belongs to the feature "Configuration loading".
+- How each rule decides that a value is a secret. It belongs to the feature "Rules and rule presets".
+- Disable comments. They belong to the feature "Ignoring by comment".
+- Masking secret values in messages. It belongs to the feature "Secret masking in results".
+- Showing the results. It belongs to [Result output](../result-output/requirements.md).
+- Text encodings other than UTF-8. The Product limits text to UTF-8.
+- How keywords and declarative patterns of rules are checked, and how the lint is kept fast. They are not written yet.
+
+## User stories
+
+### Find a secret in a text file
+
+As a developer, I want the secrets in the text files of a repository to be reported so that I can remove them before the commit.
+
+**Acceptance criteria:**
+
+Scenario: When a text file has a secret, the rule that detects it reports it
+
+- Given: A UTF-8 text file has a value that an enabled rule reports.
+- When: The developer runs `secretlint` for the file.
+- Then: The result of the file has a message of the rule, with the line and column of the value.
+
+Scenario: When a text file starts with a byte order mark, the location does not count it
+
+- Given: A UTF-8 text file starts with a byte order mark and has a secret on the first line.
+- When: The developer runs `secretlint` for the file.
+- Then: The column of the message is the same as for the file without the byte order mark.
+
+### Find a secret in a binary file
+
+As a developer, I want a secret that is stored as a binary file, such as a GCP service account key in the PKCS#12 format (`.p12`), to be reported so that I do not commit it.
+
+**Acceptance criteria:**
+
+Scenario: When a `.p12` file is a GCP service account key, the gcp rule reports it in Node.js
+
+- Given: A `.p12` file is a GCP service account key, and the gcp rule is enabled.
+- When: The developer runs `secretlint` for the file.
+- Then: The result of the file has the `PrivateKeyP12` message of the gcp rule with the file name.
+
+Scenario: When a binary file is linted, the rules for text do not run
+
+- Given: A binary file, such as an image, happens to have bytes that look like a token, and only rules for text are enabled.
+- When: The developer runs `secretlint` for the file.
+- Then: The result of the file has no message.
+
+### Lint content in a browser
+
+As a tool integrator, I want to lint content with `@secretlint/core` and the recommended preset in a browser so that my tool finds secrets without Node.js.
+
+**Acceptance criteria:**
+
+Scenario: When text content is linted in a browser, the result is the same as in Node.js
+
+- Given: A tool in a browser has text content with a secret, and the recommended preset.
+- When: The tool calls `lintSource()` with the content.
+- Then: The result has the same messages as the lint of the same content in Node.js.
+
+Scenario: When a `.p12` source is linted in a browser, nothing is reported
+
+- Given: A tool in a browser has the bytes of a `.p12` file that is a GCP service account key.
+- When: The tool calls `lintSource()` with the source and the recommended preset.
+- Then: The result has no message, and no error is thrown. In Node.js the same file is reported.
+
+### Lint the STDIN content
+
+As a developer or an AI agent, I want to lint content from STDIN with a file name so that I can check content that is not saved as a file.
+
+**Acceptance criteria:**
+
+Scenario: When content is given from STDIN, it is linted as text with the given file name
+
+- Given: Content with a secret.
+- When: The user runs `secretlint --stdinFileName=secret.txt` with the content on STDIN.
+- Then: The result has the file name `secret.txt` and the message of the rule.
+
+## KPIs
+
+None for this part of the feature.
+
+## Functional requirements
+
+### Tell the content type of a source
+
+**Overview:** Each source has a content type: text, binary, or unknown. The content type decides which rules run.
+
+**Input:** A file path and the bytes of the file, or the content type that a program gives.
+
+**Output:** The content type of the source, which is also shown in the result.
+
+#### Applicable conditions
+
+##### Files
+
+For a file, Secretlint decides the content type from the file name and the bytes of the file.
+A file that is known as binary is binary, a file that is known as text is text, and other files are unknown.
+
+##### STDIN
+
+The STDIN content is always text.
+
+##### A source from a program
+
+A program that calls `@secretlint/core` gives the content type of the source.
+
+### Run the rules for the content type
+
+**Overview:** A rule declares the content types it supports, and it runs only for them.
+
+**Input:** The content type of the source and the enabled rules.
+
+**Output:** The messages of the rules that ran.
+
+#### Applicable conditions
+
+##### Supported content types
+
+A rule declares `text`, `binary`, or `all`.
+For text content, the rules that support `text` or `all` run.
+For binary content, the rules that support `binary` or `all` run.
+For unknown content, all rules run.
+
+##### Rules that check binary content
+
+Among the rules that Secretlint provides, only the gcp rule checks binary content, for `.p12` files.
+
+### Give the source to a rule
+
+**Overview:** A rule receives the content of the source and information about it.
+
+**Input:** The source being linted.
+
+**Output:** What a rule can read: the content as a string, whether it had a byte order mark, the file path, the path of the file on the disk, the file extension, the content type, and conversions between positions and indexes in the content.
+
+#### Applicable conditions
+
+##### The content
+
+The content is the text of the source decoded as UTF-8, without the byte order mark.
+For binary content, the content is also the bytes decoded as UTF-8, so bytes that are not valid UTF-8 are replaced and the original bytes can not be read from it.
+A rule does not receive the bytes of the source.
+
+##### The path of the file on the disk
+
+The path of the file on the disk is available when the source is a file and the caller allows it.
+A rule that needs the bytes of a file reads the file from this path or from the file path, which works only where a file system is available.
+
+#### Exceptional behavior
+
+##### A rule can not read the file
+
+When a rule needs to read the file and can not, for example in a browser, the rule reports nothing for that check, and the lint does not fail.
+
+## Data requirements
+
+### Required data
+
+- **Source:** The content to lint, its file path or the name given for STDIN, the file extension, and the content type. A source from a file also has the bytes of the file during the lint.
+- **Result:** The file path, the content type, and the messages. The result does not have the content.
+
+### Relationships
+
+A source produces one result.
+
+### Personal information
+
+None is collected by Secretlint. A linted file can have any data, including secrets and personal information, and Secretlint keeps it only in memory during the lint.
+
+## External service dependencies
+
+None. The lint runs in the process of Secretlint, and rules do not connect to services.
+
+## Security considerations
+
+The content of a source can have secrets. Secretlint reads it only in memory, and does not write it anywhere except the output that the user chooses, such as the `mask-result` formatter.
+
+## Open questions
+
+None.

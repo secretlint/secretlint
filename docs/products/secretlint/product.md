@@ -110,7 +110,7 @@ GitHub secret scanning works on the GitHub side, after a commit is made or pushe
 
 | Feature | Description | Specification |
 | --- | --- | --- |
-| Secret scanning | Lint files, globs, or STDIN content with the configured rules and report the secrets found | Not written |
+| Secret scanning | Lint files, globs, or STDIN content with the configured rules and report the secrets found | [Requirements](features/secret-scanning/requirements.md) |
 | File selection | Choose the files to lint from globs and paths, honoring `.gitignore`, `.secretlintignore`, and built-in ignores | Not written |
 | Configuration loading | Find and validate the configuration file and decide the rules, options, severities, and allowed messages | Not written |
 | Configuration creation | Create a `.secretlintrc.json` with `--init` | Not written |
