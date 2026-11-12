@@ -44,7 +44,7 @@ A rule whose entry has `disabled: true` is not registered, in the same way as a 
 
 The preset packages depend on their rule packages only as devDependencies, and are built with Rollup into one module that contains the code of all their rules.
 So installing a preset does not install the rule packages, and the version of each rule is the one bundled in the preset.
-The README of the preset gives the reason: a bundled file reduces the loading cost.
+Bundling reduces the cost of loading the rules.
 
 The canary preset is the source of the rule list.
 The `sync-canary` script of the recommended preset copies the source and the tests of the canary preset into the recommended preset, replacing the preset id, when the rules are promoted in a major release.
