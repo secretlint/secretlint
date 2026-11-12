@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794490010509,
+  "lastUpdate": 1794490438054,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -61712,6 +61712,44 @@ window.BENCHMARK_DATA = {
             "range": "±0.98%",
             "unit": "ops/sec",
             "extra": "12 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "3e256973867447111c750d437823b10f3e7bcd52",
+          "message": "test: run @secretlint/core and the recommend preset in a browser with Playwright (#1803)\n\n<!-- claude-projects-attribution: {\"github_login\":\"azu\"} -->\n_Requested by **azu** · [project\nthread](https://claude.ai/code/project/chan_01ChfsKF1sN6vYsJMPZ7PuDt?thread=cmsg_01ChfsKF1sN6vYsJMPZ7PuDtRMRmxQ8jxj1onzXYar8zuS)_\n\nFixes #1790\n\n## Summary\n\nCI now checks that `@secretlint/core` and\n`@secretlint/secretlint-rule-preset-recommend` work in a browser. The\ntest bundles them with Vite **without Node.js polyfills**, loads the\nbundle in Chromium with Playwright, and lints a content with fake\nsecrets.\n\n#1790 (the recommend preset can not be bundled for browsers, because the\ngcp rule imported `node:path`) is fixed on `master` by #1804. This PR\nadds the browser test that keeps it fixed. Rebased onto `master` after\n#1804: the gcp commits of this PR were the same change and are dropped,\nso this PR changes only the test, the CI and the workspace.\n\n## Changes\n\n- **e2e/core-browser** (new private workspace package\n`@secretlint/e2e-browser`, TypeScript)\n- `src/index.ts`: `lint(content)` = `lintSource()` with the recommend\npreset. It sets `ext` from the file path, as\n`@secretlint/source-creator` does in Node.js. `src/main.ts` +\n`index.html` put it on `window.secretlint`.\n- `vite.config.ts`: `vite build`. Vite replaces a Node.js built-in\nmodule with an empty module that throws only when it is used, so\n`node:*` is kept as an import (`rollupOptions.external`): a static\nimport of it makes the page fail to load, and a dynamic import of it\nfails only when it runs (as `node:crypto` in gcp does, with a Web Crypto\nfallback). An unresolved bare import fails the build. Vite 7.1.1 is\nalready in the lockfile through vitest.\n- `test/browser.spec.ts`: the page is served from `dist/` by\n`page.route()`, so no web server is needed. It checks that the bundle\nloads (console errors are shown on failure), that AWS / GitHub fake\nsecrets are reported, that the gcp rule reports a service account key\nJSON with its file name (a Windows path), and that a content without\nsecrets reports nothing. Each case runs with `content` only and with\n`contentBytes` (the `TextDecoder` path that is used in browsers instead\nof `Buffer#utf8Slice`).\n  - `test:browser` = `tsc -p . && playwright test`.\n- **CI**: a `browser-test` job in `test.yml` (ubuntu, Node.js 22): build\nwith `turbo --filter=@secretlint/e2e-browser...`, `playwright install\n--with-deps chromium`, run the test. `pnpm test` does not run it.\n- `@playwright/test` and `vite` added to the catalog, `e2e/*` to the\nworkspace, `dist/**` to the turbo build outputs, and a line in\n`AGENTS.md`.\n\nThe directory is `e2e/core-browser`, not `e2e/browser`, because\n`.gitignore` ignores `browser/`.\n\n## Test plan\n\n- [x] `test:browser` in `e2e/core-browser` after the rebase: 6 passed\n(Chromium)\n- [x] with a static `node:path` import added to gcp, the test fails with\n`secretlint is not loaded in the browser`; without `external` in\n`vite.config.ts` it passes (so `external` is needed)\n- [x] CI `browser-test` job after the rebase\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nhttps://claude.ai/code/session_01TSdrAHmxHtUM7exvcWnqJp\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-11-12T22:32:53+09:00",
+          "tree_id": "15341ba1d0e410cafb5ad97c41f2284a8f81283a",
+          "url": "https://github.com/secretlint/secretlint/commit/3e256973867447111c750d437823b10f3e7bcd52"
+        },
+        "date": 1794490435271,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 6.02,
+            "range": "±3.46%",
+            "unit": "ops/sec",
+            "extra": "20 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 4.97,
+            "range": "±2.03%",
+            "unit": "ops/sec",
+            "extra": "17 samples"
           }
         ]
       }
