@@ -349,6 +349,49 @@ describe("lintSource with patterns", () => {
             [["pattern-rule", "preset", "tok_cd34"]],
         );
     });
+    it("should not run a rule that is disabled in the rules of a preset", async () => {
+        const rule = createPatternRule([tokenPattern()]);
+        const handlerRule: SecretLintRuleCreator = {
+            messages: {},
+            meta: { id: "handler-rule", recommended: true, type: "scanner", supportedContentTypes: ["text"] },
+            create(context) {
+                return {
+                    file(source) {
+                        context.report({ message: "found", range: [0, source.content.length] });
+                    },
+                };
+            },
+        };
+        const preset: SecretLintRulePresetCreator = {
+            meta: { id: "preset", recommended: true, type: "preset" },
+            rules: [rule as SecretLintRuleCreator<unknown>, handlerRule as SecretLintRuleCreator<unknown>],
+            create(context) {
+                context.registerRule(rule);
+                context.registerRule(handlerRule);
+            },
+        };
+        const config: SecretLintCoreConfig = {
+            rules: [
+                {
+                    id: "preset",
+                    rule: preset,
+                    rules: [
+                        { id: "pattern-rule", disabled: true },
+                        { id: "handler-rule", disabled: true },
+                    ],
+                },
+            ],
+        };
+        const content = "tok_ab12";
+        assert.deepStrictEqual((await lintBoth(content, config)).messages, []);
+        assert.strictEqual(rule.created, 0);
+        // enable the rules again with the same config object
+        config.rules[0] = { id: "preset", rule: preset, rules: [{ id: "pattern-rule", disabled: false }] };
+        assert.deepStrictEqual((await lintBoth(content, config)).messages.map((message) => message.ruleId).sort(), [
+            "handler-rule",
+            "pattern-rule",
+        ]);
+    });
     it("should reject if report() throws", async () => {
         const rule = createPatternRule([
             tokenPattern({

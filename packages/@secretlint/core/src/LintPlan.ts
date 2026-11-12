@@ -353,6 +353,11 @@ Duplicated rule.id is something wrong in .secretlintrc.
                     const descriptorRule = presetRules.find((descriptorRule) => {
                         return descriptorRule.id === rule.meta.id;
                     });
+                    // Do not register a rule that is disabled in the preset's rules
+                    if (descriptorRule?.disabled) {
+                        debug("Skip registerRule %s in %s, because it is disabled", rule.meta.id, descriptor.id);
+                        return;
+                    }
                     registerRule(
                         {
                             // options and disabled ...
