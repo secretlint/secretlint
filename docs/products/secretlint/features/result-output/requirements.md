@@ -12,6 +12,7 @@ The parent Product is [Secretlint](../../product.md).
 - Choosing a formatter with `--format`
 - The formatters that come with Secretlint, and formatters that a user adds
 - The content of the JSON output
+- The content of the linted file that a formatter can use
 - Writing the output to the standard output or to a file with `--output`
 - The exit status of the command
 - Color, terminal links, and control characters in the output for a terminal
@@ -68,17 +69,11 @@ Scenario: When `--format=json` is specified, the output is a JSON array with one
 - When: The user runs `secretlint` for the files with `--format=json`.
 - Then: The standard output is one JSON array with two items. Each item has the file path, the content type, and the list of messages. The item of the file without a secret has an empty list of messages.
 
-Scenario: When `--format=json` is specified, each item of a text file includes the content of the file
+Scenario: When `--format=json` is specified, the output does not include the content of the files
 
 - Given: Two text files are linted. One has a secret and the other has none.
 - When: The user runs `secretlint` for the files with `--format=json`.
-- Then: Each of the two items has the whole content of its file as `sourceContent`. The secret in the content is not masked, even when the secret in the messages is masked.
-
-Scenario: When a binary file is linted with `--format=json`, its item does not include the content
-
-- Given: A binary file is linted.
-- When: The user runs `secretlint` for the file with `--format=json`.
-- Then: The item of the file has the content type `binary` and has no `sourceContent`.
+- Then: Neither of the two items has the content of its file, and no item has `sourceContent`. When the secret in the messages is masked, the output does not have the secret value anywhere.
 
 ### Save results to a file
 
@@ -116,6 +111,36 @@ Scenario: When the formatter is not found, the command fails with an error that 
 - When: The user runs `secretlint` with `--format=unknown-name`.
 - Then: The standard error shows that the formatter `unknown-name` could not be found. The exit status is 2.
 
+### Use the content of the linted file in a formatter
+
+As a tool integrator, I want to get the content of a linted file in my formatter so that the output can show the text around a secret.
+
+**Acceptance criteria:**
+
+Scenario: When a file has messages, a formatter can get the content of the file
+
+- Given: A text file has a secret, and a formatter that a user adds asks for the content of each result by its file path.
+- When: The user runs `secretlint` for the file with the formatter.
+- Then: The formatter gets the whole content of the file as it was linted. The ranges of the messages point into this content.
+
+Scenario: When a file has no messages, a formatter gets no content for the file
+
+- Given: A text file has no secret, and a formatter that a user adds asks for the content of each result by its file path.
+- When: The user runs `secretlint` for the file with the formatter.
+- Then: The formatter gets the answer that the content is not available, and it can still output the result of the file.
+
+Scenario: When the STDIN content is linted, a formatter can get the content
+
+- Given: A content is given from STDIN with `--stdinFileName`, and a formatter that a user adds asks for the content by the given file name.
+- When: The user runs `secretlint` with the formatter.
+- Then: The formatter gets the given content, whether it has messages or not.
+
+Scenario: When a binary file is linted, a formatter gets no content for the file
+
+- Given: A binary file is linted, and a formatter that a user adds asks for the content of each result by its file path.
+- When: The user runs `secretlint` for the file with the formatter.
+- Then: The formatter gets the answer that the content is not available.
+
 ## KPIs
 
 None. No metric is defined for this feature.
@@ -141,7 +166,15 @@ None. No metric is defined for this feature.
 
 `--format` accepts a path of a file, or a name of an installed package.
 A package name can be the full name, or the name without the prefix `secretlint-formatter-`.
-A formatter receives the list of results and the color setting, and returns the text to output.
+A formatter receives the list of results, the color setting, and a way to get the content of a linted file by its file path. It returns the text to output.
+The results do not have the content of the files.
+
+##### The content of a linted file
+
+A formatter can get the content of a text file that has at least one message, and the content given from STDIN.
+The content is the content that was linted. Secretlint does not read the file again for the formatter.
+The content of a text file without messages, the content of a binary file, and the content for the configuration file are not available.
+[File masking](../file-masking/requirements.md) is the exception: the `mask-result` formatter gets the content of every linted text file.
 
 ##### Output for a terminal
 
@@ -166,8 +199,7 @@ The command shows an error that names the formatter, and exits with the status 2
 #### Applicable conditions
 
 Each item has the file path (`filePath`), the content type (`sourceContentType`), and the messages (`messages`).
-An item of a text file also has the whole content of the file (`sourceContent`), whether the file has messages or not.
-The content is the content that was linted, and secrets in it are not masked.
+An item does not have the content of the file. A program that needs the text of a range reads the file by the file path.
 Each message has the rule ID, the message ID, the message text, the severity, the range and location in the content, and the URL of the documentation when the rule has one.
 
 ### Output destination and exit status
@@ -196,12 +228,13 @@ When the lint or the formatter throws an error, the command shows the error on t
 
 ### Required data
 
-- **Lint result:** The result of linting one file or one content. It has the file path, the content type (text, binary, or unknown), the messages, and the content of the file when the content type is text.
+- **Lint result:** The result of linting one file or one content. It has the file path, the content type (text, binary, or unknown), and the messages. It does not have the content.
+- **Content of the linted file:** The text that was linted. It is kept during one run only for the files whose content a formatter can get.
 - **Message:** One report of a rule. It has the rule ID, the message ID, the message text, the severity, the range and location in the content, the data of the message, and the URL of the documentation.
 
 ### Relationships
 
-A lint result has zero or more messages. The range and location of a message point into the content of its lint result.
+A lint result has zero or more messages. The range and location of a message point into the content of the linted file with the same file path.
 
 ### Personal information
 
@@ -215,7 +248,8 @@ None. The output is created on the machine that runs Secretlint.
 
 The output can be shown in terminals, CI logs, and the input of AI agents, so it should not expose secrets.
 Secret values in messages are masked by default.
-The JSON output includes the content of each text file without masking, so it exposes the secrets of the linted files to everything that reads the output.
+The content of a linted file is not masked, so no formatter that comes with Secretlint outputs it, except `mask-result`, which masks it.
+A formatter that a user adds and that outputs the content exposes the secrets of the file.
 File paths and messages come from linted files, so the output for a terminal must not let them control the terminal.
 
 ## Open questions

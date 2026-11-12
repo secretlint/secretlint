@@ -2,6 +2,7 @@ import { createEngine } from "../src/index.js";
 import { secretLintProfiler } from "@secretlint/profiler";
 import fs from "node:fs";
 import assert from "node:assert";
+import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -135,6 +136,43 @@ describe("createEngine", () => {
         const secretResult = await engine.executeOnFiles({ filePathList: [secretFilePath] });
         assert.strictEqual(secretResult.ok, false);
         assert.strictEqual(secretResult.output, fs.readFileSync(secretFilePath, "utf-8").replace("SECRET", "******"));
+    });
+    it("should output nothing for an empty file with mask-result formatter", async () => {
+        const dir = fs.mkdtempSync(path.join(os.tmpdir(), "secretlint-node-test-"));
+        try {
+            const emptyFilePath = path.join(dir, "empty.txt");
+            fs.writeFileSync(emptyFilePath, "");
+            const engine = await createEngine({
+                color: false,
+                cwd: path.join(__dirname, "fixtures/valid-config"),
+                formatter: "mask-result",
+            });
+            const cleanFilePath = path.join(__dirname, "fixtures/valid-config/.secretlintrc.json");
+            const result = await engine.executeOnFiles({ filePathList: [emptyFilePath, cleanFilePath] });
+            assert.strictEqual(result.ok, true);
+            assert.strictEqual(result.output, fs.readFileSync(cleanFilePath, "utf-8"));
+        } finally {
+            fs.rmSync(dir, { recursive: true, force: true });
+        }
+    });
+    it("should throw for a binary file with mask-result formatter", async () => {
+        const dir = fs.mkdtempSync(path.join(os.tmpdir(), "secretlint-node-test-"));
+        try {
+            const binaryFilePath = path.join(dir, "binary.png");
+            fs.writeFileSync(binaryFilePath, Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x00, 0x01, 0xff, 0xfe]));
+            const engine = await createEngine({
+                color: false,
+                cwd: path.join(__dirname, "fixtures/valid-config"),
+                formatter: "mask-result",
+            });
+            const cleanFilePath = path.join(__dirname, "fixtures/valid-config/.secretlintrc.json");
+            await assert.rejects(
+                engine.executeOnFiles({ filePathList: [cleanFilePath, binaryFilePath] }),
+                /Binary file is not supported/,
+            );
+        } finally {
+            fs.rmSync(dir, { recursive: true, force: true });
+        }
     });
     it("should create an Engine and execute on a content", async () => {
         const engine = await createEngine({

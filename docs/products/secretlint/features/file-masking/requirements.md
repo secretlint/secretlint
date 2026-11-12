@@ -34,7 +34,7 @@ Scenario: When a file has a secret, the output is the content with the secret re
 
 Scenario: When a file has no secret, the output is the content as it is
 
-- Given: A text file has no value that an enabled rule reports, and it is not empty.
+- Given: A text file has no value that an enabled rule reports.
 - When: The developer runs `secretlint` for the file with `--format=mask-result`.
 - Then: The standard output is the content of the file without any change.
 
@@ -56,11 +56,11 @@ Scenario: When a binary file is linted, the command fails without output
 - When: The developer runs `secretlint` for the files with `--format=mask-result`.
 - Then: The standard error shows that a binary file is not supported. No masked content is output. The exit status is 2.
 
-Scenario: When an empty file is linted, the command fails without output
+Scenario: When an empty file is linted, the output for the file is empty and the command succeeds
 
-- Given: An empty file is one of the linted files.
+- Given: An empty file and a text file without a secret are linted.
 - When: The developer runs `secretlint` for the files with `--format=mask-result`.
-- Then: The standard error shows that `sourceContent` is not found. No masked content is output. The exit status is 2.
+- Then: The standard output is the content of the text file only. The exit status is 0.
 
 ## KPIs
 
@@ -80,7 +80,7 @@ None. No metric is defined for this feature.
 
 A reported value is the range of a message. Every message is used, whatever its severity is.
 Each character of the range is replaced by one `*`, so the length of the content does not change.
-The content of every linted file is output, whether the file has messages or not.
+The content of every linted file is output, whether the file has messages or not. An empty file adds nothing to the output.
 Messages about problems of the configuration file are not output with `mask-result`.
 
 #### Exceptional behavior
@@ -89,15 +89,11 @@ Messages about problems of the configuration file are not output with `mask-resu
 
 The command fails with an error, and outputs nothing for all files.
 
-##### An empty file
-
-The command fails with an error, and outputs nothing for all files.
-
 ## Data requirements
 
 ### Required data
 
-- **Content of the linted file:** The whole content of each linted text file, as it was linted.
+- **Content of the linted file:** The whole content of each linted text file, as it was linted. It is kept for all linted files during one run.
 - **Ranges of messages:** The start and end of each reported value in the content.
 
 ### Relationships
