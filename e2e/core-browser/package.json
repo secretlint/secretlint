@@ -1,0 +1,21 @@
+{
+    "private": true,
+    "name": "@secretlint/e2e-browser",
+    "version": "13.1.0",
+    "description": "E2E test: run @secretlint/core and the recommend preset in a browser",
+    "license": "MIT",
+    "type": "module",
+    "scripts": {
+        "build": "vite build",
+        "test:browser": "tsc -p . && playwright test"
+    },
+    "devDependencies": {
+        "@playwright/test": "catalog:",
+        "@secretlint/core": "workspace:*",
+        "@secretlint/secretlint-rule-preset-recommend": "workspace:*",
+        "@secretlint/types": "workspace:*",
+        "@types/node": "catalog:",
+        "typescript": "catalog:",
+        "vite": "catalog:"
+    }
+}

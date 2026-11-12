@@ -75,6 +75,33 @@ jobs:
         run: bun run test:binary
         working-directory: ./publish/binary-compiler
 
+  browser-test:
+    name: "Test @secretlint/core and the recommend preset in a browser"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: Install pnpm
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+      - name: setup Node.js
+        uses: actions/setup-node@3235b876344d2a9aa001b8d1453c930bba69e610 # v3.9.1
+        with:
+          node-version: 22
+      - name: Install
+        run: pnpm install
+      # build the packages and bundle them for browsers without Node.js polyfills
+      - name: Build
+        run: pnpm turbo run build --filter=@secretlint/e2e-browser...
+      - name: Install Playwright browser
+        run: pnpm exec playwright install --with-deps chromium
+        working-directory: ./e2e/core-browser
+      - name: Test in browser
+        run: pnpm run test:browser
+        working-directory: ./e2e/core-browser
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true

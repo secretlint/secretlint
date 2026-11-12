@@ -3,8 +3,10 @@ packages:
   - packages/@secretlint/*
   - examples/*
   - publish/binary-compiler
+  - e2e/*
 
 catalog:
+  "@playwright/test": "^1.64.1"
   "@rollup/plugin-commonjs": "^29.0.3"
   "@rollup/plugin-node-resolve": "^16.0.3"
   "@rollup/plugin-typescript": "^12.3.1"
@@ -51,6 +53,7 @@ catalog:
   "tsx": "^4.23.15"
   "turbo": "^2.11.10"
   "typescript": "^6.0.3"
+  "vite": "^7.1.1"
   "vitest": "^4.1.12"
 
 onlyBuiltDependencies:
