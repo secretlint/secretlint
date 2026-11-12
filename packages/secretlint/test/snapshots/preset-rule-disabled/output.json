@@ -1,0 +1,11 @@
+{
+    "exitStatus": 0,
+    "stdout": [
+        {
+            "filePath": "[SNAPSHOT]/preset-rule-disabled/input.txt",
+            "sourceContentType": "text",
+            "messages": []
+        }
+    ],
+    "stderr": null
+}
