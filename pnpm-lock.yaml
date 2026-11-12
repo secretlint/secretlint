@@ -93,6 +93,9 @@ catalogs:
     scaffdog:
       specifier: ^4.1.0
       version: 4.1.0
+    structured-source:
+      specifier: ^4.0.0
+      version: 4.0.0
     table:
       specifier: ^6.10.1
       version: 6.10.1
@@ -271,12 +274,18 @@ importers:
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
+      '@textlint/regexp-string-matcher':
+        specifier: 'catalog:'
+        version: 2.0.2
       debug:
         specifier: 'catalog:'
         version: 4.4.3
       picomatch:
         specifier: 'catalog:'
         version: 4.0.7
+      structured-source:
+        specifier: 'catalog:'
+        version: 4.0.0
     devDependencies:
       '@secretlint/source-creator':
         specifier: workspace:*
@@ -2192,6 +2201,9 @@ packages:
   bl@4.1.0:
     resolution: {integrity: sha512-1W07cM9gS6DcLperZfFSj+bWLtaPGSOHWhPiGzXmvVJbRLdG82sH/Kn8EtW1VqWVA54AKf2h5k5BbnIbwF3h6w==}
 
+  boundary@2.0.0:
+    resolution: {integrity: sha512-rJKn5ooC9u8q13IMCrW0RSp31pxBCHE3y9V/tp3TdWSLf8Em3p6Di4NBpfzbJge9YjjFEsD0RtFEjtvHL5VyEA==}
+
   boxen@8.0.1:
     resolution: {integrity: sha512-F3PH5k5juxom4xktynS7MoFY+NUWH5LC4CnH11YB8NPew+HLpmBLCybSAEyb2F+4pRXhuhWqFesoQd6DAyc2hw==}
     engines: {node: '>=18'}
@@ -3237,6 +3249,9 @@ packages:
     resolution: {integrity: sha512-4gB8na07fecVVkOI6Rs4e7T6NOTki5EmL7TUduTs6bu3EdnSycntVJ4re8kgZA+wx9IueI2Y11bfbgwtzuE0KQ==}
     engines: {node: '>=0.10.0'}
 
+  structured-source@4.0.0:
+    resolution: {integrity: sha512-qGzRFNJDjFieQkl/sVOI2dUjHKRyL9dAJi2gCPGJLbJHBIkyOHxjuocpIEfbLioX+qSJpvbYdT49/YCdMznKxA==}
+
   stubborn-fs@2.0.0:
     resolution: {integrity: sha512-Y0AvSwDw8y+nlSNFXMm2g6L51rBGdAQT20J3YSOqxC53Lo3bjWRtr2BKcfYoAf352WYpsZSTURrA0tqhfgudPA==}
 
@@ -4120,6 +4135,8 @@ snapshots:
       buffer: 5.7.1
       inherits: 2.0.4
       readable-stream: 3.6.2
+
+  boundary@2.0.0: {}
 
   boxen@8.0.1:
     dependencies:
@@ -5276,6 +5293,10 @@ snapshots:
       ansi-regex: 6.2.2
 
   strip-json-comments@2.0.1: {}
+
+  structured-source@4.0.0:
+    dependencies:
+      boundary: 2.0.0
 
   stubborn-fs@2.0.0:
     dependencies:

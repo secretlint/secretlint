@@ -1,5 +1,5 @@
 import type { SecretLintRuleCreator } from "@secretlint/types";
-import { matchPatterns } from "../../../helper/regexp-string-matcher.js";
+import { matchPatterns } from "@textlint/regexp-string-matcher";
 
 export const messages = {
     HASHICORP_VAULT_SERVICE_TOKEN: {

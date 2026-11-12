@@ -1,5 +1,5 @@
 import type { messages, Options } from "./index.js";
-import { matchPatterns } from "../../../helper/regexp-string-matcher.js";
+import { matchPatterns } from "@textlint/regexp-string-matcher";
 import type { SecretLintRuleContext, SecretLintRuleMessageTranslate, SecretLintSourceCode } from "@secretlint/types";
 import { verifyPkcs12Mac } from "./pkcs12Mac.js";
 import { basename } from "../../path-util.js";
