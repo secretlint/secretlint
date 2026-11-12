@@ -13,16 +13,16 @@ Secretlintは秘密情報の種類ごとにルールで検出し、ルールをr
 
 - Secretlintが提供するルールと、そのルールID
 - recommendプリセットとcanaryプリセット:どのルールを含み、どう登録するか
--プリセット内のルールのオプション、重大度、許可するメッセージ、無効化
--各ルールのドキュメント
+- プリセット内のルールのオプション、重大度、許可するメッセージ、無効化
+- 各ルールのドキュメント
 
 ### 範囲外
 
--各ルールが何を検出するか。各ルールのドキュメントが説明します。
--設定ファイルのルールIDをルールに解決するしかた: [設定の読み込み](../config-loading/requirements.ja.md)
--ルールの作成とテスト: [独自ルール](../custom-rules/requirements.ja.md)
--単一実行ファイルで使えるルール: [単一実行ファイル](../single-executable-binary/requirements.ja.md)
--コメントで報告を抑える機能（`@secretlint/secretlint-rule-filter-comments`の動作）。これは「コメントによる無視」の機能に属し、まだ書かれていません。
+- 各ルールが何を検出するか。各ルールのドキュメントが説明します。
+- 設定ファイルのルールIDをルールに解決するしかた: [設定の読み込み](../config-loading/requirements.ja.md)
+- ルールの作成とテスト: [独自ルール](../custom-rules/requirements.ja.md)
+- 単一実行ファイルで使えるルール: [単一実行ファイル](../single-executable-binary/requirements.ja.md)
+- コメントで報告を抑える機能（`@secretlint/secretlint-rule-filter-comments`の動作）。これは「コメントによる無視」の機能に属し、まだ書かれていません。
 
 ## ユーザーストーリー
 
