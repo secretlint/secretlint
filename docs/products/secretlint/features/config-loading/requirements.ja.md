@@ -10,7 +10,7 @@ Secretlintはリポジトリの設定ファイルを読み、どのルールを�
 
 ### 範囲
 
-- 設定ファイルの各ルールIDを、ルールやプリセットに解決すること
+- 設定ファイルの各ルールIDを、組み込みルールか、インストールしたパッケージのルールやプリセットに解決すること
 - ルールIDの短い形
 - ルールIDを解決できないときの動作
 
@@ -26,25 +26,31 @@ Secretlintはリポジトリの設定ファイルを読み、どのルールを�
 
 ## ユーザーストーリー
 
-### インストールしたルールをIDで使う
+### ルールをIDで使う
 
-開発者として、ルールをnpmパッケージの名前で書きたい。そうすれば、インストールしたルールをSecretlintが動かす。
+開発者として、組み込みルールはルールIDで、カスタムルールはnpmパッケージの名前で書きたい。そうすれば、意図したルールをSecretlintが動かす。
 
 **受け入れ条件:**
 
-Scenario: ルールIDがインストールしたルールのパッケージ名なら、そのルールが動く
+Scenario: ルールIDが組み込みルールのIDなら、組み込みルールが動く
 
-- Given: リポジトリに`@secretlint/secretlint-rule-aws`がインストールされていて、設定ファイルに`{ "id": "@secretlint/secretlint-rule-aws" }`がある。
+- Given: `secretlint`だけがインストールされていて、設定ファイルに`{ "id": "@secretlint/secretlint-rule-aws" }`がある。
 - When: 開発者が、AWSのアクセスキーを含むファイルをlintする。
 - Then: 結果に、`ruleId`が`@secretlint/secretlint-rule-aws`のメッセージがある。
 
-Scenario: ルールIDが短い形なら、完全なパッケージ名のルールが動く
+Scenario: ルールIDが短い形なら、完全なIDのルールが動く
 
-- Given: `@secretlint/secretlint-rule-aws`がインストールされていて、設定ファイルに`{ "id": "@secretlint/aws" }`がある。
+- Given: `secretlint`だけがインストールされていて、設定ファイルに`{ "id": "@secretlint/aws" }`がある。
 - When: 開発者が、AWSのアクセスキーを含むファイルをlintする。
 - Then: 結果にAWSのルールのメッセージがあり、その`ruleId`は設定ファイルに書いたIDの`@secretlint/aws`である。
 
-Scenario: サードパーティのルールをインストールすると、同じように使える
+Scenario: 組み込みルールと同じ名前のパッケージがインストールされていると、組み込みルールが動く
+
+- Given: 古いバージョンの`@secretlint/secretlint-rule-preset-recommend`がインストールされていて、設定ファイルに`{ "id": "@secretlint/secretlint-rule-preset-recommend" }`がある。
+- When: 開発者がSecretlintを実行する。
+- Then: インストールしたSecretlintのプリセットが動き、インストールしたパッケージはimportされない。
+
+Scenario: サードパーティのルールをインストールすると、そのパッケージ名で使える
 
 - Given: ルールのパッケージ`secretlint-rule-example`がインストールされていて、設定ファイルに`{ "id": "secretlint-rule-example" }`か`{ "id": "example" }`がある。
 - When: 開発者がファイルをlintする。
@@ -58,9 +64,9 @@ Scenario: サードパーティのルールをインストールすると、同�
 
 Scenario: ルールIDがインストールされていないと、SecretlintはそのIDを示して止まる
 
-- Given: 設定ファイルに`{ "id": "@secretlint/secretlint-rule-github" }`があり、そのパッケージはインストールされていない。
+- Given: 設定ファイルにカスタムルールの`{ "id": "@secretlint/secretlint-rule-no-dotenv" }`があり、そのパッケージはインストールされていない。
 - When: 開発者がSecretlintを実行する。
-- Then: Secretlintは`@secretlint/secretlint-rule-github`が見つからないため読み込めないというエラーで止まり、どのファイルもlintされない。
+- Then: Secretlintは`@secretlint/secretlint-rule-no-dotenv`が見つからないため読み込めないというエラーで止まり、どのファイルもlintされない。
 
 ## KPI
 
@@ -70,7 +76,7 @@ Scenario: ルールIDがインストールされていないと、Secretlintは�
 
 ### ルールIDの解決
 
-**概要:** 設定ファイルの各ルールIDを、npmパッケージがexportするルールやプリセットに解決します。
+**概要:** 設定ファイルの各ルールIDを、組み込みのルールやプリセットか、npmパッケージがexportするルールやプリセットに解決します。
 
 **入力:** 設定ファイルの`rules`と、パッケージを解決するディレクトリ。
 
@@ -78,9 +84,14 @@ Scenario: ルールIDがインストールされていないと、Secretlintは�
 
 #### 適用条件
 
+##### 組み込みルール
+
+ルールIDはまず`@secretlint/core`の組み込みルールから、そのままの形で、次にパッケージ名と同じように接頭辞`secretlint-rule-`を付けた形で引かれます。
+組み込みのルールやプリセットを指すときはそれが使われ、同じ名前のパッケージがインストールされていても、パッケージは解決もimportもされません。
+
 ##### パッケージ名
 
-ルールIDはまず短い形として読まれ、接頭辞`secretlint-rule-`が付けられます。`@scope/name`は`@scope/secretlint-rule-name`に、`name`は`secretlint-rule-name`になります。
+組み込みでないルールIDは、短い形として読まれ、接頭辞`secretlint-rule-`が付けられます。`@scope/name`は`@scope/secretlint-rule-name`に、`name`は`secretlint-rule-name`になります。
 すでに接頭辞があるIDはそのまま使われます。
 その名前のパッケージが見つからなければ、ID自体をパッケージ名として試します。
 
@@ -88,7 +99,7 @@ Scenario: ルールIDがインストールされていないと、Secretlintは�
 
 パッケージは、Secretlintがインストールされた場所から、Node.jsの`require.resolve`と同じように探されます。
 設定の読み込みを使うプログラムは、別の`node_modules`ディレクトリを渡せます。
-プログラムは、Node.jsより先にパッケージ名を解決・importするフックも登録できます。単一実行ファイルは、組み込みルールのためにこれを使います。
+プログラムは、Node.jsより先にパッケージ名を解決・importするフックも登録できます。単一実行ファイルは、組み込みのフォーマッターのためにこれを使います。
 
 ##### パッケージのexport
 
@@ -124,11 +135,12 @@ Scenario: ルールIDがインストールされていないと、Secretlintは�
 
 ## 外部サービスへの依存
 
-なし。パッケージはローカルのファイルシステムから読みます。インストールは利用者のパッケージマネージャーが行います。
+なし。組み込みルールは`@secretlint/core`の一部です。パッケージはローカルのファイルシステムから読みます。インストールは利用者のパッケージマネージャーが行います。
 
 ## セキュリティの考慮
 
-ルールIDはimportしてSecretlintの権限で実行するパッケージを指すので、利用者がインストールしたパッケージだけが実行されます。
+ルールIDは、組み込みルールか、importしてSecretlintの権限で実行するパッケージを指すので、組み込みルールと利用者がインストールしたパッケージだけが実行されます。
+同じ名前のパッケージをインストールしても、組み込みルールは置き換えられません。
 
 ## 未解決事項
 

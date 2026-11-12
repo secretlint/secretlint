@@ -28,7 +28,8 @@ Node.jsのモジュール解決と、[ルールとルールプリセット](../r
 各ルールの項目について、読み込みは次のうち最初に当てはまるものからcreatorを取ります。
 
 1. `testReplaceDefinitions`: 呼び出し側が渡す`{ id, rule }`の一覧で、ルールIDをcreatorに置き換えます。`@secretlint/tester`は、インストール済みのパッケージではなく開発中のルールをテストで動かすためにこれを使います。
-2. ルールIDのnpmパッケージ。`SecretLintModuleResolver.resolveRulePackageName()`が`createFullPackageName("secretlint-rule-", id)`で完全なパッケージ名を作り、それとID自体を順に`@secretlint/resolver`の`tryResolve()`で試します。`@secretlint/resolver`の`dynamicImport()`がモジュールをimportし、読み込みはその`creator`のexportを取ります。
+2. `@secretlint/core`の組み込みの表。`resolveBuiltinRule()`が`@secretlint/core/builtin`を`await import()`でimportし、IDで、次に`createFullPackageName("secretlint-rule-", id)`で`getBuiltinRule()`を呼びます。
+3. ルールIDのnpmパッケージ。`SecretLintModuleResolver.resolveRulePackageName()`が`createFullPackageName("secretlint-rule-", id)`で完全なパッケージ名を作り、それとID自体を順に`@secretlint/resolver`の`tryResolve()`で試します。`@secretlint/resolver`の`dynamicImport()`がモジュールをimportし、読み込みはその`creator`のexportを取ります。
 
 `meta.type: "preset"`のcreatorは、記述の項目の`rules`を持つプリセットの項目になります。ほかのcreatorは、`options`、`severity`、`disabled`、`allowMessageIds`を持つルールの項目になります。
 記述の項目の`id`が結果にコピーされるので、メッセージは設定ファイルに書いたIDを保ちます。
@@ -37,7 +38,7 @@ Node.jsのモジュール解決と、[ルールとルールプリセット](../r
 
 `@secretlint/resolver`は、`require.resolve()`と`import()`に頼る前に、プログラムが登録したresolveフックとimportフックを実行します。
 フックはパッケージ名に対して決まったURLを返せ、importフックは読み込み済みのモジュールのexportを返せます。
-これにより、単一実行ファイルのようにバンドルしたプログラムが、`node_modules`にないパッケージを提供できます。
+これにより、単一実行ファイルのようにバンドルしたプログラムが、`node_modules`にないパッケージを提供できます。組み込みルールはresolverより先に見つかるので、フックはいりません。
 
 ### 失敗
 
@@ -55,6 +56,7 @@ sequenceDiagram
     CLI->>Loader: loadConfig()
     loop each rule entry
         Loader->>Loader: testReplaceDefinitions?
+        Loader->>Core: getBuiltinRule(id, then full id)
         Loader->>Resolver: tryResolve(full package name, then id)
         Resolver-->>Loader: path or URL (hooks first)
         Loader->>Resolver: dynamicImport()
@@ -97,7 +99,8 @@ sequenceDiagram
 
 ## 検討した代替案
 
-ルールをnpmパッケージの名前で解決することについて、代替案の記録はありません。
+- **resolverのフックで組み込みルールを解決する:** 単一実行ファイルがパッケージに対してしていた方法です。すべてのプログラムがフックを登録する必要があり、npmパッケージではやはりパッケージのインストールが必要なので、選びませんでした。
+- **インストールしたパッケージを組み込みルールより優先する:** ルールが常にインストールしたSecretlintのバージョンになり、古いプリセットのパッケージが新しいルールを隠さないように、選びませんでした。
 
 ## 未解決事項
 

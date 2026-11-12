@@ -1,10 +1,10 @@
-# 独自ルールの設計
+# カスタムルールの設計
 
 [English](design.md)
 
 ## この文書について
 
-この文書は、ルールのパッケージの構成と、`@secretlint/tester`が[独自ルール](requirements.ja.md)のスナップショットテストを実行するしかたを説明します。
+この文書は、カスタムルールのパッケージの構成と、`@secretlint/tester`が[カスタムルール](requirements.ja.md)のスナップショットテストを実行するしかたを説明します。
 親のProductは[Secretlint](../../product.ja.md)です。
 
 ### 読者
@@ -23,7 +23,7 @@
 
 ルールはコードの隣にテストを持つパッケージで、`@secretlint/tester`はスナップショットのディレクトリの各ディレクトリを1つのテストにします。
 
-### ルールのパッケージの構成
+### カスタムルールのパッケージの構成
 
 ```text
 packages/@secretlint/secretlint-rule-<name>/
@@ -35,10 +35,12 @@ packages/@secretlint/secretlint-rule-<name>/
     snapshots/<case>/ # input*, output.json, optional .secretlintrc.json and options.*
 ```
 
-`pnpm run gen:rule`は、scaffdogのテンプレート`.scaffdog/new-rule.md`からこの構成を作ります。
+Secretlintが公開するカスタムルールはこの構成です。
 パッケージのtestスクリプトは`test/index.test.ts`を`node --import tsx --test`で実行し、`updateSnapshot`はそれを`UPDATE_SNAPSHOT=1`で実行します。
 
 ### テストケースの実行
+
+ケースの確認は、組み込みルールのテストも使うランナー`@secretlint/core/testing`にあります。`@secretlint/tester`はそれを包み、入力ファイルの読み込みと設定ファイルの読み込みを渡します。
 
 `snapshot(options)`はスナップショットのディレクトリを読み、`forEach(handler)`を持つオブジェクトを返します。`forEach`は各ケースの名前と、それを実行する関数でhandlerを呼びます。
 テストファイルはその関数を`t.test()`に渡し、`"skip"`が返ればテストをスキップします。
@@ -55,7 +57,7 @@ packages/@secretlint/secretlint-rule-<name>/
 
 ### プリセット
 
-プリセットのテストも同じ`snapshot()`を使い、プリセットのルールごとに1つのスナップショットのディレクトリを持ちます。プリセットの`import-tests.js`スクリプトはルールのテストケースをコピーし、その`.secretlintrc.json`をプリセットの項目の下でオプションを設定するように変えます。
+サードパーティのプリセットも同じ`snapshot()`で、プリセットのルールごとに1つのスナップショットのディレクトリを持ってテストできます。組み込みのプリセットは`@secretlint/tester`ではなく`@secretlint/core`でテストします。
 
 ## 構成図とシーケンス図
 
@@ -68,8 +70,9 @@ sequenceDiagram
     Test->>Tester: snapshot(options).forEach(handler)
     loop each case
         Tester->>Loader: loadConfig(.secretlintrc.json, testReplaceDefinitions)
-        Tester->>Core: lintSource(bytes), lintSource(string), lintSource(unoptimized)
-        Tester->>Tester: compare results and output.json
+        Tester->>Core: createSnapshotTestCases() of @secretlint/core/testing
+        Core->>Core: lintSource(bytes), lintSource(string), lintSource(unoptimized)
+        Core->>Core: compare results and output.json
     end
 ```
 
@@ -82,10 +85,11 @@ sequenceDiagram
 
 `@secretlint/tester`は`snapshot()`と、型`SnapshotOptions`と`SecretLintTestCaseOptions`をexportします。
 依存は`@secretlint/core`、`@secretlint/config-loader`、`@secretlint/source-creator`、`@secretlint/types`です。
+APIはランナーが`@secretlint/core`に移る前と同じなので、カスタムルールのテストは変わりません。
 
 ## 外部サービスとの連携
 
-テストにはなし。Secretlintのリポジトリのルールは、リポジトリのリリースのワークフローで公開されます。
+テストにはなし。Secretlintのリポジトリのカスタムルールは、リポジトリのリリースのワークフローで公開されます。
 
 ## データの扱い
 
@@ -101,7 +105,7 @@ testerはスナップショットのディレクトリのファイルを読み�
 
 ## デプロイの注意
 
-Secretlintのリポジトリのパッケージは、npmのtrusted publishingで公開されます。新しいパッケージは、npmでtrusted publisherを手で設定する必要があります。
+Secretlintのリポジトリのパッケージは、npmのtrusted publishingで公開されます。新しいパッケージは、npmでtrusted publisherを手で設定する必要があります。そのため、Secretlintの新しいルールは新しいカスタムルールのパッケージではなく、組み込みルールとして加えます。
 
 ## 検討した代替案
 

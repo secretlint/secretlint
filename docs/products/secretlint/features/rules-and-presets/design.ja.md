@@ -4,12 +4,12 @@
 
 ## この文書について
 
-この文書は、[ルールとルールプリセット](requirements.ja.md)のルールとプリセットを、どう作って配布しているかを説明します。
+この文書は、[ルールとルールプリセット](requirements.ja.md)の組み込みルールとプリセットを、どう作り、テストし、配布しているかを説明します。
 親のProductは[Secretlint](../../product.ja.md)です。
 
 ### 読者
 
-Secretlintが提供するルールやプリセットを追加・変更する人とエージェント。
+組み込みルールや組み込みのプリセットを追加・変更する人とエージェント。
 
 ### 前提
 
@@ -18,36 +18,61 @@ Secretlintが提供するルールやプリセットを追加・変更する人�
 ### この文書の外
 
 - 設定の読み込みがルールIDからルールを見つけるしかた: [設定の読み込み](../config-loading/requirements.ja.md)
-- ルールのテストのしかた: [独自ルール](../custom-rules/requirements.ja.md)
+- カスタムルールの作り方とテストのしかた: [カスタムルール](../custom-rules/requirements.ja.md)
 - `@secretlint/core`がルールを実行するしかた（lint planとキーワードの走査）
 
 ## 実装方針
 
-Secretlintが提供する各ルールはそれぞれ1つのnpmパッケージで、各プリセットはルールのコードを同梱したnpmパッケージです。
-ルールIDはパッケージ名なので、設定の読み込みは同じ名前のパッケージをインストールしてimportすればルールを見つけられます。
+組み込みルールとプリセットは、それを実行するエンジンとそのテストとともに`@secretlint/core`の一部です。
+`@secretlint/core`はルールIDからルールへの表を持ち、設定の読み込みはパッケージを探す前にこの表を引きます。
+同じ名前のパッケージは、`@secretlint/core`のルールをre-exportする薄いパッケージとして残ります。
 
-### ルールのパッケージ
+ルールを新しいnpmパッケージとして加えるには、最初のリリースの前に、trusted publisherなどnpmでのパッケージの設定を手作業でする必要があります。
+組み込みルールは`@secretlint/core`の中のディレクトリなので、加えるのに新しいパッケージはいりません。
 
-ルールは`packages/@secretlint/secretlint-rule-<name>/`にあり、`@secretlint/secretlint-rule-<name>`として公開されます。
-メインモジュールは`creator`と`messages`をexportします。
-`creator.meta`は、ルールID、種類（`scanner`か`filter`）、`recommended`、`supportedContentTypes`、パッケージのREADMEを指す`docs.url`を持ちます。
+### ルールのディレクトリ
+
+組み込みルールは`packages/@secretlint/core/src/builtin/rules/<name>/`にあり、メインモジュールは`creator`と`messages`をexportします。
+`creator.meta`は、ルールID`@secretlint/secretlint-rule-<name>`、種類（`scanner`か`filter`）、`recommended`、`supportedContentTypes`、リポジトリのルールのREADMEを指す`docs.url`を持ちます。
 `@secretlint/core`は`docs.url`にメッセージIDを付けて、各メッセージのリンクを作ります。
 
 正規表現で秘密情報を探すルールは`patterns`を宣言し、`@secretlint/core`がそれを実行します。
 patternルールやGCPルールなど、それ以外のルールは`create()`を実装し、`context.report()`で報告します。
 
-### プリセットのパッケージ
+`@secretlint/core`がブラウザで読み込めるように、組み込みルールはNode.jsのモジュールをトップレベルでimportしません。
+`node:path`の代わりに小さな`basename`の関数を使います。
+GCPルールは`.p12`ファイルを確かめるときだけ`node:fs`と`node:crypto`をimportし、`node:crypto`がなければWeb Cryptoを使います。
+patternルールは`micromatch`と同じやり方で`picomatch`でファイルのパスを照合するので、`micromatch`はもう依存ではありません。
 
-プリセットは、`meta.type: "preset"`の`creator`、ルールの一覧`rules`、各ルールについて順に`context.registerRule()`を呼ぶ`create()`をexportします。
+### 組み込みの表とプリセット
+
+`@secretlint/core/builtin`は、一覧`builtinRules`、`recommendedRules`、`canaryRules`、プリセット`presetRecommend`と`presetCanary`、完全なルールIDに対するルールかプリセットを返し、なければ`undefined`を返す`getBuiltinRule(id)`をexportします。
+
+2つのプリセットは1つの`createPreset(id, rules)`で作ります。プリセットは、`meta.type: "preset"`、ルールの一覧`rules`、各ルールについて順に`context.registerRule()`を呼ぶ`create()`を持ちます。
 `@secretlint/core`は、登録された各ルールをプリセットの項目の`rules`とルールIDで照合し、その`options`、`severity`、`allowMessageIds`を適用します。
 項目が`disabled: true`のルールは、最上位の項目の`disabled: true`と同じように登録されません。
 
-プリセットのパッケージはルールのパッケージにdevDependenciesとしてだけ依存し、Rollupで全ルールのコードを含む1つのモジュールにビルドされます。
-そのため、プリセットをインストールしてもルールのパッケージはインストールされず、各ルールのバージョンはプリセットに同梱したものになります。
-同梱するのは、ルールを読み込むコストを減らすためです。
+`canaryRules`がルールの一覧の元です。新しいルールはまず`canaryRules`に加え、メジャーリリースで`recommendedRules`に加えます。
+今は`canaryRules`は`recommendedRules`のコピーです。
 
-canaryプリセットがルールの一覧の元です。
-recommendプリセットの`sync-canary`スクリプトは、メジャーリリースでルールを昇格するときに、canaryプリセットのソースとテストをプリセットIDを置き換えてrecommendプリセットにコピーします。
+### 同じ名前のパッケージ
+
+組み込みルールの各パッケージ`@secretlint/secretlint-rule-<name>`は、`@secretlint/core/builtin/rules/<name>`をre-exportします。
+プリセットのパッケージは、`@secretlint/core/builtin`から`creator`と`rules`をexportします。
+これらのパッケージは同じバージョンの`@secretlint/core`に依存し、自分のテストは持ちません。
+
+### テスト
+
+スナップショットのテストケースは`packages/@secretlint/core/test/builtin/rules/<name>/snapshots/`と`packages/@secretlint/core/test/builtin/presets/{recommend,canary}/snapshots/`にあります。
+これらは、`@secretlint/tester`と同じように各ケースを確かめるランナー`@secretlint/core/testing`で動きます。バイト列のソース、文字列のソース、キーワードの最適化をしないルールの結果が同じでなければなりません。
+`@secretlint/tester`は`@secretlint/core`に依存するので、`@secretlint/core`のテストが`@secretlint/tester`を使うとworkspaceに循環ができます。そのためランナーは`@secretlint/core`にあります。
+`@secretlint/tester`はランナーを包み、設定の読み込みを通した設定ファイルの読み込みを加えます。
+
+`@secretlint/core`のテストでは、テストケースの設定ファイルはルールIDを書き、ランナーはそれを`getBuiltinRule`で引きます。
+ルールのディレクトリにスナップショットのディレクトリがないと、テストが失敗します。
+`sync-preset-snapshots`スクリプトは、各ルールのテストケースをプリセットのスナップショットにコピーします。
+
+`pnpm run gen:rule`は、ルールのディレクトリ、そのREADME、テストケース`ng.secret`と`ok.valid`を`@secretlint/core`に作ります。
 
 ## 構成図とシーケンス図
 
@@ -61,12 +86,14 @@ recommendプリセットの`sync-canary`スクリプトは、メジャーリリ�
 
 ## APIとインターフェース
 
-ルールのパッケージの公開インターフェースはexportの`creator`と`messages`で、プリセットのパッケージは`creator`と`rules`です。
-ルールのパッケージから`creator`をimportしたコードは、それを`@secretlint/core`に直接渡せます。
+- `@secretlint/core/builtin`: `builtinRules`、`recommendedRules`、`canaryRules`、`presetRecommend`、`presetCanary`、`getBuiltinRule(id)`、`builtinRuleIds`。
+- `@secretlint/core/builtin/rules/<name>`: 1つのルールの`creator`と`messages`。
+- `@secretlint/core/testing`: スナップショットのディレクトリのテストケースを返す`createSnapshotTestCases(options)`。
+- 同じ名前のパッケージは、同じ`creator`と`messages`を、プリセットなら`creator`と`rules`をexportします。
 
 ## 外部サービスとの連携
 
-パッケージは、リポジトリのリリースのワークフローからnpm registryに公開されます。
+`@secretlint/core`と同じ名前のパッケージは、リポジトリのリリースのワークフローからnpm registryに公開されます。
 
 ## データの扱い
 
@@ -82,11 +109,13 @@ recommendプリセットの`sync-canary`スクリプトは、メジャーリリ�
 
 ## デプロイの注意
 
-なし。
+同じ名前のパッケージは引き続き公開されるので、それを書いた設定や`package.json`は動き続けます。その非推奨化は別の変更です。
+npmパッケージの`--init`は、`package.json`にあるルールを書きます。それがなくてもrecommendプリセットを書くようになるまでは、ドキュメントはプリセットのパッケージのインストールを案内したままにします。
 
 ## 検討した代替案
 
-ルールごとに1つのパッケージにすることや、プリセットにルールを同梱することについて、代替案の記録はありません。
+- **ルールごとに1つのパッケージにし、プリセットにルールを同梱する:** 変更前の設計です。新しいルールごとに新しいnpmパッケージと、npmでの手作業の設定が必要でした。
+- **組み込みルールのための別の1つのパッケージ:** Biomeがルールをエンジンとは別のcrateに置くように、ルールとテストを`@secretlint/core`の隣のパッケージに置く案です。これは選びませんでした。oxlintやESLintのように、ルール、エンジン、テストを1つのパッケージに置きます。
 
 ## 未解決事項
 

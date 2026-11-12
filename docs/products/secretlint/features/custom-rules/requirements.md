@@ -4,13 +4,14 @@
 
 ## About this document
 
-A rule author creates a rule for a kind of secret, tests it with snapshot tests, and publishes it as an npm package.
-The same steps are used for a third-party rule and for a rule added to the Secretlint repository.
+A custom rule is a rule that is created, tested, and published as an npm package, and used by installing the package.
+A rule author creates a custom rule for a kind of secret, tests it with snapshot tests, and publishes it.
+Secretlint also publishes some custom rules, such as `@secretlint/secretlint-rule-no-dotenv`. A rule added to Secretlint itself is a built-in rule instead.
 The parent Product is [Secretlint](../../product.md).
 
 ### Scope
 
-- Creating a rule package, both a third-party rule and a rule of the Secretlint repository
+- Creating a custom rule package, both a third-party rule and a custom rule published by Secretlint
 - Testing a rule with snapshot tests (`@secretlint/tester`)
 - Checking that the declared keywords and scope of a rule do not change its results
 
@@ -18,7 +19,7 @@ The parent Product is [Secretlint](../../product.md).
 
 - The rule interface itself, and how `@secretlint/core` runs a rule
 - How a rule id is resolved to the package: [Configuration loading](../config-loading/requirements.md)
-- Which rules Secretlint provides, and the presets: [Rules and rule presets](../rules-and-presets/requirements.md)
+- The built-in rules and presets, and adding a built-in rule: [Rules and rule presets](../rules-and-presets/requirements.md)
 - Publishing a third-party rule, which is up to its author
 
 ## User stories
@@ -77,18 +78,6 @@ Scenario: When a match does not contain any keyword, the test fails
 - When: The rule author runs the tests.
 - Then: The test case fails with a message that the result with `patterns` and `meta.keywords` differs from the result of the whole content, and asks to check the keywords and scope.
 
-### Add a rule to the Secretlint repository
-
-As a rule author, I want to generate the files of a new rule in the Secretlint repository, so that it follows the conventions of the other rules.
-
-**Acceptance criteria:**
-
-Scenario: When the rule author generates a rule, a new rule package is created
-
-- Given: The rule author is in the Secretlint repository.
-- When: The rule author runs `pnpm run gen:rule` and enters the name `example`.
-- Then: `packages/@secretlint/secretlint-rule-example/` is created with its README, LICENSE, `package.json`, `tsconfig.json`, `src/index.ts`, `test/index.test.ts`, and the test cases `ng.secret` and `ok.valid`.
-
 ## KPIs
 
 None. No metric has been defined for rule authoring.
@@ -139,9 +128,10 @@ The test case fails with an error that names the case directory.
 
 #### Applicable conditions
 
-##### Rules of the Secretlint repository
+##### Custom rules published by Secretlint
 
-A rule of the repository is a package `@secretlint/secretlint-rule-<name>` with its own tests. Adding it to the canary preset is a separate step.
+`@secretlint/secretlint-rule-no-dotenv`, `@secretlint/secretlint-rule-no-homedir`, `@secretlint/secretlint-rule-no-k8s-kind-secret`, and `@secretlint/secretlint-rule-secp256k1-privatekey` are custom rules in the Secretlint repository. Each is a package with its own tests, and is not in a preset.
+A new rule of Secretlint is added as a built-in rule, not as a custom rule.
 
 ## Data requirements
 
@@ -160,8 +150,8 @@ None. Test inputs contain dummy secrets, not real ones.
 ## External service dependencies
 
 - **npm registry**
-  - **Related user stories:** Add a rule to the Secretlint repository
-  - **Reason for dependency:** A rule is published as an npm package.
+  - **Related user stories:** Test a rule with input files and expected results
+  - **Reason for dependency:** A custom rule is published as an npm package, and `@secretlint/tester` is installed from it.
   - **Contractual and usage decisions:** Public packages, free of charge.
 
 ## Security considerations

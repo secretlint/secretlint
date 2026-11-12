@@ -4,7 +4,7 @@
 
 ## About this document
 
-This document describes how a rule package is laid out and how `@secretlint/tester` runs the snapshot tests of [Custom rules](requirements.md).
+This document describes how a custom rule package is laid out and how `@secretlint/tester` runs the snapshot tests of [Custom rules](requirements.md).
 The parent Product is [Secretlint](../../product.md).
 
 ### Audience
@@ -21,9 +21,9 @@ The configuration loader that the tester uses for the configuration of a case, a
 
 ## Implementation approach
 
-A rule is a package with its tests next to its code, and `@secretlint/tester` turns each directory of its snapshot directory into one test.
+A custom rule is a package with its tests next to its code, and `@secretlint/tester` turns each directory of its snapshot directory into one test.
 
-### Layout of a rule package
+### Layout of a custom rule package
 
 ```text
 packages/@secretlint/secretlint-rule-<name>/
@@ -35,10 +35,12 @@ packages/@secretlint/secretlint-rule-<name>/
     snapshots/<case>/ # input*, output.json, optional .secretlintrc.json and options.*
 ```
 
-`pnpm run gen:rule` creates this layout from the scaffdog template `.scaffdog/new-rule.md`.
+The custom rules published by Secretlint have this layout.
 The test script of the package runs `test/index.test.ts` with `node --import tsx --test`, and `updateSnapshot` runs it with `UPDATE_SNAPSHOT=1`.
 
 ### Running a test case
+
+The checks of a case are in the runner `@secretlint/core/testing`, which the tests of the built-in rules also use. `@secretlint/tester` wraps it, and gives it the reading of the input file and the loading of the configuration file.
 
 `snapshot(options)` reads the snapshot directory and returns an object whose `forEach(handler)` calls the handler with the name of each case and a function that runs it.
 The test file passes the function to `t.test()` and skips the test when it returns `"skip"`.
@@ -55,7 +57,7 @@ Step 4 is how a wrong keyword or a `line` scope that needs other lines makes the
 
 ### Presets
 
-The tests of a preset use the same `snapshot()`, with one snapshot directory per rule of the preset. The `import-tests.js` script of a preset copies the test cases of its rules, and changes their `.secretlintrc.json` to set the options under the preset entry.
+A third-party preset can be tested with the same `snapshot()`, with one snapshot directory per rule of the preset. The built-in presets are tested in `@secretlint/core`, not with `@secretlint/tester`.
 
 ## Architecture and sequence diagrams
 
@@ -68,8 +70,9 @@ sequenceDiagram
     Test->>Tester: snapshot(options).forEach(handler)
     loop each case
         Tester->>Loader: loadConfig(.secretlintrc.json, testReplaceDefinitions)
-        Tester->>Core: lintSource(bytes), lintSource(string), lintSource(unoptimized)
-        Tester->>Tester: compare results and output.json
+        Tester->>Core: createSnapshotTestCases() of @secretlint/core/testing
+        Core->>Core: lintSource(bytes), lintSource(string), lintSource(unoptimized)
+        Core->>Core: compare results and output.json
     end
 ```
 
@@ -82,10 +85,11 @@ sequenceDiagram
 
 `@secretlint/tester` exports `snapshot()` and the types `SnapshotOptions` and `SecretLintTestCaseOptions`.
 Its dependencies are `@secretlint/core`, `@secretlint/config-loader`, `@secretlint/source-creator`, and `@secretlint/types`.
+The API is the same as before the runner moved to `@secretlint/core`, so the tests of a custom rule do not change.
 
 ## External service integration
 
-None for testing. A rule of the Secretlint repository is published by the release workflow of the repository.
+None for testing. A custom rule of the Secretlint repository is published by the release workflow of the repository.
 
 ## Data handling
 
@@ -101,7 +105,7 @@ The repository runs Secretlint on its changed files in CI. The test inputs conta
 
 ## Deployment notes
 
-The packages of the Secretlint repository are published with npm trusted publishing. A new package needs its trusted publisher to be set up on npm by hand.
+The packages of the Secretlint repository are published with npm trusted publishing. A new package needs its trusted publisher to be set up on npm by hand, which is why a new rule of Secretlint is added as a built-in rule instead of a new custom rule package.
 
 ## Alternatives considered
 

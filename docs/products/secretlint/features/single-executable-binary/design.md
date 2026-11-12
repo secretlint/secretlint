@@ -4,12 +4,12 @@
 
 ## About this document
 
-This document describes how the binary of [Single-executable binary](requirements.md) is built and how it provides its built-in packages.
+This document describes how the binary of [Single-executable binary](requirements.md) is built and how it provides its built-in rules and formatter.
 The parent Product is [Secretlint](../../product.md).
 
 ### Audience
 
-People and agents who change the binary, its built-in packages, or its release.
+People and agents who change the binary, its built-in rules and formatter, or its release.
 
 ### Prerequisites
 
@@ -21,7 +21,7 @@ The CLI itself (`secretlint/cli`), which the binary runs.
 
 ## Implementation approach
 
-The binary is the `secretlint` CLI compiled by Bun into one executable, with resolver hooks that serve the built-in packages from the executable instead of `node_modules`.
+The binary is the `secretlint` CLI compiled by Bun into one executable, with resolver hooks that serve the SARIF formatter from the executable instead of `node_modules`. The built-in rules come with `@secretlint/core`, which Bun bundles as a part of the CLI.
 The sources are in `publish/binary-compiler/`.
 
 ### Entry point
@@ -32,13 +32,14 @@ The sources are in `publish/binary-compiler/`.
 It keeps the `--cwd` handling and the existing-config check of the Node.js CLI, and writes with the `wx` flag so that a file created at the same moment is not overwritten.
 `--version` prints `SECRETLINT_VERSION`, which `build-binary.sh` inlines at compile time.
 
-### Built-in packages
+### Built-in rules and formatter
 
-`src/secretlint-resolver-hooks.ts` imports `@secretlint/secretlint-rule-preset-recommend`, `@secretlint/secretlint-rule-pattern`, and `@secretlint/secretlint-formatter-sarif` statically, so Bun bundles them into the executable.
-It registers a resolve hook that returns the package name itself as the URL for these three names, and an import hook that returns the imported module for them.
-The configuration loader and the formatter loader resolve and import names through `@secretlint/resolver`, so these names never reach the file system. Other names fall through to the normal resolution.
+The built-in rules need no hook: the configuration loader finds them in the built-in table of `@secretlint/core` before it resolves a package, and Bun bundles `@secretlint/core` with the CLI.
+So every built-in rule and preset, and their short forms, work in the binary in the same way as in the npm package.
 
-Because the hooks match exact package names, a rule id is built in only when its full package name is one of the three. The short form works because the configuration loader makes the full package name before it resolves.
+`src/secretlint-resolver-hooks.ts` imports `@secretlint/secretlint-formatter-sarif` statically, so Bun bundles it into the executable.
+It registers a resolve hook that returns the package name itself as the URL for this name, and an import hook that returns the imported module for it.
+The formatter loader resolves and imports names through `@secretlint/resolver`, so this name never reaches the file system. Other names fall through to the normal resolution.
 
 ### Build and release
 
@@ -54,11 +55,12 @@ sequenceDiagram
     participant Hooks as resolver hooks
     participant CLI as secretlint/cli
     participant Loader as config-loader
-    Entry->>Hooks: register (preset-recommend, pattern, sarif)
+    Entry->>Hooks: register (sarif)
     Entry->>CLI: run()
     CLI->>Loader: loadConfig()
-    Loader->>Hooks: resolve "@secretlint/secretlint-rule-preset-recommend"
-    Hooks-->>Loader: bundled module
+    Loader->>Loader: getBuiltinRule("@secretlint/secretlint-rule-preset-recommend")
+    CLI->>Hooks: resolve "@secretlint/secretlint-formatter-sarif"
+    Hooks-->>CLI: bundled module
 ```
 
 ## Data model and ER diagrams
@@ -87,11 +89,11 @@ The binaries are not code-signed. The checksum file lets a user verify a downloa
 
 ## Deployment notes
 
-The version of the built-in packages is the version in the workspace at build time, so the binary and the npm packages of the same release have the same rules.
+The version of `@secretlint/core` and the formatter is the version in the workspace at build time, so the binary and the npm packages of the same release have the same rules.
 
 ## Alternatives considered
 
-There is no record of alternatives to resolver hooks for the built-in packages.
+Before the built-in rules moved into `@secretlint/core`, the binary served the recommended preset and the pattern rule with resolver hooks too. Only the packages in the hooks were available, so the canary preset and the rules by their own ids were not. Finding the rules in `@secretlint/core` removes that difference.
 
 ## Open questions
 

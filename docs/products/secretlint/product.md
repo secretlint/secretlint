@@ -50,7 +50,7 @@ GitHub secret scanning works on the GitHub side, after a commit is made or pushe
 
 - **Characteristics:** Developers who add detection for a new kind of secret, either to the Secretlint repository or as their own npm package.
 - **Problems:** They need to define a detection and its documentation, and test it without missing or over-reporting secrets.
-- **Usage context:** They write a rule package and test it with snapshot tests.
+- **Usage context:** They add a built-in rule to the Secretlint repository, or write a custom rule as an npm package, and test it with snapshot tests.
 
 ### Tool integrators
 
@@ -81,7 +81,7 @@ GitHub secret scanning works on the GitHub side, after a commit is made or pushe
 ### Extensible detection
 
 - **Recipient:** Rule authors and developers
-- **Offering:** A rule is an npm package, so anyone can create, publish, and install a rule for their own kind of secret. A value that a user considers secret can also be defined with a pattern and detected.
+- **Offering:** A custom rule is an npm package, so anyone can create, publish, and install a rule for their own kind of secret. A value that a user considers secret can also be defined with a pattern and detected.
 - **Reason:** Each repository has its own secrets. Node.js and its package managers make a pluggable rule system possible.
 
 ### Results that do not expose secrets
@@ -94,7 +94,7 @@ GitHub secret scanning works on the GitHub side, after a commit is made or pushe
 
 - **Secret:** A value that must not be published. It includes credentials and values that a user defines as secret, for example with a pattern.
 - **Credential:** A value that gives access to a service, such as a token, a password, or a private key, in a generally defined format. Most rules that Secretlint provides detect credentials.
-- **Rule:** A package that detects one group of secrets, or that filters the reports of other rules. A rule that reports secrets is a scanner rule, and a rule that suppresses reports is a filter rule.
+- **Rule:** A unit that detects one group of secrets, or that filters the reports of other rules. A rule is a built-in rule or a custom rule. A rule that reports secrets is a scanner rule, and a rule that suppresses reports is a filter rule.
 - **Rule preset:** A rule that groups other rules, such as `@secretlint/secretlint-rule-preset-recommend` and `@secretlint/secretlint-rule-preset-canary`.
 - **Configuration file (`.secretlintrc`):** The file that lists the rules to use, with their options.
 - **Rule options:** Settings of each rule, such as `allows`, a list of values that the rule does not report.
@@ -103,7 +103,8 @@ GitHub secret scanning works on the GitHub side, after a commit is made or pushe
 - **Ignore file (`.secretlintignore`):** A file that excludes files from linting, with the same syntax as `.gitignore`. `.gitignore` files are also respected by default.
 - **Disable comment:** A comment such as `secretlint-disable` that suppresses reports in a range of a file.
 - **Formatter:** The output format of results, such as `stylish`, `json`, `github`, `mask-result`, and SARIF.
-- **Built-in rules:** Rules and formatters bundled in the Docker image, the single-executable binary, and the quick start command, which run without installing rule packages.
+- **Built-in rules:** The rules and rule presets that Secretlint itself has. They are used by their rule ids without installing a package, in the same way with npm, the Docker image, the single-executable binary, and the quick start command.
+- **Custom rules:** Rules that are created and installed as npm packages, by third parties or users. Secretlint also publishes some rules as custom rules, such as `@secretlint/secretlint-rule-no-dotenv`.
 - **Mask:** Replacing a secret value with characters that hide it, in results or in the output of a file.
 
 ## Feature list
@@ -114,18 +115,18 @@ GitHub secret scanning works on the GitHub side, after a commit is made or pushe
 | File selection | Choose the files to lint from globs and paths, honoring `.gitignore`, `.secretlintignore`, and built-in ignores | Not written |
 | Configuration loading | Find and validate the configuration file and decide the rules, options, severities, and allowed messages | [Requirements](features/config-loading/requirements.md) |
 | Configuration creation | Create a `.secretlintrc.json` with `--init` | Not written |
-| Rules and rule presets | Detect each kind of secret, and group rules into the recommended and canary presets | [Requirements](features/rules-and-presets/requirements.md) |
+| Rules and rule presets | Detect each kind of secret with the built-in rules, and group them into the recommended and canary presets | [Requirements](features/rules-and-presets/requirements.md) |
 | Ignoring by comment | Suppress reports in a range of a file with disable comments | Not written |
 | Secret masking in results | Mask secret values in reported messages by default | Not written |
 | Result output | Show results with a chosen formatter, write them to a file, and set the exit status | [Requirements](features/result-output/requirements.md) |
 | mask-result formatter | Output the content of a file with its secrets masked (`mask-result`) | [Requirements](features/mask-result-formatter/requirements.md) |
 | Message localization | Show messages in a chosen locale (`--locale`, experimental) | Not written |
-| Custom rules | Create, test, and publish a rule as an npm package | [Requirements](features/custom-rules/requirements.md) |
+| Custom rules | Create, test, publish, and use a rule as an npm package | [Requirements](features/custom-rules/requirements.md) |
 | Node.js API | Lint content from other programs with `@secretlint/node` | Not written |
 | npm packages | Install the CLI, rules, and formatters as npm packages and run them with Node.js | Not written |
 | Quick start | Run once with `npx @secretlint/quick-start` and the recommended preset, without a configuration file | Not written |
-| Docker image | Run `secretlint/secretlint` without Node.js or configuration, with the recommended preset, the pattern rule, and the SARIF formatter built in | Not written |
-| Single-executable binary | Run a binary from GitHub Releases for Linux, macOS, and Windows without Node.js, with the same built-in rules and formatter as the Docker image | [Requirements](features/single-executable-binary/requirements.md) |
+| Docker image | Run `secretlint/secretlint` without Node.js or configuration, with the built-in rules and the SARIF formatter | Not written |
+| Single-executable binary | Run a binary from GitHub Releases for Linux, macOS, and Windows without Node.js, with the built-in rules and the SARIF formatter | [Requirements](features/single-executable-binary/requirements.md) |
 | Performance profile | Show where time is spent with `--profile` | Not written |
 
 ## Definition of success
@@ -141,7 +142,7 @@ Not decided yet. See [Open questions](#open-questions).
 - **Rule as documentation.** Each rule documents why it reports a value.
 - **Semantic Versioning.** Releases follow Semantic Versioning, except for `@secretlint/secretlint-rule-preset-canary`. A change that makes Secretlint report more errors by default, such as adding a rule to a preset, is a major release.
 - **Keep the meaning of the pattern format.** A new property of a rule's declarative pattern gets a new name, and the meaning of an existing property does not change, so an older Secretlint never runs a newer rule with a different result.
-- **Run `@secretlint/core` and the recommended preset in browsers.** They do not depend on Node.js, so that tools such as Secretlint WebExtension can use them. File access and configuration loading belong to the Node.js packages.
+- **Run `@secretlint/core` and its built-in rules in browsers.** They do not depend on Node.js, so that tools such as Secretlint WebExtension can use them. File access and configuration loading belong to the Node.js packages.
 - **Read text as UTF-8 only.** Supporting other encodings is desirable, but Secretlint currently limits text to UTF-8 because of the realistic cost of supporting them.
 
 ## SLA, SLI, and SLO

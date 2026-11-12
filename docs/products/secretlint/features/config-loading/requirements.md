@@ -10,7 +10,7 @@ The parent Product is [Secretlint](../../product.md).
 
 ### Scope
 
-- Resolving each rule id in the configuration file to a rule or a preset
+- Resolving each rule id in the configuration file to a built-in rule, or to a rule or a preset of an installed package
 - The short form of a rule id
 - What happens when a rule id cannot be resolved
 
@@ -26,25 +26,31 @@ The rules and presets themselves are described in [Rules and rule presets](../ru
 
 ## User stories
 
-### Use an installed rule by its id
+### Use a rule by its id
 
-As a developer, I want to list a rule by the name of its npm package, so that Secretlint runs the rule that I installed.
+As a developer, I want to list a built-in rule by its rule id, and a custom rule by the name of its npm package, so that Secretlint runs the rule that I mean.
 
 **Acceptance criteria:**
 
-Scenario: When the rule id is the package name of an installed rule, the rule runs
+Scenario: When the rule id is the id of a built-in rule, the built-in rule runs
 
-- Given: `@secretlint/secretlint-rule-aws` is installed in the repository, and the configuration file has `{ "id": "@secretlint/secretlint-rule-aws" }`.
+- Given: Only `secretlint` is installed, and the configuration file has `{ "id": "@secretlint/secretlint-rule-aws" }`.
 - When: The developer lints a file that contains an AWS access key.
 - Then: The result has a message whose `ruleId` is `@secretlint/secretlint-rule-aws`.
 
-Scenario: When the rule id is the short form, the rule of the full package name runs
+Scenario: When the rule id is the short form, the rule of the full id runs
 
-- Given: `@secretlint/secretlint-rule-aws` is installed, and the configuration file has `{ "id": "@secretlint/aws" }`.
+- Given: Only `secretlint` is installed, and the configuration file has `{ "id": "@secretlint/aws" }`.
 - When: The developer lints a file that contains an AWS access key.
 - Then: The result has a message of the AWS rule, and its `ruleId` is `@secretlint/aws`, the id written in the configuration file.
 
-Scenario: When a third-party rule is installed, it is used in the same way
+Scenario: When a package of the same name as a built-in rule is installed, the built-in rule runs
+
+- Given: An older version of `@secretlint/secretlint-rule-preset-recommend` is installed, and the configuration file has `{ "id": "@secretlint/secretlint-rule-preset-recommend" }`.
+- When: The developer runs Secretlint.
+- Then: The preset of the installed Secretlint runs, and the installed package is not imported.
+
+Scenario: When a third-party rule is installed, it is used by its package name
 
 - Given: A rule package `secretlint-rule-example` is installed, and the configuration file has `{ "id": "secretlint-rule-example" }` or `{ "id": "example" }`.
 - When: The developer lints a file.
@@ -58,9 +64,9 @@ As a developer, I want to know which rule id cannot be loaded, so that I can ins
 
 Scenario: When a rule id is not installed, Secretlint stops with the id
 
-- Given: The configuration file has `{ "id": "@secretlint/secretlint-rule-github" }`, and the package is not installed.
+- Given: The configuration file has `{ "id": "@secretlint/secretlint-rule-no-dotenv" }`, which is a custom rule, and the package is not installed.
 - When: The developer runs Secretlint.
-- Then: Secretlint stops with an error that says it failed to load `@secretlint/secretlint-rule-github` because it is not found, and no file is linted.
+- Then: Secretlint stops with an error that says it failed to load `@secretlint/secretlint-rule-no-dotenv` because it is not found, and no file is linted.
 
 ## KPIs
 
@@ -70,7 +76,7 @@ None. This feature is a step of every lint, and no metric has been defined for i
 
 ### Rule id resolution
 
-**Overview:** Each rule id of the configuration file is resolved to the rule or preset exported by an npm package.
+**Overview:** Each rule id of the configuration file is resolved to a built-in rule or preset, or to the rule or preset exported by an npm package.
 
 **Input:** The `rules` of the configuration file, and the directory to resolve packages from.
 
@@ -78,9 +84,14 @@ None. This feature is a step of every lint, and no metric has been defined for i
 
 #### Applicable conditions
 
+##### Built-in rules
+
+A rule id is first looked up in the built-in rules of `@secretlint/core`, as it is and then with the prefix `secretlint-rule-` added in the same way as a package name.
+When it names a built-in rule or preset, that is used, and no package is resolved or imported, even if a package of the same name is installed.
+
 ##### Package names
 
-A rule id is first read as the short form, and the prefix `secretlint-rule-` is added: `@scope/name` becomes `@scope/secretlint-rule-name`, and `name` becomes `secretlint-rule-name`.
+For a rule id that is not built-in, the id is first read as the short form, and the prefix `secretlint-rule-` is added: `@scope/name` becomes `@scope/secretlint-rule-name`, and `name` becomes `secretlint-rule-name`.
 An id that already has the prefix is used as it is.
 If no package of that name is found, the id itself is tried as a package name.
 
@@ -88,7 +99,7 @@ If no package of that name is found, the id itself is tried as a package name.
 
 Packages are found in the same way as Node.js `require.resolve`, from the location where Secretlint is installed.
 A program that uses the configuration loader can give another `node_modules` directory.
-A program can also register hooks that resolve and import a package name before Node.js does. The single-executable binary uses them for its built-in rules.
+A program can also register hooks that resolve and import a package name before Node.js does. The single-executable binary uses them for its built-in formatter.
 
 ##### The exports of a package
 
@@ -124,11 +135,12 @@ None.
 
 ## External service dependencies
 
-None. Packages are read from the local file system; installing them is done by the user's package manager.
+None. Built-in rules are part of `@secretlint/core`. Packages are read from the local file system; installing them is done by the user's package manager.
 
 ## Security considerations
 
-A rule id names a package that is imported and run with the permissions of Secretlint, so only packages that the user installed are run.
+A rule id names a built-in rule, or a package that is imported and run with the permissions of Secretlint, so only built-in rules and packages that the user installed are run.
+A built-in rule cannot be replaced by installing a package of the same name.
 
 ## Open questions
 

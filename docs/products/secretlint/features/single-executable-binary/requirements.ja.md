@@ -5,13 +5,13 @@
 ## この文書について
 
 単一実行ファイルは、Node.jsもパッケージのインストールもなしにSecretlintを動かします。
-いくつかのルールとフォーマッターを組み込んでいるので、リポジトリは1つのファイルをダウンロードするだけで推奨ルールでlintできます。
+Secretlintの組み込みルールとSARIFのフォーマッターを持つので、リポジトリは1つのファイルをダウンロードするだけで推奨ルールでlintできます。
 親のProductは[Secretlint](../../product.ja.md)です。
 
 ### 範囲
 
 - 実行ファイルの対応プラットフォームと公開場所
-- 実行ファイルに組み込んだルールとフォーマッター
+- 実行ファイルが持つルールとフォーマッター
 - 実行ファイルの`--init`と`--version`
 
 ### 範囲外
@@ -45,9 +45,15 @@ Scenario: 設定が組み込みルールを使うと、実行ファイルはそ�
 - When: 管理者が、秘密情報を含むファイルに`secretlint "**/*"`を実行する。
 - Then: 実行ファイルは秘密情報を報告し、ステータス1で終わる。
 
-Scenario: 設定が組み込みでないルールを使うと、読み込みが失敗する
+Scenario: 設定が組み込みルールをそのIDで書くと、実行ファイルはそれを使う
 
-- Given: `.secretlintrc.json`に`@secretlint/secretlint-rule-no-dotenv`があり、それはインストールされていない。
+- Given: `.secretlintrc.json`に`@secretlint/secretlint-rule-preset-canary`か`@secretlint/secretlint-rule-aws`があり、`node_modules`ディレクトリはない。
+- When: 管理者が、AWSのアクセスキーを含むファイルに`secretlint "**/*"`を実行する。
+- Then: 実行ファイルは`@secretlint/secretlint-rule-aws`でそのキーを報告する。
+
+Scenario: 設定がカスタムルールを使うと、読み込みが失敗する
+
+- Given: `.secretlintrc.json`にカスタムルール`@secretlint/secretlint-rule-no-dotenv`があり、それはインストールされていない。
 - When: 管理者が実行ファイルを実行する。
 - Then: 実行ファイルは、ルールのモジュールが見つからないというエラーで止まる。
 
@@ -71,22 +77,26 @@ Scenario: SARIFのフォーマッターを選ぶと、実行ファイルはSARIF
 
 ### 組み込みのルールとフォーマッター
 
-**概要:** 実行ファイルはいくつかのパッケージを含み、設定やオプションがそれを指すときに使います。
+**概要:** 実行ファイルはすべての組み込みのルールとプリセット、SARIFのフォーマッターを持ち、設定やオプションがそれを指すときに使います。
 
 **入力:** 設定ファイルのルールIDと、`--format`オプション。
 
-**出力:** 同じパッケージをインストールしたnpmパッケージと同じ結果。
+**出力:** 同じバージョンのnpmパッケージと同じ結果。
 
 #### 適用条件
 
-##### 組み込みのパッケージ
+##### 組み込みルール
 
-実行ファイルは`@secretlint/secretlint-rule-preset-recommend`、`@secretlint/secretlint-rule-pattern`、`@secretlint/secretlint-formatter-sarif`を、実行ファイルと同じバージョンで含みます。
+実行ファイルは、ビルド元のSecretlintのバージョンのすべての組み込みのルールとプリセットを持ちます。recommendプリセット、canaryプリセット、それらの各ルールを単独のIDで書いたもの、`@secretlint/secretlint-rule-pattern`、`@secretlint/secretlint-rule-azure`です。
 `@secretlint/preset-recommend`のような、これらのIDの短い形もそれを使います。
+
+##### 組み込みのフォーマッター
+
+実行ファイルは`@secretlint/secretlint-formatter-sarif`を、実行ファイルと同じバージョンで含みます。
 
 ##### ほかのパッケージ
 
-canaryプリセット、recommendプリセットのルールを単独のIDで書いたもの、サードパーティのルールなど、ほかのルールは組み込まれていません。
+`@secretlint/secretlint-rule-no-dotenv`やサードパーティのルールのようなカスタムルールは、実行ファイルに含まれません。
 
 ##### プラットフォーム
 

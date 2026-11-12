@@ -14,7 +14,7 @@ Secretlintは、トークン・秘密鍵・パスワードなどの秘密情報�
 
 リポジトリの秘密情報を検査するツールには、git-secrets、Gitleaks、truffleHog、detect-secretsなどがすでにあります。
 git-secretsは主にグローバルに導入するもので、リポジトリごとの設定が難しいです。
-ほかの検査ツールは、無視の定義や独自ルールなどの柔軟な調整ができません。
+ほかの検査ツールは、無視の定義やカスタムルールなどの柔軟な調整ができません。
 detect-secretsはオプトアウト方式を採用しています。
 GitHubのsecret scanningはコミットやpushの後にGitHub側で動きますが、Secretlintは手元の環境で動き、コミットそのものを止められます。
 
@@ -50,7 +50,7 @@ GitHubのsecret scanningはコミットやpushの後にGitHub側で動きます�
 
 - **特徴:** 新しい種類の秘密情報の検出を、Secretlintのリポジトリか自分のnpmパッケージとして追加する開発者。
 - **課題:** 検出とその説明を定義し、見逃しや過剰な報告がないことをテストしたい。
-- **利用場面:** ルールのパッケージを書き、スナップショットテストで確認する。
+- **利用場面:** Secretlintのリポジトリに組み込みルールを加えるか、npmパッケージとしてカスタムルールを書き、スナップショットテストで確認する。
 
 ### ツールの組み込み開発者
 
@@ -81,7 +81,7 @@ GitHubのsecret scanningはコミットやpushの後にGitHub側で動きます�
 ### 拡張できる検出
 
 - **受け手:** ルールの作者、開発者
-- **提供内容:** ルールはnpmパッケージなので、誰でも自分の種類の秘密情報のルールを作り、公開し、導入できる。利用者が秘密だと考える値も、パターンで定義して検出できる。
+- **提供内容:** カスタムルールはnpmパッケージなので、誰でも自分の種類の秘密情報のルールを作り、公開し、導入できる。利用者が秘密だと考える値も、パターンで定義して検出できる。
 - **理由:** リポジトリごとに独自の秘密情報がある。Node.jsとそのパッケージマネージャーを使うと、ルールを追加できる仕組みを実現できる。
 
 ### 秘密情報を漏らさない結果
@@ -94,7 +94,7 @@ GitHubのsecret scanningはコミットやpushの後にGitHub側で動きます�
 
 - **秘密情報（secret）:** 公開してはいけない値。認証情報のほか、利用者がパターンなどで秘密だと定義した値を含む。
 - **認証情報（credential）:** トークン、パスワード、秘密鍵など、サービスへのアクセスを与える値で、形式が一般に決まっているもの。Secretlintが提供するルールの多くは認証情報を検出する。
-- **ルール（rule）:** ひとまとまりの秘密情報を検出するパッケージ、またはほかのルールの報告を絞り込むパッケージ。秘密情報を報告するルールはscannerルール、報告を抑えるルールはfilterルール。
+- **ルール（rule）:** ひとまとまりの秘密情報を検出する単位、またはほかのルールの報告を絞り込む単位。ルールには組み込みルールとカスタムルールがある。秘密情報を報告するルールはscannerルール、報告を抑えるルールはfilterルール。
 - **ルールプリセット（rule preset）:** `@secretlint/secretlint-rule-preset-recommend`や`@secretlint/secretlint-rule-preset-canary`のように、ほかのルールをまとめたルール。
 - **設定ファイル（`.secretlintrc`）:** 使うルールと、そのオプションを並べたファイル。
 - **ルールのオプション（rule options）:** 報告しない値の一覧である`allows`など、ルールごとの設定。
@@ -103,7 +103,8 @@ GitHubのsecret scanningはコミットやpushの後にGitHub側で動きます�
 - **無視ファイル（`.secretlintignore`）:** lintの対象からファイルを外すファイル。書き方は`.gitignore`と同じ。`.gitignore`も既定で考慮する。
 - **無効化コメント（disable comment）:** `secretlint-disable`のように、ファイルの範囲を指定して報告を抑えるコメント。
 - **フォーマッター（formatter）:** `stylish`、`json`、`github`、`mask-result`、SARIFなどの結果の出力形式。
-- **組み込みルール（built-in rules）:** Dockerイメージ、単一実行ファイル、quick startに同梱したルールとフォーマッター。ルールのパッケージを導入せずに使える。
+- **組み込みルール（built-in rules）:** Secretlint自身が持つルールとルールプリセット。パッケージを導入せずにルールIDで使え、npm、Dockerイメージ、単一実行ファイル、quick startのどれでも同じように使える。
+- **カスタムルール（custom rules）:** サードパーティや利用者がnpmパッケージとして作り、導入するルール。`@secretlint/secretlint-rule-no-dotenv`など、Secretlintもいくつかのルールをカスタムルールとして公開している。
 - **マスク（mask）:** 結果やファイルの出力で、秘密情報の値を隠す文字に置き換えること。
 
 ## 機能の一覧
@@ -114,18 +115,18 @@ GitHubのsecret scanningはコミットやpushの後にGitHub側で動きます�
 | 対象ファイルの選択 | globとパスからlintするファイルを選び、`.gitignore`、`.secretlintignore`、組み込みの除外を考慮する | 未作成 |
 | 設定の読み込み | 設定ファイルを探して検証し、ルール、オプション、重大度、許可するメッセージを決める | [Requirements](features/config-loading/requirements.ja.md) |
 | 設定ファイルの作成 | `--init`で`.secretlintrc.json`を作る | 未作成 |
-| ルールとルールプリセット | 秘密情報の種類ごとに検出し、ルールをrecommendとcanaryのプリセットにまとめる | [Requirements](features/rules-and-presets/requirements.ja.md) |
+| ルールとルールプリセット | 組み込みルールで秘密情報の種類ごとに検出し、それをrecommendとcanaryのプリセットにまとめる | [Requirements](features/rules-and-presets/requirements.ja.md) |
 | コメントによる無視 | 無効化コメントで、ファイルの範囲の報告を抑える | 未作成 |
 | 結果の秘密情報のマスク | 報告するメッセージの秘密情報の値を既定で伏せる | 未作成 |
 | 結果の出力 | 選んだフォーマッターで結果を表示し、ファイルへ書き出し、終了ステータスを決める | [Requirements](features/result-output/requirements.ja.md) |
 | mask-resultフォーマッター | ファイルの内容を、秘密情報を伏せた状態で出力する（`mask-result`） | [Requirements](features/mask-result-formatter/requirements.ja.md) |
 | メッセージの翻訳 | 選んだロケールでメッセージを表示する（`--locale`、実験的） | 未作成 |
-| 独自ルール | ルールをnpmパッケージとして作り、テストし、公開する | [Requirements](features/custom-rules/requirements.ja.md) |
+| カスタムルール | ルールをnpmパッケージとして作り、テストし、公開して使う | [Requirements](features/custom-rules/requirements.ja.md) |
 | Node.jsのAPI | `@secretlint/node`で、ほかのプログラムから内容をlintする | 未作成 |
 | npmパッケージ | CLI、ルール、フォーマッターをnpmパッケージとして導入し、Node.jsで実行する | 未作成 |
 | quick start | `npx @secretlint/quick-start`で、設定ファイルなしにrecommendプリセットで一度だけ実行する | 未作成 |
-| Dockerイメージ | Node.jsや設定なしで`secretlint/secretlint`を実行する。recommendプリセット、patternルール、SARIFフォーマッターを組み込んでいる | 未作成 |
-| 単一実行ファイル | GitHub ReleasesのLinux、macOS、Windows向けの実行ファイルを、Node.jsなしで実行する。組み込みのルールとフォーマッターはDockerイメージと同じ | [Requirements](features/single-executable-binary/requirements.ja.md) |
+| Dockerイメージ | Node.jsや設定なしで`secretlint/secretlint`を実行する。組み込みルールとSARIFフォーマッターを使える | 未作成 |
+| 単一実行ファイル | GitHub ReleasesのLinux、macOS、Windows向けの実行ファイルを、Node.jsなしで実行する。組み込みルールとSARIFフォーマッターを使える | [Requirements](features/single-executable-binary/requirements.ja.md) |
 | 性能プロファイル | `--profile`で時間のかかった処理を表示する | 未作成 |
 
 ## 成功の定義
@@ -141,7 +142,7 @@ GitHubのsecret scanningはコミットやpushの後にGitHub側で動きます�
 - **ドキュメントとしてのルール。** 各ルールは値を報告する理由を説明する。
 - **セマンティックバージョニング。** `@secretlint/secretlint-rule-preset-canary`を除き、セマンティックバージョニングに従ってリリースする。プリセットへのルールの追加など、既定で報告するエラーが増える変更はメジャーリリースにする。
 - **パターンの形式の意味を保つ。** ルールの宣言的なパターンに属性を足すときは新しい名前を付け、既存の属性の意味は変えない。古いSecretlintが新しいルールを異なる結果で実行しないようにするため。
-- **`@secretlint/core`とrecommendプリセットをブラウザでも動かす。** Secretlint WebExtensionなどのツールが使えるように、Node.jsに依存させない。ファイルの読み込みと設定の読み込みは、Node.js向けのパッケージが受け持つ。
+- **`@secretlint/core`とその組み込みルールをブラウザでも動かす。** Secretlint WebExtensionなどのツールが使えるように、Node.jsに依存させない。ファイルの読み込みと設定の読み込みは、Node.js向けのパッケージが受け持つ。
 - **テキストはUTF-8だけで読む。** ほかの文字コードにもできれば対応したいが、対応にかかる現実的なコストから、現在はUTF-8だけに制限している。
 
 ## SLA・SLI・SLO

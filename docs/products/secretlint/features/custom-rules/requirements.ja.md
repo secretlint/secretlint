@@ -1,16 +1,17 @@
-# 独自ルール
+# カスタムルール
 
 [English](requirements.md)
 
 ## この文書について
 
-ルールの作者は、ある種類の秘密情報のためのルールを作り、スナップショットテストでテストし、npmパッケージとして公開します。
-サードパーティのルールにも、Secretlintのリポジトリに加えるルールにも、同じ手順を使います。
+カスタムルールは、npmパッケージとして作り、テストし、公開し、そのパッケージをインストールして使うルールです。
+ルールの作者は、ある種類の秘密情報のためのカスタムルールを作り、スナップショットテストでテストし、公開します。
+Secretlintも`@secretlint/secretlint-rule-no-dotenv`のようにいくつかのカスタムルールを公開しています。Secretlint自身に加えるルールは、カスタムルールではなく組み込みルールです。
 親のProductは[Secretlint](../../product.ja.md)です。
 
 ### 範囲
 
-- ルールのパッケージを作ること。サードパーティのルールとSecretlintのリポジトリのルールの両方
+- カスタムルールのパッケージを作ること。サードパーティのルールとSecretlintが公開するカスタムルールの両方
 - スナップショットテスト（`@secretlint/tester`）でルールをテストすること
 - ルールが宣言したキーワードと範囲（scope）が結果を変えないことを確かめること
 
@@ -18,7 +19,7 @@
 
 - ルールのインターフェースそのものと、`@secretlint/core`がルールを実行するしかた
 - ルールIDをパッケージに解決するしかた: [設定の読み込み](../config-loading/requirements.ja.md)
-- Secretlintが提供するルールとプリセット: [ルールとルールプリセット](../rules-and-presets/requirements.ja.md)
+- 組み込みルールとプリセット、組み込みルールの加え方: [ルールとルールプリセット](../rules-and-presets/requirements.ja.md)
 - サードパーティのルールの公開。これは作者に任されます
 
 ## ユーザーストーリー
@@ -77,18 +78,6 @@ Scenario: 一致した値がどのキーワードも含まないと、テスト�
 - When: ルールの作者がテストを実行する。
 - Then: テストケースは失敗し、`patterns`と`meta.keywords`を使った結果が内容全体の結果と違うので、キーワードと範囲を確かめるよう求めるメッセージを表示する。
 
-### Secretlintのリポジトリにルールを加える
-
-ルールの作者として、Secretlintのリポジトリで新しいルールのファイルを生成したい。そうすれば、ほかのルールの決まりに沿う。
-
-**受け入れ条件:**
-
-Scenario: ルールの作者がルールを生成すると、新しいルールのパッケージが作られる
-
-- Given: ルールの作者がSecretlintのリポジトリにいる。
-- When: ルールの作者が`pnpm run gen:rule`を実行し、名前`example`を入力する。
-- Then: `packages/@secretlint/secretlint-rule-example/`が、README、LICENSE、`package.json`、`tsconfig.json`、`src/index.ts`、`test/index.test.ts`、テストケース`ng.secret`と`ok.valid`とともに作られる。
-
 ## KPI
 
 なし。ルールの作成について指標は決まっていません。
@@ -139,9 +128,10 @@ Scenario: ルールの作者がルールを生成すると、新しいルール�
 
 #### 適用条件
 
-##### Secretlintのリポジトリのルール
+##### Secretlintが公開するカスタムルール
 
-リポジトリのルールは、自分のテストを持つパッケージ`@secretlint/secretlint-rule-<name>`です。canaryプリセットへの追加は別の手順です。
+`@secretlint/secretlint-rule-no-dotenv`、`@secretlint/secretlint-rule-no-homedir`、`@secretlint/secretlint-rule-no-k8s-kind-secret`、`@secretlint/secretlint-rule-secp256k1-privatekey`は、Secretlintのリポジトリにあるカスタムルールです。それぞれ自分のテストを持つパッケージで、どのプリセットにも入っていません。
+Secretlintの新しいルールは、カスタムルールではなく組み込みルールとして加えます。
 
 ## データ要件
 
@@ -160,8 +150,8 @@ Scenario: ルールの作者がルールを生成すると、新しいルール�
 ## 外部サービスへの依存
 
 - **npm registry**
-  - **関係するユーザーストーリー:** Secretlintのリポジトリにルールを加える
-  - **依存する理由:** ルールはnpmパッケージとして公開されます。
+  - **関係するユーザーストーリー:** 入力ファイルと期待する結果でルールをテストする
+  - **依存する理由:** カスタムルールはnpmパッケージとして公開され、`@secretlint/tester`もそこからインストールします。
   - **契約と利用の判断:** 公開パッケージで、無料です。
 
 ## セキュリティの考慮

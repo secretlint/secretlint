@@ -28,7 +28,8 @@ The result is the configuration of `@secretlint/core`, which runs the creators w
 For each rule entry, the loader takes the creator from the first of these that applies:
 
 1. `testReplaceDefinitions`: a list of `{ id, rule }` that a caller passes to replace a rule id with a creator. `@secretlint/tester` uses it so that a test runs the rule under development instead of an installed package.
-2. The npm package of the rule id. `SecretLintModuleResolver.resolveRulePackageName()` makes the full package name with `createFullPackageName("secretlint-rule-", id)`, and tries it and then the id itself with `tryResolve()` of `@secretlint/resolver`. `dynamicImport()` of `@secretlint/resolver` imports the module, and the loader takes its `creator` export.
+2. The built-in table of `@secretlint/core`. `resolveBuiltinRule()` imports `@secretlint/core/builtin` with `await import()`, and calls `getBuiltinRule()` with the id, and then with `createFullPackageName("secretlint-rule-", id)`.
+3. The npm package of the rule id. `SecretLintModuleResolver.resolveRulePackageName()` makes the full package name with `createFullPackageName("secretlint-rule-", id)`, and tries it and then the id itself with `tryResolve()` of `@secretlint/resolver`. `dynamicImport()` of `@secretlint/resolver` imports the module, and the loader takes its `creator` export.
 
 A creator with `meta.type: "preset"` becomes a preset entry with the `rules` of its descriptor entry. Other creators become rule entries with `options`, `severity`, `disabled`, and `allowMessageIds`.
 The `id` of the descriptor entry is copied to the result, which is why the messages keep the id written in the configuration file.
@@ -37,7 +38,7 @@ The `id` of the descriptor entry is copied to the result, which is why the messa
 
 `@secretlint/resolver` runs the resolve hooks and the import hooks that a program registered before it falls back to `require.resolve()` and `import()`.
 A hook can return a fixed URL for a package name, and the import hook can return the exports of a module that is already loaded.
-This lets a bundled program, such as the single-executable binary, provide packages that are not in a `node_modules` directory.
+This lets a bundled program, such as the single-executable binary, provide packages that are not in a `node_modules` directory. Built-in rules do not need hooks, because they are found before the resolver runs.
 
 ### Failures
 
@@ -55,6 +56,7 @@ sequenceDiagram
     CLI->>Loader: loadConfig()
     loop each rule entry
         Loader->>Loader: testReplaceDefinitions?
+        Loader->>Core: getBuiltinRule(id, then full id)
         Loader->>Resolver: tryResolve(full package name, then id)
         Resolver-->>Loader: path or URL (hooks first)
         Loader->>Resolver: dynamicImport()
@@ -97,7 +99,8 @@ None.
 
 ## Alternatives considered
 
-There is no record of alternatives to resolving rules from npm packages by their names.
+- **Resolve built-in rules with resolver hooks:** The binary did this for its packages. It was not chosen, because every program would have to register the hooks, and the npm package would still need the packages installed.
+- **Let an installed package win over the built-in rule:** It was not chosen, so that the rules always have the version of the installed Secretlint, and an older preset package does not hide new rules.
 
 ## Open questions
 

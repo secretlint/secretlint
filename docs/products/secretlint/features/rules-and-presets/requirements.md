@@ -5,23 +5,24 @@
 ## About this document
 
 Secretlint detects each group of secrets with a rule, and groups rules into the recommended preset and the canary preset.
-A repository enables a rule or a preset by its rule id in the configuration file.
-This document describes the rules and presets that Secretlint provides, how they are identified, and how a preset passes options to its rules.
+Secretlint itself has these rules as built-in rules, so a repository enables a rule or a preset by its rule id in the configuration file without installing a package.
+This document describes the built-in rules and presets, how they are identified, how a preset passes options to its rules, and how a built-in rule is added.
 The parent Product is [Secretlint](../../product.md).
 
 ### Scope
 
-- The rules provided by Secretlint and their rule ids
+- The built-in rules and their rule ids
+- Using the built-in rules without installing a package, and the packages of the same names
 - The recommended preset and the canary preset: which rules they contain and how they register them
 - Options, severities, allowed messages, and disabling of the rules in a preset
 - The documentation of each rule
+- Adding a built-in rule to the Secretlint repository, and testing the built-in rules
 
 ### Out of scope
 
 - What each rule detects. Each rule's documentation describes it.
 - How a rule id in the configuration file is resolved to a rule: [Configuration loading](../config-loading/requirements.md)
-- Creating and testing a rule: [Custom rules](../custom-rules/requirements.md)
-- The rules available in the single-executable binary: [Single-executable binary](../single-executable-binary/requirements.md)
+- Creating, testing, and using a rule as an npm package: [Custom rules](../custom-rules/requirements.md)
 - Suppressing reports with comments (the behavior of `@secretlint/secretlint-rule-filter-comments`), which belongs to the Ignoring by comment feature. It is not written yet.
 
 ## User stories
@@ -34,15 +35,33 @@ As a developer, I want to enable the recommended rules with one entry in the con
 
 Scenario: When the configuration file lists the recommended preset, all rules of the preset run
 
-- Given: `@secretlint/secretlint-rule-preset-recommend` is installed, and the configuration file has `{ "id": "@secretlint/secretlint-rule-preset-recommend" }`.
+- Given: Only `secretlint` is installed, and the configuration file has `{ "id": "@secretlint/secretlint-rule-preset-recommend" }`.
 - When: The developer lints a file that contains an AWS access key and a GitHub token.
 - Then: The result has a message of `@secretlint/secretlint-rule-aws` and a message of `@secretlint/secretlint-rule-github`.
 
 Scenario: When the configuration file lists one rule, only that rule runs
 
-- Given: `@secretlint/secretlint-rule-aws` is installed, and the configuration file has only `{ "id": "@secretlint/secretlint-rule-aws" }`.
+- Given: Only `secretlint` is installed, and the configuration file has only `{ "id": "@secretlint/secretlint-rule-aws" }`.
 - When: The developer lints a file that contains an AWS access key and a GitHub token.
 - Then: The result has a message of `@secretlint/secretlint-rule-aws` and no message of `@secretlint/secretlint-rule-github`.
+
+### Keep a configuration that installs the rule packages
+
+As a developer who installed the preset package as the documentation said, I want my configuration and `package.json` to keep working, so that I do not have to change anything when I update Secretlint.
+
+**Acceptance criteria:**
+
+Scenario: When an older preset package is installed, the built-in preset of Secretlint runs
+
+- Given: `package.json` has `secretlint` and an older version of `@secretlint/secretlint-rule-preset-recommend`, and the configuration file has the recommended preset.
+- When: The developer lints a file that contains a secret that a rule added in the newer Secretlint detects.
+- Then: The result has the message of that rule, because the preset of the installed Secretlint runs, not the installed package.
+
+Scenario: When code imports a rule from its package, it gets the built-in rule
+
+- Given: A program imports `creator` from `@secretlint/secretlint-rule-aws` of the same version as `@secretlint/core`.
+- When: The program passes the creator to `@secretlint/core` and lints a file with an AWS access key.
+- Then: The result is the same as the result of the built-in rule `@secretlint/secretlint-rule-aws`.
 
 ### Configure a rule in a preset
 
@@ -82,7 +101,7 @@ As a developer, I want to use the rules that may be added to the recommended pre
 
 Scenario: When the configuration file lists the canary preset, the rules of the canary preset run
 
-- Given: `@secretlint/secretlint-rule-preset-canary` is installed, and the configuration file has `{ "id": "@secretlint/secretlint-rule-preset-canary" }`.
+- Given: Only `secretlint` is installed, and the configuration file has `{ "id": "@secretlint/secretlint-rule-preset-canary" }`.
 - When: The developer lints a file that contains a secret that a rule of the canary preset detects.
 - Then: The result has a message of that rule.
 
@@ -97,6 +116,30 @@ Scenario: When a rule reports a message, the message links to the documentation 
 - Given: A rule that has documentation reports a message.
 - When: The developer reads the result.
 - Then: The message has a URL to the documentation of the rule and the message ID.
+
+### Add a built-in rule to the Secretlint repository
+
+As a rule author, I want to add a rule for a new kind of secret to Secretlint without creating an npm package, so that the rule can be released without setting up a new package on npm.
+
+**Acceptance criteria:**
+
+Scenario: When the rule author generates a rule, the files of a built-in rule are created
+
+- Given: The rule author is in the Secretlint repository.
+- When: The rule author runs `pnpm run gen:rule` and enters the name `example`.
+- Then: The code and README of the rule, and the test cases `ng.secret` and `ok.valid`, are created in `@secretlint/core`, and no new package directory is created.
+
+Scenario: When a built-in rule is registered, it is used by its rule id
+
+- Given: The rule `example` is registered as a built-in rule and added to the canary preset.
+- When: A developer lints with `{ "id": "@secretlint/secretlint-rule-example" }` or with the canary preset, without installing a package.
+- Then: The rule `@secretlint/secretlint-rule-example` runs.
+
+Scenario: When the tests of Secretlint run, the snapshot tests of every built-in rule run
+
+- Given: Each built-in rule has a directory of snapshot test cases in `@secretlint/core`.
+- When: The rule author runs the tests of `@secretlint/core`.
+- Then: Each test case is checked in the same way as `@secretlint/tester` checks a custom rule, including the check of keywords and scope, and a built-in rule without a snapshot directory makes the tests fail.
 
 ## KPIs
 
@@ -121,18 +164,31 @@ Scenario: When a rule reports a message, the message links to the documentation 
 
 ##### Rule ids
 
-Each rule provided by Secretlint has the rule id `@secretlint/secretlint-rule-<name>`, which is the name of its npm package.
+Each built-in rule has the rule id `@secretlint/secretlint-rule-<name>`, which is also the name of its npm package.
 The rule id is used in the configuration file and as `ruleId` of the messages.
+The short form, such as `@secretlint/aws`, also names the built-in rule.
 
 ##### Provided rules
 
-Secretlint provides the rules of the recommended preset, and the following rules that are not in any preset:
-`@secretlint/secretlint-rule-pattern` (user-defined patterns), `@secretlint/secretlint-rule-azure`, `@secretlint/secretlint-rule-no-dotenv`, `@secretlint/secretlint-rule-no-homedir`, `@secretlint/secretlint-rule-no-k8s-kind-secret`, and `@secretlint/secretlint-rule-secp256k1-privatekey`.
+The built-in rules are the rules of the recommended preset, `@secretlint/secretlint-rule-pattern` (user-defined patterns), and `@secretlint/secretlint-rule-azure`.
+The built-in presets are the recommended preset and the canary preset.
 A rule that is not in a preset is used by listing its rule id.
+
+Secretlint also publishes `@secretlint/secretlint-rule-no-dotenv`, `@secretlint/secretlint-rule-no-homedir`, `@secretlint/secretlint-rule-no-k8s-kind-secret`, and `@secretlint/secretlint-rule-secp256k1-privatekey` as custom rules. They are installed as packages, as described in [Custom rules](../custom-rules/requirements.md).
 
 ##### Installation
 
-A rule or a preset is used after its npm package is installed where Secretlint can resolve it.
+A built-in rule or preset is used without installing a package, with every way of running Secretlint: npm, the Docker image, the single-executable binary, and the quick start command.
+When a package of the same name is installed, the built-in rule is used and the package is not loaded, so the rule always has the version of the installed Secretlint.
+
+##### Packages of the same names
+
+The packages `@secretlint/secretlint-rule-<name>` of the built-in rules, and the packages of the two presets, are still published. Each exports the same rule as the built-in rule of the same version, so code that imports `creator` from them keeps working.
+Deprecating these packages is a separate change.
+
+##### Browsers
+
+The built-in rules can be loaded in a browser. A rule that needs Node.js only for some content, such as the GCP rule for a `.p12` file, loads it only when it checks that content.
 
 ##### Documentation
 
@@ -172,6 +228,25 @@ A rule without an entry runs with its default options.
 
 When a rule id is registered twice, for example by a preset and by its own entry, Secretlint stops with an error that names the rule id.
 
+### Adding a built-in rule
+
+**Overview:** A built-in rule is added as files of Secretlint, not as a new npm package.
+
+**Input:** The name of the rule, its code, its README, and its snapshot test cases.
+
+**Output:** A rule that is used by `@secretlint/secretlint-rule-<name>` without installing a package.
+
+#### Applicable conditions
+
+##### Registration
+
+A new built-in rule is registered as a built-in rule and added to the canary preset. Adding it to the recommended preset is done in a major release.
+
+##### Tests
+
+The snapshot test cases of the built-in rules and the presets are in `@secretlint/core`, and the tests of `@secretlint/core` run them.
+The test cases have the same layout as the test cases of `@secretlint/tester`, and the rule ids in their configuration files name the built-in rules.
+
 ## Data requirements
 
 ### Required data
@@ -190,8 +265,8 @@ None. Rules read file content, and the reported values can be secrets; masking t
 ## External service dependencies
 
 - **npm registry**
-  - **Related user stories:** Enable the recommended rules with one id, Try new rules early
-  - **Reason for dependency:** Rules and presets are distributed as npm packages.
+  - **Related user stories:** Enable the recommended rules with one id, Keep a configuration that installs the rule packages, Try new rules early
+  - **Reason for dependency:** Secretlint, which has the built-in rules, and the packages of the same names are distributed as npm packages.
   - **Contractual and usage decisions:** Public packages on the npm registry, free of charge.
 
 ## Security considerations
