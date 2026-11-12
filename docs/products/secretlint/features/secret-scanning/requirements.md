@@ -78,11 +78,17 @@ Scenario: When text content is linted in a browser, the result is the same as in
 - When: The tool calls `lintSource()` with the content.
 - Then: The result has the same messages as the lint of the same content in Node.js.
 
-Scenario: When a `.p12` source is linted in a browser, nothing is reported
+Scenario: When the bytes of a `.p12` file are linted in a browser, the result is the same as in Node.js
 
 - Given: A tool in a browser has the bytes of a `.p12` file that is a GCP service account key.
-- When: The tool calls `lintSource()` with the source and the recommended preset.
-- Then: The result has no message, and no error is thrown. In Node.js the same file is reported.
+- When: The tool calls `lintSource()` with the file name, the bytes, the content type `binary`, and the recommended preset.
+- Then: The result has the `PrivateKeyP12` message of the gcp rule, the same as the lint of the file in Node.js.
+
+Scenario: When a `.p12` source is linted without its bytes, nothing is reported and no file is read
+
+- Given: A program has only the content of a `.p12` file as a string, and the gcp rule is enabled.
+- When: The program calls `lintSource()` with the file name and the string, without the bytes.
+- Then: The result has no message for the file, and no error is thrown. Secretlint does not read the file from the disk, in Node.js or in a browser.
 
 ### Lint the STDIN content
 
@@ -160,24 +166,36 @@ Among the rules that Secretlint provides, only the gcp rule checks binary conten
 
 The content is the text of the source decoded as UTF-8, without the byte order mark.
 For binary content, the content is also the bytes decoded as UTF-8, so bytes that are not valid UTF-8 are replaced and the original bytes can not be read from it.
-A rule does not receive the bytes of the source.
+
+##### The bytes
+
+A rule also receives the bytes of the source when the caller gives them, for every content type.
+For a file linted by the command, the bytes are always given.
+For the STDIN content, the bytes are not given.
+The bytes are the bytes of the file as they are: for binary content they are the original bytes, and for text they include the byte order mark if the file has one.
+The bytes can be read until the lint of the source ends. A rule that keeps them after that copies them.
+
+##### Rules that need the bytes
+
+A rule that checks binary content, such as the gcp rule for `.p12` files, uses the bytes and does not read the file.
+So the rule gives the same result in Node.js, in browsers, and in the single-executable binary.
 
 ##### The path of the file on the disk
 
 The path of the file on the disk is available when the source is a file and the caller allows it.
-A rule that needs the bytes of a file reads the file from this path or from the file path, which works only where a file system is available.
+The rules that Secretlint provides do not read files from it.
 
 #### Exceptional behavior
 
-##### A rule can not read the file
+##### The bytes are not given
 
-When a rule needs to read the file and can not, for example in a browser, the rule reports nothing for that check, and the lint does not fail.
+When a rule needs the bytes and the caller does not give them, the rule reports nothing for that check, and the lint does not fail.
 
 ## Data requirements
 
 ### Required data
 
-- **Source:** The content to lint, its file path or the name given for STDIN, the file extension, and the content type. A source from a file also has the bytes of the file during the lint.
+- **Source:** The content to lint, its file path or the name given for STDIN, the file extension, and the content type. A source from a file also has the bytes of the file during the lint, and rules can read them.
 - **Result:** The file path, the content type, and the messages. The result does not have the content.
 
 ### Relationships
@@ -198,4 +216,4 @@ The content of a source can have secrets. Secretlint reads it only in memory, an
 
 ## Open questions
 
-None.
+- **Release type:** A program that calls `lintSource()` for a `.p12` file without the bytes got a report before this change, because the gcp rule read the file. It gets no report after the change. Whether this is released as a breaking change is decided by the maintainer. Until then, the change is treated as a breaking change and the release notes say that a caller passes the bytes.

@@ -38,7 +38,7 @@ source-creatorは、すべてのファイルで共有する1つのバッファ�
 ファイルの内容の種類は`istextorbinary`で決める。これは拡張子を見てから、バイト列を見る。
 バイナリと判断されたファイルは`binary`、テキストと判断されたファイルは`text`、それ以外は`unknown`になる。
 
-`mask-result`フォーマッターはすべてのファイルの内容を必要とするので、その場合エンジンは`createRawSource()`で各ファイルを専用のバッファに読み、バイト列を付けずに文字列だけをcoreに渡す。
+`mask-result`フォーマッターはすべてのファイルの内容を必要とするので、その場合エンジンは`createRawSource()`で各ファイルを専用のバッファに読み、そのソースをバイト列ごとcoreに渡す。
 STDINの場合、エンジンは文字列を内容の種類`text`で渡す。
 ブラウザのツールのように`lintSource()`を直接呼ぶプログラムは、ソースを自分で作る。
 
@@ -54,15 +54,31 @@ coreは設定から計画を一度だけ作り、内容の種類ごとに計画�
 これは`content`、`hasBOM`、`filePath`、`physicalFilePath`、`ext`、`contentType`と、位置とインデックスの変換を持つ。
 `content`はバイトオーダーマークを除いたデコード済みの文字列で、ルールが読んだときに初めてデコードされる。
 呼び出し元が`noPhysicFilePath`を指定すると、`physicalFilePath`は`undefined`になる。
-ソースコードのオブジェクトはバイト列を持たないので、呼び出し元がバイト列を渡していても、ルールはそれを読めない。
+`contentBytes`は、呼び出し元が`source.contentBytes`として渡したバイト列で、渡されていなければ`undefined`になる。
+
+ルールにバイト列を渡すのは、バイナリを確かめるルールには元のバイト列が必要で、バイナリファイルの`content`ではデコードでそれが失われているためである。
+これまでは、そうしたルールは`node:fs`でファイルを読み直す必要があった。これはブラウザでは動かず、同じルールが環境によって違う結果を返す原因になっていた。
+ソースコードのオブジェクトにバイト列があれば、ルールは呼び出し元が渡したものだけに依存する。これはcoreが内容をすでに扱っている方法と同じである。
+
+coreは`lintSource()`の最初に`source.contentBytes`を一度だけ読み、同じ値をキーワードの検索とソースコードのオブジェクトに使う。
+source-creatorの共有バッファのバイト列は、`lintSource()`が返るまで有効である。エンジンは結果を待ってから次のファイルを読み、`lintSource()`はpromiseを返したルールを待つためである。
+そのためルールは、`await`のあとも含めて、ハンドラーの中でいつでも`contentBytes`を読める。
+lintのあともバイト列を持ち続けるルールは、バッファが次のファイルに再利用されるので、コピーして持つ。Secretlintが提供するルールは持ち続けない。
+
+`source.contentBytes`のテキストでの意味は変えない。`content`のUTF-8表現で、先頭にバイトオーダーマークがあってもよい。
+バイナリでは、ファイルのバイト列で、`content`はそれをUTF-8として読んだ文字列である。source-creatorはすでにこのとおり動いているので、型のドキュメントにこれを書く。
 
 ### gcpルールと`.p12`ファイル
 
 gcpルールは`all`に対応している。`.json`では`content`をパースし、`.p12`ではGCPがサービスアカウントキーに使うパスワードでPKCS#12ファイルのMACを検証する。
-MACの検証には元のバイト列が必要だが、バイナリファイルの`content`ではデコードでそれが失われている。
-そのためルールは`node:fs`を動的にimportし、`filePath`からファイルを読み直す。`physicalFilePath`ではなく`filePath`を読むので、呼び出し元が`noPhysicFilePath`を指定していてもファイルを読む。
-ブラウザでは動的importが失敗し、ルールはそのエラーを捕まえて何も報告しない。
-MACの検証そのものは、`node:crypto`があればそれを使い、なければWeb Cryptoを使う。
+MACの検証には、ソースコードのオブジェクトの`contentBytes`を使う。`contentBytes`が`undefined`の場合、ルールは`.p12`ファイルを確かめず、何も報告しない。
+ルールは`node:fs`をimportせず、ファイルも読まない。そのためNode.js、ブラウザ、単一実行ファイルで同じ結果になり、呼び出し元が`noPhysicFilePath`を指定したときにファイルを読むこともなくなる。
+MACの検証そのものは、これまでどおり`node:crypto`があればそれを使い、なければWeb Cryptoを使う。
+
+### ルールのテスト
+
+`@secretlint/tester`は、各テストファイルを2回lintする。1回はバイト列あり、もう1回は文字列だけでlintする。テキストではバイト列は速さのためだけにあるので、2つの結果が同じであることを確かめている。
+バイナリではバイト列が必要なので、testerが2つの結果を比べるのはテキストのときだけにする。バイナリのスナップショットは、バイト列ありの結果にする。
 
 ## アーキテクチャ・シーケンス図
 
@@ -76,8 +92,8 @@ sequenceDiagram
     Reader-->>Engine: ソース（contentのgetter、contentBytes = 共有バッファ、contentType）
     Engine->>Core: lintSource(source)
     Core->>Core: 内容の種類のビューを選ぶ
-    Core->>Rule: バイト列なしで file(sourceCode)
-    Rule->>Rule: node:fs をimportし、filePathを読み直す
+    Core->>Rule: contentBytesつきで file(sourceCode)
+    Rule->>Rule: contentBytesのPKCS#12 MACを検証する
     Rule-->>Core: report
     Core-->>Engine: 結果
     Engine->>Reader: 次のファイルを読む（バッファを再利用）
@@ -87,8 +103,8 @@ sequenceDiagram
 
 | 型 | プロパティ | 補足 |
 | --- | --- | --- |
-| `SecretLintRawSource` | `content`、`contentBytes?`、`filePath`、`ext?`、`contentType` | 呼び出し元が作る。テキストでは、`contentBytes`は`content`のUTF-8表現である。バイナリファイルでは、`contentBytes`はファイルのバイト列で、`content`はそれをUTF-8として読んだ文字列なので、`content`をエンコードし直しても`contentBytes`には戻らない。 |
-| `SecretLintSourceCode` | `content`、`hasBOM`、`filePath`、`physicalFilePath`、`ext`、`contentType`、位置のメソッド | coreがルールのために作る。バイト列はない。 |
+| `SecretLintRawSource` | `content`、`contentBytes?`、`filePath`、`ext?`、`contentType` | 呼び出し元が作る。テキストでは、`contentBytes`は`content`のUTF-8表現である。バイナリでは、`contentBytes`はファイルのバイト列で、`content`はそれをUTF-8として読んだ文字列である。 |
+| `SecretLintSourceCode` | `content`、`contentBytes`、`hasBOM`、`filePath`、`physicalFilePath`、`ext`、`contentType`、位置のメソッド | coreがルールのために作る。`contentBytes`は新しいプロパティで、`Uint8Array \| undefined`、読み取り専用、そのソースのlintが終わるまで有効。 |
 
 1つのソースから1回のlintで1つのソースコードのオブジェクトができるだけなので、図は不要である。
 
@@ -102,6 +118,7 @@ coreの入口である。ソースと設定を受け取り、内容を含まな�
 ### ルールの`create(context, options)`
 
 ルールはハンドラーを返し、`file(source)`ハンドラーがソースコードのオブジェクトを受け取る。ハンドラーはpromiseを返してよく、coreはそれを待つ。
+`source.contentBytes`が新しいプロパティである。coreとほかのルールが同じバイト列を読むので、ルールはバイト列を書き換えない。
 
 ### `@secretlint/source-creator`
 
@@ -114,7 +131,7 @@ coreの入口である。ソースと設定を受け取り、内容を含まな�
 ## データの取り扱い設計
 
 ファイルのバイト列は、次のファイルを読むまで共有バッファにある。デコードした文字列は、呼び出し元がソースを持っている間、ソースが持つ。
-gcpルールは`.p12`ファイルをもう一度専用のバッファに読み、確認のあと捨てる。
+ルールはcoreと同じバイト列を読み、コピーしない。ファイルを2回読むことはない。
 
 ## 認証認可に関する特記事項
 
@@ -126,11 +143,32 @@ gcpルールは`.p12`ファイルをもう一度専用のバッファに読み�
 
 ## デプロイに関する特記事項
 
-なし。
+ソースコードのオブジェクトに`contentBytes`を足しても、既存のルールは変わらない。
+バイト列なしで`.p12`ファイルの`lintSource()`を呼ぶプログラムは、これまではgcpルールがファイルを読んで報告していたが、この変更のあとは報告されない。リリースノートで、そうした呼び出し元に`contentBytes`を渡すよう案内する。破壊的変更として扱うかはRequirementsの未決事項である。
+ルールはcoreと一緒にリリースされるので、新しいgcpルールが`contentBytes`を渡さない古いcoreで動くことはない。
 
 ## 検討した代替手段
 
-現状の記述なので、なし。
+### ブラウザ向けのプリセットでNode.jsに依存するルールを無効にする
+
+ブラウザ向けのプリセットでNode.jsを必要とするルールを外し、それを元にバンドルを作る。
+採用しなかったのは、そうしたルールはgcpルールだけで、その確認にはバイト列しか要らないためである。バイト列を渡せば、依存を隠すのではなく取り除ける。
+また、プリセットはすべてのルールを静的にimportするので、無効にしたルールもバンドルに残り、ブラウザでは`.p12`ファイルが報告されないままになる。
+
+### バイナリのときだけバイト列を渡す
+
+テキストでは`contentBytes`を`undefined`にする。
+採用しなかったのは、ルールがバイト列のある条件を知る必要が出てくるうえ、速さのためにテキストのバイト列を見るルールを後で作るときにまた変更が要るためである。coreはすでにバイト列を持っているので、渡すことにコストはかからない。
+
+### 元のバイト列のための新しいプロパティを生のソースに足す
+
+バイナリのために`originalBytes`のようなプロパティを足し、`contentBytes`は`content`の表現だけにする。
+採用しなかったのは、source-creatorはすでにバイナリでもファイルのバイト列を`contentBytes`として渡していて、キーワードの検索もそれを使っているためである。いまの振る舞いを型のドキュメントに書いても呼び出し元には何も変わらないが、プロパティを2つにすると、呼び出し元は同じバイト列を2回渡すことになる。
+
+### バイト列が渡されないときは`node:fs`でファイルを読む
+
+`contentBytes`が`undefined`のとき、gcpルールはこれまでどおりファイルを読む。
+メンテナーの判断で採用しなかった。コマンドは常にバイト列を渡し、ルールはcoreと一緒にリリースされる。また、ファイルを読むと`noPhysicFilePath`を無視することになり、ルールにNode.jsのimportが残る。
 
 ## 未決事項
 
