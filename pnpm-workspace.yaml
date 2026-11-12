@@ -6,7 +6,7 @@ packages:
   - e2e/*
 
 catalog:
-  "@playwright/test": "^1.64.1"
+  "@playwright/test": "^1.65.0"
   "@rollup/plugin-commonjs": "^29.0.3"
   "@rollup/plugin-node-resolve": "^16.0.3"
   "@rollup/plugin-typescript": "^12.3.1"
