@@ -1,10 +1,10 @@
-# File masking design
+# mask-result formatter design
 
 [日本語](design.ja.md)
 
 ## About this document
 
-This document describes how [File masking](requirements.md) of [Secretlint](../../product.md) is realized by the `mask-result` formatter.
+This document describes how the [mask-result formatter](requirements.md) of [Secretlint](../../product.md) is realized.
 
 ### Audience
 

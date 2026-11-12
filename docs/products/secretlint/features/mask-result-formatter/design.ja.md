@@ -1,10 +1,10 @@
-# ファイルのマスクの設計
+# mask-resultフォーマッターの設計
 
 [English](design.md)
 
 ## このドキュメントについて
 
-このドキュメントは、[Secretlint](../../product.ja.md)の[ファイルのマスク](requirements.ja.md)を`mask-result`フォーマッターでどう実現しているかを説明する。
+このドキュメントは、[Secretlint](../../product.ja.md)の[mask-resultフォーマッター](requirements.ja.md)をどう実現しているかを説明する。
 
 ### 対象読者
 

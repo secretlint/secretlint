@@ -1,10 +1,10 @@
-# File masking
+# mask-result formatter
 
 [日本語](requirements.ja.md)
 
 ## About this document
 
-File masking outputs the content of a file with its secrets replaced by `*`, so that the content can be shared or saved without the secrets.
+The `mask-result` formatter outputs the content of a file with its secrets replaced by `*`, so that the content can be shared or saved without the secrets.
 The parent Product is [Secretlint](../../product.md).
 
 ### Scope

@@ -20,7 +20,7 @@ The parent Product is [Secretlint](../../product.md).
 ### Out of scope
 
 - Masking of secret values in messages. It belongs to the feature "Secret masking in results".
-- The `mask-result` formatter. It belongs to [File masking](../file-masking/requirements.md).
+- The output of the `mask-result` formatter. It belongs to [mask-result formatter](../mask-result-formatter/requirements.md).
 - The layout of each formatter for people, such as `stylish` and `table`, and the content of the SARIF output. They are not yet written.
 - Messages about problems of the configuration file that are shown together with lint results. They are not yet written.
 - The output of `--profile`.
@@ -174,7 +174,7 @@ The results do not have the content of the files.
 A formatter can get the content of a text file that has at least one message, and the content given from STDIN.
 The content is the content that was linted. Secretlint does not read the file again for the formatter.
 The content of a text file without messages, the content of a binary file, and the content for the configuration file are not available.
-[File masking](../file-masking/requirements.md) is the exception: the `mask-result` formatter gets the content of every linted text file.
+The [mask-result formatter](../mask-result-formatter/requirements.md) is the exception: it gets the content of every linted text file.
 
 ##### Output for a terminal
 
@@ -207,7 +207,7 @@ The command shows an error that names the formatter, and exits with the status 2
 | STDIN content | `text` | The messages of the rules | The whole content, with or without messages | 1 when a message has the severity error, otherwise 0 |
 | Configuration file with a problem | `text` | The messages about the configuration | Not available | Not changed by these messages |
 
-The same applies to every formatter except `mask-result`. [File masking](../file-masking/requirements.md) lists the behavior of `mask-result` for each kind.
+The same applies to every formatter except `mask-result`. [mask-result formatter](../mask-result-formatter/requirements.md) lists the behavior of `mask-result` for each kind.
 
 An empty file is a text file without a secret.
 A file is binary when its extension is one of binary files, such as `.png`, or when its extension is not known and its content looks binary. The extension is checked first, so a file with the extension `.png` is binary even when its content is text.

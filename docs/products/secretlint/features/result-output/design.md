@@ -57,7 +57,7 @@ It reads files into one shared buffer, and the buffer has a file only until the 
 Right after the lint of a file, while the buffer still has the file, the engine decodes and keeps the content if the file is text and has at least one message.
 The contents are kept in a map from the file path to the content, and `getSource` looks up this map.
 For the STDIN content, `getSource` returns the given string for the given file name.
-For the `mask-result` formatter, the engine keeps the content of every text file, as the Requirements of File masking describe.
+For the `mask-result` formatter, the engine keeps the content of every text file, as the Requirements of the mask-result formatter describe.
 
 Nothing is read again from the disk for a formatter.
 Reading the content of a source after the buffer was reused throws an error instead of reading the file again, so a content that no rule has checked can not reach a formatter.
