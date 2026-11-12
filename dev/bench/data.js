@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794492928922,
+  "lastUpdate": 1794493709117,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -61976,6 +61976,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 4.71,
             "range": "±0.87%",
+            "unit": "ops/sec",
+            "extra": "16 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "aa890e4cb57ced2d7225a870cdc1e7839aa61bf9",
+          "message": "refactor(formatter): port the formatters of textlint, and remove @textlint/linter-formatter (#1813)\n\n<!-- claude-projects-attribution: {\"github_login\":\"azu\"} -->\n_Requested by **azu** · [project\nthread](https://claude.ai/code/project/chan_01ChfsKF1sN6vYsJMPZ7PuDt?thread=cmsg_01ChfsKF1sN6vYsJMPZ7PuDt1dLpaUG2dRgJz4gM4mB9jx)_\n\n## Summary\n\n`@secretlint/formatter` loaded `stylish` and eight other formatters from\n`@textlint/linter-formatter`.\nThis PR ports them into `@secretlint/formatter`, and removes the\ndependencies that only the formatters used.\n\nThe external packages that `secretlint` installs go from 57 to 26\n(counted with `pnpm list --prod`).\n\n| Removed | Replacement |\n| --- | --- |\n| `@textlint/linter-formatter`, `@textlint/types`,\n`@textlint/module-interop` | `src/formatters/lint/*.ts`: stylish,\npretty-error, compact, unix, github, checkstyle, junit, jslint-xml, tap\n|\n| `table` | `src/helper/draw-table.ts` |\n| `chalk` | `styleText` of `node:util` |\n| `pluralize` | a function that adds \"s\" |\n| `terminal-link` | `src/helper/terminal-link.ts` |\n\n`tap` formatter outputs YAML, so `@secretlint/formatter` depends on\n`js-yaml` directly. `js-yaml` is already installed via\n`rc-config-loader`, and it is imported only when `tap` is used.\n\nEach formatter is now imported when it is used. Before, importing\n`@secretlint/formatter` loaded all formatters of textlint, `lodash`,\n`table` and `ajv`.\n\n## Unintended behavior that is removed\n\nThese worked only as a side effect of delegating to\n`@textlint/linter-formatter`. They were not a documented feature of\nsecretlint, so this PR is not handled as a breaking change.\n\n- `--format <name>` does not load `textlint-formatter-<name>` packages.\nA secretlint formatter (`secretlint-formatter-<name>` package or a file\npath) still works.\n- A built-in formatter name such as `stylish` is resolved before a file\nof the same name in the current directory.\n\n## Behavior\n\nThe output of the ported formatters is the same as\n`@textlint/linter-formatter` 15.8.0.\n`secretlint` requires `^15.7.0`, so a new install already uses 15.8.0.\nThe lockfile of this repository had 15.7.0, so these snapshots are\nupdated:\n\n- `compact`, `unix`, `checkstyle`, `jslint-xml`: the output ends with a\nline break.\n- `github`: the messages of a file are grouped with `::group::`, the\ntitle is `TextLint [rule]`, the position is added to the message, and\nthe values are escaped\n([textlint#2159](https://github.com/textlint/textlint/pull/2159)).\n\nDifferences from before:\n\n- `table` formatter decides the colors with `styleText` instead of\n`chalk`. The escape sequences are the same. `chalk` enabled colors on\nsome CI without a TTY, and `styleText` does not. `stylish` already used\n`styleText` in textlint 15.8.0.\n- `table` formatter does not throw an error for a message that has a tab\ncharacter.\n- `pretty-error` does not output `undefined` for an empty file.\n\nNot changed in this PR, but it looks odd now that the code is in\nsecretlint (I can change them in another PR):\n\n- `github` uses `TextLint` as the title, and `junit` / `checkstyle` use\n`org.eslint` / `eslint.rules.` as the prefix.\n- \"info\" severity is passed as an unknown severity, and the formatters\nshow it as \"warning\".\n\n## Test\n\n- Compared the output of this branch with master +\n`@textlint/linter-formatter` 15.8.0 for all 12 formatters: 300 random\nresult sets (fullwidth characters, emoji, long words, line breaks,\ncharacters to escape, each severity) x color on/off x terminalLink\non/off, with and without `FORCE_COLOR=1` and `FORCE_HYPERLINK=1`. All\noutputs of the ported formatters and `table` are identical.\n- New unit tests: `draw-table`, `string-width`, `terminal-link`, each\nported formatter (snapshots and edge cases), and `loadFormatter`.\n- `pnpm run ci` passes.\n- The `github` snapshot test replaces the escaped form of the snapshot\ndirectory too, because the formatter escapes `:` of a Windows path\n(`D:\\...`).\n\n## Performance\n\nMedian of the CLI on a 4 vCPU Linux VM, Node.js 22.\n\n| Case | Before | After |\n| --- | --- | --- |\n| 1 file (stylish) | 238ms | 190ms |\n| 1 file (json) | 236ms | 176ms |\n| `--version` | 205ms | 138ms |\n| 14,441 files | 915ms | 855ms |\n\nThe files that Node.js loads to lint a file go from 280 to 179.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nhttps://claude.ai/code/session_01TSdrAJQDcp4n5az58XCmyq\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-11-12T23:27:19+09:00",
+          "tree_id": "1b16be8711daa517766f8a39dc918d5cdb88fe59",
+          "url": "https://github.com/secretlint/secretlint/commit/aa890e4cb57ced2d7225a870cdc1e7839aa61bf9"
+        },
+        "date": 1794493706077,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 5.52,
+            "range": "±1.03%",
+            "unit": "ops/sec",
+            "extra": "18 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 4.4,
+            "range": "±2.13%",
             "unit": "ops/sec",
             "extra": "16 samples"
           }
