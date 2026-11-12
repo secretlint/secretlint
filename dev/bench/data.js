@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794490976965,
+  "lastUpdate": 1794491399637,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -61826,6 +61826,44 @@ window.BENCHMARK_DATA = {
             "range": "±0.67%",
             "unit": "ops/sec",
             "extra": "13 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "e5e956aa6da347387398146988106b9e70dad3bf",
+          "message": "feat: build the official rules into @secretlint/core and resolve them by rule id (#1798)\n\n<!-- claude-projects-attribution: {\"github_login\":\"azu\"} -->\n_Requested by **azu** · [project\nthread](https://claude.ai/code/project/chan_01ChfsKF1sN6vYsJMPZ7PuDt?thread=cmsg_01ChfsKF1sN6vYsJMPZ7PuDtVjqVnXcX9pbSj5Ln26T4wX)_\n\nFollows #1796 (merged). Rebased onto `master`.\n\n## Summary\n\nThe official rules become files in `@secretlint/core` instead of\nseparate npm packages. The rule ids (`@secretlint/secretlint-rule-*`) do\nnot change, and the config loader resolves them from core without\ninstalling a package. A new rule no longer needs a new npm package, so\nit needs no manual npm trusted publishing setup.\n\n```\nconfig id -> config-loader -> built-in table of @secretlint/core? -- yes --> built-in rule\n                                                                 \\-- no  --> npm package (external rule, as before)\n```\n\nThe tests of the rules are in core too, as oxlint\n([`crates/oxc_linter`](https://github.com/oxc-project/oxc/tree/main/crates/oxc_linter/src))\nand ESLint ([`lib/`](https://github.com/eslint/eslint/tree/main/lib))\nkeep the engine, the rules, and the test runner in one package.\n\nDeprecating the old packages is not part of this PR.\n\n## Changes\n\n- **core**: `src/builtin/rules/<name>/` holds the code of the 28 rules\nof the recommend preset, `azure` and `pattern`. The `refactor(core):\nmove ...` commits only move the files (`git log --follow` works). `gcp`\nand `pattern` use a small `basename` helper instead of `node:path`, so\nno file under `src/builtin` imports a Node.js module statically.\n- **pattern**: `filePathGlobs` uses picomatch (already used by the\nwalker) with the algorithm of `micromatch()`, and micromatch is removed.\nChecked against micromatch for 121 path/glob pairs including negation,\nre-inclusion after a negation, only negations, and extglob `!(foo)`:\nsame results.\n- **core**: `@secretlint/core/builtin` exports `builtinRules`,\n`recommendedRules`, `canaryRules`, `presetRecommend`, `presetCanary` and\n`getBuiltinRule(id)`. `@secretlint/core/builtin/rules/<name>` exports\none rule.\n- **config-loader**: the order of resolution is `testReplaceDefinitions`\n→ built-in table → node_modules. The full id and the short form that the\nmodule resolver accepts (`@secretlint/aws`,\n`@secretlint/preset-recommend`) are both resolved. A built-in id is\nresolved from core even if a package of the same name is installed, so\nthe rule always has the version of the core. The id in the config is\nkept as written, so `ruleId` in the results does not change.\n- **tests**: the snapshot tests of the built-in rules and the presets\nare in `core/test/builtin/rules/<name>/snapshots/` and\n`core/test/builtin/presets/<preset>/snapshots/` (moved, no snapshot\nchanges). `@secretlint/tester` depends on core, so core can not use it:\nthe snapshot runner moves into core as `@secretlint/core/testing`, and\n`@secretlint/tester` wraps it with config-loader for the rules outside\ncore (same API). The core tests resolve the ids of `.secretlintrc.json`\nfrom the built-in table. The `import-tests.js` of the presets becomes\n`core/scripts/sync-preset-snapshots.mjs`.\n- **rule packages (30) and the two presets**: `src/index.ts` re-exports\nthe rule or preset from core, and they have no tests now. The presets\nare built with `tsc` instead of `rollup`.\n- **binary**: the resolver hooks map only the sarif formatter now.\n`canary`, `azure`, `pattern` and each rule id work in the binary through\nthe built-in table.\n- **gen:rule**: creates `core/src/builtin/rules/<name>/` and\n`core/test/builtin/rules/<name>/snapshots/`, not a new package.\n`AGENTS.md` describes the new layout.\n\nNot moved: `no-dotenv`, `no-homedir` (`node:os`), `no-k8s-kind-secret`\n(js-yaml), `secp256k1-privatekey` (native module). They stay as packages\nand use `@secretlint/tester`.\n\n## Compatibility and users who already installed the preset\n\n- Configs do not change. `{ \"id\":\n\"@secretlint/secretlint-rule-preset-recommend\", \"rules\": [...] }` and\nsingle rule ids work as before.\n- Users who have `@secretlint/secretlint-rule-preset-recommend` in\n`package.json` (the documented install) need to do nothing. The\ninstalled package is not loaded, because the id is resolved from core.\nRemoving it from `package.json` is optional, and it keeps working after\nthe package stops being published.\n- Code that imports `creator` from `@secretlint/secretlint-rule-*`\nworks, because the packages re-export the rule from core.\n- `@secretlint/tester` keeps its API (`snapshot(options).forEach(...)`).\n- Not changed in this PR: the README still says `npm install secretlint\n@secretlint/secretlint-rule-preset-recommend`, and the packages are\nstill published. Both can change when the packages are deprecated.\n\n## Test plan\n\n- [x] `turbo run build test --force` (77 tasks pass; the 32 test tasks\nof the moved packages are now in core, 478 core tests; no snapshot\nchanges)\n- [x] a changed `output.json` makes the core snapshot test fail\n- [x] new tests: `core/test/builtin/builtin.test.ts` (each rule\ndirectory is registered with its former id, ids are unique, presets\nregister their rules, no static `node:` import under `src/builtin`),\n`core/test/builtin/rules.test.ts` (each built-in rule has snapshot\ntests), `config-loader/test/builtin.test.ts` (full id, short id, preset\nwith rule options, `testReplaceDefinitions` wins, non built-in id still\nloads from node_modules)\n- [x] CLI in a directory without any rule package: the recommend preset,\n`azure` and `pattern` (with a negated `filePathGlobs`) work\n- [x] linux-x64 binary built with bun: `publish/binary-compiler/test.sh`\npasses, and `azure`, `@secretlint/preset-canary` and `pattern` with a\nnegated `filePathGlobs` work\n- [x] merged together with #1797 locally: no conflict\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nhttps://claude.ai/code/session_01TSdrAFioURheEzCVd5yJ1K\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-11-12T13:48:29Z",
+          "tree_id": "9df201fe7b4521972de159b4eba0c5228e2ffa48",
+          "url": "https://github.com/secretlint/secretlint/commit/e5e956aa6da347387398146988106b9e70dad3bf"
+        },
+        "date": 1794491395527,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 3.67,
+            "range": "±1.61%",
+            "unit": "ops/sec",
+            "extra": "14 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 3.08,
+            "range": "±0.88%",
+            "unit": "ops/sec",
+            "extra": "12 samples"
           }
         ]
       }
