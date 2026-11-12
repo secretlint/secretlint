@@ -80,7 +80,7 @@ const lintBoth = async (content: string, config: SecretLintCoreConfig) => {
     const textResult = await lintSource({ source: textSource, options: { config } });
     const bytesResult = await lintSource({ source: bytesSource, options: { config } });
     assert.deepStrictEqual(bytesResult.messages, textResult.messages);
-    return { messages: textResult.messages, bytesResult, state };
+    return { messages: textResult.messages, textResult, bytesResult, state };
 };
 const toRangeTexts = (content: string, messages: { range: readonly [number, number] }[]) => {
     return messages.map((message) => content.slice(message.range[0], message.range[1]));
@@ -125,9 +125,6 @@ describe("lintSource with patterns", () => {
         const result = await lintSource({ source: bytesSource, options: { config: toConfig(rule) } });
         assert.deepStrictEqual(result.messages, []);
         assert.strictEqual(state.contentReads, 0);
-        // the result reads the content lazily
-        assert.strictEqual(result.sourceContent, "no keyword here\n".repeat(10));
-        assert.strictEqual(state.contentReads, 1);
     });
     it("should not read the content when a line has a keyword but the pattern does not match the line", async () => {
         const rule = createPatternRule([tokenPattern()]);
@@ -279,12 +276,10 @@ describe("lintSource with patterns", () => {
         const { bytesSource, state } = createSources("tok_ab12", "binary");
         const result = await lintSource({ source: bytesSource, options: { config: toConfig(rule) } });
         assert.deepStrictEqual(result.messages, []);
-        assert.strictEqual(result.sourceContent, undefined);
         assert.strictEqual(state.contentReads, 0);
         const unknown = createSources("tok_ab12", "unknown");
         const unknownResult = await lintSource({ source: unknown.bytesSource, options: { config: toConfig(rule) } });
         assert.strictEqual(unknownResult.messages.length, 1);
-        assert.strictEqual(unknownResult.sourceContent, undefined);
     });
     it("should run pattern rules and other rules together, and sort messages by location", async () => {
         const patternRule = createPatternRule([tokenPattern()]);
@@ -411,11 +406,17 @@ describe("lintSource with patterns", () => {
             /The rule "pattern-rule" has a pattern with unknown scope: "lines"\nThe scope should be "line" or "file"/,
         );
     });
+    it("should not return the content of the source in the result", async () => {
+        const rule = createPatternRule([tokenPattern()]);
+        const found = await lintBoth("key = tok_ab12", toConfig(rule));
+        assert.strictEqual(found.messages.length, 1);
+        assert.deepStrictEqual(Object.keys(found.bytesResult).sort(), ["filePath", "messages", "sourceContentType"]);
+        assert.deepStrictEqual(Object.keys(found.textResult).sort(), ["filePath", "messages", "sourceContentType"]);
+    });
     it("should lint empty content", async () => {
         const rule = createPatternRule([tokenPattern()]);
-        const { messages, bytesResult } = await lintBoth("", toConfig(rule));
+        const { messages } = await lintBoth("", toConfig(rule));
         assert.deepStrictEqual(messages, []);
-        assert.strictEqual(bytesResult.sourceContent, "");
     });
     it("should lint the bytes of a view of a larger buffer", async () => {
         const rule = createPatternRule([tokenPattern()]);

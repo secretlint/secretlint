@@ -31,7 +31,6 @@
         },
         {
             "filePath": "[SNAPSHOT]/empty-rules/input.txt",
-            "sourceContent": "THIS IS PUBLIC DATA ONLY!\n",
             "sourceContentType": "text",
             "messages": []
         }

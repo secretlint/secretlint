@@ -1,6 +1,6 @@
 import { lintSource } from "@secretlint/core";
 import { loadConfig, loadPackagesFromConfigDescriptor, SecretLintConfigMessage } from "@secretlint/config-loader";
-import { createFileSourceReader } from "@secretlint/source-creator";
+import { createFileSourceReader, createRawSource } from "@secretlint/source-creator";
 import { loadFormatter } from "@secretlint/formatter";
 import {
     SecretLintConfigDescriptor,
@@ -76,25 +76,42 @@ export type SecretLintEngineOptions = SecretLintEngineOptionsConfigFilePath | Se
 const isConfigFileJSON = (v: any): v is SecretLintEngineOptionsConfigFileJSON => {
     return "configFileJSON" in v && v.configFileJSON !== undefined;
 };
-// The engine lints a file at a time, so files are read into one buffer
-const readFileSource = createFileSourceReader();
-const lintFile = async ({
-    filePath,
-    config,
-    options,
-}: {
-    filePath: string;
-    config: SecretLintCoreConfig;
-    options: SecretLintEngineOptions;
-}) => {
-    const rawSource = readFileSource(filePath);
-    return lintSource({
-        source: rawSource,
-        options: {
-            ...options,
-            config: config,
-        },
-    });
+type LintedFile = {
+    result: SecretLintCoreResult;
+    /**
+     * The content of the file for the formatter.
+     * It is `undefined` if the formatter does not get the content of the file.
+     */
+    content: string | undefined;
+};
+/**
+ * Create a function that reads and lints a file.
+ *
+ * The files are read into one buffer, and the buffer has a file only until the next file is read.
+ * So the returned function lints a file at a time: wait for the result before linting the next file.
+ * Each `executeOnFiles()` call creates its own function, so concurrent calls do not share the buffer.
+ *
+ * The result does not have the content of the file, and a formatter gets the content via `getSource()`.
+ * Most files have no message, and their bytes are never decoded.
+ * So the function returns the content only for the text files that have messages.
+ * "mask-result" formatter outputs the content of all files, so it reads all files as strings.
+ */
+const createFileLinter = ({ config, options }: { config: SecretLintCoreConfig; options: SecretLintEngineOptions }) => {
+    const readFileSource = createFileSourceReader();
+    const lintOptions = { ...options, config };
+    return async (filePath: string): Promise<LintedFile> => {
+        if (options.formatter === "mask-result") {
+            const { content, ext, contentType } = await createRawSource(filePath);
+            const result = await lintSource({ source: { filePath, content, ext, contentType }, options: lintOptions });
+            return { result, content: contentType === "text" ? content : undefined };
+        }
+        // Read and start the lint in the same turn: `lintSource()` scans the bytes at the start of the call
+        const source = readFileSource(filePath);
+        const result = await lintSource({ source, options: lintOptions });
+        // The buffer still has the file here, because the next file is not read yet
+        const hasContent = source.contentType === "text" && result.messages.length > 0;
+        return { result, content: hasContent ? source.content : undefined };
+    };
 };
 
 /**
@@ -109,7 +126,6 @@ const createConfigResult = ({
 }): SecretLintCoreResult => {
     return {
         filePath: configFilePath,
-        sourceContent: undefined,
         sourceContentType: "text",
         messages: messages.map((message) => {
             return {
@@ -171,6 +187,7 @@ const executeOnContent = async ({
         color: options.color ?? true,
         formatterName: options.formatter,
         terminalLink: options.terminalLink ?? false,
+        getSource: (sourceFilePath) => (sourceFilePath === filePath ? content : undefined),
     });
     const output = formatter.format([...configResults, result]);
     secretLintProfiler.mark({
@@ -194,14 +211,20 @@ const executeOnFiles = async ({
     options: SecretLintEngineOptions;
 }) => {
     // Lint a file at a time.
-    // lintFile() reads the file synchronously into a shared buffer, so linting files concurrently has no gain,
-    // and the file is read again if another file is read before the lint uses the content.
+    // lintFile() reads the file synchronously into a buffer, so linting files concurrently has no gain,
+    // and the buffer has the file only until the next file is read.
     const results: SecretLintCoreResult[] = [];
+    // The contents for the formatter: `filePath` of the result to the content
+    const contents = new Map<string, string>();
+    const lintFile = createFileLinter({ config, options });
     for (const filePath of filePathList) {
         debug("executeOnFiles file: %s", filePath);
-        const result = await lintFile({ filePath: filePath, config: config, options: options });
+        const { result, content } = await lintFile(filePath);
         debug("executeOnFiles result: %o", result);
         results.push(result);
+        if (content !== undefined) {
+            contents.set(result.filePath, content);
+        }
     }
     debug("executeOnFiles result counts: %s", results.length);
     secretLintProfiler.mark({
@@ -211,6 +234,7 @@ const executeOnFiles = async ({
         color: options.color ?? true,
         formatterName: options.formatter,
         terminalLink: options.terminalLink ?? false,
+        getSource: (filePath) => contents.get(filePath),
     });
     const output = formatter.format([...configResults, ...results]);
     secretLintProfiler.mark({

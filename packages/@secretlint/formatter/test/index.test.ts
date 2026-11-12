@@ -34,6 +34,8 @@ describe("@secretlint/formatter", () => {
             const formatter = await loadFormatter({
                 color: false,
                 formatterName: formatterName,
+                // The results do not have the content of the sources
+                getSource: (filePath) => fs.readFileSync(filePath, "utf-8"),
             });
             const actual = snapshotReplace(formatter.format(results));
             const expectedFilePath = path.join(fixtureDir, `output.${formatterName}.txt`);

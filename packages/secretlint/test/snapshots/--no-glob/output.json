@@ -3,7 +3,6 @@
     "stdout": [
         {
             "filePath": "[SNAPSHOT]/--no-glob/input-(group).[test].md",
-            "sourceContent": "THIS IS SECRET DATA!!\n",
             "sourceContentType": "text",
             "messages": [
                 {

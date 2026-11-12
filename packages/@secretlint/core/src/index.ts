@@ -254,33 +254,15 @@ type RuleToRun =
 
 /**
  * Create the result of the lint.
- * `bytes` is `contentBytes` of the source at the start of the lint.
+ *
+ * The result does not have the content of the source.
+ * Most files have no message, and their bytes are never decoded: decoding them only for the result
+ * would cost more than the lint. The caller has the source, and it can pass the content to a formatter.
  */
-const createResult = (
-    source: SecretLintRawSource,
-    bytes: Uint8Array | undefined,
-    messages: SecretLintCoreResultMessage[],
-): SecretLintCoreResult => {
-    const contentType = source.contentType;
-    if (contentType !== "text") {
-        // binary content should be skipped
-        return { filePath: source.filePath, sourceContent: undefined, sourceContentType: contentType, messages };
-    }
-    if (bytes === undefined) {
-        return {
-            filePath: source.filePath,
-            sourceContent: source.content,
-            sourceContentType: contentType,
-            messages,
-        };
-    }
-    // `source.content` may decode the bytes lazily. Do not read it until the result is used
+const createResult = (source: SecretLintRawSource, messages: SecretLintCoreResultMessage[]): SecretLintCoreResult => {
     return {
         filePath: source.filePath,
-        get sourceContent() {
-            return source.content;
-        },
-        sourceContentType: contentType,
+        sourceContentType: source.contentType,
         messages,
     };
 };
@@ -314,7 +296,7 @@ const lintWithPlan = (
     const bytesCheck = bytes === undefined ? undefined : checkBytes(view, bytes);
     if (bytes !== undefined && !bytesCheck?.hasKeyword && !view.hasAlwaysPattern && !view.hasAlwaysRule) {
         // Most files end here: no rule runs, and nothing is created for the file except the result
-        return Promise.resolve(createResult(source, bytes, []));
+        return Promise.resolve(createResult(source, []));
     }
     // Create a SourceCode for linting.
     // Defer reading the content, because it may be decoded lazily and most files do not need it
@@ -387,7 +369,7 @@ const lintWithPlan = (
             };
         });
     if (rulesToRun.length === 0) {
-        return Promise.resolve(createResult(source, bytes, []));
+        return Promise.resolve(createResult(source, []));
     }
     /**
      * Return where the pattern runs: the whole content, some lines, or nowhere
@@ -466,11 +448,10 @@ const lintWithPlan = (
     }
     const finish = (): SecretLintCoreResult => {
         if (reportedMessages.length === 0) {
-            return createResult(source, bytes, []);
+            return createResult(source, []);
         }
         return createResult(
             source,
-            bytes,
             cleanupMessages({
                 reportedMessages,
                 ignoredMessages,

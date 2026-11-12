@@ -4,7 +4,7 @@ import {
     getFormatterList as textlintGetFormatterList,
     loadFormatter as textlintCreateFormatter,
 } from "@textlint/linter-formatter";
-import { SecretLintCoreResult } from "@secretlint/types";
+import { SecretLintCoreResult, SecretLintFormatterGetSource } from "@secretlint/types";
 import terminalLink from "terminal-link";
 import { FormatterConfig } from "./types.js";
 import fs from "node:fs";
@@ -42,6 +42,12 @@ export interface SecretLintFormatterConfig {
      * Default: false
      */
     terminalLink?: boolean;
+    /**
+     * Get the content of the linted source by `filePath` of the result.
+     * The results do not have the content, so a formatter that needs the content gets it from this function.
+     * For example, "mask-result" formatter needs it.
+     */
+    getSource?: SecretLintFormatterGetSource;
 }
 
 /**

@@ -9,9 +9,9 @@ import { fileURLToPath } from "node:url";
 const packageDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const binPath = path.join(packageDirectory, "bin", "quick-start.js");
 
-test("quick-start does not truncate large JSON output piped to another process", async () => {
+test("quick-start does not truncate large output piped to another process", async () => {
     const input = `AWS_SECRET_ACCESS_KEY = wJalrXUtnFEMI/K7MDENG/bPxRfiCYSECRETSKEY\n${"a".repeat(2 * 1024 * 1024)}`;
-    const child = spawn(process.execPath, [binPath, "--stdinFileName=input.txt", "--format=json"], {
+    const child = spawn(process.execPath, [binPath, "--stdinFileName=input.txt", "--format=mask-result"], {
         cwd: packageDirectory,
         env: {
             ...process.env,
@@ -30,8 +30,8 @@ test("quick-start does not truncate large JSON output piped to another process",
     assert.strictEqual(signal, null);
     assert.strictEqual(exitCode, 1, stderr);
     assert.ok(Buffer.byteLength(stdout) > 1024 * 1024, "stdout should contain more than 1 MiB");
-    const results = JSON.parse(stdout);
-    assert.strictEqual(results.length, 1);
-    assert.strictEqual(results[0].sourceContent, input);
-    assert.ok(results[0].messages.length > 0);
+    // mask-result outputs the whole content, and the secret is masked
+    assert.strictEqual(stdout.length, `${input}\n`.length);
+    assert.notStrictEqual(stdout, `${input}\n`);
+    assert.ok(stdout.endsWith(`${"a".repeat(2 * 1024 * 1024)}\n`));
 });

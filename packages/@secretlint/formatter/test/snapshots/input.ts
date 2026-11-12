@@ -5,7 +5,6 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export const results: SecretLintCoreResult[] = [
     {
         filePath: path.join(__dirname, "input.txt"),
-        sourceContent: "THIS IS SECRET SOURCE\n",
         sourceContentType: "text",
         messages: [
             {
@@ -76,7 +75,6 @@ export const results: SecretLintCoreResult[] = [
     },
     {
         filePath: path.join(__dirname, "input.no-secret.txt"),
-        sourceContent: "THIS IS PUBLIC SOURCE\n",
         sourceContentType: "text",
         messages: [],
     },

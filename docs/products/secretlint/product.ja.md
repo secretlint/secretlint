@@ -117,8 +117,8 @@ GitHubのsecret scanningはコミットやpushの後にGitHub側で動きます�
 | ルールとルールプリセット | 秘密情報の種類ごとに検出し、ルールをrecommendとcanaryのプリセットにまとめる | 未作成 |
 | コメントによる無視 | 無効化コメントで、ファイルの範囲の報告を抑える | 未作成 |
 | 結果の秘密情報のマスク | 報告するメッセージの秘密情報の値を既定で伏せる | 未作成 |
-| 結果の出力 | 選んだフォーマッターで結果を表示し、ファイルへ書き出し、終了ステータスを決める | 未作成 |
-| ファイルのマスク | ファイルの内容を、秘密情報を伏せた状態で出力する（`mask-result`） | 未作成 |
+| 結果の出力 | 選んだフォーマッターで結果を表示し、ファイルへ書き出し、終了ステータスを決める | [Requirements](features/result-output/requirements.ja.md) |
+| mask-resultフォーマッター | ファイルの内容を、秘密情報を伏せた状態で出力する（`mask-result`） | [Requirements](features/mask-result-formatter/requirements.ja.md) |
 | メッセージの翻訳 | 選んだロケールでメッセージを表示する（`--locale`、実験的） | 未作成 |
 | 独自ルール | ルールをnpmパッケージとして作り、テストし、公開する | 未作成 |
 | Node.jsのAPI | `@secretlint/node`で、ほかのプログラムから内容をlintする | 未作成 |

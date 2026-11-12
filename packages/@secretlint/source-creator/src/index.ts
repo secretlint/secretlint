@@ -57,7 +57,6 @@ export const createRawSource = async (filePath: string): Promise<SecretLintRawSo
  * Read a file and return the source for linting. See {@link createFileSourceReader}.
  */
 export type FileSourceReader = (filePath: string) => SecretLintRawSource;
-type FileStamp = { size: number; mtimeMs: number; ctimeMs: number };
 const INITIAL_BUFFER_SIZE = 64 * 1024;
 /**
  * A file larger than this size is read into its own buffer, and the shared buffer does not grow for it.
@@ -70,22 +69,23 @@ const MAX_SHARED_BUFFER_SIZE = 16 * 1024 * 1024;
  * The reader reads each file into one shared buffer instead, so linting many files does not allocate for each file
  * and does not keep the content of all files in memory.
  *
+ * The source is for linting a file at a time:
+ *
  * - `contentBytes` of the source is the shared buffer. It is available until the reader reads the next file,
  *   and it is `undefined` after that. `lintSource()` scans it at the start of the call.
- * - `content` of the source is always available. It decodes the bytes when it is accessed.
- *   If the reader has already read the next file, it reads the file again.
+ * - `content` of the source decodes the bytes when it is accessed first, and it is cached.
+ *   `lintSource()` reads it while linting only if a rule needs the content or the result has messages.
+ *   If it is accessed first after the reader has read the next file, it throws:
+ *   the reader does not read the file again, because the file may have been changed after the lint.
  */
 export const createFileSourceReader = (): FileSourceReader => {
     let sharedBuffer = Buffer.allocUnsafe(INITIAL_BUFFER_SIZE);
     // the number of files that the reader has read. It tells whether the shared buffer still has a file.
     let generation = 0;
-    // size and times of the file that `readFile()` has read last
-    let lastStat: FileStamp = { size: 0, mtimeMs: 0, ctimeMs: 0 };
     const readFile = (filePath: string): Buffer => {
         const fd = fs.openSync(filePath, "r");
         try {
             const stat = fs.fstatSync(fd);
-            lastStat = { size: stat.size, mtimeMs: stat.mtimeMs, ctimeMs: stat.ctimeMs };
             let buffer = sharedBuffer;
             let length = 0;
             while (true) {
@@ -119,38 +119,21 @@ export const createFileSourceReader = (): FileSourceReader => {
         generation++;
         const sourceGeneration = generation;
         let bytes: Buffer | undefined = readFile(filePath);
-        const stamp = lastStat;
-        const scannedLength = bytes.length;
         const contentType = detectContentType(filePath, bytes);
         let decodedContent: string | undefined;
-        // Read the file again, because the shared buffer has another file.
-        // The content must be the content that was linted. If the file has been changed, it is an error:
-        // a formatter such as "mask-result" would output the new content that no rule has checked.
-        const readAgain = (): Buffer => {
-            const fd = fs.openSync(filePath, "r");
-            try {
-                const stat = fs.fstatSync(fd);
-                if (stat.size !== stamp.size || stat.mtimeMs !== stamp.mtimeMs || stat.ctimeMs !== stamp.ctimeMs) {
-                    throw new Error(`The file was changed while linting: ${filePath}`);
-                }
-                const buffer = fs.readFileSync(fd);
-                if (buffer.length !== scannedLength) {
-                    throw new Error(`The file was changed while linting: ${filePath}`);
-                }
-                return buffer;
-            } finally {
-                fs.closeSync(fd);
-            }
-        };
         const source: SecretLintRawSource = {
             filePath,
             get content(): string {
-                if (decodedContent === undefined) {
-                    decodedContent = (
-                        bytes !== undefined && generation === sourceGeneration ? bytes : readAgain()
-                    ).toString();
-                    bytes = undefined;
+                if (decodedContent !== undefined) {
+                    return decodedContent;
                 }
+                if (bytes === undefined || generation !== sourceGeneration) {
+                    throw new Error(
+                        `The content is not available after the reader has read the next file: ${filePath}`,
+                    );
+                }
+                decodedContent = bytes.toString();
+                bytes = undefined;
                 return decodedContent;
             },
             ext: path.extname(filePath),

@@ -63,4 +63,8 @@ export type {
     SecretLintConfigDescriptorRulePreset,
 } from "./SecretLintConfigDescriptor.js";
 // Formatter
-export type { SecretLintFormatterOptions, SecretLintFormatter } from "./SecretLintFormatter.js";
+export type {
+    SecretLintFormatterOptions,
+    SecretLintFormatterGetSource,
+    SecretLintFormatter,
+} from "./SecretLintFormatter.js";

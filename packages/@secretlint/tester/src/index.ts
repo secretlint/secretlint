@@ -232,7 +232,7 @@ export const snapshot = (options: SnapshotOptions) => {
                             : undefined);
                         const config = loadedConfig && loadedConfig.ok ? loadedConfig.config : options.defaultConfig;
                         const rawSource = await createRawSource(actualFilePath);
-                        const actualResult = await lintSource({
+                        const bytesResult = await lintSource({
                             source: rawSource,
                             options: {
                                 config,
@@ -252,15 +252,21 @@ export const snapshot = (options: SnapshotOptions) => {
                         });
                         const normalizeResult = (result: unknown) => JSON.parse(JSON.stringify(result));
                         assert.deepStrictEqual(
+                            normalizeResult(bytesResult),
                             normalizeResult(textResult),
-                            normalizeResult(actualResult),
-                            "The result of the content string should be the same as the result of the content bytes",
+                            "The result of the content bytes should be the same as the result of the content string",
                         );
                         assert.deepStrictEqual(
-                            normalizeResult(actualResult),
+                            normalizeResult(textResult),
                             normalizeResult(unoptimizedResult),
                             "The result with `patterns` and `meta.keywords` should be the same as the result of the whole content without them. Check keywords and scope of the rule.",
                         );
+                        // The result does not have the content of the source.
+                        // The snapshot has it as `sourceContent` to show what the ranges of the messages point to.
+                        const snapshotResult = {
+                            ...textResult,
+                            sourceContent: textSource.contentType === "text" ? textSource.content : undefined,
+                        };
                         const expectedFilePath = path.join(testCaseDir, "output.json");
                         // Usage: update snapshots
                         // UPDATE_SNAPSHOT=1 npm test
@@ -268,13 +274,13 @@ export const snapshot = (options: SnapshotOptions) => {
                             // Sort Object by keys before Store JSON
                             fs.writeFileSync(
                                 expectedFilePath,
-                                JSON.stringify(sortObject(actualResult), snapshotReplacer, 4),
+                                JSON.stringify(sortObject(snapshotResult), snapshotReplacer, 4),
                             );
                             return "skip";
                         }
                         // compare input and output
                         const expected = JSON.parse(fs.readFileSync(expectedFilePath, "utf-8"));
-                        assert.deepStrictEqual(JSON.parse(JSON.stringify(actualResult, snapshotReplacer)), expected);
+                        assert.deepStrictEqual(JSON.parse(JSON.stringify(snapshotResult, snapshotReplacer)), expected);
                         return "done";
                     });
                 });
