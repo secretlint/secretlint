@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?><jslint><file name="/path/to/a&b.txt"><issue line="1" char="8" evidence="" reason="[ID] found &lt;secret&gt; &amp; &quot;token&quot;. (rule-error)" /><issue line="12" char="0" evidence="" reason="[ID] 日本語のメッセージ (preset > rule-warning)" /><issue line="3" char="123" evidence="" reason="[ID] it&#39;s 100%
+second line (rule-info)" /></file><file name="/path/to/no-message.txt"></file><file name="/path/to/c,d:e.txt"><issue line="2" char="4" evidence="" reason="[ID] message (rule-unknown-severity)" /></file></jslint>

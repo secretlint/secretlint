@@ -3,10 +3,8 @@ import { SecretLintCoreResult, SecretLintCoreResultMessage, SecretLintFormatter 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
-import chalk from "chalk";
-import { table } from "table";
-import { stripVTControlCharacters } from "node:util";
-import pluralize from "pluralize";
+import { stripVTControlCharacters, styleText } from "node:util";
+import { drawTable as drawBorderedTable, TableCell } from "../helper/draw-table.js";
 import { sanitizeTerminalOutput } from "../sanitize-terminal-output.js";
 
 //------------------------------------------------------------------------------
@@ -14,72 +12,52 @@ import { sanitizeTerminalOutput } from "../sanitize-terminal-output.js";
 //------------------------------------------------------------------------------
 
 /**
+ * Return the count and the word. Add "s" to the word if the count is not one.
+ */
+const pluralize = (word: string, count: number): string => {
+    return `${count} ${count === 1 ? word : `${word}s`}`;
+};
+
+/**
  * Draws text table.
  * @param {Array<Object>} messages Error messages relating to a specific file.
  * @returns {string} A text table.
  */
 function drawTable(messages: SecretLintCoreResultMessage[]): string {
-    let rows: any = [];
+    const rows: TableCell[][] = [];
 
     if (messages.length === 0) {
         return "";
     }
 
-    rows.push([
-        chalk.bold("Line"),
-        chalk.bold("Column"),
-        chalk.bold("Type"),
-        chalk.bold("Message"),
-        chalk.bold("Rule ID"),
-    ]);
+    const bold = (text: string) => styleText("bold", text);
+    rows.push(
+        ["Line", "Column", "Type", "Message", "Rule ID"].map((text) => {
+            return { text, style: bold };
+        }),
+    );
 
     messages.forEach(function (message) {
-        let messageType;
-
-        if (message.severity === "error") {
-            messageType = chalk.red("error");
-        } else {
-            messageType = chalk.yellow("warning");
-        }
+        const messageType: TableCell =
+            message.severity === "error"
+                ? { text: "error", style: (text) => styleText("red", text) }
+                : { text: "warning", style: (text) => styleText("yellow", text) };
 
         rows.push([
-            message.loc.start.line,
-            message.loc.start.column,
+            { text: String(message.loc.start.line) },
+            { text: String(message.loc.start.column) },
             messageType,
-            sanitizeTerminalOutput(message.message),
-            sanitizeTerminalOutput(message.ruleId),
+            { text: sanitizeTerminalOutput(message.message) },
+            { text: sanitizeTerminalOutput(message.ruleId) },
         ]);
     });
 
-    const output = table(rows, {
-        columns: {
-            0: {
-                width: 8,
-                wrapWord: true,
-            },
-            1: {
-                width: 8,
-                wrapWord: true,
-            },
-            2: {
-                width: 8,
-                wrapWord: true,
-            },
-            3: {
-                paddingRight: 5,
-                width: 50,
-                wrapWord: true,
-            },
-            4: {
-                width: 20,
-                wrapWord: true,
-            },
-        },
+    return drawBorderedTable(rows, {
+        columns: [{ width: 8 }, { width: 8 }, { width: 8 }, { width: 50, paddingRight: 5 }, { width: 20 }],
         drawHorizontalLine: function (index: number) {
             return index === 1;
         },
     });
-    return output;
 }
 
 /**
@@ -131,18 +109,13 @@ const formatter: SecretLintFormatter = (results, options) => {
 
     output +=
         "\n" +
-        table(
+        drawBorderedTable(
             [
-                [chalk.red(pluralize("Error", errorCount, true))],
-                [chalk.yellow(pluralize("Warning", warningCount, true))],
+                [{ text: pluralize("Error", errorCount), style: (text) => styleText("red", text) }],
+                [{ text: pluralize("Warning", warningCount), style: (text) => styleText("yellow", text) }],
             ],
             {
-                columns: {
-                    0: {
-                        width: 110,
-                        wrapWord: true,
-                    },
-                },
+                columns: [{ width: 110 }],
                 drawHorizontalLine: function () {
                     return true;
                 },

@@ -2,9 +2,27 @@
 
 A formatter collection for Secretlint.
 
-These formatter come from textlint and create compatible layer between Secretlint and textlint
+## Formatters
 
-We will re-implement formatter for Secretlint.
+| Name           | Description                                                                                                                                         |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `stylish`      | Human-readable format. The default formatter of `secretlint` command                                                                                |
+| `pretty-error` | Human-readable format with the line of the source                                                                                                   |
+| `table`        | Table format                                                                                                                                        |
+| `compact`      | A message per line                                                                                                                                  |
+| `unix`         | A message per line, like the output of compilers                                                                                                    |
+| `github`       | [Workflow commands](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands) that create annotations on GitHub Actions |
+| `json`         | JSON of the results                                                                                                                                 |
+| `checkstyle`   | Checkstyle XML                                                                                                                                      |
+| `junit`        | JUnit XML                                                                                                                                           |
+| `jslint-xml`   | JSLint XML                                                                                                                                          |
+| `tap`          | [TAP](https://testanything.org/) version 13                                                                                                         |
+| `mask-result`  | The content of the source with the secrets masked                                                                                                   |
+
+`stylish`, `pretty-error`, `compact`, `unix`, `github`, `checkstyle`, `junit`, `jslint-xml` and `tap` are ported from [@textlint/linter-formatter](https://github.com/textlint/textlint/tree/master/packages/%40textlint/linter-formatter), and the output is the same as it.
+
+You can also pass a file path or a package name as `formatterName`.
+A package name can omit `secretlint-formatter-` prefix.
 
 ## Install
 

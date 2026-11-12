@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+<testsuite package="org.eslint" time="0" tests="3" errors="3" name="/path/to/a&b.txt">
+<testcase time="0" name="org.eslint.rule-error"><failure message="[ID] found &lt;secret&gt; &amp; &quot;token&quot;."><![CDATA[line 1, col 8, Error - [ID] found &lt;secret&gt; &amp; &quot;token&quot;. (rule-error)]]></failure></testcase>
+<testcase time="0" name="org.eslint.preset > rule-warning"><failure message="[ID] 日本語のメッセージ"><![CDATA[line 12, col 0, Warning - [ID] 日本語のメッセージ (preset > rule-warning)]]></failure></testcase>
+<testcase time="0" name="org.eslint.rule-info"><failure message="[ID] it&#39;s 100%
+second line"><![CDATA[line 3, col 123, Info - [ID] it&#39;s 100%
+second line (rule-info)]]></failure></testcase>
+</testsuite>
+<testsuite package="org.eslint" time="0" tests="1" errors="1" name="/path/to/c,d:e.txt">
+<testcase time="0" name="org.eslint.rule-unknown-severity"><failure message="[ID] message"><![CDATA[line 2, col 4, Warning - [ID] message (rule-unknown-severity)]]></failure></testcase>
+</testsuite>
+</testsuites>

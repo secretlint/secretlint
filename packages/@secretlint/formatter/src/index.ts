@@ -1,22 +1,43 @@
 // LICENSE : MIT
-import { TextlintResult } from "@textlint/types";
-import {
-    getFormatterList as textlintGetFormatterList,
-    loadFormatter as textlintCreateFormatter,
-} from "@textlint/linter-formatter";
 import { SecretLintCoreResult, SecretLintFormatterGetSource } from "@secretlint/types";
-import terminalLink from "terminal-link";
+import { terminalLink } from "./helper/terminal-link.js";
 import { FormatterConfig } from "./types.js";
 import fs from "node:fs";
 import path from "node:path";
 import debug0 from "debug";
 import { dynamicImport, tryResolve } from "@secretlint/resolver";
-import jsonFormatter from "./formatters/json.js";
-import maskResultFormatter from "./formatters/mask-result.js";
-import tableFormatter from "./formatters/table.js";
 import { sanitizeTerminalOutput } from "./sanitize-terminal-output.js";
+import type { LintFormatter, LintResult } from "./formatters/lint/types.js";
 
-const BuiltInFormatters = ["json", "mask-result", "table"];
+/**
+ * The formatters that format the results of secretlint.
+ * Each formatter is imported when it is used.
+ */
+const BuiltInFormatters: Record<string, () => Promise<Formatter>> = {
+    json: async () => (await import("./formatters/json.js")).default,
+    "mask-result": async () => (await import("./formatters/mask-result.js")).default,
+    table: async () => (await import("./formatters/table.js")).default,
+};
+/**
+ * The formatters that format the lint messages in a general format of linters.
+ * These are ported from @textlint/linter-formatter.
+ * Each formatter is imported when it is used.
+ */
+const BuiltInLintFormatters: Record<string, () => Promise<LintFormatter>> = {
+    checkstyle: async () => (await import("./formatters/lint/checkstyle.js")).default,
+    compact: async () => (await import("./formatters/lint/compact.js")).default,
+    github: async () => (await import("./formatters/lint/github.js")).default,
+    "jslint-xml": async () => (await import("./formatters/lint/jslint-xml.js")).default,
+    junit: async () => (await import("./formatters/lint/junit.js")).default,
+    "pretty-error": async () => (await import("./formatters/lint/pretty-error.js")).default,
+    stylish: async () => (await import("./formatters/lint/stylish.js")).default,
+    tap: async () => {
+        // tap formatter outputs the messages as YAML
+        const [{ createFormatter }, yaml] = await Promise.all([import("./formatters/lint/tap.js"), import("js-yaml")]);
+        return createFormatter((value) => yaml.dump(value));
+    },
+    unix: async () => (await import("./formatters/lint/unix.js")).default,
+};
 const debug = debug0("@secretlint/formatter");
 const tryResolveModule = (moduleName: string) => {
     return tryResolve(moduleName, {
@@ -51,12 +72,12 @@ export interface SecretLintFormatterConfig {
 }
 
 /**
- * Convert secretlint result to textlint result for formatter
+ * Convert secretlint result to the result for the lint formatters
  */
-const convertSecretLintResultToTextlintResult = (
+const convertSecretLintResultToLintResult = (
     secretLintCoreResult: SecretLintCoreResult,
     { enableTerminalLink, sanitizeFilePath }: { enableTerminalLink: boolean; sanitizeFilePath: boolean },
-): TextlintResult => {
+): LintResult => {
     return {
         filePath: sanitizeFilePath
             ? sanitizeTerminalOutput(secretLintCoreResult.filePath)
@@ -74,11 +95,7 @@ const convertSecretLintResultToTextlintResult = (
             // If the message has docsUrl, try to link to docsUrl
             const messageId =
                 enableTerminalLink && message.docsUrl
-                    ? terminalLink(sanitizeTerminalOutput(message.messageId), sanitizeTerminalOutput(message.docsUrl), {
-                          fallback: (text, _url) => {
-                              return text;
-                          },
-                      })
+                    ? terminalLink(sanitizeTerminalOutput(message.messageId), sanitizeTerminalOutput(message.docsUrl))
                     : sanitizeTerminalOutput(message.messageId);
             return {
                 // Preset rule format
@@ -88,26 +105,12 @@ const convertSecretLintResultToTextlintResult = (
                 ruleId: sanitizeTerminalOutput(
                     message.ruleParentId ? `${message.ruleParentId} > ${message.ruleId}` : message.ruleId,
                 ),
-                /**
-                 * @deprecated backward compatibility - use range or loc
-                 */
-                index: message.range[0],
-                /**
-                 * @deprecated backward compatibility - use range or loc
-                 */
                 line: message.loc.start.line,
-                /**
-                 * @deprecated backward compatibility - use range or loc
-                 */
                 column: message.loc.start.column,
                 range: message.range,
                 loc: message.loc,
                 severity: severityLevel,
                 message: `[${messageId}] ${sanitizeTerminalOutput(message.message)}`,
-                data: message.data,
-                // NO NEED - DUMMY DATA
-                fix: undefined,
-                type: "lint",
             };
         }),
     };
@@ -127,63 +130,52 @@ export async function loadFormatter(formatterConfig: SecretLintFormatterConfig) 
     const sanitizeFilePath = formatterName !== "pretty-error";
     debug(`formatterName: ${formatterName}`);
 
-    try {
+    const loadLintFormatter = Object.hasOwn(BuiltInLintFormatters, formatterName)
+        ? BuiltInLintFormatters[formatterName]
+        : undefined;
+    if (!loadLintFormatter) {
         const formatter = await secretlintCreateFormatter(formatterConfig);
         return {
             format: (results: SecretLintCoreResult[]) => {
                 return formatter.format(results);
             },
         };
-    } catch {
-        const formatter = await textlintCreateFormatter(formatterConfig);
-        return {
-            format: (results: SecretLintCoreResult[]) => {
-                const output = formatter.format(
-                    results.map((result) =>
-                        convertSecretLintResultToTextlintResult(result, {
-                            enableTerminalLink,
-                            sanitizeFilePath,
-                        }),
-                    ),
-                );
-                if (sanitizeFilePath) {
-                    return output;
-                }
-                return results.reduce((text, result) => {
-                    const sanitizedFilePath = sanitizeTerminalOutput(result.filePath);
-                    return sanitizedFilePath === result.filePath
-                        ? text
-                        : text.split(result.filePath).join(sanitizedFilePath);
-                }, output);
-            },
-        };
     }
+    const lintFormatter = await loadLintFormatter();
+    return {
+        format: (results: SecretLintCoreResult[]) => {
+            const output = lintFormatter(
+                results.map((result) =>
+                    convertSecretLintResultToLintResult(result, {
+                        enableTerminalLink,
+                        sanitizeFilePath,
+                    }),
+                ),
+                formatterConfig,
+            );
+            if (sanitizeFilePath) {
+                return output;
+            }
+            return results.reduce((text, result) => {
+                const sanitizedFilePath = sanitizeTerminalOutput(result.filePath);
+                return sanitizedFilePath === result.filePath
+                    ? text
+                    : text.split(result.filePath).join(sanitizedFilePath);
+            }, output);
+        },
+    };
 }
 
 export async function secretlintCreateFormatter(formatterConfig: FormatterConfig) {
     const formatterName = formatterConfig.formatterName;
     debug(`formatterName: ${formatterName}`);
-    if (BuiltInFormatters.includes(formatterName)) {
-        switch (formatterName) {
-            case "json":
-                return {
-                    format: function secretlintFormatterFormat(results: SecretLintCoreResult[]) {
-                        return jsonFormatter(results, formatterConfig);
-                    },
-                };
-            case "mask-result":
-                return {
-                    format: function secretlintFormatterFormat(results: SecretLintCoreResult[]) {
-                        return maskResultFormatter(results, formatterConfig);
-                    },
-                };
-            case "table":
-                return {
-                    format: function secretlintFormatterFormat(results: SecretLintCoreResult[]) {
-                        return tableFormatter(results, formatterConfig);
-                    },
-                };
-        }
+    if (Object.hasOwn(BuiltInFormatters, formatterName)) {
+        const builtInFormatter = await BuiltInFormatters[formatterName]();
+        return {
+            format: function secretlintFormatterFormat(results: SecretLintCoreResult[]) {
+                return builtInFormatter(results, formatterConfig);
+            },
+        };
     }
     let formatter: Formatter;
     let formatterPath;
@@ -227,26 +219,20 @@ export interface SecretLintFormatterDetail {
     name: string;
 }
 
+/**
+ * Get the list of the built-in formatters
+ */
 export function getFormatterList(): SecretLintFormatterDetail[] {
-    const textlintFormatters = textlintGetFormatterList();
-    const secretlintFormatters = secretlintGetFormatterList();
-    const secretlintFormatterNames = secretlintFormatters.map((formatter) => formatter.name);
-    const externalFormatters = textlintFormatters.filter(
-        (formatter) => !secretlintFormatterNames.includes(formatter.name),
-    );
-    return [...externalFormatters, ...secretlintFormatters];
+    return [...Object.keys(BuiltInLintFormatters), ...Object.keys(BuiltInFormatters)].map((name) => {
+        return { name };
+    });
 }
 
+/**
+ * Get the list of the formatters that format the results of secretlint
+ */
 export function secretlintGetFormatterList(): SecretLintFormatterDetail[] {
-    return [
-        {
-            name: "json",
-        },
-        {
-            name: "mask-result",
-        },
-        {
-            name: "table",
-        },
-    ];
+    return Object.keys(BuiltInFormatters).map((name) => {
+        return { name };
+    });
 }
