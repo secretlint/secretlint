@@ -41,7 +41,7 @@ Other rules, such as the pattern rule and the GCP rule, implement `create()` and
 
 The built-in rules do not import Node.js modules at the top level, so that `@secretlint/core` loads in a browser.
 A small `basename` helper replaces `node:path`.
-The GCP rule imports `node:fs` and `node:crypto` only when it checks a `.p12` file, and uses Web Crypto when `node:crypto` is not available.
+The GCP rule checks a `.p12` file from `contentBytes` of the source, without reading the file. For the MAC of the file, it imports `node:crypto` only when it is available, and uses Web Crypto otherwise.
 The pattern rule matches file paths with `picomatch` in the way `micromatch` did, so `micromatch` is no longer a dependency.
 
 ### The built-in table and the presets

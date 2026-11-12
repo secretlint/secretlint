@@ -41,7 +41,7 @@ patternルールやGCPルールなど、それ以外のルールは`create()`を
 
 `@secretlint/core`をブラウザでも読み込めるように、組み込みルールはNode.jsのモジュールをトップレベルでimportしません。
 `node:path`の代わりに、小さな`basename`関数を使います。
-GCPルールは、`.p12`ファイルを確認するときだけ`node:fs`と`node:crypto`をimportし、`node:crypto`が使えない環境ではWeb Cryptoを使います。
+GCPルールは、ファイルを読み込まずに、ソースの`contentBytes`から`.p12`ファイルを確認します。ファイルのMACの計算では、`node:crypto`が使える環境でだけそれをimportし、使えない環境ではWeb Cryptoを使います。
 patternルールは、`micromatch`と同じ方法で`picomatch`を使ってファイルパスを照合します。そのため、`micromatch`には依存しなくなりました。
 
 ### 組み込みの対応表とプリセット

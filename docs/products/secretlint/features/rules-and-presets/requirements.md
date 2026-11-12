@@ -188,7 +188,7 @@ Deprecating these packages is a separate change.
 
 ##### Browsers
 
-The built-in rules can be loaded in a browser. A rule that needs Node.js only for some content, such as the GCP rule for a `.p12` file, loads it only when it checks that content.
+The built-in rules can be loaded and run in a browser without Node.js modules. A rule that checks binary content, such as the GCP rule for a `.p12` file, uses the bytes that the caller passes with the source, and does not read the file.
 
 ##### Documentation
 
