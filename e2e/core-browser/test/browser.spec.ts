@@ -62,6 +62,26 @@ for (const useBytes of [false, true]) {
             ]);
         });
 
+        test("reports a GCP service account key JSON with its file name", async ({ page }) => {
+            // `private_key` only needs the header of a private key to match the gcp rule
+            const content = JSON.stringify({
+                type: "service_account",
+                private_key_id: "0123456789abcdef0123456789abcdef01234567",
+                private_key: ["-----BEGIN", "PRIVATE KEY-----\nfake\n-----END", "PRIVATE KEY-----\n"].join(" ")
+            });
+            const result = await page.evaluate(
+                ({ content, useBytes }) =>
+                    window.secretlint.lint(content, { filePath: "C:\\keys\\sa-key.json", useBytes }),
+                { content, useBytes }
+            );
+            const gcpMessages = result.messages.filter(
+                (message) => message.ruleId === "@secretlint/secretlint-rule-gcp"
+            );
+            expect(gcpMessages.map((message) => [message.messageId, message.message])).toEqual([
+                ["PrivateKeyJSON", "found GCP Service Account's private key(json): sa-key.json"]
+            ]);
+        });
+
         test("reports nothing for a content without secrets", async ({ page }) => {
             const result = await page.evaluate(
                 ({ useBytes }) => window.secretlint.lint("const answer = 42;\n", { useBytes }),

@@ -22,6 +22,8 @@ export const lint = (
             content,
             contentBytes: useBytes ? new TextEncoder().encode(content) : undefined,
             filePath,
+            // @secretlint/source-creator sets the extension in Node.js. A rule like gcp checks it
+            ext: /\.[^./\\]+$/.exec(filePath)?.[0] ?? "",
             contentType: "text"
         },
         options: {
