@@ -117,8 +117,8 @@ GitHub secret scanning works on the GitHub side, after a commit is made or pushe
 | Rules and rule presets | Detect each kind of secret, and group rules into the recommended and canary presets | Not written |
 | Ignoring by comment | Suppress reports in a range of a file with disable comments | Not written |
 | Secret masking in results | Mask secret values in reported messages by default | Not written |
-| Result output | Show results with a chosen formatter, write them to a file, and set the exit status | Not written |
-| File masking | Output the content of a file with its secrets masked (`mask-result`) | Not written |
+| Result output | Show results with a chosen formatter, write them to a file, and set the exit status | [Requirements](features/result-output/requirements.md) |
+| File masking | Output the content of a file with its secrets masked (`mask-result`) | [Requirements](features/file-masking/requirements.md) |
 | Message localization | Show messages in a chosen locale (`--locale`, experimental) | Not written |
 | Custom rules | Create, test, and publish a rule as an npm package | Not written |
 | Node.js API | Lint content from other programs with `@secretlint/node` | Not written |
