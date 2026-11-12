@@ -68,13 +68,21 @@ A rule that keeps the bytes after the lint copies them, because the buffer is re
 `source.contentBytes` keeps its meaning for text: the UTF-8 encoding of `content`, with an optional byte order mark at the start.
 For binary, it is the bytes of the file, and `content` is those bytes decoded as UTF-8. source-creator already does this, so the documentation of the type is changed to say it.
 
-### The gcp rule and `.p12` files
+### Rules that check binary content
 
-The gcp rule declares `["text", "binary"]`, because one rule checks both `.json` (text) and `.p12` (binary) files. It declared `all` before; listing the types states what the rule checks. For `.json` it parses `content`, and for `.p12` it verifies the MAC of the PKCS#12 file with the password that GCP uses for service account keys.
-The MAC check uses `contentBytes` of the source code object. When `contentBytes` is `undefined`, the rule does not check the `.p12` file and reports nothing.
-The rule does not import `node:fs` or read any file, so it gives the same result in Node.js, in browsers, and in the single-executable binary, and it no longer reads a file when the caller set `noPhysicFilePath`.
-The MAC check itself uses `node:crypto` when it is available and Web Crypto otherwise, as before.
-The rule takes the file name for its messages from `filePath` with a small `basename` helper instead of `node:path`, so no module of the rule imports a Node.js module statically, and the recommended preset loads in a browser without Node.js polyfills. `node:crypto` is imported only dynamically, and its failure falls back to Web Crypto.
+A rule that checks binary content lists `binary` in `meta.supportedContentTypes`, and also `text` when it checks text files too. Listing the types, instead of `all`, states in the declaration which content the rule checks.
+Keywords are not used for binary content, so the rule runs for every binary file. It decides from `filePath` or `ext` whether the file is one it checks, and returns quickly for other files.
+
+The rule reads the bytes from `contentBytes` of the source code object, not from `content` and not from a file.
+When `contentBytes` is `undefined`, the rule does not check the file and reports nothing. It does not fall back to reading the file, because the command always gives the bytes, and reading the file would ignore `noPhysicFilePath` and make the result depend on the environment.
+
+The rule does not import a Node.js module statically, because a preset imports its rules statically and one such import stops the preset from loading in a browser. A file name for a message is taken from `filePath` with a small helper instead of `node:path`.
+An API that is faster in Node.js but has a standard alternative, such as `node:crypto` for Web Crypto, is imported dynamically and falls back to the standard API when the import fails.
+With these conditions, the rule gives the same result in Node.js, in browsers, and in the single-executable binary.
+
+A message for binary content points to the whole file, because positions in the decoded string have no meaning for the bytes.
+
+Among the rules that Secretlint provides, the gcp rule is the one that checks binary content: it verifies the MAC of a `.p12` file with the password that GCP uses for service account keys, and it follows the conditions above.
 
 ### Rule tests
 
@@ -88,13 +96,13 @@ sequenceDiagram
     participant Engine as @secretlint/node
     participant Reader as source-creator
     participant Core as @secretlint/core
-    participant Rule as gcp rule
+    participant Rule as rule for binary
     Engine->>Reader: read file
     Reader-->>Engine: source (content getter, contentBytes = shared buffer, contentType)
     Engine->>Core: lintSource(source)
     Core->>Core: choose the view for the content type
     Core->>Rule: file(sourceCode) with contentBytes
-    Rule->>Rule: verify the PKCS#12 MAC of contentBytes
+    Rule->>Rule: check contentBytes
     Rule-->>Core: report
     Core-->>Engine: result
     Engine->>Reader: read next file (buffer is reused)
@@ -149,18 +157,18 @@ Removing `all` from the type makes a TypeScript rule that declares `all` fail to
 Removing a value from a public type is an incompatible change of the public API, so this part is released in a major version, following the versioning rules of the contributing guide.
 
 Adding `contentBytes` to the source code object does not change existing rules.
-A program that calls `lintSource()` for a `.p12` file with only the string gets no report after this change, while the gcp rule read the file before. The release notes tell such a caller to pass `contentBytes`. It is not a breaking change: by the versioning principle of the Product, a major release is for a change that reports more by default, and this change only reports less for such a caller.
-This change is made after the built-in rules move into `@secretlint/core`. Then the gcp rule is a file of the core, and the package `@secretlint/secretlint-rule-gcp` only re-exports it and depends on the core of the same release.
-So the configuration resolves the gcp rule from the core that also runs `lintSource()`, and the rule and `contentBytes` always come from the same core.
-A program that imports the rule object from a newer package and passes it to `lintSource()` of an older core is not supported, as the rules ship with the core. In that case the `.p12` check sees no bytes and reports nothing, without reading the file.
+A program that calls `lintSource()` for a binary file with only the string gets no report from a rule that checks binary content after this change, while such a rule (the gcp rule for `.p12`) read the file before. The release notes tell such a caller to pass `contentBytes`. It is not a breaking change: by the versioning principle of the Product, a major release is for a change that reports more by default, and this change only reports less for such a caller.
+This change is made after the built-in rules move into `@secretlint/core`. Then the built-in rules are files of the core, and their packages only re-export them and depend on the core of the same release.
+So the configuration resolves a built-in rule from the core that also runs `lintSource()`, and the rule and `contentBytes` always come from the same core.
+A program that imports a rule object from a newer package and passes it to `lintSource()` of an older core is not supported, as the rules ship with the core. In that case a rule that checks binary content sees no bytes and reports nothing, without reading the file.
 
 ## Alternatives considered
 
 ### Disable rules that depend on Node.js in a preset for browsers
 
 A preset for browsers would turn off the rules that need Node.js, and the bundle would be built from it.
-It was not chosen because the gcp rule is the only such rule and its check needs only the bytes, so giving the bytes removes the dependency instead of hiding it.
-A disabled rule also stays in the bundle, because a preset imports all its rules statically, and the `.p12` file would still not be reported in browsers.
+It was not chosen because a rule that checks binary content needs only the bytes, so giving the bytes removes the dependency instead of hiding it.
+A disabled rule also stays in the bundle, because a preset imports all its rules statically, and its secrets would still not be reported in browsers.
 
 ### Give the bytes only for binary content
 
@@ -174,7 +182,7 @@ It was not chosen because source-creator already gives the bytes of the file as 
 
 ### Keep reading the file with `node:fs` when the bytes are not given
 
-The gcp rule would read the file as before when `contentBytes` is `undefined`.
+A rule that checks binary content would read the file when `contentBytes` is `undefined`, as the gcp rule did.
 It was not chosen by the maintainer: the command always gives the bytes, the rules are released with the core, and reading the file ignores `noPhysicFilePath` and keeps a Node.js import in the rule.
 
 ## Open questions
