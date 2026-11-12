@@ -7,7 +7,10 @@ import { fileURLToPath } from "node:url";
 
 const p12FilePath = fileURLToPath(new URL("snapshots/ng.privatekey-p12/input.p12", import.meta.url));
 
-const lintP12 = async (contentBytes: Uint8Array | undefined) => {
+const lintP12 = async (
+    contentBytes: Uint8Array | undefined,
+    { filePath = p12FilePath, allows = [] as string[] } = {},
+) => {
     const reports: unknown[] = [];
     const context = {
         createTranslator: () => (messageId: string) => ({ message: messageId, messageId, data: {} }),
@@ -16,14 +19,14 @@ const lintP12 = async (contentBytes: Uint8Array | undefined) => {
     const bytes = fs.readFileSync(p12FilePath);
     const source = {
         // the file exists on the disk, so the rule could read it if it tried
-        filePath: p12FilePath,
-        physicalFilePath: p12FilePath,
+        filePath,
+        physicalFilePath: filePath,
         ext: ".p12",
         contentType: "binary",
         content: bytes.toString(),
         contentBytes,
     } as unknown as SecretLintSourceCode;
-    const handler = rule.create(context, {});
+    const handler = rule.create(context, { allows });
     await handler.file?.(source);
     return reports;
 };
