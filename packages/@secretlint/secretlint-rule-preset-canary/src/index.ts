@@ -9,6 +9,7 @@ import { creator as ruleAnthropic } from "@secretlint/secretlint-rule-anthropic"
 import { creator as ruleGroq } from "@secretlint/secretlint-rule-groq";
 import { creator as ruleHuggingface } from "@secretlint/secretlint-rule-huggingface";
 import { creator as ruleLinear } from "@secretlint/secretlint-rule-linear";
+import { creator as ruleReplicate } from "@secretlint/secretlint-rule-replicate";
 import { creator as ruleNotion } from "@secretlint/secretlint-rule-notion";
 import { creator as rulePrivateKey } from "@secretlint/secretlint-rule-privatekey";
 import { creator as ruleSendgrid } from "@secretlint/secretlint-rule-sendgrid";
@@ -46,6 +47,7 @@ export const rules = [
     ruleGroq,
     ruleHuggingface,
     ruleLinear,
+    ruleReplicate,
     ruleNotion,
     rule1Password,
     ruleDatabaseConnectionString,

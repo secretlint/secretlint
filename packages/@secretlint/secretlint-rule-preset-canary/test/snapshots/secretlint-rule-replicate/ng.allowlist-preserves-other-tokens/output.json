@@ -1,0 +1,33 @@
+{
+    "filePath": "[SNAPSHOT]/ng.allowlist-preserves-other-tokens/input.txt",
+    "messages": [
+        {
+            "message": "found replicate api token: r8_Aa0_-Aa0_-Aa0_-Aa0_-Aa0_-Aa0_-Aa0_-Z9",
+            "range": [
+                41,
+                81
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-replicate",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 0
+                },
+                "end": {
+                    "line": 2,
+                    "column": 40
+                }
+            },
+            "severity": "error",
+            "messageId": "REPLICATE_API_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-replicate/README.md#REPLICATE_API_TOKEN",
+            "data": {
+                "ID": "r8_Aa0_-Aa0_-Aa0_-Aa0_-Aa0_-Aa0_-Aa0_-Z9"
+            }
+        }
+    ],
+    "sourceContent": "r8_0000000000000000000000000000000000000\nr8_Aa0_-Aa0_-Aa0_-Aa0_-Aa0_-Aa0_-Aa0_-Z9\n",
+    "sourceContentType": "text"
+}
