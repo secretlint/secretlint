@@ -86,6 +86,11 @@ None.
 The engine would read files as bytes like for other formatters, and decode every file after its lint.
 It was not chosen because `mask-result` needs every content as a string anyway. Reading the file as a string from the start is simpler and has one path for the content.
 
+### Skip binary files instead of throwing an error
+
+The formatter would leave binary files out of the output and mask only the text files, so linting many files with `mask-result` would not fail because of one image.
+It was not chosen because `mask-result` is basically used for one file. For one binary file, skipping would return an empty output, and `--output` to the same path would replace the file with an empty file.
+
 ## Open questions
 
 None.

@@ -101,6 +101,7 @@ With `--output`, the exit status is 0 unless the command fails with the status 2
 ##### A binary file
 
 The command fails with an error, and outputs nothing for all files.
+`mask-result` is basically used for one file, so a binary file is treated as an error instead of being skipped.
 
 ## Data requirements
 
