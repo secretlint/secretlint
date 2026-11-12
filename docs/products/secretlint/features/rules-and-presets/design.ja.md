@@ -15,7 +15,7 @@
 
 `@secretlint/types`のルールのインターフェース（`SecretLintRuleCreator`と`SecretLintRulePresetCreator`）と、このリポジトリのpnpm workspace。
 
-### この文書の外
+### スコープ外
 
 - 設定の読み込みがルールIDからルールを見つけるしかた: [設定の読み込み](../config-loading/requirements.ja.md)
 - カスタムルールの作り方とテストのしかた: [カスタムルール](../custom-rules/requirements.ja.md)

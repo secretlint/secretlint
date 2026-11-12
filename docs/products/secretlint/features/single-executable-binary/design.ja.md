@@ -15,7 +15,7 @@
 
 `bun build --compile`と、[設定の読み込み](../config-loading/requirements.ja.md)が説明する`@secretlint/resolver`のresolverのフック。
 
-### この文書の外
+### スコープ外
 
 実行ファイルが動かすCLIそのもの（`secretlint/cli`）。
 

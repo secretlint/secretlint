@@ -9,13 +9,13 @@
 Secretlintも`@secretlint/secretlint-rule-no-dotenv`のようにいくつかのカスタムルールを公開しています。Secretlint自身に加えるルールは、カスタムルールではなく組み込みルールです。
 親のProductは[Secretlint](../../product.ja.md)です。
 
-### 範囲
+### スコープ
 
 - カスタムルールのパッケージを作ること。サードパーティのルールとSecretlintが公開するカスタムルールの両方
 - スナップショットテスト（`@secretlint/tester`）でルールをテストすること
 - ルールが宣言したキーワードと範囲（scope）が結果を変えないことを確かめること
 
-### 範囲外
+### スコープ外
 
 - ルールのインターフェースそのものと、`@secretlint/core`がルールを実行するしかた
 - ルールIDをパッケージに解決するしかた: [設定の読み込み](../config-loading/requirements.ja.md)

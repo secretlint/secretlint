@@ -16,7 +16,7 @@ Requirementsと同じく、ルールIDの解決だけを扱います。
 
 Node.jsのモジュール解決と、[ルールとルールプリセット](../rules-and-presets/requirements.ja.md)が説明するルールのパッケージのexport。
 
-### この文書の外
+### スコープ外
 
 設定ファイルを探して検証すること、読み込んだルールを`@secretlint/core`で実行すること。
 

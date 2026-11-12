@@ -15,7 +15,7 @@
 
 `@secretlint/types`のルールのインターフェースと、Node.jsのテストランナー（`node:test`）。
 
-### この文書の外
+### スコープ外
 
 ケースの設定のためにtesterが使う設定の読み込みと、ルールを実行する`@secretlint/core`。
 
