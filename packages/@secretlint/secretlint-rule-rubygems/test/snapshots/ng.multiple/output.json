@@ -1,0 +1,57 @@
+{
+    "filePath": "[SNAPSHOT]/ng.multiple/input.txt",
+    "messages": [
+        {
+            "message": "found RubyGems API token: rubygems_000000000000000000000000000000000000000000000000",
+            "range": [
+                3,
+                60
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-rubygems",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 3
+                },
+                "end": {
+                    "line": 1,
+                    "column": 60
+                }
+            },
+            "severity": "error",
+            "messageId": "RUBYGEMS_API_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-rubygems/README.md#RUBYGEMS_API_TOKEN",
+            "data": {
+                "TOKEN": "rubygems_000000000000000000000000000000000000000000000000"
+            }
+        },
+        {
+            "message": "found RubyGems API token: rubygems_000000000000000000000000000000000000000000000000",
+            "range": [
+                79,
+                136
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-rubygems",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 18
+                },
+                "end": {
+                    "line": 2,
+                    "column": 75
+                }
+            },
+            "severity": "error",
+            "messageId": "RUBYGEMS_API_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-rubygems/README.md#RUBYGEMS_API_TOKEN",
+            "data": {
+                "TOKEN": "rubygems_000000000000000000000000000000000000000000000000"
+            }
+        }
+    ],
+    "sourceContent": "🔑 rubygems_000000000000000000000000000000000000000000000000\nGEM_HOST_API_KEY=\"rubygems_000000000000000000000000000000000000000000000000\"\n",
+    "sourceContentType": "text"
+}
