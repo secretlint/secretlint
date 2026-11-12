@@ -14,9 +14,8 @@ ENV SECRETLINT_VERSION=${SECRETLINT_VERSION:-4.0.0}
 # hadolint ignore=DL3064
 ENV SECRETLINTRC=/.secretlintrc.json
 COPY .secretlintrc.json $SECRETLINTRC
+# The built-in rules (the recommend preset, the pattern rule, ...) are part of secretlint (@secretlint/core)
 RUN npm install -g secretlint@${SECRETLINT_VERSION} \
-            @secretlint/secretlint-rule-preset-recommend@${SECRETLINT_VERSION} \
-            @secretlint/secretlint-rule-pattern@${SECRETLINT_VERSION} \
             @secretlint/secretlint-formatter-sarif@${SECRETLINT_VERSION} && \
     rm -rf /usr/share/man /tmp/* \
            /root/.npm /root/.node-gyp \

@@ -2,11 +2,19 @@
 
 An example rule for secretlint.
 
-## Install
+## Usage
 
-Install with [npm](https://www.npmjs.com/):
+This rule is built into secretlint. No package needs to be installed.
 
-    npm install @secretlint/secretlint-rule-{{ inputs.name }}
+```json
+{
+    "rules": [
+        {
+            "id": "@secretlint/secretlint-rule-{{ inputs.name }}"
+        }
+    ]
+}
+```
 
 ## MessageIDs
 

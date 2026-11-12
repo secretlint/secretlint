@@ -24,6 +24,27 @@
             },
             "default": "./module/index.js"
         },
+        "./builtin": {
+            "import": {
+                "types": "./module/builtin/index.d.ts",
+                "default": "./module/builtin/index.js"
+            },
+            "default": "./module/builtin/index.js"
+        },
+        "./builtin/rules/*": {
+            "import": {
+                "types": "./module/builtin/rules/*/index.d.ts",
+                "default": "./module/builtin/rules/*/index.js"
+            },
+            "default": "./module/builtin/rules/*/index.js"
+        },
+        "./testing": {
+            "import": {
+                "types": "./module/testing/index.d.ts",
+                "default": "./module/testing/index.js"
+            },
+            "default": "./module/testing/index.js"
+        },
         "./package.json": "./package.json"
     },
     "main": "./module/index.js",
@@ -44,6 +65,7 @@
         "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
         "prepublish": "npm run --if-present build",
         "test": "vitest run",
+        "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
         "watch": "tsc --build --watch"
     },
     "prettier": {
@@ -54,12 +76,16 @@
     "dependencies": {
         "@secretlint/profiler": "workspace:*",
         "@secretlint/types": "workspace:*",
+        "@textlint/regexp-string-matcher": "catalog:",
         "debug": "catalog:",
+        "picomatch": "catalog:",
         "structured-source": "catalog:"
     },
     "devDependencies": {
+        "@secretlint/source-creator": "workspace:*",
         "@types/debug": "catalog:",
         "@types/node": "catalog:",
+        "@types/picomatch": "catalog:",
         "assert-json-equal": "catalog:",
         "prettier": "catalog:",
         "tsx": "catalog:",

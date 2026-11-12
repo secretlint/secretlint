@@ -9,15 +9,6 @@ catalogs:
     '@playwright/test':
       specifier: ^1.65.0
       version: 1.65.0
-    '@rollup/plugin-commonjs':
-      specifier: ^29.0.3
-      version: 29.0.3
-    '@rollup/plugin-node-resolve':
-      specifier: ^16.0.3
-      version: 16.0.3
-    '@rollup/plugin-typescript':
-      specifier: ^12.3.1
-      version: 12.3.1
     '@textlint/linter-formatter':
       specifier: ^15.7.0
       version: 15.7.0
@@ -42,9 +33,6 @@ catalogs:
     '@types/js-yaml':
       specifier: ^4.0.9
       version: 4.0.9
-    '@types/micromatch':
-      specifier: ^4.0.10
-      version: 4.0.10
     '@types/node':
       specifier: ^25.9.9
       version: 25.9.9
@@ -93,9 +81,6 @@ catalogs:
     lint-staged:
       specifier: ^16.4.0
       version: 16.4.0
-    micromatch:
-      specifier: ^4.0.8
-      version: 4.0.8
     node-sarif-builder:
       specifier: ^4.1.0
       version: 4.1.0
@@ -117,12 +102,6 @@ catalogs:
     rimraf:
       specifier: ^6.1.4
       version: 6.1.4
-    rollup:
-      specifier: ^4.68.1
-      version: 4.68.2
-    rollup-plugin-polyfill-node:
-      specifier: ^0.13.0
-      version: 0.13.0
     scaffdog:
       specifier: ^4.1.0
       version: 4.1.0
@@ -147,6 +126,9 @@ catalogs:
     typescript:
       specifier: ^6.0.3
       version: 6.0.3
+    vite:
+      specifier: ^7.1.1
+      version: 7.3.7
     vitest:
       specifier: ^4.1.12
       version: 4.1.12
@@ -252,6 +234,9 @@ importers:
 
   packages/@secretlint/config-loader:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/profiler':
         specifier: workspace:*
         version: link:../profiler
@@ -304,19 +289,31 @@ importers:
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
+      '@textlint/regexp-string-matcher':
+        specifier: 'catalog:'
+        version: 2.0.2
       debug:
         specifier: 'catalog:'
         version: 4.4.3
+      picomatch:
+        specifier: 'catalog:'
+        version: 4.0.7
       structured-source:
         specifier: 'catalog:'
         version: 4.0.0
     devDependencies:
+      '@secretlint/source-creator':
+        specifier: workspace:*
+        version: link:../source-creator
       '@types/debug':
         specifier: 'catalog:'
         version: 4.1.13
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
+      '@types/picomatch':
+        specifier: 'catalog:'
+        version: 4.0.3
       assert-json-equal:
         specifier: 'catalog:'
         version: 2.0.0
@@ -526,225 +523,171 @@ importers:
 
   packages/@secretlint/secretlint-rule-1password:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-anthropic:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-aws:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-azure:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-basicauth:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-cloudflare:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-database-connection-string:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-databricks:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-docker:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -773,31 +716,28 @@ importers:
 
   packages/@secretlint/secretlint-rule-figma:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-filter-comments:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
@@ -805,193 +745,145 @@ importers:
       '@secretlint/secretlint-rule-pattern':
         specifier: workspace:*
         version: link:../secretlint-rule-pattern
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-gcp:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-github:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-gitlab:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-grafana:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-groq:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-hashicorp-vault:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-huggingface:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1024,25 +916,19 @@ importers:
 
   packages/@secretlint/secretlint-rule-linear:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1127,211 +1013,89 @@ importers:
 
   packages/@secretlint/secretlint-rule-notion:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-npm:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-openai:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-pattern:
     dependencies:
-      '@secretlint/tester':
+      '@secretlint/core':
         specifier: workspace:*
-        version: link:../tester
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
-      micromatch:
-        specifier: 'catalog:'
-        version: 4.0.8
     devDependencies:
-      '@types/micromatch':
-        specifier: 'catalog:'
-        version: 4.0.10
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-preset-canary:
-    devDependencies:
-      '@rollup/plugin-commonjs':
-        specifier: 'catalog:'
-        version: 29.0.3(rollup@4.68.2)
-      '@rollup/plugin-node-resolve':
-        specifier: 'catalog:'
-        version: 16.0.3(rollup@4.68.2)
-      '@rollup/plugin-typescript':
-        specifier: 'catalog:'
-        version: 12.3.1(rollup@4.68.2)(tslib@2.8.1)(typescript@6.0.3)
-      '@secretlint/secretlint-rule-1password':
+    dependencies:
+      '@secretlint/core':
         specifier: workspace:*
-        version: link:../secretlint-rule-1password
-      '@secretlint/secretlint-rule-anthropic':
-        specifier: workspace:*
-        version: link:../secretlint-rule-anthropic
-      '@secretlint/secretlint-rule-aws':
-        specifier: workspace:*
-        version: link:../secretlint-rule-aws
-      '@secretlint/secretlint-rule-basicauth':
-        specifier: workspace:*
-        version: link:../secretlint-rule-basicauth
-      '@secretlint/secretlint-rule-cloudflare':
-        specifier: workspace:*
-        version: link:../secretlint-rule-cloudflare
-      '@secretlint/secretlint-rule-database-connection-string':
-        specifier: workspace:*
-        version: link:../secretlint-rule-database-connection-string
-      '@secretlint/secretlint-rule-databricks':
-        specifier: workspace:*
-        version: link:../secretlint-rule-databricks
-      '@secretlint/secretlint-rule-docker':
-        specifier: workspace:*
-        version: link:../secretlint-rule-docker
-      '@secretlint/secretlint-rule-figma':
-        specifier: workspace:*
-        version: link:../secretlint-rule-figma
-      '@secretlint/secretlint-rule-filter-comments':
-        specifier: workspace:*
-        version: link:../secretlint-rule-filter-comments
-      '@secretlint/secretlint-rule-gcp':
-        specifier: workspace:*
-        version: link:../secretlint-rule-gcp
-      '@secretlint/secretlint-rule-github':
-        specifier: workspace:*
-        version: link:../secretlint-rule-github
-      '@secretlint/secretlint-rule-gitlab':
-        specifier: workspace:*
-        version: link:../secretlint-rule-gitlab
-      '@secretlint/secretlint-rule-grafana':
-        specifier: workspace:*
-        version: link:../secretlint-rule-grafana
-      '@secretlint/secretlint-rule-groq':
-        specifier: workspace:*
-        version: link:../secretlint-rule-groq
-      '@secretlint/secretlint-rule-hashicorp-vault':
-        specifier: workspace:*
-        version: link:../secretlint-rule-hashicorp-vault
-      '@secretlint/secretlint-rule-huggingface':
-        specifier: workspace:*
-        version: link:../secretlint-rule-huggingface
-      '@secretlint/secretlint-rule-linear':
-        specifier: workspace:*
-        version: link:../secretlint-rule-linear
-      '@secretlint/secretlint-rule-notion':
-        specifier: workspace:*
-        version: link:../secretlint-rule-notion
-      '@secretlint/secretlint-rule-npm':
-        specifier: workspace:*
-        version: link:../secretlint-rule-npm
-      '@secretlint/secretlint-rule-openai':
-        specifier: workspace:*
-        version: link:../secretlint-rule-openai
-      '@secretlint/secretlint-rule-privatekey':
-        specifier: workspace:*
-        version: link:../secretlint-rule-privatekey
-      '@secretlint/secretlint-rule-sendgrid':
-        specifier: workspace:*
-        version: link:../secretlint-rule-sendgrid
-      '@secretlint/secretlint-rule-shopify':
-        specifier: workspace:*
-        version: link:../secretlint-rule-shopify
-      '@secretlint/secretlint-rule-slack':
-        specifier: workspace:*
-        version: link:../secretlint-rule-slack
-      '@secretlint/secretlint-rule-stripe':
-        specifier: workspace:*
-        version: link:../secretlint-rule-stripe
-      '@secretlint/secretlint-rule-tailscale':
-        specifier: workspace:*
-        version: link:../secretlint-rule-tailscale
-      '@secretlint/secretlint-rule-vercel':
-        specifier: workspace:*
-        version: link:../secretlint-rule-vercel
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
+    devDependencies:
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
@@ -1341,120 +1105,19 @@ importers:
       rimraf:
         specifier: 'catalog:'
         version: 6.1.4
-      rollup:
-        specifier: 'catalog:'
-        version: 4.68.2
-      rollup-plugin-polyfill-node:
-        specifier: 'catalog:'
-        version: 0.13.0(rollup@4.68.2)
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-preset-recommend:
-    devDependencies:
-      '@rollup/plugin-commonjs':
-        specifier: 'catalog:'
-        version: 29.0.3(rollup@4.68.2)
-      '@rollup/plugin-node-resolve':
-        specifier: 'catalog:'
-        version: 16.0.3(rollup@4.68.2)
-      '@rollup/plugin-typescript':
-        specifier: 'catalog:'
-        version: 12.3.1(rollup@4.68.2)(tslib@2.8.1)(typescript@6.0.3)
-      '@secretlint/secretlint-rule-1password':
+    dependencies:
+      '@secretlint/core':
         specifier: workspace:*
-        version: link:../secretlint-rule-1password
-      '@secretlint/secretlint-rule-anthropic':
-        specifier: workspace:*
-        version: link:../secretlint-rule-anthropic
-      '@secretlint/secretlint-rule-aws':
-        specifier: workspace:*
-        version: link:../secretlint-rule-aws
-      '@secretlint/secretlint-rule-basicauth':
-        specifier: workspace:*
-        version: link:../secretlint-rule-basicauth
-      '@secretlint/secretlint-rule-cloudflare':
-        specifier: workspace:*
-        version: link:../secretlint-rule-cloudflare
-      '@secretlint/secretlint-rule-database-connection-string':
-        specifier: workspace:*
-        version: link:../secretlint-rule-database-connection-string
-      '@secretlint/secretlint-rule-databricks':
-        specifier: workspace:*
-        version: link:../secretlint-rule-databricks
-      '@secretlint/secretlint-rule-docker':
-        specifier: workspace:*
-        version: link:../secretlint-rule-docker
-      '@secretlint/secretlint-rule-figma':
-        specifier: workspace:*
-        version: link:../secretlint-rule-figma
-      '@secretlint/secretlint-rule-filter-comments':
-        specifier: workspace:*
-        version: link:../secretlint-rule-filter-comments
-      '@secretlint/secretlint-rule-gcp':
-        specifier: workspace:*
-        version: link:../secretlint-rule-gcp
-      '@secretlint/secretlint-rule-github':
-        specifier: workspace:*
-        version: link:../secretlint-rule-github
-      '@secretlint/secretlint-rule-gitlab':
-        specifier: workspace:*
-        version: link:../secretlint-rule-gitlab
-      '@secretlint/secretlint-rule-grafana':
-        specifier: workspace:*
-        version: link:../secretlint-rule-grafana
-      '@secretlint/secretlint-rule-groq':
-        specifier: workspace:*
-        version: link:../secretlint-rule-groq
-      '@secretlint/secretlint-rule-hashicorp-vault':
-        specifier: workspace:*
-        version: link:../secretlint-rule-hashicorp-vault
-      '@secretlint/secretlint-rule-huggingface':
-        specifier: workspace:*
-        version: link:../secretlint-rule-huggingface
-      '@secretlint/secretlint-rule-linear':
-        specifier: workspace:*
-        version: link:../secretlint-rule-linear
-      '@secretlint/secretlint-rule-notion':
-        specifier: workspace:*
-        version: link:../secretlint-rule-notion
-      '@secretlint/secretlint-rule-npm':
-        specifier: workspace:*
-        version: link:../secretlint-rule-npm
-      '@secretlint/secretlint-rule-openai':
-        specifier: workspace:*
-        version: link:../secretlint-rule-openai
-      '@secretlint/secretlint-rule-privatekey':
-        specifier: workspace:*
-        version: link:../secretlint-rule-privatekey
-      '@secretlint/secretlint-rule-sendgrid':
-        specifier: workspace:*
-        version: link:../secretlint-rule-sendgrid
-      '@secretlint/secretlint-rule-shopify':
-        specifier: workspace:*
-        version: link:../secretlint-rule-shopify
-      '@secretlint/secretlint-rule-slack':
-        specifier: workspace:*
-        version: link:../secretlint-rule-slack
-      '@secretlint/secretlint-rule-stripe':
-        specifier: workspace:*
-        version: link:../secretlint-rule-stripe
-      '@secretlint/secretlint-rule-tailscale':
-        specifier: workspace:*
-        version: link:../secretlint-rule-tailscale
-      '@secretlint/secretlint-rule-vercel':
-        specifier: workspace:*
-        version: link:../secretlint-rule-vercel
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
+    devDependencies:
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
@@ -1464,28 +1127,16 @@ importers:
       rimraf:
         specifier: 'catalog:'
         version: 6.1.4
-      rollup:
-        specifier: 'catalog:'
-        version: 4.68.2
-      rollup-plugin-polyfill-node:
-        specifier: 'catalog:'
-        version: 0.13.0(rollup@4.68.2)
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-privatekey:
     dependencies:
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
-    devDependencies:
-      '@secretlint/tester':
+      '@secretlint/core':
         specifier: workspace:*
-        version: link:../tester
+        version: link:../core
+    devDependencies:
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
@@ -1495,9 +1146,6 @@ importers:
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1541,150 +1189,114 @@ importers:
 
   packages/@secretlint/secretlint-rule-sendgrid:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-shopify:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-slack:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-stripe:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-tailscale:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
 
   packages/@secretlint/secretlint-rule-vercel:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
-      '@textlint/regexp-string-matcher':
-        specifier: 'catalog:'
-        version: 2.0.2
     devDependencies:
-      '@secretlint/tester':
-        specifier: workspace:*
-        version: link:../tester
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
       prettier:
         specifier: 'catalog:'
         version: 3.8.3
-      tsx:
-        specifier: 'catalog:'
-        version: 4.23.15
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -1852,12 +1464,6 @@ importers:
       '@secretlint/secretlint-formatter-sarif':
         specifier: workspace:*
         version: link:../../packages/@secretlint/secretlint-formatter-sarif
-      '@secretlint/secretlint-rule-pattern':
-        specifier: workspace:*
-        version: link:../../packages/@secretlint/secretlint-rule-pattern
-      '@secretlint/secretlint-rule-preset-recommend':
-        specifier: workspace:*
-        version: link:../../packages/@secretlint/secretlint-rule-preset-recommend
       '@types/bun':
         specifier: 'catalog:'
         version: 1.4.4
@@ -2253,64 +1859,6 @@ packages:
     resolution: {integrity: sha512-h104Kh26rR8tm+a3Qkc5S4VLYint3FE48as7+/5oCEcKR2idC/pF1G6AhIXKI+eHPJa/3J9i5z0Al47IeGHPkA==}
     engines: {node: '>=12'}
 
-  '@rollup/plugin-commonjs@29.0.3':
-    resolution: {integrity: sha512-ZaOxZceP7SOUW7Lqw5IRVweSQYWaeIPnXIGLiB690EBA3FGJTO40EEr2L5yZplJWsgTCogILRSpcAe7+U0Otdg==}
-    engines: {node: '>=16.0.0 || 14 >= 14.17'}
-    peerDependencies:
-      rollup: ^2.68.0||^3.0.0||^4.0.0
-    peerDependenciesMeta:
-      rollup:
-        optional: true
-
-  '@rollup/plugin-inject@5.0.5':
-    resolution: {integrity: sha512-2+DEJbNBoPROPkgTDNe8/1YXWcqxbN5DTjASVIOx8HS+pITXushyNiBV56RB08zuptzz8gT3YfkqriTBVycepg==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
-    peerDependenciesMeta:
-      rollup:
-        optional: true
-
-  '@rollup/plugin-node-resolve@16.0.3':
-    resolution: {integrity: sha512-lUYM3UBGuM93CnMPG1YocWu7X802BrNF3jW2zny5gQyLQgRFJhV1Sq0Zi74+dh/6NBx1DxFC4b4GXg9wUCG5Qg==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      rollup: ^2.78.0||^3.0.0||^4.0.0
-    peerDependenciesMeta:
-      rollup:
-        optional: true
-
-  '@rollup/plugin-typescript@12.3.1':
-    resolution: {integrity: sha512-+dT5iMCxLNOCdaCGvGQpLhBpWdnKlPNMU/hvVLKgQgHuBlRFABi1Y6YxXg7ajqnsHRA53Tkdm3Vu1P+qn9HQ7Q==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      rollup: ^2.14.0||^3.0.0||^4.0.0
-      tslib: '*'
-      typescript: '>=3.7.0'
-    peerDependenciesMeta:
-      rollup:
-        optional: true
-      tslib:
-        optional: true
-
-  '@rollup/pluginutils@5.2.0':
-    resolution: {integrity: sha512-qWJ2ZTbmumwiLFomfzTyt5Kng4hwPi9rwCYN4SHb6eaRU1KNO4ccxINHr/VhH4GgPlt1XfSTLX2LBTme8ne4Zw==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
-    peerDependenciesMeta:
-      rollup:
-        optional: true
-
-  '@rollup/pluginutils@5.3.0':
-    resolution: {integrity: sha512-5EdhGZtnu3V88ces7s53hhfK5KSASnJZv8Lulpc04cWO3REESroJXg73DFsOmgbU2BhwV0E20bu2IDZb3VKW4Q==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
-    peerDependenciesMeta:
-      rollup:
-        optional: true
-
   '@rollup/rollup-android-arm-eabi@4.68.2':
     resolution: {integrity: sha512-ItKrNMkEL3hy85kLBXwB0+M6CWWVI8vr7RV+Eb7oDlQIMXLaiEhGfdaj5jAUadYn2v3nwzAhIRl/nLyjAqV9vQ==}
     cpu: [arm]
@@ -2531,9 +2079,6 @@ packages:
   '@types/bn.js@5.2.0':
     resolution: {integrity: sha512-DLbJ1BPqxvQhIGbeu8VbUC1DiAiahHtAYvA0ZEAa4P31F7IaArc8z3C3BRQdWX4mtLQuABG4yzp76ZrS02Ui1Q==}
 
-  '@types/braces@3.0.5':
-    resolution: {integrity: sha512-SQFof9H+LXeWNz8wDe7oN5zu7ket0qwMu5vZubW4GCJ8Kkeh6nBWUz87+KTz/G3Kqsrp0j/W253XJb3KMEeg3w==}
-
   '@types/bun@1.4.4':
     resolution: {integrity: sha512-9wkRDXUXK124pEnAutE6n/l18j+i9GC5IAHK8TmX/2nlySETmky0OU6yL5U8pW1AoKh++AN9auDCr647BfurjQ==}
 
@@ -2561,9 +2106,6 @@ packages:
   '@types/mdast@4.0.4':
     resolution: {integrity: sha512-kGaNbPh1k7AFzgpud/gMdvIm5xuECykRR+JnWKQno9TAXVa6WIVCGTPvYGekIDL4uwCZQSYbUxNBSb1aUo79oA==}
 
-  '@types/micromatch@4.0.10':
-    resolution: {integrity: sha512-5jOhFDElqr4DKTrTEbnW8DZ4Hz5LRUEmyrGpCMrD/NphYv3nUnaF08xmSLx1rGGnyEs/kFnhiw6dCgcDqMr5PQ==}
-
   '@types/ms@2.1.0':
     resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
 
@@ -2578,9 +2120,6 @@ packages:
 
   '@types/pluralize@0.0.33':
     resolution: {integrity: sha512-JOqsl+ZoCpP4e8TDke9W79FDcSgPAR0l6pixx2JHkhnRjvShyYiAYw2LVsnA7K08Y6DeOnaU6ujmENO4os/cYg==}
-
-  '@types/resolve@1.20.2':
-    resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
 
   '@types/sarif@2.1.7':
     resolution: {integrity: sha512-kRz0VEkJqWLf1LLVN4pT1cg1Z9wAuvI6L97V3m2f5B76Tg8d413ddvLBPTEHAZJlnn4XSvu0FkZtViCQGVyrXQ==}
@@ -2833,9 +2372,6 @@ packages:
   common-path-prefix@3.0.0:
     resolution: {integrity: sha512-QE33hToZseCH3jS0qN96O/bSh3kaw/h+Tq7ngyY9eWDUnTlTNUyqfqvCXioLe5Na5jFsL78ra/wuBU4iuEgd4w==}
 
-  commondir@1.0.1:
-    resolution: {integrity: sha512-W9pAhw0ja1Edb5GVdIF1mjZw/ASI0AlShXM83UUGe2DVr5TdAPEA1OA8m/g8zWp9x6On7gqufY+FatDbC3MDQg==}
-
   config-chain@1.1.13:
     resolution: {integrity: sha512-qj+f8APARXHrM0hraqXYb2/bOVSV4PvJQlNZ/DVj0QrmNM2q2euizkeuVckQ57J+W0mRH6Hvi+k50M4Jul2VRQ==}
 
@@ -2958,9 +2494,6 @@ packages:
     resolution: {integrity: sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==}
     engines: {node: '>=4'}
     hasBin: true
-
-  estree-walker@2.0.2:
-    resolution: {integrity: sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==}
 
   estree-walker@3.0.3:
     resolution: {integrity: sha512-7RUKfXgSMMkzt6ZuXmqapOurLGPPfgj6l9uRZ7lRGolvk0y2yocc35LdcxKC5PQZdn2DMqioAQ2NoWcrTKmm6g==}
@@ -3198,9 +2731,6 @@ packages:
     resolution: {integrity: sha512-2HvIEKRoqS62guEC+qBjpvRubdX910WCMuJTZ+I9yvqKU2/12eSL549HMwtabb4oupdj2sMP50k+XJfB/8JE6w==}
     engines: {node: '>=8'}
 
-  is-module@1.0.0:
-    resolution: {integrity: sha512-51ypPSPCoTEIN9dy5Oy+h4pShgJmPCygKfyRCISBI+JoWT/2oJvK8QPxmwv7b/p239jXrm9M1mlQbyKJ5A152g==}
-
   is-npm@6.1.0:
     resolution: {integrity: sha512-O2z4/kNgyjhQwVR1Wpkbfc19JIhggF97NZNCpWTnjH7kVcZMUrnut9XSN7txI7VdyIYk5ZatOq3zvSuWpU8hoA==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
@@ -3216,9 +2746,6 @@ packages:
   is-plain-obj@4.1.0:
     resolution: {integrity: sha512-+Pgi+vMuUNkJyExiMBt5IlFoMyKnr5zhJ4Uspz58WOhBF5QoIZkFyNHIbBAtHwzVAgk5RtndVNsDRN61/mmDqg==}
     engines: {node: '>=12'}
-
-  is-reference@1.2.1:
-    resolution: {integrity: sha512-U82MsXXiFIrjCK4otLT+o2NA2Cd2g5MLoOVXUZjIOhLurrRxpEXzI8O0KZHr3IjLvlAH1kTPYSuqer5T9ZVBKQ==}
 
   is-unicode-supported@0.1.0:
     resolution: {integrity: sha512-knxG2q4UC3u8stRGyAVJCOdxFmv5DZiRcdlIaAQXAbSfJya+OhopNotLQrstBhququ4ZpuKbDc/8S6mgXgPFPw==}
@@ -3679,11 +3206,6 @@ packages:
     resolution: {integrity: sha512-Fk3reQDVPZUMbEm7Zwxz03BWQMW3V5buSk9aU8OckTrO8A1nQtbqvYsAantGNermwsIsXcuOBqcoJ3HuMELctw==}
     engines: {node: 20 || >=22}
     hasBin: true
-
-  rollup-plugin-polyfill-node@0.13.0:
-    resolution: {integrity: sha512-FYEvpCaD5jGtyBuBFcQImEGmTxDTPbiHjJdrYIp+mFIwgXiXabxvKUK7ZT9P31ozu2Tqm9llYQMRWsfvTMTAOw==}
-    peerDependencies:
-      rollup: ^1.20.0 || ^2.0.0 || ^3.0.0 || ^4.0.0
 
   rollup@4.68.2:
     resolution: {integrity: sha512-xzt45rKOxzEuqjTdkGTIEaePcq9xRELlFI1uoazlKap8T6bENJkONSCfhK51P6XFTixa4rosPcDHihSdduXndQ==}
@@ -4412,61 +3934,6 @@ snapshots:
       '@pnpm/network.ca-file': 1.0.2
       config-chain: 1.1.13
 
-  '@rollup/plugin-commonjs@29.0.3(rollup@4.68.2)':
-    dependencies:
-      '@rollup/pluginutils': 5.3.0(rollup@4.68.2)
-      commondir: 1.0.1
-      estree-walker: 2.0.2
-      fdir: 6.5.0(picomatch@4.0.4)
-      is-reference: 1.2.1
-      magic-string: 0.30.21
-      picomatch: 4.0.4
-    optionalDependencies:
-      rollup: 4.68.2
-
-  '@rollup/plugin-inject@5.0.5(rollup@4.68.2)':
-    dependencies:
-      '@rollup/pluginutils': 5.3.0(rollup@4.68.2)
-      estree-walker: 2.0.2
-      magic-string: 0.30.21
-    optionalDependencies:
-      rollup: 4.68.2
-
-  '@rollup/plugin-node-resolve@16.0.3(rollup@4.68.2)':
-    dependencies:
-      '@rollup/pluginutils': 5.2.0(rollup@4.68.2)
-      '@types/resolve': 1.20.2
-      deepmerge: 4.3.1
-      is-module: 1.0.0
-      resolve: 1.22.10
-    optionalDependencies:
-      rollup: 4.68.2
-
-  '@rollup/plugin-typescript@12.3.1(rollup@4.68.2)(tslib@2.8.1)(typescript@6.0.3)':
-    dependencies:
-      '@rollup/pluginutils': 5.3.0(rollup@4.68.2)
-      resolve: 1.22.10
-      typescript: 6.0.3
-    optionalDependencies:
-      rollup: 4.68.2
-      tslib: 2.8.1
-
-  '@rollup/pluginutils@5.2.0(rollup@4.68.2)':
-    dependencies:
-      '@types/estree': 1.0.10
-      estree-walker: 2.0.2
-      picomatch: 4.0.7
-    optionalDependencies:
-      rollup: 4.68.2
-
-  '@rollup/pluginutils@5.3.0(rollup@4.68.2)':
-    dependencies:
-      '@types/estree': 1.0.10
-      estree-walker: 2.0.2
-      picomatch: 4.0.4
-    optionalDependencies:
-      rollup: 4.68.2
-
   '@rollup/rollup-android-arm-eabi@4.68.2':
     optional: true
 
@@ -4645,8 +4112,6 @@ snapshots:
     dependencies:
       '@types/node': 25.9.9
 
-  '@types/braces@3.0.5': {}
-
   '@types/bun@1.4.4':
     dependencies:
       bun-types: 1.4.4
@@ -4676,10 +4141,6 @@ snapshots:
     dependencies:
       '@types/unist': 3.0.3
 
-  '@types/micromatch@4.0.10':
-    dependencies:
-      '@types/braces': 3.0.5
-
   '@types/ms@2.1.0': {}
 
   '@types/node@25.9.9':
@@ -4691,8 +4152,6 @@ snapshots:
   '@types/picomatch@4.0.3': {}
 
   '@types/pluralize@0.0.33': {}
-
-  '@types/resolve@1.20.2': {}
 
   '@types/sarif@2.1.7': {}
 
@@ -4945,8 +4404,6 @@ snapshots:
 
   common-path-prefix@3.0.0: {}
 
-  commondir@1.0.1: {}
-
   config-chain@1.1.13:
     dependencies:
       ini: 1.3.8
@@ -5104,8 +4561,6 @@ snapshots:
 
   esprima@4.0.1: {}
 
-  estree-walker@2.0.2: {}
-
   estree-walker@3.0.3:
     dependencies:
       '@types/estree': 1.0.10
@@ -5131,10 +4586,6 @@ snapshots:
   fastq@1.20.1:
     dependencies:
       reusify: 1.1.0
-
-  fdir@6.5.0(picomatch@4.0.4):
-    optionalDependencies:
-      picomatch: 4.0.4
 
   fdir@6.5.0(picomatch@4.0.7):
     optionalDependencies:
@@ -5336,8 +4787,6 @@ snapshots:
 
   is-interactive@1.0.0: {}
 
-  is-module@1.0.0: {}
-
   is-npm@6.1.0: {}
 
   is-number@7.0.0: {}
@@ -5345,10 +4794,6 @@ snapshots:
   is-path-inside@4.0.0: {}
 
   is-plain-obj@4.1.0: {}
-
-  is-reference@1.2.1:
-    dependencies:
-      '@types/estree': 1.0.10
 
   is-unicode-supported@0.1.0: {}
 
@@ -5874,11 +5319,6 @@ snapshots:
     dependencies:
       glob: 14.0.4
       package-json-from-dist: 1.0.1
-
-  rollup-plugin-polyfill-node@0.13.0(rollup@4.68.2):
-    dependencies:
-      '@rollup/plugin-inject': 5.0.5(rollup@4.68.2)
-      rollup: 4.68.2
 
   rollup@4.68.2:
     dependencies:
