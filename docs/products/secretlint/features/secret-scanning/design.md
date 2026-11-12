@@ -70,7 +70,7 @@ For binary, it is the bytes of the file, and `content` is those bytes decoded as
 
 ### The gcp rule and `.p12` files
 
-The gcp rule declares `all`, because one rule checks both `.json` (text) and `.p12` (binary) files. For `.json` it parses `content`, and for `.p12` it verifies the MAC of the PKCS#12 file with the password that GCP uses for service account keys.
+The gcp rule declares `["text", "binary"]`, because one rule checks both `.json` (text) and `.p12` (binary) files. It declared `all` before; listing the types states what the rule checks. For `.json` it parses `content`, and for `.p12` it verifies the MAC of the PKCS#12 file with the password that GCP uses for service account keys.
 The MAC check uses `contentBytes` of the source code object. When `contentBytes` is `undefined`, the rule does not check the `.p12` file and reports nothing.
 The rule does not import `node:fs` or read any file, so it gives the same result in Node.js, in browsers, and in the single-executable binary, and it no longer reads a file when the caller set `noPhysicFilePath`.
 The MAC check itself uses `node:crypto` when it is available and Web Crypto otherwise, as before.
@@ -120,6 +120,7 @@ It reads `source.contentBytes` once at the start of the call, and `source.conten
 
 A rule returns handlers, and the `file(source)` handler receives the source code object. The handler can return a promise, and the core waits for it.
 `source.contentBytes` is the new property. A rule must not change the bytes, because the core and other rules read the same bytes.
+`meta.supportedContentTypes` lists `text` and `binary`. `all` is removed from the type `SecretLintRuleContentType`, and the core still treats `all` as both at runtime, so a JavaScript rule or a published rule that declares `all` keeps working.
 
 ### `@secretlint/source-creator`
 
@@ -143,6 +144,8 @@ None. The lint reads the files that the user of the command can read.
 The bytes and the content can have secrets. They stay in memory and are not written by the core.
 
 ## Deployment notes
+
+Removing `all` from the type makes a TypeScript rule that declares `all` fail to compile until it lists `text` and `binary`. Its behavior does not change, because the core still accepts `all`.
 
 Adding `contentBytes` to the source code object does not change existing rules.
 A program that calls `lintSource()` for a `.p12` file with only the string gets no report after this change, while the gcp rule read the file before. The release notes tell such a caller to pass `contentBytes`. It is not a breaking change: by the versioning principle of the Product, a major release is for a change that reports more by default, and this change only reports less for such a caller.

@@ -143,9 +143,10 @@ A program that calls `@secretlint/core` gives the content type of the source.
 
 ##### Supported content types
 
-A rule declares one or more of `text`, `binary`, and `all`. `all` means both text and binary, the same as declaring `text` and `binary`.
-For text content, the rules that support `text` or `all` run.
-For binary content, the rules that support `binary` or `all` run.
+A rule lists the content types it supports: `text`, `binary`, or both. A rule that checks both lists both, so the supported types can be read from the rule as they are.
+For text content, the rules that list `text` run.
+For binary content, the rules that list `binary` run.
+A rule that still declares `all` runs for both, as before, so existing custom rules keep working. The rules that Secretlint provides do not use `all`.
 For unknown content, all rules run.
 
 ##### Rules that check binary content
