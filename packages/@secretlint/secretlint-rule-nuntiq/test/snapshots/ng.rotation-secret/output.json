@@ -1,0 +1,32 @@
+{
+    "filePath": "[SNAPSHOT]/ng.rotation-secret/input.txt",
+    "messages": [
+        {
+            "message": "found Nuntiq key rotation secret: nuntiq_rs_live_21de8760_SqPffdMtVohhIsr6xV3cb9KQeXZ33W2DY2jtbXBeY0Q2ESzMW",
+            "range": [
+                17,
+                90
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-nuntiq",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 17
+                },
+                "end": {
+                    "line": 1,
+                    "column": 90
+                }
+            },
+            "severity": "error",
+            "messageId": "NUNTIQ_ROTATION_SECRET",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-nuntiq/README.md#NUNTIQ_ROTATION_SECRET",
+            "data": {
+                "KEY": "nuntiq_rs_live_21de8760_SqPffdMtVohhIsr6xV3cb9KQeXZ33W2DY2jtbXBeY0Q2ESzMW"
+            }
+        }
+    ],
+    "sourceContent": "rotation_secret: nuntiq_rs_live_21de8760_SqPffdMtVohhIsr6xV3cb9KQeXZ33W2DY2jtbXBeY0Q2ESzMW\n",
+    "sourceContentType": "text"
+}
