@@ -1,0 +1,32 @@
+{
+    "filePath": "[SNAPSHOT]/ng.partial-allows/input.txt",
+    "messages": [
+        {
+            "message": "found doppler CLI token: dp.ct.0000000000000000000000000000000000000000000",
+            "range": [
+                50,
+                99
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-doppler",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 0
+                },
+                "end": {
+                    "line": 2,
+                    "column": 49
+                }
+            },
+            "severity": "error",
+            "messageId": "DOPPLER_CLI_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-doppler/README.md#DOPPLER_CLI_TOKEN",
+            "data": {
+                "ID": "dp.ct.0000000000000000000000000000000000000000000"
+            }
+        }
+    ],
+    "sourceContent": "dp.pt.0000000000000000000000000000000000000000000\ndp.ct.0000000000000000000000000000000000000000000\n",
+    "sourceContentType": "text"
+}
