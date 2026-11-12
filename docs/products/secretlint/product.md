@@ -112,20 +112,20 @@ GitHub secret scanning works on the GitHub side, after a commit is made or pushe
 | --- | --- | --- |
 | Secret scanning | Lint files, globs, or STDIN content with the configured rules and report the secrets found | [Requirements](features/secret-scanning/requirements.md) |
 | File selection | Choose the files to lint from globs and paths, honoring `.gitignore`, `.secretlintignore`, and built-in ignores | Not written |
-| Configuration loading | Find and validate the configuration file and decide the rules, options, severities, and allowed messages | Not written |
+| Configuration loading | Find and validate the configuration file and decide the rules, options, severities, and allowed messages | [Requirements](features/config-loading/requirements.md) |
 | Configuration creation | Create a `.secretlintrc.json` with `--init` | Not written |
-| Rules and rule presets | Detect each kind of secret, and group rules into the recommended and canary presets | Not written |
+| Rules and rule presets | Detect each kind of secret, and group rules into the recommended and canary presets | [Requirements](features/rules-and-presets/requirements.md) |
 | Ignoring by comment | Suppress reports in a range of a file with disable comments | Not written |
 | Secret masking in results | Mask secret values in reported messages by default | Not written |
 | Result output | Show results with a chosen formatter, write them to a file, and set the exit status | [Requirements](features/result-output/requirements.md) |
 | mask-result formatter | Output the content of a file with its secrets masked (`mask-result`) | [Requirements](features/mask-result-formatter/requirements.md) |
 | Message localization | Show messages in a chosen locale (`--locale`, experimental) | Not written |
-| Custom rules | Create, test, and publish a rule as an npm package | Not written |
+| Custom rules | Create, test, and publish a rule as an npm package | [Requirements](features/custom-rules/requirements.md) |
 | Node.js API | Lint content from other programs with `@secretlint/node` | Not written |
 | npm packages | Install the CLI, rules, and formatters as npm packages and run them with Node.js | Not written |
 | Quick start | Run once with `npx @secretlint/quick-start` and the recommended preset, without a configuration file | Not written |
 | Docker image | Run `secretlint/secretlint` without Node.js or configuration, with the recommended preset, the pattern rule, and the SARIF formatter built in | Not written |
-| Single-executable binary | Run a binary from GitHub Releases for Linux, macOS, and Windows without Node.js, with the same built-in rules and formatter as the Docker image | Not written |
+| Single-executable binary | Run a binary from GitHub Releases for Linux, macOS, and Windows without Node.js, with the same built-in rules and formatter as the Docker image | [Requirements](features/single-executable-binary/requirements.md) |
 | Performance profile | Show where time is spent with `--profile` | Not written |
 
 ## Definition of success
