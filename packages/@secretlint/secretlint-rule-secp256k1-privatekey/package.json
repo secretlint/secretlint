@@ -61,11 +61,7 @@
     },
     "dependencies": {
         "@secretlint/types": "workspace:*",
-        "@textlint/regexp-string-matcher": "catalog:",
-        "@types/bn.js": "catalog:",
-        "@types/secp256k1": "catalog:",
-        "bn.js": "catalog:",
-        "secp256k1": "catalog:"
+        "@textlint/regexp-string-matcher": "catalog:"
     },
     "devDependencies": {
         "@secretlint/tester": "workspace:*",

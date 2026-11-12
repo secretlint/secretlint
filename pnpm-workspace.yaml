@@ -14,18 +14,15 @@ catalog:
   "@textlint/module-interop": "^15.7.0"
   "@textlint/regexp-string-matcher": "^2.0.2"
   "@textlint/types": "^15.7.0"
-  "@types/bn.js": "^5.2.0"
   "@types/bun": "^1.4.4"
   "@types/debug": "^4.1.13"
   "@types/js-yaml": "^4.0.9"
   "@types/node": "^25.9.9"
   "@types/picomatch": "^4.0.3"
   "@types/pluralize": "0.0.33"
-  "@types/secp256k1": "^4.0.7"
   "ajv": "^8.20.0"
   "assert-json-equal": "^2.0.0"
   "benchmark": "^2.1.4"
-  "bn.js": "^5.2.5"
   "chalk": "^5.6.2"
   "create-validator-ts": "^6.0.1"
   "debug": "^4.4.3"
@@ -44,7 +41,6 @@ catalog:
   "rollup": "^4.68.1"
   "rollup-plugin-polyfill-node": "^0.13.0"
   "scaffdog": "^4.1.0"
-  "secp256k1": "^5.0.2"
   "structured-source": "^4.0.0"
   "table": "^6.10.1"
   "terminal-link": "^5.0.0"
@@ -56,7 +52,6 @@ catalog:
 
 onlyBuiltDependencies:
   - esbuild
-  - secp256k1
 
 settings:
   strictCatalog: true
