@@ -2,26 +2,26 @@
 
 [English](design.md)
 
-## この文書について
+## このドキュメントについて
 
-この文書は、カスタムルールのパッケージの構成と、`@secretlint/tester`が[カスタムルール](requirements.ja.md)のスナップショットテストを実行するしかたを説明します。
+このドキュメントでは、カスタムルールのパッケージの構成と、`@secretlint/tester`が[カスタムルール](requirements.ja.md)のスナップショットテストを実行する方法を説明します。
 親のProductは[Secretlint](../../product.ja.md)です。
 
-### 読者
+### 対象読者
 
-ルールを書いたりテストしたりする人とエージェント、`@secretlint/tester`を変える人とエージェント。
+ルールを書いたりテストしたりする人とエージェント、および`@secretlint/tester`を変更する人とエージェント。
 
-### 前提
+### 前提知識
 
 `@secretlint/types`のルールのインターフェースと、Node.jsのテストランナー（`node:test`）。
 
-### スコープ外
+### このドキュメントで扱わないこと
 
-ケースの設定のためにtesterが使う設定の読み込みと、ルールを実行する`@secretlint/core`。
+testerがテストケースの設定を読むために使う設定の読み込みと、ルールを実行する`@secretlint/core`。
 
 ## 実装方針
 
-ルールはコードの隣にテストを持つパッケージで、`@secretlint/tester`はスナップショットのディレクトリの各ディレクトリを1つのテストにします。
+カスタムルールは、コードと同じパッケージにテストを持ちます。`@secretlint/tester`は、スナップショットのディレクトリにあるディレクトリをそれぞれ1つのテストにします。
 
 ### カスタムルールのパッケージの構成
 
@@ -35,31 +35,31 @@ packages/@secretlint/secretlint-rule-<name>/
     snapshots/<case>/ # input*, output.json, optional .secretlintrc.json and options.*
 ```
 
-Secretlintが公開するカスタムルールはこの構成です。
-パッケージのtestスクリプトは`test/index.test.ts`を`node --import tsx --test`で実行し、`updateSnapshot`はそれを`UPDATE_SNAPSHOT=1`で実行します。
+Secretlintが公開するカスタムルールも、この構成になっています。
+パッケージの`test`スクリプトは`node --import tsx --test`で`test/index.test.ts`を実行し、`updateSnapshot`スクリプトは`UPDATE_SNAPSHOT=1`を付けて同じテストを実行します。
 
 ### テストケースの実行
 
-ケースの確認は、組み込みルールのテストも使うランナー`@secretlint/core/testing`にあります。`@secretlint/tester`はそれを包み、入力ファイルの読み込みと設定ファイルの読み込みを渡します。
+各ケースの確認処理は、組み込みルールのテストでも使うテストランナー`@secretlint/core/testing`にあります。`@secretlint/tester`はこのテストランナーをラップし、入力ファイルの読み込み処理と設定ファイルの読み込み処理を渡します。
 
-`snapshot(options)`はスナップショットのディレクトリを読み、`forEach(handler)`を持つオブジェクトを返します。`forEach`は各ケースの名前と、それを実行する関数でhandlerを呼びます。
-テストファイルはその関数を`t.test()`に渡し、`"skip"`が返ればテストをスキップします。
+`snapshot(options)`はスナップショットのディレクトリを読み、`forEach(handler)`を持つオブジェクトを返します。`forEach`は、各ケースの名前とそのケースを実行する関数を引数にしてhandlerを呼びます。
+テストファイルはその関数を`t.test()`に渡し、関数が`"skip"`を返したらテストをスキップします。
 
-ケースの関数は次のことをします。
+ケースを実行する関数は、次の処理をします。
 
-1. ケースのオプション（`options.js`、`options.json`、`options.ts`）を読み、入力ファイルを選ぶ。
-2. ケースに`.secretlintrc.json`があれば、テストするルールを`testReplaceDefinitions`として渡し、`@secretlint/config-loader`の`loadConfig()`で読む。なければ既定の設定を使う。
-3. 入力ファイルを`@secretlint/source-creator`の`createRawSource()`で読み（バイト列と内容の種類が得られる）、`@secretlint/core`の`lintSource()`でlintする。
-4. 内容をバイト列なしの文字列として、さらに各ルールの`meta.keywords`をなくし各パターンのキーワードをなくして範囲を`file`にした設定で、もう一度lintする。どちらも`assert.deepStrictEqual`で最初の結果と比べる。
-5. lintの結果はソースの内容を持たないので、テキストのソースの内容を`sourceContent`として結果に加える。`output.json`がないかスナップショットを更新するなら、キーを並べ替えて`[SNAPSHOT]`のパスにした結果を書き、`"skip"`を返す。そうでなければ結果を`output.json`と比べる。
+1. ケースのオプション（`options.js`、`options.json`、`options.ts`）を読み、入力ファイルを決める。
+2. ケースに`.secretlintrc.json`があれば、テストするルールを`testReplaceDefinitions`として渡し、`@secretlint/config-loader`の`loadConfig()`で読み込む。なければ既定の設定を使う。
+3. `@secretlint/source-creator`の`createRawSource()`で入力ファイルを読み込み（バイト列と内容の種類が得られる）、`@secretlint/core`の`lintSource()`でlintする。
+4. バイト列を除いて内容を文字列として渡した場合と、各ルールの`meta.keywords`と各パターンのキーワードを除き、スコープを`file`にした設定の場合で、もう一度lintする。どちらの結果も`assert.deepStrictEqual`で最初の結果と比較する。
+5. lintの結果にはソースの内容が含まれないため、テキストのソースの内容を`sourceContent`として結果に加える。`output.json`がない場合やスナップショットを更新する場合は、キーを並べ替え、パスを`[SNAPSHOT]`に置き換えた結果を書き出して`"skip"`を返す。それ以外の場合は、結果を`output.json`と比較する。
 
-4の手順があるので、間違ったキーワードや、ほかの行が必要な`line`範囲があると、最適化しない結果が最適化した結果の見逃した秘密情報を報告し、テストが失敗します。
+手順4があるため、キーワードが間違っている場合や、ほかの行も見る必要があるパターンに`line`スコープを指定した場合には、最適化した結果が見逃した秘密情報を最適化しない結果が報告し、テストが失敗します。
 
 ### プリセット
 
-サードパーティのプリセットも同じ`snapshot()`で、プリセットのルールごとに1つのスナップショットのディレクトリを持ってテストできます。組み込みのプリセットは`@secretlint/tester`ではなく`@secretlint/core`でテストします。
+サードパーティのプリセットも、同じ`snapshot()`を使い、プリセットのルールごとにスナップショットのディレクトリを用意すればテストできます。組み込みのプリセットは、`@secretlint/tester`ではなく`@secretlint/core`でテストします。
 
-## 構成図とシーケンス図
+## アーキテクチャ・シーケンス図
 
 ```mermaid
 sequenceDiagram
@@ -76,41 +76,41 @@ sequenceDiagram
     end
 ```
 
-## データモデルとER図
+## データモデル・ER 図
 
-- **SnapshotOptions:** `snapshotDirectory`（パスかURL）、`defaultConfig`、任意の`testDefinitions`、`updateSnapshot`。
+- **SnapshotOptions:** `snapshotDirectory`（パスまたはURL）、`defaultConfig`、任意の`testDefinitions`、`updateSnapshot`。
 - **SecretLintTestCaseOptions:** 任意の`inputFilePath`。
 
-## APIとインターフェース
+## API・インターフェース
 
-`@secretlint/tester`は`snapshot()`と、型`SnapshotOptions`と`SecretLintTestCaseOptions`をexportします。
-依存は`@secretlint/core`、`@secretlint/config-loader`、`@secretlint/source-creator`、`@secretlint/types`です。
-APIはランナーが`@secretlint/core`に移る前と同じなので、カスタムルールのテストは変わりません。
+`@secretlint/tester`は、`snapshot()`と、型`SnapshotOptions`、`SecretLintTestCaseOptions`をexportします。
+依存パッケージは`@secretlint/core`、`@secretlint/config-loader`、`@secretlint/source-creator`、`@secretlint/types`です。
+APIはテストランナーを`@secretlint/core`に移す前と同じなので、カスタムルールのテストを変更する必要はありません。
 
-## 外部サービスとの連携
+## 外部サービスとの連携方式
 
-テストにはなし。Secretlintのリポジトリのカスタムルールは、リポジトリのリリースのワークフローで公開されます。
+テストでは使いません。Secretlintのリポジトリにあるカスタムルールは、リポジトリのリリースワークフローで公開されます。
 
-## データの扱い
+## データの取り扱い設計
 
-testerはスナップショットのディレクトリのファイルを読み、スナップショットがないときか更新するときだけ`output.json`を書きます。
+testerはスナップショットのディレクトリにあるファイルを読み、スナップショットがない場合と更新する場合だけ`output.json`を書き出します。
 
-## 認証と認可
+## 認証認可に関する特記事項
 
 なし。
 
-## セキュリティの考慮
+## セキュリティ上の留意事項
 
-リポジトリはCIで変更したファイルにSecretlintを実行します。テストの入力はダミーの秘密情報を含み、リポジトリの`.secretlintignore`はその検査から`**/packages/**/test/**`を外しています。
+このリポジトリは、CIで変更されたファイルにSecretlintを実行しています。テストの入力にはダミーの秘密情報が含まれるため、リポジトリの`.secretlintignore`で`**/packages/**/test/**`をこの検査の対象外にしています。
 
-## デプロイの注意
+## デプロイに関する特記事項
 
-Secretlintのリポジトリのパッケージは、npmのtrusted publishingで公開されます。新しいパッケージは、npmでtrusted publisherを手で設定する必要があります。そのため、Secretlintの新しいルールは新しいカスタムルールのパッケージではなく、組み込みルールとして加えます。
+Secretlintのリポジトリのパッケージは、npmのtrusted publishingで公開されます。新しいパッケージを公開するには、npmでtrusted publisherを手作業で設定する必要があります。そのため、Secretlintに新しいルールを追加するときは、新しいカスタムルールのパッケージを作らず、組み込みルールとして追加します。
 
-## 検討した代替案
+## 検討した代替手段
 
-ケースごとに1つのディレクトリを持つスナップショットテストについて、代替案の記録はありません。
+ケースごとにディレクトリを1つ用意するスナップショットテストについて、ほかの案を検討した記録はありません。
 
-## 未解決事項
+## 未決事項
 
 なし。

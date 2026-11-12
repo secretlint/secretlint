@@ -115,7 +115,7 @@ GitHubのsecret scanningはコミットやpushの後にGitHub側で動きます�
 | 対象ファイルの選択 | globとパスからlintするファイルを選び、`.gitignore`、`.secretlintignore`、組み込みの除外を考慮する | 未作成 |
 | 設定の読み込み | 設定ファイルを探して検証し、ルール、オプション、重大度、許可するメッセージを決める | [Requirements](features/config-loading/requirements.ja.md) |
 | 設定ファイルの作成 | `--init`で`.secretlintrc.json`を作る | 未作成 |
-| ルールとルールプリセット | 組み込みルールで秘密情報の種類ごとに検出し、それをrecommendとcanaryのプリセットにまとめる | [Requirements](features/rules-and-presets/requirements.ja.md) |
+| ルールとルールプリセット | 秘密情報の種類ごとに組み込みルールで検出し、ルールをrecommendとcanaryのプリセットにまとめる | [Requirements](features/rules-and-presets/requirements.ja.md) |
 | コメントによる無視 | 無効化コメントで、ファイルの範囲の報告を抑える | 未作成 |
 | 結果の秘密情報のマスク | 報告するメッセージの秘密情報の値を既定で伏せる | 未作成 |
 | 結果の出力 | 選んだフォーマッターで結果を表示し、ファイルへ書き出し、終了ステータスを決める | [Requirements](features/result-output/requirements.ja.md) |

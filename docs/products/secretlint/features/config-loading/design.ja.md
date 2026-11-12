@@ -2,50 +2,50 @@
 
 [English](design.md)
 
-## この文書について
+## このドキュメントについて
 
-この文書は、`@secretlint/config-loader`が[設定の読み込み](requirements.ja.md)のルールIDをルールに解決するしかたを説明します。
+このドキュメントでは、`@secretlint/config-loader`が[設定の読み込み](requirements.ja.md)のルールIDをルールに解決する方法を説明します。
 親のProductは[Secretlint](../../product.ja.md)です。
 Requirementsと同じく、ルールIDの解決だけを扱います。
 
-### 読者
+### 対象読者
 
-ルールを見つけて読み込むしかたを変える人とエージェント。
+ルールを探して読み込む処理を変更する人とエージェント。
 
-### 前提
+### 前提知識
 
-Node.jsのモジュール解決と、[ルールとルールプリセット](../rules-and-presets/requirements.ja.md)が説明するルールのパッケージのexport。
+Node.jsのモジュール解決と、[ルールとルールプリセット](../rules-and-presets/requirements.ja.md)で説明しているルールのパッケージのexport。
 
-### スコープ外
+### このドキュメントで扱わないこと
 
-設定ファイルを探して検証すること、読み込んだルールを`@secretlint/core`で実行すること。
+設定ファイルの探索と検証、および読み込んだルールを`@secretlint/core`で実行すること。
 
 ## 実装方針
 
-`loadConfig()`は設定ファイルを設定の記述（descriptor）として読み、`loadPackagesFromConfigDescriptor()`はその各ルールの項目を、ルールのcreatorを持つ項目に変えます。
-結果は`@secretlint/core`の設定になり、coreはcreatorがどこから来たかを知らずに実行します。
+`loadConfig()`は設定ファイルを読んで設定の記述（descriptor）にし、`loadPackagesFromConfigDescriptor()`は記述の各ルールの項目を、ルールのcreatorを持つ項目に変換します。
+変換結果は`@secretlint/core`の設定になります。`@secretlint/core`は、creatorがどこから来たかを知らずに実行します。
 
-各ルールの項目について、読み込みは次のうち最初に当てはまるものからcreatorを取ります。
+読み込みは、各ルールの項目について、次のうち最初に当てはまるものからcreatorを取得します。
 
 1. `testReplaceDefinitions`: 呼び出し側が渡す`{ id, rule }`の一覧で、ルールIDをcreatorに置き換えます。`@secretlint/tester`は、インストール済みのパッケージではなく開発中のルールをテストで動かすためにこれを使います。
-2. `@secretlint/core`の組み込みの表。`resolveBuiltinRule()`が`@secretlint/core/builtin`を`await import()`でimportし、IDで、次に`createFullPackageName("secretlint-rule-", id)`で`getBuiltinRule()`を呼びます。
-3. ルールIDのnpmパッケージ。`SecretLintModuleResolver.resolveRulePackageName()`が`createFullPackageName("secretlint-rule-", id)`で完全なパッケージ名を作り、それとID自体を順に`@secretlint/resolver`の`tryResolve()`で試します。`@secretlint/resolver`の`dynamicImport()`がモジュールをimportし、読み込みはその`creator`のexportを取ります。
+2. `@secretlint/core`の組み込みの対応表。`resolveBuiltinRule()`が`@secretlint/core/builtin`を`await import()`で読み込み、まずIDのまま、次に`createFullPackageName("secretlint-rule-", id)`で作ったIDで`getBuiltinRule()`を呼びます。
+3. ルールIDに対応するnpmパッケージ。`SecretLintModuleResolver.resolveRulePackageName()`が`createFullPackageName("secretlint-rule-", id)`で完全なパッケージ名を作り、そのパッケージ名とID自体を順に`@secretlint/resolver`の`tryResolve()`で試します。見つかったモジュールを`@secretlint/resolver`の`dynamicImport()`でimportし、`creator`のexportを取得します。
 
-`meta.type: "preset"`のcreatorは、記述の項目の`rules`を持つプリセットの項目になります。ほかのcreatorは、`options`、`severity`、`disabled`、`allowMessageIds`を持つルールの項目になります。
-記述の項目の`id`が結果にコピーされるので、メッセージは設定ファイルに書いたIDを保ちます。
+`meta.type: "preset"`のcreatorは、記述の項目の`rules`を持つプリセットの項目になります。それ以外のcreatorは、`options`、`severity`、`disabled`、`allowMessageIds`を持つルールの項目になります。
+記述の項目の`id`を結果にそのままコピーするため、メッセージには設定ファイルに書いたIDが残ります。
 
 ### resolverのフック
 
-`@secretlint/resolver`は、`require.resolve()`と`import()`に頼る前に、プログラムが登録したresolveフックとimportフックを実行します。
-フックはパッケージ名に対して決まったURLを返せ、importフックは読み込み済みのモジュールのexportを返せます。
-これにより、単一実行ファイルのようにバンドルしたプログラムが、`node_modules`にないパッケージを提供できます。組み込みルールはresolverより先に見つかるので、フックはいりません。
+`@secretlint/resolver`は、`require.resolve()`や`import()`を使う前に、プログラムが登録したresolveフックとimportフックを実行します。
+resolveフックはパッケージ名に対して決まったURLを返すことができ、importフックは読み込み済みのモジュールのexportを返すことができます。
+これにより、単一実行ファイルのようにバンドルされたプログラムでも、`node_modules`にないパッケージを提供できます。組み込みルールはresolverを使う前に見つかるため、フックは必要ありません。
 
 ### 失敗
 
-1つの項目のエラーは集められ、読み込みはほかの項目を続けます。すべての項目のあとで、読み込みは各エラーに`Failed to load rule module: <id>`を前置した`AggregationError`を投げます。
-読み込みのあと、`allowMessageIds`がルールのメッセージを必要とするため、設定はcreatorと合わせて検証されます。
+1つの項目でエラーが起きても、そのエラーを記録してほかの項目の読み込みを続けます。すべての項目を処理したあと、各エラーの先頭に`Failed to load rule module: <id>`を付けた`AggregationError`を投げます。
+`allowMessageIds`の検証にはルールのメッセージが必要なため、設定の検証は読み込みのあとにcreatorと合わせて行います。
 
-## 構成図とシーケンス図
+## アーキテクチャ・シーケンス図
 
 ```mermaid
 sequenceDiagram
@@ -66,42 +66,42 @@ sequenceDiagram
     CLI->>Core: lintSource(config)
 ```
 
-## データモデルとER図
+## データモデル・ER 図
 
-- **設定の記述:** 読んだ設定ファイル。ルールの項目は`id`、`options`、`severity`、`disabled`、`allowMessageIds`、プリセットなら`rules`を持ちます。
-- **coreの設定:** 同じ項目に、creatorである`rule`を加えたもの。
+- **設定の記述:** 読み込んだ設定ファイルの内容。ルールの項目は`id`、`options`、`severity`、`disabled`、`allowMessageIds`を持ち、プリセットの場合は`rules`も持ちます。
+- **`@secretlint/core`の設定:** 設定の記述の各項目に、creatorである`rule`を加えたもの。
 
-## APIとインターフェース
+## API・インターフェース
 
 - `loadConfig({ cwd, configFilePath, node_moduleDir, testReplaceDefinitions })`は`{ ok, config, configDescriptor, configFilePath, messages }`を返します。
-- `loadPackagesFromConfigDescriptor({ configDescriptor, node_moduleDir, testReplaceDefinitions })`は、読み済みの記述から同じことをします。
+- `loadPackagesFromConfigDescriptor({ configDescriptor, node_moduleDir, testReplaceDefinitions })`は、読み込み済みの設定の記述から同じ処理をします。
 - `node_moduleDir`は、`SecretLintModuleResolver`がパッケージ名と結合する基準のディレクトリです。
 
-## 外部サービスとの連携
+## 外部サービスとの連携方式
 
 なし。
 
-## データの扱い
+## データの取り扱い設計
 
-読み込みは設定ファイルとパッケージのモジュールを読みます。ファイルは書きません。
+設定ファイルとパッケージのモジュールを読み込むだけで、ファイルには書き込みません。
 
-## 認証と認可
+## 認証認可に関する特記事項
 
-なし。パッケージはプロセスの権限でimportされます。
+なし。パッケージは、実行しているプロセスの権限でimportされます。
 
-## セキュリティの考慮
+## セキュリティ上の留意事項
 
-パッケージのimportはそのコードを実行するので、読み込みは設定ファイルにあるパッケージ名だけをimportします。
+パッケージをimportするとそのコードが実行されるため、設定ファイルに書かれたパッケージ名だけをimportします。
 
-## デプロイの注意
+## デプロイに関する特記事項
 
 なし。
 
-## 検討した代替案
+## 検討した代替手段
 
-- **resolverのフックで組み込みルールを解決する:** 単一実行ファイルがパッケージに対してしていた方法です。すべてのプログラムがフックを登録する必要があり、npmパッケージではやはりパッケージのインストールが必要なので、選びませんでした。
-- **インストールしたパッケージを組み込みルールより優先する:** ルールが常にインストールしたSecretlintのバージョンになり、古いプリセットのパッケージが新しいルールを隠さないように、選びませんでした。
+- **resolverのフックで組み込みルールを解決する:** 以前の単一実行ファイルがパッケージに対して使っていた方法です。すべてのプログラムがフックを登録する必要があり、npmパッケージでは結局ルールのパッケージのインストールが必要になるため、採用しませんでした。
+- **インストールしたパッケージを組み込みルールより優先する:** ルールのバージョンを常にインストールしたSecretlintと一致させ、古いプリセットのパッケージで新しいルールが隠れないようにするため、採用しませんでした。
 
-## 未解決事項
+## 未決事項
 
 なし。

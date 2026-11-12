@@ -45,7 +45,7 @@ The formatter loader resolves and imports names through `@secretlint/resolver`, 
 
 `build-binary.sh` runs `bun build --compile` for each of `linux-x64`, `linux-arm64`, `windows-x64`, `darwin-x64`, and `darwin-arm64`, and writes `secretlint-<version>-sha256sum.txt`.
 The `publish-binary` job of the release workflow builds and uploads them to the GitHub release after the npm packages are published.
-`test.sh` checks `--init`, `--init` with an existing configuration and with `--cwd`, `--version`, `--help`, linting `**/*`, and that a large JSON output is written completely.
+`test.sh` checks `--init`, `--init` with an existing configuration and with `--cwd`, `--version`, `--help`, linting `**/*`, and that a large output of the `mask-result` formatter is written completely.
 
 ## Architecture and sequence diagrams
 
@@ -65,7 +65,7 @@ sequenceDiagram
 
 ## Data model and ER diagrams
 
-None. The hooks map three package names to modules.
+None. The hooks map one package name, `@secretlint/secretlint-formatter-sarif`, to its module.
 
 ## APIs and interfaces
 
