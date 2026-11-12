@@ -51,7 +51,7 @@ The function of a case does the following:
 2. If the case has `.secretlintrc.json`, load it with `loadConfig()` of `@secretlint/config-loader`, passing the rules under test as `testReplaceDefinitions`. Otherwise use the default configuration.
 3. Read the input file with `createRawSource()` of `@secretlint/source-creator`, which gives the bytes and the content type, and lint it with `lintSource()` of `@secretlint/core`.
 4. Lint the content again as a string without the bytes, and again with a configuration in which each rule has no `meta.keywords` and each pattern has no keywords and the `file` scope. Compare both with the first result with `assert.deepStrictEqual`.
-5. If `output.json` does not exist or the snapshots are updated, write the result with sorted keys and the `[SNAPSHOT]` path, and return `"skip"`. Otherwise compare the result with `output.json`.
+5. Add the content of the text source to the result as `sourceContent`, because the lint result does not have it. If `output.json` does not exist or the snapshots are updated, write the result with sorted keys and the `[SNAPSHOT]` path, and return `"skip"`. Otherwise compare the result with `output.json`.
 
 Step 4 is how a wrong keyword or a `line` scope that needs other lines makes the test fail, because the unoptimized result reports a secret that the optimized result missed.
 

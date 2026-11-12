@@ -51,7 +51,7 @@ Secretlintが公開するカスタムルールはこの構成です。
 2. ケースに`.secretlintrc.json`があれば、テストするルールを`testReplaceDefinitions`として渡し、`@secretlint/config-loader`の`loadConfig()`で読む。なければ既定の設定を使う。
 3. 入力ファイルを`@secretlint/source-creator`の`createRawSource()`で読み（バイト列と内容の種類が得られる）、`@secretlint/core`の`lintSource()`でlintする。
 4. 内容をバイト列なしの文字列として、さらに各ルールの`meta.keywords`をなくし各パターンのキーワードをなくして範囲を`file`にした設定で、もう一度lintする。どちらも`assert.deepStrictEqual`で最初の結果と比べる。
-5. `output.json`がないかスナップショットを更新するなら、キーを並べ替えて`[SNAPSHOT]`のパスにした結果を書き、`"skip"`を返す。そうでなければ結果を`output.json`と比べる。
+5. lintの結果はソースの内容を持たないので、テキストのソースの内容を`sourceContent`として結果に加える。`output.json`がないかスナップショットを更新するなら、キーを並べ替えて`[SNAPSHOT]`のパスにした結果を書き、`"skip"`を返す。そうでなければ結果を`output.json`と比べる。
 
 4の手順があるので、間違ったキーワードや、ほかの行が必要な`line`範囲があると、最適化しない結果が最適化した結果の見逃した秘密情報を報告し、テストが失敗します。
 
