@@ -1,0 +1,26 @@
+<ESC>[90mexample: <ESC>[31m[<ESC>]8;;https://example.com/docs#message-id<BEL>message-id<ESC>]8;;<BEL>] warning found secret: SECRET<ESC>[0m
+<ESC>[90m[SNAPSHOT]/input.txt:1:8<ESC>[0m
+    <ESC>[31m          v<ESC>[0m
+    <ESC>[90m0. <ESC>[0m
+    <ESC>[0m1. THIS IS SECRET SOURCE<ESC>[0m
+    <ESC>[90m2. <ESC>[0m
+    <ESC>[31m          ^<ESC>[0m
+
+<ESC>[90mexample: <ESC>[31m[message-id] error found secret: SECRET<ESC>[0m
+<ESC>[90m[SNAPSHOT]/input.txt:1:8<ESC>[0m
+    <ESC>[31m          v<ESC>[0m
+    <ESC>[90m0. <ESC>[0m
+    <ESC>[0m1. THIS IS SECRET SOURCE<ESC>[0m
+    <ESC>[90m2. <ESC>[0m
+    <ESC>[31m          ^<ESC>[0m
+
+<ESC>[90mparent > example: <ESC>[31m[message-id] error found secret: SECRET<ESC>[0m
+<ESC>[90m[SNAPSHOT]/input.txt:1:8<ESC>[0m
+    <ESC>[31m          v<ESC>[0m
+    <ESC>[90m0. <ESC>[0m
+    <ESC>[0m1. THIS IS SECRET SOURCE<ESC>[0m
+    <ESC>[90m2. <ESC>[0m
+    <ESC>[31m          ^<ESC>[0m
+
+<ESC>[33m<ESC>[1m✖ 3 problems (2 errors, 1 warning)
+<ESC>[22m<ESC>[39m
