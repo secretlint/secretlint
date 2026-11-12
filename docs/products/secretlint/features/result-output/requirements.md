@@ -188,6 +188,31 @@ Formatters for people remove terminal control characters from file paths, messag
 
 The command shows an error that names the formatter, and exits with the status 2. No result is output.
 
+### Behavior for each kind of content
+
+**Overview:** What the user gets depends on the kind of the linted content. This table lists every kind.
+
+**Input:** The linted files or the STDIN content.
+
+**Output:** The result of each file, and the content that a formatter can get.
+
+#### Applicable conditions
+
+| Kind of content | Content type in the result | Messages | Content that a formatter can get | Exit status |
+| --- | --- | --- | --- | --- |
+| Text file with a secret | `text` | The messages of the rules | The whole content | 1 when a message has the severity error, otherwise 0 |
+| Text file without a secret | `text` | Empty | Not available | 0 |
+| Empty file | `text` | Empty | Not available | 0 |
+| Binary file | `binary` | Empty, unless a rule supports binary content | Not available | 0, unless such a rule reports an error |
+| STDIN content | `text` | The messages of the rules | The whole content, with or without messages | 1 when a message has the severity error, otherwise 0 |
+| Configuration file with a problem | `text` | The messages about the configuration | Not available | Not changed by these messages |
+
+The same applies to every formatter except `mask-result`. [File masking](../file-masking/requirements.md) lists the behavior of `mask-result` for each kind.
+
+An empty file is a text file without a secret.
+A file is binary when its extension is one of binary files, such as `.png`, or when its extension is not known and its content looks binary. The extension is checked first, so a file with the extension `.png` is binary even when its content is text.
+Most rules support only text, so a binary file has no messages. How the kind is decided and which rules lint which kind belong to the feature "Secret scanning", which is not yet written.
+
 ### JSON output
 
 **Overview:** `--format=json` outputs the results as they are, for programs.

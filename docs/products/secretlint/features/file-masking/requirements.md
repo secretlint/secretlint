@@ -83,6 +83,19 @@ Each character of the range is replaced by one `*`, so the length of the content
 The content of every linted file is output, whether the file has messages or not. An empty file adds nothing to the output.
 Messages about problems of the configuration file are not output with `mask-result`.
 
+##### Behavior for each kind of content
+
+| Kind of content | Output of `mask-result` | Exit status |
+| --- | --- | --- |
+| Text file with a secret | The content with each reported value replaced by `*` | 1 when a message has the severity error, otherwise 0 |
+| Text file without a secret | The content as it is | 0 |
+| Empty file | Nothing | 0 |
+| Binary file | Nothing for all files. The standard error shows that a binary file is not supported | 2 |
+| STDIN content | The content with each reported value replaced by `*` | 1 when a message has the severity error, otherwise 0 |
+| Configuration file with a problem | Nothing. The messages about the configuration are not output | Not changed by these messages |
+
+With `--output`, the exit status is 0 unless the command fails with the status 2, as [Result output](../result-output/requirements.md) describes.
+
 #### Exceptional behavior
 
 ##### A binary file
