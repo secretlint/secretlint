@@ -105,7 +105,7 @@ The repository runs Secretlint on its changed files in CI. The test inputs conta
 
 ## Deployment notes
 
-The packages of the Secretlint repository are published with npm trusted publishing. A new package needs its trusted publisher to be set up on npm by hand, which is why a new rule of Secretlint is added as a built-in rule instead of a new custom rule package.
+The packages of the Secretlint repository are published with npm trusted publishing. To publish a new package, an empty package has to be published first and its trusted publisher set up on npm by hand before the first release, which is why a new rule of Secretlint is added as a built-in rule instead of a new custom rule package.
 
 ## Alternatives considered
 

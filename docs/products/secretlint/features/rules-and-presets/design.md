@@ -27,7 +27,7 @@ The built-in rules and presets are part of `@secretlint/core`, together with the
 `@secretlint/core` has a table from rule id to rule, and the configuration loader looks up this table before it looks for a package.
 The packages of the same names stay as thin packages that re-export the rules from `@secretlint/core`.
 
-Adding a rule as a new npm package needs a manual setup of the package on npm, such as its trusted publisher, before the first release.
+Publishing a new npm package with trusted publishing takes manual steps: publish an empty package first, set up its trusted publisher on npm, and only then release the rule. Writing the code of a rule is not enough to publish it, so adding rules this way does not scale.
 A built-in rule is a directory in `@secretlint/core`, so adding one needs no new package.
 
 ### Rule directories
@@ -114,7 +114,7 @@ The `--init` of the npm package writes the rules that it finds in `package.json`
 
 ## Alternatives considered
 
-- **One package per rule, with the rules bundled into the presets:** This was the design before the change. Each new rule needed a new npm package and its manual setup on npm.
+- **One package per rule, with the rules bundled into the presets:** This was the design before the change. Each new rule needed a new npm package, and publishing it took the manual steps of trusted publishing described above.
 - **One separate package for the built-in rules:** The rules and their tests would be in a package next to `@secretlint/core`, as Biome keeps its rules in a crate separate from its engine. It was not chosen. The rules, the engine, and the tests are in one package, as oxlint and ESLint do.
 
 ## Open questions
