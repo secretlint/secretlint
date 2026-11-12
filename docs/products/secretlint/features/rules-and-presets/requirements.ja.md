@@ -46,7 +46,7 @@ Scenario: 設定ファイルに1つのルールだけを書くと、そのルー
 
 ### プリセット内のルールを設定する
 
-開発者として、プリセット内のルールのオプションや重大度を設定したい。そうすれば、プリセットを使ったままリポジトリの誤検知を減らせる。
+開発者として、プリセット内のルールのオプションや重大度を設定したり、ルールを無効にしたりしたい。そうすれば、プリセットを使ったままリポジトリの誤検知を減らせる。
 
 **受け入れ条件:**
 
@@ -61,6 +61,12 @@ Scenario: プリセットの項目がルールの重大度を設定すると、�
 - Given: 設定ファイルのrecommendプリセットに`"rules": [{ "id": "@secretlint/secretlint-rule-github", "severity": "warning" }]`がある。
 - When: 開発者が、GitHubのトークンを含むファイルをlintする。
 - Then: `@secretlint/secretlint-rule-github`のメッセージの重大度は`warning`で、それが原因でコマンドは失敗しない。
+
+Scenario: プリセットの項目がルールを無効にすると、ほかのルールは動き続ける
+
+- Given: 設定ファイルのrecommendプリセットに`"rules": [{ "id": "@secretlint/secretlint-rule-github", "disabled": true }]`がある。
+- When: 開発者が、AWSのアクセスキーとGitHubのトークンを含むファイルをlintする。
+- Then: 結果に`@secretlint/secretlint-rule-aws`のメッセージがあり、`@secretlint/secretlint-rule-github`のメッセージはない。
 
 Scenario: 同じルールをプリセットと単独の両方に書くと、読み込みが失敗する
 
@@ -156,9 +162,9 @@ Semantic Versioningに従わず、マイナーリリースでもルールが追�
 ##### プリセット内のルール
 
 プリセットの項目の`rules`の各項目は、ルールIDで照合されます。
-そのルールの`options`、`severity`、`allowMessageIds`を設定できます。
+プリセットに入っていないルールの項目と同じように、そのルールの`options`、`severity`、`allowMessageIds`、`disabled`を設定できます。
+項目が`disabled: true`のルールは動きません。
 項目のないルールは既定のオプションで動きます。
-項目の`disabled`は、今はルールを無効にしません。[未解決事項](#未解決事項)を参照してください。
 
 #### 例外的な動作
 
@@ -194,4 +200,4 @@ Semantic Versioningに従わず、マイナーリリースでもルールが追�
 
 ## 未解決事項
 
-- **プリセット内のルールの`disabled`:** 設定のドキュメントは`disabled: true`でルールを無効にすると書いていますが、プリセットの項目の`rules`に書いた`disabled`は、今はそのルールを無効にしません。ルールは報告を続けます。どちらが意図した動作かはメンテナーが決めます。それまでは、プリセット内のルールは`allowMessageIds`や`allows`で抑えます。
+なし。

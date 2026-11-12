@@ -40,7 +40,7 @@ Other rules, such as the pattern rule and the GCP rule, implement `create()` and
 
 A preset exports `creator` with `meta.type: "preset"`, its list of rules as `rules`, and a `create()` that calls `context.registerRule()` for each rule in order.
 `@secretlint/core` matches each registered rule with the `rules` entries of the preset entry by rule id, and applies its `options`, `severity`, and `allowMessageIds`.
-`disabled` of such an entry is not read when the rule is registered, which is why the rule still runs (see the Open questions of the Requirements).
+A rule whose entry has `disabled: true` is not registered, in the same way as a top-level entry with `disabled: true`.
 
 The preset packages depend on their rule packages only as devDependencies, and are built with Rollup into one module that contains the code of all their rules.
 So installing a preset does not install the rule packages, and the version of each rule is the one bundled in the preset.
@@ -90,4 +90,4 @@ There is no record of alternatives to one package per rule, or to bundling the r
 
 ## Open questions
 
-None, other than the Open questions of the Requirements.
+None.

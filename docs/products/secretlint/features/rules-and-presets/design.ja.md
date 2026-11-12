@@ -40,7 +40,7 @@ patternルールやGCPルールなど、それ以外のルールは`create()`を
 
 プリセットは、`meta.type: "preset"`の`creator`、ルールの一覧`rules`、各ルールについて順に`context.registerRule()`を呼ぶ`create()`をexportします。
 `@secretlint/core`は、登録された各ルールをプリセットの項目の`rules`とルールIDで照合し、その`options`、`severity`、`allowMessageIds`を適用します。
-その項目の`disabled`はルールを登録するときに読まれないため、ルールは動いたままになります（Requirementsの未解決事項を参照）。
+項目が`disabled: true`のルールは、最上位の項目の`disabled: true`と同じように登録されません。
 
 プリセットのパッケージはルールのパッケージにdevDependenciesとしてだけ依存し、Rollupで全ルールのコードを含む1つのモジュールにビルドされます。
 そのため、プリセットをインストールしてもルールのパッケージはインストールされず、各ルールのバージョンはプリセットに同梱したものになります。
@@ -90,4 +90,4 @@ recommendプリセットの`sync-canary`スクリプトは、メジャーリリ�
 
 ## 未解決事項
 
-Requirementsの未解決事項のほかには、なし。
+なし。

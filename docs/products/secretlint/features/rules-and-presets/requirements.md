@@ -46,7 +46,7 @@ Scenario: When the configuration file lists one rule, only that rule runs
 
 ### Configure a rule in a preset
 
-As a developer, I want to set the options or the severity of a rule in a preset, so that I can reduce false positives in my repository without leaving the preset.
+As a developer, I want to set the options or the severity of a rule in a preset, or disable it, so that I can reduce false positives in my repository without leaving the preset.
 
 **Acceptance criteria:**
 
@@ -61,6 +61,12 @@ Scenario: When a preset entry sets the severity of one of its rules, the message
 - Given: The configuration file has the recommended preset with `"rules": [{ "id": "@secretlint/secretlint-rule-github", "severity": "warning" }]`.
 - When: The developer lints a file that contains a GitHub token.
 - Then: The message of `@secretlint/secretlint-rule-github` has the severity `warning`, and the command does not fail because of it.
+
+Scenario: When a preset entry disables one of its rules, the other rules still run
+
+- Given: The configuration file has the recommended preset with `"rules": [{ "id": "@secretlint/secretlint-rule-github", "disabled": true }]`.
+- When: The developer lints a file that contains an AWS access key and a GitHub token.
+- Then: The result has a message of `@secretlint/secretlint-rule-aws` and no message of `@secretlint/secretlint-rule-github`.
 
 Scenario: When a rule is listed both in a preset and on its own, loading fails
 
@@ -156,9 +162,9 @@ Currently it has the same rules as the recommended preset.
 ##### Rules in a preset
 
 An entry of the `rules` list of a preset entry is matched by rule id.
-It can set `options`, `severity`, and `allowMessageIds` of that rule.
+It can set `options`, `severity`, `allowMessageIds`, and `disabled` of that rule, in the same way as an entry of a rule that is not in a preset.
+A rule whose entry has `disabled: true` does not run.
 A rule without an entry runs with its default options.
-`disabled` in an entry does not disable the rule now. See [Open questions](#open-questions).
 
 #### Exceptional behavior
 
@@ -194,4 +200,4 @@ The provided rules read only the content that Secretlint passes to them, and do 
 
 ## Open questions
 
-- **`disabled` of a rule in a preset:** The configuration document says that `disabled: true` disables a rule, but `disabled` in the `rules` list of a preset entry does not disable that rule now: the rule still reports. Which is the intended behavior is to be decided by the maintainer. Until then, a rule of a preset is suppressed with `allowMessageIds` or `allows`.
+None.
