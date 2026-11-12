@@ -63,14 +63,15 @@ These packages depend on `@secretlint/core` of the same version, and have no tes
 
 ### Tests
 
-The snapshot test cases are in `packages/@secretlint/core/test/builtin/rules/<name>/snapshots/` and `packages/@secretlint/core/test/builtin/presets/{recommend,canary}/snapshots/`.
+The snapshot test cases are in `packages/@secretlint/core/test/builtin/rules/<name>/snapshots/`.
 They run with the runner `@secretlint/core/testing`, which checks each case in the same way as `@secretlint/tester`: the results of the bytes source, the string source, and the rule without its keywords optimization must be the same.
 The runner is in `@secretlint/core` because `@secretlint/tester` depends on `@secretlint/core`, so the tests of `@secretlint/core` cannot use `@secretlint/tester` without a cycle in the workspace.
 `@secretlint/tester` wraps the runner, and adds the loading of the configuration file through the configuration loader.
 
 In the tests of `@secretlint/core`, the configuration files of the test cases name rule ids, and the runner looks them up with `getBuiltinRule`.
 A test fails when a rule directory has no snapshot directory.
-The `sync-preset-snapshots` script copies the test cases of each rule into the preset snapshots.
+The presets have no test cases of their own. Their test runs each test case of each rule in the preset through the preset, with the options of the rule under the preset entry, and checks two things: the messages of the rule are the same as the `output.json` of the rule, with `ruleParentId` of the preset, and an `ok.*` case has no message of any rule in the preset. The second check finds a rule of the preset that reports a value that another rule treats as valid.
+Before, the test cases of the rules were copied into a snapshot directory of each preset by a script. The copies had the same content except `ruleParentId`, and had to be copied again when a rule changed, so the test reads the cases of the rules instead.
 
 `pnpm run gen:rule` creates the rule directory, its README, and the test cases `ng.secret` and `ok.valid` in `@secretlint/core`.
 

@@ -64,7 +64,6 @@ packages/
       src/builtin/index.ts       # Built-in table: rule id -> rule, and the rules of the presets
       src/testing/               # Snapshot test runner (`@secretlint/core/testing`)
       test/builtin/rules/<name>/snapshots/      # Snapshot tests of each built-in rule
-      test/builtin/presets/<preset>/snapshots/  # Snapshot tests of the presets
     tester/                # Snapshot testing for rules outside core (wraps `@secretlint/core/testing`)
     config-loader/         # .secretlintrc loader
     node/                  # Node.js integration
@@ -206,7 +205,7 @@ packages/@secretlint/core/test/builtin/rules/<name>/
 - **Generate snapshots**: `cd packages/@secretlint/core && npm run updateSnapshot`
 - **Optional files**: `.secretlintrc.json` for per-case rule options, and `options.json` or `options.ts` for `{ inputFilePath }`
 - **A rule that needs other rules in the test** (like `filter-comments`): add them to `additionalRules` in `rules.test.ts`
-- **Preset snapshots**: `test/builtin/presets/<preset>/snapshots/secretlint-rule-<name>/` run each rule's cases through the preset. Copy the cases of the rules with `npm run sync-preset-snapshots` in `packages/@secretlint/core` after adding the rule to a preset
+- **Preset tests**: `presets.test.ts` runs the cases of each rule in a preset through the preset, with the rule's options under the preset entry. The messages of the rule must equal the rule's `output.json` (with `ruleParentId`), and an `ok.*` case must have no message of any rule in the preset. The presets have no test case files of their own
 
 Tests of a rule outside core use `@secretlint/tester`:
 

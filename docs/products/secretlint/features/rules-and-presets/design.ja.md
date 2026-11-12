@@ -63,14 +63,15 @@ patternルールは、`micromatch`と同じ方法で`picomatch`を使ってフ�
 
 ### テスト
 
-スナップショットのテストケースは、`packages/@secretlint/core/test/builtin/rules/<name>/snapshots/`と`packages/@secretlint/core/test/builtin/presets/{recommend,canary}/snapshots/`にあります。
+スナップショットのテストケースは、`packages/@secretlint/core/test/builtin/rules/<name>/snapshots/`にあります。
 テストは、`@secretlint/tester`と同じ方法で各ケースを確認するテストランナー`@secretlint/core/testing`で実行します。バイト列のソース、文字列のソース、キーワードによる最適化をしないルールの3つで、結果が一致しなければなりません。
 `@secretlint/tester`は`@secretlint/core`に依存しているため、`@secretlint/core`のテストで`@secretlint/tester`を使うとworkspaceに循環依存ができます。そのため、テストランナーは`@secretlint/core`に置いています。
 `@secretlint/tester`はこのテストランナーをラップし、設定の読み込みを使った設定ファイルの読み込みを追加しています。
 
 `@secretlint/core`のテストでは、テストケースの設定ファイルにルールIDを書き、テストランナーが`getBuiltinRule`でルールを取得します。
 スナップショットのディレクトリがないルールのディレクトリがあると、テストは失敗します。
-`sync-preset-snapshots`スクリプトは、各ルールのテストケースをプリセットのスナップショットにコピーします。
+プリセットは自分のテストケースを持ちません。プリセットのテストでは、プリセットに含まれる各ルールのテストケースを、そのルールのオプションをプリセットの項目に入れた設定でプリセットとして実行し、次の2つを確認します。1つは、そのルールのメッセージがルールの`output.json`と一致すること（`ruleParentId`はプリセットのIDになる）です。もう1つは、`ok.*`のケースでプリセットのどのルールも報告しないことです。2つ目の確認で、あるルールが有効とする値をプリセットのほかのルールが報告していないかが分かります。
+以前は、スクリプトでルールのテストケースをプリセットごとのスナップショットのディレクトリにコピーしていました。コピーは`ruleParentId`以外はルールのものと同じ内容で、ルールを変えるたびにコピーし直す必要があったため、ルールのテストケースを直接読むようにしました。
 
 `pnpm run gen:rule`は、ルールのディレクトリ、README、テストケース`ng.secret`と`ok.valid`を`@secretlint/core`の中に作ります。
 

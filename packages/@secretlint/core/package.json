@@ -66,7 +66,6 @@
         "prepublish": "npm run --if-present build",
         "test": "vitest run",
         "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
-        "sync-preset-snapshots": "npm run build && node scripts/sync-preset-snapshots.mjs && npm run updateSnapshot",
         "watch": "tsc --build --watch"
     },
     "prettier": {

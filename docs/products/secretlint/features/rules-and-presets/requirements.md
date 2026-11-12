@@ -244,7 +244,7 @@ A new built-in rule is registered as a built-in rule and added to the canary pre
 
 ##### Tests
 
-The snapshot test cases of the built-in rules and the presets are in `@secretlint/core`, and the tests of `@secretlint/core` run them.
+The snapshot test cases of the built-in rules are in `@secretlint/core`, and the tests of `@secretlint/core` run them. The tests of the presets run the test cases of their rules through the preset, and an `ok.*` case must not be reported by any rule of the preset.
 The test cases have the same layout as the test cases of `@secretlint/tester`, and the rule ids in their configuration files name the built-in rules.
 
 ## Data requirements

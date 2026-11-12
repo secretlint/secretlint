@@ -1,2 +1,0 @@
-# Hugging Face User Access Tokens that should be detected
-hf_token = 'hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'

@@ -1,3 +1,0 @@
-// secretlint-disable-next-line
-THIS IS SECRET A
-THIS IS SECRET B

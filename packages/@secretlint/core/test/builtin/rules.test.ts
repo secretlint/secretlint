@@ -3,7 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { SecretLintCoreConfig } from "@secretlint/types";
 import { getBuiltinRule } from "../../src/builtin/index.js";
-import { creator as patternRule } from "../../src/builtin/rules/pattern/index.js";
+import { additionalRules } from "./additional-rules.js";
 import { createRawSource } from "@secretlint/source-creator";
 import { createSnapshotTestCases } from "../../src/testing/index.js";
 
@@ -21,25 +21,6 @@ it("each built-in rule has snapshot tests", () => {
         .map((dirent) => dirent.name);
     expect(ruleNames.sort()).toEqual(sourceRuleNames.sort());
 });
-
-/**
- * The rules that need other rules in the test.
- * filter-comments filters the messages of other rules, so it is tested with the pattern rule.
- */
-const additionalRules: Record<string, SecretLintCoreConfig["rules"]> = {
-    "filter-comments": [
-        {
-            id: "@secretlint/secretlint-rule-secret-number",
-            rule: patternRule,
-            options: { patterns: [{ name: "secret-number", pattern: "/SECRET \\d+/" }] },
-        },
-        {
-            id: "@secretlint/secretlint-rule-secret-alphabet",
-            rule: patternRule,
-            options: { patterns: [{ name: "secret-alphabet", pattern: "/SECRET [a-zA-Z]/" }] },
-        },
-    ],
-};
 
 // Snapshot tests of each built-in rule: test/builtin/rules/<name>/snapshots/<test case>/
 describe.each(ruleNames)("@secretlint/secretlint-rule-%s", (name) => {
