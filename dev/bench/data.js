@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794492477753,
+  "lastUpdate": 1794492928922,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -61940,6 +61940,44 @@ window.BENCHMARK_DATA = {
             "range": "±0.82%",
             "unit": "ops/sec",
             "extra": "15 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "228f98b922dfc179beef337aa442c7a173d0f3b7",
+          "message": "refactor(secretlint): remove read-pkg (#1810)\n\n<!-- claude-projects-attribution: {\"github_login\":\"azu\"} -->\n_Requested by **azu** · [project\nthread](https://claude.ai/code/project/chan_01ChfsKF1sN6vYsJMPZ7PuDt?thread=cmsg_01ChfsKF1sN6vYsJMPZ7PuDt1dLpaUG2dRgJz4gM4mB9jx)_\n\n## Summary\n\nThis is the first step to reduce the dependencies of `secretlint`.\n\n`secretlint --init` used `read-pkg` only to read `package.json`. This PR\nreads it with `JSON.parse` instead.\n`read-pkg` brought 21 packages, so the external packages that\n`secretlint` installs go from 78 to 57 (counted with `pnpm list\n--prod`).\n\n## Behavior\n\nNo behavior change is intended.\n\n- `--init` still throws if `package.json` is not found or it is invalid\nJSON.\n- `read-pkg` also normalized the package data, but `--init` only reads\nthe names in `dependencies` and `devDependencies`.\n\nAn earlier version of this PR also replaced `structured-source` and\n`@textlint/regexp-string-matcher`. They bring only 7 packages and are\nmaintained outside of this repository, so the second commit puts them\nback.\n\n## Test\n\n- Tests of `--init`: the rule packages in `package.json` are written to\n`.secretlintrc.json`, and a missing or invalid `package.json` throws.\n\n## Performance\n\n`read-pkg` was imported only by `--init`, so the time of linting does\nnot change.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nhttps://claude.ai/code/session_01TSdrAJQDcp4n5az58XCmyq\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-11-12T23:14:06+09:00",
+          "tree_id": "2decc91c3ea744861816b3fbe3c77b30af2a8912",
+          "url": "https://github.com/secretlint/secretlint/commit/228f98b922dfc179beef337aa442c7a173d0f3b7"
+        },
+        "date": 1794492924372,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 5.52,
+            "range": "±1.19%",
+            "unit": "ops/sec",
+            "extra": "18 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 4.71,
+            "range": "±0.87%",
+            "unit": "ops/sec",
+            "extra": "16 samples"
           }
         ]
       }
