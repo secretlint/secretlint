@@ -216,4 +216,4 @@ The content of a source can have secrets. Secretlint reads it only in memory, an
 
 ## Open questions
 
-- **Release type:** A program that calls `lintSource()` for a `.p12` file without the bytes got a report before this change, because the gcp rule read the file. It gets no report after the change. Whether this is released as a breaking change is decided by the maintainer. Until then, the change is treated as a breaking change and the release notes say that a caller passes the bytes.
+None.

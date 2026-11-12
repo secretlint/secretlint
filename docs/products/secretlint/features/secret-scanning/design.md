@@ -145,7 +145,7 @@ The bytes and the content can have secrets. They stay in memory and are not writ
 ## Deployment notes
 
 Adding `contentBytes` to the source code object does not change existing rules.
-A program that calls `lintSource()` for a `.p12` file with only the string gets no report after this change, while the gcp rule read the file before. The release notes tell such a caller to pass `contentBytes`. Whether the release is a breaking change is an open question of the Requirements.
+A program that calls `lintSource()` for a `.p12` file with only the string gets no report after this change, while the gcp rule read the file before. The release notes tell such a caller to pass `contentBytes`. It is not a breaking change: by the versioning principle of the Product, a major release is for a change that reports more by default, and this change only reports less for such a caller.
 This change is made after the built-in rules move into `@secretlint/core`. Then the gcp rule is a file of the core, and the package `@secretlint/secretlint-rule-gcp` only re-exports it and depends on the core of the same release.
 So the configuration resolves the gcp rule from the core that also runs `lintSource()`, and the rule and `contentBytes` always come from the same core.
 A program that imports the rule object from a newer package and passes it to `lintSource()` of an older core is not supported, as the rules ship with the core. In that case the `.p12` check sees no bytes and reports nothing, without reading the file.
