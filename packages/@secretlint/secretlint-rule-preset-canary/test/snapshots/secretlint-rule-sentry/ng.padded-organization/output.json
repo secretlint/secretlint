@@ -1,0 +1,33 @@
+{
+    "filePath": "[SNAPSHOT]/ng.padded-organization/input.txt",
+    "messages": [
+        {
+            "message": "found Sentry organization auth token: sntrys_eyJpYXQiOjF9IA==_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+            "range": [
+                0,
+                67
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-sentry",
+            "ruleParentId": "@secretlint/secretlint-rule-preset-canary",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 67
+                }
+            },
+            "severity": "error",
+            "messageId": "SENTRY_ORGANIZATION_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-sentry/README.md#SENTRY_ORGANIZATION_TOKEN",
+            "data": {
+                "TOKEN": "sntrys_eyJpYXQiOjF9IA==_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+            }
+        }
+    ],
+    "sourceContent": "sntrys_eyJpYXQiOjF9IA==_AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\n",
+    "sourceContentType": "text"
+}
