@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>secretlint browser e2e</title>
+    </head>
+    <body>
+        <script type="module">
+            import { lint } from "/dist/secretlint.js";
+            window.secretlint = { lint };
+            document.body.dataset.ready = "true";
+        </script>
+    </body>
+</html>

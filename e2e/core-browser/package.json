@@ -1,0 +1,20 @@
+{
+    "private": true,
+    "name": "@secretlint/e2e-browser",
+    "version": "13.1.0",
+    "description": "E2E test: run @secretlint/core and the recommend preset in a browser",
+    "license": "MIT",
+    "type": "module",
+    "scripts": {
+        "build": "rollup --config",
+        "test:browser": "playwright test"
+    },
+    "devDependencies": {
+        "@playwright/test": "catalog:",
+        "@rollup/plugin-commonjs": "catalog:",
+        "@rollup/plugin-node-resolve": "catalog:",
+        "@secretlint/core": "workspace:*",
+        "@secretlint/secretlint-rule-preset-recommend": "workspace:*",
+        "rollup": "catalog:"
+    }
+}

@@ -49,6 +49,7 @@ pnpm catalog (`pnpm-workspace.yaml` with `strictCatalog: true`) manages shared d
 - **Format**: `pnpm format` (Prettier)
 - **Lint**: `pnpm lint` (runs secretlint itself)
 - **CI check**: `pnpm run ci` (build + test + lint)
+- **Browser test**: `pnpm turbo run build --filter=@secretlint/e2e-browser... && cd e2e/core-browser && pnpm exec playwright install chromium && pnpm run test:browser` (bundles `@secretlint/core` + the recommend preset without Node.js polyfills and runs them in Chromium)
 - **Generate new rule**: `pnpm run gen:rule`
 
 ## Monorepo Structure
@@ -65,6 +66,7 @@ packages/
     secretlint-rule-*/     # Individual rule packages (30+)
     secretlint-rule-preset-recommend/  # Stable preset
     secretlint-rule-preset-canary/     # Experimental preset
+e2e/core-browser/          # Browser test of core + recommend preset (Playwright)
 docs/                      # Documentation
 examples/                  # Example projects
 .scaffdog/                 # Template for generating new rules
