@@ -70,7 +70,7 @@ For binary, it is the bytes of the file, and `content` is those bytes decoded as
 
 ### The gcp rule and `.p12` files
 
-The gcp rule supports `all` content types. For `.json` it parses `content`, and for `.p12` it verifies the MAC of the PKCS#12 file with the password that GCP uses for service account keys.
+The gcp rule declares `all`, because one rule checks both `.json` (text) and `.p12` (binary) files. For `.json` it parses `content`, and for `.p12` it verifies the MAC of the PKCS#12 file with the password that GCP uses for service account keys.
 The MAC check uses `contentBytes` of the source code object. When `contentBytes` is `undefined`, the rule does not check the `.p12` file and reports nothing.
 The rule does not import `node:fs` or read any file, so it gives the same result in Node.js, in browsers, and in the single-executable binary, and it no longer reads a file when the caller set `noPhysicFilePath`.
 The MAC check itself uses `node:crypto` when it is available and Web Crypto otherwise, as before.
