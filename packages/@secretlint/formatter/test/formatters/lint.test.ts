@@ -51,9 +51,9 @@ describe("lint formatters", () => {
         const noMessageResults: LintResult[] = [{ filePath: "/path/to/file.txt", messages: [] }];
         it("stylish, compact, unix and github output nothing", () => {
             assert.strictEqual(stylish(noMessageResults, {}), "");
-            assert.strictEqual(compact(noMessageResults, {}), "");
-            assert.strictEqual(unix(noMessageResults, {}), "");
-            assert.strictEqual(github(noMessageResults, {}), "");
+            assert.strictEqual(compact(noMessageResults), "");
+            assert.strictEqual(unix(noMessageResults), "");
+            assert.strictEqual(github(noMessageResults), "");
         });
         it("tap outputs ok", () => {
             assert.strictEqual(
@@ -63,15 +63,15 @@ describe("lint formatters", () => {
         });
         it("the XML formatters output a document without messages", () => {
             assert.strictEqual(
-                junit(noMessageResults, {}),
+                junit(noMessageResults),
                 '<?xml version="1.0" encoding="utf-8"?>\n<testsuites>\n</testsuites>\n',
             );
             assert.strictEqual(
-                jslintXml(noMessageResults, {}),
+                jslintXml(noMessageResults),
                 '<?xml version="1.0" encoding="utf-8"?><jslint><file name="/path/to/file.txt"></file></jslint>\n',
             );
             assert.strictEqual(
-                checkstyle(noMessageResults, {}),
+                checkstyle(noMessageResults),
                 '<?xml version="1.0" encoding="utf-8"?><checkstyle version="4.3"><file name="/path/to/file.txt"></file></checkstyle>\n',
             );
         });
@@ -83,22 +83,19 @@ describe("lint formatters", () => {
             assert.ok(
                 stylish(oneMessageResults, { color: false }).endsWith("✖ 1 problem (0 errors, 1 warning, 0 infos)\n"),
             );
-            assert.ok(compact(oneMessageResults, {}).endsWith("\n\n1 problem\n"));
-            assert.ok(unix(oneMessageResults, {}).endsWith("\n\n1 problem\n"));
+            assert.ok(compact(oneMessageResults).endsWith("\n\n1 problem\n"));
+            assert.ok(unix(oneMessageResults).endsWith("\n\n1 problem\n"));
         });
     });
 
     describe("github", () => {
         it("escapes line breaks, so that a message can not start a new workflow command", () => {
-            const output = github(
-                [
-                    {
-                        filePath: "/path/to/a\nb.txt",
-                        messages: [{ ...results[0].messages[0], message: "first\r\n::error::forged", ruleId: "a,b:c" }],
-                    },
-                ],
-                {},
-            );
+            const output = github([
+                {
+                    filePath: "/path/to/a\nb.txt",
+                    messages: [{ ...results[0].messages[0], message: "first\r\n::error::forged", ruleId: "a,b:c" }],
+                },
+            ]);
             assert.strictEqual(
                 output,
                 "::group::/path/to/a%0Ab.txt\n" +
