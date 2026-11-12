@@ -1,0 +1,8 @@
+::group::/path/to/a&b.txt
+::error file=/path/to/a&b.txt,line=1,endLine=1,col=8,endColumn=14,title=TextLint [rule-error]::[ID] found <secret> & "token". | 1:8
+::warning file=/path/to/a&b.txt,line=12,endLine=12,col=1,endColumn=10,title=TextLint [preset > rule-warning]::[ID] 日本語のメッセージ | 12:1
+::notice file=/path/to/a&b.txt,line=3,endLine=3,col=123,endColumn=133,title=TextLint [rule-info]::[ID] it's 100%25%0Asecond line | 3:123
+::endgroup::
+::group::/path/to/c,d:e.txt
+::warning file=/path/to/c%2Cd%3Ae.txt,line=2,endLine=2,col=4,endColumn=6,title=TextLint [rule-unknown-severity]::[ID] message | 2:4
+::endgroup::

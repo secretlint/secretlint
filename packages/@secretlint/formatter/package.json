@@ -56,19 +56,13 @@
     "dependencies": {
         "@secretlint/resolver": "workspace:*",
         "@secretlint/types": "workspace:*",
-        "@textlint/linter-formatter": "catalog:",
-        "@textlint/module-interop": "catalog:",
-        "@textlint/types": "catalog:",
-        "chalk": "catalog:",
         "debug": "catalog:",
-        "pluralize": "catalog:",
-        "table": "catalog:",
-        "terminal-link": "catalog:"
+        "js-yaml": "catalog:"
     },
     "devDependencies": {
         "@types/debug": "catalog:",
+        "@types/js-yaml": "catalog:",
         "@types/node": "catalog:",
-        "@types/pluralize": "catalog:",
         "escape-string-regexp": "catalog:",
         "prettier": "catalog:",
         "tsx": "catalog:",

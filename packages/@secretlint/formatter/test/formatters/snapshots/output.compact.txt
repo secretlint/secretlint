@@ -1,0 +1,7 @@
+/path/to/a&b.txt: line 1, col 8, Error - [ID] found <secret> & "token". (rule-error)
+/path/to/a&b.txt: line 12, col 0, Warning - [ID] 日本語のメッセージ (preset > rule-warning)
+/path/to/a&b.txt: line 3, col 123, Info - [ID] it's 100%
+second line (rule-info)
+/path/to/c,d:e.txt: line 2, col 4, Warning - [ID] message (rule-unknown-severity)
+
+4 problems
