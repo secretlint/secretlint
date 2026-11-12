@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794493709117,
+  "lastUpdate": 1794494131011,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -62016,6 +62016,44 @@ window.BENCHMARK_DATA = {
             "range": "±2.13%",
             "unit": "ops/sec",
             "extra": "16 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "6c2c0b515c19d1a5a5d4cdbc2115d5888312565e",
+          "message": "refactor(config-loader): validate the config with hand-written code, and remove ajv (#1814)\n\n<!-- claude-projects-attribution: {\"github_login\":\"azu\"} -->\n_Requested by **azu** · [project\nthread](https://claude.ai/code/project/chan_01ChfsKF1sN6vYsJMPZ7PuDt?thread=cmsg_01ChfsKF1sN6vYsJMPZ7PuDt1dLpaUG2dRgJz4gM4mB9jx)_\n\n## Summary\n\n`@secretlint/config-loader` validated `.secretlintrc` with `ajv` and a\nvalidator that `create-validator-ts` generated from the types.\nThe schema is small (the config, a rule and a preset), so this PR\nvalidates it with hand-written code and removes `ajv`.\n\nIt also updates `@textlint/regexp-string-matcher` to 2.0.3, which has no\ndependencies.\n\nThe external packages that `secretlint` installs go from 26 to 18\n(counted with `pnpm list --prod`).\n\n| Change | Packages |\n| --- | --- |\n| Remove `ajv` | 26 -> 22 |\n| `@textlint/regexp-string-matcher` 2.0.2 -> 2.0.3 | 22 -> 18\n(`lodash.sortby`, `lodash.uniq`, `lodash.uniqwith`,\n`escape-string-regexp`) |\n\n## Changes\n\n- Add `src/descriptor-validator.ts`:\n`validateSecretLintConfigDescriptor`,\n`validateSecretLintConfigDescriptorRule` and\n`validateSecretLintConfigDescriptorRulePreset`.\n- Remove `src/descriptor-types.ts` and the generated\n`src/descriptor-types.validator.ts`.\n- Remove `ajv` and `create-validator-ts` from the dependencies and the\ncatalog, and the `create-validation` script that is not used anymore.\n\n## Behavior\n\nThe error is the same as before: an `Error` whose name is\n`ValidationError`, and the message is the text that `ajv` produced. For\nexample:\n\n```\nInvalid secretlintrc: secretlintrc must have required property 'rules'\n```\n\n## Test\n\n- Compared with the old validator: 60,000 random values (missing\nproperties, wrong types, extra properties, nested presets). The result\n(valid or not) and the error message are identical for all of them.\n- New unit tests: `test/descriptor-validator.test.ts` (42 tests).\n- `pnpm run ci` passes.\n\n## Performance\n\nMedian of the CLI on a 4 vCPU Linux VM, Node.js 22. \"Before\" is master\nafter #1813.\n\n| Case | Before | After |\n| --- | --- | --- |\n| 1 file (stylish) | 190ms | 132ms |\n| 1 file (json) | 176ms | 117ms |\n| `--version` | 138ms | 92ms |\n| 14,441 files | 855ms | 839ms |\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nhttps://claude.ai/code/session_01TSdrAJQDcp4n5az58XCmyq\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-11-12T23:34:04+09:00",
+          "tree_id": "d21369905e84d157fa51865b2f63ca15038929c6",
+          "url": "https://github.com/secretlint/secretlint/commit/6c2c0b515c19d1a5a5d4cdbc2115d5888312565e"
+        },
+        "date": 1794494127523,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 5.96,
+            "range": "±1.26%",
+            "unit": "ops/sec",
+            "extra": "19 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 4.37,
+            "range": "±1.14%",
+            "unit": "ops/sec",
+            "extra": "15 samples"
           }
         ]
       }
