@@ -1,6 +1,7 @@
-import { lintSource } from "@secretlint/core";
+import { getKeywordScanPlan, lintSource } from "@secretlint/core";
+import type { KeywordScanResult } from "@secretlint/core/keyword-scan";
 import { loadConfig, loadPackagesFromConfigDescriptor, SecretLintConfigMessage } from "@secretlint/config-loader";
-import { createFileSourceReader, createRawSource } from "@secretlint/source-creator";
+import { createFileSourceReader, createRawSource, detectContentTypeByFileName } from "@secretlint/source-creator";
 import { loadFormatter } from "@secretlint/formatter";
 import {
     SecretLintConfigDescriptor,
@@ -11,6 +12,8 @@ import {
 import path from "node:path";
 import { secretLintProfiler } from "@secretlint/profiler";
 import debug0 from "debug";
+import { FileScanState, type FileKeywordScan } from "./keyword-scan-files.js";
+import { getKeywordScanThreads, type ParallelKeywordScan, scanKeywordsInParallel } from "./parallel-keyword-scan.js";
 
 const debug = debug0("@secretlint/node");
 export type SecretLintEngineOptionsBase = {
@@ -99,7 +102,7 @@ type LintedFile = {
 const createFileLinter = ({ config, options }: { config: SecretLintCoreConfig; options: SecretLintEngineOptions }) => {
     const readFileSource = createFileSourceReader();
     const lintOptions = { ...options, config };
-    return async (filePath: string): Promise<LintedFile> => {
+    return async (filePath: string, fileKeywordScan?: FileKeywordScan): Promise<LintedFile> => {
         if (options.formatter === "mask-result") {
             // The source has its own buffer, and it has the bytes for the rules that check binary content
             const readStartTime = secretLintProfiler.isEnabled ? secretLintProfiler.now() : 0;
@@ -116,7 +119,13 @@ const createFileLinter = ({ config, options }: { config: SecretLintCoreConfig; o
         if (secretLintProfiler.isEnabled) {
             secretLintProfiler.record("@node>read-file", undefined, readStartTime);
         }
-        const result = await lintSource({ source, options: lintOptions });
+        // Use the keyword scan of the file only if it scanned the same size of content:
+        // the file may have been changed after the scan. Without it, `lintSource()` scans the bytes
+        const keywordScan: KeywordScanResult | undefined =
+            fileKeywordScan !== undefined && fileKeywordScan.byteLength === source.contentBytes?.length
+                ? fileKeywordScan.scan
+                : undefined;
+        const result = await lintSource({ source, options: lintOptions, keywordScan });
         // The buffer still has the file here, because the next file is not read yet
         const hasContent = source.contentType === "text" && result.messages.length > 0;
         return { result, content: hasContent ? source.content : undefined };
@@ -208,6 +217,37 @@ const executeOnContent = async ({
     };
 };
 
+/**
+ * Scan the files for the keywords of the rules on several threads, if it is faster than scanning each file in the lint.
+ * It returns undefined if the files are linted as before.
+ */
+const scanKeywordsBeforeLint = async ({
+    filePathList,
+    config,
+    options,
+}: {
+    filePathList: string[];
+    config: SecretLintCoreConfig;
+    options: SecretLintEngineOptions;
+}): Promise<(ParallelKeywordScan & { skipsNoKeyword: boolean }) | undefined> => {
+    // "mask-result" needs the content of all files.
+    // The profiler measures the steps of the lint of each file, so the lint does all steps while profiling
+    if (options.formatter === "mask-result" || secretLintProfiler.isEnabled) {
+        return undefined;
+    }
+    const threads = getKeywordScanThreads(filePathList.length);
+    if (threads <= 1) {
+        return undefined;
+    }
+    const plan = getKeywordScanPlan({ config, locale: options.locale, contentType: "text" });
+    if (plan === undefined) {
+        return undefined;
+    }
+    const scan = await scanKeywordsInParallel({ plan, filePathList, threads });
+    debug("executeOnFiles keyword scan threads: %d, files with keywords: %d", threads, scan.scans.size);
+    return { ...scan, skipsNoKeyword: plan.requiresKeyword };
+};
+
 const executeOnFiles = async ({
     filePathList,
     config,
@@ -226,9 +266,22 @@ const executeOnFiles = async ({
     // The contents for the formatter: `filePath` of the result to the content
     const contents = new Map<string, string>();
     const lintFile = createFileLinter({ config, options });
-    for (const filePath of filePathList) {
+    const parallelScan = await scanKeywordsBeforeLint({ filePathList, config, options });
+    for (let fileIndex = 0; fileIndex < filePathList.length; fileIndex++) {
+        const filePath = filePathList[fileIndex] as string;
+        // The keyword scan is for the text content type, so use it only for a file that is text by its name.
+        // The content type of other files depends on the content
+        const isTextFile = parallelScan !== undefined && detectContentTypeByFileName(filePath) === "text";
+        if (isTextFile && parallelScan.skipsNoKeyword && parallelScan.states[fileIndex] === FileScanState.NoKeyword) {
+            // No rule runs for the file. It is the same result as `lintSource()` returns for it
+            results.push({ filePath, sourceContentType: "text", messages: [] });
+            continue;
+        }
         debug("executeOnFiles file: %s", filePath);
-        const { result, content } = await lintFile(filePath);
+        const { result, content } = await lintFile(
+            filePath,
+            isTextFile ? parallelScan.scans.get(fileIndex) : undefined,
+        );
         debug("executeOnFiles result: %o", result);
         results.push(result);
         if (content !== undefined) {

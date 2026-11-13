@@ -14,6 +14,16 @@ const detectContentType = (filePath: string, content: Buffer): SecretLintRawSour
     }
 };
 /**
+ * Detect the content type of a file from its name only.
+ * It returns the same type as the source of the file has, or undefined if the type depends on the content.
+ */
+export const detectContentTypeByFileName = (filePath: string): "text" | "binary" | undefined => {
+    if (isBinary(filePath) === true) {
+        return "binary";
+    }
+    return isText(filePath) === true ? "text" : undefined;
+};
+/**
  * Define `contentBytes` of the source as a non-enumerable property.
  * So `JSON.stringify(source)` and `{ ...source }` do not include the bytes, as before `contentBytes` is added.
  */

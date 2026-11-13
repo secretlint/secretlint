@@ -16,6 +16,9 @@ import { ContextEvents, createRuleContext } from "./RuleContext.js";
 import { secretLintProfiler } from "@secretlint/profiler";
 import { cleanupMessages } from "./messages/index.js";
 import { getLintPlan, getPlanView, LintPlan, PlanPattern, PlanView, ViewRule } from "./LintPlan.js";
+import { hasUtf8BOM, type KeywordScanPlan, type KeywordScanResult } from "./keyword-scan.js";
+
+export type { KeywordScanPlan, KeywordScanResult };
 import debug0 from "debug";
 
 const debug = debug0("@secretlint/core");
@@ -24,6 +27,15 @@ export type SecretLintSourceOptions = {
      * Lint target source
      */
     source: SecretLintRawSource;
+    /**
+     * The result of the keyword scan of `source.contentBytes`, from `createKeywordScanner()` of
+     * `@secretlint/core/keyword-scan` with the plan of `getKeywordScanPlan()`.
+     * If it is passed, `lintSource()` does not scan the bytes again.
+     * It is ignored if it is not for the keywords of the config and the content type of the source,
+     * so a wrong result costs time and does not change the result of the lint.
+     * The caller passes it only if it scanned the same bytes as `source.contentBytes`.
+     */
+    keywordScan?: KeywordScanResult;
     options: {
         /**
          * local for translate
@@ -50,9 +62,6 @@ export type SecretLintSourceOptions = {
 };
 
 const LINE_FEED = 0x0a;
-const hasUtf8BOM = (bytes: Uint8Array): boolean => {
-    return bytes.length >= 3 && bytes[0] === 0xef && bytes[1] === 0xbb && bytes[2] === 0xbf;
-};
 // TextDecoder is in browsers and Node.js. `ignoreBOM: true` keeps a BOM as a character, as `Buffer#toString` does
 const textDecoder = new TextDecoder("utf-8", { ignoreBOM: true });
 /**
@@ -239,7 +248,11 @@ type BytesCheck = {
  * 1. Scan the bytes once for the keywords of all rules.
  * 2. Check the patterns on the lines that have a keyword, without decoding the whole content.
  */
-const checkBytes = (view: PlanView, bytes: Uint8Array): BytesCheck | undefined => {
+const checkBytes = (
+    view: PlanView,
+    bytes: Uint8Array,
+    keywordScan: KeywordScanResult | undefined,
+): BytesCheck | undefined => {
     const matcher = view.matcher;
     if (!matcher) {
         return undefined;
@@ -247,7 +260,11 @@ const checkBytes = (view: PlanView, bytes: Uint8Array): BytesCheck | undefined =
     const contentStart = hasUtf8BOM(bytes) ? 3 : 0;
     const profiling = secretLintProfiler.isEnabled;
     const scanStartTime = profiling ? secretLintProfiler.now() : 0;
-    const hits = matcher.scan(bytes, contentStart);
+    // Use the result of the caller only if it is for the same keywords: the hits have the indexes of the keywords
+    const hits =
+        keywordScan !== undefined && keywordScan.planId === view.keywordScanPlan?.id
+            ? keywordScan.hits
+            : matcher.scan(bytes, contentStart);
     if (profiling) {
         secretLintProfiler.record("@core>keyword-scan", undefined, scanStartTime);
     }
@@ -317,6 +334,7 @@ const lintWithPlan = (
     plan: LintPlan,
     source: SecretLintRawSource,
     options: { maskSecrets: boolean; noPhysicFilePath: boolean },
+    keywordScan?: KeywordScanResult,
 ): Promise<SecretLintCoreResult> => {
     const contentType = source.contentType;
     const view = getPlanView(plan, contentType);
@@ -324,7 +342,7 @@ const lintWithPlan = (
     // The bytes may be available only at the start of the lint. See createFileSourceReader() of source-creator
     const bytes = source.contentBytes;
     // Check the bytes if the source has them, because decoding the content costs more than scanning it.
-    const bytesCheck = bytes === undefined ? undefined : checkBytes(view, bytes);
+    const bytesCheck = bytes === undefined ? undefined : checkBytes(view, bytes, keywordScan);
     if (bytes !== undefined && !bytesCheck?.hasKeyword && !view.hasAlwaysPattern && !view.hasAlwaysRule) {
         // Most files end here: no rule runs, and nothing is created for the file except the result
         return Promise.resolve(createResult(source, []));
@@ -501,16 +519,42 @@ const lintWithPlan = (
     return Promise.all(promises).then(finish);
 };
 
-export const lintSource = ({ source, options }: SecretLintSourceOptions): Promise<SecretLintCoreResult> => {
+/**
+ * Get what the keyword scan looks for with the config, for sources of the content type.
+ * Pass it to `createKeywordScanner()` of `@secretlint/core/keyword-scan`.
+ * It returns undefined if no rule has keywords: then there is nothing to scan.
+ */
+export const getKeywordScanPlan = ({
+    config,
+    locale,
+    contentType = "text",
+}: {
+    config: SecretLintCoreConfig;
+    locale?: SecretLintRuleLocaleTag;
+    contentType?: SecretLintRawSource["contentType"];
+}): KeywordScanPlan | undefined => {
+    return getPlanView(getLintPlan(config, locale ?? "en"), contentType).keywordScanPlan;
+};
+
+export const lintSource = ({
+    source,
+    options,
+    keywordScan,
+}: SecretLintSourceOptions): Promise<SecretLintCoreResult> => {
     // Each call has its own start time, because the calls can overlap
     const startTime = secretLintProfiler.isEnabled ? secretLintProfiler.now() : 0;
     debug(`source filePath: %O`, source.filePath);
     debug(`options: %O`, options);
     const plan = getLintPlan(options.config, options.locale ?? "en");
-    const promise = lintWithPlan(plan, source, {
-        maskSecrets: options.maskSecrets ?? false,
-        noPhysicFilePath: options.noPhysicFilePath ?? false,
-    });
+    const promise = lintWithPlan(
+        plan,
+        source,
+        {
+            maskSecrets: options.maskSecrets ?? false,
+            noPhysicFilePath: options.noPhysicFilePath ?? false,
+        },
+        keywordScan,
+    );
     if (!secretLintProfiler.isEnabled) {
         return promise;
     }
