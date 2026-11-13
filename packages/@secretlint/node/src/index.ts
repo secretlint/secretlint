@@ -50,7 +50,7 @@ export type SecretLintEngineOptionsBase = {
     /**
      * If profile is true, enable the profiler of `@secretlint/profiler`.
      * If profile is false, disable the profiler.
-     * You can get the result via `secretLintProfiler.getMeasures()` of `@secretlint/profiler`.
+     * You can get the result via `secretLintProfiler.getStats()` of `@secretlint/profiler`.
      * Profiling costs performance, so enable it only when you need the profiling result.
      * If profile is not defined, the engine does not change the state of the profiler.
      * Default: undefined (the profiler is disabled by default)
@@ -107,7 +107,11 @@ const createFileLinter = ({ config, options }: { config: SecretLintCoreConfig; o
             return { result, content: source.contentType === "text" ? source.content : undefined };
         }
         // Read and start the lint in the same turn: `lintSource()` scans the bytes at the start of the call
+        const readStartTime = secretLintProfiler.isEnabled ? secretLintProfiler.now() : 0;
         const source = readFileSource(filePath);
+        if (secretLintProfiler.isEnabled) {
+            secretLintProfiler.record("@node>read-file", undefined, readStartTime);
+        }
         const result = await lintSource({ source, options: lintOptions });
         // The buffer still has the file here, because the next file is not read yet
         const hasContent = source.contentType === "text" && result.messages.length > 0;

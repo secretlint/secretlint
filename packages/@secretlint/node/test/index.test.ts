@@ -259,19 +259,16 @@ describe("createEngine profile option", () => {
         const engine = await createEngine(options);
         await engine.executeOnFiles({ filePathList: [path.join(__dirname, "fixtures/SECRET.txt")] });
         assert.strictEqual(secretLintProfiler.isEnabled, false);
-        assert.deepStrictEqual(await secretLintProfiler.getMeasures(), []);
+        assert.deepStrictEqual(secretLintProfiler.getStats(), []);
     });
     it("should enable the profiler and collect measures if profile is true", async () => {
         const engine = await createEngine({ ...options, profile: true });
         await engine.executeOnFiles({ filePathList: [path.join(__dirname, "fixtures/SECRET.txt")] });
         assert.strictEqual(secretLintProfiler.isEnabled, true);
-        // wait for PerformanceObserver callback
-        await new Promise((resolve) => setTimeout(resolve, 100));
-        const measures = await secretLintProfiler.getMeasures();
-        assert.ok(
-            measures.some((measure) => measure.name === "@node>execute"),
-            `should have measures: ${measures.map((measure) => measure.name).join(", ")}`,
-        );
+        const types = secretLintProfiler.getStats().map((stat) => stat.type);
+        ["@node>execute", "@node>read-file", "@core>lint", "@core>keyword-scan"].forEach((type) => {
+            assert.ok(types.includes(type as (typeof types)[number]), `should have ${type}: ${types.join(", ")}`);
+        });
     });
     it("should disable the profiler if profile is false", async () => {
         secretLintProfiler.setEnabled(true);

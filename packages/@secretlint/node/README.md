@@ -57,7 +57,8 @@ const engine = await createEngine({
     profile: true
 });
 await engine.executeOnFiles({ filePathList: process.argv.slice(2) });
-const measures = await secretLintProfiler.getMeasures();
+// the totals for each type and id. See the README of `@secretlint/profiler`
+const stats = secretLintProfiler.getStats();
 ```
 
 `executeOnFiles` returns an object with the formatted `output` string and an `ok` flag. `ok` is `false` if any file has a lint message. Configuration and file-reading errors reject the promise.

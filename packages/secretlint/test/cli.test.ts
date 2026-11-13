@@ -125,27 +125,57 @@ describe("--profile", () => {
         });
         assert.strictEqual(secretLintProfiler.isEnabled, false);
     });
-    it("should enable the profiler and print the measures if --profile is specified", async () => {
+    // a preset: its rules have `patterns`
+    const patternFixtureDir = path.join(SNAPSHOT_DIR, "preset-rule-severity-warning");
+    const patternInputFilePath = path.join(patternFixtureDir, "input.txt");
+    const runWithProfile = async (format: string): Promise<string[]> => {
         const logs: string[] = [];
         const consoleLog = console.log;
         console.log = (...args: unknown[]) => {
             logs.push(args.join(" "));
         };
         try {
-            await run([inputFilePath], {
+            await run([patternInputFilePath], {
                 ...cli.flags,
-                cwd: fixtureDir,
+                cwd: patternFixtureDir,
                 color: false,
-                format: "stylish",
+                format,
                 profile: true,
             });
         } finally {
             console.log = consoleLog;
         }
+        return logs;
+    };
+    it("should enable the profiler and print the summary if --profile is specified", async () => {
+        const logs = await runWithProfile("stylish");
         assert.strictEqual(secretLintProfiler.isEnabled, true);
-        assert.ok(
-            logs.some((log) => /^.+ - [\d.]+ms$/.test(log)),
-            `should print the measures: ${JSON.stringify(logs)}`,
+        assert.strictEqual(logs.length, 1);
+        const output = logs[0] as string;
+        assert.match(output, /^secretlint profile: [\d.]+ms, 1 files\n/);
+        // phases, rules, patterns, and files
+        assert.match(output, /\n {2}@node>execute +[\d.]+ +[\d.]+ +1\n/);
+        assert.match(output, /\n +[\d.]+ +1 {2}@secretlint\/secretlint-rule-/);
+        assert.match(
+            output,
+            /\n +[\d.]+ +[\d.]+ +\d+ +[1-9]\d* +[\d.]+ +\d+ {2}@secretlint\/secretlint-rule-[a-z-]+#\d+ \//,
         );
+        assert.match(output, /\n +[\d.]+ {2}<cwd>[\\/]input\.txt$/);
+    });
+    it("should print the summary as JSON if --profile and --format=json are specified", async () => {
+        const logs = await runWithProfile("json");
+        assert.strictEqual(logs.length, 1);
+        const report = JSON.parse(logs[0] as string);
+        assert.deepStrictEqual(Object.keys(report), ["total", "files", "phases", "rules", "patterns", "slowestFiles"]);
+        assert.strictEqual(report.files, 1);
+        assert.strictEqual(report.phases[0].name, "secretlint>cli");
+        assert.strictEqual(report.slowestFiles[0].filePath, patternInputFilePath);
+        const matchedPatterns = report.patterns.filter((pattern: { matches: number }) => pattern.matches > 0);
+        assert.ok(matchedPatterns.length > 0, `should have a pattern with matches: ${logs[0]}`);
+        matchedPatterns.forEach((pattern: { ruleId: string; pattern: string; runs: number }) => {
+            assert.match(pattern.ruleId, /^@secretlint\/secretlint-rule-/);
+            assert.match(pattern.pattern, /^\/.+\/[a-z]*$/s);
+            assert.ok(pattern.runs > 0);
+        });
     });
 });

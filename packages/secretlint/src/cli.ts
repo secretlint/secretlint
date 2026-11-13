@@ -2,6 +2,7 @@ import { parseArgs } from "node:util";
 import { runSecretLint, SecretLintOptions } from "./index.js";
 import { runConfigCreator } from "./create-secretlintrc.js";
 import { secretLintProfiler } from "@secretlint/profiler";
+import { createProfileReport, formatProfileReport } from "./profile-report.js";
 import { getFormatterList } from "@secretlint/formatter";
 import { getPackageJson } from "@secretlint/resolver";
 import debug0 from "debug";
@@ -307,16 +308,11 @@ export const run = async (
             type: "secretlint>cli::end",
         });
         if (flags.profile) {
-            const measures = await secretLintProfiler.getMeasures();
-            const cwd = flags.cwd;
+            const report = createProfileReport(secretLintProfiler.getStats());
             if (flags.format === "json") {
-                console.log(JSON.stringify(measures, null, 4));
+                console.log(JSON.stringify(report, null, 4));
             } else {
-                measures.forEach((entry) => {
-                    const takenMs = entry.duration;
-                    const takenRoundMs = Math.round((takenMs + Number.EPSILON) * 100) / 100;
-                    console.log(`${entry.name.replace(cwd, "<cwd>")} - ${takenRoundMs}ms`);
-                });
+                console.log(formatProfileReport(report, { cwd: flags.cwd }));
             }
         }
     });

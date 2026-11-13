@@ -1,7 +1,3 @@
-import perf_hooks from "node:perf_hooks";
-
-type Performance = typeof perf_hooks.performance | typeof performance;
-
 export type SecretLintProfilerMarker =
     // cli
     | {
@@ -9,6 +5,12 @@ export type SecretLintProfilerMarker =
       }
     | {
           type: "secretlint>cli::end";
+      }
+    | {
+          type: "secretlint>search-files::start";
+      }
+    | {
+          type: "secretlint>search-files::end";
       }
     // config-loader
     | {
@@ -88,52 +90,106 @@ export type SecretLintProfilerMarker =
           id: string;
       };
 
-export type Constructor<I> = {
-    new (...args: any[]): I;
+/**
+ * A span is the time between `{span}::start` and `{span}::end`.
+ */
+type SpanOfMarker<T> = T extends { type: `${infer Span}::start` } ? Span : never;
+type SecretLintProfilerMarkedSpanType = SpanOfMarker<SecretLintProfilerMarker>;
+/**
+ * The types of what the profiler records.
+ *
+ * The types of `mark()` and the types that are recorded with `record()` and `count()`,
+ * because they run too many times to create a marker object for each:
+ *
+ * - "@node>read-file": read a file and decide if it is text or binary
+ * - "@core>keyword-scan": scan the content once for the keywords of all rules. It is shared by all rules
+ * - "@core>line-check": check the lines that have a keyword with the patterns, before decoding the whole content.
+ *    It includes "@core>pattern-line-test"
+ * - "@core>pattern-line-test": test a line with a pattern, in "@core>line-check". `id` is the id of the pattern
+ * - "@core>pattern": run a pattern on the content or a line and report the matches. `id` is the id of the pattern
+ * - "@core>pattern-match": the number of the matches of a pattern. It has no duration. `id` is the id of the pattern
+ */
+export type SecretLintProfilerStatType =
+    | SecretLintProfilerMarkedSpanType
+    | "@node>read-file"
+    | "@core>keyword-scan"
+    | "@core>line-check"
+    | "@core>pattern-line-test"
+    | "@core>pattern"
+    | "@core>pattern-match";
+/**
+ * The total of the records of a type and an id
+ */
+export type SecretLintProfilerStat = {
+    type: SecretLintProfilerStatType;
+    /**
+     * The id of the target: a file path, a rule id, or the id of a pattern.
+     * undefined if the type has no target.
+     */
+    id: string | undefined;
+    /**
+     * How many times it is recorded
+     */
+    count: number;
+    /**
+     * The total time in milliseconds
+     */
+    duration: number;
+    /**
+     * The longest time of a record in milliseconds
+     */
+    maxDuration: number;
 };
-export type LimitedPerformanceObserver = Constructor<{
-    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/PerformanceObserver/disconnect) */
-    disconnect(): void;
-    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/PerformanceObserver/observe) */
-    observe(options?: any): void;
-    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/PerformanceObserver/takeRecords) */
-    takeRecords?(): PerformanceEntry[];
-}>;
+/**
+ * @deprecated Use `SecretLintProfilerStat` of `getStats()`
+ */
+export type SecretLintProfilerMeasure = {
+    /**
+     * `{type}` or `{type}||{id}`
+     */
+    name: string;
+    entryType: "measure";
+    /**
+     * The total time of the records of the name in milliseconds
+     */
+    duration: number;
+    count: number;
+};
 export type SecretLintProfilerOptions = {
-    perf: Performance;
-    PerformanceObserver: LimitedPerformanceObserver;
+    /**
+     * Return the current time in milliseconds, like `performance.now()`
+     */
+    now: () => number;
     /**
      * If `enabled` is `false`, the profiler does not do anything.
-     * `mark()` becomes no-op and `PerformanceObserver` is not started.
      * Profiling costs performance, so it is opt-in.
      * Default: false
      */
     enabled?: boolean;
 };
 
-export class SecretLintProfiler {
-    private perf: Performance;
-    private PerformanceObserver: LimitedPerformanceObserver;
-    private observer: InstanceType<LimitedPerformanceObserver> | undefined;
-    /**
-     * Profiling costs performance.
-     * `performance.mark()` and `PerformanceObserver` callback are called for each rule and each file.
-     * So, the profiler should be disabled if the user does not need the profiling result.
-     * https://github.com/secretlint/secretlint/issues/1633
-     */
-    private enabled: boolean;
-    private entries: PerformanceEntry[] = [];
-    private measures: PerformanceEntry[] = [];
-    /**
-     * Set of mark names that have already been marked as `{mark}::start`
-     */
-    private startMarkNames: Set<string> = new Set();
+type MutableStat = { count: number; duration: number; maxDuration: number };
+const NO_ID = "";
 
-    private executionPromises: Promise<void>[] = [];
+/**
+ * The profiler keeps only the totals for each type and id: the count and the time.
+ * It does not keep each record, because the core records for each file and each pattern.
+ * https://github.com/secretlint/secretlint/issues/1633
+ */
+export class SecretLintProfiler {
+    private nowFn: () => number;
+    private enabled: boolean;
+    /**
+     * type -> id -> total. The id of a type without a target is ""
+     */
+    private stats: Map<SecretLintProfilerStatType, Map<string, MutableStat>> = new Map();
+    /**
+     * The start time of the spans that are started by `mark()` and not ended yet
+     */
+    private startTimes: Map<string, number> = new Map();
 
     constructor(options: SecretLintProfilerOptions) {
-        this.perf = options.perf;
-        this.PerformanceObserver = options.PerformanceObserver;
+        this.nowFn = options.now;
         this.enabled = options.enabled ?? false;
     }
 
@@ -143,7 +199,7 @@ export class SecretLintProfiler {
 
     /**
      * Enable or Disable the profiler.
-     * If the profiler is disabled, `mark()` does nothing and collected entries are cleared.
+     * If the profiler is disabled, it records nothing and the collected totals are cleared.
      * @param enabled
      */
     setEnabled(enabled: boolean) {
@@ -152,103 +208,114 @@ export class SecretLintProfiler {
         }
         this.enabled = enabled;
         if (!enabled) {
-            this.stopObserving();
+            this.stats.clear();
+            this.startTimes.clear();
         }
     }
 
-    private startObserving() {
-        const observer = new this.PerformanceObserver((items: PerformanceObserverEntryList) => {
-            this.handleEntries(items.getEntries());
-        });
-        observer.observe({ entryTypes: ["mark", "measure"] });
-        this.observer = observer;
-    }
-
-    private handleEntries(entries: PerformanceEntry[]) {
-        if (!this.enabled) {
-            return;
+    private statOf(type: SecretLintProfilerStatType, id: string | undefined): MutableStat {
+        let statsOfType = this.stats.get(type);
+        if (!statsOfType) {
+            statsOfType = new Map();
+            this.stats.set(type, statsOfType);
         }
-        const pattern = /(.*?)::end(\|\|.*)?/;
-        entries.forEach((entry) => {
-            if (entry.entryType === "mark") {
-                const match = entry.name.match(pattern);
-                const endIdentifier = match ? match[1] : undefined;
-                const suffix = match && match[2] ? match[2] : "";
-                // if mark already {mark}::start, measure start to end
-                if (endIdentifier) {
-                    const startMarkName = `${endIdentifier}::start${suffix}`;
-                    // create measure only when the paired `{mark}::start` is already marked
-                    if (this.startMarkNames.has(startMarkName)) {
-                        // FIXME: avoid ERR_INVALID_PERFORMANCE_MARK error
-                        this.executionPromises.push(
-                            Promise.resolve().then(() => {
-                                this.perf.measure(endIdentifier + suffix, startMarkName, entry.name);
-                            }),
-                        );
-                    }
-                } else {
-                    this.startMarkNames.add(entry.name);
-                }
-                this.entries.push(entry);
-            } else if (entry.entryType === "measure") {
-                this.measures.push(entry);
-            }
-        });
+        const key = id ?? NO_ID;
+        let stat = statsOfType.get(key);
+        if (!stat) {
+            stat = { count: 0, duration: 0, maxDuration: 0 };
+            statsOfType.set(key, stat);
+        }
+        return stat;
     }
 
     /**
-     * PerformanceObserver delivers entries asynchronously.
-     * Take the entries that are not delivered yet, so that the result includes marks made just before.
+     * Mark the start or the end of a span: `{span}::start` and `{span}::end`.
+     * The time between the start and the end is recorded for the span and the id.
+     * `::end` without `::start` is ignored.
      */
-    private flushObserver() {
-        const records = this.observer?.takeRecords?.();
-        if (records && records.length > 0) {
-            this.handleEntries(records);
-        }
-    }
-
-    private stopObserving() {
-        this.observer?.disconnect();
-        this.observer = undefined;
-        this.entries.length = 0;
-        this.measures.length = 0;
-        this.executionPromises.length = 0;
-        this.startMarkNames.clear();
-    }
-
     mark(marker: SecretLintProfilerMarker) {
         if (!this.enabled) {
             return;
         }
-        // Start observing lazily
-        // It avoids to start PerformanceObserver when the profiler is disabled before the first mark
-        if (!this.observer) {
-            this.startObserving();
+        const now = this.nowFn();
+        const id = "id" in marker ? marker.id : undefined;
+        const isStart = marker.type.endsWith("::start");
+        const span = marker.type.slice(0, isStart ? -"::start".length : -"::end".length);
+        const name = id === undefined ? span : `${span}||${id}`;
+        if (isStart) {
+            this.startTimes.set(name, now);
+            return;
         }
-        if ("id" in marker) {
-            this.perf.mark(`${marker.type}||${marker.id}`);
-        } else {
-            this.perf.mark(marker.type);
+        const startTime = this.startTimes.get(name);
+        if (startTime === undefined) {
+            return;
+        }
+        this.startTimes.delete(name);
+        this.add(span as SecretLintProfilerStatType, id, now - startTime);
+    }
+
+    /**
+     * Return the current time for `record()`. It is 0 if the profiler is disabled.
+     */
+    now(): number {
+        return this.enabled ? this.nowFn() : 0;
+    }
+
+    /**
+     * Record the time from `startTime` to now. `startTime` is the result of `now()`.
+     * It is for code that runs many times: check `isEnabled` first, and call `now()` and `record()` only if it is true.
+     */
+    record(type: SecretLintProfilerStatType, id: string | undefined, startTime: number) {
+        if (!this.enabled) {
+            return;
+        }
+        this.add(type, id, this.nowFn() - startTime);
+    }
+
+    /**
+     * Count something that has no duration
+     */
+    count(type: SecretLintProfilerStatType, id: string | undefined, count: number = 1) {
+        if (!this.enabled) {
+            return;
+        }
+        this.statOf(type, id).count += count;
+    }
+
+    private add(type: SecretLintProfilerStatType, id: string | undefined, duration: number) {
+        const stat = this.statOf(type, id);
+        stat.count++;
+        stat.duration += duration;
+        if (duration > stat.maxDuration) {
+            stat.maxDuration = duration;
         }
     }
 
-    private waifForExecutionPromises = () => {
-        return Promise.all(this.executionPromises).finally(() => {
-            this.executionPromises.length = 0;
+    /**
+     * Return the totals for each type and id, in the order of the first record
+     */
+    getStats(): SecretLintProfilerStat[] {
+        const results: SecretLintProfilerStat[] = [];
+        for (const [type, statsOfType] of this.stats) {
+            for (const [id, stat] of statsOfType) {
+                results.push({ type, id: id === NO_ID ? undefined : id, ...stat });
+            }
+        }
+        return results;
+    }
+
+    /**
+     * Return the totals as measures: a measure for each `{type}` or `{type}||{id}`.
+     * @deprecated Use `getStats()`. A measure was an entry for each pair of marks, and now it is the total of a name.
+     */
+    async getMeasures(): Promise<SecretLintProfilerMeasure[]> {
+        return this.getStats().map((stat) => {
+            return {
+                name: stat.id === undefined ? stat.type : `${stat.type}||${stat.id}`,
+                entryType: "measure",
+                duration: stat.duration,
+                count: stat.count,
+            };
         });
-    };
-
-    async getEntries() {
-        this.flushObserver();
-        await this.waifForExecutionPromises();
-        return this.entries;
-    }
-
-    async getMeasures() {
-        this.flushObserver();
-        await this.waifForExecutionPromises();
-        // measures created by the marks above
-        this.flushObserver();
-        return this.measures;
     }
 }

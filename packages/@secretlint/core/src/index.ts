@@ -144,6 +144,14 @@ const hasLineMatchInBytes = (view: PlanView, hits: KeywordHits, bytes: Uint8Arra
         },
         (lineStart, lineEnd, patterns) => {
             const line = decodeBytes(bytes, lineStart, lineEnd);
+            if (secretLintProfiler.isEnabled) {
+                return patterns.some((pattern) => {
+                    const startTime = secretLintProfiler.now();
+                    const matched = pattern.tester.test(line);
+                    secretLintProfiler.record("@core>pattern-line-test", pattern.profileId, startTime);
+                    return matched;
+                });
+            }
             return patterns.some((pattern) => pattern.tester.test(line));
         },
     );
@@ -186,8 +194,12 @@ const runPattern = (
     offset: number,
     context: SecretLintRulePatternContext<any>,
 ): void => {
+    const profiling = secretLintProfiler.isEnabled;
+    const startTime = profiling ? secretLintProfiler.now() : 0;
+    let matchCount = 0;
     // matchAll works on its own copy of the regular expression, so `pattern.regex` is never changed
     for (const match of text.matchAll(pattern.regex)) {
+        matchCount++;
         const matchedText = match[0];
         const startIndex = offset + match.index;
         pattern.report(
@@ -199,6 +211,13 @@ const runPattern = (
             },
             context,
         );
+    }
+    if (profiling) {
+        // the time includes `report()` of the pattern
+        secretLintProfiler.record("@core>pattern", pattern.profileId, startTime);
+        if (matchCount > 0) {
+            secretLintProfiler.count("@core>pattern-match", pattern.profileId, matchCount);
+        }
     }
 };
 
@@ -226,17 +245,29 @@ const checkBytes = (view: PlanView, bytes: Uint8Array): BytesCheck | undefined =
         return undefined;
     }
     const contentStart = hasUtf8BOM(bytes) ? 3 : 0;
+    const profiling = secretLintProfiler.isEnabled;
+    const scanStartTime = profiling ? secretLintProfiler.now() : 0;
     const hits = matcher.scan(bytes, contentStart);
+    if (profiling) {
+        secretLintProfiler.record("@core>keyword-scan", undefined, scanStartTime);
+    }
     const hasKeyword = hits.count > 0;
     const hasFilePatternKeyword = (): boolean => {
         return view.keywordPatterns.some((pattern) => {
             return pattern.scope === "file" && isKeywordFound(pattern.keywordIndexes as readonly number[], hits.found);
         });
     };
+    const hasLineMatch = (): boolean => {
+        if (!profiling) {
+            return hasLineMatchInBytes(view, hits, bytes, contentStart);
+        }
+        const startTime = secretLintProfiler.now();
+        const matched = hasLineMatchInBytes(view, hits, bytes, contentStart);
+        secretLintProfiler.record("@core>line-check", undefined, startTime);
+        return matched;
+    };
     const runsPatterns =
-        view.hasAlwaysPattern ||
-        (hasKeyword &&
-            ((view.hasFilePattern && hasFilePatternKeyword()) || hasLineMatchInBytes(view, hits, bytes, contentStart)));
+        view.hasAlwaysPattern || (hasKeyword && ((view.hasFilePattern && hasFilePatternKeyword()) || hasLineMatch()));
     return { found: hits.found, hasKeyword, runsPatterns };
 };
 
@@ -311,7 +342,21 @@ const lintWithPlan = (
     // Scan the text if the source has no bytes, or if the patterns run:
     // the patterns need the indexes in the text, which are different from the indexes in the bytes.
     const needsTextHits = bytes === undefined || bytesCheck?.runsPatterns === true || view.hasAlwaysPattern;
-    const textHits = matcher !== undefined && needsTextHits ? matcher.scan(sourceCode.content) : undefined;
+    const scanText = (): KeywordHits | undefined => {
+        if (matcher === undefined || !needsTextHits) {
+            return undefined;
+        }
+        if (!secretLintProfiler.isEnabled) {
+            return matcher.scan(sourceCode.content);
+        }
+        // Decode the content before the scan, so that the time of the scan does not include the decoding
+        const content = sourceCode.content;
+        const startTime = secretLintProfiler.now();
+        const hits = matcher.scan(content);
+        secretLintProfiler.record("@core>keyword-scan", undefined, startTime);
+        return hits;
+    };
+    const textHits = scanText();
     const found = textHits?.found ?? bytesCheck?.found;
     const runsPatterns =
         view.hasAlwaysPattern ||
