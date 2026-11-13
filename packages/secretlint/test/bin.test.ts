@@ -24,7 +24,6 @@ const runBin = async (args: string[]) => {
 };
 
 describe("secretlint bin", () => {
-    // bin/secretlint.js runs dist/cli.js that is the bundle of the CLI
     it("outputs the version of the package", async () => {
         const pkg = JSON.parse(fs.readFileSync(path.join(packageDirectory, "package.json"), "utf-8"));
         const { exitCode, stdout, stderr } = await runBin(["--version"]);

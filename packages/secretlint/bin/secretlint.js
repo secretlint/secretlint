@@ -11,8 +11,7 @@
 // Entry Point
 try {
     // if imported code is syntax error, throw error -> exit 2
-    // dist/cli.js is the bundle of module/cli.js and its dependencies. See scripts/bundle.mjs
-    const { run, cli } = await import("../dist/cli.js");
+    const { run, cli } = await import("../module/cli.js");
     const { exitStatus, stderr, stdout } = await run(cli.input, cli.flags);
     if (stdout) {
         console.log(stdout);
