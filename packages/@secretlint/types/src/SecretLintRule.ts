@@ -90,8 +90,11 @@ export type SecretLintRuleHandlerCreator<Options = SecretLintRuleCreatorOptions>
  * runs the regular expression of a pattern only where its keywords are found,
  * and calls `report()` of the pattern for each match.
  */
-export type SecretLintRulePatternCreator<Options = SecretLintRuleCreatorOptions> = SecretLintRuleCreatorBase & {
-    patterns: SecretLintRulePattern<Options>[];
+export type SecretLintRulePatternCreator<
+    Options = SecretLintRuleCreatorOptions,
+    BooleanOptionName extends string = SecretLintRulePatternBooleanOptionName<Options>,
+> = SecretLintRuleCreatorBase & {
+    patterns: SecretLintRulePattern<Options, BooleanOptionName>[];
     /**
      * Secretlint that supports `patterns` does not call `create()` of a rule that has `patterns`.
      * Define it only if the rule should also work on secretlint that does not support `patterns`:
@@ -101,10 +104,16 @@ export type SecretLintRulePatternCreator<Options = SecretLintRuleCreatorOptions>
 };
 /**
  * A rule is defined with `create()` or with `patterns`.
+ *
+ * `BooleanOptionName` is the names that `enabledByOption` of a pattern accepts.
+ * It is computed from `Options`, so you do not need to pass it.
+ * It is a type parameter of its own so that a rule with its own `Options` is assignable to
+ * `SecretLintRuleCreator<unknown>`, such as an item of `rules` of a preset.
  */
-export type SecretLintRuleCreator<Options = SecretLintRuleCreatorOptions> =
-    | SecretLintRuleHandlerCreator<Options>
-    | SecretLintRulePatternCreator<Options>;
+export type SecretLintRuleCreator<
+    Options = SecretLintRuleCreatorOptions,
+    BooleanOptionName extends string = SecretLintRulePatternBooleanOptionName<Options>,
+> = SecretLintRuleHandlerCreator<Options> | SecretLintRulePatternCreator<Options, BooleanOptionName>;
 /**
  * A match of {@link SecretLintRulePattern}
  */
@@ -141,7 +150,7 @@ export type SecretLintRulePatternContext<Options = SecretLintRuleCreatorOptions>
 };
 /**
  * The names of the options whose value is a boolean.
- * If the type of the options has no property, such as the default `{}`, any name is accepted.
+ * If the type of the options has no property, such as the default `{}` and `unknown`, any name is accepted.
  */
 export type SecretLintRulePatternBooleanOptionName<Options> = [keyof Options] extends [never]
     ? string
@@ -158,7 +167,10 @@ export type SecretLintRulePatternBooleanOptionName<Options> = [keyof Options] ex
  * So a rule that uses a property of a newer secretlint does not run on an older secretlint with a different result.
  * The meaning of a property is never changed: a change is added as a property with a new name.
  */
-export type SecretLintRulePattern<Options = SecretLintRuleCreatorOptions> = {
+export type SecretLintRulePattern<
+    Options = SecretLintRuleCreatorOptions,
+    BooleanOptionName extends string = SecretLintRulePatternBooleanOptionName<Options>,
+> = {
     /**
      * The regular expression that finds the secret.
      * Secretlint finds all matches of the pattern, regardless of the "g" flag.
@@ -210,7 +222,7 @@ export type SecretLintRulePattern<Options = SecretLintRuleCreatorOptions> = {
      * // type Options = { enableIDScanRule?: boolean }
      * enabledByOption: "enableIDScanRule"
      */
-    enabledByOption?: SecretLintRulePatternBooleanOptionName<Options>;
+    enabledByOption?: BooleanOptionName;
     /**
      * Called for each match of the pattern.
      * Check the match (allow list, checksum, etc.) and call `context.report()`.

@@ -328,7 +328,7 @@ describe("lintSource with patterns", () => {
         const rule = createPatternRule([tokenPattern()]);
         const preset: SecretLintRulePresetCreator = {
             meta: { id: "preset", recommended: true, type: "preset" },
-            rules: [rule as SecretLintRuleCreator<any>],
+            rules: [rule as SecretLintRuleCreator<unknown>],
             create(context) {
                 context.registerRule(rule);
             },
@@ -364,7 +364,7 @@ describe("lintSource with patterns", () => {
         };
         const preset: SecretLintRulePresetCreator = {
             meta: { id: "preset", recommended: true, type: "preset" },
-            rules: [rule as SecretLintRuleCreator<any>, handlerRule as SecretLintRuleCreator<any>],
+            rules: [rule as SecretLintRuleCreator<unknown>, handlerRule as SecretLintRuleCreator<unknown>],
             create(context) {
                 context.registerRule(rule);
                 context.registerRule(handlerRule);

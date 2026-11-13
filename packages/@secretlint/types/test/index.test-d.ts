@@ -49,3 +49,5 @@ expectTypeOf<SecretLintRulePattern["enabledByOption"]>().toEqualTypeOf<string | 
 declare var scanRule: SecretLintRuleCreator<ScanOptions>;
 declare var allowsRule: SecretLintRuleCreator<{ allows?: string[] }>;
 expectTypeOf([scanRule, allowsRule, creator]).toExtend<SecretLintRulePresetCreator["rules"]>();
+expectTypeOf(scanRule).toExtend<SecretLintRuleCreator<unknown>>();
+expectTypeOf(scanRule).toExtend<SecretLintRuleCreator>();

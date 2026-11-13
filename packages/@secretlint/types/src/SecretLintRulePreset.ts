@@ -20,10 +20,6 @@ export type SecretLintRulePresetCreator<Options = SecretLintRulePresetCreatorOpt
             url: string;
         };
     };
-    /**
-     * The rules of the preset.
-     * Each rule has its own type of options, so the type of the options is `any` here.
-     */
-    rules: SecretLintRuleCreator<any>[];
+    rules: SecretLintRuleCreator<unknown>[];
     create(context: SecretLintRulePresetContext, options: Options): void;
 };

@@ -59,8 +59,8 @@ planは1つの設定に対して1回だけ作るので、オプションを読�
 planにないパターンは、キーワードを探す処理に登録されません。そのため、そのキーワードがきっかけでcoreがファイルを文字列として読むことはなく、正規表現も実行されません。
 パターンの`report()`は、オプションをもう一度確認しません。
 
-このプロパティの型は、`@secretlint/types`の`SecretLintRulePatternBooleanOptionName<Options>`です。`Options`のプロパティのうち、値がbooleanであるものの名前だけを受け付けます。ほかのオプションの名前や、オプションではない名前は型エラーになります。既定の`{}`のように`Options`にプロパティが1つもない場合、型は`string`になります。
-パターンの型が`Options`のプロパティ名を使うようになったため、独自の`Options`を持つルールのcreatorは`SecretLintRuleCreator<unknown>`に代入できません。プリセットのcreatorの`rules`や`builtinRules`のように、オプションが異なるルールを並べる一覧の型は`SecretLintRuleCreator<any>[]`です。
+このプロパティの型は、`@secretlint/types`の`SecretLintRulePatternBooleanOptionName<Options>`です。`Options`のプロパティのうち、値がbooleanであるものの名前だけを受け付けます。ほかのオプションの名前や、オプションではない名前は型エラーになります。既定の`{}`や`unknown`のように`Options`にプロパティが1つもない場合、型は`string`になります。
+この名前の型は、`SecretLintRulePattern`、`SecretLintRulePatternCreator`、`SecretLintRuleCreator`の2つ目の型引数です。既定値は`Options`から計算されるので、ルールが渡す必要はありません。プロパティの型で`Options`を直接使うと、独自の`Options`を持つルールのcreatorを`SecretLintRuleCreator<unknown>`に代入できなくなります。TypeScriptは、`Options`のプロパティ名を使う型を、`unknown`のそれの代わりとしては受け付けないからです。独立した型引数にしておくと、ルールが持つ名前は、`SecretLintRuleCreator<unknown>`が持つ名前である`string`に代入できます。そのため、プリセットのcreatorの`rules`や`builtinRules`のように、オプションが異なるルールを並べる一覧の型は、`SecretLintRuleCreator<unknown>[]`のままです。
 
 `enabledByOption`は、coreが知っているパターンのプロパティの1つです。coreは知らないプロパティがあるとエラーを投げます。テストを実行する`@secretlint/core/testing`は、比較のためにキーワードとスコープを取り除くときも、`enabledByOption`は残します。このプロパティはルールが何を報告するかを決めるもので、最適化ではないからです。
 
