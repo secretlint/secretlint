@@ -90,8 +90,11 @@ export type SecretLintRuleHandlerCreator<Options = SecretLintRuleCreatorOptions>
  * runs the regular expression of a pattern only where its keywords are found,
  * and calls `report()` of the pattern for each match.
  */
-export type SecretLintRulePatternCreator<Options = SecretLintRuleCreatorOptions> = SecretLintRuleCreatorBase & {
-    patterns: SecretLintRulePattern<Options>[];
+export type SecretLintRulePatternCreator<
+    Options = SecretLintRuleCreatorOptions,
+    When extends string = SecretLintRulePatternWhen<Options>,
+> = SecretLintRuleCreatorBase & {
+    patterns: SecretLintRulePattern<Options, When>[];
     /**
      * Secretlint that supports `patterns` does not call `create()` of a rule that has `patterns`.
      * Define it only if the rule should also work on secretlint that does not support `patterns`:
@@ -101,10 +104,16 @@ export type SecretLintRulePatternCreator<Options = SecretLintRuleCreatorOptions>
 };
 /**
  * A rule is defined with `create()` or with `patterns`.
+ *
+ * `When` is the strings that `when` of a pattern accepts.
+ * It is computed from `Options`, so you do not need to pass it.
+ * It is a type parameter of its own so that a rule with its own `Options` is assignable to
+ * `SecretLintRuleCreator<unknown>`, such as an item of `rules` of a preset.
  */
-export type SecretLintRuleCreator<Options = SecretLintRuleCreatorOptions> =
-    | SecretLintRuleHandlerCreator<Options>
-    | SecretLintRulePatternCreator<Options>;
+export type SecretLintRuleCreator<
+    Options = SecretLintRuleCreatorOptions,
+    When extends string = SecretLintRulePatternWhen<Options>,
+> = SecretLintRuleHandlerCreator<Options> | SecretLintRulePatternCreator<Options, When>;
 /**
  * A match of {@link SecretLintRulePattern}
  */
@@ -140,13 +149,35 @@ export type SecretLintRulePatternContext<Options = SecretLintRuleCreatorOptions>
     source: SecretLintSourceCode;
 };
 /**
+ * The names of the options whose value is a boolean.
+ * If the type of the options has no property, such as the default `{}` and `unknown`, any name is accepted.
+ */
+export type SecretLintRulePatternBooleanOptionName<Options> = [keyof Options] extends [never]
+    ? string
+    : Extract<
+          {
+              [Name in keyof Options]-?: NonNullable<Options[Name]> extends boolean ? Name : never;
+          }[keyof Options],
+          string
+      >;
+/**
+ * The strings that `when` of a pattern accepts:
+ * `options.` and the name of a boolean option of the rule, with or without `!` before it.
+ */
+export type SecretLintRulePatternWhen<Options> =
+    | `options.${SecretLintRulePatternBooleanOptionName<Options>}`
+    | `!options.${SecretLintRulePatternBooleanOptionName<Options>}`;
+/**
  * A pattern of a rule.
  *
  * Secretlint throws an error if a pattern has a property that it does not know.
  * So a rule that uses a property of a newer secretlint does not run on an older secretlint with a different result.
  * The meaning of a property is never changed: a change is added as a property with a new name.
  */
-export type SecretLintRulePattern<Options = SecretLintRuleCreatorOptions> = {
+export type SecretLintRulePattern<
+    Options = SecretLintRuleCreatorOptions,
+    When extends string = SecretLintRulePatternWhen<Options>,
+> = {
     /**
      * The regular expression that finds the secret.
      * Secretlint finds all matches of the pattern, regardless of the "g" flag.
@@ -186,6 +217,28 @@ export type SecretLintRulePattern<Options = SecretLintRuleCreatorOptions> = {
      * Default: "file"
      */
     scope?: "line" | "file";
+    /**
+     * The condition for the pattern to be a part of the lint.
+     * It refers to a boolean option of the rule as `options.<name>`:
+     *
+     * - `"options.name"`: the pattern is enabled only when the option is `true`.
+     * - `"!options.name"`: the pattern is enabled unless the option is `true`.
+     *
+     * An option that is not set is `false`.
+     * Secretlint throws an error if the value of the option is not a boolean.
+     *
+     * Secretlint reads the option once for a config, and a disabled pattern is not a part of the lint:
+     * its keywords are not searched, and the pattern never runs.
+     * Use it for a pattern that an option turns on or off, instead of checking the option in `report()`.
+     *
+     * Only these two forms are supported. Secretlint throws an error on any other string.
+     *
+     * Default: undefined (the pattern is always enabled)
+     * @example
+     * // type Options = { enableIDScanRule?: boolean }
+     * when: "options.enableIDScanRule"
+     */
+    when?: When;
     /**
      * Called for each match of the pattern.
      * Check the match (allow list, checksum, etc.) and call `context.report()`.

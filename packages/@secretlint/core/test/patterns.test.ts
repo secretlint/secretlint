@@ -13,7 +13,7 @@ const messages = {
         en: (props: { TEXT: string }) => `found: ${props.TEXT}`,
     },
 };
-type Options = { allows?: string[] };
+type Options = { allows?: string[]; enableTokenScan?: boolean };
 const reportMatch: SecretLintRulePattern<Options>["report"] = (match, context) => {
     if (context.options.allows?.includes(match.text)) {
         return;
@@ -438,6 +438,119 @@ describe("lintSource with patterns", () => {
             await assert.rejects(
                 async () => lintSource({ source, options: { config: toConfig(rule) } }),
                 /The rule "pattern-rule" has a pattern with unknown properties: futureCondition\nThis version of secretlint does not support the properties. Please update secretlint./,
+            );
+        }
+    });
+    it("should not run a pattern whose `when` option is not true", async () => {
+        const rule = createPatternRule([
+            tokenPattern({ when: "options.enableTokenScan" }),
+            tokenPattern({ pattern: /key_[a-z]{2}/g, keywords: ["key_"] }),
+        ]);
+        const toScanConfig = (options?: Options): SecretLintCoreConfig => toConfig(rule, options);
+        const { textSource, bytesSource, state } = createSources("a = tok_ab12\nb = key_xy");
+        // disabled: the pattern is not a part of the lint
+        for (const options of [undefined, {}, { enableTokenScan: false }, { enableTokenScan: undefined }]) {
+            const config = toScanConfig(options);
+            for (const source of [textSource, bytesSource]) {
+                const result = await lintSource({ source, options: { config } });
+                assert.deepStrictEqual(
+                    result.messages.map((message) => message.message),
+                    ["found: key_xy"],
+                );
+            }
+        }
+        // the keyword of a disabled pattern does not make secretlint read the content
+        const { bytesSource: tokenOnlySource, state: tokenOnlyState } = createSources("a = tok_ab12");
+        const tokenOnlyResult = await lintSource({ source: tokenOnlySource, options: { config: toScanConfig() } });
+        assert.deepStrictEqual(tokenOnlyResult.messages, []);
+        assert.strictEqual(tokenOnlyState.contentReads, 0);
+        // enabled
+        const enabledResult = await lintSource({
+            source: bytesSource,
+            options: { config: toScanConfig({ enableTokenScan: true }) },
+        });
+        assert.deepStrictEqual(
+            enabledResult.messages.map((message) => message.message),
+            ["found: tok_ab12", "found: key_xy"],
+        );
+        assert.ok(state.contentReads > 0);
+    });
+    it("should run a pattern whose `when` is negated unless the option is true", async () => {
+        const rule = createPatternRule([
+            tokenPattern({ when: "!options.enableTokenScan" }),
+            tokenPattern({ pattern: /key_[a-z]{2}/g, keywords: ["key_"] }),
+        ]);
+        const { bytesSource } = createSources("a = tok_ab12\nb = key_xy");
+        // enabled: the option is false or not set
+        for (const options of [undefined, {}, { enableTokenScan: false }]) {
+            const result = await lintSource({ source: bytesSource, options: { config: toConfig(rule, options) } });
+            assert.deepStrictEqual(
+                result.messages.map((message) => message.message),
+                ["found: tok_ab12", "found: key_xy"],
+            );
+        }
+        // disabled: the pattern is not a part of the lint
+        const disabledConfig = toConfig(rule, { enableTokenScan: true });
+        const disabledResult = await lintSource({ source: bytesSource, options: { config: disabledConfig } });
+        assert.deepStrictEqual(
+            disabledResult.messages.map((message) => message.message),
+            ["found: key_xy"],
+        );
+        const { bytesSource: tokenOnlySource, state: tokenOnlyState } = createSources("a = tok_ab12");
+        await lintSource({ source: tokenOnlySource, options: { config: disabledConfig } });
+        assert.strictEqual(tokenOnlyState.contentReads, 0);
+    });
+    it("should throw if the option of `when` is not a boolean", async () => {
+        const { textSource } = createSources("a = tok_ab12");
+        for (const [value, type] of [
+            ["true", "string"],
+            [1, "number"],
+            [null, "null"],
+        ] as const) {
+            for (const when of ["options.enableTokenScan", "!options.enableTokenScan"] as const) {
+                const rule = createPatternRule([tokenPattern({ when })]);
+                const config = toConfig(rule, { enableTokenScan: value as unknown as boolean });
+                await assert.rejects(
+                    async () => lintSource({ source: textSource, options: { config } }),
+                    new RegExp(
+                        `The option "enableTokenScan" of the rule "pattern-rule" should be a boolean, but it is ${type}.`,
+                    ),
+                );
+            }
+        }
+    });
+    it("should not enable a pattern by a property that the options inherit", async () => {
+        const rule = createPatternRule([
+            // the type does not accept "constructor", because it is not an option
+            tokenPattern({ when: "options.constructor" as "options.enableTokenScan" }),
+        ]);
+        const { textSource } = createSources("a = tok_ab12");
+        const result = await lintSource({ source: textSource, options: { config: toConfig(rule, {}) } });
+        assert.deepStrictEqual(result.messages, []);
+    });
+    it("should throw if `when` of a pattern is not a supported form", async () => {
+        // an expression is not supported: it should not be read as the name of an option
+        for (const when of [
+            true,
+            "",
+            "!",
+            "enableTokenScan",
+            "!enableTokenScan",
+            "options",
+            "options.",
+            "!!options.a",
+            "! options.a",
+            "options.a.b",
+            "options.enableTokenScan == true",
+            "options.a && options.b",
+            "sharedOptions.a",
+            () => true,
+        ]) {
+            const rule = createPatternRule([{ ...tokenPattern(), when } as unknown as SecretLintRulePattern<Options>]);
+            const { textSource } = createSources("key = tok_ab12");
+            await assert.rejects(
+                async () => lintSource({ source: textSource, options: { config: toConfig(rule) } }),
+                /The rule "pattern-rule" has a pattern whose `when` is not supported/,
             );
         }
     });
