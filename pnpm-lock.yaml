@@ -36,6 +36,9 @@ catalogs:
     debug:
       specifier: ^4.4.3
       version: 4.4.3
+    esbuild:
+      specifier: ^0.28.2
+      version: 0.28.2
     escape-string-regexp:
       specifier: ^5.0.0
       version: 5.0.0
@@ -1355,6 +1358,12 @@ importers:
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
+      esbuild:
+        specifier: 'catalog:'
+        version: 0.28.2
+      js-yaml:
+        specifier: 'catalog:'
+        version: 4.3.2
       prettier:
         specifier: 'catalog:'
         version: 3.8.3

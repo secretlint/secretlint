@@ -15,6 +15,7 @@ CLI (secretlint) → SecretLintEngine (@secretlint/node) → config-loader → c
 ```
 
 1. **CLI** (`packages/secretlint/src/cli.ts`) parses arguments, calls `runSecretLint()`
+   - `bin/secretlint.js` runs `packages/secretlint/dist/cli.js`: a bundle of the CLI and its dependencies that `pnpm run build` creates with esbuild (`packages/secretlint/scripts/bundle.mjs`) for a fast startup. After changing a package that the CLI uses, build `secretlint` again before running the bin. `module/` is not bundled and is for the API users
 2. **SecretLintEngine** (`packages/@secretlint/node`) loads config, discovers files via glob, lints files one by one
 3. **config-loader** searches for `.secretlintrc.*`, validates with AJV schema, resolves each rule id from the built-in rules of core (`@secretlint/core/builtin`) first, and dynamically imports rule modules only for other ids
 4. **core** (`packages/@secretlint/core/src/index.ts` - `lintSource()`) builds a lint plan per config (`LintPlan.ts`), scans the content once for the keywords of all rules, runs the matching `patterns` and rules, collects messages

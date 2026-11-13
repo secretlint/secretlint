@@ -19,6 +19,7 @@ catalog:
   "assert-json-equal": "^2.0.0"
   "benchmark": "^2.1.4"
   "debug": "^4.4.3"
+  "esbuild": "^0.28.2"
   "escape-string-regexp": "^5.0.0"
   "ignore": "^7.0.14"
   "istextorbinary": "^9.5.0"

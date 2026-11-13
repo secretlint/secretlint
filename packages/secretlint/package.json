@@ -43,12 +43,13 @@
     },
     "files": [
         "bin/",
+        "dist/",
         "module/",
         "src/"
     ],
     "scripts": {
-        "build": "tsc --build",
-        "clean": "tsc --build --clean",
+        "build": "tsc --build && node scripts/bundle.mjs",
+        "clean": "tsc --build --clean && node -e \"fs.rmSync('dist', { recursive: true, force: true })\"",
         "prepublishOnly": "npm run clean && npm run build",
         "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
         "prepublish": "npm run --if-present build",
@@ -76,6 +77,8 @@
         "@secretlint/types": "workspace:*",
         "@types/debug": "catalog:",
         "@types/node": "catalog:",
+        "esbuild": "catalog:",
+        "js-yaml": "catalog:",
         "prettier": "catalog:",
         "tsx": "catalog:",
         "typescript": "catalog:"

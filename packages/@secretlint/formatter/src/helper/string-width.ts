@@ -1,6 +1,15 @@
 import { stripVTControlCharacters } from "node:util";
 
-const EMOJI_PATTERN = new RegExp("\\p{RGI_Emoji}", "gv");
+/**
+ * Compiling `\p{RGI_Emoji}` takes about 20ms, so the pattern is created when a text that is not printable ASCII comes first.
+ * Most outputs are printable ASCII only, and they never create it.
+ */
+let emojiPattern: RegExp | undefined;
+const getEmojiPattern = (): RegExp => {
+    emojiPattern ??= new RegExp("\\p{RGI_Emoji}", "gv");
+    return emojiPattern;
+};
+const PRINTABLE_ASCII_PATTERN = /^[\x20-\x7e]*$/;
 
 /**
  * Code points are derived from http://www.unix.org/Public/UNIDATA/EastAsianWidth.txt
@@ -54,7 +63,12 @@ export const stringWidth = (text: string): number => {
     if (text.length === 0) {
         return 0;
     }
-    const plainText = stripVTControlCharacters(text).replace(EMOJI_PATTERN, "  ");
+    const strippedText = stripVTControlCharacters(text);
+    if (PRINTABLE_ASCII_PATTERN.test(strippedText)) {
+        // Each printable ASCII character uses one column
+        return strippedText.length;
+    }
+    const plainText = strippedText.replace(getEmojiPattern(), "  ");
     let width = 0;
     for (const character of plainText) {
         const codePoint = character.codePointAt(0)!;
