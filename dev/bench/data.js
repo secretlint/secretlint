@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794582346208,
+  "lastUpdate": 1794583484222,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -62320,6 +62320,44 @@ window.BENCHMARK_DATA = {
             "range": "±1.18%",
             "unit": "ops/sec",
             "extra": "16 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "61c2e57709e09fca62f2b0b5c45645d81e7c574b",
+          "message": "perf(walker): match ignore rules like Git without node-ignore (#1822)\n\n<!-- claude-projects-attribution: {\"github_login\":\"azu\"} -->\n_Requested by **azu** · [project\nthread](https://claude.ai/code/project/chan_01ChfsKF1sN6vYsJMPZ7PuDt?thread=cmsg_01ChfsKF1sN6vYsJMPZ7PuDt98foDrFxEn7Yge2FdbnQwd)_\n\n## Summary\n\nThe ignore rules of `.gitignore` and `.secretlintignore` are now matched\nby an own matcher in `@secretlint/walker` that gives the same results as\nGit, and the `ignore` package (node-ignore) is removed from the\ndependencies.\n\nBefore, an ignore file with one rule outside the simple forms (for\nexample `.v[0-9]*/` in the root `.gitignore` of vscode) made all its\nrules fall back to node-ignore.\n\n## Changes\n\n- `gitignore.ts` / `glob.ts`: a matcher without dependencies (no Node.js\nimport, no walker import). It is written from the [Git\nmanual](https://git-scm.com/docs/gitignore) and from the observed\nresults of Git. It is not a port of Git's source code.\n- The matcher does not use regular expressions and takes polynomial time\nfor any rule (see \"Security\").\n- New walker option `ignoreCase` (default `false`, like Git on a\ncase-sensitive file system). The `secretlint` command always passes\n`true`, so the command is case-insensitive on every OS, as before.\n- `walk()` / `walkSync()`: fewer allocations per directory, and the\ndirectories are kept in a list instead of recursive calls.\n- Docs: two development principles in the Product (\"Reduce false\npositives\" now also covers files that the user excluded, and \"Ignore\nrules mean the same as in Git\"), and Requirements/Design of the feature\nFile selection (en, ja). The docs describe the state after this change.\n\n## Behavior changes\n\n- A file in a directory that a nested `.gitignore` includes again with\n`!` is now found, as in Git. In vscode,\n`extensions/css-language-features/server/test/linksTestFixtures/node_modules/foo/package.json`\nis now linted (a nested `.gitignore` has `!node_modules`). Before, the\ndirectory was included again but its content was still ignored by the\nbuilt-in `**/node_modules`.\n- Rules where node-ignore and Git differ now follow Git: `a**/b`, and\nthe case of non-ASCII letters (only A-Z are folded).\n- The file lists of react, vuejs/core, and this repository are the same\nas on master.\n\n## Benchmark\n\n4 vCPU, Node 22, warm cache, recommended preset. JavaScript values are\nmedians.\n\n### The command, since the last release\n\n| | v13.1.0 | this PR | |\n| --- | --- | --- | --- |\n| vscode (21,269 files) | 10,830 ms | 974 ms | 11.1x |\n| react (7,274 files) | 2,265 ms | 260 ms | 8.7x |\n| vuejs/core (704 files) | 457 ms | 130 ms | 3.5x |\n| 1 file | 184 ms | 89 ms | 2.1x |\n| `--version` | 157 ms | 59 ms | 2.7x |\n\n### The walk only (`walkSync()` of all files)\n\n| | vscode | react |\n| --- | --- | --- |\n| v13.1.0 | 591 ms (min 543) | 188 ms (min 175) |\n| master | 155 ms (min 144) | 19.5 ms (min 17.1) |\n| this PR, `ignoreCase: true` (the command) | 54 ms (min 46) | 11.9 ms\n(min 10.5) |\n| Rust `ignore` crate, 1 thread | min 30 ms | min 8.7 ms |\n| Rust `ignore` crate, 4 threads | min 18 ms | min 5.9 ms |\n| `git ls-files --others --cached --exclude-standard` (process) | 41 ms\n| - |\n| `rg --files --hidden` (process), 1 / 4 threads | 79 / 48 ms | - |\n| tiny-readdir-glob-gitignore 2.0.5 | 292 ms | 89 ms |\n| globby 16.2.4 (`gitignore: true`) | 1,863 ms | 635 ms |\n| ignore-walk 9.0.0 (sync) | 5,107 ms | 1,529 ms |\n\nAbout 40 ms of the 54 ms is `readdir` itself. The other JavaScript\nlibraries are not set up for exactly the same file list (their counts\ndiffer by 0-36 files), so read them as an order of size.\n\n## Security\n\nAn ignore file can come from a repository that the user does not trust\n(a pull request in CI), so the matcher was checked for rules that make\nthe walk hang.\n\n- Found and fixed in this PR: with a first version of the matcher that\ncompiled rules to regular expressions, `?*a*a*a*a*a*a*b` or\n`[a]*[a]*[a]*[a]*[a]*[a]*b` took seconds for a 60-character name with 6\nwildcards and did not finish with 12.\n- Found and fixed, also on master (since #1818, not released):\n`**/a/**/a/.../b` with 10 or more `**` did not finish in 10 s for a path\nof 40 directories, because path segments were matched recursively.\n- Now: when the rest of a rule does not match, only the last `*` and the\nlast `**` move forward. One test takes at most about (path length)² ×\n(rule length). The cases above with 200 wildcards take less than 1 ms.\nFor reference, Git 2.43.0 itself took 8.5 s for `git status` with the\ntwo rules with 24 wildcards.\n- `[[:constructor:]]` and other class names that are properties of\n`Object` are unknown classes (the lookup used a plain object).\n- A character class of 300 KB is parsed in 13 ms (was 414 ms).\n- A tree of 2,000 nested directories overflowed the call stack with the\nfirst version of this PR (master could walk it). The walk no longer uses\nrecursion. A tree deeper than the path limit of the OS fails with\n`ENAMETOOLONG`, as on master.\n- Not changed: the time of a walk is (number of entries) × (number of\nrules that are not a plain name or extension), as in Git. 100,000 such\nrules take about 10 ms for each entry.\n\n## Test plan\n\n- [x] `test/gitignore.test.ts`: the matcher gives the same result as the\nrecorded results of `git check-ignore --no-index` (git 2.43.0) for 1,650\nrule sets × 320 paths, with and without `ignoreCase`. The fixture is\ncreated by `node test/git-compat/generate-fixtures.mjs`.\n- [x] `test/gitignore.test.ts`: rules with 100-200 wildcards finish\nwithin the time limit, and `[[:constructor:]]` matches nothing.\n- [x] `test/walk-git-compat.test.ts`: `walkSync()` returns the files of\n`git ls-files --others --exclude-standard` for 40 random trees with\nnested `.gitignore` files (skipped where Git is not installed, and on\nWindows).\n- [x] `test/walk-deep.test.ts`: a file below about 2,000 directories is\nfound (skipped on Windows).\n- [x] Outside the repository, after the last change of the matcher:\n6,000 random rule sets (1,008,000 checks) and 5,000 rule sets of `*`,\n`**`, `?`, and classes on paths of up to 5 directories (2,900,000\nchecks) against `git check-ignore`, and 300 random trees against `git\nls-files`, with no difference.\n- [x] `pnpm run build` and `pnpm test` (78 tasks)\n- [x] `sdev lint`\n\n_Generated by [Claude\nCode](https://claude.ai/code/session_01TSdrAEXgE1NWCvs8hUVC2j)_\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nhttps://claude.ai/code/session_01TSdrAEXgE1NWCvs8hUVC2j\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-11-14T00:23:18+09:00",
+          "tree_id": "bb5dc4084ad086039de96ab94afad0134a785ef7",
+          "url": "https://github.com/secretlint/secretlint/commit/61c2e57709e09fca62f2b0b5c45645d81e7c574b"
+        },
+        "date": 1794583479959,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 7.23,
+            "range": "±1.72%",
+            "unit": "ops/sec",
+            "extra": "23 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 5.59,
+            "range": "±0.99%",
+            "unit": "ops/sec",
+            "extra": "18 samples"
           }
         ]
       }
