@@ -21,7 +21,6 @@ const getEmojiPattern = (): RegExp => {
  * - U+D83C..U+D83E: the high surrogate of U+1F000..U+1FFFF
  */
 export const MAY_HAVE_EMOJI_PATTERN = /[\u203c-\u2b55\u3030\u303d\u3297\u3299\ufe0f\ud83c-\ud83e]/;
-const PRINTABLE_ASCII_PATTERN = /^[\x20-\x7e]*$/;
 
 /**
  * Code points are derived from http://www.unix.org/Public/UNIDATA/EastAsianWidth.txt
@@ -76,10 +75,6 @@ export const stringWidth = (text: string): number => {
         return 0;
     }
     const strippedText = stripVTControlCharacters(text);
-    if (PRINTABLE_ASCII_PATTERN.test(strippedText)) {
-        // Each printable ASCII character uses one column
-        return strippedText.length;
-    }
     const plainText = MAY_HAVE_EMOJI_PATTERN.test(strippedText)
         ? strippedText.replace(getEmojiPattern(), "  ")
         : strippedText;
