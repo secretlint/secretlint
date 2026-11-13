@@ -40,8 +40,9 @@ function reportIfFoundPrivateKeyJSONFormat({
     t: SecretLintRuleMessageTranslate<typeof messages>;
 }) {
     // Skip parsing JSON if the content can not be a service account key, because JSON.parse is costly for large json files.
-    // A key may be written with unicode escapes like "\u0070rivate_key_id", so parse the content when it includes "\u".
-    if (!source.content.includes("private_key_id") && !source.content.includes("\\u")) {
+    // A key written with a unicode escape like "\u0070rivate_key_id" is not checked.
+    // The key file that Google Cloud creates does not escape it, and "\u" is too common in source code to be a keyword.
+    if (!source.content.includes("private_key_id")) {
         return;
     }
     try {
@@ -81,9 +82,9 @@ export const creator: SecretLintRuleCreator<Options> = {
         recommended: true,
         type: "scanner",
         supportedContentTypes: ["text", "binary"],
-        // For text content: a service account key JSON has "private_key_id". It may be escaped as "\\uXXXX".
+        // For text content: a service account key JSON has "private_key_id".
         // Keywords are not checked for binary content, so the rule always runs for a binary file.
-        keywords: ["private_key_id", "\\u"],
+        keywords: ["private_key_id"],
         docs: {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-gcp/README.md",
         },

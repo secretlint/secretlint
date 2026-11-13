@@ -127,7 +127,13 @@ const toUnoptimizedRule = <T>(rule: SecretLintRuleCreator<T>): SecretLintRuleCre
         ...rule,
         meta,
         patterns: rule.patterns.map((pattern) => {
-            return { pattern: pattern.pattern, scope: "file", report: pattern.report };
+            // `when` is not an optimization: it decides whether the pattern is a part of the rule
+            return {
+                pattern: pattern.pattern,
+                scope: "file",
+                when: pattern.when,
+                report: pattern.report,
+            };
         }),
     };
 };

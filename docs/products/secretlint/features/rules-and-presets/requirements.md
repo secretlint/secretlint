@@ -93,6 +93,30 @@ Scenario: When a rule is listed both in a preset and on its own, loading fails
 - When: The developer runs Secretlint.
 - Then: Secretlint stops with an error that says `@secretlint/secretlint-rule-aws` is already registered, and no file is linted.
 
+### Turn on a part of a rule with an option
+
+As a developer, I want a part of a rule that is off by default to cost nothing until I turn it on with an option, so that a check that I do not use does not make the lint slower.
+
+**Acceptance criteria:**
+
+Scenario: When the option is not set, the part of the rule is not a part of the lint
+
+- Given: The configuration file has `{ "id": "@secretlint/secretlint-rule-aws" }` without options.
+- When: The developer lints a file that contains an AWS access key ID and an AWS secret access key.
+- Then: The result has the message of the secret access key and no message of the access key ID, and Secretlint does not search the file for the access key ID.
+
+Scenario: When the option is true, the part of the rule reports
+
+- Given: The configuration file has `{ "id": "@secretlint/secretlint-rule-aws", "options": { "enableIDScanRule": true } }`.
+- When: The developer lints the same file.
+- Then: The result has the message of the access key ID and the message of the secret access key.
+
+Scenario: When the option is not a boolean, Secretlint stops
+
+- Given: The configuration file has `{ "id": "@secretlint/secretlint-rule-aws", "options": { "enableIDScanRule": "true" } }`.
+- When: The developer runs Secretlint.
+- Then: Secretlint stops with an error that says the option `enableIDScanRule` of `@secretlint/secretlint-rule-aws` should be a boolean, and no file is linted.
+
 ### Try new rules early
 
 As a developer, I want to use the rules that may be added to the recommended preset in the next major release, so that I can check them on my repository before they become recommended.
@@ -190,9 +214,34 @@ Deprecating these packages is a separate change.
 
 The built-in rules can be loaded and run in a browser without Node.js modules. A rule that checks binary content, such as the GCP rule for a `.p12` file, uses the bytes that the caller passes with the source, and does not read the file.
 
+##### Patterns that an option turns on or off
+
+A rule can have a pattern that reports only when an option of the rule is set, such as a pattern for an ID that is not a secret by itself.
+The rule states this as data: the pattern has a condition that refers to the option. The rule does not decide it with its own code.
+Secretlint reads the option and decides whether the pattern is a part of the lint. So the decision is made before any file is read, it is the same for every rule, and Secretlint can tell which option turns which pattern on or off.
+
+- The condition refers to a boolean option of the rule as `options.<name>`, with or without `!` before it. With `options.<name>`, the pattern is a part of the lint only when the option is `true`. With `!options.<name>`, the pattern is a part of the lint unless the option is `true`.
+- The condition says where the value comes from (`options.`), so that a condition can refer to a value other than the options of the rule later, without changing the meaning of the existing conditions.
+- An option that is not set is `false`.
+- A pattern that is not a part of the lint costs nothing: Secretlint does not search for its keywords, and does not run it.
+- A pattern without a condition is always a part of the lint.
+- The condition is one way to write "on" and "off". There is no second property for a pattern that an option turns off.
+- The option must be a boolean option of the rule. In TypeScript, a name that is not a boolean option of the rule is a type error.
+- The condition is a small subset of an expression language such as CEL: a reference to an option, and `!`. Other operators, such as `&&`, `||`, and `==`, are not supported. If one is needed, it is added to the condition, and a Secretlint that does not know it stops with an error instead of reading the condition in another way.
+
 ##### Documentation
 
 Each rule has a README that describes why it reports values, its messages, and its options.
+
+#### Exceptional behavior
+
+##### The condition of a pattern is not supported
+
+When the condition of a pattern is not a string, or is a string other than `options.<name>` or `!options.<name>`, Secretlint stops with an error that names the rule and the condition, and no file is linted.
+
+##### The value of the option of a condition is not a boolean
+
+When the value of the option that a condition names is set and is not `true` or `false`, such as the string `"true"`, Secretlint stops with an error that names the rule and the option, and no file is linted. Secretlint does not read another value as `true` or `false`.
 
 ### Rule presets
 
@@ -253,6 +302,7 @@ The test cases have the same layout as the test cases of `@secretlint/tester`, a
 
 - **Rule id:** The name that identifies a rule or a preset in the configuration file and in the messages.
 - **Rule list of a preset:** The rules that a preset registers, in a fixed order.
+- **Condition of a pattern:** A reference to a boolean option of the rule (`options.<name>`), with or without `!` before it, that decides whether a pattern of the rule is a part of the lint.
 
 ### Relationships
 
