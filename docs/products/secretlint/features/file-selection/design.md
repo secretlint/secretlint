@@ -87,7 +87,7 @@ sequenceDiagram
 ## Data model and ER diagrams
 
 - **Level:** the directory of an ignore file, the matcher of its rules, and the parent level.
-- **Rule:** negated or not, directories only or not, and how it is compared: a name, an extension, path segments, or a regular expression.
+- **Rule:** negated or not, directories only or not, and how it is compared: a name, an extension, path segments, or a list of parts for the whole path.
 
 ## APIs and interfaces
 
