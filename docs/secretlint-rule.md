@@ -381,11 +381,22 @@ type Options = { enableIDScan?: boolean };
 
 ## Performance
 
-Use `--profile` option for checking performance of your rule .
+Use `--profile` option for checking performance of your rule.
 
 ```
 $ secretlint --profile "**/*"
 ```
+
+`--profile` prints a summary of the run. Its size does not depend on the number of files.
+
+- **Phase**: where the time goes: loading the config, searching files, reading files, the keyword scan that all rules share, and so on
+- **Rule**: the time of each rule
+- **Pattern**: the time of each pattern of `patterns`, how many times it ran, and how many matches it found.
+  A pattern with many `Runs` and no `Matches` may need more specific `keywords`
+- **File**: the files that took the longest time to lint
+
+The text output shows the top 10 of the rules, the patterns, and the files.
+`--profile --format json` prints all of them as JSON, before the results.
 
 
 ## Tips

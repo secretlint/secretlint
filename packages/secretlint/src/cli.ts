@@ -2,6 +2,7 @@ import { parseArgs } from "node:util";
 import { runSecretLint, SecretLintOptions } from "./index.js";
 import { runConfigCreator } from "./create-secretlintrc.js";
 import { secretLintProfiler } from "@secretlint/profiler";
+import { createProfileReport, formatProfileReport } from "./profile-report.js";
 import { getFormatterList } from "@secretlint/formatter";
 import { getPackageJson } from "@secretlint/resolver";
 import debug0 from "debug";
@@ -35,7 +36,7 @@ Options
                      respected by default (since v13).
 
 Options for Developer
-  --profile          Enable performance profile. 
+  --profile          Print the performance profile instead of the lint results. --format json prints it as JSON.
   --secretlintrcJSON [String] a JSON string of .secretlintrc. use JSON string instead of rc file.
 
 Experimental Options
@@ -280,44 +281,53 @@ export const run = async (
     });
     debug("cliOptions %O", cliOptions);
 
-    return runSecretLint({
-        cliOptions,
-        engineOptions: flags.secretlintrcJSON
-            ? {
-                  // Parse config string as JSON
-                  configFileJSON: JSON.parse(flags.secretlintrcJSON),
-                  cwd: cwd,
-                  formatter: flags.format,
-                  color: flags.color,
-                  terminalLink: flags.terminalLink,
-                  locale: flags.locale,
-                  maskSecrets: flags.maskSecrets,
-              }
-            : {
-                  configFilePath: flags.secretlintrc,
-                  cwd: cwd,
-                  formatter: flags.format,
-                  color: flags.color,
-                  terminalLink: flags.terminalLink,
-                  locale: flags.locale,
-                  maskSecrets: flags.maskSecrets,
-              },
-    }).finally(async () => {
+    // --profile prints the summary instead of the lint results
+    // --format selects the format of the summary: "json" or text
+    const createProfileOutput = () => {
         secretLintProfiler.mark({
             type: "secretlint>cli::end",
         });
-        if (flags.profile) {
-            const measures = await secretLintProfiler.getMeasures();
-            const cwd = flags.cwd;
-            if (flags.format === "json") {
-                console.log(JSON.stringify(measures, null, 4));
-            } else {
-                measures.forEach((entry) => {
-                    const takenMs = entry.duration;
-                    const takenRoundMs = Math.round((takenMs + Number.EPSILON) * 100) / 100;
-                    console.log(`${entry.name.replace(cwd, "<cwd>")} - ${takenRoundMs}ms`);
-                });
-            }
+        const report = createProfileReport(secretLintProfiler.getStats());
+        return flags.format === "json"
+            ? JSON.stringify(report, null, 4)
+            : formatProfileReport(report, { cwd: flags.cwd });
+    };
+    try {
+        const result = await runSecretLint({
+            cliOptions,
+            engineOptions: flags.secretlintrcJSON
+                ? {
+                      // Parse config string as JSON
+                      configFileJSON: JSON.parse(flags.secretlintrcJSON),
+                      cwd: cwd,
+                      formatter: flags.format,
+                      color: flags.color,
+                      terminalLink: flags.terminalLink,
+                      locale: flags.locale,
+                      maskSecrets: flags.maskSecrets,
+                  }
+                : {
+                      configFilePath: flags.secretlintrc,
+                      cwd: cwd,
+                      formatter: flags.format,
+                      color: flags.color,
+                      terminalLink: flags.terminalLink,
+                      locale: flags.locale,
+                      maskSecrets: flags.maskSecrets,
+                  },
+        });
+        if (!flags.profile) {
+            return result;
         }
-    });
+        return {
+            ...result,
+            stdout: createProfileOutput(),
+        };
+    } catch (error) {
+        if (flags.profile) {
+            // the summary has what was recorded until the failure
+            console.log(createProfileOutput());
+        }
+        throw error;
+    }
 };

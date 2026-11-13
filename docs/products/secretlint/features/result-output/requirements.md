@@ -23,7 +23,7 @@ The parent Product is [Secretlint](../../product.md).
 - The output of the `mask-result` formatter. It belongs to [mask-result formatter](../mask-result-formatter/requirements.md).
 - The layout of each formatter for people, such as `stylish` and `table`, and the content of the SARIF output. They are not yet written.
 - Messages about problems of the configuration file that are shown together with lint results. They are not yet written.
-- The output of `--profile`.
+- The output of `--profile`. It belongs to [Performance profile](../performance-profile/requirements.md).
 
 ## User stories
 

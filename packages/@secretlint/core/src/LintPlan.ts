@@ -32,6 +32,10 @@ type ContentType = SecretLintRawSource["contentType"];
  */
 export type PlanPattern = {
     /**
+     * The id of the pattern for the profiler: `{rule id}#{index of the pattern in the rule} {pattern}`
+     */
+    readonly profileId: string;
+    /**
      * The index of the pattern in `keywordPatterns` of the view. -1 if the pattern has no keywords.
      */
     readonly index: number;
@@ -519,8 +523,10 @@ const createView = (plan: LintPlan, contentType: ContentType): PlanView => {
         if (!rule.patterns) {
             return { rule, keywordIndexes: toIndexes(keywordsOfRule(rule)), patterns: undefined };
         }
-        const patterns = rule.patterns.map((pattern): PlanPattern => {
+        const patterns = rule.patterns.map((pattern, patternNumber): PlanPattern => {
             return {
+                // the id of the rule itself: the id of the config can be a short id such as "@secretlint/aws"
+                profileId: `${rule.descriptorRule.rule.meta.id}#${patternNumber} ${String(pattern.source.pattern)}`,
                 index: patternIndexes.get(pattern) ?? -1,
                 regex: pattern.regex,
                 tester: pattern.tester,

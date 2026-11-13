@@ -1,7 +1,6 @@
 import { SecretLintProfiler } from "./index.js";
 
-export { SecretLintProfiler };
+export * from "./index.js";
 export const secretLintProfiler = new SecretLintProfiler({
-    perf: performance,
-    PerformanceObserver: PerformanceObserver,
+    now: () => performance.now(),
 });
