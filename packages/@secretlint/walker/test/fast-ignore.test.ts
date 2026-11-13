@@ -158,10 +158,17 @@ describe("compileFastIgnore", () => {
     });
     it("returns null for rules that it does not support", () => {
         for (const rule of [
-            "a?c",
-            "[ab]",
-            "a\\*",
-            "\\#a",
+            "[!ab]",
+            "[^ab]",
+            "[z-a]",
+            "[a-Z]",
+            "[a",
+            "a]",
+            "[]",
+            "[a/b]",
+            "a\\",
+            "a\\ b",
+            "a?**",
             "a ",
             " a",
             "a b",
@@ -176,6 +183,58 @@ describe("compileFastIgnore", () => {
             "!",
         ]) {
             expect(compileFastIgnore([rule]), rule).toBeNull();
+        }
+    });
+    it("is the same as node-ignore for `?`, a character class, and an escaped character", () => {
+        const paths = [
+            ...PATHS,
+            "abc",
+            "aXc",
+            "ac",
+            "a/c",
+            "x/abc/",
+            "a1",
+            "A2",
+            "a12",
+            "ab",
+            ".v1",
+            ".v12x/",
+            ".vx/",
+            "x/.v9/y",
+            "a*",
+            "ab*",
+            "#a",
+            "!a",
+            "a?c",
+            "a.c",
+            "a[1]",
+            "x/#a/",
+            "b_1.js",
+        ];
+        for (const rules of [
+            ["a?c"],
+            ["a?"],
+            ["?"],
+            ["[ab]"],
+            ["a[0-9]"],
+            ["A[0-9]*"],
+            [".v[0-9]*/"],
+            ["[a-c][A-C]c"],
+            ["a[._]c"],
+            ["a\\*"],
+            ["\\#a"],
+            ["\\!a"],
+            ["a\\?c"],
+            ["a\\.c"],
+            ["a\\[1\\]"],
+            ["x/a?c/"],
+            ["/a[0-9]"],
+            ["**/.v[0-9]"],
+            ["x/**/[xy]"],
+            ["*.l?g", "!c.log", "?/c.log"],
+            ["b_[0-9].js", "!*.js", "[a-b]*"],
+        ]) {
+            expectSameAsNodeIgnore(rules, paths);
         }
     });
     it("returns no verdict for no rules", () => {
@@ -208,7 +267,27 @@ describe("compileFastIgnore", () => {
         };
         const pick = <T>(items: readonly T[]): T => items[random(items.length)] as T;
         const names = ["a", "b", "x", "y", "A", "c.log", ".log", "a.tar.gz", "node_modules", "build", "b.js"];
-        const segments = [...names, "*", "**", "*.log", "*.js", "*.tar.gz", "a*", "*b", "*.l*", ".*", "b*d", "*.LOG"];
+        const segments = [
+            ...names,
+            "*",
+            "**",
+            "*.log",
+            "*.js",
+            "*.tar.gz",
+            "a*",
+            "*b",
+            "*.l*",
+            ".*",
+            "b*d",
+            "*.LOG",
+            "?",
+            "[a-b]",
+            "?.js",
+            "*.l[a-z]g",
+            "[XY]",
+            "b\\.js",
+            "a?*",
+        ];
         const createRule = (): string => {
             let rule = Array.from({ length: 1 + random(3) }, () => pick(segments)).join("/");
             if (random(4) === 0) rule = `/${rule}`;

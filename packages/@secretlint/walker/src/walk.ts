@@ -216,8 +216,11 @@ type WalkContext = {
     patternRoot: string;
     /** Compiled include matcher; null means "match every file". */
     matcher: CompiledMatcher;
-    /** Shared dedup sink for absolute file paths in POSIX form. */
-    results: Set<string>;
+    /**
+     * Absolute file paths in POSIX form. A walk does not add a path twice,
+     * but two groups of patterns can find the same file, so {@link walkSync} removes the duplicates.
+     */
+    results: string[];
     /** When true, descend into directory symlinks (with cycle detection). */
     followSymlinks: boolean;
     /** When true and not following, symlinks are returned by their own path. */
@@ -265,7 +268,9 @@ const seedAncestorIgnore = (options: {
 const walkSeeded = (absDir: string, chain: IgnoreChain, ctx: WalkContext): void => {
     const entries = safeReaddir(absDir);
     if (entries === null) return;
-    processEntries(absDir, entries, chain, createDirIgnoreState(chain, absDir, null), ctx);
+    // Normalize the directory once, so `prefix + name` is the same as `path.join(absDir, name)`.
+    const prefix = path.join(absDir, path.sep);
+    processEntries(prefix, entries, chain, createDirIgnoreState(chain, absDir, null), ctx);
 };
 
 /**
@@ -278,12 +283,14 @@ const walkSubdir = (
     parentChain: IgnoreChain,
     parentState: DirIgnoreState | null,
     ctx: WalkContext,
+    /** `absDir` with a trailing separator in the normalized form. The caller passes it when `absDir` is already normalized. */
+    prefix: string = path.join(absDir, path.sep),
 ): void => {
     const entries = safeReaddir(absDir);
     if (entries === null) return;
     const present = presentIgnoreNames(entries, ctx.ignoreFiles);
     const chain = extendIgnore(parentChain, absDir, ctx.ignoreFiles, present);
-    processEntries(absDir, entries, chain, createDirIgnoreState(chain, absDir, parentState), ctx);
+    processEntries(prefix, entries, chain, createDirIgnoreState(chain, absDir, parentState), ctx);
 };
 
 /**
@@ -332,14 +339,13 @@ const resolveEntryKind = (
  * to consult `/shared/lib`'s rules). Cycles are detected via realpath.
  */
 const processEntries = (
-    absDir: string,
+    /** The directory with a trailing separator in the normalized form, so `prefix + name` is the same as `path.join(absDir, name)`. */
+    prefix: string,
     entries: readonly Dirent[],
     chain: IgnoreChain,
     state: DirIgnoreState,
     ctx: WalkContext,
 ): void => {
-    // Normalize the directory once, so `prefix + name` is the same as `path.join(absDir, name)`.
-    const prefix = path.join(absDir, path.sep);
     for (const entry of entries) {
         const full = prefix + entry.name;
         const resolved = resolveEntryKind(full, entry, ctx.followSymlinks, ctx.listSymlinks);
@@ -360,12 +366,13 @@ const processEntries = (
                 if (ctx.visitedRealPaths.has(real)) continue;
                 ctx.visitedRealPaths.add(real);
             }
-            walkSubdir(full, chain, state, ctx);
+            // `full` is normalized, because `prefix` is
+            walkSubdir(full, chain, state, ctx, full + path.sep);
         } else if (ctx.matcher === null) {
-            ctx.results.add(toPosix(full));
+            ctx.results.push(toPosix(full));
         } else {
             const relFromPatternRoot = toPosix(relativeFrom(ctx.patternRoot, full));
-            if (ctx.matcher(relFromPatternRoot)) ctx.results.add(toPosix(full));
+            if (ctx.matcher(relFromPatternRoot)) ctx.results.push(toPosix(full));
         }
     }
 };
@@ -378,7 +385,7 @@ const handleStaticPath = (options: {
     absPath: string;
     parentChain: IgnoreChain;
     ignoreFiles: readonly string[];
-    results: Set<string>;
+    results: string[];
     followSymlinks: boolean;
     listSymlinks: boolean;
     visitedRealPaths: Set<string>;
@@ -413,7 +420,7 @@ const handleStaticPath = (options: {
         });
     } else if (info.isFile()) {
         if (isIgnoredByChain(parentChain, absPath, false)) return;
-        results.add(toPosix(absPath));
+        results.push(toPosix(absPath));
     }
 };
 
@@ -427,7 +434,7 @@ export const walkSync = (options: WalkOptions): string[] => {
     const cwd = path.resolve(options.cwd);
     const ignoreFiles = options.ignoreFiles ?? [];
     const rootChain = createRootIgnore(cwd, options.extraIgnorePatterns ?? []);
-    const results = new Set<string>();
+    const results: string[] = [];
     const followSymlinks = options.followSymlinks !== false;
     const listSymlinks = !followSymlinks && options.listSymlinks === true;
     // Shared across all groups so two patterns under the same job don't
@@ -480,7 +487,8 @@ export const walkSync = (options: WalkOptions): string[] => {
             visitedRealPaths,
         });
     }
-    return [...results];
+    // One group does not find a file twice
+    return groups.length === 1 ? results : [...new Set(results)];
 };
 
 /**

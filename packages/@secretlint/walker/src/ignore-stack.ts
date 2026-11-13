@@ -1,7 +1,13 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import ignore from "ignore";
-import { compileFastIgnore, type DirectoryRules, type FastIgnore, type FastIgnoreResult } from "./fast-ignore.js";
+import {
+    compileFastIgnore,
+    toAsciiLowerCase,
+    type DirectoryRules,
+    type FastIgnore,
+    type FastIgnoreResult,
+} from "./fast-ignore.js";
 import { relativeFrom } from "./relative.js";
 
 /**
@@ -206,13 +212,15 @@ export const createDirIgnoreState = (
  */
 export const isIgnoredInDir = (state: DirIgnoreState, name: string, isDirectory: boolean): boolean => {
     const levels = state.levels;
+    // The fast matchers of all levels use the same name in lowercase
+    let lowerName: string | undefined;
     for (let index = 0; index < levels.length; index++) {
         const { level, relDir, directoryRules, parentIgnored } = levels[index] as DirIgnoreState["levels"][number];
         if (parentIgnored) return true;
         // The fast matcher finds the rules by the name of the entry, so the path is not created for it
         const r =
             level.leafMatcher && directoryRules
-                ? level.leafMatcher.testEntry(directoryRules, name, isDirectory)
+                ? level.leafMatcher.testEntry(directoryRules, (lowerName ??= toAsciiLowerCase(name)), isDirectory)
                 : level.matcher.test(isDirectory ? `${relDir}${name}/` : relDir + name);
         if (r.ignored) return true;
         if (r.unignored) return false;

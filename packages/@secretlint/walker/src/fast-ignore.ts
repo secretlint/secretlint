@@ -1,12 +1,16 @@
 /**
- * A matcher for simple `.gitignore` rules that does not use regular expressions.
+ * A matcher for `.gitignore` rules that tests the name of an entry, not the whole path.
  *
  * Most `.gitignore` rules are a file name (`node_modules`), an extension
  * (`*.log`), or a path without wildcards (`build/Release`). This module
  * matches them with string comparisons, like the match strategies of
- * ripgrep's `globset` crate. When a rule uses anything else (`?`, `[...]`,
- * `\`, spaces, non-ASCII characters, ...), {@link compileFastIgnore}
+ * ripgrep's `globset` crate. A name that has `?`, a character class
+ * (`[0-9]`), or an escaped character (`\#`) is matched with a regular
+ * expression for the name. When a rule uses anything else (spaces,
+ * non-ASCII characters, a negated class, ...), {@link compileFastIgnore}
  * returns null and the caller uses node-ignore for the rules.
+ * One such rule would make every entry under the ignore file pay for node-ignore,
+ * so the rules that real repositories use are supported here.
  *
  * The matcher tests only the given path. It does not test the parent
  * directories of the path, because the walker does not descend into an
@@ -26,7 +30,11 @@
  */
 
 /** A segment is a literal string, `**`, or a pattern that has `*` in it. */
-type Segment = { type: "literal"; value: string } | { type: "globstar" } | { type: "star"; parts: string[] };
+type Segment =
+    | { type: "literal"; value: string }
+    | { type: "globstar" }
+    | { type: "star"; parts: string[] }
+    | { type: "regexp"; regexp: RegExp };
 
 type FastRule = {
     negative: boolean;
@@ -74,10 +82,11 @@ export type FastIgnore = {
      */
     forDirectory(relDir: string): DirectoryRules;
     /**
-     * Test the entry `name` of the directory of `directoryRules`.
+     * Test the entry of the directory of `directoryRules`.
      * It is the same as `test(relDir + name)`, but it does not create the path for most rules.
+     * @param lowerName the name of the entry that {@link toAsciiLowerCase} converted. The caller converts it once for all levels.
      */
-    testEntry(directoryRules: DirectoryRules, name: string, isDirectory: boolean): FastIgnoreResult;
+    testEntry(directoryRules: DirectoryRules, lowerName: string, isDirectory: boolean): FastIgnoreResult;
 };
 
 const NO_MATCH: FastIgnoreResult = { ignored: false, unignored: false };
@@ -86,15 +95,67 @@ const UNIGNORED: FastIgnoreResult = { ignored: false, unignored: true };
 
 // Characters that have no special meaning in a gitignore rule.
 const SAFE_SEGMENT = /^[A-Za-z0-9._\-@+~*]+$/;
-const ASCII_UPPER = /[A-Z]/;
 
 export const toAsciiLowerCase = (value: string): string => {
-    return ASCII_UPPER.test(value) ? value.replace(/[A-Z]+/g, (match) => match.toLowerCase()) : value;
+    let hasUpperCase = false;
+    for (let index = 0; index < value.length; index++) {
+        const code = value.charCodeAt(index);
+        if (code > 127) {
+            // `toLowerCase()` also converts a non-ASCII character, and the result can have an ASCII character
+            return value.replace(/[A-Z]+/g, (match) => match.toLowerCase());
+        }
+        if (code >= 65 && code <= 90) {
+            hasUpperCase = true;
+        }
+    }
+    return hasUpperCase ? value.toLowerCase() : value;
+};
+
+// A segment that also has `?`, a character class like `[0-9]`, or an escaped character like `\#`.
+// The class has only letters, digits, `_`, `.`, and ranges of letters or digits, so it means the same in a regular expression.
+const REGEXP_SEGMENT = /^(?:[A-Za-z0-9._\-@+~*?]|\\[!-~]|\[(?:[A-Za-z0-9_.]|[a-z]-[a-z]|[A-Z]-[A-Z]|[0-9]-[0-9])+\])+$/;
+const REGEXP_SEGMENT_TOKEN = /\\([!-~])|(\[[^\]]+\])|(\*)|(\?)|([^\\[*?]+)/g;
+const escapeRegExp = (value: string): string => value.replace(/[.*+?^${}()|[\]\\/-]/g, "\\$&");
+const isValidClass = (characterClass: string): boolean => {
+    for (const range of characterClass.matchAll(/(.)-(.)/g)) {
+        if ((range[1] as string) > (range[2] as string)) return false;
+    }
+    return true;
+};
+
+/**
+ * Parse a segment that {@link SAFE_SEGMENT} does not accept into a regular expression for a name.
+ * `*` and `?` do not match `/`, but a name has no `/`.
+ */
+const parseRegExpSegment = (segment: string): Segment | null => {
+    if (!REGEXP_SEGMENT.test(segment) || segment.includes("**")) {
+        return null;
+    }
+    let source = "";
+    for (const token of segment.matchAll(REGEXP_SEGMENT_TOKEN)) {
+        if (token[1] !== undefined) {
+            source += escapeRegExp(token[1]);
+        } else if (token[2] !== undefined) {
+            if (!isValidClass(token[2])) return null;
+            source += token[2];
+        } else if (token[3] !== undefined) {
+            source += ".*";
+        } else if (token[4] !== undefined) {
+            source += ".";
+        } else {
+            source += escapeRegExp(token[5] as string);
+        }
+    }
+    // The name is in lowercase, so the flag `i` is for the uppercase letters of the rule
+    return { type: "regexp", regexp: new RegExp(`^${source}$`, "is") };
 };
 
 const parseSegment = (segment: string): Segment | null => {
-    if (!SAFE_SEGMENT.test(segment) || segment === "." || segment === "..") {
+    if (segment === "." || segment === "..") {
         return null;
+    }
+    if (!SAFE_SEGMENT.test(segment)) {
+        return parseRegExpSegment(segment);
     }
     if (segment === "**") {
         return { type: "globstar" };
@@ -175,6 +236,9 @@ const matchSegment = (segment: Segment, value: string): boolean => {
     }
     if (segment.type === "star") {
         return matchStar(segment.parts, value);
+    }
+    if (segment.type === "regexp") {
+        return segment.regexp.test(value);
     }
     return true;
 };
@@ -360,12 +424,11 @@ export const compileFastIgnore = (contents: readonly string[]): FastIgnore | nul
             orderedRules: [...nameOrderedRules, ...rulesOfDirectory].sort((a, b) => b.order - a.order),
         };
     };
-    const testEntry = (directoryRules: DirectoryRules, name: string, isDirectory: boolean): FastIgnoreResult => {
+    const testEntry = (directoryRules: DirectoryRules, lowerName: string, isDirectory: boolean): FastIgnoreResult => {
         if (rules.length === 0) {
             return NO_MATCH;
         }
         const orderedRules = directoryRules.orderedRules;
-        const lowerName = toAsciiLowerCase(name);
         // The last matching rule decides: `best` is the matching rule that has the largest `order`
         let best = findResult(nameTable.get(lowerName), isDirectory);
         if (hasExtensionTable) {
@@ -408,7 +471,11 @@ export const compileFastIgnore = (contents: readonly string[]): FastIgnore | nul
             const isDirectory = relPosixPath.endsWith("/");
             const path = isDirectory ? relPosixPath.slice(0, -1) : relPosixPath;
             const slashIndex = path.lastIndexOf("/");
-            return testEntry(forDirectory(path.slice(0, slashIndex + 1)), path.slice(slashIndex + 1), isDirectory);
+            return testEntry(
+                forDirectory(path.slice(0, slashIndex + 1)),
+                toAsciiLowerCase(path.slice(slashIndex + 1)),
+                isDirectory,
+            );
         },
         forDirectory,
         testEntry,
