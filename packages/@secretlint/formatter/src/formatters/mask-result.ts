@@ -4,16 +4,17 @@ const replaceRange = (str: string, range: readonly [number, number], replace: st
     return str.slice(0, range[0]) + replace + str.slice(range[1]);
 };
 
-const formatter: SecretLintFormatter = (results) => {
+const formatter: SecretLintFormatter = (results, { getSource }) => {
     let resultOutput = "";
     for (const result of results) {
-        const sourceContent = result.sourceContent;
         const sourceContentType = result.sourceContentType;
         if (sourceContentType === "binary") {
             throw new Error("--format=mask-result: Binary file is not supported");
         }
-        if (!sourceContent) {
-            throw new Error("--format=mask-result: sourceContent is not found");
+        // The result does not have the content of the source
+        const sourceContent = getSource?.(result.filePath);
+        if (sourceContent === undefined) {
+            throw new Error("--format=mask-result: the content of the source is not found");
         }
         let tmp = sourceContent;
         result.messages.forEach((message) => {

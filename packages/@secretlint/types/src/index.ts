@@ -19,11 +19,16 @@ export type { SecretLintRuleSeverityLevel } from "./SecretLintRuleSeverityLevel.
 export type {
     SecretLintRuleIgnoreDescriptor,
     SecretLintRuleCreator,
+    SecretLintRuleHandlerCreator,
+    SecretLintRulePatternCreator,
     SecretLintRuleContext,
     SecretLintRuleCreatorOptions,
     SecretLintRuleReportDescriptor,
     SecretLintRuleReportHandler,
     SecretLintRuleContentType,
+    SecretLintRulePattern,
+    SecretLintRulePatternMatch,
+    SecretLintRulePatternContext,
 } from "./SecretLintRule.js";
 // Rule Preset
 export type {
@@ -58,4 +63,8 @@ export type {
     SecretLintConfigDescriptorRulePreset,
 } from "./SecretLintConfigDescriptor.js";
 // Formatter
-export type { SecretLintFormatterOptions, SecretLintFormatter } from "./SecretLintFormatter.js";
+export type {
+    SecretLintFormatterOptions,
+    SecretLintFormatterGetSource,
+    SecretLintFormatter,
+} from "./SecretLintFormatter.js";

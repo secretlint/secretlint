@@ -1,8 +1,16 @@
 import type { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
 import { matchPatterns } from "@textlint/regexp-string-matcher";
 
-import secp256k1 from "secp256k1";
-import BN from "bn.js";
+// Order n of the secp256k1 curve. https://en.bitcoin.it/wiki/Secp256k1
+const SECP256K1_N = 0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141n;
+/**
+ * A secp256k1 private key is an integer k where 0 < k < n.
+ * This is the same check as secp256k1's privateKeyVerify.
+ */
+const isSecp256k1PrivateKey = (hex: string): boolean => {
+    const value = BigInt(`0x${hex}`);
+    return value > 0n && value < SECP256K1_N;
+};
 
 export const messages = {
     secp256k1Priv: {
@@ -50,19 +58,15 @@ export const creator: SecretLintRuleCreator<Options> = {
                         continue;
                     }
                     const range = [index, index + matchString.length] as const;
-                    try {
-                        if (!secp256k1.privateKeyVerify(new BN(matchString, 16).toBuffer("be", 32))) {
-                            continue;
-                        }
-                        context.report({
-                            message: t("secp256k1Priv", {
-                                KEY: matchString,
-                            }),
-                            range,
-                        });
-                    } catch (error) {
-                        // No-op. Not a private key.
+                    if (!isSecp256k1PrivateKey(matchString)) {
+                        continue;
                     }
+                    context.report({
+                        message: t("secp256k1Priv", {
+                            KEY: matchString,
+                        }),
+                        range,
+                    });
                 }
             },
         };

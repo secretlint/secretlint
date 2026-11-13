@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-rule-filter-comments",
-    "version": "13.0.7",
+    "version": "13.1.0",
     "description": "secretlint-disable comment directive.",
     "keywords": [
         "secretlint",
@@ -47,8 +47,6 @@
         "clean": "tsc --build --clean",
         "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
         "prepublishOnly": "npm run clean && npm run build",
-        "test": "node --import tsx --test test/index.test.ts test/parseComment.test.ts",
-        "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
         "watch": "tsc --build --watch"
     },
     "prettier": {
@@ -58,14 +56,13 @@
         "trailingComma": "none"
     },
     "dependencies": {
+        "@secretlint/core": "workspace:*",
         "@secretlint/types": "workspace:*"
     },
     "devDependencies": {
         "@secretlint/secretlint-rule-pattern": "workspace:*",
-        "@secretlint/tester": "workspace:*",
         "@types/node": "catalog:",
         "prettier": "catalog:",
-        "tsx": "catalog:",
         "typescript": "catalog:"
     },
     "engines": {

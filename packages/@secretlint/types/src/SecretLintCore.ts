@@ -70,7 +70,8 @@ export type SecretLintUnionRuleCreator<Options = SecretLintRuleCreatorOptions | 
     | SecretLintRuleCreator<Options>
     | SecretLintRulePresetCreator<Options>;
 export type SecretLintCoreConfigUnionRule<Options = SecretLintRuleCreatorOptions | SecretLintRulePresetCreatorOptions> =
-    SecretLintCoreConfigRule<Options> | SecretLintCoreConfigRulePreset<Options>;
+    | SecretLintCoreConfigRule<Options>
+    | SecretLintCoreConfigRulePreset<Options>;
 // module export named `creator`
 export type SecretLintRuleModule = {
     creator: SecretLintUnionRuleCreator;
@@ -87,8 +88,6 @@ export type SecretLintCoreConfig = {
 
 export type SecretLintCoreResult = {
     filePath: string;
-    // binary content always be undefined
-    sourceContent: string | undefined;
     sourceContentType: SecretLintRawSource["contentType"];
     messages: SecretLintCoreResultMessage[];
 };

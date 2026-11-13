@@ -4,25 +4,10 @@ import { fileURLToPath } from "node:url";
 import assert from "node:assert";
 import { loadFormatter, getFormatterList } from "../src/index.js";
 import { results } from "./snapshots/input.js";
-import escapeStringRegexp from "escape-string-regexp";
+import { snapshotReplace } from "./snapshot-replace.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const snapshotsDir = path.join(__dirname, "snapshots");
-const snapshotReplace = (value: string) => {
-    return (
-        value
-            // replace snapshotsDir to [SNAPSHOT]
-            .replace(new RegExp(escapeStringRegexp(snapshotsDir), "g"), "[SNAPSHOT]")
-            // 1. escape \n \t \r
-            .replace(/\\([ntr])/g, "_!!!_$1")
-            // 2. normalize path separator for Windows
-            .replace(/\\/g, "/")
-            // 3. restore \n \t \r
-            .replace(/_!!!_/g, "\\")
-            .replace(/\r?\n/g, "\n")
-    );
-};
-
 describe("@secretlint/formatter", () => {
     const formatters = getFormatterList();
     for (const formatter of formatters) {
@@ -34,6 +19,8 @@ describe("@secretlint/formatter", () => {
             const formatter = await loadFormatter({
                 color: false,
                 formatterName: formatterName,
+                // The results do not have the content of the sources
+                getSource: (filePath) => fs.readFileSync(filePath, "utf-8"),
             });
             const actual = snapshotReplace(formatter.format(results));
             const expectedFilePath = path.join(fixtureDir, `output.${formatterName}.txt`);

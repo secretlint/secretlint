@@ -1,0 +1,36 @@
+TAP version 13
+1..3
+not ok 1 - /path/to/a&b.txt
+  ---
+  message: '[ID] found <secret> & "token".'
+  severity: error
+  data:
+    line: 1
+    column: 8
+    ruleId: rule-error
+  messages:
+    - message: '[ID] 日本語のメッセージ'
+      severity: warning
+      data:
+        line: 12
+        column: 0
+        ruleId: preset > rule-warning
+    - message: |-
+        [ID] it's 100%
+        second line
+      severity: info
+      data:
+        line: 3
+        column: 123
+        ruleId: rule-info
+  ...
+ok 2 - /path/to/no-message.txt
+not ok 3 - /path/to/c,d:e.txt
+  ---
+  message: '[ID] message'
+  severity: warning
+  data:
+    line: 2
+    column: 4
+    ruleId: rule-unknown-severity
+  ...

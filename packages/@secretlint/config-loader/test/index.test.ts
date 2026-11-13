@@ -42,10 +42,11 @@ describe("@secretlint/config-loader", () => {
                     ],
                 },
                 configFilePath: path.join(__dirname, "fixtures/valid-config-cjs/.secretlintrc.json"),
+                messages: [],
                 configDescriptor: JSON.parse(
-                    fs.readFileSync(path.join(__dirname, "fixtures/valid-config-cjs/.secretlintrc.json"), "utf-8")
+                    fs.readFileSync(path.join(__dirname, "fixtures/valid-config-cjs/.secretlintrc.json"), "utf-8"),
                 ),
-            })
+            }),
         );
     });
     it("should load .secretlintrc.json with ESM rule", async () => {
@@ -76,9 +77,9 @@ describe("@secretlint/config-loader", () => {
             .catch((error: Error) => {
                 assert.ok(
                     error.message.includes(
-                        `secretlintrc/rules/0 must have required property 'id', secretlintrc/rules/0 must have required property 'id', secretlintrc/rules/0 must match a schema in anyOf`
+                        `secretlintrc/rules/0 must have required property 'id', secretlintrc/rules/0 must have required property 'id', secretlintrc/rules/0 must match a schema in anyOf`,
                     ),
-                    error.message
+                    error.message,
                 );
             });
     });

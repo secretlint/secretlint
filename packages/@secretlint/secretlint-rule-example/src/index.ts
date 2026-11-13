@@ -14,6 +14,7 @@ export const creator: SecretLintRuleCreator = {
         recommended: true,
         type: "scanner",
         supportedContentTypes: ["text"],
+        keywords: ["SECRET"],
         docs: {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-example/README.md",
         },

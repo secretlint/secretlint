@@ -7,10 +7,10 @@ import type {
 import { AggregationError } from "./AggregationError.js";
 import { SecretLintConfigDescriptorRule, SecretLintConfigDescriptorRulePreset } from "@secretlint/types";
 import {
-    validateSecretLintConfigDescriptor_,
-    validateSecretLintConfigDescriptorRule_,
-    validateSecretLintConfigDescriptorRulePreset_,
-} from "./descriptor-types.validator.js";
+    validateSecretLintConfigDescriptor,
+    validateSecretLintConfigDescriptorRule,
+    validateSecretLintConfigDescriptorRulePreset,
+} from "./descriptor-validator.js";
 
 function invariant(condition: any, message: string): asserts condition {
     if (condition) {
@@ -20,7 +20,7 @@ function invariant(condition: any, message: string): asserts condition {
 }
 
 const isPreset = (
-    value: SecretLintConfigDescriptorRule | SecretLintConfigDescriptorRulePreset
+    value: SecretLintConfigDescriptorRule | SecretLintConfigDescriptorRulePreset,
 ): value is SecretLintCoreConfigRulePreset => {
     return "rules" in value; // TODO: it is loose detection
 };
@@ -29,7 +29,7 @@ const isPreset = (
  * @param configDescriptor
  */
 export const validateConfigDescriptor = (
-    configDescriptor: SecretLintConfigDescriptor
+    configDescriptor: SecretLintConfigDescriptor,
 ): { ok: true } | { ok: false; error: Error | AggregationError } => {
     const errors: Error[] = [];
     if (!Array.isArray(configDescriptor.rules)) {
@@ -49,14 +49,9 @@ export const validateConfigDescriptor = (
     }
     // Validate Descriptor
     try {
-        validateSecretLintConfigDescriptor_(configDescriptor);
+        validateSecretLintConfigDescriptor(configDescriptor, "secretlintrc");
     } catch (error) {
-        // SecretLintConfigDescriptor -> secretlintrc
-        const errorMessage =
-            error instanceof Error
-                ? error.message.replace(/SecretLintConfigDescriptor_/g, "secretlintrc")
-                : String(error);
-        errors.push(new Error(errorMessage));
+        errors.push(new Error(error instanceof Error ? error.message : String(error)));
     }
     for (const ruleOrPreset of configDescriptor.rules) {
         // validate as preset
@@ -64,13 +59,9 @@ export const validateConfigDescriptor = (
         if (isPreset(ruleOrPreset)) {
             const rulePreset = ruleOrPreset as SecretLintCoreConfigRulePreset;
             try {
-                validateSecretLintConfigDescriptorRulePreset_(rulePreset);
+                validateSecretLintConfigDescriptorRulePreset(rulePreset, String(ruleOrPreset.id));
             } catch (error) {
-                const errorMessage =
-                    error instanceof Error
-                        ? error.message.replace(/SecretLintConfigDescriptorRulePreset_/g, ruleOrPreset.id)
-                        : String(error);
-                errors.push(new Error(errorMessage));
+                errors.push(new Error(error instanceof Error ? error.message : String(error)));
             }
             if ("allowMessageIds" in ruleOrPreset) {
                 errors.push(new Error(`Can not set "allowMessageIds" option to preset(${rulePreset.id}) `));
@@ -81,13 +72,9 @@ export const validateConfigDescriptor = (
         } else {
             const rule = ruleOrPreset as SecretLintCoreConfigRule;
             try {
-                validateSecretLintConfigDescriptorRule_(rule);
+                validateSecretLintConfigDescriptorRule(rule, String(ruleOrPreset.id));
             } catch (error) {
-                const errorMessage =
-                    error instanceof Error
-                        ? error.message.replace(/SecretLintConfigDescriptorRule_/g, ruleOrPreset.id)
-                        : String(error);
-                errors.push(new Error(errorMessage));
+                errors.push(new Error(error instanceof Error ? error.message : String(error)));
             }
         }
     }
@@ -133,7 +120,7 @@ validateConfigOption): { ok: true } | { ok: false; error: Error } => {
 Following config is invalid because the preset(${preset.id}) does not have id: "${ruleCreatorOption.id}".
 
 ${JSON.stringify(ruleCreatorOption)}
-`)
+`),
                     );
                 }
             });
@@ -141,7 +128,10 @@ ${JSON.stringify(ruleCreatorOption)}
             // Validate rule
             const rule = ruleOrPreset as SecretLintCoreConfigRule;
             invariant(typeof rule.rule.meta === "object", "rule should have `meta` property");
-            invariant(typeof rule.rule.create === "function", "rule should have `create` function");
+            invariant(
+                typeof rule.rule.create === "function" || Array.isArray(rule.rule.patterns),
+                "rule should have `create` function or `patterns`",
+            );
             // `allowMessageIds` validation
             if (Array.isArray(rule.allowMessageIds)) {
                 const messageIds: string[] = Object.keys(rule.rule.messages);
@@ -153,7 +143,7 @@ ${JSON.stringify(ruleCreatorOption)}
 Following config is invalid because the rule(${rule.id}) does not have messageId: "${allowMessageId}".
 
 ${JSON.stringify({ allowMessageIds: rule.allowMessageIds })}
-`)
+`),
                         );
                     }
                 });

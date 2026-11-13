@@ -5,8 +5,9 @@ import type { SecretLintCreateRuleMessageTranslator } from "../src/SecretLintRul
 declare var creator: SecretLintRuleCreator;
 declare var context: SecretLintRuleContext;
 declare var source: SecretLintSourceCode;
-const rule = creator.create(context, {});
-if (rule.file) {
+// `create` is optional: a rule that has `patterns` does not need it
+const rule = creator.create?.(context, {});
+if (rule?.file) {
     expectTypeOf(rule.file(source)).toEqualTypeOf<void | Promise<void>>();
 }
 
@@ -21,3 +22,10 @@ const t = createTranslator(messages);
 t("key", {
     k1: "str",
 });
+
+// a rule is defined with `create()` or with `patterns`
+const meta = { id: "rule", type: "scanner", recommended: true, supportedContentTypes: ["text"] } as const;
+const baseRule = { messages, meta: { ...meta, supportedContentTypes: [...meta.supportedContentTypes] } };
+expectTypeOf({ ...baseRule, create: () => ({}) }).toExtend<SecretLintRuleCreator>();
+expectTypeOf({ ...baseRule, patterns: [] }).toExtend<SecretLintRuleCreator>();
+expectTypeOf(baseRule).not.toExtend<SecretLintRuleCreator>();

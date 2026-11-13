@@ -1,8 +1,0 @@
-# Anthropic Claude API keys that should be detected
-claude_api_key = 'sk-ant-api03-z0zjHHXo5uibD2havvfqiZYJe9ENlwI1trcQC4pyRC2N2w6nbpUitUU_iR4kkSszVyUpINaxvCtun3_Mub0O3w-48GXRgAA'
-
-sk-ant-api03-z0zjHHXo5k3zD2havvfqiZYJe9ENlwI1trcQC4pyRC2N2w6nbpUitUU_iR4ttSszVyUpINaxvCtun3_Mub0O3w-48GXRgAA
-
-CLAUDE_API_KEY=sk-ant-api03-lwfESWqh_7RvqZ2cCANYw9scfj8Z8tegAppkRnWnclSFEuEPcjuYUITSiziCs2_JRgru7AET1AxD4Fpdic3T-Q-apLfhQAA
-
-ANTHROPIC_API_KEY='sk-ant-api04-pRLEoxKCq2cuUW5bhgMTVPcAuDd6aoydZQYcEXVp_Fu46ri_GkPW5INiuAEYTqOx4w27CnqVik4Ak_wNjjzKAA-Q5uYbwAA'

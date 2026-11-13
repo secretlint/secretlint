@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/node",
-    "version": "13.0.7",
+    "version": "13.1.0",
     "description": "Secretlint client library for Node.js",
     "keywords": [
         "secretlint",
@@ -59,8 +59,7 @@
         "@secretlint/profiler": "workspace:*",
         "@secretlint/source-creator": "workspace:*",
         "@secretlint/types": "workspace:*",
-        "debug": "catalog:",
-        "p-map": "catalog:"
+        "debug": "catalog:"
     },
     "devDependencies": {
         "@secretlint/secretlint-rule-example": "workspace:*",

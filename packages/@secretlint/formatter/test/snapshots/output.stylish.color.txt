@@ -1,0 +1,8 @@
+
+<ESC>[4m[SNAPSHOT]/input.txt<ESC>[24m
+  <ESC>[90m1:8<ESC>[39m  <ESC>[33mwarning<ESC>[39m  [<ESC>]8;;https://example.com/docs#message-id<BEL>message-id<ESC>]8;;<BEL>] warning found secret: SECRET  <ESC>[90mexample<ESC>[39m
+  <ESC>[90m1:8<ESC>[39m  <ESC>[31merror<ESC>[39m    [message-id] error found secret: SECRET    <ESC>[90mexample<ESC>[39m
+  <ESC>[90m1:8<ESC>[39m  <ESC>[31merror<ESC>[39m    [message-id] error found secret: SECRET    <ESC>[90mparent > example<ESC>[39m
+
+<ESC>[31m<ESC>[1m✖ 3 problems (2 errors, 1 warning, 0 infos)
+<ESC>[22m<ESC>[39m

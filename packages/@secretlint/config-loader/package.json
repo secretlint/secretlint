@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/config-loader",
-    "version": "13.0.7",
+    "version": "13.1.0",
     "description": "Config loader for secretlint.",
     "keywords": [
         "secretlint",
@@ -43,7 +43,6 @@
     "scripts": {
         "build": "tsc --build",
         "clean": "tsc --build --clean",
-        "create-validation": "create-validator-ts src/descriptor-types.ts --additionalProperties",
         "prepublishOnly": "npm run clean && npm run build",
         "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
         "prepublish": "npm run --if-present build",
@@ -57,10 +56,10 @@
         "tabWidth": 4
     },
     "dependencies": {
+        "@secretlint/core": "workspace:*",
         "@secretlint/profiler": "workspace:*",
         "@secretlint/resolver": "workspace:*",
         "@secretlint/types": "workspace:*",
-        "ajv": "catalog:",
         "debug": "catalog:",
         "rc-config-loader": "catalog:"
     },
@@ -69,7 +68,6 @@
         "@secretlint/secretlint-rule-internal-test-esm": "workspace:*",
         "@types/debug": "catalog:",
         "@types/node": "catalog:",
-        "create-validator-ts": "catalog:",
         "prettier": "catalog:",
         "tsx": "catalog:",
         "typescript": "catalog:"

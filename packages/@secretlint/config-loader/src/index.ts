@@ -13,9 +13,13 @@ import { SecretLintModuleResolver } from "./SecretLintModuleResolver.js";
 import { validateConfigDescriptor, validateConfigWithDescriptor } from "./validator.js";
 import { AggregationError } from "./AggregationError.js";
 import { dynamicImport } from "@secretlint/resolver";
+import { getConfigMessages, SecretLintConfigMessage } from "./config-messages.js";
+import { createFullPackageName } from "./package-name-util.js";
+
+export type { SecretLintConfigMessage };
 
 export function importSecretlintCreator(
-    moduleExports?: SecretLintRuleModule | Record<string, unknown>
+    moduleExports?: SecretLintRuleModule | Record<string, unknown>,
 ): SecretLintUnionRuleCreator {
     if (!moduleExports) {
         throw new Error("Secretlint rule should export { creator }. module is undefined");
@@ -25,6 +29,19 @@ export function importSecretlintCreator(
     }
     return moduleExports.creator as SecretLintUnionRuleCreator;
 }
+
+/**
+ * Resolve a built-in rule or preset of @secretlint/core by the id in the config.
+ * The id is the full id (`@secretlint/secretlint-rule-aws`) or the short form that the module resolver accepts
+ * (`@secretlint/aws`). Return `undefined` if the id is not built-in.
+ *
+ * A built-in id is resolved from @secretlint/core even if the package of the same name is installed,
+ * so the rule always matches the version of the core.
+ */
+const resolveBuiltinRule = async (id: string): Promise<SecretLintUnionRuleCreator | undefined> => {
+    const { getBuiltinRule } = await import("@secretlint/core/builtin");
+    return getBuiltinRule(id) ?? getBuiltinRule(createFullPackageName("secretlint-rule-", id));
+};
 
 export type SecretLintConfigLoaderOptions = {
     cwd?: string;
@@ -56,6 +73,10 @@ export type SecretLintConfigLoaderResult = {
      */
     configDescriptor: SecretLintConfigDescriptor;
     configFilePath: string;
+    /**
+     * Problems in the config file that are reported like lint messages
+     */
+    messages: SecretLintConfigMessage[];
 };
 
 export type SecretLintConfigLoaderRawResult = {
@@ -87,6 +108,10 @@ export type SecretLintLoadPackagesFromRawConfigOptions = {
 export type SecretLintLoadPackagesFromRawConfigResult = {
     ok: true;
     config: SecretLintCoreConfig; // Core Option object
+    /**
+     * Problems in the config that are reported like lint messages
+     */
+    messages: SecretLintConfigMessage[];
 };
 
 /**
@@ -94,7 +119,7 @@ export type SecretLintLoadPackagesFromRawConfigResult = {
  * @param options
  */
 export const loadPackagesFromConfigDescriptor = async (
-    options: SecretLintLoadPackagesFromRawConfigOptions
+    options: SecretLintLoadPackagesFromRawConfigOptions,
 ): Promise<SecretLintLoadPackagesFromRawConfigResult> => {
     // Early validation, validate rawConfig by JSON Schema
     const validateConfigDescriptorResult = validateConfigDescriptor(options.configDescriptor);
@@ -125,17 +150,21 @@ export const loadPackagesFromConfigDescriptor = async (
                 options.testReplaceDefinitions.find(({ id }) => {
                     return id === configDescriptorRule.id;
                 });
+            // Resolution order: test replacement -> built-in rule of @secretlint/core -> npm package
+            const builtinRule = replacedDefinition ? undefined : await resolveBuiltinRule(configDescriptorRule.id);
             // TODO: any to be remove
             const ruleCreator: SecretLintUnionRuleCreator = replacedDefinition
                 ? replacedDefinition.rule
-                : importSecretlintCreator(
-                      (
-                          await dynamicImport(moduleResolver.resolveRulePackageName(configDescriptorRule.id), {
-                              parentModule: "config-loader",
-                              parentImportMeta: import.meta,
-                          })
-                      ).exports
-                  );
+                : builtinRule
+                  ? builtinRule
+                  : importSecretlintCreator(
+                        (
+                            await dynamicImport(moduleResolver.resolveRulePackageName(configDescriptorRule.id), {
+                                parentModule: "config-loader",
+                                parentImportMeta: import.meta,
+                            })
+                        ).exports,
+                    );
             if (isSecretLintCoreConfigRulePreset(ruleCreator)) {
                 const configDescriptorRulePreset = configDescriptorRule as SecretLintConfigDescriptorRulePreset;
                 rules.push({
@@ -175,7 +204,7 @@ export const loadPackagesFromConfigDescriptor = async (
 Error: ${error.message}`,
                           {
                               cause: error,
-                          }
+                          },
                       )
                     : new Error(`Failed to load rule module: ${configDescriptorRule.id}
 
@@ -204,6 +233,7 @@ Error: ${String(error)}`);
     return {
         ok: true,
         config: loadedConfig,
+        messages: getConfigMessages(options.configDescriptor),
     };
 };
 /**
@@ -234,6 +264,7 @@ export const loadConfig = async (options: SecretLintConfigLoaderOptions): Promis
         config: configLoadResult.config,
         configDescriptor,
         configFilePath,
+        messages: configLoadResult.messages,
     };
 };
 /**
@@ -242,7 +273,7 @@ export const loadConfig = async (options: SecretLintConfigLoaderOptions): Promis
  * @param options
  */
 export const loadConfigDescriptor = async (
-    options: SecretLintConfigLoaderOptions
+    options: SecretLintConfigLoaderOptions,
 ): Promise<SecretLintConfigLoaderRawResult> => {
     const results = rcFile<SecretLintConfigDescriptor>("secretlint", {
         cwd: options.cwd,

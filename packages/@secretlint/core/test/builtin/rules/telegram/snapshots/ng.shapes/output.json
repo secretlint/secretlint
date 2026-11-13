@@ -1,0 +1,82 @@
+{
+    "filePath": "[SNAPSHOT]/ng.shapes/input.txt",
+    "messages": [
+        {
+            "message": "found Telegram bot token: 12345:ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+            "range": [
+                0,
+                41
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-telegram",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 41
+                }
+            },
+            "severity": "error",
+            "messageId": "TELEGRAM_BOT_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-telegram/README.md#TELEGRAM_BOT_TOKEN",
+            "data": {
+                "ID": "12345:ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
+            }
+        },
+        {
+            "message": "found Telegram bot token: 1234567890123456:ADDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD",
+            "range": [
+                42,
+                94
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-telegram",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 0
+                },
+                "end": {
+                    "line": 2,
+                    "column": 52
+                }
+            },
+            "severity": "error",
+            "messageId": "TELEGRAM_BOT_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-telegram/README.md#TELEGRAM_BOT_TOKEN",
+            "data": {
+                "ID": "1234567890123456:ADDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD"
+            }
+        },
+        {
+            "message": "found Telegram bot token: 54321:Aab_CD-09ab_CD-09ab_CD-09ab_CD-09_-",
+            "range": [
+                104,
+                145
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-telegram",
+            "loc": {
+                "start": {
+                    "line": 3,
+                    "column": 9
+                },
+                "end": {
+                    "line": 3,
+                    "column": 50
+                }
+            },
+            "severity": "error",
+            "messageId": "TELEGRAM_BOT_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-telegram/README.md#TELEGRAM_BOT_TOKEN",
+            "data": {
+                "ID": "54321:Aab_CD-09ab_CD-09ab_CD-09ab_CD-09_-"
+            }
+        }
+    ],
+    "sourceContent": "12345:ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC\n1234567890123456:ADDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD\ntoken = \"54321:Aab_CD-09ab_CD-09ab_CD-09ab_CD-09_-\"\n",
+    "sourceContentType": "text"
+}

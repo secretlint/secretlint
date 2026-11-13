@@ -167,6 +167,7 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
     
         - 0:
           - Linting succeeded, no errors found.
+          - Found only "warning" or "info" severity messages.
           - Found lint error but --output is specified.
         - 1:
           - Linting failed, errors found.

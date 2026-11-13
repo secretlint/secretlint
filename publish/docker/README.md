@@ -4,11 +4,11 @@
 
 ## Built-in
 
-This Image has built-in packages:
+This image has the built-in rules of secretlint, such as [@secretlint/secretlint-rule-preset-recommend](https://www.npmjs.com/package/@secretlint/secretlint-rule-preset-recommend) and [@secretlint/secretlint-rule-pattern](https://www.npmjs.com/package/@secretlint/secretlint-rule-pattern), and this package:
 
-- [@secretlint/secretlint-rule-preset-recommend](https://www.npmjs.com/package/@secretlint/secretlint-rule-preset-recommend) 
-- [@secretlint/secretlint-rule-pattern](https://www.npmjs.com/package/@secretlint/secretlint-rule-pattern)
 - [@secretlint/secretlint-formatter-sarif](https://www.npmjs.com/package/@secretlint/secretlint-formatter-sarif)
+
+Other rules, such as `@secretlint/secretlint-rule-no-dotenv`, are not included.
 
 ## Installation
 

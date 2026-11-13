@@ -1,6 +1,6 @@
 {
     "name": "secretlint",
-    "version": "13.0.7",
+    "version": "13.1.0",
     "description": "Secretlint CLI that scan secret/credential data.",
     "keywords": [
         "secretlint",
@@ -68,8 +68,7 @@
         "@secretlint/profiler": "workspace:*",
         "@secretlint/resolver": "workspace:*",
         "@secretlint/walker": "workspace:*",
-        "debug": "catalog:",
-        "read-pkg": "catalog:"
+        "debug": "catalog:"
     },
     "devDependencies": {
         "@secretlint/secretlint-rule-example": "workspace:*",

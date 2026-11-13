@@ -3,7 +3,6 @@
     "stdout": [
         {
             "filePath": "[SNAPSHOT]/escape-glob-characters-bracket-path/input-[group].md",
-            "sourceContent": "Include glob special characters in path\n",
             "sourceContentType": "text",
             "messages": []
         }

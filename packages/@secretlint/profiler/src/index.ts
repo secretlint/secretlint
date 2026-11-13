@@ -96,6 +96,8 @@ export type LimitedPerformanceObserver = Constructor<{
     disconnect(): void;
     /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/PerformanceObserver/observe) */
     observe(options?: any): void;
+    /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/PerformanceObserver/takeRecords) */
+    takeRecords?(): PerformanceEntry[];
 }>;
 export type SecretLintProfilerOptions = {
     perf: Performance;
@@ -103,7 +105,8 @@ export type SecretLintProfilerOptions = {
     /**
      * If `enabled` is `false`, the profiler does not do anything.
      * `mark()` becomes no-op and `PerformanceObserver` is not started.
-     * Default: true
+     * Profiling costs performance, so it is opt-in.
+     * Default: false
      */
     enabled?: boolean;
 };
@@ -131,7 +134,7 @@ export class SecretLintProfiler {
     constructor(options: SecretLintProfilerOptions) {
         this.perf = options.perf;
         this.PerformanceObserver = options.PerformanceObserver;
-        this.enabled = options.enabled ?? true;
+        this.enabled = options.enabled ?? false;
     }
 
     get isEnabled(): boolean {
@@ -154,40 +157,54 @@ export class SecretLintProfiler {
     }
 
     private startObserving() {
-        const pattern = /(.*?)::end(\|\|.*)?/;
         const observer = new this.PerformanceObserver((items: PerformanceObserverEntryList) => {
-            if (!this.enabled) {
-                return;
-            }
-            const entries = items.getEntries();
-            entries.forEach((entry) => {
-                if (entry.entryType === "mark") {
-                    const match = entry.name.match(pattern);
-                    const endIdentifier = match ? match[1] : undefined;
-                    const suffix = match && match[2] ? match[2] : "";
-                    // if mark already {mark}::start, measure start to end
-                    if (endIdentifier) {
-                        const startMarkName = `${endIdentifier}::start${suffix}`;
-                        // create measure only when the paired `{mark}::start` is already marked
-                        if (this.startMarkNames.has(startMarkName)) {
-                            // FIXME: avoid ERR_INVALID_PERFORMANCE_MARK error
-                            this.executionPromises.push(
-                                Promise.resolve().then(() => {
-                                    this.perf.measure(endIdentifier + suffix, startMarkName, entry.name);
-                                }),
-                            );
-                        }
-                    } else {
-                        this.startMarkNames.add(entry.name);
-                    }
-                    this.entries.push(entry);
-                } else if (entry.entryType === "measure") {
-                    this.measures.push(entry);
-                }
-            });
+            this.handleEntries(items.getEntries());
         });
         observer.observe({ entryTypes: ["mark", "measure"] });
         this.observer = observer;
+    }
+
+    private handleEntries(entries: PerformanceEntry[]) {
+        if (!this.enabled) {
+            return;
+        }
+        const pattern = /(.*?)::end(\|\|.*)?/;
+        entries.forEach((entry) => {
+            if (entry.entryType === "mark") {
+                const match = entry.name.match(pattern);
+                const endIdentifier = match ? match[1] : undefined;
+                const suffix = match && match[2] ? match[2] : "";
+                // if mark already {mark}::start, measure start to end
+                if (endIdentifier) {
+                    const startMarkName = `${endIdentifier}::start${suffix}`;
+                    // create measure only when the paired `{mark}::start` is already marked
+                    if (this.startMarkNames.has(startMarkName)) {
+                        // FIXME: avoid ERR_INVALID_PERFORMANCE_MARK error
+                        this.executionPromises.push(
+                            Promise.resolve().then(() => {
+                                this.perf.measure(endIdentifier + suffix, startMarkName, entry.name);
+                            }),
+                        );
+                    }
+                } else {
+                    this.startMarkNames.add(entry.name);
+                }
+                this.entries.push(entry);
+            } else if (entry.entryType === "measure") {
+                this.measures.push(entry);
+            }
+        });
+    }
+
+    /**
+     * PerformanceObserver delivers entries asynchronously.
+     * Take the entries that are not delivered yet, so that the result includes marks made just before.
+     */
+    private flushObserver() {
+        const records = this.observer?.takeRecords?.();
+        if (records && records.length > 0) {
+            this.handleEntries(records);
+        }
     }
 
     private stopObserving() {
@@ -222,12 +239,16 @@ export class SecretLintProfiler {
     };
 
     async getEntries() {
+        this.flushObserver();
         await this.waifForExecutionPromises();
         return this.entries;
     }
 
     async getMeasures() {
+        this.flushObserver();
         await this.waifForExecutionPromises();
+        // measures created by the marks above
+        this.flushObserver();
         return this.measures;
     }
 }

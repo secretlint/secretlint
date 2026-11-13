@@ -1,4 +1,3 @@
-import { EventEmitter } from "./helper/promise-event-emitter.js";
 import {
     SecretLintCoreIgnoreDescriptor,
     SecretLintCoreIgnoreMessage,
@@ -14,43 +13,12 @@ import {
 } from "@secretlint/types";
 import { createTranslator } from "./helper/SecretLintRuleMessageTranslator.js";
 
-type Handler<T> = (descriptor: T) => void;
+/**
+ * The receiver of the messages that rules report for a source code
+ */
 export type ContextEvents = {
     report(descriptor: SecretLintCoreResultMessage): void;
-    onReport(handler: Handler<SecretLintCoreResultMessage>): () => void;
     ignore(descriptor: SecretLintCoreIgnoreMessage): void;
-    onIgnore(handler: Handler<SecretLintCoreIgnoreMessage>): () => void;
-};
-export const createContextEvents = (): ContextEvents => {
-    const contextEvents = new EventEmitter();
-    const REPORT_SYMBOL = Symbol("report");
-    const IGNORE_SYMBOL = Symbol("ignore");
-    return {
-        report(descriptor: SecretLintCoreResultMessage) {
-            contextEvents.emit(REPORT_SYMBOL, descriptor);
-        },
-        onReport(handler: Handler<SecretLintCoreResultMessage>) {
-            const listener = (descriptor: SecretLintCoreResultMessage) => {
-                handler(descriptor);
-            };
-            contextEvents.on(REPORT_SYMBOL, listener);
-            return () => {
-                contextEvents.off(REPORT_SYMBOL, listener);
-            };
-        },
-        ignore(descriptor: SecretLintCoreIgnoreMessage) {
-            contextEvents.emit(IGNORE_SYMBOL, descriptor);
-        },
-        onIgnore(handler: Handler<SecretLintCoreIgnoreMessage>) {
-            const listener = (descriptor: SecretLintCoreIgnoreMessage) => {
-                handler(descriptor);
-            };
-            contextEvents.on(IGNORE_SYMBOL, listener);
-            return () => {
-                contextEvents.off(IGNORE_SYMBOL, listener);
-            };
-        },
-    };
 };
 
 export type CreateRuleContextOptions = {

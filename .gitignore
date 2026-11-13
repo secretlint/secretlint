@@ -172,3 +172,5 @@ browser/
 /module/
 /lib/
 *.tsbuildinfo
+
+/.sdev/

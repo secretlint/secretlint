@@ -15,9 +15,9 @@ CLI (secretlint) → SecretLintEngine (@secretlint/node) → config-loader → c
 ```
 
 1. **CLI** (`packages/secretlint/src/cli.ts`) parses arguments, calls `runSecretLint()`
-2. **SecretLintEngine** (`packages/@secretlint/node`) loads config, discovers files via glob, processes files in parallel with `p-map`
-3. **config-loader** searches for `.secretlintrc.*`, validates with AJV schema, dynamically imports rule modules
-4. **core** (`packages/@secretlint/core/src/index.ts` - `lintSource()`) creates `SecretLintSourceCode`, registers scanner/filter rules, runs them, collects messages
+2. **SecretLintEngine** (`packages/@secretlint/node`) loads config, discovers files via glob, lints files one by one
+3. **config-loader** searches for `.secretlintrc.*`, validates with AJV schema, resolves each rule id from the built-in rules of core (`@secretlint/core/builtin`) first, and dynamically imports rule modules only for other ids
+4. **core** (`packages/@secretlint/core/src/index.ts` - `lintSource()`) builds a lint plan per config (`LintPlan.ts`), scans the content once for the keywords of all rules, runs the matching `patterns` and rules, collects messages
 5. **RuleContext** (`packages/@secretlint/core/src/RuleContext.ts`) provides `report()`, `ignore()`, `createTranslator()` to each rule
 6. **formatter** converts results to textlint-compatible format, applies selected formatter (stylish, json, sarif, table, mask-result)
 
@@ -49,6 +49,7 @@ pnpm catalog (`pnpm-workspace.yaml` with `strictCatalog: true`) manages shared d
 - **Format**: `pnpm format` (Prettier)
 - **Lint**: `pnpm lint` (runs secretlint itself)
 - **CI check**: `pnpm run ci` (build + test + lint)
+- **Browser test**: `pnpm turbo run build --filter=@secretlint/e2e-browser... && cd e2e/core-browser && pnpm exec playwright install chromium && pnpm run test:browser` (bundles `@secretlint/core` + the recommend preset without Node.js polyfills and runs them in Chromium)
 - **Generate new rule**: `pnpm run gen:rule`
 
 ## Monorepo Structure
@@ -59,12 +60,18 @@ packages/
   @secretlint/
     types/                 # Core TypeScript type definitions
     core/                  # Linting engine
-    tester/                # Snapshot testing utilities
+      src/builtin/rules/<name>/  # Built-in rules (code of the official rules)
+      src/builtin/index.ts       # Built-in table: rule id -> rule, and the rules of the presets
+      src/testing/               # Snapshot test runner (`@secretlint/core/testing`)
+      test/builtin/rules/<name>/snapshots/      # Snapshot tests of each built-in rule
+    tester/                # Snapshot testing for rules outside core (wraps `@secretlint/core/testing`)
     config-loader/         # .secretlintrc loader
     node/                  # Node.js integration
-    secretlint-rule-*/     # Individual rule packages (30+)
-    secretlint-rule-preset-recommend/  # Stable preset
-    secretlint-rule-preset-canary/     # Experimental preset
+    secretlint-rule-*/     # Compatibility packages that re-export a built-in rule (no tests),
+                           # and the rules that are not built in (no-dotenv, no-homedir, no-k8s-kind-secret, secp256k1-privatekey)
+    secretlint-rule-preset-recommend/  # Stable preset (re-exports the built-in preset)
+    secretlint-rule-preset-canary/     # Experimental preset (re-exports the built-in preset)
+e2e/core-browser/          # Browser test of core + recommend preset (Playwright)
 docs/                      # Documentation
 examples/                  # Example projects
 .scaffdog/                 # Template for generating new rules
@@ -75,8 +82,8 @@ examples/                  # Example projects
 - **Language**: TypeScript (strict mode)
 - **Module system**: ESM (`"type": "module"`)
 - **Formatter**: Prettier (printWidth: 120, tabWidth: 4, singleQuote: false, trailingComma: none)
-- **Test framework**: Node.js native `test` module + `@secretlint/tester` for snapshots (`@secretlint/core` and `@secretlint/node` use vitest)
-- **Single package test**: `pnpm test --filter="@secretlint/secretlint-rule-<name>"`
+- **Test framework**: vitest for `@secretlint/core` (including the built-in rules) and `@secretlint/node`; Node.js native `test` module + `@secretlint/tester` for the rules outside core
+- **Single package test**: `pnpm test --filter="@secretlint/core"`; one built-in rule: `cd packages/@secretlint/core && npx vitest run test/builtin/rules.test.ts -t "secretlint-rule-<name>"`
 - **Commit messages**: Angular Convention (`type(component): description`)
   - Types: `feat`, `fix`, `docs`, `style`, `perf`, `test`, `chore`, `refactor`
 
@@ -88,14 +95,23 @@ examples/                  # Example projects
 pnpm run gen:rule
 ```
 
-This uses scaffdog (`.scaffdog/new-rule.md`) to generate the rule package structure.
+This uses scaffdog (`.scaffdog/new-rule.md`) to generate a built-in rule:
+
+- `packages/@secretlint/core/src/builtin/rules/<name>/index.ts` and `README.md`
+- `packages/@secretlint/core/test/builtin/rules/<name>/snapshots/` (snapshot tests)
+
+**Do not add a new npm package for a rule.** Official rules are built into `@secretlint/core`, and a new package needs a manual npm trusted publishing setup.
+The rule id stays `@secretlint/secretlint-rule-<name>`, and the config loader resolves it from core without a package.
+
+Then register the rule in `packages/@secretlint/core/src/builtin/index.ts`: import it, and add it to `builtinRules` and `canaryRules`.
 
 ### Step 2: Implement the Rule
 
-Every rule must export a `creator` object and `messages`. The canonical structure:
+Every rule must export a `creator` object and `messages`.
+A rule that finds secrets with regular expressions is defined with `patterns`, and it has no `create()`. The canonical structure:
 
 ```typescript
-import type { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
+import type { SecretLintRuleCreator } from "@secretlint/types";
 
 // 1. Define messages with at least `en` locale (ja is recommended)
 export const messages = {
@@ -122,39 +138,40 @@ export const creator: SecretLintRuleCreator<Options> = {
             url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-<name>/README.md",
         },
     },
-    create(context, options) {
-        const t = context.createTranslator(messages);
-        const normalizedOptions = {
-            allows: options.allows || [],
-        };
-        return {
-            file(source: SecretLintSourceCode) {
-                const pattern = /(?<!\p{L})YOUR_PREFIX_[A-Za-z0-9]{20,60}(?![A-Za-z0-9])/gu;
-                const matches = source.content.matchAll(pattern);
-                for (const match of matches) {
-                    const index = match.index || 0;
-                    const matchString = match[0] || "";
-                    const range = [index, index + matchString.length] as const;
-                    // Check allows list using @textlint/regexp-string-matcher
-                    context.report({
-                        message: t("MESSAGE_ID", { ID: matchString }),
-                        range,
-                    });
-                }
+    patterns: [
+        {
+            pattern: /(?<!\p{L})YOUR_PREFIX_[A-Za-z0-9]{20,60}(?![A-Za-z0-9])/gu,
+            keywords: ["YOUR_PREFIX_"], // every match contains one of them
+            scope: "line",              // a match never includes a line break
+            report(match, context) {
+                // Check allows list using @textlint/regexp-string-matcher with context.options.allows
+                const t = context.createTranslator(messages);
+                context.report({
+                    message: t("MESSAGE_ID", { ID: match.text }),
+                    range: match.range,
+                });
             },
-        };
-    },
+        },
+    ],
 };
 ```
+
+The core scans the content once for the keywords of all rules (as UTF-8 bytes if the source has `contentBytes`),
+runs `pattern` only where its keywords are found, and calls `report()` for each match.
+A rule that needs code other than regular expressions (e.g. checks the file name or parses a binary) defines `create(context, options)` that returns `{ file(source) {} }` instead of `patterns`.
 
 ### Key Rules for Rule Implementation
 
 - **Always export `creator` and `messages`** from `src/index.ts`
 - **`meta.id`** must match the npm package name exactly
 - **`meta.type`** is `"scanner"` for detection rules, `"filter"` for rules that suppress other rules' reports
+- **`keywords`** of a pattern lists ASCII strings that every match of the pattern contains, such as a token prefix (ASCII case-insensitive). Every string the pattern can report must contain at least one keyword, or the rule misses it. Omit `keywords` if no such string exists; the pattern then runs for all content. Make keywords as specific as the pattern allows (`"http://"` instead of `"://"`), and set `caseSensitiveKeywords: true` if the pattern is case-sensitive and the keyword is common in another case (`"SG."` vs `"msg."`)
+- **`scope: "line"`** runs the pattern only on the lines that contain a keyword. Use it only if a match never includes a line break and the result does not depend on other lines. Otherwise use `"file"` (default)
+- **A pattern has only the properties that `SecretLintRulePattern` defines.** The core throws on an unknown property, so an older secretlint never runs a newer rule with a different result. When adding a property to the pattern format, add it with a new name and never change the meaning of an existing property
+- **The snapshot test runner checks `keywords` and `scope`**: for each snapshot it compares the result with the result of running the patterns on the whole content, and fails if they differ
+- **`meta.keywords`** (optional, for rules with `create()`) skips the rule if the text content contains none of the keywords. Keywords are not checked for binary content. A rule with `patterns` does not need it
 - **Messages must have at least `en` locale**; `ja` is strongly recommended
 - **Always support `allows` option** using `@textlint/regexp-string-matcher` for user-defined exclusions
-- **Use `matchAll` with global regex** for pattern scanning
 - **Regex boundary conventions**:
   - Leading: use `(?<!\p{L})` to prevent matching mid-word
   - Trailing: add a negative lookahead matching the pattern's character class (e.g., `(?![A-Za-z0-9])` or `(?![a-f0-9])`). Without this, greedy quantifiers over-match into adjacent content, causing incorrect `range` and breaking `allows` list matching
@@ -167,25 +184,30 @@ export const creator: SecretLintRuleCreator<Options> = {
 
 ### Step 3: Write Tests
 
-Tests use snapshot testing with `@secretlint/tester`:
+The tests of the built-in rules are in `@secretlint/core`, like the rules (the same layout as oxlint and ESLint: the engine, the rules, and the test runner in one package).
+`@secretlint/tester` depends on `@secretlint/core`, so core uses its own runner `@secretlint/core/testing`, and `@secretlint/tester` wraps it for the rules outside core.
+
+`packages/@secretlint/core/test/builtin/rules.test.ts` runs the snapshot directory of each built-in rule:
 
 ```
-test/
-  index.test.ts
+packages/@secretlint/core/test/builtin/rules/<name>/
   snapshots/
     ng.secret-found/       # Test case expecting errors
       input.txt            # Input content
       output.json          # Expected output (auto-generated)
+      .secretlintrc.json   # (optional) config of the case. Rule ids are resolved from the built-in rules
     ok.valid-content/      # Test case expecting no errors
       input.txt
       output.json
 ```
 
 - **Naming convention**: `ok.*` for valid (no errors), `ng.*` for invalid (errors expected)
-- **Generate snapshots**: `UPDATE_SNAPSHOT=1 pnpm test`
-- **Optional files**: `options.json` or `options.ts` for per-case rule options
+- **Generate snapshots**: `cd packages/@secretlint/core && npm run updateSnapshot`
+- **Optional files**: `.secretlintrc.json` for per-case rule options, and `options.json` or `options.ts` for `{ inputFilePath }`
+- **A rule that needs other rules in the test** (like `filter-comments`): add them to `additionalRules` in `rules.test.ts`
+- **Preset tests**: `presets.test.ts` runs the cases of each rule in a preset through the preset, with the rule's options under the preset entry. The messages of the rule must equal the rule's `output.json` (with `ruleParentId`), and an `ok.*` case must have no message of any rule in the preset. The presets have no test case files of their own
 
-Test file pattern:
+Tests of a rule outside core use `@secretlint/tester`:
 
 ```typescript
 import test from "node:test";
@@ -210,12 +232,9 @@ test("@secretlint/secretlint-rule-<name>", async (t) => {
 
 ### Step 4: Add to Canary Preset
 
-- Add dependency to `secretlint-rule-preset-canary/package.json`
-- Import and register in `secretlint-rule-preset-canary/src/index.ts`
-- Run: `pnpm run -r --filter "@secretlint/secretlint-rule-preset-canary" import-test`
+- Add the rule to `canaryRules` in `packages/@secretlint/core/src/builtin/index.ts` (done in Step 1)
 
-> **Note**: Syncing to the **recommend** preset is a separate task done at major release time.
-> Run: `pnpm run -r --filter "@secretlint/secretlint-rule-preset-recommend" sync-canary`
+> **Note**: Adding the rule to the **recommend** preset (`recommendedRules`) is a separate task done at major release time.
 
 ## Agent Workflows
 
@@ -223,16 +242,17 @@ test("@secretlint/secretlint-rule-<name>", async (t) => {
 
 When creating a new rule, verify every item:
 
-1. `src/index.ts` exports `creator` (SecretLintRuleCreator) and `messages`
+1. `core/src/builtin/rules/<name>/index.ts` exports `creator` (SecretLintRuleCreator) and `messages`, and is registered in `core/src/builtin/index.ts`
 2. Messages include `en` and `ja` locales
 3. Options type has `allows?: string[]`
-4. `meta.id` exactly matches package name `@secretlint/secretlint-rule-<name>`
+4. `meta.id` is exactly `@secretlint/secretlint-rule-<name>` (`<name>` is the directory name)
 5. `meta.type` is `"scanner"` (detection) or `"filter"` (suppression)
-6. Detection uses `matchAll` with global regex, reports via `context.report({ message, range })`
-7. Allow list integrates `@textlint/regexp-string-matcher`
-8. Tests have `ng.*` (error cases) and `ok.*` (valid cases) in `test/snapshots/`
-9. Snapshots generated with `UPDATE_SNAPSHOT=1 pnpm test`
-10. README.md documents the rule's purpose, detected patterns, and options
+6. `meta.keywords` (if set) is contained in every string the rule reports
+7. Detection uses `matchAll` with global regex, reports via `context.report({ message, range })`
+8. Allow list integrates `@textlint/regexp-string-matcher`
+9. Tests have `ng.*` (error cases) and `ok.*` (valid cases) in the snapshot directory
+10. Snapshots generated with `UPDATE_SNAPSHOT=1 pnpm test`
+11. README.md documents the rule's purpose, detected patterns, and options
 
 **Common pitfalls:**
 - Regex must use the `g` flag for `matchAll`
@@ -242,9 +262,9 @@ When creating a new rule, verify every item:
 
 ### Bug Fixer
 
-1. **Reproduce**: Create a minimal `input.txt` in the relevant rule's `test/snapshots/`
-2. **Debug**: Run single package test: `cd packages/@secretlint/secretlint-rule-<name> && pnpm test`
-3. **Fix**: Modify `src/index.ts`, update snapshots if output changes
+1. **Reproduce**: Create a minimal `input.txt` in the rule's snapshot directory (`packages/@secretlint/core/test/builtin/rules/<name>/snapshots/` for a built-in rule)
+2. **Debug**: Run the tests of the rule: `cd packages/@secretlint/core && npx vitest run test/builtin/rules.test.ts -t "secretlint-rule-<name>"` (a rule outside core: `cd packages/@secretlint/secretlint-rule-<name> && pnpm test`)
+3. **Fix**: Modify the rule (`packages/@secretlint/core/src/builtin/rules/<name>/` for a built-in rule), update snapshots if output changes
 4. **Verify**: Run `pnpm test` from root to check for regressions
 
 ### Code Reviewer
@@ -253,7 +273,7 @@ When creating a new rule, verify every item:
 - Check that `allows` option is properly supported
 - Ensure messages have both `en` and `ja` locales
 - Confirm test cases cover both detection and non-detection scenarios
-- Verify `meta.id` matches the package name
+- Verify `meta.id` is `@secretlint/secretlint-rule-<name>` and matches the directory name
 - Check Prettier formatting (printWidth: 120, tabWidth: 4)
 
 ## Important Notes
@@ -262,3 +282,23 @@ When creating a new rule, verify every item:
 - Releases use OIDC trusted publishing (no npm tokens)
 - Pre-commit hooks run Prettier via `lint-staged`
 - The project uses its own tool (`secretlint`) to lint itself
+
+<!-- sdev:begin -->
+## Specifications-first development
+
+Before creating or changing specifications, design, implementation, or verification, run `./bin/sdev help` and choose the guide for the task.
+Tasks include defining product purpose, specifying feature requirements, designing an implementation, and updating documents.
+
+Treat an idea such as 'I want to build this' as a starting point for discussing purpose and scope, rather than permission to implement.
+When only a document is requested, present the document and its key points, then stop. When implementation is requested, present requirement and design decisions along the way.
+Ask the user about unresolved decisions affecting purpose, scope, or observable behavior.
+Ask instead of inventing purposes or constraints; prefer available question tools and follow up according to the answers.
+Read `./bin/sdev help workflow` for the full workflow.
+
+Prioritize the consuming project's instructions, conventions, and existing specifications.
+If no template is designated for a new document, choose one from `./bin/sdev template`. Respect an existing document's structure when editing it.
+
+Use this project's Product, Requirements, and Design. Without another placement rule, put specifications under `docs/products/`.
+Use the default language and translations configured in sdev.toml. Default-language documents use `.md`; other language versions use `.<language>.md`.
+Keep language versions equivalent and update them in the same change.
+<!-- sdev:end -->

@@ -3,7 +3,6 @@
     "stdout": [
         {
             "filePath": "[SNAPSHOT]/--no-glob-valid/input-(safe).[data].md",
-            "sourceContent": "THIS IS PUBLIC DATA ONLY!\n",
             "sourceContentType": "text",
             "messages": []
         }

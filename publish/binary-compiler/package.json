@@ -12,12 +12,10 @@
         "@secretlint/formatter": "workspace:*",
         "@secretlint/secretlint-formatter-sarif": "workspace:*",
         "@secretlint/resolver": "workspace:*",
-        "@secretlint/secretlint-rule-pattern": "workspace:*",
-        "@secretlint/secretlint-rule-preset-recommend": "workspace:*",
         "secretlint": "workspace:*"
     },
     "peerDependencies": {
         "typescript": "^5.0.0"
     },
-    "version": "13.0.7"
+    "version": "13.1.0"
 }

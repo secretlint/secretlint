@@ -82,6 +82,28 @@ Install with [npm](https://www.npmjs.com/):
         - Unexpected error occurred, fatal error.
 
 
+## MessageIDs
+
+Config problems are reported as messages for the config file, like lint results.
+
+### EMPTY_RULES
+> No rules are configured. secretlint does not detect any secrets. Add rules to "rules" in the config file.
+
+Severity: `warning`
+
+The `rules` array in the config file is empty, so secretlint checks files but can not find any secrets.
+Install a rule or a preset and add it to `rules`.
+
+```json
+{
+    "rules": [
+        {
+            "id": "@secretlint/secretlint-rule-preset-recommend"
+        }
+    ]
+}
+```
+
 ## Changelog
 
 See [Releases page](https://github.com/secretlint/secretlint/releases).

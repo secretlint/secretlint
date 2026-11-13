@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/resolver",
-    "version": "13.0.7",
+    "version": "13.1.0",
     "description": "Module Resolver Utility for Secretlint",
     "keywords": [
         "secretlint",
@@ -43,7 +43,6 @@
     "scripts": {
         "build": "tsc --build",
         "clean": "tsc --build --clean",
-        "create-validation": "create-validator-ts src/descriptor-types.ts --additionalProperties",
         "prepublishOnly": "npm run clean && npm run build",
         "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
         "prepublish": "npm run --if-present build",
