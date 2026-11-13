@@ -127,7 +127,7 @@ GitHubのsecret scanningはコミットやpushの後にGitHub側で動きます�
 | quick start | `npx @secretlint/quick-start`で、設定ファイルなしにrecommendプリセットで一度だけ実行する | 未作成 |
 | Dockerイメージ | Node.jsや設定なしで`secretlint/secretlint`を実行する。組み込みルールとSARIFフォーマッターを使える | 未作成 |
 | 単一実行ファイル | GitHub ReleasesのLinux、macOS、Windows向けの実行ファイルを、Node.jsなしで実行する。組み込みルールとSARIFフォーマッターを使える | [Requirements](features/single-executable-binary/requirements.ja.md) |
-| 性能プロファイル | `--profile`で時間のかかった処理を表示する | 未作成 |
+| 性能プロファイル | `--profile`で時間のかかった処理を表示する | [Requirements](features/performance-profile/requirements.ja.md) |
 
 ## 成功の定義
 
