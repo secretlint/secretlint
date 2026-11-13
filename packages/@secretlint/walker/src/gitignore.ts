@@ -10,7 +10,7 @@
  * Most rules of real `.gitignore` files are a file name (`node_modules`), an extension
  * (`*.log`), or a path without wildcards (`build/Release`), so they are matched with string
  * comparisons, like the match strategies of ripgrep's `globset` crate.
- * The other rules are matched with a regular expression of {@link compileGlob}.
+ * The other rules are matched with a matcher of {@link compileGlob}.
  *
  * The matcher tests only the given path. It does not test the parent
  * directories of the path, because a walker does not descend into an
@@ -28,7 +28,7 @@
  *
  * This module does not depend on Node.js or on other packages.
  */
-import { compileGlob, toByteString } from "./glob.js";
+import { compileGlob, toByteString, type Glob } from "./glob.js";
 
 /**
  * A segment of a rule: a part of the pattern between `/`, which is matched against a name.
@@ -38,7 +38,7 @@ type Segment =
     | { type: "globstar" }
     | { type: "star"; parts: string[] }
     /** A pattern that has `?`, a character class, or an escaped character */
-    | { type: "glob"; regexp: RegExp };
+    | { type: "glob"; glob: Glob };
 
 type Rule = {
     negative: boolean;
@@ -48,13 +48,13 @@ type Rule = {
     nameOnly: boolean;
     /**
      * The segments of the rule, if each segment can be matched alone.
-     * null for a rule with `/` that is matched with the whole path by `pathRegExp`.
+     * null for a rule with `/` that is matched with the whole path by `pathGlob`.
      */
     segments: Segment[] | null;
     /** For a rule with `/`: the beginning of the pattern that has no wildcard. The path starts with it. */
     prefix: string;
-    /** For a rule with `/` that has no `segments`: the regular expression for the whole path */
-    pathRegExp: RegExp | undefined;
+    /** For a rule with `/` that has no `segments`: the matcher for the whole path */
+    pathGlob: Glob | undefined;
 };
 
 /**
@@ -147,8 +147,8 @@ const parseNameSegment = (pattern: string, ignoreCase: boolean): Segment | null 
     if (!/[?[\\]/.test(pattern)) {
         return { type: "star", parts: foldName(pattern, ignoreCase).split(/\*+/) };
     }
-    const regexp = compileGlob(pattern, { pathname: false, caseFold: ignoreCase });
-    return regexp === null ? null : { type: "glob", regexp };
+    const glob = compileGlob(pattern, { pathname: false, caseFold: ignoreCase });
+    return glob === null ? null : { type: "glob", glob };
 };
 
 /**
@@ -173,8 +173,8 @@ const parsePathSegment = (segment: string, ignoreCase: boolean): Segment | null 
         return { type: "star", parts: foldName(segment, ignoreCase).split("*") };
     }
     // A segment that is not complete alone ends with a backslash or has a character class that is not closed
-    const regexp = compileGlob(segment, { pathname: true, caseFold: ignoreCase });
-    return regexp === null ? null : { type: "glob", regexp };
+    const glob = compileGlob(segment, { pathname: true, caseFold: ignoreCase });
+    return glob === null ? null : { type: "glob", glob };
 };
 
 /**
@@ -230,7 +230,7 @@ const parseLine = (rawLine: string, ignoreCase: boolean): Rule | undefined => {
         if (segment === null) {
             return undefined;
         }
-        return { negative, dirOnly, nameOnly: true, segments: [segment], prefix: "", pathRegExp: undefined };
+        return { negative, dirOnly, nameOnly: true, segments: [segment], prefix: "", pathGlob: undefined };
     }
     if (pattern.startsWith("/")) {
         pattern = pattern.slice(1);
@@ -250,17 +250,17 @@ const parseLine = (rawLine: string, ignoreCase: boolean): Rule | undefined => {
     }
     const prefix = foldName(pattern.slice(0, prefixLength), ignoreCase);
     if (segments !== null) {
-        return { negative, dirOnly, nameOnly: false, segments, prefix, pathRegExp: undefined };
+        return { negative, dirOnly, nameOnly: false, segments, prefix, pathGlob: undefined };
     }
-    const pathRegExp = compileGlob(pattern.slice(prefixLength), {
+    const pathGlob = compileGlob(pattern.slice(prefixLength), {
         pathname: true,
         caseFold: ignoreCase,
         literalPrefix: prefix,
     });
-    if (pathRegExp === null) {
+    if (pathGlob === null) {
         return undefined;
     }
-    return { negative, dirOnly, nameOnly: false, segments, prefix, pathRegExp };
+    return { negative, dirOnly, nameOnly: false, segments, prefix, pathGlob };
 };
 
 /**
@@ -314,7 +314,7 @@ export const compileGitignore = (contents: readonly string[], options: Gitignore
             case "star":
                 return matchStar(segment.parts, value);
             case "glob":
-                return segment.regexp.test(toByteString(value));
+                return segment.glob.test(toByteString(value));
             default:
                 return true;
         }
@@ -323,27 +323,47 @@ export const compileGitignore = (contents: readonly string[], options: Gitignore
      * Match the rule segments against the path segments.
      * `**` matches zero or more segments, except that a trailing `**` matches one or more segments.
      */
-    const matchSegments = (segments: Segment[], si: number, values: string[], vi: number): boolean => {
-        while (si < segments.length) {
-            const segment = segments[si] as Segment;
-            if (segment.type === "globstar") {
-                if (si === segments.length - 1) {
-                    return vi < values.length;
-                }
-                for (let next = vi; next <= values.length; next++) {
-                    if (matchSegments(segments, si + 1, values, next)) {
-                        return true;
+    const matchSegments = (
+        segments: Segment[],
+        startIndex: number,
+        values: string[],
+        valueStartIndex: number,
+    ): boolean => {
+        let si = startIndex;
+        let vi = valueStartIndex;
+        // The segment after the last `**`, and the path segment where the segments after it are tried.
+        // When the rest does not match, only the last `**` takes one more path segment:
+        // an earlier `**` does not need to, because the last `**` matches any path segments.
+        // So the time is limited by (path segments) × (rule segments), and a rule that has many `**` is not slow.
+        let globstarNextIndex = -1;
+        let globstarValueIndex = 0;
+        for (;;) {
+            if (si < segments.length) {
+                const segment = segments[si] as Segment;
+                if (segment.type === "globstar") {
+                    if (si === segments.length - 1) {
+                        return vi < values.length;
                     }
+                    si++;
+                    globstarNextIndex = si;
+                    globstarValueIndex = vi;
+                    continue;
                 }
+                if (vi < values.length && matchSegment(segment, values[vi] as string)) {
+                    si++;
+                    vi++;
+                    continue;
+                }
+            } else if (vi === values.length) {
+                return true;
+            }
+            if (globstarNextIndex === -1 || globstarValueIndex >= values.length) {
                 return false;
             }
-            if (vi >= values.length || !matchSegment(segment, values[vi] as string)) {
-                return false;
-            }
-            si++;
-            vi++;
+            globstarValueIndex++;
+            si = globstarNextIndex;
+            vi = globstarValueIndex;
         }
-        return vi === values.length;
     };
     // The rule matches the name of the entry at any depth: `name`, or `**/name`
     const getNameSegment = (rule: Rule): Segment | undefined => {
@@ -523,9 +543,7 @@ export const compileGitignore = (contents: readonly string[], options: Gitignore
             if (orderedRule.nameSegment !== undefined) {
                 matched = matchSegment(orderedRule.nameSegment, foldedName);
             } else if (orderedRule.rule.segments === null) {
-                matched = (orderedRule.rule.pathRegExp as RegExp).test(
-                    toByteString(directoryRules.relDir + foldedName),
-                );
+                matched = (orderedRule.rule.pathGlob as Glob).test(toByteString(directoryRules.relDir + foldedName));
             } else {
                 values ??= (directoryRules.relDir + foldedName).split("/");
                 matched = matchSegments(orderedRule.rule.segments, 0, values, 0);

@@ -148,6 +148,8 @@ None. Git is not run: Secretlint reads the ignore files itself, so it works wher
 
 ## Security considerations
 
+An ignore file can be written by someone whom the user does not trust, for example in a pull request. A rule in it can exclude files, but it must not make the command hang.
+
 A file that is ignored is not linted, so a secret in it is not reported. An ignore rule that is too wide hides secrets. Files that Git ignores are not committed, so a secret in them does not reach the repository by a commit.
 
 ## Open questions

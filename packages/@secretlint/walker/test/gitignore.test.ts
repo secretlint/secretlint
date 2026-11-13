@@ -152,4 +152,30 @@ describe("compileGitignore", () => {
         expect(entry("packages/a/", "lib", true)).toBe("i");
         expect(entry("packages/a/b/", "lib", true)).toBe("-");
     });
+    it("does not take exponential time for a rule that has many wildcards", () => {
+        // Each of them took seconds or more with a backtracking matcher
+        const name = "a".repeat(200);
+        const deepPath = `${"a/".repeat(200)}c`;
+        const cases: [rule: string, path: string][] = [
+            [`${"*a".repeat(200)}*b`, name],
+            [`?${"*a".repeat(200)}*b`, name],
+            [`${"[a]*".repeat(200)}b`, name],
+            [`/x/?${"*a".repeat(200)}*b`, `x/${name}`],
+            [`/q${"a**".repeat(200)}b`, `q${name}`],
+            [`${"**/a/".repeat(100)}b`, deepPath],
+            [`x**/${"**/a/".repeat(100)}b`, `x/${deepPath}`],
+            [`/**/${"?/".repeat(100)}b`, deepPath],
+        ];
+        const start = performance.now();
+        for (const [rule, path] of cases) {
+            for (const ignoreCase of [false, true]) {
+                expect(compileGitignore([rule], { ignoreCase }).test(path).ignored, rule.slice(0, 20)).toBe(false);
+            }
+        }
+        // It takes a few milliseconds. The limit is loose for a slow machine.
+        expect(performance.now() - start).toBeLessThan(2000);
+    });
+    it("treats a class name that is a property of Object as an unknown class", () => {
+        check(["[[:constructor:]]", "[[:toString:]]x", "[[:__proto__:]]"], { a: "-", ax: "-", c: "-" });
+    });
 });

@@ -267,6 +267,16 @@ const seedAncestorIgnore = (options: {
     return chain;
 };
 
+/** A directory that is being walked: its entries, and the index of the next entry */
+type DirectoryFrame = {
+    /** The directory with a trailing separator in the normalized form, so `prefix + name` is the same as `path.join(absDir, name)`. */
+    prefix: string;
+    entries: readonly Dirent[];
+    index: number;
+    chain: IgnoreChain;
+    state: DirIgnoreState;
+};
+
 /**
  * Walk a directory whose ignore stack has already been seeded for the
  * directory itself. Reads `absDir` once and processes entries.
@@ -276,27 +286,40 @@ const walkSeeded = (absDir: string, chain: IgnoreChain, ctx: WalkContext): void 
     if (entries === null) return;
     // Normalize the directory once, so `prefix + name` is the same as `path.join(absDir, name)`.
     const prefix = path.join(absDir, path.sep);
-    processEntries(prefix, entries, chain, createDirIgnoreState(chain, absDir, null), ctx);
+    processEntries({ prefix, entries, index: 0, chain, state: createDirIgnoreState(chain, absDir, null) }, ctx);
 };
 
 /**
- * Recurse into a child directory: read it once, derive ignore-file presence,
- * extend the ignore chain with that directory's ignore file (if any), then
- * process entries.
+ * Open a child directory: read it once, derive ignore-file presence, and
+ * extend the ignore chain with that directory's ignore file (if any).
+ * Returns null if the directory can not be read.
  */
-const walkSubdir = (
+const openSubdir = (
     absDir: string,
     parentChain: IgnoreChain,
     parentState: DirIgnoreState | null,
     ctx: WalkContext,
     /** `absDir` with a trailing separator in the normalized form. The caller passes it when `absDir` is already normalized. */
     prefix: string = path.join(absDir, path.sep),
-): void => {
+): DirectoryFrame | null => {
     const entries = safeReaddir(absDir);
-    if (entries === null) return;
+    if (entries === null) return null;
     const present = presentIgnoreNames(entries, ctx.ignoreFiles);
     const chain = extendIgnore(parentChain, absDir, ctx.ignoreFiles, present);
-    processEntries(prefix, entries, chain, createDirIgnoreState(chain, absDir, parentState), ctx);
+    return { prefix, entries, index: 0, chain, state: createDirIgnoreState(chain, absDir, parentState) };
+};
+
+/**
+ * Walk a child directory and the directories below it.
+ */
+const walkSubdir = (
+    absDir: string,
+    parentChain: IgnoreChain,
+    parentState: DirIgnoreState | null,
+    ctx: WalkContext,
+): void => {
+    const frame = openSubdir(absDir, parentChain, parentState, ctx);
+    if (frame !== null) processEntries(frame, ctx);
 };
 
 /**
@@ -344,21 +367,23 @@ const resolveEntryKind = (
  * `vendor/` excludes a `vendor → /shared/lib` symlink without us having
  * to consult `/shared/lib`'s rules). Cycles are detected via realpath.
  */
-const processEntries = (
-    /** The directory with a trailing separator in the normalized form, so `prefix + name` is the same as `path.join(absDir, name)`. */
-    prefix: string,
-    entries: readonly Dirent[],
-    chain: IgnoreChain,
-    state: DirIgnoreState,
-    ctx: WalkContext,
-): void => {
-    for (const entry of entries) {
-        const full = prefix + entry.name;
+const processEntries = (root: DirectoryFrame, ctx: WalkContext): void => {
+    // The directories from `root` to the one that is being walked.
+    // It is a list and not a recursive call, so a very deep tree does not overflow the call stack.
+    const frames: DirectoryFrame[] = [root];
+    while (frames.length > 0) {
+        const frame = frames[frames.length - 1] as DirectoryFrame;
+        if (frame.index >= frame.entries.length) {
+            frames.pop();
+            continue;
+        }
+        const entry = frame.entries[frame.index++] as Dirent;
+        const full = frame.prefix + entry.name;
         const resolved = resolveEntryKind(full, entry, ctx.followSymlinks, ctx.listSymlinks);
         if (resolved === null) continue;
         const isDir = resolved.kind === "dir";
         // Ignore evaluation always uses the symlink's path, never the resolved target.
-        if (isIgnoredInDir(state, entry.name, isDir)) continue;
+        if (isIgnoredInDir(frame.state, entry.name, isDir)) continue;
         if (isDir) {
             if (resolved.isSymlink) {
                 let real;
@@ -373,7 +398,9 @@ const processEntries = (
                 ctx.visitedRealPaths.add(real);
             }
             // `full` is normalized, because `prefix` is
-            walkSubdir(full, chain, state, ctx, full + path.sep);
+            const child = openSubdir(full, frame.chain, frame.state, ctx, full + path.sep);
+            // The entries of the child directory are walked before the next entry of this directory
+            if (child !== null) frames.push(child);
         } else if (ctx.matcher === null) {
             ctx.results.push(toPosix(full));
         } else {

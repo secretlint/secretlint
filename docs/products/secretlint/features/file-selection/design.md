@@ -49,8 +49,15 @@ The matcher is written from the manual and from the observed results of Git. It 
 
 Most rules are a name (`node_modules`), an extension (`*.log`), or a path without wildcards.
 A matcher puts names and extensions in tables, so an entry is tested with a few table lookups, and only the other rules of the directory are tested one by one.
-A rule is compiled to a regular expression only when it has `?`, a character class, an escape, or `**` that is not a whole segment.
+A rule is compiled to a list of parts for the whole name or path only when it has `?`, a character class, an escape, or `**` that is not a whole segment.
 With `ignoreCase`, the name of an entry is converted to lowercase once, and all levels compare the same string.
+
+### Time of a match
+
+An ignore file can come from a repository that the user does not trust, so a rule must not make the walk hang.
+The matcher does not use regular expressions and does not try every way to match the wildcards. When the rest of a rule does not match, only the last `*` and the last `**` move forward, which is enough to find a match if there is one.
+The time of one test is at most about (length of the path)² × (length of the rule), and a rule such as `*a*a*a*a*b` or `**/a/**/a/**/a/b` is not slower than other rules.
+The walker keeps the directories that it is reading in a list, not in recursive calls, so a tree as deep as the OS allows does not overflow the call stack.
 
 ### Levels
 
