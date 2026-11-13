@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import ignore from "ignore";
-import { compileFastIgnore, type FastIgnore, type FastIgnoreResult } from "./fast-ignore.js";
+import { compileFastIgnore, type DirectoryRules, type FastIgnore, type FastIgnoreResult } from "./fast-ignore.js";
 import { relativeFrom } from "./relative.js";
 
 /**
@@ -147,6 +147,8 @@ export type DirIgnoreState = {
         level: IgnoreChain;
         /** The directory relative to the level's directory in POSIX form, with a trailing `/`. "" for the level's directory itself. */
         relDir: string;
+        /** The rules of the fast matcher for the entries of the directory. undefined for a node-ignore level. */
+        directoryRules: DirectoryRules | undefined;
         /**
          * true if this level ignores the directory or one of its parent directories within the level.
          * Always false for a node-ignore level, because node-ignore tests the parent directories itself.
@@ -188,7 +190,13 @@ export const createDirIgnoreState = (
                 ? parentLevel.parentIgnored || cur.leafMatcher.test(relDir).ignored
                 : cur.matcher.test(relDir).ignored;
         }
-        levels.push({ level: cur, relDir, parentIgnored });
+        levels.push({
+            level: cur,
+            relDir,
+            // The entries of an ignored directory are not tested
+            directoryRules: parentIgnored ? undefined : cur.leafMatcher?.forDirectory(relDir),
+            parentIgnored,
+        });
     }
     return { levels };
 };
@@ -197,10 +205,15 @@ export const createDirIgnoreState = (
  * Same as {@link isIgnoredByChain} for the entry `name` of the directory of `state`.
  */
 export const isIgnoredInDir = (state: DirIgnoreState, name: string, isDirectory: boolean): boolean => {
-    for (const { level, relDir, parentIgnored } of state.levels) {
+    const levels = state.levels;
+    for (let index = 0; index < levels.length; index++) {
+        const { level, relDir, directoryRules, parentIgnored } = levels[index] as DirIgnoreState["levels"][number];
         if (parentIgnored) return true;
-        const target = isDirectory ? `${relDir}${name}/` : relDir + name;
-        const r = (level.leafMatcher ?? level.matcher).test(target);
+        // The fast matcher finds the rules by the name of the entry, so the path is not created for it
+        const r =
+            level.leafMatcher && directoryRules
+                ? level.leafMatcher.testEntry(directoryRules, name, isDirectory)
+                : level.matcher.test(isDirectory ? `${relDir}${name}/` : relDir + name);
         if (r.ignored) return true;
         if (r.unignored) return false;
     }

@@ -181,4 +181,54 @@ describe("compileFastIgnore", () => {
     it("returns no verdict for no rules", () => {
         expect(compileFastIgnore(["# only comment\n\n"])?.test("a")).toEqual({ ignored: false, unignored: false });
     });
+    it("finds the last matching rule among a name, an extension and a path", () => {
+        expectSameAsNodeIgnore(["*.log", "!c.log", "x/c.log"], PATHS);
+        expectSameAsNodeIgnore(["x/c.log", "!*.log", "c.log"], PATHS);
+        expectSameAsNodeIgnore(["node_modules", "!x/node_modules/", "**/node_modules"], PATHS);
+        expectSameAsNodeIgnore(["a", "!a/b", "*b", "!/b"], PATHS);
+        expectSameAsNodeIgnore(["**/a", "!x/a", "a/"], PATHS);
+        expectSameAsNodeIgnore(["npm-debug.log*", "!*.1", "x/*.1"], PATHS);
+    });
+    it("picks the rules for a path by the directory", () => {
+        expectSameAsNodeIgnore(["a/b"], PATHS);
+        expectSameAsNodeIgnore(["a/*/b"], PATHS);
+        expectSameAsNodeIgnore(["a/**"], PATHS);
+        expectSameAsNodeIgnore(["a/**/b"], PATHS);
+        expectSameAsNodeIgnore(["a/**/y/b"], PATHS);
+        expectSameAsNodeIgnore(["**/x/**/b"], PATHS);
+        expectSameAsNodeIgnore(["A/**/B", "!a/x/b"], PATHS);
+        expectSameAsNodeIgnore(["x/**", "!x/a", "x/*.log/"], PATHS);
+    });
+    it("is the same as node-ignore for random rules", () => {
+        // a linear congruential generator, so the test is the same in each run
+        let seed = 20261113;
+        const random = (max: number): number => {
+            seed = (seed * 1103515245 + 12345) & 0x7fffffff;
+            return seed % max;
+        };
+        const pick = <T>(items: readonly T[]): T => items[random(items.length)] as T;
+        const names = ["a", "b", "x", "y", "A", "c.log", ".log", "a.tar.gz", "node_modules", "build", "b.js"];
+        const segments = [...names, "*", "**", "*.log", "*.js", "*.tar.gz", "a*", "*b", "*.l*", ".*", "b*d", "*.LOG"];
+        const createRule = (): string => {
+            let rule = Array.from({ length: 1 + random(3) }, () => pick(segments)).join("/");
+            if (random(4) === 0) rule = `/${rule}`;
+            if (random(4) === 0) rule = `${rule}/`;
+            if (random(4) === 0) rule = `!${rule}`;
+            return rule;
+        };
+        const createPath = (): string => {
+            const relPath = Array.from({ length: 1 + random(4) }, () => pick(names)).join("/");
+            return random(3) === 0 ? `${relPath}/` : relPath;
+        };
+        let count = 0;
+        for (let index = 0; index < 3000; index++) {
+            const rules = Array.from({ length: 1 + random(5) }, createRule);
+            if (compileFastIgnore([rules.join("\n")]) === null) {
+                continue;
+            }
+            expectSameAsNodeIgnore(rules, Array.from({ length: 20 }, createPath));
+            count++;
+        }
+        expect(count).toBeGreaterThan(1000);
+    });
 });
