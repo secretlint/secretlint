@@ -46,9 +46,11 @@ ${lines.map((line) => `    "${line}"`).join(" +\n")};
     if (process.argv.includes("--check")) {
         if (fs.readFileSync(output, "utf8") !== content) {
             console.error(`${path.relative(packageDir, output)} is not the build result of wasm/keyword-scan.c`);
-            process.exit(1);
+            // Not process.exit(): the temporary directory is removed in `finally`
+            process.exitCode = 1;
+        } else {
+            console.log("up to date");
         }
-        console.log("up to date");
     } else {
         fs.writeFileSync(output, content);
         console.log(`wrote ${path.relative(packageDir, output)} (${wasm.length} bytes of WebAssembly)`);
