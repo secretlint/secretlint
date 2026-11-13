@@ -7,11 +7,14 @@ import { stripVTControlCharacters } from "node:util";
  * Do not write it as a regular expression literal, even in a function:
  * V8 parses a literal when it parses the file, so only loading this file takes the time.
  */
-let emojiPattern: RegExp | undefined;
-const getEmojiPattern = (): RegExp => {
-    emojiPattern ??= new RegExp("\\p{RGI_Emoji}", "gv");
-    return emojiPattern;
-};
+const getEmojiPattern = (() => {
+    // Only this function refers to the created pattern
+    let emojiPattern: RegExp | undefined;
+    return (): RegExp => {
+        emojiPattern ??= new RegExp("\\p{RGI_Emoji}", "gv");
+        return emojiPattern;
+    };
+})();
 /**
  * A text that has an emoji matches this pattern. It is a cheap check before creating the emoji pattern.
  * Each emoji has one of them:
