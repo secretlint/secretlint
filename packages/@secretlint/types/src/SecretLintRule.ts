@@ -187,6 +187,15 @@ export type SecretLintRulePattern<Options = SecretLintRuleCreatorOptions> = {
      */
     scope?: "line" | "file";
     /**
+     * Return false to disable the pattern for the options of the rule.
+     * Secretlint calls it once for a config, and a disabled pattern is not a part of the lint:
+     * its keywords are not searched, and the pattern never runs.
+     * Use it for a pattern that an option turns on, instead of checking the option in `report()`.
+     *
+     * Default: undefined (the pattern is enabled)
+     */
+    enabled?(options: Options): boolean;
+    /**
      * Called for each match of the pattern.
      * Check the match (allow list, checksum, etc.) and call `context.report()`.
      */

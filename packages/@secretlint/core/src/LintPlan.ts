@@ -190,6 +190,7 @@ const KNOWN_PATTERN_PROPERTIES: ReadonlySet<string> = new Set([
     "keywords",
     "caseSensitiveKeywords",
     "scope",
+    "enabled",
     "report",
 ] satisfies (keyof SecretLintRulePattern<any>)[]);
 /**
@@ -215,28 +216,56 @@ The scope should be "line" or "file". If it is a scope of a newer secretlint, pl
         );
     }
 };
-const compilePatterns = (rule: SecretLintRuleCreator<any>): CompiledPattern[] | undefined => {
+/**
+ * Return true if the pattern is enabled for the options of the rule.
+ */
+const isEnabledPattern = (
+    rule: SecretLintRuleCreator<any>,
+    pattern: SecretLintRulePattern<any>,
+    options: SecretLintRuleCreatorOptions,
+): boolean => {
+    const enabled: unknown = pattern.enabled;
+    if (enabled === undefined) {
+        return true;
+    }
+    if (typeof enabled !== "function") {
+        throw new Error(`The rule "${rule.meta.id}" has a pattern whose \`enabled\` is not a function.`);
+    }
+    return pattern.enabled?.(options) === true;
+};
+/**
+ * Compile the patterns of the rule that are enabled for the options.
+ * A disabled pattern is not in the plan, so its keywords are not searched and it never runs.
+ */
+const compilePatterns = (
+    rule: SecretLintRuleCreator<any>,
+    options: SecretLintRuleCreatorOptions,
+): CompiledPattern[] | undefined => {
     const patterns = rule.patterns;
     if (!Array.isArray(patterns)) {
         return undefined;
     }
-    return patterns.map((pattern) => {
-        assertKnownPatternProperties(rule, pattern);
-        const caseSensitiveKeywords = pattern.caseSensitiveKeywords === true;
-        const keywords = normalizeKeywords(pattern.keywords, caseSensitiveKeywords);
-        // A line is found by its keyword, so "line" needs keywords.
-        // A keyword with a line break does not tell which line the pattern should run on.
-        const canUseLineScope =
-            pattern.scope === "line" && keywords !== undefined && keywords.every((keyword) => !keyword.includes("\n"));
-        return {
-            source: pattern,
-            regex: toGlobalRegExp(pattern.pattern),
-            tester: toStatelessRegExp(pattern.pattern),
-            scope: canUseLineScope ? "line" : "file",
-            keywords,
-            caseSensitiveKeywords,
-        };
-    });
+    patterns.forEach((pattern) => assertKnownPatternProperties(rule, pattern));
+    return patterns
+        .filter((pattern) => isEnabledPattern(rule, pattern, options))
+        .map((pattern) => {
+            const caseSensitiveKeywords = pattern.caseSensitiveKeywords === true;
+            const keywords = normalizeKeywords(pattern.keywords, caseSensitiveKeywords);
+            // A line is found by its keyword, so "line" needs keywords.
+            // A keyword with a line break does not tell which line the pattern should run on.
+            const canUseLineScope =
+                pattern.scope === "line" &&
+                keywords !== undefined &&
+                keywords.every((keyword) => !keyword.includes("\n"));
+            return {
+                source: pattern,
+                regex: toGlobalRegExp(pattern.pattern),
+                tester: toStatelessRegExp(pattern.pattern),
+                scope: canUseLineScope ? "line" : "file",
+                keywords,
+                caseSensitiveKeywords,
+            };
+        });
 };
 
 /**
@@ -317,7 +346,8 @@ Duplicated rule.id is something wrong in .secretlintrc.
             descriptorRule,
             ruleParentId,
             keywords: normalizeKeywords(descriptorRule.rule.meta.keywords),
-            patterns: compilePatterns(descriptorRule.rule),
+            // If option is not defined Options is {} by default
+            patterns: compilePatterns(descriptorRule.rule, descriptorRule.options || {}),
             metaKeywords: descriptorRule.rule.meta.keywords,
             metaPatterns: descriptorRule.rule.patterns,
         });
