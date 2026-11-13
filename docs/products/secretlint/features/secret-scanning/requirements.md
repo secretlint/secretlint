@@ -7,7 +7,7 @@
 Secret scanning lints the content of files, of STDIN, or of a source given by a program with the configured rules, and reports the secrets that the rules find.
 The parent Product is [Secretlint](../../product.md).
 
-This document is written for the part of the feature that a change needs: what content is linted, how text and binary content are told apart, which rules run for each kind of content, and what a rule receives.
+This document is written for the part of the feature that a change needs: what content is linted, how text and binary content are told apart, which rules run for each kind of content, what a rule receives, and how the keywords of rules are looked for in the content.
 
 ### Scope
 
@@ -16,6 +16,7 @@ This document is written for the part of the feature that a change needs: what c
 - Which rules run for each content type
 - The content and the information about the source that a rule receives
 - The same results in Node.js and in browsers
+- Looking for the keywords of rules in the content, fast and with the same results everywhere
 
 ### Out of scope
 
@@ -26,7 +27,8 @@ This document is written for the part of the feature that a change needs: what c
 - Masking secret values in messages. It belongs to the feature "Secret masking in results".
 - Showing the results. It belongs to [Result output](../result-output/requirements.md).
 - Text encodings other than UTF-8. The Product limits text to UTF-8.
-- How keywords and declarative patterns of rules are checked, and how the lint is kept fast. They are not written yet.
+- How declarative patterns of rules are checked. It is not written yet.
+- Linting files in parallel. It is not decided yet.
 
 ## User stories
 
@@ -89,6 +91,12 @@ Scenario: When a `.p12` source is linted without its bytes, nothing is reported 
 - Given: A program has only the content of a `.p12` file as a string, and the gcp rule is enabled.
 - When: The program calls `lintSource()` with the file name and the string, without the bytes.
 - Then: The result has no message for the file, and no error is thrown. Secretlint does not read the file from the disk, in Node.js or in a browser.
+
+Scenario: When a page does not allow WebAssembly, the result is the same
+
+- Given: A page has a Content Security Policy that does not allow WebAssembly, and a tool in the page has long content with a secret as bytes.
+- When: The tool calls `lintSource()` with the content and the bytes.
+- Then: The result has the same messages as in a page that allows WebAssembly, and no error is thrown.
 
 ### Lint the STDIN content
 
@@ -191,6 +199,34 @@ The rules that Secretlint provides do not read files from it.
 ##### The bytes are not given
 
 When a rule needs the bytes and the caller does not give them, the rule reports nothing for that check, and the lint does not fail.
+
+### Look for the keywords of rules in the content
+
+**Overview:** A rule can declare keywords, and its patterns run only for content that has one of them. Secretlint looks for the keywords of all rules in one pass over the content. This pass reads every byte of every file, so it uses a faster way where the runtime has one.
+
+**Input:** The content of the source and the keywords of the enabled rules.
+
+**Output:** The keywords that the content has and where they are. A user does not see this output; it only decides which patterns run.
+
+#### Applicable conditions
+
+##### The same results with and without the faster way
+
+The faster way finds the same keywords at the same places as the usual way.
+So the messages of a lint do not depend on the runtime, on the size of the content, or on whether the faster way is used.
+This follows the Product: the results are the same in Node.js, in browsers, and in the single-executable binary.
+
+##### Nothing to set up
+
+The faster way needs no option, no extra file next to the package, no build when the package is installed, and no setting of a bundler.
+A user of the command, of `@secretlint/core` in a browser, or of the single-executable binary gets it without doing anything.
+
+#### Exceptional behavior
+
+##### The runtime can not use the faster way
+
+When the runtime does not have what the faster way needs, or does not allow it (for example a browser page with a Content Security Policy that does not allow WebAssembly), Secretlint uses the usual way.
+The lint does not fail, and nothing is shown to the user.
 
 ## Data requirements
 

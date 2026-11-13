@@ -102,6 +102,28 @@ jobs:
         run: pnpm run test:browser
         working-directory: ./e2e/core-browser
 
+  wasm-check:
+    name: "Check that the WebAssembly module of @secretlint/core is built from its source"
+    # The build result depends on the version of clang. ubuntu-24.04 has clang 18.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: setup Node.js
+        uses: actions/setup-node@3235b876344d2a9aa001b8d1453c930bba69e610 # v3.9.1
+        with:
+          node-version: 22
+      - name: Install wasm-ld
+        run: command -v wasm-ld || (sudo apt-get update && sudo apt-get install -y lld-18 && sudo ln -s "$(command -v wasm-ld-18)" /usr/local/bin/wasm-ld)
+      - name: Check
+        run: |
+          clang --version
+          node scripts/build-wasm.mjs --check
+        working-directory: ./packages/@secretlint/core
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true

@@ -10,7 +10,12 @@
  * Rules declare keywords, and the core scans the content once for all keywords of all rules
  * instead of running each rule's regular expressions over the whole content.
  * Secret scanners such as gitleaks and TruffleHog use the same keyword pre-filter.
+ *
+ * UTF-8 bytes are scanned by a WebAssembly SIMD kernel where it is available, and by the loop of this file otherwise.
+ * Both find the same keywords at the same indexes. See keyword-scan-kernel.ts.
  */
+import { createKeywordScanKernel, type KeywordScanKernel } from "./keyword-scan-kernel.js";
+
 /**
  * The result of a scan. It is not changed after the scan.
  */
@@ -53,7 +58,18 @@ export type KeywordMatcher = {
     keywordsOfState(state: number): readonly number[];
 };
 
+export type KeywordMatcherOptions = {
+    /**
+     * Scan bytes with the WebAssembly SIMD kernel where it is available.
+     * If false, the scan loop of JavaScript is always used. The result is the same.
+     * Default: true
+     */
+    useKernel?: boolean;
+};
+
 const ASCII_SIZE = 128;
+/** A shorter input is scanned by the loop: copying it to the kernel costs more than the loop */
+const KERNEL_MIN_INPUT_SIZE = 256;
 const BYTE_SIZE = 256;
 const INITIAL_POSITIONS_SIZE = 64;
 
@@ -81,6 +97,7 @@ export const normalizeKeyword = (keyword: unknown, caseSensitive: boolean = fals
 export const createKeywordMatcher = (
     keywords: readonly string[],
     caseSensitive: readonly boolean[] = [],
+    options: KeywordMatcherOptions = {},
 ): KeywordMatcher => {
     const trieKeywords = keywords.map((keyword) => keyword.toLowerCase());
     // Map each byte to a small character class. 0 means "not used by any keyword".
@@ -240,7 +257,7 @@ export const createKeywordMatcher = (
     /**
      * Write [state, index] of the hits to the buffer, and return the length of the written part
      */
-    const scanBytes = (bytes: Uint8Array, start: number): number => {
+    const scanBytesByLoop = (bytes: Uint8Array, start: number): number => {
         let offset = 0;
         let written = 0;
         for (let i = start, length = bytes.length; i < length; i++) {
@@ -255,6 +272,39 @@ export const createKeywordMatcher = (
             }
         }
         return written;
+    };
+    // The kernel is created at the first scan of bytes that is large enough: undefined = not tried yet, null = not available
+    let kernel: KeywordScanKernel | null | undefined = options.useKernel === false ? null : undefined;
+    let kernelWritten = 0;
+    const writeKernelHit = (state: number, index: number): void => {
+        if (kernelWritten >= buffer.length) {
+            growBuffer();
+        }
+        buffer[kernelWritten] = state;
+        buffer[kernelWritten + 1] = index;
+        kernelWritten += 2;
+    };
+    const scanBytes = (bytes: Uint8Array, start: number): number => {
+        if (kernel === null || bytes.length - start < KERNEL_MIN_INPUT_SIZE) {
+            return scanBytesByLoop(bytes, start);
+        }
+        if (kernel === undefined) {
+            kernel =
+                (transitions instanceof Uint16Array
+                    ? createKeywordScanKernel({
+                          keywords: trieKeywords,
+                          transitions,
+                          charClass,
+                          classCount,
+                          firstOutputOffset,
+                      })
+                    : undefined) ?? null;
+            if (kernel === null) {
+                return scanBytesByLoop(bytes, start);
+            }
+        }
+        kernelWritten = 0;
+        return kernel.scan(bytes, start, writeKernelHit) ? kernelWritten : scanBytesByLoop(bytes, start);
     };
     const scanText = (text: string, start: number): number => {
         let offset = 0;
