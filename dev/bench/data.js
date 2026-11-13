@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794529217142,
+  "lastUpdate": 1794529976824,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -62130,6 +62130,44 @@ window.BENCHMARK_DATA = {
             "range": "±1.92%",
             "unit": "ops/sec",
             "extra": "19 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "ff62fcfdfa1851b6853e8b148af623ab852d4d3c",
+          "message": "perf(formatter): create the emoji pattern of string-width lazily (#1816)\n\n<!-- claude-projects-attribution: {\"github_login\":\"azu\"} -->\n_Requested by **azu** · [project\nthread](https://claude.ai/code/project/chan_01ChfsKF1sN6vYsJMPZ7PuDt?thread=cmsg_01ChfsKF1sN6vYsJMPZ7PuDt98foDrFxEn7Yge2FdbnQwd)_\n\n## Summary\n\n`string-width` of `@secretlint/formatter` created `new\nRegExp(\"\\\\p{RGI_Emoji}\", \"gv\")` at the top of the module.\n`\\p{RGI_Emoji}` is a large set of strings, and V8 takes 15-20ms to parse\nit. The stylish formatter (the default) imports the module, so every run\npaid it, even if the result had no message (since #1813).\n\nNow `stringWidth` creates the emoji pattern only when a text may have an\nemoji. `MAY_HAVE_EMOJI_PATTERN` is a cheap check by code point ranges,\nso an ASCII text or a text such as a Japanese file name does not create\nthe pattern.\n\nA regular expression literal does not help: V8 parses a literal when it\nparses the file, so a literal costs the same time even inside a function\nthat is never called. Measured as the time of a whole `node file.mjs`\nprocess (base 28ms): top-level literal 44ms, literal in an unused\nfunction 42ms, `new RegExp` in an unused function 29ms. So the pattern\nstays `new RegExp` in a function, and the TypeScript target is not\nchanged.\n\n## Results\n\nSame machine (4 vCPU, Node.js 22.23), `examples/benchmark`.\n\n| | master | this PR |\n|---|---|---|\n| benchmark.js: textlint.github.io (58 files) | 6.33 ops/sec | 7.60\nops/sec |\n| benchmark.js: js-primer (532 files) | 4.78 ops/sec | 5.64 ops/sec |\n| 1 file (median) | 123-125ms | 109-110ms |\n| js-primer (median) | 186-191ms | 173-174ms |\n\n## Not included\n\nAn earlier commit of this PR ran the CLI from an esbuild bundle (1 file:\n75ms). It is reverted: the binary version covers the fast startup, and\nthe npm package stays unbundled.\n\n## Test plan\n\n- [x] `pnpm run ci` (78 tasks pass)\n- [x] `MAY_HAVE_EMOJI_PATTERN` matches every code point that\n`\\p{RGI_Emoji}` matches as one character (test over all code points),\nand emoji of the BMP, a keycap and a variation-selector emoji count as\ntwo columns\n- [x] New bin tests: `--version`, a built-in preset, and a rule and a\nformatter that are not built in\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nhttps://claude.ai/code/session_01TSdrAEXgE1NWCvs8hUVC2j\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-11-13T09:31:54+09:00",
+          "tree_id": "2840d219e79d5bd55faf6a7a03d258db1a441f83",
+          "url": "https://github.com/secretlint/secretlint/commit/ff62fcfdfa1851b6853e8b148af623ab852d4d3c"
+        },
+        "date": 1794529974208,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 11.25,
+            "range": "±2.78%",
+            "unit": "ops/sec",
+            "extra": "33 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 8.07,
+            "range": "±5.74%",
+            "unit": "ops/sec",
+            "extra": "25 samples"
           }
         ]
       }
