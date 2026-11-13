@@ -92,7 +92,7 @@ export const creator: SecretLintRuleCreator<Options> = {
             caseSensitiveKeywords: true,
             scope: "line",
             // "AKIA..." is an ID, not a secret, so it is reported only if the option is set
-            when: "enableIDScanRule",
+            when: "options.enableIDScanRule",
             report(match, context) {
                 // Built-in ignore
                 if (BUILTIN_IGNORED.AWSAccountID.includes(match.text)) {
@@ -118,7 +118,7 @@ export const creator: SecretLintRuleCreator<Options> = {
             caseSensitiveKeywords: true,
             scope: "file",
             // The keywords are common words, so the pattern should not run unless the option is set
-            when: "enableIDScanRule",
+            when: "options.enableIDScanRule",
             report(match, context) {
                 const allowedResults = matchPatterns(match.text, context.options.allows ?? []);
                 if (allowedResults.length > 0) {

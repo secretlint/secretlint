@@ -217,16 +217,17 @@ The built-in rules can be loaded and run in a browser without Node.js modules. A
 ##### Patterns that an option turns on or off
 
 A rule can have a pattern that reports only when an option of the rule is set, such as a pattern for an ID that is not a secret by itself.
-The rule states this as data: the pattern has a condition, written with the name of the option. The rule does not decide it with its own code.
+The rule states this as data: the pattern has a condition that refers to the option. The rule does not decide it with its own code.
 Secretlint reads the option and decides whether the pattern is a part of the lint. So the decision is made before any file is read, it is the same for every rule, and Secretlint can tell which option turns which pattern on or off.
 
-- The condition is the name of a boolean option of the rule, or the name after `!`. With the name, the pattern is a part of the lint only when the option is `true`. With `!` and the name, the pattern is a part of the lint unless the option is `true`.
+- The condition refers to a boolean option of the rule as `options.<name>`, with or without `!` before it. With `options.<name>`, the pattern is a part of the lint only when the option is `true`. With `!options.<name>`, the pattern is a part of the lint unless the option is `true`.
+- The condition says where the value comes from (`options.`), so that a condition can refer to a value other than the options of the rule later, without changing the meaning of the existing conditions.
 - An option that is not set is `false`.
 - A pattern that is not a part of the lint costs nothing: Secretlint does not search for its keywords, and does not run it.
 - A pattern without a condition is always a part of the lint.
 - The condition is one way to write "on" and "off". There is no second property for a pattern that an option turns off.
 - The option must be a boolean option of the rule. In TypeScript, a name that is not a boolean option of the rule is a type error.
-- The condition is a small subset of an expression language such as CEL: a name, and `!`. Other operators, such as `&&`, `||`, and `==`, are not supported. If one is needed, it is added to the condition, and a Secretlint that does not know it stops with an error instead of reading the condition in another way.
+- The condition is a small subset of an expression language such as CEL: a reference to an option, and `!`. Other operators, such as `&&`, `||`, and `==`, are not supported. If one is needed, it is added to the condition, and a Secretlint that does not know it stops with an error instead of reading the condition in another way.
 
 ##### Documentation
 
@@ -236,7 +237,7 @@ Each rule has a README that describes why it reports values, its messages, and i
 
 ##### The condition of a pattern is not supported
 
-When the condition of a pattern is not a string, or is a string other than the name of an option or the name after `!`, Secretlint stops with an error that names the rule and the condition, and no file is linted.
+When the condition of a pattern is not a string, or is a string other than `options.<name>` or `!options.<name>`, Secretlint stops with an error that names the rule and the condition, and no file is linted.
 
 ##### The value of the option of a condition is not a boolean
 
@@ -301,7 +302,7 @@ The test cases have the same layout as the test cases of `@secretlint/tester`, a
 
 - **Rule id:** The name that identifies a rule or a preset in the configuration file and in the messages.
 - **Rule list of a preset:** The rules that a preset registers, in a fixed order.
-- **Condition of a pattern:** The name of a boolean option of the rule, or the name after `!`, that decides whether a pattern of the rule is a part of the lint.
+- **Condition of a pattern:** A reference to a boolean option of the rule (`options.<name>`), with or without `!` before it, that decides whether a pattern of the rule is a part of the lint.
 
 ### Relationships
 

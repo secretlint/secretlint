@@ -443,7 +443,7 @@ describe("lintSource with patterns", () => {
     });
     it("should not run a pattern whose `when` option is not true", async () => {
         const rule = createPatternRule([
-            tokenPattern({ when: "enableTokenScan" }),
+            tokenPattern({ when: "options.enableTokenScan" }),
             tokenPattern({ pattern: /key_[a-z]{2}/g, keywords: ["key_"] }),
         ]);
         const toScanConfig = (options?: Options): SecretLintCoreConfig => toConfig(rule, options);
@@ -477,7 +477,7 @@ describe("lintSource with patterns", () => {
     });
     it("should run a pattern whose `when` is negated unless the option is true", async () => {
         const rule = createPatternRule([
-            tokenPattern({ when: "!enableTokenScan" }),
+            tokenPattern({ when: "!options.enableTokenScan" }),
             tokenPattern({ pattern: /key_[a-z]{2}/g, keywords: ["key_"] }),
         ]);
         const { bytesSource } = createSources("a = tok_ab12\nb = key_xy");
@@ -507,7 +507,7 @@ describe("lintSource with patterns", () => {
             [1, "number"],
             [null, "null"],
         ] as const) {
-            for (const when of ["enableTokenScan", "!enableTokenScan"] as const) {
+            for (const when of ["options.enableTokenScan", "!options.enableTokenScan"] as const) {
                 const rule = createPatternRule([tokenPattern({ when })]);
                 const config = toConfig(rule, { enableTokenScan: value as unknown as boolean });
                 await assert.rejects(
@@ -522,7 +522,7 @@ describe("lintSource with patterns", () => {
     it("should not enable a pattern by a property that the options inherit", async () => {
         const rule = createPatternRule([
             // the type does not accept "constructor", because it is not an option
-            tokenPattern({ when: "constructor" as "enableTokenScan" }),
+            tokenPattern({ when: "options.constructor" as "options.enableTokenScan" }),
         ]);
         const { textSource } = createSources("a = tok_ab12");
         const result = await lintSource({ source: textSource, options: { config: toConfig(rule, {}) } });
@@ -534,11 +534,16 @@ describe("lintSource with patterns", () => {
             true,
             "",
             "!",
-            "!!a",
-            "! a",
-            "enableTokenScan == true",
-            "a && b",
-            "options.a",
+            "enableTokenScan",
+            "!enableTokenScan",
+            "options",
+            "options.",
+            "!!options.a",
+            "! options.a",
+            "options.a.b",
+            "options.enableTokenScan == true",
+            "options.a && options.b",
+            "sharedOptions.a",
             () => true,
         ]) {
             const rule = createPatternRule([{ ...tokenPattern(), when } as unknown as SecretLintRulePattern<Options>]);

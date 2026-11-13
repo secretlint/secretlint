@@ -217,15 +217,15 @@ The scope should be "line" or "file". If it is a scope of a newer secretlint, pl
     }
 };
 /**
- * `when` of a pattern is the name of a boolean option, or the name after "!".
- * Other strings are an error, so that a `when` of a newer secretlint, such as an expression with another operator,
- * never runs on this secretlint with a different result.
+ * `when` of a pattern refers to a boolean option of the rule as `options.<name>`, with or without "!" before it.
+ * Other strings are an error, so that a `when` of a newer secretlint, such as an expression with another operator
+ * or a value other than the options, never runs on this secretlint with a different result.
  */
-const WHEN_PATTERN = /^(!?)([A-Za-z_$][A-Za-z0-9_$]*)$/;
+const WHEN_PATTERN = /^(!?)options\.([A-Za-z_$][A-Za-z0-9_$]*)$/;
 /**
  * Return true if the pattern is enabled for the options of the rule.
- * - `when: "name"`: enabled only if the option is true
- * - `when: "!name"`: enabled unless the option is true
+ * - `when: "options.name"`: enabled only if the option is true
+ * - `when: "!options.name"`: enabled unless the option is true
  * An option that is not set is false.
  */
 const isEnabledPattern = (
@@ -241,7 +241,7 @@ const isEnabledPattern = (
     if (!matched) {
         throw new Error(
             `The rule "${rule.meta.id}" has a pattern whose \`when\` is not supported: ${JSON.stringify(when) ?? typeof when}
-\`when\` should be the name of a boolean option of the rule, or the name after "!".
+\`when\` should be "options.<name>" or "!options.<name>", where <name> is a boolean option of the rule.
 If it is a \`when\` of a newer secretlint, please update secretlint.`,
         );
     }

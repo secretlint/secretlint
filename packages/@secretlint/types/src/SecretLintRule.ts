@@ -162,11 +162,11 @@ export type SecretLintRulePatternBooleanOptionName<Options> = [keyof Options] ex
       >;
 /**
  * The strings that `when` of a pattern accepts:
- * the name of a boolean option of the rule, or the name after `!`.
+ * `options.` and the name of a boolean option of the rule, with or without `!` before it.
  */
 export type SecretLintRulePatternWhen<Options> =
-    | SecretLintRulePatternBooleanOptionName<Options>
-    | `!${SecretLintRulePatternBooleanOptionName<Options>}`;
+    | `options.${SecretLintRulePatternBooleanOptionName<Options>}`
+    | `!options.${SecretLintRulePatternBooleanOptionName<Options>}`;
 /**
  * A pattern of a rule.
  *
@@ -219,10 +219,10 @@ export type SecretLintRulePattern<
     scope?: "line" | "file";
     /**
      * The condition for the pattern to be a part of the lint.
-     * It is written with the name of a boolean option of the rule:
+     * It refers to a boolean option of the rule as `options.<name>`:
      *
-     * - `"name"`: the pattern is enabled only when the option is `true`.
-     * - `"!name"`: the pattern is enabled unless the option is `true`.
+     * - `"options.name"`: the pattern is enabled only when the option is `true`.
+     * - `"!options.name"`: the pattern is enabled unless the option is `true`.
      *
      * An option that is not set is `false`.
      * Secretlint throws an error if the value of the option is not a boolean.
@@ -236,7 +236,7 @@ export type SecretLintRulePattern<
      * Default: undefined (the pattern is always enabled)
      * @example
      * // type Options = { enableIDScanRule?: boolean }
-     * when: "enableIDScanRule"
+     * when: "options.enableIDScanRule"
      */
     when?: When;
     /**
