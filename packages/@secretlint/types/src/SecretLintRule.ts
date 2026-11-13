@@ -140,6 +140,18 @@ export type SecretLintRulePatternContext<Options = SecretLintRuleCreatorOptions>
     source: SecretLintSourceCode;
 };
 /**
+ * The names of the options whose value is a boolean.
+ * If the type of the options has no property, such as the default `{}`, any name is accepted.
+ */
+export type SecretLintRulePatternBooleanOptionName<Options> = [keyof Options] extends [never]
+    ? string
+    : Extract<
+          {
+              [Name in keyof Options]-?: NonNullable<Options[Name]> extends boolean ? Name : never;
+          }[keyof Options],
+          string
+      >;
+/**
  * A pattern of a rule.
  *
  * Secretlint throws an error if a pattern has a property that it does not know.
@@ -187,14 +199,18 @@ export type SecretLintRulePattern<Options = SecretLintRuleCreatorOptions> = {
      */
     scope?: "line" | "file";
     /**
-     * Return false to disable the pattern for the options of the rule.
-     * Secretlint calls it once for a config, and a disabled pattern is not a part of the lint:
+     * The name of the option of the rule that enables the pattern.
+     * The pattern is enabled only if the value of the option is truthy.
+     * Secretlint reads the option once for a config, and a disabled pattern is not a part of the lint:
      * its keywords are not searched, and the pattern never runs.
      * Use it for a pattern that an option turns on, instead of checking the option in `report()`.
      *
-     * Default: undefined (the pattern is enabled)
+     * Default: undefined (the pattern is always enabled)
+     * @example
+     * // type Options = { enableIDScanRule?: boolean }
+     * enabledByOption: "enableIDScanRule"
      */
-    enabled?(options: Options): boolean;
+    enabledByOption?: SecretLintRulePatternBooleanOptionName<Options>;
     /**
      * Called for each match of the pattern.
      * Check the match (allow list, checksum, etc.) and call `context.report()`.

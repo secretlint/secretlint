@@ -73,14 +73,6 @@ const AWSAccountIDPattern = (() => {
     );
 })();
 
-/**
- * AWSAccessKeyID and AWSAccountID are reported only if `enableIDScanRule` is truthy.
- * Their keywords, such as "account", are common words, so the patterns are disabled by default instead of
- * discarding their matches in `report()`.
- */
-const isIDScanRuleEnabled = (options: Options): boolean => {
-    return Boolean(options.enableIDScanRule);
-};
 export const creator: SecretLintRuleCreator<Options> = {
     messages,
     meta: {
@@ -99,7 +91,8 @@ export const creator: SecretLintRuleCreator<Options> = {
             // the prefixes are upper case only. "asia" and "aida" appear often in lower case
             caseSensitiveKeywords: true,
             scope: "line",
-            enabled: isIDScanRuleEnabled,
+            // "AKIA..." is an ID, not a secret, so it is reported only if the option is set
+            enabledByOption: "enableIDScanRule",
             report(match, context) {
                 // Built-in ignore
                 if (BUILTIN_IGNORED.AWSAccountID.includes(match.text)) {
@@ -124,7 +117,8 @@ export const creator: SecretLintRuleCreator<Options> = {
             keywords: ["ACCOUNT", "account", "Account"],
             caseSensitiveKeywords: true,
             scope: "file",
-            enabled: isIDScanRuleEnabled,
+            // The keywords are common words, so the pattern should not run unless the option is set
+            enabledByOption: "enableIDScanRule",
             report(match, context) {
                 const allowedResults = matchPatterns(match.text, context.options.allows ?? []);
                 if (allowedResults.length > 0) {

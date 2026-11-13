@@ -93,6 +93,24 @@ Scenario: When a rule is listed both in a preset and on its own, loading fails
 - When: The developer runs Secretlint.
 - Then: Secretlint stops with an error that says `@secretlint/secretlint-rule-aws` is already registered, and no file is linted.
 
+### Turn on a part of a rule with an option
+
+As a developer, I want a part of a rule that is off by default to cost nothing until I turn it on with an option, so that a check that I do not use does not make the lint slower.
+
+**Acceptance criteria:**
+
+Scenario: When the option is not set, the part of the rule is not a part of the lint
+
+- Given: The configuration file has `{ "id": "@secretlint/secretlint-rule-aws" }` without options.
+- When: The developer lints a file that contains an AWS access key ID and an AWS secret access key.
+- Then: The result has the message of the secret access key and no message of the access key ID, and Secretlint does not search the file for the access key ID.
+
+Scenario: When the option is set, the part of the rule reports
+
+- Given: The configuration file has `{ "id": "@secretlint/secretlint-rule-aws", "options": { "enableIDScanRule": true } }`.
+- When: The developer lints the same file.
+- Then: The result has the message of the access key ID and the message of the secret access key.
+
 ### Try new rules early
 
 As a developer, I want to use the rules that may be added to the recommended preset in the next major release, so that I can check them on my repository before they become recommended.
@@ -190,9 +208,27 @@ Deprecating these packages is a separate change.
 
 The built-in rules can be loaded and run in a browser without Node.js modules. A rule that checks binary content, such as the GCP rule for a `.p12` file, uses the bytes that the caller passes with the source, and does not read the file.
 
+##### Patterns that an option enables
+
+A rule can have a pattern that reports only when an option of the rule is set, such as a pattern for an ID that is not a secret by itself.
+The rule states this as data: the pattern has the name of the option that enables it. The rule does not decide it with its own code.
+Secretlint reads the option and decides whether the pattern is a part of the lint. So the decision is made before any file is read, it is the same for every rule, and Secretlint can tell which option enables which pattern.
+
+- The pattern is a part of the lint only when the value of the option is truthy. When the option is not set, the pattern is not a part of the lint.
+- A pattern that is not a part of the lint costs nothing: Secretlint does not search for its keywords, and does not run it.
+- A pattern without the name of an option is always a part of the lint.
+- The option must be a boolean option of the rule. In TypeScript, a name that is not a boolean option of the rule is a type error.
+- An option only turns a pattern on. Turning a pattern off with an option, and deciding with several options, are not supported. If one is needed, it is added as a property with a new name, and the meaning of the existing property does not change.
+
 ##### Documentation
 
 Each rule has a README that describes why it reports values, its messages, and its options.
+
+#### Exceptional behavior
+
+##### The name of the option of a pattern is not a name
+
+When the name of the option that enables a pattern is not a string, or is an empty string, Secretlint stops with an error that names the rule, and no file is linted.
 
 ### Rule presets
 
@@ -253,6 +289,7 @@ The test cases have the same layout as the test cases of `@secretlint/tester`, a
 
 - **Rule id:** The name that identifies a rule or a preset in the configuration file and in the messages.
 - **Rule list of a preset:** The rules that a preset registers, in a fixed order.
+- **Option name of a pattern:** The name of the boolean option that enables a pattern of a rule.
 
 ### Relationships
 

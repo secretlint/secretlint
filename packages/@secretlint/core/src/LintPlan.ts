@@ -190,7 +190,7 @@ const KNOWN_PATTERN_PROPERTIES: ReadonlySet<string> = new Set([
     "keywords",
     "caseSensitiveKeywords",
     "scope",
-    "enabled",
+    "enabledByOption",
     "report",
 ] satisfies (keyof SecretLintRulePattern<any>)[]);
 /**
@@ -218,20 +218,24 @@ The scope should be "line" or "file". If it is a scope of a newer secretlint, pl
 };
 /**
  * Return true if the pattern is enabled for the options of the rule.
+ * A pattern with `enabledByOption` is enabled only if the value of that option is truthy.
  */
 const isEnabledPattern = (
     rule: SecretLintRuleCreator<any>,
     pattern: SecretLintRulePattern<any>,
     options: SecretLintRuleCreatorOptions,
 ): boolean => {
-    const enabled: unknown = pattern.enabled;
-    if (enabled === undefined) {
+    const optionName: unknown = pattern.enabledByOption;
+    if (optionName === undefined) {
         return true;
     }
-    if (typeof enabled !== "function") {
-        throw new Error(`The rule "${rule.meta.id}" has a pattern whose \`enabled\` is not a function.`);
+    if (typeof optionName !== "string" || optionName === "") {
+        throw new Error(
+            `The rule "${rule.meta.id}" has a pattern whose \`enabledByOption\` is not a name of an option.
+It should be a string that is not empty.`,
+        );
     }
-    return pattern.enabled?.(options) === true;
+    return Object.hasOwn(options, optionName) && Boolean((options as Record<string, unknown>)[optionName]);
 };
 /**
  * Compile the patterns of the rule that are enabled for the options.

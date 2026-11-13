@@ -44,6 +44,26 @@ patternルールやGCPルールなど、それ以外のルールは`create()`を
 GCPルールは、ファイルを読み込まずに、ソースの`contentBytes`から`.p12`ファイルを確認します。ファイルのMACの計算では、`node:crypto`が使える環境でだけそれをimportし、使えない環境ではWeb Cryptoを使います。
 patternルールは、`micromatch`と同じ方法で`picomatch`を使ってファイルパスを照合します。そのため、`micromatch`には依存しなくなりました。
 
+### オプションで有効になるパターン
+
+パターンは、任意のプロパティ`enabledByOption`を持てます。値は、そのパターンを有効にするルールのオプションの名前です。
+たとえばAWSルールは、アクセスキーIDとアカウントIDのパターンに`enabledByOption: "enableIDScanRule"`を書いています。アカウントIDのキーワードは`account`のようなよくある単語です。そのため、パターンを実行してから`report()`で一致をすべて捨てる方法では、その単語を含むファイルが多いリポジトリで、lintの時間の大きな部分をこのパターンが占めていました。
+
+`@secretlint/core`は、設定からlint planを作るときに各ルールのオプションを読み、有効ではないパターンをplanから外します。
+
+- `enabledByOption`がないパターンは、planに入ります。
+- `enabledByOption`があるパターンは、オプションがその名前のプロパティを自分自身で持ち、その値が真とみなせるときだけplanに入ります。`toString`のように、オプションのオブジェクトが継承しているプロパティでは有効になりません。
+- `enabledByOption`が文字列ではないとき、または空文字列のときは、planを作る処理がルールIDを含むエラーを投げます。
+
+planは1つの設定に対して1回だけ作るので、オプションを読むのも1回で、ファイルごとには読みません。
+planにないパターンは、キーワードを探す処理に登録されません。そのため、そのキーワードがきっかけでcoreがファイルを文字列として読むことはなく、正規表現も実行されません。
+パターンの`report()`は、オプションをもう一度確認しません。
+
+このプロパティの型は、`@secretlint/types`の`SecretLintRulePatternBooleanOptionName<Options>`です。`Options`のプロパティのうち、値がbooleanであるものの名前だけを受け付けます。ほかのオプションの名前や、オプションではない名前は型エラーになります。既定の`{}`のように`Options`にプロパティが1つもない場合、型は`string`になります。
+パターンの型が`Options`のプロパティ名を使うようになったため、独自の`Options`を持つルールのcreatorは`SecretLintRuleCreator<unknown>`に代入できません。プリセットのcreatorの`rules`や`builtinRules`のように、オプションが異なるルールを並べる一覧の型は`SecretLintRuleCreator<any>[]`です。
+
+`enabledByOption`は、coreが知っているパターンのプロパティの1つです。coreは知らないプロパティがあるとエラーを投げます。テストを実行する`@secretlint/core/testing`は、比較のためにキーワードとスコープを取り除くときも、`enabledByOption`は残します。このプロパティはルールが何を報告するかを決めるもので、最適化ではないからです。
+
 ### 組み込みの対応表とプリセット
 
 `@secretlint/core/builtin`は、ルールの一覧`builtinRules`、`recommendedRules`、`canaryRules`、プリセット`presetRecommend`と`presetCanary`、そして`getBuiltinRule(id)`をexportします。`getBuiltinRule(id)`は、完全なルールIDに対応するルールかプリセットを返し、見つからなければ`undefined`を返します。
@@ -82,6 +102,7 @@ patternルールは、`micromatch`と同じ方法で`picomatch`を使ってフ�
 ## データモデル・ER 図
 
 - **ルールのcreator:** `meta`（id、type、recommended、supportedContentTypes、docs.url、任意のkeywords）、`messages`、そして`patterns`か`create()`のどちらか。
+- **パターン:** `pattern`、任意の`keywords`、`caseSensitiveKeywords`、`scope`、`enabledByOption`、そして`report()`。
 - **プリセットのcreator:** `meta`（id、type `preset`）、`rules`（ルールのcreator）、`create(context, options)`。
 - **設定ファイルのプリセットの項目:** `id`、`options`、`rules`。`rules`は、`id`、`options`、`severity`、`allowMessageIds`、`disabled`を持つ項目の一覧です。
 
@@ -117,6 +138,8 @@ npmパッケージの`--init`は、`package.json`にあるルールを設定に�
 
 - **ルールごとに1つのパッケージを作り、プリセットにルールを同梱する:** 変更前の設計です。ルールを追加するたびに新しいnpmパッケージを作り、上で説明したtrusted publishingの手作業をする必要がありました。
 - **組み込みルール専用のパッケージを1つ作る:** Biomeがルールをエンジンとは別のcrateに置いているように、ルールとテストを`@secretlint/core`とは別のパッケージに置く案です。これは、ルールとエンジンのバージョンが一致している必要があるため採用しませんでした。ルールが宣言した`patterns`は`@secretlint/core`が実行し、古いエンジンで新しいルールを動かすことはサポートしません。別のパッケージにすると、`@secretlint/core`と異なるバージョンのルールがインストールされる可能性があります。1つのパッケージにすれば、ルールは常にそれを実行するエンジンと一緒に配布され、公開してインストールするパッケージも1つで済みます。oxlintやESLintと同じく、ルール、エンジン、テストを1つのパッケージに置きます。
+- **パターンに関数`enabled(options)`を持たせる:** パターンが、有効かどうかを返す関数を持つ案です。どんな条件でも書けますが、採用しませんでした。ルールは探すものをデータとして書き、`@secretlint/core`がそれを実行します。関数にすると、どのオプションを読んでいるのかがcoreから見えません。また、条件をルールごとに書くことになるので、文字列の`"true"`のような同じ値でも、あるルールでは有効になり、別のルールでは有効にならないということが起こります。オプションの名前を書く形なら、条件はcoreの1か所にまとまり、名前は型で確認でき、データなので一覧にしたり別のスレッドに渡したりできます。現在の用途はAWSルールのbooleanのオプション1つだけなので、表現できる範囲が狭くても足ります。
+- **オプションが指定されていないときに`report()`の最初で処理をやめる:** 変更前の設計です。結果は同じですが、パターンのキーワードを探し、ファイルを文字列として読み、パターンを実行したうえで、一致をすべて捨てていました。
 
 ## 未決事項
 

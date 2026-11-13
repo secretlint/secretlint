@@ -37,7 +37,7 @@ import { creator as rulePattern } from "./rules/pattern/index.js";
  * (for example `@secretlint/secretlint-rule-aws`) from this table without installing a package.
  * The ids are the same as the ids of the former rule packages, so configs do not change.
  */
-export const builtinRules: readonly SecretLintRuleCreator<unknown>[] = [
+export const builtinRules: readonly SecretLintRuleCreator<any>[] = [
     ruleAws,
     ruleGcp,
     rulePrivatekey,
@@ -73,7 +73,7 @@ export const builtinRules: readonly SecretLintRuleCreator<unknown>[] = [
 /**
  * Rules of `@secretlint/secretlint-rule-preset-recommend`, in the order the preset registers them.
  */
-export const recommendedRules: readonly SecretLintRuleCreator<unknown>[] = [
+export const recommendedRules: readonly SecretLintRuleCreator<any>[] = [
     ruleAws,
     ruleGcp,
     rulePrivatekey,
@@ -108,9 +108,9 @@ export const recommendedRules: readonly SecretLintRuleCreator<unknown>[] = [
  * Rules of `@secretlint/secretlint-rule-preset-canary`.
  * A new rule is added here first, and is added to `recommendedRules` at a major release.
  */
-export const canaryRules: readonly SecretLintRuleCreator<unknown>[] = [...recommendedRules];
+export const canaryRules: readonly SecretLintRuleCreator<any>[] = [...recommendedRules];
 
-const createPreset = (id: string, rules: readonly SecretLintRuleCreator<unknown>[]): SecretLintRulePresetCreator => {
+const createPreset = (id: string, rules: readonly SecretLintRuleCreator<any>[]): SecretLintRulePresetCreator => {
     return {
         meta: {
             id,

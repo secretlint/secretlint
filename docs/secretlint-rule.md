@@ -357,14 +357,17 @@ A rule with `patterns` costs almost nothing for the files that do not contain it
 A rule that has only `patterns` needs secretlint that supports `patterns`. An older secretlint reports that the rule should have `create` function.
 Secretlint also throws an error if a pattern has a property that it does not know, so a rule that uses a newer property never runs with a different result on an older secretlint.
 
-If an option of the rule turns a pattern on, define `enabled(options)` of the pattern instead of returning early in `report()`.
-Secretlint calls it once for a config. A pattern that returns `false` is not a part of the lint: its keywords are not searched, and the pattern never runs.
+If an option of the rule turns a pattern on, set `enabledByOption` of the pattern to the name of the option instead of returning early in `report()`.
+The pattern is enabled only if the value of the option is truthy. Secretlint reads the option once for a config. A disabled pattern is not a part of the lint: its keywords are not searched, and the pattern never runs.
+The type accepts only the name of an option whose value is a boolean.
 
 ```ts
+type Options = { enableIDScan?: boolean };
+// ...
 {
     pattern: /example_id_[0-9]{12}/g,
     keywords: ["example_id_"],
-    enabled: (options) => options.enableIDScan === true,
+    enabledByOption: "enableIDScan",
     report(match, context) { /* ... */ },
 }
 ```

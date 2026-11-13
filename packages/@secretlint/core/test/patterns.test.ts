@@ -13,7 +13,7 @@ const messages = {
         en: (props: { TEXT: string }) => `found: ${props.TEXT}`,
     },
 };
-type Options = { allows?: string[] };
+type Options = { allows?: string[]; enableTokenScan?: boolean };
 const reportMatch: SecretLintRulePattern<Options>["report"] = (match, context) => {
     if (context.options.allows?.includes(match.text)) {
         return;
@@ -328,7 +328,7 @@ describe("lintSource with patterns", () => {
         const rule = createPatternRule([tokenPattern()]);
         const preset: SecretLintRulePresetCreator = {
             meta: { id: "preset", recommended: true, type: "preset" },
-            rules: [rule as SecretLintRuleCreator<unknown>],
+            rules: [rule as SecretLintRuleCreator<any>],
             create(context) {
                 context.registerRule(rule);
             },
@@ -364,7 +364,7 @@ describe("lintSource with patterns", () => {
         };
         const preset: SecretLintRulePresetCreator = {
             meta: { id: "preset", recommended: true, type: "preset" },
-            rules: [rule as SecretLintRuleCreator<unknown>, handlerRule as SecretLintRuleCreator<unknown>],
+            rules: [rule as SecretLintRuleCreator<any>, handlerRule as SecretLintRuleCreator<any>],
             create(context) {
                 context.registerRule(rule);
                 context.registerRule(handlerRule);
@@ -441,50 +441,72 @@ describe("lintSource with patterns", () => {
             );
         }
     });
-    it("should not run a pattern that is disabled for the options", async () => {
-        let calls = 0;
-        const enabled = (options: Options): boolean => {
-            calls++;
-            return options.allows !== undefined;
-        };
+    it("should not run a pattern whose `enabledByOption` option is not set", async () => {
         const rule = createPatternRule([
-            tokenPattern({ enabled }),
+            tokenPattern({ enabledByOption: "enableTokenScan" }),
             tokenPattern({ pattern: /key_[a-z]{2}/g, keywords: ["key_"] }),
         ]);
+        const toScanConfig = (options?: Options): SecretLintCoreConfig => toConfig(rule, options);
         const { textSource, bytesSource, state } = createSources("a = tok_ab12\nb = key_xy");
-        // disabled: the pattern is not a part of the lint, and its keyword does not make secretlint read the content
-        const disabledConfig = toConfig(rule);
-        for (const source of [textSource, bytesSource]) {
-            const result = await lintSource({ source, options: { config: disabledConfig } });
-            assert.deepStrictEqual(
-                result.messages.map((message) => message.message),
-                ["found: key_xy"],
-            );
+        // disabled: the pattern is not a part of the lint
+        for (const options of [undefined, {}, { enableTokenScan: false }]) {
+            const config = toScanConfig(options);
+            for (const source of [textSource, bytesSource]) {
+                const result = await lintSource({ source, options: { config } });
+                assert.deepStrictEqual(
+                    result.messages.map((message) => message.message),
+                    ["found: key_xy"],
+                );
+            }
         }
+        // the keyword of a disabled pattern does not make secretlint read the content
         const { bytesSource: tokenOnlySource, state: tokenOnlyState } = createSources("a = tok_ab12");
-        const tokenOnlyResult = await lintSource({ source: tokenOnlySource, options: { config: disabledConfig } });
+        const tokenOnlyResult = await lintSource({ source: tokenOnlySource, options: { config: toScanConfig() } });
         assert.deepStrictEqual(tokenOnlyResult.messages, []);
         assert.strictEqual(tokenOnlyState.contentReads, 0);
-        // `enabled` is called once for a config, not for each source
-        assert.strictEqual(calls, 1);
-        // enabled by the options
-        const enabledResult = await lintSource({
-            source: bytesSource,
-            options: { config: toConfig(rule, { allows: [] }) },
-        });
-        assert.deepStrictEqual(
-            enabledResult.messages.map((message) => message.message),
-            ["found: tok_ab12", "found: key_xy"],
-        );
+        // enabled: a truthy value of the option enables the pattern
+        for (const enableTokenScan of [true, "true" as unknown as boolean]) {
+            const enabledResult = await lintSource({
+                source: bytesSource,
+                options: { config: toScanConfig({ enableTokenScan }) },
+            });
+            assert.deepStrictEqual(
+                enabledResult.messages.map((message) => message.message),
+                ["found: tok_ab12", "found: key_xy"],
+            );
+        }
         assert.ok(state.contentReads > 0);
     });
-    it("should throw if `enabled` of a pattern is not a function", async () => {
-        const rule = createPatternRule([{ ...tokenPattern(), enabled: true as unknown as () => boolean }]);
-        const { textSource } = createSources("key = tok_ab12");
-        await assert.rejects(
-            async () => lintSource({ source: textSource, options: { config: toConfig(rule) } }),
-            /The rule "pattern-rule" has a pattern whose `enabled` is not a function./,
-        );
+    it("should not enable a pattern by a property that the options inherit", async () => {
+        const rule = createPatternRule([
+            // @ts-expect-error -- the type accepts only the name of an option whose value is a boolean
+            tokenPattern({ enabledByOption: "toString" }),
+        ]);
+        const { textSource } = createSources("a = tok_ab12");
+        const result = await lintSource({ source: textSource, options: { config: toConfig(rule, {}) } });
+        assert.deepStrictEqual(result.messages, []);
+    });
+    it("should accept only the name of a boolean option as `enabledByOption` in the type", () => {
+        const booleanOption: SecretLintRulePattern<Options>["enabledByOption"] = "enableTokenScan";
+        // @ts-expect-error -- `allows` is not a boolean option
+        const notBooleanOption: SecretLintRulePattern<Options>["enabledByOption"] = "allows";
+        // @ts-expect-error -- `unknownOption` is not an option
+        const unknownOption: SecretLintRulePattern<Options>["enabledByOption"] = "unknownOption";
+        // any name is accepted if the type of the options is not given
+        const untypedOption: SecretLintRulePattern["enabledByOption"] = "anyName";
+        assert.ok(booleanOption && notBooleanOption && unknownOption && untypedOption);
+    });
+    it("should throw if `enabledByOption` of a pattern is not a name of an option", async () => {
+        for (const enabledByOption of [true, "", () => true]) {
+            const rule = createPatternRule([
+                { ...tokenPattern(), enabledByOption } as unknown as SecretLintRulePattern<Options>,
+            ]);
+            const { textSource } = createSources("key = tok_ab12");
+            await assert.rejects(
+                async () => lintSource({ source: textSource, options: { config: toConfig(rule) } }),
+                /The rule "pattern-rule" has a pattern whose `enabledByOption` is not a name of an option./,
+            );
+        }
     });
     it("should throw if a pattern has an unknown scope", async () => {
         const rule = createPatternRule([{ ...tokenPattern(), scope: "lines" as "line" }]);
