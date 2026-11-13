@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794575010110,
+  "lastUpdate": 1794582346208,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -62280,6 +62280,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 4.65,
             "range": "±1.19%",
+            "unit": "ops/sec",
+            "extra": "16 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "270507fe6ba40b4b0fb5fabb6f06889baed25207",
+          "message": "feat(profiler): print a summary by phase, rule, pattern, and file with --profile (#1820)\n\n<!-- claude-projects-attribution: {\"github_login\":\"azu\"} -->\n_Requested by **azu** · [project\nthread](https://claude.ai/code/project/chan_01ChfsKF1sN6vYsJMPZ7PuDt?thread=cmsg_01ChfsKF1sN6vYsJMPZ7PuDtL8NmAvcdLZojmBhpshKkAe)_\n\n## Problem\n\n`--profile` could not answer \"which rule or pattern is slow\", for a\nhuman or for an AI agent.\n\n- It printed a line for each file and each rule call. 7,220 files gave\n7,505 lines.\n- It did not show the patterns. Rules are data (`patterns`) and the core\nruns them, so the time of a rule was almost always `0ms`, and the real\ncost (the keyword scan that all rules share, and each regular\nexpression) was not recorded.\n- The profiler called `performance.mark()` for each file and used\n`PerformanceObserver`. `--profile` made the run 41% slower (442ms ->\n624ms, median of 7 runs), so the numbers were not close to a normal run.\n\n## Change\n\n`--profile` prints a summary instead of the lint results. Its size does\nnot depend on the number of files (2.9KB of text for the same 7,220\nfiles).\n\n```\nsecretlint profile: 363.96ms, 7220 files\n\nPhase                                Time(ms)      %  Count\nsecretlint>cli                         363.96  100.0      1\n  @node>load-config                     19.43    5.3      1\n    @config-loader>load-config-file      1.11    0.3      1\n    @config-loader>load-packages        18.21    5.0      1\n  secretlint>search-files               88.32   24.3      1\n  @node>execute                        255.73   70.3      1\n    @node>read-file                     81.91   22.5   7220\n    @core>lint                         139.68   38.4   7220\n      @core>setup-rules                  2.04    0.6      1\n      @core>keyword-scan                86.77   23.8   7120\n      @core>line-check                  14.40    4.0   1360\n      @core>rule-handler                 1.56    0.4    275\n    @node>format                         8.59    2.4      1\n\nTime(ms)  Files  Rule (top 10 of 27)\n    0.74      5  @secretlint/secretlint-rule-aws\n    0.54      5  @secretlint/secretlint-rule-basicauth\n    0.16    145  @secretlint/secretlint-rule-gcp\n...\n\nTime(ms)  Run(ms)  Runs  Matches  LineTest(ms)  LineTests  Pattern\n    3.97     0.30   170        0          3.66      13020  @secretlint/secretlint-rule-basicauth#0 /(?<protocol>(?:https?|ftp|ftps)):\\/\\/(?<user>...\n    0.48     0.48     5        0          0.00          0  @secretlint/secretlint-rule-aws#1 /(\"|')?(AWS|aws|Aws)?_?(ACCOUNT|account|Account)...\n...\n\nTime(ms)  File (top 10 of 7220)\n    2.63  <cwd>/t1/docs/CONTRIBUTING.md\n...\n```\n\n- **Phase**: the shared cost is its own row. `@core>keyword-scan` is the\none scan for the keywords of all rules, and it is not divided between\nthe rules (Biome's `--profile-rules` also excludes the shared\npreparation).\n- **Pattern**: time, runs, matches, and the line tests before the run. A\npattern with many runs and no matches is a candidate for more specific\n`keywords`.\n- The text shows the top 10 of the rules, the patterns, and the files.\n`--profile --format json` prints all rules and patterns as JSON (about\n10KB here).\n\n### Output\n\n- With `--profile`, the standard output has the summary only. The lint\nresults are not printed, so the output is one document.\n- `--format` selects the format of the summary: `json` is JSON, and any\nother value is text.\n- The lint still runs to its end, including the formatter, and the exit\nstatus is the one of the lint.\n- With `--output`, the lint results are written to the file as before,\nand the standard output has the summary.\n\n### Packages\n\n- `@secretlint/profiler`: keeps the totals (`count`, `duration`,\n`maxDuration`) for each type and id, not each record. New: `getStats()`,\n`now()`, `record()`, `count()`. `PerformanceObserver` and\n`performance.mark()` are not used.\n- `@secretlint/core`: records the keyword scan, the line check, and each\npattern. A pattern of the plan has `profileId` (`{rule id}#{index}\n{pattern}`). When the profiler is disabled, the added cost is a boolean\ncheck.\n- `@secretlint/node`, `secretlint`: record reading files and searching\nfiles. `secretlint/src/profile-report.ts` creates and formats the\nreport.\n\n### Specification (sdev)\n\n`docs/products/secretlint/features/performance-profile/` has the\nRequirements and the Design (en and ja).\n\n- The profile has almost no performance loss when it is off, and the\nRequirements say how to check it.\n- A run with `--profile` can take a few percent longer than a run\nwithout it.\n- Measuring many times for stable numbers (warm-up, repeating the lint\nin one process) is out of scope. A benchmark tool such as hyperfine does\nit, and the profile explains one run.\n\n## Cost\n\nSame 7,220 files (textlint x5, recommend preset), Node.js 22, 4 vCPU.\n\n**Without `--profile`** (the profile is off): base ffcb4f7 vs this\nbranch, 31 runs each in turns, median:\n\n| | base | this branch |\n| --- | --- | --- |\n| 7,220 files | 326.3ms | 319.9ms |\n| 7,220 files, second round | 329.8ms | 319.1ms |\n| 1 file | 87.0ms | 86.4ms |\n\nNo loss: the difference is inside the noise.\n\n**With `--profile`**: median of 11 runs, two rounds: without 447 /\n417ms, with 438 / 453ms (before this PR: +41%).\n\n## Breaking changes\n\n- `--profile` prints the summary and does not print the lint results.\nThe summary is changed (text and JSON).\n- `new SecretLintProfiler()` takes `{ now }` instead of `{ perf,\nPerformanceObserver }`.\n- `getEntries()` and `getMeasures()` are removed. Use `getStats()`.\n\n## Test\n\n- `@secretlint/profiler`: tests with a fake clock.\n- `@secretlint/core`: `test/profile.test.ts` (patterns, rule ids, lints\nthat overlap).\n- `secretlint`: `test/profile-report.test.ts` (report and text), and\n`--profile` tests in `test/cli.test.ts` for text, JSON, and `--output`\nwith a preset.\n- `pnpm run build`, `pnpm test`, and `sdev lint` pass.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nhttps://claude.ai/code/session_01TSdrAGGftEXQYQqbgXuGaC\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-11-14T00:04:19+09:00",
+          "tree_id": "c04fa048d0333eb7b396e39d956b078d0826dd5c",
+          "url": "https://github.com/secretlint/secretlint/commit/270507fe6ba40b4b0fb5fabb6f06889baed25207"
+        },
+        "date": 1794582342474,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 6.55,
+            "range": "±1.40%",
+            "unit": "ops/sec",
+            "extra": "21 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 4.57,
+            "range": "±1.18%",
             "unit": "ops/sec",
             "extra": "16 samples"
           }
