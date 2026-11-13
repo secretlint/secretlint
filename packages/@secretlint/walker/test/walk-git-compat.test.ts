@@ -10,8 +10,11 @@ const hasGit = spawnSync("git", ["--version"]).status === 0;
 /**
  * Compare the walk with Git in real directories that have nested `.gitignore` files.
  * `git ls-files --others --exclude-standard` lists the files that are not ignored in a repository without commits.
+ *
+ * It is skipped on Windows: creating the trees and starting Git for each of them takes too long there,
+ * and the matcher itself is compared with Git on every OS in gitignore.test.ts.
  */
-describe.skipIf(!hasGit)("walk and Git", () => {
+describe.skipIf(!hasGit || process.platform === "win32")("walk and Git", () => {
     it("finds the same files as `git ls-files` in random trees with nested .gitignore files", () => {
         // a linear congruential generator, so the test is the same in each run
         let seed = 20261113;
@@ -79,5 +82,5 @@ describe.skipIf(!hasGit)("walk and Git", () => {
         } finally {
             fs.rmSync(root, { recursive: true, force: true });
         }
-    });
+    }, 120_000);
 });
