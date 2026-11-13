@@ -74,12 +74,12 @@ const AWSAccountIDPattern = (() => {
 })();
 
 /**
- * AWSAccessKeyID and AWSAccountID are reported only if `enableIDScanRule` is true.
+ * AWSAccessKeyID and AWSAccountID are reported only if `enableIDScanRule` is truthy.
  * Their keywords, such as "account", are common words, so the patterns are disabled by default instead of
  * discarding their matches in `report()`.
  */
 const isIDScanRuleEnabled = (options: Options): boolean => {
-    return options.enableIDScanRule === true;
+    return Boolean(options.enableIDScanRule);
 };
 export const creator: SecretLintRuleCreator<Options> = {
     messages,
