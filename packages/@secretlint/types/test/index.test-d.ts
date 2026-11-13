@@ -1,5 +1,11 @@
 import { expectTypeOf } from "vitest";
-import type { SecretLintRuleContext, SecretLintRuleCreator, SecretLintSourceCode } from "../src/index.js";
+import type {
+    SecretLintRuleContext,
+    SecretLintRuleCreator,
+    SecretLintRulePattern,
+    SecretLintRulePresetCreator,
+    SecretLintSourceCode,
+} from "../src/index.js";
 import type { SecretLintCreateRuleMessageTranslator } from "../src/SecretLintRuleTranslator.js";
 
 declare var creator: SecretLintRuleCreator;
@@ -29,3 +35,17 @@ const baseRule = { messages, meta: { ...meta, supportedContentTypes: [...meta.su
 expectTypeOf({ ...baseRule, create: () => ({}) }).toExtend<SecretLintRuleCreator>();
 expectTypeOf({ ...baseRule, patterns: [] }).toExtend<SecretLintRuleCreator>();
 expectTypeOf(baseRule).not.toExtend<SecretLintRuleCreator>();
+
+// `enabledByOption` of a pattern is the name of a boolean option of the rule
+type ScanOptions = { allows?: string[]; enableIDScan?: boolean; strict: boolean };
+expectTypeOf<SecretLintRulePattern<ScanOptions>["enabledByOption"]>().toEqualTypeOf<
+    "enableIDScan" | "strict" | undefined
+>();
+// a rule without a boolean option can not use it
+expectTypeOf<SecretLintRulePattern<{ allows?: string[] }>["enabledByOption"]>().toEqualTypeOf<undefined>();
+// any name is accepted if the type of the options has no property
+expectTypeOf<SecretLintRulePattern["enabledByOption"]>().toEqualTypeOf<string | undefined>();
+// rules with different options are in one list of a preset
+declare var scanRule: SecretLintRuleCreator<ScanOptions>;
+declare var allowsRule: SecretLintRuleCreator<{ allows?: string[] }>;
+expectTypeOf([scanRule, allowsRule, creator]).toExtend<SecretLintRulePresetCreator["rules"]>();

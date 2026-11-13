@@ -479,22 +479,12 @@ describe("lintSource with patterns", () => {
     });
     it("should not enable a pattern by a property that the options inherit", async () => {
         const rule = createPatternRule([
-            // @ts-expect-error -- the type accepts only the name of an option whose value is a boolean
-            tokenPattern({ enabledByOption: "toString" }),
+            // the type does not accept "toString", because it is not an option
+            tokenPattern({ enabledByOption: "toString" as "enableTokenScan" }),
         ]);
         const { textSource } = createSources("a = tok_ab12");
         const result = await lintSource({ source: textSource, options: { config: toConfig(rule, {}) } });
         assert.deepStrictEqual(result.messages, []);
-    });
-    it("should accept only the name of a boolean option as `enabledByOption` in the type", () => {
-        const booleanOption: SecretLintRulePattern<Options>["enabledByOption"] = "enableTokenScan";
-        // @ts-expect-error -- `allows` is not a boolean option
-        const notBooleanOption: SecretLintRulePattern<Options>["enabledByOption"] = "allows";
-        // @ts-expect-error -- `unknownOption` is not an option
-        const unknownOption: SecretLintRulePattern<Options>["enabledByOption"] = "unknownOption";
-        // any name is accepted if the type of the options is not given
-        const untypedOption: SecretLintRulePattern["enabledByOption"] = "anyName";
-        assert.ok(booleanOption && notBooleanOption && unknownOption && untypedOption);
     });
     it("should throw if `enabledByOption` of a pattern is not a name of an option", async () => {
         for (const enabledByOption of [true, "", () => true]) {
