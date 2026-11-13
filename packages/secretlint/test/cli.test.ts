@@ -1,3 +1,4 @@
+import os from "node:os";
 import fs from "node:fs";
 import assert from "node:assert";
 import { cli, run } from "../src/cli.js";
@@ -128,30 +129,22 @@ describe("--profile", () => {
     // a preset: its rules have `patterns`
     const patternFixtureDir = path.join(SNAPSHOT_DIR, "preset-rule-severity-warning");
     const patternInputFilePath = path.join(patternFixtureDir, "input.txt");
-    const runWithProfile = async (format: string): Promise<string[]> => {
-        const logs: string[] = [];
-        const consoleLog = console.log;
-        console.log = (...args: unknown[]) => {
-            logs.push(args.join(" "));
-        };
-        try {
-            await run([patternInputFilePath], {
-                ...cli.flags,
-                cwd: patternFixtureDir,
-                color: false,
-                format,
-                profile: true,
-            });
-        } finally {
-            console.log = consoleLog;
-        }
-        return logs;
+    const runWithProfile = async (format: string) => {
+        return run([patternInputFilePath], {
+            ...cli.flags,
+            cwd: patternFixtureDir,
+            color: false,
+            format,
+            profile: true,
+        });
     };
     it("should enable the profiler and print the summary if --profile is specified", async () => {
-        const logs = await runWithProfile("stylish");
+        const result = await runWithProfile("stylish");
         assert.strictEqual(secretLintProfiler.isEnabled, true);
-        assert.strictEqual(logs.length, 1);
-        const output = logs[0] as string;
+        // the exit status is the one of the lint: the fixture has a warning only
+        assert.strictEqual(result.exitStatus, 0);
+        // the summary only: no lint results
+        const output = result.stdout as string;
         assert.match(output, /^secretlint profile: [\d.]+ms, 1 files\n/);
         // phases, rules, patterns, and files
         assert.match(output, /\n {2}@node>execute +[\d.]+ +[\d.]+ +1\n/);
@@ -162,10 +155,25 @@ describe("--profile", () => {
         );
         assert.match(output, /\n +[\d.]+ {2}<cwd>[\\/]input\.txt$/);
     });
+    it("should write the lint results to --output and print the summary only", async () => {
+        const outputFilePath = path.join(fs.mkdtempSync(path.join(os.tmpdir(), "secretlint-profile-")), "result.json");
+        const result = await run([patternInputFilePath], {
+            ...cli.flags,
+            cwd: patternFixtureDir,
+            color: false,
+            format: "json",
+            profile: true,
+            output: outputFilePath,
+        });
+        const report = JSON.parse(result.stdout as string);
+        assert.strictEqual(report.files, 1);
+        const lintResults = JSON.parse(fs.readFileSync(outputFilePath, "utf-8"));
+        assert.ok(Array.isArray(lintResults));
+    });
     it("should print the summary as JSON if --profile and --format=json are specified", async () => {
-        const logs = await runWithProfile("json");
-        assert.strictEqual(logs.length, 1);
-        const report = JSON.parse(logs[0] as string);
+        const result = await runWithProfile("json");
+        // the standard output is one JSON document: the summary
+        const report = JSON.parse(result.stdout as string);
         assert.deepStrictEqual(Object.keys(report), ["total", "files", "phases", "rules", "patterns", "slowestFiles"]);
         assert.strictEqual(report.files, 1);
         assert.strictEqual(report.phases[0].name, "secretlint>cli");
@@ -175,7 +183,7 @@ describe("--profile", () => {
             patternInputFilePath.replaceAll("\\", "/"),
         );
         const matchedPatterns = report.patterns.filter((pattern: { matches: number }) => pattern.matches > 0);
-        assert.ok(matchedPatterns.length > 0, `should have a pattern with matches: ${logs[0]}`);
+        assert.ok(matchedPatterns.length > 0, `should have a pattern with matches: ${result.stdout}`);
         matchedPatterns.forEach((pattern: { ruleId: string; pattern: string; runs: number }) => {
             assert.match(pattern.ruleId, /^@secretlint\/secretlint-rule-/);
             assert.match(pattern.pattern, /^\/.+\/[a-z]*$/s);

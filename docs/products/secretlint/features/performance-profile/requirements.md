@@ -19,6 +19,7 @@ The parent Product is [Secretlint](../../product.md).
 - How fast Secretlint lints. This feature measures it and does not define it.
 - A CPU profile of the JavaScript engine, such as `node --cpu-prof`. It shows functions, and this feature shows the work of Secretlint: phases, rules, and patterns.
 - The lint results and the exit status. They belong to [Result output](../result-output/requirements.md).
+- Measuring the run time many times to get stable numbers, with warm-up runs or by repeating the lint in one process. A benchmark tool such as hyperfine does it. The profile explains one run.
 
 ## User stories
 
@@ -32,7 +33,7 @@ Scenario: When `--profile` is specified, the summary shows the time of each phas
 
 - Given: A directory has files to lint and a configuration.
 - When: The developer runs `secretlint "**/*" --profile`.
-- Then: The standard output has a summary before the lint results. The first line has the total time and the number of the linted files. The summary has a row for each phase with its total time, its percentage of the total time, and how many times it ran.
+- Then: The standard output has the summary and no lint results. The first line has the total time and the number of the linted files. The summary has a row for each phase with its total time, its percentage of the total time, and how many times it ran.
 
 Scenario: When the number of files grows, the size of the summary does not grow
 
@@ -74,7 +75,13 @@ Scenario: When `--profile` and `--format json` are specified, the summary is JSO
 
 - Given: A directory has files to lint and a configuration.
 - When: The agent runs `secretlint "**/*" --profile --format json`.
-- Then: The standard output starts with a JSON object that has `total`, `files`, `phases`, `rules`, `patterns`, and `slowestFiles`. `rules` and `patterns` have every rule and pattern that ran, in the order of the time. `slowestFiles` has at most 10 files. The lint results follow as another JSON document.
+- Then: The standard output is one JSON object that has `total`, `files`, `phases`, `rules`, `patterns`, and `slowestFiles`. `rules` and `patterns` have every rule and pattern that ran, in the order of the time. `slowestFiles` has at most 10 files.
+
+Scenario: When `--profile` and `--output` are specified, the lint results go to the file and the summary to the standard output
+
+- Given: A directory has files to lint and a configuration.
+- When: The developer runs `secretlint "**/*" --profile --output result.txt`.
+- Then: The file has the lint results in the format of `--format`. The standard output has the summary only.
 
 ### Pay nothing when the profile is not used
 
@@ -102,13 +109,19 @@ None. No metric is defined for this feature.
 
 ### Summary of a run
 
-**Overview:** Prints a summary of where the time of the run was spent.
+**Overview:** Prints a summary of where the time of the run was spent, instead of the lint results.
 
-**Input:** `--profile`, with the files or the STDIN content to lint. `--format json` selects JSON.
+**Input:** `--profile`, with the files or the STDIN content to lint. `--format` selects the format of the summary: `json` is JSON, and any other value is text.
 
-**Output:** The summary on the standard output, before the lint results.
+**Output:** The summary on the standard output. The lint results are not printed. The exit status is the one of the lint.
 
 #### Applicable conditions
+
+##### What `--profile` changes
+
+A run with `--profile` is for looking at the profile, so the standard output has one document: the summary.
+The lint still runs to its end, including the formatter, so the summary has the time of formatting.
+With `--output`, the lint results are written to the file as without `--profile`.
 
 ##### Sections of the summary
 
@@ -137,7 +150,7 @@ Terminal control sequences and control characters in file paths, rule ids, and r
 
 ##### The command fails
 
-The summary is printed with what was recorded until the failure.
+The summary is printed to the standard output with what was recorded until the failure, and the error follows on the standard error.
 
 ### Cost of the profile
 
@@ -157,7 +170,7 @@ The profile is off unless `--profile` is specified, or a program enables the pro
 ##### The profile is on
 
 The times in the summary are for explaining a normal run, so a run with `--profile` must stay close to a run without it.
-No number is defined for "close". See [Open questions](#open-questions).
+A run with `--profile` can take a few percent longer than a run without it. Reading the clock for each file and each pattern has a cost, and it is accepted.
 
 ### Totals for a program
 
@@ -197,6 +210,4 @@ The summary never has the content of a file or a matched value.
 
 ## Open questions
 
-- Where the summary is printed. It is printed to the standard output before the lint results, so with `--format json` the standard output has two JSON documents. The standard error or a file would keep the lint results parseable.
-- The limit for the cost of a run with `--profile`. No number is defined.
-- Whether the profile should support repeating the lint in one process, to get stable numbers for a small directory.
+None.

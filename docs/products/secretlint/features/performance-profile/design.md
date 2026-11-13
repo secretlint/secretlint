@@ -68,7 +68,7 @@ When the content is decoded only for the keyword scan, the content is decoded be
 
 ### The summary
 
-The command creates the summary from the totals when it ends, and prints it.
+The command creates the summary from the totals when the lint ends, and returns it as its output in place of the output of the formatter. The formatter still runs, and its output is used only for `--output`.
 Creating the summary and formatting it as text are two steps: the first gives the object that `--format json` prints, and the second gives the tables.
 The order and the depth of the phases are a fixed list in the command. A type that is not in the list is not a phase.
 
@@ -91,7 +91,7 @@ The summary is `{ total, files, phases, rules, patterns, slowestFiles }`:
 
 ## APIs and interfaces
 
-- Command: `--profile`. `--format json` selects the JSON summary.
+- Command: `--profile`. `--format json` selects the JSON summary, and any other value selects the text.
 - Engine: `profile` option of `createEngine()`. `true` enables the profiler, `false` disables it, and without the option the state of the profiler is not changed.
 - Profiler (`@secretlint/profiler`): `secretLintProfiler.setEnabled()`, `isEnabled`, `getStats()` for readers, and `mark()`, `now()`, `record()`, `count()` for the packages of Secretlint that record.
 
@@ -133,6 +133,16 @@ It was not chosen because the list grows with the number of files and runs of pa
 The time of the shared scan would be added to each rule by the number of its keywords.
 It was not chosen because the scan is one pass for all keywords, and its time does not change in proportion to the keywords of one rule. A divided number would look like the cost of a rule, and removing the rule would not save that time.
 
+### Print the summary with the lint results
+
+The summary before the lint results on the standard output, or the summary on the standard error, would keep the lint results.
+It was not chosen because a run with `--profile` is for the profile: two documents on one output can not be parsed as JSON, and no reader needs both.
+
+### A separate option for the format of the summary
+
+An option such as `--profile=json` would leave `--format` for the lint results.
+It was not chosen because the lint results are not printed with `--profile`, so `--format` has no other meaning there, and one option for the format is simpler than two.
+
 ### Use only a CPU profile of the JavaScript engine
 
 `node --cpu-prof` and a tool that summarizes it would replace this feature.
@@ -140,4 +150,4 @@ It was not chosen as the only way because rules are data and the core runs them:
 
 ## Open questions
 
-The open questions of the Requirements.
+None.

@@ -127,7 +127,7 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
                        respected by default (since v13).
     
     Options for Developer
-    --profile          Enable performance profile.
+    --profile          Print the performance profile instead of the lint results. --format json prints it as JSON.
     --secretlintrcJSON [String] a JSON string of .secretlintrc. use JSON string instead of rc file.
     
     Experimental Options
