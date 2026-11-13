@@ -55,7 +55,6 @@
         "tabWidth": 4
     },
     "dependencies": {
-        "ignore": "catalog:",
         "picomatch": "catalog:"
     },
     "devDependencies": {

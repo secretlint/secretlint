@@ -112,7 +112,7 @@ GitHubのsecret scanningはコミットやpushの後にGitHub側で動きます�
 | 機能 | 説明 | 仕様 |
 | --- | --- | --- |
 | 秘密情報の検査 | ファイル、glob、STDINの内容を設定したルールでlintし、見つかった秘密情報を報告する | [Requirements](features/secret-scanning/requirements.ja.md) |
-| 対象ファイルの選択 | globとパスからlintするファイルを選び、`.gitignore`、`.secretlintignore`、組み込みの除外を考慮する | 未作成 |
+| 対象ファイルの選択 | globとパスからlintするファイルを選び、`.gitignore`、`.secretlintignore`、組み込みの除外を考慮する | [Requirements](features/file-selection/requirements.ja.md) |
 | 設定の読み込み | 設定ファイルを探して検証し、ルール、オプション、重大度、許可するメッセージを決める | [Requirements](features/config-loading/requirements.ja.md) |
 | 設定ファイルの作成 | `--init`で`.secretlintrc.json`を作る | 未作成 |
 | ルールとルールプリセット | 秘密情報の種類ごとに組み込みルールで検出し、ルールをrecommendとcanaryのプリセットにまとめる | [Requirements](features/rules-and-presets/requirements.ja.md) |
@@ -135,7 +135,8 @@ GitHubのsecret scanningはコミットやpushの後にGitHub側で動きます�
 
 ## 開発の指針
 
-- **誤検知を減らす。** ルールは秘密情報である可能性が高い値だけを報告し、可能なら一致した値を検証する。
+- **誤検知を減らす。** ルールは秘密情報である可能性が高い値だけを報告し、可能なら一致した値を検証する。Secretlintは開発者が動かし続けるlintツールであり、候補をすべて洗い出すスキャナーではない。報告を減らすことと多く見つけることが食い違うときは、誤検知が少ないほうを選ぶ。利用者が外したファイルの中の報告も誤検知なので、無視ルールが二通りに読めるときは、より多くのファイルを無視する読み方を選ぶ。
+- **無視ルールの意味はGitと同じにする。** 利用者は`.gitignore`をGitのために書いており、`.secretlintignore`も同じ書き方である。基準はGitそのものがルールをどう扱うかであり、ライブラリの挙動ではない。誤検知を減らすことと食い違うところでは、誤検知を減らすほうを優先する。
 - **オプトアウトではなくオプトイン。** 必要なルールだけを有効にする。
 - **開発の流れに組み込む。** 開発者の手元、pre-commitフック、CI、AIエージェントのコマンドとして動く。
 - **利用者が貢献できるようにする。** 利用者が自分でルールとその説明を書ける。
