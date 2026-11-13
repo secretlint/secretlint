@@ -82,7 +82,7 @@ static inline v128_t candidates(const uint8_t* p, uint32_t set) {
 
 // Find the keywords in the `length` bytes at `input()`.
 // Returns the number of the hits. Only the first MAX_HITS hits are written to `hitIndex()` and `hitState()`:
-// if the result is larger than MAX_HITS, the caller scans the input again in another way.
+// if the result is larger than MAX_HITS, the scan stopped there, and the caller scans the input again in another way.
 EXPORT(scan) uint32_t scan(uint32_t length) {
     const uint8_t* bytes = &__heap_base;
     uint32_t hits = 0;
@@ -106,6 +106,10 @@ EXPORT(scan) uint32_t scan(uint32_t length) {
             if (to > from) {
                 hits = check(bytes, from, to, &state, hits);
                 done = to;
+                if (hits > MAX_HITS) {
+                    // The caller scans the input again, so the rest is not read here
+                    return hits;
+                }
             }
         }
         i += 16;

@@ -42,28 +42,9 @@ const PAGE_SIZE = 65536;
 const MAX_INPUT_SIZE = 64 * 1024 * 1024;
 
 /**
- * How often each ASCII byte appears, per 10,000 bytes. Only the order matters.
- * It is used to choose the rarest part of a keyword as its fingerprint, so the filter drops more bytes.
- * A wrong value makes the filter slower, and it does not change the result.
- *
- * Measured over the text files of three repositories (microsoft/vscode, facebook/react, vuejs/core; the mean of the
- * three ratios). An upper case letter and its lower case letter have the sum of both, because a letter of a keyword
- * matches both cases. A value below 1 is 1.
+ * How many byte values a byte of a keyword matches in the filter: a letter matches both cases.
  */
-// prettier-ignore
-const ASCII_FREQUENCY = [
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 151, 290, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1684, 6, 75, 11, 13, 1, 7, 84, 123, 123, 22, 8, 107, 87, 165, 106,
-    47, 49, 37, 26, 25, 24, 22, 21, 20, 21, 94, 51, 22, 78, 36, 8,
-    9, 375, 99, 299, 234, 783, 132, 111, 133, 397, 23, 49, 255, 164, 437, 440,
-    211, 16, 422, 430, 580, 187, 93, 58, 55, 80, 15, 24, 11, 23, 7, 35,
-    27, 375, 99, 299, 234, 783, 132, 111, 133, 397, 23, 49, 255, 164, 437, 440,
-    211, 16, 422, 430, 580, 187, 93, 58, 55, 80, 15, 62, 16, 62, 1, 1,
-];
-/** A byte that is not ASCII is rare in code */
-const NON_ASCII_FREQUENCY = 1;
-const frequencyOfByte = (byte: number): number => ASCII_FREQUENCY[byte] ?? NON_ASCII_FREQUENCY;
+const matchingByteValues = (byte: number): number => (byte >= 0x61 && byte <= 0x7a ? 2 : 1);
 
 /** A fingerprint of a keyword: the bytes of `length` from `offset` of the keyword */
 type Fingerprint = { offset: number; bytes: number[]; keywordLength: number };
@@ -74,12 +55,15 @@ const chooseFingerprint = (keyword: string): Fingerprint => {
         // The positions after a short keyword match any byte
         return { offset: 0, bytes, keywordLength: bytes.length };
     }
+    // The fingerprint is the part of the keyword that matches the fewest byte sequences, and the first of such parts.
+    // It is decided only from the keyword: Secretlint lints any kind of content, so nothing is assumed about
+    // which bytes are common in the content.
     let bestOffset = 0;
     let bestScore = Number.POSITIVE_INFINITY;
     for (let offset = 0; offset + FINGERPRINT_LENGTH <= bytes.length; offset++) {
         let score = 1;
         for (let index = 0; index < FINGERPRINT_LENGTH; index++) {
-            score *= frequencyOfByte(bytes[offset + index] as number);
+            score *= matchingByteValues(bytes[offset + index] as number);
         }
         if (score < bestScore) {
             bestScore = score;
