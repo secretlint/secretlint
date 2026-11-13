@@ -292,16 +292,22 @@ const walkSubdir = (
  * out what to do with it. Returns null when the symlink is dangling /
  * inaccessible / points to something we don't care about (sockets etc.).
  */
+type EntryKind = { readonly kind: "file" | "dir"; readonly isSymlink: boolean };
+// The results of resolveEntryKind are shared, so it does not create an object for each entry
+const ENTRY_DIR: EntryKind = { kind: "dir", isSymlink: false };
+const ENTRY_FILE: EntryKind = { kind: "file", isSymlink: false };
+const ENTRY_SYMLINK_DIR: EntryKind = { kind: "dir", isSymlink: true };
+const ENTRY_SYMLINK_FILE: EntryKind = { kind: "file", isSymlink: true };
 const resolveEntryKind = (
     full: string,
     entry: Dirent,
     followSymlinks: boolean,
     listSymlinks: boolean,
-): { kind: "file" | "dir"; isSymlink: boolean } | null => {
-    if (entry.isDirectory()) return { kind: "dir", isSymlink: false };
-    if (entry.isFile()) return { kind: "file", isSymlink: false };
+): EntryKind | null => {
+    if (entry.isDirectory()) return ENTRY_DIR;
+    if (entry.isFile()) return ENTRY_FILE;
     if (!entry.isSymbolicLink()) return null;
-    if (!followSymlinks) return listSymlinks ? { kind: "file", isSymlink: true } : null;
+    if (!followSymlinks) return listSymlinks ? ENTRY_SYMLINK_FILE : null;
     let info;
     try {
         info = statSync(full);
@@ -310,8 +316,8 @@ const resolveEntryKind = (
         if (code === "ENOENT" || code === "EACCES") return null;
         throw error;
     }
-    if (info.isDirectory()) return { kind: "dir", isSymlink: true };
-    if (info.isFile()) return { kind: "file", isSymlink: true };
+    if (info.isDirectory()) return ENTRY_SYMLINK_DIR;
+    if (info.isFile()) return ENTRY_SYMLINK_FILE;
     return null;
 };
 
