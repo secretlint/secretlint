@@ -190,7 +190,7 @@ const KNOWN_PATTERN_PROPERTIES: ReadonlySet<string> = new Set([
     "keywords",
     "caseSensitiveKeywords",
     "scope",
-    "enabledByOption",
+    "when",
     "report",
 ] satisfies (keyof SecretLintRulePattern<any>)[]);
 /**
@@ -217,25 +217,47 @@ The scope should be "line" or "file". If it is a scope of a newer secretlint, pl
     }
 };
 /**
+ * `when` of a pattern is the name of a boolean option, or the name after "!".
+ * Other strings are an error, so that a `when` of a newer secretlint, such as an expression with another operator,
+ * never runs on this secretlint with a different result.
+ */
+const WHEN_PATTERN = /^(!?)([A-Za-z_$][A-Za-z0-9_$]*)$/;
+/**
  * Return true if the pattern is enabled for the options of the rule.
- * A pattern with `enabledByOption` is enabled only if the value of that option is truthy.
+ * - `when: "name"`: enabled only if the option is true
+ * - `when: "!name"`: enabled unless the option is true
+ * An option that is not set is false.
  */
 const isEnabledPattern = (
     rule: SecretLintRuleCreator<any>,
     pattern: SecretLintRulePattern<any>,
     options: SecretLintRuleCreatorOptions,
 ): boolean => {
-    const optionName: unknown = pattern.enabledByOption;
-    if (optionName === undefined) {
+    const when: unknown = pattern.when;
+    if (when === undefined) {
         return true;
     }
-    if (typeof optionName !== "string" || optionName === "") {
+    const matched = typeof when === "string" ? WHEN_PATTERN.exec(when) : null;
+    if (!matched) {
         throw new Error(
-            `The rule "${rule.meta.id}" has a pattern whose \`enabledByOption\` is not a name of an option.
-It should be a string that is not empty.`,
+            `The rule "${rule.meta.id}" has a pattern whose \`when\` is not supported: ${JSON.stringify(when) ?? typeof when}
+\`when\` should be the name of a boolean option of the rule, or the name after "!".
+If it is a \`when\` of a newer secretlint, please update secretlint.`,
         );
     }
-    return Object.hasOwn(options, optionName) && Boolean((options as Record<string, unknown>)[optionName]);
+    const isNegated = matched[1] === "!";
+    const optionName = matched[2];
+    // A property that the options object inherits, such as "constructor", is not an option
+    const value: unknown = Object.hasOwn(options, optionName)
+        ? (options as Record<string, unknown>)[optionName]
+        : undefined;
+    if (value !== undefined && typeof value !== "boolean") {
+        throw new Error(
+            `The option "${optionName}" of the rule "${rule.meta.id}" should be a boolean, but it is ${value === null ? "null" : typeof value}.`,
+        );
+    }
+    const optionValue = value === true;
+    return isNegated ? !optionValue : optionValue;
 };
 /**
  * Compile the patterns of the rule that are enabled for the options.

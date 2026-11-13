@@ -44,25 +44,27 @@ A small `basename` helper replaces `node:path`.
 The GCP rule checks a `.p12` file from `contentBytes` of the source, without reading the file. For the MAC of the file, it imports `node:crypto` only when it is available, and uses Web Crypto otherwise.
 The pattern rule matches file paths with `picomatch` in the way `micromatch` did, so `micromatch` is no longer a dependency.
 
-### Patterns that an option enables
+### Patterns that an option turns on or off
 
-A pattern has the optional property `enabledByOption`, the name of the option of the rule that enables it.
-For example, the AWS rule has `enabledByOption: "enableIDScanRule"` on its patterns of the access key ID and the account ID. The keywords of the account ID are common words such as `account`, so running the pattern only to discard its matches in `report()` took a large part of the lint of a repository that has the word in many files.
+A pattern has the optional property `when`, the condition for the pattern to be a part of the lint.
+`when: "name"` is true when the option `name` of the rule is `true`, and `when: "!name"` is true unless the option is `true`.
+For example, the AWS rule has `when: "enableIDScanRule"` on its patterns of the access key ID and the account ID. The keywords of the account ID are common words such as `account`, so running the pattern only to discard its matches in `report()` took a large part of the lint of a repository that has the word in many files.
 
-When `@secretlint/core` makes the lint plan of a configuration, it reads the options of each rule and leaves out the patterns that are not enabled:
+When `@secretlint/core` makes the lint plan of a configuration, it reads the options of each rule and leaves out the patterns whose `when` is false:
 
-- A pattern without `enabledByOption` is in the plan.
-- A pattern with `enabledByOption` is in the plan only if the options have their own property of that name and its value is truthy. A property that the options object inherits, such as `toString`, does not enable a pattern.
-- If `enabledByOption` is not a string, or is an empty string, making the plan throws an error with the rule id.
+- A pattern without `when` is in the plan.
+- `when` must match `!` (optional) and a name of letters, digits, `_`, and `$` that does not start with a digit. For any other value, making the plan throws an error with the rule id and the value. So a string with an operator that a newer core supports, such as `a && b`, is never read as the name of an option.
+- The value of the option is read from the own property of the options of that name. A property that the options object inherits, such as `constructor`, is not an option. An option that is not set is `false`.
+- If the value is set and is not a boolean, making the plan throws an error with the rule id and the name of the option. The core does not convert a value to a boolean.
 
 The plan is made once for a configuration, so the option is read once, not for each file.
 A pattern that is not in the plan has no entry in the keyword matcher, so its keywords do not make the core read a file as a string, and its regular expression never runs.
 `report()` of a pattern does not check the option again.
 
-The type of the property is `SecretLintRulePatternBooleanOptionName<Options>` of `@secretlint/types`: the names of the properties of `Options` whose value is a boolean. A name of another option, or a name that is not an option, is a type error. If `Options` has no property, such as the default `{}` and `unknown`, the type is `string`.
-The names are the second type parameter of `SecretLintRulePattern`, `SecretLintRulePatternCreator`, and `SecretLintRuleCreator`, and its default is computed from `Options`, so a rule does not pass it. If the type of the property used `Options` directly, a rule creator with its own `Options` would not be assignable to `SecretLintRuleCreator<unknown>`, because TypeScript does not accept a type that uses the names of the properties of `Options` in place of the one of `unknown`. As a type parameter of its own, the names of a rule are assignable to `string`, the names of `SecretLintRuleCreator<unknown>`. So a list of rules with different options, such as `rules` of a preset creator and `builtinRules`, stays `SecretLintRuleCreator<unknown>[]`.
+The type of the property is `SecretLintRulePatternWhen<Options>` of `@secretlint/types`: the names of the properties of `Options` whose value is a boolean (`SecretLintRulePatternBooleanOptionName<Options>`), and the same names after `!`, as a template literal type. A name of another option, or a name that is not an option, is a type error. If `Options` has no property, such as the default `{}` and `unknown`, the type is `string`.
+The strings are the second type parameter of `SecretLintRulePattern`, `SecretLintRulePatternCreator`, and `SecretLintRuleCreator`, and its default is computed from `Options`, so a rule does not pass it. If the type of the property used `Options` directly, a rule creator with its own `Options` would not be assignable to `SecretLintRuleCreator<unknown>`, because TypeScript does not accept a type that uses the names of the properties of `Options` in place of the one of `unknown`. As a type parameter of its own, the strings of a rule are assignable to `string`, the strings of `SecretLintRuleCreator<unknown>`. So a list of rules with different options, such as `rules` of a preset creator and `builtinRules`, stays `SecretLintRuleCreator<unknown>[]`.
 
-`enabledByOption` is one of the properties of a pattern that the core knows, and the core throws on an unknown property. The runner `@secretlint/core/testing` keeps `enabledByOption` when it removes the keywords and the scope for its comparison, because the property decides what the rule reports and is not an optimization.
+`when` is one of the properties of a pattern that the core knows, and the core throws on an unknown property. The runner `@secretlint/core/testing` keeps `when` when it removes the keywords and the scope for its comparison, because the property decides what the rule reports and is not an optimization.
 
 ### The built-in table and the presets
 
@@ -102,7 +104,7 @@ No diagram is needed: a preset is a list of rules, and its only interaction is `
 ## Data model and ER diagrams
 
 - **Rule creator:** `meta` (id, type, recommended, supportedContentTypes, docs.url, optional keywords), `messages`, and either `patterns` or `create()`.
-- **Pattern:** `pattern`, optional `keywords`, `caseSensitiveKeywords`, `scope`, and `enabledByOption`, and `report()`.
+- **Pattern:** `pattern`, optional `keywords`, `caseSensitiveKeywords`, `scope`, and `when`, and `report()`.
 - **Preset creator:** `meta` (id, type `preset`), `rules` (rule creators), and `create(context, options)`.
 - **Preset entry of the configuration:** `id`, `options`, and `rules`, a list of entries with `id`, `options`, `severity`, `allowMessageIds`, and `disabled`.
 
@@ -138,7 +140,10 @@ The `--init` of the npm package writes the rules that it finds in `package.json`
 
 - **One package per rule, with the rules bundled into the presets:** This was the design before the change. Each new rule needed a new npm package, and publishing it took the manual steps of trusted publishing described above.
 - **One separate package for the built-in rules:** The rules and their tests would be in a package next to `@secretlint/core`, as Biome keeps its rules in a crate separate from its engine. It was not chosen, because the rules and the engine must have the same version. `@secretlint/core` runs the `patterns` that the rules declare, and a new rule on an older engine is not supported, so a separate package could be installed in a version that does not match `@secretlint/core`. With one package, the rules always come with the engine that runs them, and only one package has to be published and installed. The rules, the engine, and the tests are in one package, as oxlint and ESLint do.
-- **A function `enabled(options)` on a pattern:** The pattern would have a function that returns whether it is enabled. It can express any condition, but it was not chosen. A rule states what it finds as data and `@secretlint/core` runs it, and a function hides from the core which option it reads. Each rule would also write its own condition, so the same value of an option, such as the string `"true"`, could enable a pattern in one rule and not in another. With the name of the option, the condition is in one place in the core, the name is checked by the type, and the data can be listed or passed to another thread. The only use today is one boolean option of the AWS rule, so the narrower form is enough.
+- **A function `enabled(options)` on a pattern:** The pattern would have a function that returns whether it is enabled. It can express any condition, but it was not chosen. A rule states what it finds as data and `@secretlint/core` runs it, and a function hides from the core which option it reads. Each rule would also write its own condition, so the same value of an option, such as the string `"true"`, could enable a pattern in one rule and not in another. With `when`, the condition is in one place in the core, the name is checked by the type, and the data can be listed or passed to another thread.
+- **Two properties, `enabledByOption` and `disabledByOption`:** Each would have the name of an option. It was not chosen, because a pair of properties for one condition grows with each new kind of condition, and a pattern could have both. One condition with `!` writes both, as the `when` clause of VS Code and CEL do.
+- **An expression language such as CEL:** The condition would be any expression of the options. It was not chosen: an evaluator adds a dependency and size to `@secretlint/core`, which also runs in browsers, a free expression can not be checked by the type of the options, and the only use today is one boolean option. `when` is written so that it reads as a subset of such a language, and the core rejects what it does not support, so operators can be added later.
+- **Reading a truthy value as true:** The string `"true"` enabled the patterns of the AWS rule when the rule checked the option in `report()`. It was not kept, because `when` is a new property with no behavior to keep, and a condition on a boolean should not depend on how each value converts. A configuration with such a value stops with an error instead of changing its result silently.
 - **Returning early in `report()` when the option is not set:** This was the design before the change. The result is the same, but the keywords of the pattern were searched, the file was read as a string, and the pattern ran on it, only to discard every match.
 
 ## Open questions

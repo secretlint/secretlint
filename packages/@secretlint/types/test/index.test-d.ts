@@ -36,15 +36,15 @@ expectTypeOf({ ...baseRule, create: () => ({}) }).toExtend<SecretLintRuleCreator
 expectTypeOf({ ...baseRule, patterns: [] }).toExtend<SecretLintRuleCreator>();
 expectTypeOf(baseRule).not.toExtend<SecretLintRuleCreator>();
 
-// `enabledByOption` of a pattern is the name of a boolean option of the rule
+// `when` of a pattern is the name of a boolean option of the rule, or the name after "!"
 type ScanOptions = { allows?: string[]; enableIDScan?: boolean; strict: boolean };
-expectTypeOf<SecretLintRulePattern<ScanOptions>["enabledByOption"]>().toEqualTypeOf<
-    "enableIDScan" | "strict" | undefined
+expectTypeOf<SecretLintRulePattern<ScanOptions>["when"]>().toEqualTypeOf<
+    "enableIDScan" | "strict" | "!enableIDScan" | "!strict" | undefined
 >();
 // a rule without a boolean option can not use it
-expectTypeOf<SecretLintRulePattern<{ allows?: string[] }>["enabledByOption"]>().toEqualTypeOf<undefined>();
-// any name is accepted if the type of the options has no property
-expectTypeOf<SecretLintRulePattern["enabledByOption"]>().toEqualTypeOf<string | undefined>();
+expectTypeOf<SecretLintRulePattern<{ allows?: string[] }>["when"]>().toEqualTypeOf<undefined>();
+// any string is accepted if the type of the options has no property
+expectTypeOf<SecretLintRulePattern["when"]>().toEqualTypeOf<string | undefined>();
 // rules with different options are in one list of a preset
 declare var scanRule: SecretLintRuleCreator<ScanOptions>;
 declare var allowsRule: SecretLintRuleCreator<{ allows?: string[] }>;

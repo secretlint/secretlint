@@ -92,9 +92,9 @@ export type SecretLintRuleHandlerCreator<Options = SecretLintRuleCreatorOptions>
  */
 export type SecretLintRulePatternCreator<
     Options = SecretLintRuleCreatorOptions,
-    BooleanOptionName extends string = SecretLintRulePatternBooleanOptionName<Options>,
+    When extends string = SecretLintRulePatternWhen<Options>,
 > = SecretLintRuleCreatorBase & {
-    patterns: SecretLintRulePattern<Options, BooleanOptionName>[];
+    patterns: SecretLintRulePattern<Options, When>[];
     /**
      * Secretlint that supports `patterns` does not call `create()` of a rule that has `patterns`.
      * Define it only if the rule should also work on secretlint that does not support `patterns`:
@@ -105,15 +105,15 @@ export type SecretLintRulePatternCreator<
 /**
  * A rule is defined with `create()` or with `patterns`.
  *
- * `BooleanOptionName` is the names that `enabledByOption` of a pattern accepts.
+ * `When` is the strings that `when` of a pattern accepts.
  * It is computed from `Options`, so you do not need to pass it.
  * It is a type parameter of its own so that a rule with its own `Options` is assignable to
  * `SecretLintRuleCreator<unknown>`, such as an item of `rules` of a preset.
  */
 export type SecretLintRuleCreator<
     Options = SecretLintRuleCreatorOptions,
-    BooleanOptionName extends string = SecretLintRulePatternBooleanOptionName<Options>,
-> = SecretLintRuleHandlerCreator<Options> | SecretLintRulePatternCreator<Options, BooleanOptionName>;
+    When extends string = SecretLintRulePatternWhen<Options>,
+> = SecretLintRuleHandlerCreator<Options> | SecretLintRulePatternCreator<Options, When>;
 /**
  * A match of {@link SecretLintRulePattern}
  */
@@ -161,6 +161,13 @@ export type SecretLintRulePatternBooleanOptionName<Options> = [keyof Options] ex
           string
       >;
 /**
+ * The strings that `when` of a pattern accepts:
+ * the name of a boolean option of the rule, or the name after `!`.
+ */
+export type SecretLintRulePatternWhen<Options> =
+    | SecretLintRulePatternBooleanOptionName<Options>
+    | `!${SecretLintRulePatternBooleanOptionName<Options>}`;
+/**
  * A pattern of a rule.
  *
  * Secretlint throws an error if a pattern has a property that it does not know.
@@ -169,7 +176,7 @@ export type SecretLintRulePatternBooleanOptionName<Options> = [keyof Options] ex
  */
 export type SecretLintRulePattern<
     Options = SecretLintRuleCreatorOptions,
-    BooleanOptionName extends string = SecretLintRulePatternBooleanOptionName<Options>,
+    When extends string = SecretLintRulePatternWhen<Options>,
 > = {
     /**
      * The regular expression that finds the secret.
@@ -211,18 +218,27 @@ export type SecretLintRulePattern<
      */
     scope?: "line" | "file";
     /**
-     * The name of the option of the rule that enables the pattern.
-     * The pattern is enabled only if the value of the option is truthy.
+     * The condition for the pattern to be a part of the lint.
+     * It is written with the name of a boolean option of the rule:
+     *
+     * - `"name"`: the pattern is enabled only when the option is `true`.
+     * - `"!name"`: the pattern is enabled unless the option is `true`.
+     *
+     * An option that is not set is `false`.
+     * Secretlint throws an error if the value of the option is not a boolean.
+     *
      * Secretlint reads the option once for a config, and a disabled pattern is not a part of the lint:
      * its keywords are not searched, and the pattern never runs.
-     * Use it for a pattern that an option turns on, instead of checking the option in `report()`.
+     * Use it for a pattern that an option turns on or off, instead of checking the option in `report()`.
+     *
+     * Only these two forms are supported. Secretlint throws an error on any other string.
      *
      * Default: undefined (the pattern is always enabled)
      * @example
      * // type Options = { enableIDScanRule?: boolean }
-     * enabledByOption: "enableIDScanRule"
+     * when: "enableIDScanRule"
      */
-    enabledByOption?: BooleanOptionName;
+    when?: When;
     /**
      * Called for each match of the pattern.
      * Check the match (allow list, checksum, etc.) and call `context.report()`.
