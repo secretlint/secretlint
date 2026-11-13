@@ -65,8 +65,6 @@ type SecretLintProfilerStat = {
 
 The id of a pattern is `{rule id}#{index of the pattern in the rule} {pattern}`.
 
-`getMeasures()` is deprecated. It returns the same totals as `{ name, duration, count }`, where `name` is `{type}` or `{type}||{id}`.
-
 ## Changelog
 
 See [Releases page](https://github.com/secretlint/secretlint/releases).

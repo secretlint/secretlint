@@ -74,23 +74,11 @@ describe("profile", () => {
             { type: "@core>pattern-match", id: "rule#0 /a/g", count: 4, duration: 0, maxDuration: 0 },
         ]);
     });
-    it("should return the totals as measures with getMeasures()", async () => {
-        const clock = createClock([0, 10, 10, 25]);
-        const profiler = new SecretLintProfiler({ now: clock.now, enabled: true });
-        profiler.mark({ type: "@node>execute::start" });
-        profiler.mark({ type: "@node>execute::end" });
-        profiler.mark({ type: "@core>lint::start", id: "a.txt" });
-        profiler.mark({ type: "@core>lint::end", id: "a.txt" });
-        assert.deepStrictEqual(await profiler.getMeasures(), [
-            { name: "@node>execute", entryType: "measure", duration: 10, count: 1 },
-            { name: "@core>lint||a.txt", entryType: "measure", duration: 15, count: 1 },
-        ]);
-    });
     it("should be disabled by default", () => {
         const profiler = new SecretLintProfiler({ now: createClock([]).now });
         assert.strictEqual(profiler.isEnabled, false);
     });
-    it("should not read the clock and not record if the profiler is disabled", async () => {
+    it("should not read the clock and not record if the profiler is disabled", () => {
         const clock = createClock([]);
         const profiler = new SecretLintProfiler({ now: clock.now, enabled: false });
         profiler.mark({ type: "secretlint>cli::start" });
@@ -102,7 +90,6 @@ describe("profile", () => {
         assert.strictEqual(profiler.isEnabled, false);
         assert.strictEqual(clock.calledCount, 0, "the clock should not be read");
         assert.deepStrictEqual(profiler.getStats(), []);
-        assert.deepStrictEqual(await profiler.getMeasures(), []);
     });
     it("should clear the totals if setEnabled(false) is called", () => {
         const clock = createClock([0, 10, 20]);

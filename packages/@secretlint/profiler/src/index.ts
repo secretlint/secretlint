@@ -140,21 +140,6 @@ export type SecretLintProfilerStat = {
      */
     maxDuration: number;
 };
-/**
- * @deprecated Use `SecretLintProfilerStat` of `getStats()`
- */
-export type SecretLintProfilerMeasure = {
-    /**
-     * `{type}` or `{type}||{id}`
-     */
-    name: string;
-    entryType: "measure";
-    /**
-     * The total time of the records of the name in milliseconds
-     */
-    duration: number;
-    count: number;
-};
 export type SecretLintProfilerOptions = {
     /**
      * Return the current time in milliseconds, like `performance.now()`
@@ -304,20 +289,5 @@ export class SecretLintProfiler {
             }
         }
         return results;
-    }
-
-    /**
-     * Return the totals as measures: a measure for each `{type}` or `{type}||{id}`.
-     * @deprecated Use `getStats()`. A measure was an entry for each pair of marks, and now it is the total of a name.
-     */
-    async getMeasures(): Promise<SecretLintProfilerMeasure[]> {
-        return this.getStats().map((stat) => {
-            return {
-                name: stat.id === undefined ? stat.type : `${stat.type}||${stat.id}`,
-                entryType: "measure",
-                duration: stat.duration,
-                count: stat.count,
-            };
-        });
     }
 }
