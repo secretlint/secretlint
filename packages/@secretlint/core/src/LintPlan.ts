@@ -469,7 +469,8 @@ const createView = (plan: LintPlan, contentType: ContentType): PlanView => {
         }
         const patterns = rule.patterns.map((pattern, patternNumber): PlanPattern => {
             return {
-                profileId: `${rule.descriptorRule.id}#${patternNumber} ${String(pattern.source.pattern)}`,
+                // the id of the rule itself: the id of the config can be a short id such as "@secretlint/aws"
+                profileId: `${rule.descriptorRule.rule.meta.id}#${patternNumber} ${String(pattern.source.pattern)}`,
                 index: patternIndexes.get(pattern) ?? -1,
                 regex: pattern.regex,
                 tester: pattern.tester,

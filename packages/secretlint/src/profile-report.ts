@@ -1,3 +1,4 @@
+import { stripVTControlCharacters } from "node:util";
 import type { SecretLintProfilerStat, SecretLintProfilerStatType } from "@secretlint/profiler";
 
 export type SecretLintProfileReportPhase = {
@@ -226,7 +227,16 @@ export const createProfileReport = (stats: readonly SecretLintProfilerStat[]): S
 const TOP_COUNT = 10;
 const MAX_PATTERN_LENGTH = 80;
 type Column = { title: string; align: "left" | "right" };
-const formatTable = (columns: readonly Column[], rows: readonly (readonly string[])[]): string[] => {
+/**
+ * Remove terminal control sequences and control characters from a cell.
+ * A file path and a pattern can have any character: for example, a file named with ESC sequences.
+ * Printing them as-is lets the input rewrite the terminal output. A line break and a tab also break the table.
+ */
+const sanitizeCell = (text: string): string => {
+    return stripVTControlCharacters(text).replace(/[\x00-\x1f\x7f-\x9f]/g, "");
+};
+const formatTable = (columns: readonly Column[], unsafeRows: readonly (readonly string[])[]): string[] => {
+    const rows = unsafeRows.map((row) => row.map(sanitizeCell));
     const widths = columns.map((column, index) => {
         return Math.max(column.title.length, ...rows.map((row) => (row[index] as string).length));
     });

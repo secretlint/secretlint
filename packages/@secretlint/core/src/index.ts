@@ -435,10 +435,8 @@ const lintWithPlan = (
         for (const ruleToRun of rulesToRun) {
             const viewRule = ruleToRun.viewRule;
             const ruleId = viewRule.rule.descriptorRule.rule.meta.id;
-            secretLintProfiler.mark({
-                type: "@core>rule-handler::start",
-                id: ruleId,
-            });
+            // Each call has its own start time, because the calls for different sources can overlap
+            const ruleStartTime = secretLintProfiler.isEnabled ? secretLintProfiler.now() : 0;
             if (ruleToRun.type === "patterns") {
                 const targets = ruleToRun.patterns
                     .map((pattern) => ({ pattern, target: targetsOfPattern(pattern) }))
@@ -461,10 +459,7 @@ const lintWithPlan = (
                         }
                     }
                 }
-                secretLintProfiler.mark({
-                    type: "@core>rule-handler::end",
-                    id: ruleId,
-                });
+                secretLintProfiler.record("@core>rule-handler", ruleId, ruleStartTime);
             } else {
                 const file = ruleToRun.handler.file;
                 // Most handlers are synchronous. Do not create a promise for them, because it costs for each file
@@ -472,17 +467,11 @@ const lintWithPlan = (
                 if (returned !== undefined && typeof (returned as PromiseLike<void>).then === "function") {
                     promises.push(
                         Promise.resolve(returned as PromiseLike<void>).then(() => {
-                            secretLintProfiler.mark({
-                                type: "@core>rule-handler::end",
-                                id: ruleId,
-                            });
+                            secretLintProfiler.record("@core>rule-handler", ruleId, ruleStartTime);
                         }),
                     );
                 } else {
-                    secretLintProfiler.mark({
-                        type: "@core>rule-handler::end",
-                        id: ruleId,
-                    });
+                    secretLintProfiler.record("@core>rule-handler", ruleId, ruleStartTime);
                 }
             }
         }
@@ -513,10 +502,8 @@ const lintWithPlan = (
 };
 
 export const lintSource = ({ source, options }: SecretLintSourceOptions): Promise<SecretLintCoreResult> => {
-    secretLintProfiler.mark({
-        type: "@core>lint::start",
-        id: source.filePath,
-    });
+    // Each call has its own start time, because the calls can overlap
+    const startTime = secretLintProfiler.isEnabled ? secretLintProfiler.now() : 0;
     debug(`source filePath: %O`, source.filePath);
     debug(`options: %O`, options);
     const plan = getLintPlan(options.config, options.locale ?? "en");
@@ -528,9 +515,6 @@ export const lintSource = ({ source, options }: SecretLintSourceOptions): Promis
         return promise;
     }
     return promise.finally(() => {
-        secretLintProfiler.mark({
-            type: "@core>lint::end",
-            id: source.filePath,
-        });
+        secretLintProfiler.record("@core>lint", source.filePath, startTime);
     });
 };

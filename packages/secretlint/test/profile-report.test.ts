@@ -132,6 +132,21 @@ Time(ms)  File
         assert.ok(output.includes(`rule-11#0 /${"x".repeat(79)}...`));
         assert.ok(!output.includes("rule-1#0"));
     });
+    it("should remove terminal control sequences and control characters from the text", () => {
+        const report = createProfileReport([
+            stat("secretlint>cli", undefined, 1, 1),
+            stat("@core>rule-handler", "rule-\u001b[31mred", 1, 1),
+            stat("@core>pattern", "rule-\u001b[31mred#0 /a\u001b]0;title\u0007b/g", 1, 1),
+            stat("@core>lint", "/cwd/\u001b[2Jclear\nline\ttab.txt", 1, 1),
+        ]);
+        const output = formatProfileReport(report, { cwd: "/cwd" });
+        assert.doesNotMatch(output, /[\x00-\x09\x0b-\x1f\x7f-\x9f]/);
+        assert.ok(output.includes("  rule-red\n"));
+        assert.ok(output.includes("  rule-red#0 /ab/g\n"));
+        assert.ok(output.endsWith("  <cwd>/clearlinetab.txt"));
+        // JSON.stringify escapes them
+        assert.doesNotMatch(JSON.stringify(report), /[\x00-\x1f\x7f-\x9f]/);
+    });
     it("should create an empty report if nothing is recorded", () => {
         const report = createProfileReport([]);
         assert.deepStrictEqual(report, { total: 0, files: 0, phases: [], rules: [], patterns: [], slowestFiles: [] });

@@ -232,6 +232,8 @@ export class SecretLintProfiler {
      * Mark the start or the end of a span: `{span}::start` and `{span}::end`.
      * The time between the start and the end is recorded for the span and the id.
      * `::end` without `::start` is ignored.
+     * A span is found by its type and id, so the spans of the same type and id should not overlap.
+     * Use `now()` and `record()` for the code that can run again before it ends.
      */
     mark(marker: SecretLintProfilerMarker) {
         if (!this.enabled) {
