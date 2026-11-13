@@ -152,12 +152,25 @@ Time(ms)  File
             stat("secretlint>cli", undefined, 1, 1),
             stat("@core>lint", "D:/a/secretlint/test/input.txt", 1, 2),
             stat("@core>lint", "D:\\a\\secretlint\\test\\literal.txt", 1, 1),
-            stat("@core>lint", "D:/other/input.txt", 1, 0),
+            stat("@core>lint", "D:/other/input.txt", 1, 0.5),
+            // a sibling directory that starts with the name of cwd is not in cwd
+            stat("@core>lint", "D:/a/secretlint-backup/input.txt", 1, 0),
         ]);
         const output = formatProfileReport(report, { cwd: "D:\\a\\secretlint", pathSeparator: "\\" });
         assert.ok(output.includes("  <cwd>/test/input.txt\n"));
         assert.ok(output.includes("  <cwd>\\test\\literal.txt\n"));
-        assert.ok(output.endsWith("  D:/other/input.txt"));
+        assert.ok(output.includes("  D:/other/input.txt\n"));
+        assert.ok(output.endsWith("  D:/a/secretlint-backup/input.txt"));
+    });
+    it("should not replace cwd in the file path of a sibling directory", () => {
+        const report = createProfileReport([
+            stat("secretlint>cli", undefined, 1, 1),
+            stat("@core>lint", "/cwd/a.txt", 1, 2),
+            stat("@core>lint", "/cwd-backup/a.txt", 1, 1),
+        ]);
+        const output = formatProfileReport(report, { cwd: "/cwd/", pathSeparator: "/" });
+        assert.ok(output.includes("  <cwd>/a.txt\n"));
+        assert.ok(output.endsWith("  /cwd-backup/a.txt"));
     });
     it("should create an empty report if nothing is recorded", () => {
         const report = createProfileReport([]);

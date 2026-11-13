@@ -262,10 +262,16 @@ const formatTable = (columns: readonly Column[], unsafeRows: readonly (readonly 
  */
 const replaceCwd = (filePath: string, cwd: string, separator: string): string => {
     const normalize = (text: string) => (separator === "\\" ? text.replaceAll("\\", "/") : text);
-    const normalizedCwd = normalize(cwd);
-    return normalizedCwd.length > 0 && normalize(filePath).startsWith(normalizedCwd)
-        ? `<cwd>${filePath.slice(cwd.length)}`
-        : filePath;
+    // without the separator at the end, so that the next character of the file path is checked
+    const normalizedCwd = normalize(cwd).replace(/\/+$/, "");
+    const normalizedFilePath = normalize(filePath);
+    if (normalizedCwd.length === 0 || !normalizedFilePath.startsWith(normalizedCwd)) {
+        return filePath;
+    }
+    // "/cwd-backup/file" is not in "/cwd"
+    const rest = filePath.slice(normalizedCwd.length);
+    const isInCwd = rest.length === 0 || normalize(rest).startsWith("/");
+    return isInCwd ? `<cwd>${rest}` : filePath;
 };
 const ms = (duration: number): string => duration.toFixed(2);
 const topTitle = (title: string, shown: number, all: number): string => {
