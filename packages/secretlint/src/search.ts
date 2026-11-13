@@ -3,11 +3,11 @@ import debug0 from "debug";
 
 const debug = debug0("secretlint");
 
-// Patterns are written WITHOUT a trailing `/**` so node-ignore prunes the
+// Patterns are written WITHOUT a trailing `/**` so the walker prunes the
 // directory itself (not just its contents). With `**/foo/**` the walker
 // would still readdir `foo/` and check each child individually.
 //
-// node-ignore (gitignore semantics) does not expand braces, so the four
+// Ignore rules (gitignore semantics) do not expand braces, so the four
 // `.secretlintrc.{json,yaml,yml,js}` variants are listed individually
 // rather than as a single brace pattern.
 const DEFAULT_IGNORE_PATTERNS = [
@@ -20,6 +20,14 @@ const DEFAULT_IGNORE_PATTERNS = [
     "**/.secretlintrc.js",
     "**/.secretlintignore*",
 ];
+
+/**
+ * The ignore rules are matched case-insensitively on every OS, like Git with `core.ignoreCase=true`.
+ * Git itself decides it by the file system (`git init` sets `core.ignoreCase` to true on macOS and Windows).
+ * Case-insensitive matching ignores every file that case-sensitive matching ignores,
+ * so it reports the fewest secrets in the files that the user meant to ignore, and the result is the same on every OS.
+ */
+const IGNORE_CASE = true;
 
 export type SearchFilesOptions = {
     cwd: string;
@@ -57,6 +65,7 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
         extraIgnorePatterns: DEFAULT_IGNORE_PATTERNS,
         noGlob: options.noGlob,
         followSymlinks: false,
+        ignoreCase: IGNORE_CASE,
     });
 
     if (items.length > 0) {
@@ -77,6 +86,7 @@ export const searchFiles = async (patterns: string[], options: SearchFilesOption
         extraIgnorePatterns: DEFAULT_IGNORE_PATTERNS,
         noGlob: options.noGlob,
         followSymlinks: false,
+        ignoreCase: IGNORE_CASE,
         // Count skipped symlinks as matches without reading their targets,
         // so a pattern that matches only symlinks is not "not found".
         listSymlinks: true,

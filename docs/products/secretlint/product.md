@@ -112,7 +112,7 @@ GitHub secret scanning works on the GitHub side, after a commit is made or pushe
 | Feature | Description | Specification |
 | --- | --- | --- |
 | Secret scanning | Lint files, globs, or STDIN content with the configured rules and report the secrets found | [Requirements](features/secret-scanning/requirements.md) |
-| File selection | Choose the files to lint from globs and paths, honoring `.gitignore`, `.secretlintignore`, and built-in ignores | Not written |
+| File selection | Choose the files to lint from globs and paths, honoring `.gitignore`, `.secretlintignore`, and built-in ignores | [Requirements](features/file-selection/requirements.md) |
 | Configuration loading | Find and validate the configuration file and decide the rules, options, severities, and allowed messages | [Requirements](features/config-loading/requirements.md) |
 | Configuration creation | Create a `.secretlintrc.json` with `--init` | Not written |
 | Rules and rule presets | Detect each kind of secret with the built-in rules, and group them into the recommended and canary presets | [Requirements](features/rules-and-presets/requirements.md) |
@@ -135,7 +135,8 @@ Not decided yet. See [Open questions](#open-questions).
 
 ## Development principles
 
-- **Reduce false positives.** A rule reports a value only when it is likely to be a secret, and validates matches when possible.
+- **Reduce false positives.** A rule reports a value only when it is likely to be a secret, and validates matches when possible. Secretlint is a linting tool that developers keep running, not a scanner that lists every candidate: when reporting less and finding more conflict, it chooses fewer false positives. A report in a file that the user excluded is also a false positive, so when an ignore rule can be read in two ways, the reading that ignores more files is taken.
+- **Ignore rules mean the same as in Git.** A user writes `.gitignore` for Git, and `.secretlintignore` has the same syntax. The reference is what Git itself does with a rule, not what a library does. Where this differs from reducing false positives, reducing false positives wins.
 - **Opt-in instead of opt-out.** Only the rules that are needed are enabled.
 - **Integrate with the development workflow.** Secretlint works on the developer's machine, in a pre-commit hook, in CI, and as a command run by AI agents.
 - **Empower users to contribute.** Users can write their own rules and documentation.

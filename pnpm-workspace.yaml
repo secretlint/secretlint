@@ -20,7 +20,6 @@ catalog:
   "benchmark": "^2.1.4"
   "debug": "^4.4.3"
   "escape-string-regexp": "^5.0.0"
-  "ignore": "^7.0.14"
   "istextorbinary": "^9.5.0"
   "js-yaml": "^4.3.2"
   "lint-staged": "^16.4.0"

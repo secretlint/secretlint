@@ -30,6 +30,12 @@ export type WalkOptions = {
      */
     extraIgnorePatterns?: string[];
     /**
+     * Match the ignore rules case-insensitively, like `core.ignoreCase` of Git.
+     * Git sets it to true for a repository on a case-insensitive file system.
+     * Only A-Z are folded. Default: false
+     */
+    ignoreCase?: boolean;
+    /**
      * Treat every entry in `patterns` as a literal path, even when it
      * contains glob special characters such as `[`, `(`, `{`, `?`.
      */
@@ -63,13 +69,13 @@ type CompiledMatcher = ((relPath: string) => boolean) | null;
 /**
  * Compile a list of glob patterns into a single matcher.
  *
- * Picomatch is used (rather than node-ignore or `path.matchesGlob`) for
+ * Picomatch is used (rather than the gitignore matcher or `path.matchesGlob`) for
  * three reasons:
  *
  * 1. Brace expansion. Patterns like `**\/*.{ts,js}` are common in CLI usage
- *    but node-ignore (gitignore semantics) does not expand braces. The
- *    cascade ignore stack still uses node-ignore — gitignore is a different
- *    pattern language from globs and the two should not be unified.
+ *    but gitignore rules do not expand braces. The cascade ignore stack
+ *    uses its own matcher: gitignore is a different pattern language from
+ *    globs and the two should not be unified.
  * 2. Dotfile traversal under `**`. `path.matchesGlob` (Node 22+) and
  *    `fs.glob` do not match dotfiles via `**\/*`, and there is no `dot`
  *    flag to opt in. Picomatch's `{ dot: true }` makes `**\/*` match every
@@ -433,7 +439,7 @@ const handleStaticPath = (options: {
 export const walkSync = (options: WalkOptions): string[] => {
     const cwd = path.resolve(options.cwd);
     const ignoreFiles = options.ignoreFiles ?? [];
-    const rootChain = createRootIgnore(cwd, options.extraIgnorePatterns ?? []);
+    const rootChain = createRootIgnore(cwd, options.extraIgnorePatterns ?? [], options.ignoreCase === true);
     const results: string[] = [];
     const followSymlinks = options.followSymlinks !== false;
     const listSymlinks = !followSymlinks && options.listSymlinks === true;

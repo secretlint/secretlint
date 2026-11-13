@@ -5,8 +5,7 @@ import { walk } from "../src/index.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const fix = (name: string) => path.join(__dirname, "fixtures", name);
-const rel = (paths: string[], cwd: string) =>
-    paths.map((p) => path.relative(cwd, p).replaceAll("\\", "/")).sort();
+const rel = (paths: string[], cwd: string) => paths.map((p) => path.relative(cwd, p).replaceAll("\\", "/")).sort();
 
 /**
  * Pin the walker against the family of "nested .gitignore is treated
