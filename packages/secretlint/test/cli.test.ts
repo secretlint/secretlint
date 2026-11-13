@@ -169,7 +169,11 @@ describe("--profile", () => {
         assert.deepStrictEqual(Object.keys(report), ["total", "files", "phases", "rules", "patterns", "slowestFiles"]);
         assert.strictEqual(report.files, 1);
         assert.strictEqual(report.phases[0].name, "secretlint>cli");
-        assert.strictEqual(report.slowestFiles[0].filePath, patternInputFilePath);
+        // the file path of a searched file uses "/" on Windows
+        assert.strictEqual(
+            report.slowestFiles[0].filePath.replaceAll("\\", "/"),
+            patternInputFilePath.replaceAll("\\", "/"),
+        );
         const matchedPatterns = report.patterns.filter((pattern: { matches: number }) => pattern.matches > 0);
         assert.ok(matchedPatterns.length > 0, `should have a pattern with matches: ${logs[0]}`);
         matchedPatterns.forEach((pattern: { ruleId: string; pattern: string; runs: number }) => {

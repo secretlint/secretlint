@@ -1,3 +1,4 @@
+import path from "node:path";
 import { stripVTControlCharacters } from "node:util";
 import type { SecretLintProfilerStat, SecretLintProfilerStatType } from "@secretlint/profiler";
 
@@ -255,6 +256,17 @@ const formatTable = (columns: readonly Column[], unsafeRows: readonly (readonly 
     };
     return [formatRow(columns.map((column) => column.title)), ...rows.map(formatRow)];
 };
+/**
+ * Replace `cwd` at the start of the file path with "<cwd>".
+ * On Windows, the file path of a searched file uses "/" and `cwd` uses "\\", so compare them with "/".
+ */
+const replaceCwd = (filePath: string, cwd: string, separator: string): string => {
+    const normalize = (text: string) => (separator === "\\" ? text.replaceAll("\\", "/") : text);
+    const normalizedCwd = normalize(cwd);
+    return normalizedCwd.length > 0 && normalize(filePath).startsWith(normalizedCwd)
+        ? `<cwd>${filePath.slice(cwd.length)}`
+        : filePath;
+};
 const ms = (duration: number): string => duration.toFixed(2);
 const topTitle = (title: string, shown: number, all: number): string => {
     return all > shown ? `${title} (top ${shown} of ${all})` : title;
@@ -264,7 +276,17 @@ const topTitle = (title: string, shown: number, all: number): string => {
  * Format the report as text.
  * It shows the top of the rules, the patterns, and the files. `--format json` outputs all of them.
  */
-export const formatProfileReport = (report: SecretLintProfileReport, options: { cwd: string }): string => {
+export const formatProfileReport = (
+    report: SecretLintProfileReport,
+    options: {
+        cwd: string;
+        /**
+         * The separator of the file paths of the platform. Default: `path.sep`
+         */
+        pathSeparator?: string;
+    },
+): string => {
+    const pathSeparator = options.pathSeparator ?? path.sep;
     const lines: string[] = [];
     lines.push(`secretlint profile: ${ms(report.total)}ms, ${report.files} files`);
     lines.push("");
@@ -338,7 +360,10 @@ export const formatProfileReport = (report: SecretLintProfileReport, options: { 
                     { title: "Time(ms)", align: "right" },
                     { title: topTitle("File", report.slowestFiles.length, report.files), align: "left" },
                 ],
-                report.slowestFiles.map((file) => [ms(file.duration), file.filePath.replace(options.cwd, "<cwd>")]),
+                report.slowestFiles.map((file) => [
+                    ms(file.duration),
+                    replaceCwd(file.filePath, options.cwd, pathSeparator),
+                ]),
             ),
         );
     }

@@ -83,7 +83,7 @@ describe("profile-report", () => {
         });
     });
     it("should format the report as text", () => {
-        const output = formatProfileReport(createProfileReport(stats), { cwd: "/cwd" });
+        const output = formatProfileReport(createProfileReport(stats), { cwd: "/cwd", pathSeparator: "/" });
         assert.strictEqual(
             output,
             `secretlint profile: 100.00ms, 2 files
@@ -125,7 +125,7 @@ Time(ms)  File
         assert.strictEqual(report.rules.length, 12);
         assert.strictEqual(report.patterns.length, 12);
         assert.strictEqual(report.slowestFiles.length, 10);
-        const output = formatProfileReport(report, { cwd: "/cwd" });
+        const output = formatProfileReport(report, { cwd: "/cwd", pathSeparator: "/" });
         assert.match(output, /Rule \(top 10 of 12\)/);
         assert.match(output, /Pattern \(top 10 of 12\)/);
         assert.match(output, /File \(top 10 of 12\)/);
@@ -139,7 +139,7 @@ Time(ms)  File
             stat("@core>pattern", "rule-\u001b[31mred#0 /a\u001b]0;title\u0007b/g", 1, 1),
             stat("@core>lint", "/cwd/\u001b[2Jclear\nline\ttab.txt", 1, 1),
         ]);
-        const output = formatProfileReport(report, { cwd: "/cwd" });
+        const output = formatProfileReport(report, { cwd: "/cwd", pathSeparator: "/" });
         assert.doesNotMatch(output, /[\x00-\x09\x0b-\x1f\x7f-\x9f]/);
         assert.ok(output.includes("  rule-red\n"));
         assert.ok(output.includes("  rule-red#0 /ab/g\n"));
@@ -147,11 +147,23 @@ Time(ms)  File
         // JSON.stringify escapes them
         assert.doesNotMatch(JSON.stringify(report), /[\x00-\x1f\x7f-\x9f]/);
     });
+    it("should replace cwd in the file paths that use another separator on Windows", () => {
+        const report = createProfileReport([
+            stat("secretlint>cli", undefined, 1, 1),
+            stat("@core>lint", "D:/a/secretlint/test/input.txt", 1, 2),
+            stat("@core>lint", "D:\\a\\secretlint\\test\\literal.txt", 1, 1),
+            stat("@core>lint", "D:/other/input.txt", 1, 0),
+        ]);
+        const output = formatProfileReport(report, { cwd: "D:\\a\\secretlint", pathSeparator: "\\" });
+        assert.ok(output.includes("  <cwd>/test/input.txt\n"));
+        assert.ok(output.includes("  <cwd>\\test\\literal.txt\n"));
+        assert.ok(output.endsWith("  D:/other/input.txt"));
+    });
     it("should create an empty report if nothing is recorded", () => {
         const report = createProfileReport([]);
         assert.deepStrictEqual(report, { total: 0, files: 0, phases: [], rules: [], patterns: [], slowestFiles: [] });
         assert.strictEqual(
-            formatProfileReport(report, { cwd: "/cwd" }),
+            formatProfileReport(report, { cwd: "/cwd", pathSeparator: "/" }),
             "secretlint profile: 0.00ms, 0 files\n\nPhase  Time(ms)  %  Count",
         );
     });
