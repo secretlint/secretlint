@@ -111,9 +111,9 @@ None. No metric is defined for this feature.
 
 | Item | Source | Why |
 | --- | --- | --- |
-| Work of each pattern | `runs`, `matches`, `lineTests` of `--profile --format json` | The same files give the same numbers in each run, so a difference is a change of the code, not noise. A new pattern with many runs and no matches shows that its keywords are too common |
+| Work of each pattern | The profile of each build: how many times each pattern ran, matched, and tested a line | The same files give the same numbers in each run, so a difference is a change of the code, not noise. A new pattern with many runs and no matches shows that its keywords are too common |
 | Findings | The lint results of each build | A rule change that adds many findings is likely to add false positives. Secretlint prefers fewer false positives |
-| Run time | hyperfine, both builds in turns on the same machine | It is the time that a user sees. It changes between runs, so only a large ratio is shown as a warning |
+| Run time | Each build runs several times, in turns, on the same machine | It is the time that a user sees. It changes between runs, so only a large ratio is shown as a warning |
 
 The output does not include the value of a secret: a finding is shown by the rule id, the file, and the line.
 
@@ -121,14 +121,15 @@ The output does not include the value of a secret: a finding is shown by the rul
 
 The sets are repositories at fixed commits, so the base and the head and two runs on different days lint the same files.
 
-| Set | Repository | Files | Use |
-| --- | --- | --- | --- |
-| small | `examples/benchmark/targets` (in this repository) | about 600 | Default of a local run |
-| medium | facebook/react | about 7,300 | |
-| large | microsoft/vscode | about 21,000 | |
-| huge | torvalds/linux | about 97,000 | |
+| Set | Repository | Files |
+| --- | --- | --- |
+| small | `examples/benchmark/targets` (in this repository) | about 600 |
+| medium | facebook/react | about 7,300 |
+| large | microsoft/vscode | about 21,000 |
+| huge | torvalds/linux | about 97,000 |
 
-CI uses all sets. A local run uses the small set unless another set is selected.
+A local run and CI use all sets. A developer can select some of the sets for a quicker local run.
+A set that is not on the machine is downloaded at its commit without the history of the repository, so preparing all sets takes a short time once.
 
 The configuration of the lint is the canary preset, so new rules are included.
 
@@ -143,21 +144,21 @@ A ratio of 1.3 or more, or 0.77 or less, is marked as a large change. A smaller 
 
 The script stops and prints which build failed. No partial comparison is written.
 
-##### hyperfine is not installed
+##### The run time can not be measured
 
-The script compares the work of the patterns and the findings, and it says that the run time was not measured.
+The tool that measures the run time is not on the machine. The script compares the work of the patterns and the findings, and it says that the run time was not measured.
 
 ### CI job
 
 **Overview:** Runs the comparison script for a pull request and puts the output in the job summary.
 
-**Input:** A pull request that changes the code of the lint: `packages/**` other than Markdown, the lock file, or the comparison script.
+**Input:** A pull request that changes the code that the lint runs, its dependencies, or the comparison itself.
 
 **Output:** The job summary with the Markdown output, and an artifact with the JSON output.
 
 #### Applicable conditions
 
-The job runs on the `pull_request` event with a token that can only read the repository and without secrets, so the code of a pull request from a fork can not get a secret or change the repository.
+The job runs the code of the pull request without any secret of the repository and with permission only to read the repository, so the code of a pull request from a fork can not get a secret or change the repository.
 The base is the base branch of the pull request. CI compares each set in its own job, so the sets run in parallel, and a set that can not run does not hide the results of the other sets. The job summary of each job has the comparison of its set.
 The job does not fail because of a difference. It fails only if the comparison can not run.
 
@@ -192,14 +193,10 @@ None is collected. The result has file paths and rule ids of public repositories
   - **Related user stories:** Notice a large change in a pull request from someone else; Read the comparison from an AI agent
   - **Reason for dependency:** It runs the comparison for each pull request and keeps the JSON output as an artifact
   - **Contractual and usage decisions:** The job uses the hosted runners that the other checks of the repository use. The comparison runs two builds on four sets in four jobs, so it adds runner time to a pull request that changes the code of the lint
-- **GitHub (codeload.github.com)**
+- **GitHub**
   - **Related user stories:** Notice a large change in a pull request from someone else; Measure on a large repository
-  - **Reason for dependency:** The sets other than small are public repositories, downloaded as archives at their fixed commits
+  - **Reason for dependency:** The sets other than small are public repositories on GitHub, downloaded at their fixed commits
   - **Contractual and usage decisions:** Only public repositories are downloaded. Their files are linted and not redistributed
-- **hyperfine**
-  - **Related user stories:** See what a rule change does before opening a pull request; Notice a large change in a pull request from someone else
-  - **Reason for dependency:** It measures the run time of the two builds in turns. Secretlint does not measure its run time many times by itself
-  - **Contractual and usage decisions:** It is installed in CI. A local run works without it and compares only the work of the patterns and the findings
 
 ## Security considerations
 
