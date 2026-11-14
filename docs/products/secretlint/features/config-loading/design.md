@@ -29,7 +29,7 @@ Validating the configuration file, and running the loaded rules in `@secretlint/
 - Otherwise it calls `loadConfig({ cwd, configFilePath })`, and the CLI passes `--secretlintrc` as `configFilePath`.
 
 `loadConfigDescriptor()` calls `rcFile("secretlint", { cwd, configFileName: configFilePath, packageJSON: { fieldName: "secretlint" } })` of `rc-config-loader`.
-`rcFile()` splits `cwd` into its directories and, from the deepest one, tries `<configFileName>` with the loaders of `.json`, `.yaml`, `.yml`, `.js`, and `.cjs` in order, then `<configFileName>.json`, `.yaml`, `.yml`, `.js`, `.cjs`, then the `secretlint` field of `package.json`, and repeats this in the parent directory up to the root.
+`rcFile()` splits `cwd` into its directories and, from the deepest one, tries `<configFileName>.cjs`, `.js`, `.json`, `.yaml`, `.yml` (the key order of its loader table), then `<configFileName>` with the loaders of `.json`, `.yaml`, `.yml`, `.js`, and `.cjs` in order, then the `secretlint` field of `package.json`, and repeats this in the parent directory up to the root.
 `configFileName` is `.secretlintrc`.
 
 When `configFilePath` is given (`--secretlintrc`), `loadConfigDescriptor()` does not search. It resolves `path.resolve(cwd, configFilePath)`, checks that the file exists, and reads only that file with the loader of its extension (`.json`, `.yaml`, `.yml`, `.js`, `.cjs`; a name without these extensions is read as JSON, YAML, then JavaScript, like `.secretlintrc`).

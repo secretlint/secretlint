@@ -29,7 +29,7 @@ Node.jsのモジュール解決と、[ルールとルールプリセット](../r
 - それ以外のときは`loadConfig({ cwd, configFilePath })`を呼びます。CLIは`--secretlintrc`を`configFilePath`として渡します。
 
 `loadConfigDescriptor()`は、`rc-config-loader`の`rcFile("secretlint", { cwd, configFileName: configFilePath, packageJSON: { fieldName: "secretlint" } })`を呼びます。
-`rcFile()`は`cwd`をディレクトリに分け、最も深いディレクトリから、`<configFileName>`を`.json`、`.yaml`、`.yml`、`.js`、`.cjs`の読み込み方で順に試し、次に`<configFileName>.json`、`.yaml`、`.yml`、`.js`、`.cjs`を試し、最後に`package.json`の`secretlint`フィールドを試します。これを親ディレクトリでルートまで繰り返します。
+`rcFile()`は`cwd`をディレクトリに分け、最も深いディレクトリから、`<configFileName>.cjs`、`.js`、`.json`、`.yaml`、`.yml`を試し（読み込み方の表のキーの順です）、次に`<configFileName>`を`.json`、`.yaml`、`.yml`、`.js`、`.cjs`の読み込み方で順に試し、最後に`package.json`の`secretlint`フィールドを試します。これを親ディレクトリでルートまで繰り返します。
 `configFileName`は`.secretlintrc`です。
 
 `configFilePath`が指定されたとき（`--secretlintrc`）は、`loadConfigDescriptor()`は探索しません。`path.resolve(cwd, configFilePath)`を解決してファイルがあることを確かめ、そのファイルだけを拡張子に合った読み込み方で読みます（`.json`、`.yaml`、`.yml`、`.js`、`.cjs`。これらの拡張子がない名前は、`.secretlintrc`と同じくJSON、YAML、JavaScriptの順に読みます）。

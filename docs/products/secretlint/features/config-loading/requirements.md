@@ -184,8 +184,8 @@ None. This feature is a step of every lint, and no metric has been defined for i
 
 In the current directory, Secretlint looks for these, in this order, and uses the first one that it can read:
 
-1. `.secretlintrc`, read as JSON, YAML, or JavaScript
-2. `.secretlintrc.json`, `.secretlintrc.yaml`, `.secretlintrc.yml`, `.secretlintrc.js`, `.secretlintrc.cjs`
+1. `.secretlintrc.cjs`, `.secretlintrc.js`, `.secretlintrc.json`, `.secretlintrc.yaml`, `.secretlintrc.yml`
+2. `.secretlintrc`, read as JSON, YAML, or JavaScript
 3. The `secretlint` field of `package.json`
 
 If none is found, it looks in the parent directory in the same way, up to the root of the file system.
