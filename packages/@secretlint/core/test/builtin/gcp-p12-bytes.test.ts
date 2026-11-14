@@ -3,9 +3,7 @@ import { fileURLToPath } from "node:url";
 import type { SecretLintRuleContext, SecretLintSourceCode } from "@secretlint/types";
 import { creator as rule } from "../../src/builtin/rules/gcp/index.js";
 
-const p12FilePath = fileURLToPath(
-    new URL("rules/gcp/snapshots/ng.privatekey-p12/input.p12", import.meta.url),
-);
+const p12FilePath = fileURLToPath(new URL("rules/gcp/snapshots/ng.privatekey-p12/input.p12", import.meta.url));
 
 const lintP12 = async (contentBytes: Uint8Array | undefined) => {
     const reports: unknown[] = [];

@@ -1,0 +1,32 @@
+{
+    "filePath": "[SNAPSHOT]/ng.api-url/input.txt",
+    "messages": [
+        {
+            "message": "found Telegram bot token: 123456789:AEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE",
+            "range": [
+                28,
+                73
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-telegram",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 28
+                },
+                "end": {
+                    "line": 1,
+                    "column": 73
+                }
+            },
+            "severity": "error",
+            "messageId": "TELEGRAM_BOT_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-telegram/README.md#TELEGRAM_BOT_TOKEN",
+            "data": {
+                "ID": "123456789:AEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"
+            }
+        }
+    ],
+    "sourceContent": "https://api.telegram.org/bot123456789:AEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE/getMe\n",
+    "sourceContentType": "text"
+}
