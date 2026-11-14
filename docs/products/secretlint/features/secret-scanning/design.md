@@ -67,6 +67,67 @@ The automaton does one table lookup for each byte, whatever the keywords are.
 So its time depends on the size of the content and barely on the number of keywords.
 It also has no knowledge about the content. This is why it meets "Any content" and "The number of keywords" of the Requirements.
 
+### Keywords with a guard
+
+A guarded keyword is a keyword and a guard. The guard is a set of ASCII characters and a least count `n`, and it is met at a place if the `n` characters after the keyword are all in the set.
+The Design of [Rules and rule presets](../rules-and-presets/requirements.md) describes how a pattern declares a guarded keyword and how the core reads it. This section describes the scan.
+
+#### An entry of the matcher
+
+The matcher is built from entries. An entry is a keyword, whether it is case-sensitive, and a guard or no guard.
+Two patterns that declare the same keyword with different guards are two entries that end at the same state of the automaton, and a pattern that declares the keyword without a guard is a third one.
+`found` of the hits has one flag for each entry, so a pattern is selected only by its own entry.
+The automaton itself does not change: it is built from the keywords, and a guard adds no state.
+
+#### The check is in the scan loop
+
+When the automaton reaches a state that completes a keyword, and an entry of that state has a guard or is case-sensitive, the matcher checks these entries at once, before it records the place.
+
+- If no entry of the state is left, nothing is recorded, and the loop goes on with the next character. This is the case that the guard is for: a keyword such as `00` has millions of places in a large repository, and each of them costs one check and no memory.
+- If some entries are left, the place is recorded with an id for the entries that are left. The matcher already creates such ids for the case-sensitive keywords, and the guard uses the same ids.
+- A state that has an entry without a guard is always recorded, as before.
+
+The comparison of a case-sensitive keyword moves into this check. Before, it ran after the scan, over the recorded places.
+
+The check of a guard reads the next `n` characters of the input and looks each one up in a table of 128 flags. It fails at the first character that is not in the set, at a character that is not ASCII, and at the end of the input.
+It does not change the state of the automaton, and the scan goes on from the same place, so keywords that overlap are all found.
+The check never goes back, and `n` is at most 255, so the scan reads each character a limited number of times, whatever the content is. This is how it meets "A cost with a limit" and "Any content" of the Requirements.
+
+#### Bytes and strings
+
+The set of a guard has only ASCII characters. A character of the set is one byte in UTF-8 and one code unit in a string, and a character that is not ASCII never meets a guard.
+So the scan of the bytes and the scan of the decoded string meet a guard at the same places, as they find the same keywords.
+
+#### After the scan
+
+A place whose guard is not met is not in the hits, so the steps after the scan need no change.
+A line is checked with the regular expression of a pattern only if it has a recorded place of that pattern, and `found`, `lineMatched`, and `runsRules` mean the same as before.
+`lintSource()`, the check of the lines, and the engine do not know about guards.
+
+#### On worker threads
+
+`KeywordScanPlan` gets `guards`: for each keyword of the plan, `undefined` or the set as a string of its characters and the least count. It is plain data, and the id of the plan has it.
+A worker builds the same matcher from the plan, so it checks the guards in its own scan loop and loads no rule.
+
+#### Why the check is in the loop
+
+The scan of a large repository was measured with ten short keywords of real services added to the keywords of the recommended preset.
+Without guards, the scan took about 4 times longer than with the keywords of the preset alone, because the scan recorded tens of millions of places and the lines of these places were checked.
+With the guards checked after the scan, over the recorded places, it took about half of that. With the guards checked in the loop, it took about a third of that, close to the time without the ten keywords.
+The files that the rules ran for were the same in all three.
+With the keywords of the recommended preset alone, a guard changed nothing that could be measured, because these keywords are long and rare. The guard is for the keywords that are added later.
+
+#### A keyword that is shared without a guard
+
+If one entry of a state has no guard, every place of the keyword is recorded. This is the case when another pattern declares the same keyword without a guard, or declares a keyword without a guard that is the end of the guarded keyword.
+The results are right, and the pattern with the guard still does not run where its guard is not met, but the scan pays for the places.
+The profile shows the count of each guarded keyword, so a rule author sees it.
+
+#### The profile
+
+A matcher that is created for the profile counts, for each entry with a guard, the places where the keyword was found and the places where the guard was met.
+Without the profile it does not count, so the loop has no cost for it.
+
 ### Looking for keywords on several threads
 
 Node.js runs JavaScript on one thread, so the engine lints files one after another.
@@ -280,6 +341,8 @@ A rule returns handlers, and the `file(source)` handler receives the source code
 The plan and the result are plain data and typed arrays, so they can be sent to another thread.
 `lintSource({ source, options, keywordScanResult })` uses the result as written in "The scan as a step of its own".
 
+`KeywordScanPlan` has `guards` next to `keywords` and `caseSensitive`: `guards[i]` is `undefined`, or `{ chars, min }` for a keyword with a guard.
+
 ## External service integration
 
 None.
@@ -375,6 +438,21 @@ A sieve with SIMD instructions in WebAssembly would look at 16 bytes at once and
 It was faster with the keywords of today: the sieve kept 5% of the blocks for 65 keywords.
 It was not chosen by the maintainer, because the number of keywords grows. With 100 more keywords the sieve kept 66% of the blocks, and with the keywords of another secret scanner (285) it kept 94%, so the sieve only adds work.
 A sieve that chooses rare bytes from a table of how common each byte is was also not chosen: Secretlint does not limit the content, so the core does not assume which bytes are common.
+
+### Check the guards after the scan
+
+The scan would record every place of a keyword as today, and a second step would drop the places whose guard is not met.
+It needs no change of the scan loop. It was not chosen because the cost of a short keyword is the recording itself: in the measurement above it was about 1.4 times slower than the check in the loop.
+
+### A regular expression as the guard
+
+The guard would be any regular expression that is tested at the place of the keyword.
+It was not chosen because a regular expression can go back in the content, so its cost has no limit that the core can state, and the check would depend on how each guard is written. A set of characters and a count is one loop over a table.
+
+### A second automaton for longer keywords
+
+The scan would look for a longer string that has the keyword, in place of a guard.
+It was not chosen because what follows a short prefix is random characters of the key. No longer fixed string exists.
 
 ## Open questions
 

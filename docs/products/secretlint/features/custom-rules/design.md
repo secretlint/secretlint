@@ -55,6 +55,17 @@ The function of a case does the following:
 
 Step 4 is how a wrong keyword or a `line` scope that needs other lines makes the test fail, because the unoptimized result reports a secret that the optimized result missed.
 
+Step 4 also finds a guard of a guarded keyword that rejects a secret, because the lint without keywords reports it. But its message is about keywords and scope in general, so the runner checks guards by themselves before the comparison of step 4.
+
+- If `keywords` of a pattern of the configuration has a guarded keyword, the runner lints the string once more with a configuration in which each guarded keyword `{ keyword, after }` is the string `keyword`.
+- A message of this result that is not in the result of step 3, by its rule id, message id, and range, is a secret that a guard rejected.
+- For such a message, the runner looks at the guarded keywords of the patterns of that rule. It finds the places of each keyword in the line of the message, or in the content for the "file" scope, and tests the guard there with the function that the keyword matcher uses.
+- It throws an error with the places whose guard is not met, such as: `@secretlint/secretlint-rule-example: the guard "[A-Za-z0-9]{40}" of the keyword "00" is not met at 3:12, but the rule reports a secret at 3:12-3:54. Every secret of the pattern must meet the guard.`
+
+The check uses the parser and the guard function of the core, so the tests check what the lint does.
+The lint without guards is skipped when no pattern has a guarded keyword, so the tests of other rules take the same time as before.
+The configuration of step 4 has no keywords, so it also has no guarded keywords.
+
 ### Presets
 
 A third-party preset can be tested with the same `snapshot()`, with one snapshot directory per rule of the preset. The built-in presets are tested in `@secretlint/core`, not with `@secretlint/tester`.
@@ -113,4 +124,4 @@ There is no record of alternatives to snapshot tests with one directory per case
 
 ## Open questions
 
-None.
+- The open question of the Requirements: a test that fails when no case meets a guard.

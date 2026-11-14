@@ -78,6 +78,12 @@ Scenario: When a match does not contain any keyword, the test fails
 - When: The rule author runs the tests.
 - Then: The test case fails with a message that the result with `patterns` and `meta.keywords` differs from the result of the whole content, and asks to check the keywords and scope.
 
+Scenario: When a guard rejects a secret that the rule reports, the test fails and names the guard
+
+- Given: A pattern of the rule has the guarded keyword `{ keyword: "00", after: "[A-Za-z0-9]{40}" }`, and the pattern also matches a key that has `_` in these 40 characters. One input of the tests has such a key.
+- When: The rule author runs the tests.
+- Then: The test case fails with a message that names the rule, the guarded keyword, and the line and column of the keyword whose guard is not met.
+
 ## KPIs
 
 None. No metric has been defined for rule authoring.
@@ -107,6 +113,15 @@ The rule ids of the default configuration, or the `testDefinitions` that the tes
 ##### Checks of every case
 
 Each case is also linted from the content as a string and with the patterns run on the whole content without keywords and scope. Both results must equal the first result.
+
+##### The check of guards
+
+A guard of a keyword must be met by every secret that the pattern reports. See "Keywords with a guard" of [Rules and rule presets](../rules-and-presets/requirements.md).
+Each case is also linted with each guarded keyword as a keyword without its guard. A message that this lint reports and the first lint does not report is a secret that a guard rejected.
+Then the case fails, and the message of the failure names the rule, the guarded keyword, and the position of the keyword. So the rule author sees that the guard is the cause, and which one.
+The rule author writes no test for this. A case with a secret that the guard rejects is enough.
+
+A guard that is looser than needed does not fail a test, because the results are the same. It is seen with `--profile`.
 
 ##### Paths in the results
 
@@ -160,4 +175,4 @@ Test inputs must not contain real secrets.
 
 ## Open questions
 
-None.
+- Should the tests fail when no case of a rule has a secret that meets a guard of the rule? Without such a case, the tests can not find a wrong guard.

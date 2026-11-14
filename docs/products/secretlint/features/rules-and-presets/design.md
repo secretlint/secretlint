@@ -101,6 +101,56 @@ Of the runs, the one whose shortest keyword is the longest is used.
 
 A prototype was checked against the 38 patterns of the built-in rules: it found keywords for all of them, 24 were the same as the keywords that the rules declare, and the others were shorter (for example `http` for `http://`). On the 142 inputs of the snapshot tests, no match was in a file without one of the found keywords. 12,852 random patterns with random texts had no such match either. These checks do not prove it, so the extraction is conservative and is tested with the built-in rules.
 
+### Keywords with a guard
+
+An item of `keywords` of a pattern is a string or an object `{ keyword, after }`. The object is a guarded keyword.
+
+```ts
+{
+    pattern: /(?<![A-Za-z0-9_-])00[A-Za-z0-9_-]{40}(?![A-Za-z0-9_-])/g,
+    keywords: [{ keyword: "00", after: "[A-Za-z0-9_-]{40}" }],
+    scope: "line",
+    report(match, context) { /* ... */ },
+}
+```
+
+`keyword` is a keyword, with the same rules as an item that is a string: ASCII, and no character has a special meaning.
+`after` is the guard. It has two parts, in this order:
+
+| Part  | Syntax                                                                                            | Example                        |
+| ----- | ------------------------------------------------------------------------------------------------- | ------------------------------ |
+| Set   | `[` and `]` around ASCII characters, ranges such as `a-z`, `\w`, and `\d`. Or `\w` or `\d` alone. | `[A-Za-z0-9_-]`, `[\w-]`, `\d` |
+| Count | `{n}`, `{n,}`, `{n,m}`, or `+`. `n` is from 1 to 255.                                             | `{40}`, `{20,}`, `+`           |
+
+The guard is met where at least `n` characters of the set follow the keyword. `+` is `n` = 1, and `m` of `{n,m}` is not used.
+This is what `after` means as a part of a regular expression that is tested at the place of the keyword: `/00[A-Za-z0-9_-]{40}/` and `/00[A-Za-z0-9_-]{40,60}/` both match there if and only if 40 such characters follow.
+So `after` is a subset of the syntax of regular expressions with the same meaning, and a rule author copies it from `pattern`, from the part after the keyword. A set and a count is also all that the scan can check without going back.
+
+The pattern of the example is the reason for the guard. Its keyword `00` is in most files, so with `keywords: ["00"]` the lines of all these places are tested with the regular expression. With the guarded keyword, the scan drops these places by itself.
+
+The guard is in `keywords`, and not in a property of its own, because it is a part of what a keyword is: where to look for the secret. One list also keeps the keywords of a pattern in one place.
+It is an object, and not a new syntax in the string, because the meaning of a string of `keywords` must not change. A keyword such as `mongodb+srv://` of the database connection string rule has `+`, and it is a keyword as written.
+
+`@secretlint/core` reads the items when it makes the lint plan, and reads `after` with a small parser of its own (`src/helper/keyword-guard.ts`). The parser has no dependency, because the core also runs in browsers.
+
+- The parser returns the characters of the set and `n`. The characters are sorted, so `[a-z0-9]{32}` and `[0-9a-z]{32,}` are the same guard, and two patterns that declare them for the same keyword share one entry of the keyword matcher.
+- For an object that is not a guarded keyword, making the plan throws an error with the rule id and the item: `keyword` or `after` is not a string, the object has another property, a character is not ASCII, the set starts with `^`, the count is `*`, `?`, 0, or over 255, `m` is under `n`, or `after` has anything else. So a guard that a newer core supports is never read in another way, and a condition such as what is before the keyword can be added later as a property with a new name.
+- `caseSensitiveKeywords` is for both parts. Without it, the keyword is lower-cased as a keyword is, and the parser adds the other case of each letter of the set. This is the meaning of `after` in a regular expression with the `i` flag for ASCII. A set that matches more is always safe, so a rule whose regular expression has the `i` flag does not need to write both cases.
+- A pattern is selected for a source if one of its keywords is found, and for a guarded keyword only where its guard is met. `scope: "line"` needs valid keywords, and a guarded keyword is one.
+- `when` works as before: a pattern that is not in the plan has no entry in the matcher.
+
+The type of an item is `SecretLintRulePatternKeyword` of `@secretlint/types`: `string | { keyword: string; after: string }`, and `keywords` of a pattern is a list of it. `meta.keywords` stays a list of strings.
+Code that reads `keywords` of a pattern as strings has to handle an object. In the Secretlint repository, this is the lint plan and the runner of the tests.
+
+A core that does not know guarded keywords reads an item that is not a string as a keyword that is not valid. Then it does not use the keywords of the pattern, and runs the pattern on the whole content in the "file" scope. The results are the same, and the lint is slower.
+This matters only for a custom rule, because the built-in rules ship with the core. It is the reason why an object in `keywords` is safe, while a new syntax in a string is not: an older core would look for the whole string as a keyword and miss the secret.
+
+How the scan checks a guard is in the Design of [Secret scanning](../secret-scanning/requirements.md). How the tests check it is in the Design of [Custom rules](../custom-rules/requirements.md).
+
+No built-in rule declares a guarded keyword at first. The keywords of the built-in rules are long, and a guard changed nothing for them in the measurement. The first use is a rule for a key with a short prefix.
+
+`keywords` of an entry of the options of `@secretlint/secretlint-rule-pattern` gets the same items, for the patterns that a user writes. `src/builtin/rules/pattern/user-patterns.ts` passes them to the patterns of the plan, so they are read by the same code. When an entry has no `keywords`, the keywords that `extractKeywords()` takes from the regular expression have no guard. It does not use a run shorter than 3 characters, so a pattern with a short prefix gets a keyword only if the user writes one.
+
 ### The built-in table and the presets
 
 `@secretlint/core/builtin` exports the lists `builtinRules`, `recommendedRules`, and `canaryRules`, the presets `presetRecommend` and `presetCanary`, and `getBuiltinRule(id)`, which returns the rule or preset for a full rule id, or `undefined`.
@@ -139,7 +189,7 @@ No diagram is needed: a preset is a list of rules, and its only interaction is `
 ## Data model and ER diagrams
 
 - **Rule creator:** `meta` (id, type, recommended, supportedContentTypes, docs.url, optional keywords), `messages`, and either `patterns` or `create()`.
-- **Pattern:** `pattern`, optional `keywords`, `caseSensitiveKeywords`, `scope`, and `when`, and `report()`.
+- **Pattern:** `pattern`, optional `keywords` (strings, or objects `{ keyword, after }` for guarded keywords), `caseSensitiveKeywords`, `scope`, and `when`, and `report()`.
 - **Preset creator:** `meta` (id, type `preset`), `rules` (rule creators), and `create(context, options)`.
 - **Preset entry of the configuration:** `id`, `options`, and `rules`, a list of entries with `id`, `options`, `severity`, `allowMessageIds`, and `disabled`.
 
@@ -187,6 +237,14 @@ The `--init` of the npm package writes the rules that it finds in `package.json`
 - **Only the keywords that the user writes:** The core would not find keywords in a pattern. It was not chosen, because the existing configurations have no `keywords`, and they would still run on every file.
 - **Keywords for the non-ASCII letters that fold to an ASCII letter:** With the flag `i`, the core could add the Kelvin sign and the long s to the keywords that have `k` or `s`. It was not chosen: the keyword matcher is ASCII only, the number of keywords would grow with each `k` and `s`, and Secretlint prefers no false positive to no false negative.
 
+- **A guard that the core takes from the regular expression of the pattern:** The rule would declare only keywords, and the core would read what follows the keyword from `pattern`. Betterleaks infers its guard from the regular expression in this way ([assignment_guard.go](https://raw.githubusercontent.com/betterleaks/betterleaks/main/scan/assignment_guard.go)). A prototype did this for the measurement. It was not chosen by the maintainer: whether a guard is found depends on how the regular expression is written, such as a lookbehind before the keyword or a group after it, and the prototype found no guard for 21 keywords of the built-in rules for this reason. The rule author also can not see which guard is used. A guard that the rule states is data that can be read, tested, and shown in the profile.
+- **A new syntax in the strings of `keywords`:** A string of `keywords` with a set and a count, such as `00[A-Za-z0-9_-]{40}`, would be read as a guarded keyword. It was not chosen, because it changes the meaning of an existing property: a keyword such as `mongodb+srv://` or `[default]` is a valid keyword today, and an older core would look for the whole string as a keyword and miss the secret without an error.
+- **A property of its own, `guardedKeywords`, with one string for the keyword and the guard:** This was the first proposal. An older core stops with an error on the unknown property, where it is only slower with an object in `keywords`. It was not chosen by the maintainer: a guard is an extension of a keyword, so it is in `keywords`. One string would also need `\` before the characters of the keyword that have a meaning in a regular expression, such as `pk\.`, while `keyword` of the object is written as it is.
+- **An object without a syntax, such as `{ keyword: "00", chars: "A-Za-z0-9_-", min: 40 }`:** It needs no parser for the count. It was not chosen, because the set still needs a syntax for ranges, and it can not be copied from the regular expression.
+- **A keyword that is not a part of the secret:** The pattern would use the name of the service as its keyword, and report the value near it. It was not chosen by the maintainer: Secretlint does not add a rule that reports a value because of a word near it. A rule finds a secret by the format of the secret.
+- **More syntax: a most of the count, what follows the run, what is before the keyword, and a set with `^`:** A regular expression can state these, and they can drop more places. They were not added. A most and an end are true only if the regular expression of the pattern also states an end, so they are easy to write wrong. A set with `^` has characters that are not ASCII, and then the bytes and the string count differently. The core rejects all of them now, so each can be added later without changing the meaning of an existing string.
+- **A set that is always case-sensitive:** The set would match as written, and only the keyword would follow `caseSensitiveKeywords`. It was not chosen, because a rule author who copies `[a-f0-9]{32}` from a regular expression with the `i` flag would get a guard that rejects upper-case keys.
+
 ## Open questions
 
-None.
+- The open questions of the Requirements: guards for `meta.keywords`, and the first rule that uses a guarded keyword.

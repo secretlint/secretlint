@@ -195,6 +195,24 @@ Scenario: When the tests of Secretlint run, the snapshot tests of every built-in
 - When: The rule author runs the tests of `@secretlint/core`.
 - Then: Each test case is checked in the same way as `@secretlint/tester` checks a custom rule, including the check of keywords and scope, and a built-in rule without a snapshot directory makes the tests fail.
 
+### Add a rule for a secret with a short prefix
+
+As a rule author, I want to state what follows the keyword of my pattern, so that a rule for a key with a short or common prefix does not make the lint slow, and I do not need a keyword that is not a part of the key.
+
+**Acceptance criteria:**
+
+Scenario: When a pattern declares a guarded keyword, the rule reports the same secrets
+
+- Given: A pattern has the regular expression `/00[A-Za-z0-9_-]{40}/` and the guarded keyword `{ keyword: "00", after: "[A-Za-z0-9_-]{40}" }` in its keywords.
+- When: A file that has such a key is linted.
+- Then: The rule reports the key, the same as with the keyword `00`.
+
+Scenario: When the guard of a guarded keyword is not supported, the lint stops with an error
+
+- Given: A pattern has the guarded keyword `{ keyword: "00", after: "[^ ]{40}" }`, which uses a syntax that Secretlint does not support.
+- When: A developer lints with the rule.
+- Then: Secretlint stops with an error that names the rule and the guarded keyword, and no file is linted.
+
 ## KPIs
 
 ### False positives of the recommended preset
@@ -272,6 +290,25 @@ Secretlint reads these options as patterns, in the same way as the patterns that
 - The rule id, the message ID `PATTERN`, the message, `allows`, and `filePathGlobs` of an entry keep their meaning.
 - `--profile` shows each pattern of the rule by its name, and ` (no keywords)` after the name of a pattern that runs on every file.
 
+##### Keywords with a guard
+
+A pattern can declare guarded keywords: a keyword with a guard, a condition on the characters that follow it. Why Secretlint has guards, and what they keep, is in [Secret scanning](../secret-scanning/requirements.md).
+The rule states the guard as data, as it states keywords, and Secretlint checks it.
+
+- A guarded keyword is an item of the keywords of a pattern. An item is a string, as before, or an object for a guarded keyword. A string means what it meant before: no string is read in a new way.
+- The object has the keyword, and what comes after it: a set of characters and a count. For example, `{ keyword: "00", after: "[A-Za-z0-9_-]{40}" }` is the keyword `00` and 40 or more characters of letters, digits, `_`, and `-` after it.
+- The keyword of the object is written as a keyword of a string is, with no special characters.
+- What comes after is written as a part of a regular expression, and it means what that part means. So a rule author can copy the part after the keyword from the regular expression of the pattern.
+- Its syntax is a small subset of the syntax of regular expressions: one set of ASCII characters and one count. The count says how many characters follow at least. A count with a most, such as `{32,40}`, is accepted and means `{32,}`, because a regular expression that matches at the start of a longer run says the same.
+- Other syntax, such as a set with `^`, a group, or a second set, is not supported, and the object has no other property. If more is needed, it is added to the syntax or as a property with a new name, and a Secretlint that does not know it does not read the guard in another way.
+- A guarded keyword is matched without the case of ASCII letters by default, both the keyword and the set. When the pattern declares its keywords as case-sensitive, both are case-sensitive.
+- Every match of the pattern must contain one of its keywords, and for a guarded keyword also the characters that meet the guard. This is the same duty as for keywords, and the tests of the rule check it. See [Custom rules](../custom-rules/requirements.md).
+- A pattern can have strings and objects together in its keywords. The pattern runs where one of them is found.
+- A guarded keyword counts as a keyword for the "line" scope.
+- A guard is for a pattern. `meta.keywords` of a rule without patterns has no guard.
+- A user can write a guarded keyword. The object is data, so it can be in a configuration file: `keywords` of an entry of `@secretlint/secretlint-rule-pattern` has the same items. See "User-defined patterns".
+- A custom rule with a guarded keyword gives the same results on a Secretlint that does not know guarded keywords. Such a Secretlint does not use the keywords of that pattern, and runs the pattern for all content, so it is only slower.
+
 ##### Documentation
 
 Each rule has a README that describes why it reports values, its messages, and its options.
@@ -288,7 +325,13 @@ When the value of the option that a condition names is set and is not `true` or 
 
 ##### A keyword of a user-defined pattern is not valid
 
-When `keywords` of an entry of `@secretlint/secretlint-rule-pattern` is not a list of non-empty ASCII strings, Secretlint stops with an error that names the entry, and no file is linted.
+When `keywords` of an entry of `@secretlint/secretlint-rule-pattern` is not a list of non-empty ASCII strings and guarded keywords, Secretlint stops with an error that names the entry, and no file is linted.
+
+##### A guarded keyword is not supported
+
+When an item of the keywords is an object, and it does not have a keyword and a guard as strings, has another property, has a character that is not ASCII, or has a guard that the syntax does not support, Secretlint stops with an error that names the rule and the item, and no file is linted.
+A count that makes the guard always true, such as `*`, `?`, or `{0,}`, is also an error.
+Secretlint does not run the pattern without the guard instead, so a mistake in the guard is found at the first lint and not as a slow lint.
 
 ### Rule presets
 
@@ -372,4 +415,5 @@ The provided rules read only the content that Secretlint passes to them, and do 
 
 ## Open questions
 
-None.
+- Should `meta.keywords` of a rule without patterns also have guards? No rule needs it today.
+- Which rule uses a guarded keyword first? The keywords of the recommended preset are long, and a guard changes nothing for them.
