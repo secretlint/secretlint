@@ -5,12 +5,13 @@
 ## このドキュメントについて
 
 Secretlintはリポジトリの設定ファイルを読み、どのルールをどのオプションで動かすかを決めます。
-このドキュメントでは、Secretlintが設定ファイルを探す方法と、設定ファイルに書いたルールIDから実行するルールが決まるまでの流れを説明します。
+このドキュメントでは、Secretlintが設定ファイルを探す方法、設定がないときに動くルール、設定に書いたルールIDから実行するルールが決まるまでの流れを説明します。
 親のProductは[Secretlint](../../product.ja.md)です。
 
 ### スコープ
 
 - 設定ファイルの探索と、`--secretlintrc`オプション、`--secretlintrcJSON`オプション
+- 設定が見つからないときに使う既定の設定
 - 設定ファイルの各ルールIDを、組み込みルール、またはインストールしたパッケージのルールやプリセットに解決すること
 - ルールIDの短い形
 - ルールIDを解決できないときの動作
@@ -50,11 +51,41 @@ Scenario: `package.json`に`secretlint`フィールドがあると、それを�
 - When: 開発者がSecretlintを実行する。
 - Then: `secretlint`フィールドのルールが動く。
 
-Scenario: 設定が見つからないと、Secretlintは止まる
+Scenario: 設定にルールがなくても、既定の設定は足さない
 
-- Given: カレントディレクトリにも親ディレクトリにも、`.secretlintrc*`ファイルと`package.json`の`secretlint`フィールドがなく、オプションでも設定を渡していない。
+- Given: `.secretlintrc.json`が`{ "rules": [] }`である。
+- When: 開発者がSecretlintを実行する。
+- Then: 秘密情報は報告されず、結果には`.secretlintrc.json`に対する`EMPTY_RULES`の警告がある。recommendプリセットは動かない。
+
+### 設定ファイルなしでSecretlintを実行する
+
+開発者、CIの管理者、またはAIエージェントとして、設定がないときはrecommendのルールで秘密情報を確認してほしい。先に設定ファイルを作らなくても、どのディレクトリでも一度実行できるからだ。
+
+**受け入れ条件:**
+
+Scenario: 設定が見つからないと、recommendプリセットが動く
+
+- Given: カレントディレクトリにも親ディレクトリにも、`.secretlintrc*`ファイルと`package.json`の`secretlint`フィールドがなく、オプションでも設定を渡しておらず、`token.txt`にGitHubのトークンがある。
 - When: 開発者が`secretlint "**/*"`を実行する。
-- Then: Secretlintは設定が見つからないというエラーで止まり、ファイルはlintされず、終了ステータスは2になる。
+- Then: 結果に`@secretlint/secretlint-rule-preset-recommend`のGitHubルールのメッセージがあり、終了ステータスは1になる。
+
+Scenario: 既定の設定を使うと、Secretlintはそのことをstderrに出す
+
+- Given: 上と同じく、設定が見つからない。
+- When: 開発者が`secretlint "**/*" --format json`を実行する。
+- Then: stderrに、設定ファイルが見つからなかったこと、recommendのルールを使うこと、`secretlint --init`で設定ファイルを作れることを伝える通知が1つ出る。stdoutにはJSONの結果だけが出る。
+
+Scenario: 既定の設定で秘密情報が見つからなければ、Secretlintは成功する
+
+- Given: 設定が見つからず、どのファイルにも秘密情報がない。
+- When: 開発者が`secretlint "**/*"`を実行する。
+- Then: メッセージは報告されず、終了ステータスは0になる。
+
+Scenario: recommendプリセットにないルールは、既定では動かない
+
+- Given: 設定が見つからず、ディレクトリに`.env`ファイルがある。
+- When: 開発者が`secretlint "**/*"`を実行する。
+- Then: `@secretlint/secretlint-rule-no-dotenv`のメッセージは報告されない。このルールはrecommendプリセットに含まれないからだ。
 
 ### コマンドで設定を選ぶ
 
@@ -77,7 +108,13 @@ Scenario: `--secretlintrc`のファイルが見つからないと、Secretlint�
 
 - Given: カレントディレクトリにも親ディレクトリにも`missing.json`がない。
 - When: 開発者が`secretlint "**/*" --secretlintrc missing.json`を実行する。
-- Then: Secretlintは設定が見つからないときと同じエラーで止まり、終了ステータスは2になる。
+- Then: Secretlintは`missing.json`を示すエラーで止まり、ファイルはlintされず、終了ステータスは2になる。既定の設定は使わない。
+
+Scenario: 見つかった設定ファイルが壊れていると、Secretlintは止まる
+
+- Given: `.secretlintrc.json`に構文エラーがある。
+- When: 開発者がSecretlintを実行する。
+- Then: Secretlintは`.secretlintrc.json`を示すエラーで止まり、終了ステータスは2になる。既定の設定は使わない。
 
 ### ルールをIDで指定する
 
@@ -133,7 +170,7 @@ Scenario: ルールのパッケージがインストールされていないと�
 
 **入力:** カレントディレクトリと、`--secretlintrc`オプションまたは`--secretlintrcJSON`オプション。
 
-**出力:** 設定と、それを読んだファイルのパス。
+**出力:** 設定と、それを読んだファイルのパス。または、パスを持たない既定の設定。
 
 #### 適用する条件
 
@@ -157,11 +194,22 @@ Secretlintはカレントディレクトリで次のものをこの順に探し�
 
 このオプションは、設定をJSON文字列で渡します。ファイルは探しません。報告先のファイルがないので、設定についてのメッセージは報告しません。
 
+##### 既定の設定
+
+オプションで設定を渡しておらず、ルートまで探しても何も見つからないとき、Secretlintは既定の設定を使います。既定の設定は、recommendプリセット`@secretlint/secretlint-rule-preset-recommend`を既定のオプションで使うものです。
+これは`secretlint --init`が書き出す設定と同じなので、`--init`で設定ファイルを作っても結果は変わりません。
+Secretlintは、設定ファイルが見つからなかったこと、recommendのルールを使うこと、`secretlint --init`で設定ファイルを作れることを伝える通知を1つstderrに出します。通知は結果と終了ステータスを変えず、stdoutには結果だけが出ます。
+Node.jsのエンジンを使うすべての配布形態、つまりnpmパッケージ、Dockerイメージ、単一実行ファイルで同じ動作になります。
+
+既定にする理由は、recommendプリセットが別にインストールするパッケージではなくSecretlint自体の一部であり、一般的な秘密情報のスキャナーよりも誤検知がはるかに少なくなるように設計されているからです。
+最初の実行の前に設定ファイルを必須にすると、recommendのルールが使いにくくなります。既定でrecommendが動くことを欠点と感じる利用者は少ないと考えます。
+recommendプリセットにないルール、ルールのオプション、許可するメッセージを使うには、引き続き設定ファイルが必要です。
+
 #### 例外ケースでの振る舞い
 
-##### 設定が見つからない
+##### `--secretlintrc`のファイルが見つからない
 
-Secretlintはエラー`secretlint config is not found`をスタックトレース付きで出して止まり、ファイルはlintされません。終了ステータスは2です。
+Secretlintは指定されたパスを示すエラーで止まり、ファイルはlintされません。終了ステータスは2です。開発者が特定のファイルを指定しているので、既定の設定は使いません。
 
 ##### 設定ファイルを読めない
 
@@ -233,9 +281,12 @@ Secretlintはエラー`secretlint config is not found`をスタックトレー�
 
 ## セキュリティ上の留意事項
 
+既定の設定は組み込みルールだけを動かすので、設定のないディレクトリでSecretlintを実行しても、パッケージはimportされません。
+結果の秘密情報の値は、設定ファイルがあるときと同じく既定でマスクされます。
 ルールIDが指すのは、組み込みルールか、importしてSecretlintの権限で実行するパッケージです。そのため、実行されるのは組み込みルールと、利用者がインストールしたパッケージだけです。
 同じ名前のパッケージをインストールしても、組み込みルールを置き換えることはできません。
 
 ## 未決事項
 
-なし。
+- **`--secretlintrc`の探索:** `--secretlintrc`に渡した相対パスは、親ディレクトリでも探され、拡張子を付けたものも試されます。この変更ではそのままにします。`--secretlintrc`がちょうど1つのファイルを指すようにするかは、azuが別に決めます。
+- **Dockerイメージとquick startコマンド:** どちらも自分でrecommendの設定を渡していますが、既定の設定があれば不要になります。quick startコマンドは、リポジトリに設定があっても自分の設定を使います。これらの簡略化は後続の作業で、azuが決めます。
