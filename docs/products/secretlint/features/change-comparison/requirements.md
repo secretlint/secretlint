@@ -186,6 +186,25 @@ None is collected. The result has file paths and rule ids of public repositories
 
 ## External service dependencies
 
-- **GitHub Actions:** runs the CI job and keeps the artifact.
-- **GitHub (codeload.github.com):** the archives of the repositories of the sets.
-- **hyperfine:** measures the run time. Optional for a local run.
+- **GitHub Actions**
+  - **Related user stories:** Notice a large change in a pull request from someone else; Read the comparison from an AI agent
+  - **Reason for dependency:** It runs the comparison for each pull request and keeps the JSON output as an artifact
+  - **Contractual and usage decisions:** The job uses the hosted runners that the other checks of the repository use. The comparison runs two builds on two sets, so it adds minutes of runner time to a pull request that changes the code of the lint
+- **GitHub (codeload.github.com)**
+  - **Related user stories:** Notice a large change in a pull request from someone else; Measure on a large repository
+  - **Reason for dependency:** The sets other than small are public repositories, downloaded as archives at their fixed commits
+  - **Contractual and usage decisions:** Only public repositories are downloaded. Their files are linted and not redistributed
+- **hyperfine**
+  - **Related user stories:** See what a rule change does before opening a pull request; Notice a large change in a pull request from someone else
+  - **Reason for dependency:** It measures the run time of the two builds in turns. Secretlint does not measure its run time many times by itself
+  - **Contractual and usage decisions:** It is installed in CI. A local run works without it and compares only the work of the patterns and the findings
+
+## Security considerations
+
+The code of a pull request from a fork is run by the CI job, so the job must not have anything that the code can steal or change: no secret of the repository, and a token that can only read.
+A job that has a secret or write access, such as one that comments on the pull request, must not run the code of the pull request, and must treat the output of the comparison as untrusted data.
+The output must not have the value of a secret, because the job summary and the artifact can be read by anyone who can read the repository.
+
+## Open questions
+
+None.
