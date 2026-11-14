@@ -21,6 +21,7 @@ import type {
 import { secretLintProfiler } from "@secretlint/profiler";
 import debug0 from "debug";
 import { getKeywordMatcher, KeywordMatcher, normalizeKeyword } from "./helper/keyword-matcher.js";
+import { createKeywordScanPlan, type KeywordScanPlan } from "./keyword-scan.js";
 import { AllowMessage } from "./messages/filter-message-id.js";
 import { creator as rulePattern, type Options as RulePatternOptions } from "./builtin/rules/pattern/index.js";
 import { compileUserPatterns } from "./user-patterns.js";
@@ -127,6 +128,10 @@ export type PlanView = {
      * undefined if no rule has keywords
      */
     readonly matcher: KeywordMatcher | undefined;
+    /**
+     * The keywords of `matcher` as data. undefined if no rule has keywords
+     */
+    readonly keywordScanPlan: KeywordScanPlan | undefined;
     /**
      * Patterns with keywords, in the order of the rules
      */
@@ -533,13 +538,11 @@ const createView = (plan: LintPlan, contentType: ContentType): PlanView => {
         }
     }
     const sortedKeys = [...allKeywords.keys()].sort();
-    const matcher =
-        sortedKeys.length > 0
-            ? getKeywordMatcher(
-                  sortedKeys.map((key) => (allKeywords.get(key) as { keyword: string }).keyword),
-                  sortedKeys.map((key) => (allKeywords.get(key) as { caseSensitive: boolean }).caseSensitive),
-              )
-            : undefined;
+    const matcherKeywords = sortedKeys.map((key) => (allKeywords.get(key) as { keyword: string }).keyword);
+    const matcherCaseSensitive = sortedKeys.map(
+        (key) => (allKeywords.get(key) as { caseSensitive: boolean }).caseSensitive,
+    );
+    const matcher = sortedKeys.length > 0 ? getKeywordMatcher(matcherKeywords, matcherCaseSensitive) : undefined;
     const indexOf = new Map(sortedKeys.map((key, index) => [key, index]));
     const toIndexes = (keywords: string[] | undefined, caseSensitive: boolean = false): number[] | undefined => {
         return keywords?.map((keyword) => indexOf.get(keywordKey(keyword, caseSensitive)) as number);
@@ -584,15 +587,46 @@ const createView = (plan: LintPlan, contentType: ContentType): PlanView => {
             return pattern.scope === "line" && (pattern.keywordIndexes as readonly number[]).includes(keywordIndex);
         });
     });
+    const hasAlwaysPattern = allPatterns.some((pattern) => pattern.keywordIndexes === undefined);
+    const hasAlwaysRule = rules.some((rule) => rule.patterns === undefined && rule.keywordIndexes === undefined);
+    const pathPatterns = rules.flatMap((rule) => rule.patterns ?? []).filter((pattern) => pattern.pathOnly);
     return {
         rules,
         matcher,
+        // The scanner of the plan uses the same matcher: the matcher is cached by its keywords
+        keywordScanPlan:
+            matcher !== undefined
+                ? createKeywordScanPlan({
+                      keywords: matcherKeywords,
+                      caseSensitive: matcherCaseSensitive,
+                      // A path pattern runs by the file path, which the scan does not check
+                      requiresKeyword: !hasAlwaysPattern && !hasAlwaysRule && pathPatterns.length === 0,
+                      ruleCheck: {
+                          contentKeywordIndexes: [
+                              ...rules.flatMap((rule) =>
+                                  rule.patterns === undefined ? (rule.keywordIndexes ?? []) : [],
+                              ),
+                              ...keywordPatterns.flatMap((pattern) => {
+                                  return pattern.scope === "file" ? (pattern.keywordIndexes as readonly number[]) : [];
+                              }),
+                          ],
+                          linePatterns: keywordPatterns
+                              .filter((pattern) => pattern.scope === "line")
+                              .map((pattern) => ({
+                                  source: pattern.tester.source,
+                                  flags: pattern.tester.flags,
+                                  keywordIndexes: pattern.keywordIndexes as readonly number[],
+                                  profileId: pattern.profileId,
+                              })),
+                      },
+                  })
+                : undefined,
         keywordPatterns,
         linePatternsOfKeyword,
-        hasAlwaysPattern: allPatterns.some((pattern) => pattern.keywordIndexes === undefined),
-        hasAlwaysRule: rules.some((rule) => rule.patterns === undefined && rule.keywordIndexes === undefined),
+        hasAlwaysPattern,
+        hasAlwaysRule,
         hasFilePattern: keywordPatterns.some((pattern) => pattern.scope === "file"),
-        pathPatterns: rules.flatMap((rule) => rule.patterns ?? []).filter((pattern) => pattern.pathOnly),
+        pathPatterns,
     };
 };
 

@@ -1368,6 +1368,9 @@ importers:
       '@secretlint/formatter':
         specifier: workspace:*
         version: link:../../packages/@secretlint/formatter
+      '@secretlint/node':
+        specifier: workspace:*
+        version: link:../../packages/@secretlint/node
       '@secretlint/resolver':
         specifier: workspace:*
         version: link:../../packages/@secretlint/resolver

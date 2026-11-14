@@ -50,13 +50,15 @@
 | `secretlint>search-files` | | コマンド | 検査するファイルを探す |
 | `@node>load-config` | | エンジン | 設定を読み込む。`@config-loader>*`の種類を含む |
 | `@node>execute` | | エンジン | ファイルを検査し、結果を整形する |
+| `@node>files` | | エンジン | その実行のファイルの数。ファイルの検査が終わったあとに足す。時間は持たない |
+| `@node>keyword-scan-thread` | スレッドの名前 | エンジン | ワーカースレッドを使ったときの、1つのスレッドの時間と読んだファイル数。ワーカーが測り、エンジンが`addTotal()`で足す |
 | `@node>read-file` | | エンジン | ファイルを読む |
 | `@node>format` | | エンジン | 結果を整形する |
 | `@core>lint` | ファイルパス | コア | 1つの内容を検査する |
 | `@core>setup-rules` | | コア | 検査計画を作る。1つの設定につき1回動く |
 | `@core>keyword-scan` | | コア | 内容を走査して全ルールのキーワードを探す |
 | `@core>line-check` | | コア | キーワードのある行をテストする。`@core>pattern-line-test`を含む |
-| `@core>pattern-line-test` | パターンのID | コア | 1つの行を1つのパターンでテストする |
+| `@core>pattern-line-test` | パターンのID | コア | 1つの行を1つのパターンでテストする。ワーカースレッドを使ったときは、ワーカーの分を含む。ワーカーが測り、エンジンが`addTotal()`で足す。メインスレッドの時間である`@core>line-check`には入らない |
 | `@core>pattern` | パターンのID | コア | パターンを実行し、マッチを報告する |
 | `@core>pattern-match` | パターンのID | コア | マッチ数。時間は持たない |
 | `@core>rule-handler` | ルールID | コア | 1つの内容に対してルールを実行する。ルールのパターン、またはルールのハンドラーが対象になる |

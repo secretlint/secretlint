@@ -38,6 +38,13 @@
             },
             "default": "./module/builtin/rules/*/index.js"
         },
+        "./keyword-scan": {
+            "import": {
+                "types": "./module/keyword-scan.d.ts",
+                "default": "./module/keyword-scan.js"
+            },
+            "default": "./module/keyword-scan.js"
+        },
         "./testing": {
             "import": {
                 "types": "./module/testing/index.d.ts",

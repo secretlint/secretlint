@@ -25,6 +25,13 @@
             },
             "default": "./module/index.js"
         },
+        "./keyword-scan-worker": {
+            "import": {
+                "types": "./module/keyword-scan-worker.d.ts",
+                "default": "./module/keyword-scan-worker.js"
+            },
+            "default": "./module/keyword-scan-worker.js"
+        },
         "./package.json": "./package.json"
     },
     "main": "./module/index.js",

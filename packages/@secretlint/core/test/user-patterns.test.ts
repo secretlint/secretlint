@@ -132,4 +132,17 @@ describe("user-defined patterns of @secretlint/secretlint-rule-pattern", () => {
     it("throws for an entry without patterns and filePathGlobs", () => {
         assert.throws(() => textView({ patterns: [{ name: "empty" }] }), /must have either/);
     });
+    it("lets the keyword scan of a worker skip files without keywords, unless a path pattern is enabled", () => {
+        assert.strictEqual(textView().keywordScanPlan?.requiresKeyword, true);
+        const withKeywords = textView({ patterns: [{ name: "password", patterns: ["/password=\\w+/"] }] });
+        assert.strictEqual(withKeywords.keywordScanPlan?.requiresKeyword, true);
+        const passwordIndex = withKeywords.keywordScanPlan?.keywords.indexOf("password=") ?? -1;
+        assert.ok(withKeywords.keywordScanPlan?.ruleCheck.contentKeywordIndexes.includes(passwordIndex));
+        // The scan does not check the path, so every file goes to the lint
+        assert.strictEqual(
+            textView({ patterns: [{ name: "env files", filePathGlobs: ["**/.env"] }] }).keywordScanPlan
+                ?.requiresKeyword,
+            false,
+        );
+    });
 });
