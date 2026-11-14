@@ -115,10 +115,9 @@ The Markdown output starts with the heading "Profile and benchmark: base vs head
 2. One line that says what changed: `✅ No change in findings and pattern work` with the ratio of the run time, or `⚠️ Changed:` with the list of what changed (findings, pattern work, files of rules, keyword guards, or a slower run time).
 3. A summary table of the base, the head, and the change: the run time with the ratio and a mark (`⚠️ slower` or `faster`), the findings, the files, the sum of the pattern runs, the sum of the pattern matches, and the keywords found by a guard.
 4. Only when they differ: the patterns, the rules, and the keyword guards that differ, and the added and removed findings, at most 50 rows each.
-5. The time of each phase of the base and the head, from the one profiled run of each.
-6. The profile of the head as `secretlint --profile` prints it (open), and the profile of the base (closed). Both are formatted by the formatter of the head.
+5. One profile section with the base and the head side by side: the time of each phase, the top 10 rules and the top 10 patterns by the time of the head (time, ratio, files or runs and matches of each build), and the slowest files of the head. A ratio is shown only when one of the times is 1 ms or more, and it is marked `⚠️` when the head is 1.3x or more and 5 ms or more slower.
 
-The times of the profile come from one run and are only for reading; the run time of the summary is the measured one. The JSON has all rows.
+The commits of the base, the head, and each set are links to the commit on GitHub. The times of the profile come from one run and are only for reading; the run time of the summary is the measured one, and the profile marks are not in the one-line verdict. The JSON has all rows.
 
 ## APIs and interfaces
 

@@ -6,7 +6,7 @@ import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
 
 const BENCHMARK_DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -614,52 +614,124 @@ const markdownChanges = (result) => {
     return lines;
 };
 
-/**
- * The time of each phase in one profiled run of the base and the head.
- * Times of one run are noisy; the run time in the summary is the measured one.
- */
-const markdownPhases = (result) => {
-    const basePhases = new Map(result.profiles.base.phases.map((phase) => [`${phase.depth}:${phase.name}`, phase]));
-    const rows = result.profiles.head.phases.map((phase) => {
-        const basePhase = basePhases.get(`${phase.depth}:${phase.name}`);
-        const name = `${"&nbsp;&nbsp;".repeat(phase.depth)}${escapeCell(phase.name)}`;
-        return `| ${name} | ${basePhase ? formatMs(basePhase.duration) : "-"} | ${formatMs(phase.duration)} | ${formatCount(phase.count)} |`;
-    });
-    return [
-        "**Phases** (one profiled run each)",
-        "",
-        "| Phase | Base | Head | Count (head) |",
-        "| --- | ---: | ---: | ---: |",
-        ...rows,
-        ""
-    ];
-};
+const TOP_PROFILE_ROWS = 10;
+const DEFAULT_REPOSITORY_URL = "https://github.com/secretlint/secretlint";
 
 /**
- * The profile as `secretlint --profile` prints it, formatted by the formatter of the head.
+ * The URL of this repository: the repository of the workflow in CI, else secretlint/secretlint.
+ * A commit of a pull request from a fork can be opened in the base repository too.
  */
-const markdownProfiles = (result, setDir, formatProfileReport) => {
-    const format = (profile) => formatProfileReport(profile, { cwd: setDir });
-    const block = (title, profile, open) => [
-        `<details${open ? " open" : ""}><summary>${title}</summary>`,
-        "",
-        "````text",
-        format(profile),
-        "````",
-        "",
-        "</details>",
-        ""
-    ];
-    return [
-        ...block("<code>secretlint --profile</code> of the head", result.profiles.head, true),
-        ...block("<code>secretlint --profile</code> of the base", result.profiles.base, false)
-    ];
+const repositoryUrl = () =>
+    process.env.GITHUB_SERVER_URL && process.env.GITHUB_REPOSITORY
+        ? `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}`
+        : DEFAULT_REPOSITORY_URL;
+
+const commitLink = (repository, commit) => `[\`${shortCommit(commit)}\`](${repository}/commit/${commit})`;
+
+// a time of one run changes by a few milliseconds between runs, so a smaller change is not marked
+const MIN_MARKED_CHANGE_MS = 5;
+
+/**
+ * The change of a time of one run: the ratio, with ⚠️ when the head is much slower.
+ */
+const timeChangeCell = (base, head) => {
+    if (base === undefined) {
+        return "new";
+    }
+    // the ratio of times under 1 ms is noise
+    if (Math.max(base, head) < 1) {
+        return "";
+    }
+    const ratio = head / base;
+    const text = `${ratio.toFixed(2)}x`;
+    return ratio >= SLOWER_RATIO && head - base >= MIN_MARKED_CHANGE_MS ? `**${text}** ⚠️` : text;
 };
 
-const markdownSet = (result, sets, formatProfileReport) => {
+const timeCell = (value) => (value === undefined ? "-" : formatMs(value));
+const countCell = (value) => (value === undefined ? "-" : formatCount(value));
+
+/**
+ * The top rows of the head, with the same rows of the base beside them.
+ */
+const topRowsOf = (baseItems, headItems, keyOf) => {
+    const baseByKey = new Map(baseItems.map((item) => [keyOf(item), item]));
+    return [...headItems]
+        .sort((a, b) => b.duration - a.duration)
+        .slice(0, TOP_PROFILE_ROWS)
+        .map((head) => ({ head, base: baseByKey.get(keyOf(head)) }));
+};
+
+const topTitle = (title, shown, all) =>
+    all > shown ? `${title} (top ${shown} of ${all} by the time of the head)` : title;
+
+/**
+ * The profile of the base and the head in one place: `secretlint --profile` of each build, side by side.
+ * The times come from one profiled run of each build and are only for reading;
+ * the run time of the summary is the measured one.
+ */
+const markdownProfile = (result, setDir) => {
+    const { base, head } = result.profiles;
+    const lines = [
+        "<details open><summary><b>Profile</b> (<code>secretlint --profile</code>, one run of each build)</summary>",
+        "",
+        `Total: base ${formatMs(base.total)}, head ${formatMs(head.total)}. ⚠️ marks a time of the head that is ${SLOWER_RATIO}x or more and ${MIN_MARKED_CHANGE_MS} ms or more slower. A time of one run changes between runs, so check a mark with the run time above.`,
+        ""
+    ];
+    const basePhases = new Map(base.phases.map((phase) => [`${phase.depth}:${phase.name}`, phase]));
+    lines.push(
+        "| Phase | Base | Head | Change | Count (base / head) |",
+        "| --- | ---: | ---: | ---: | ---: |",
+        ...head.phases.map((phase) => {
+            const basePhase = basePhases.get(`${phase.depth}:${phase.name}`);
+            const name = `${"&nbsp;&nbsp;".repeat(phase.depth)}${escapeCell(phase.name)}`;
+            return `| ${name} | ${timeCell(basePhase?.duration)} | ${formatMs(phase.duration)} | ${timeChangeCell(basePhase?.duration, phase.duration)} | ${countCell(basePhase?.count)} / ${formatCount(phase.count)} |`;
+        }),
+        ""
+    );
+    const rules = topRowsOf(base.rules, head.rules, (rule) => rule.ruleId);
+    if (rules.length > 0) {
+        lines.push(
+            `| ${topTitle("Rule", rules.length, head.rules.length)} | Base | Head | Change | Files (base / head) |`,
+            "| --- | ---: | ---: | ---: | ---: |",
+            ...rules.map(
+                ({ base: baseRule, head: headRule }) =>
+                    `| ${escapeCell(headRule.ruleId)} | ${timeCell(baseRule?.duration)} | ${formatMs(headRule.duration)} | ${timeChangeCell(baseRule?.duration, headRule.duration)} | ${countCell(baseRule?.files)} / ${formatCount(headRule.files)} |`
+            ),
+            ""
+        );
+    }
+    const patternKey = (pattern) => `${pattern.ruleId}#${pattern.index}`;
+    const patterns = topRowsOf(base.patterns, head.patterns, patternKey);
+    if (patterns.length > 0) {
+        lines.push(
+            `| ${topTitle("Pattern", patterns.length, head.patterns.length)} | Base | Head | Change | Runs (base / head) | Matches (base / head) |`,
+            "| --- | ---: | ---: | ---: | ---: | ---: |",
+            ...patterns.map(
+                ({ base: basePattern, head: headPattern }) =>
+                    `| ${escapeCell(patternKey(headPattern))} | ${timeCell(basePattern?.duration)} | ${formatMs(headPattern.duration)} | ${timeChangeCell(basePattern?.duration, headPattern.duration)} | ${countCell(basePattern?.runs)} / ${formatCount(headPattern.runs)} | ${countCell(basePattern?.matches)} / ${formatCount(headPattern.matches)} |`
+            ),
+            ""
+        );
+    }
+    const relative = (filePath) => path.relative(setDir, filePath).split(path.sep).join("/");
+    // the base lists only its own slowest files, so the files are shown for the head only
+    const files = head.slowestFiles.slice(0, TOP_PROFILE_ROWS);
+    if (files.length > 0) {
+        lines.push(
+            `| ${files.length < head.files ? `Slowest files of the head (top ${files.length} of ${formatCount(head.files)})` : "Files of the head"} | Head |`,
+            "| --- | ---: |",
+            ...files.map((file) => `| ${escapeCell(relative(file.filePath))} | ${formatMs(file.duration)} |`),
+            ""
+        );
+    }
+    lines.push("</details>", "");
+    return lines;
+};
+
+const markdownSet = (result, sets) => {
     const definition = sets.find((set) => set.name === result.name);
     const source = result.repository
-        ? `${result.repository.replace("https://github.com/", "")} ${definition?.label ?? ""} (${shortCommit(result.commit)})`
+        ? `${result.repository.replace("https://github.com/", "")} ${definition?.label ?? ""} (${commitLink(result.repository, result.commit)})`
         : "examples/benchmark/targets";
     return [
         `### ${result.name}: ${source}, ${formatCount(result.profiles.head.files)} files`,
@@ -668,30 +740,20 @@ const markdownSet = (result, sets, formatProfileReport) => {
         "",
         ...markdownSummaryTable(result),
         ...markdownChanges(result),
-        ...markdownPhases(result),
-        ...markdownProfiles(result, definition.dir, formatProfileReport)
+        ...markdownProfile(result, definition.dir)
     ];
 };
 
-const toMarkdown = (compareResult, sets, formatProfileReport) => {
-    const head = `${shortCommit(compareResult.head.commit)}${compareResult.head.dirty ? " with uncommitted changes" : ""}`;
+const toMarkdown = (compareResult, sets) => {
+    const repository = repositoryUrl();
+    const head = `${commitLink(repository, compareResult.head.commit)}${compareResult.head.dirty ? " with uncommitted changes" : ""}`;
     return [
         "## Profile and benchmark: base vs head",
         "",
-        `Base: ${escapeCell(compareResult.base.ref)} (${shortCommit(compareResult.base.commit)}), head: ${head}`,
+        `Base: ${escapeCell(compareResult.base.ref)} ${commitLink(repository, compareResult.base.commit)}, head: ${head}`,
         "",
-        ...compareResult.sets.flatMap((result) => markdownSet(result, sets, formatProfileReport))
+        ...compareResult.sets.flatMap((result) => markdownSet(result, sets))
     ].join("\n");
-};
-
-const loadProfileFormatter = async () => {
-    const modulePath = path.join(REPO_ROOT, "packages/secretlint/module/profile-report.js");
-    try {
-        const { formatProfileReport } = await import(pathToFileURL(modulePath).href);
-        return formatProfileReport;
-    } catch (error) {
-        throw new CompareError(`Can not load the profile formatter of the head (${modulePath}): ${error.message}`);
-    }
 };
 
 const main = async () => {
@@ -710,14 +772,13 @@ const main = async () => {
     }
     const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "secretlint-compare-"));
     try {
-        const formatProfileReport = await loadProfileFormatter();
         const results = sets.map((set) =>
             compareSet({ set, baseDir, headDir: REPO_ROOT, runs: options.runs, hasHyperfine, tmpDir })
         );
         const compareResult = { base, head, sets: results };
         const setsWithLabel = sets.map((set) => ({ ...set, label: definitions[set.name]?.label }));
         fs.writeFileSync(options.jsonPath, `${JSON.stringify(compareResult, null, 2)}\n`);
-        process.stdout.write(`${toMarkdown(compareResult, setsWithLabel, formatProfileReport)}\n`);
+        process.stdout.write(`${toMarkdown(compareResult, setsWithLabel)}\n`);
         log(`wrote ${options.jsonPath}`);
     } finally {
         fs.rmSync(tmpDir, { recursive: true, force: true });
