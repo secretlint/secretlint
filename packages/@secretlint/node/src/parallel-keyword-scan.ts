@@ -57,10 +57,6 @@ export const getMaxKeywordScanThreads = (): number => {
     if (Number.isInteger(specified) && specified >= 1) {
         return specified;
     }
-    // Bun runs worker threads, but the single binary has no file of the worker
-    if (process.versions.bun !== undefined) {
-        return 1;
-    }
     return os.availableParallelism();
 };
 /**
@@ -96,6 +92,8 @@ const startWorker = (workerData: unknown): Promise<FileKeywordScans | undefined>
     return new Promise<FileKeywordScans | undefined>((resolve) => {
         // A failed worker resolves with undefined: the files that it claimed are linted without the scan
         try {
+            // A bundle needs the worker as a file next to the bundle. The single-executable binary has it as an entry.
+            // Without the file the worker fails to start, and the files are linted without it
             const worker = new Worker(new URL("./keyword-scan-worker.js", import.meta.url), { workerData });
             worker.once("message", (result: FileKeywordScans) => {
                 resolve(result);

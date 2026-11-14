@@ -10,6 +10,7 @@
     "devDependencies": {
         "@types/bun": "catalog:",
         "@secretlint/formatter": "workspace:*",
+        "@secretlint/node": "workspace:*",
         "@secretlint/secretlint-formatter-sarif": "workspace:*",
         "@secretlint/resolver": "workspace:*",
         "secretlint": "workspace:*"

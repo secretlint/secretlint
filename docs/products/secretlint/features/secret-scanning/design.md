@@ -124,7 +124,16 @@ The decision uses time, not the number of files, so it follows the size of the f
 - The hits are used only if the main thread reads the same number of bytes as the thread that scanned. Otherwise the core scans the bytes itself.
 - `lintSource()` ignores hits with the id of another plan.
 - A file that a thread could not read, or that a failed worker claimed, stays "not scanned" and is linted as before, so the error is the same.
-- The scan is not used with the `mask-result` formatter, which reads every file as a string, while the profiler is enabled, and on Bun, where the single-executable binary has no script file for the worker.
+- The scan is not used with the `mask-result` formatter, which reads every file as a string, and while the profiler is enabled.
+
+#### The single-executable binary
+
+The engine starts a worker from the file `keyword-scan-worker.js` next to its own file.
+The single-executable binary is one bundle built with Bun, so it has no such file by default. The build gives the worker as a second entry with the same name, and Bun puts it next to the main entry inside the binary.
+The test of the binary checks that a worker starts in it.
+A bundle of another tool that does not have the file still works: the worker fails to start, and the files are linted without it.
+
+Measured on 4 cores with the binary (median): about 21,000 files 915ms with one thread and 610ms with workers, and about 96,000 files 4.4 seconds and 2.0 seconds.
 
 ### What a rule receives
 
@@ -334,6 +343,6 @@ A sieve that chooses rare bytes from a table of how common each byte is was also
 
 ## Open questions
 
-- The open questions of the Requirements: an option, the single-executable binary, and a limit for many cores.
+- The open questions of the Requirements: an option, and a limit for many cores.
 - The workers also scan the files that are not text by name, and those hits are not used. A worker could skip them by name.
 - There is no test for a file that changes between the scan and the lint.

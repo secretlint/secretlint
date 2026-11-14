@@ -294,7 +294,7 @@ A rule does not need to be safe for threads, and a custom rule needs no change.
 
 ##### Where it applies
 
-It applies to linting files with the command and with `@secretlint/node`.
+It applies to linting files with the command and with `@secretlint/node`, in every way the command is distributed, including the single-executable binary.
 It does not apply to the STDIN content, which is one source.
 
 ##### The core starts no thread
@@ -315,10 +315,6 @@ Other CPU cores are not used, because the formatter needs the content of every f
 ##### The profile
 
 Other CPU cores are not used with `--profile`, so that the profile shows the time of each step of each file.
-
-##### The single-executable binary
-
-Other CPU cores are not used in the single-executable binary.
 
 ##### A failure on another CPU core
 
@@ -430,6 +426,5 @@ The content of a source can have secrets. Secretlint reads it only in memory, an
 ## Open questions
 
 - Is an option needed to turn off other CPU cores or to limit their number? ESLint has `--concurrency`.
-- Should the single-executable binary also use other CPU cores?
 - Should the number of CPU cores have a limit on a machine with many cores? It was measured only on 4 cores. ripgrep limits it to 12.
 - When no other CPU core is used, a repository of medium size (about 7,000 files) became 10-20ms slower in a prototype, because looking for keywords is a pass of its own. Is this acceptable?

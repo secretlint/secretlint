@@ -21,8 +21,10 @@ do
   echo "Building for ${platforms[$i]}"
   # secretlint-{version}-{platform}
   outputFilePath="${distDir}/${binaryName}-${secretlintVersion}-${platforms[$i]}"
+  # src/keyword-scan-worker.ts is the worker thread of @secretlint/node. It is the second entry,
+  # so the binary has it as a file next to the main entry, where @secretlint/node looks for it
   # Use --env=inline to inline all environment variables at compile time
-  SECRETLINT_VERSION="$secretlintVersion" bun build --compile --target "bun-${platforms[$i]}" --env=inline --outfile "$outputFilePath" src/entry.ts
+  SECRETLINT_VERSION="$secretlintVersion" bun build --compile --target "bun-${platforms[$i]}" --env=inline --outfile "$outputFilePath" src/entry.ts src/keyword-scan-worker.ts
 done
 
 # clean up ".*.bun-build" file

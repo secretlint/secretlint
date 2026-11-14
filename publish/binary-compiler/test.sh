@@ -92,4 +92,36 @@ if [ "${pipeline_status[0]}" -ne 1 ] || [ "${pipeline_status[1]}" -ne 0 ]; then
     echo "❌ Large piped output test failed"
     exit 1
 fi
+rm large-input.txt
+
+# Verify that the binary has the worker thread that scans files for keywords.
+# Many large files make the scan long enough to start a worker.
+mkdir many-files
+node -e '
+const fs = require("node:fs");
+const content = "lorem ipsum dolor sit amet\n".repeat(10000);
+for (let i = 0; i < 1200; i++) {
+    fs.writeFileSync(`many-files/file-${i}.txt`, content);
+}
+fs.writeFileSync("many-files/secret.txt", "AWS_SECRET_ACCESS_KEY = wJalrXUtnFEMI/K7MDENG/bPxRfiCYSECRETSKEY\n");
+'
+set +e
+SECRETLINT_KEYWORD_SCAN_THREADS=2 DEBUG=@secretlint/node ./secretlint "many-files/**/*" >worker-stdout.txt 2>worker-stderr.txt
+WORKER_STATUS=$?
+set -e
+if [ "$WORKER_STATUS" -ne 1 ] || ! grep -q "secret.txt" worker-stdout.txt; then
+    echo "❌ The lint with a keyword scan worker did not report the secret (status: $WORKER_STATUS)"
+    exit 1
+fi
+if grep -q "keyword scan worker error\|keyword scan worker can not start" worker-stderr.txt; then
+    echo "❌ The keyword scan worker failed in the binary"
+    grep -m 3 "keyword scan worker" worker-stderr.txt
+    exit 1
+fi
+if ! grep -q "keyword scan workers: 1" worker-stderr.txt; then
+    echo "❌ The keyword scan worker did not start in the binary"
+    exit 1
+fi
+echo "✅ Keyword scan worker check passed"
+rm -rf many-files worker-stdout.txt worker-stderr.txt
 cd -
