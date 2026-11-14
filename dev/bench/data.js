@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794658774370,
+  "lastUpdate": 1794664986262,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -62662,6 +62662,44 @@ window.BENCHMARK_DATA = {
             "range": "±0.94%",
             "unit": "ops/sec",
             "extra": "21 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "cc5b655938541d80857c2cca29ca9fa57d2ec2bb",
+          "message": "feat!: run the recommend preset when no configuration is found (#1835)\n\n<!-- claude-projects-attribution: {\"github_login\":\"azu\"} -->\n_Requested by **azu** · [project\nthread](https://claude.ai/code/project/chan_01ChfsKF1sN6vYsJMPZ7PuDt?thread=cmsg_01ChfsKF1sN6vYsJMPZ7PuDtRVtZorvCrbPhMgfWkAcHny)_\n\n## Summary\n\nSecretlint now runs with the recommended rules when there is no\nconfiguration. Before this change, `secretlint \"**/*\"` in a directory\nwithout a configuration stopped with `Error: secretlint config is not\nfound` and a stack trace, and the exit status was 2.\n\nNow, when no option gives a configuration and the search finds nothing\nup to the root, Secretlint runs\n`@secretlint/secretlint-rule-preset-recommend`. This is the same\nconfiguration that `--init` writes. No notice is written, the same as\noxlint, Biome, and Ruff. The `--debug` log says when the default is\nused.\n\nReason (azu): the recommend preset is now bundled in Secretlint instead\nof being a separate package, and it is designed to report far fewer\nfalse positives than secret scanners in general. Asking users to opt in\non purpose is therefore worse UX than running it by default.\n\n## Breaking changes (v14)\n\n- **No configuration:** a run without a configuration no longer fails.\nIt uses the recommend preset.\n- **`--secretlintrc <path>`:** the option names exactly one file,\nresolved from the current directory. It no longer searches the parent\ndirectories or appends extensions. A missing file fails with `secretlint\nconfig file is not found: <path>` and exit status 2. The file is read\nwith `loadConfigFile()` from [rc-config-loader\n4.2.0](https://github.com/azu/rc-config-loader/releases/tag/v4.2.0).\n- **API:** `configFilePath` in the results of `loadConfig()` and\n`loadConfigDescriptor()` is now `string | undefined`. The results also\nhave `isDefault`.\n\nA broken configuration file still fails, including a `.secretlintrc`\nwithout an extension. A configuration with `rules: []` still gets the\n`EMPTY_RULES` warning, and the default is not added to it.\n\n## Changes\n\n- `@secretlint/config-loader`: adds `DEFAULT_CONFIG_DESCRIPTOR` and\n`isDefault`. When nothing is found, the loader returns the default\ninstead of throwing. `configFilePath` is read with `loadConfigFile()`. A\nbroken `.secretlintrc` without an extension is re-read so that its error\nis thrown, because `rcFile()` suppresses that error.\n- `@secretlint/node`: writes the use of the default to the debug log.\nThere is no API change.\n- `@secretlint/config-creator`: takes the preset id from the built-in\n`presetRecommend.meta.id`. A config-loader test checks that\n`DEFAULT_CONFIG_DESCRIPTOR` uses the same id.\n- README, `--help`, and sdev docs: the Product, and the Requirements and\nDesign of Configuration loading (en and ja). The first docs commit\nrecords the behavior on master. The later commits record the change and\nazu's review.\n\n## Tests\n\n- config-loader:\n  - the default is used when nothing is found\n  - each call returns a fresh descriptor\n  - `rules: []` does not get the default\n- a broken `.secretlintrc.json`, and a broken `.secretlintrc` in cwd or\na parent directory, still fail\n- `configFilePath` is resolved from cwd, is not found in a parent\ndirectory, and gets no extension appended\n  - a file without an extension is read as YAML\n- node: the default runs the recommend preset.\n- secretlint bin (spawned): with no configuration, the recommend preset\nreports a GitHub token, the exit status is 1, and stderr is empty. A\nfile with no secret exits 0. A missing `--secretlintrc` exits 2.\n\n## Follow-ups (not in this PR)\n\n- Deprecate `@secretlint/quick-start`. azu: it has no role left.\n- The Docker image keeps `/.secretlintrc.json`, which has the same rules\nas the default.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nhttps://claude.ai/code/session_01TSdrAF8jMjPqAJmbXXfWsJ\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-11-14T23:02:20+09:00",
+          "tree_id": "e9d7d6b05d36b3ade69a3591b4d6eed9af5dbbef",
+          "url": "https://github.com/secretlint/secretlint/commit/cc5b655938541d80857c2cca29ca9fa57d2ec2bb"
+        },
+        "date": 1794664983500,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 11.18,
+            "range": "±3.25%",
+            "unit": "ops/sec",
+            "extra": "32 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 9.11,
+            "range": "±0.94%",
+            "unit": "ops/sec",
+            "extra": "27 samples"
           }
         ]
       }
