@@ -32,7 +32,7 @@ Validating the configuration file, and running the loaded rules in `@secretlint/
 `rcFile()` splits `cwd` into its directories and, from the deepest one, tries `<configFileName>.cjs`, `.js`, `.json`, `.yaml`, `.yml` (the key order of its loader table), then `<configFileName>` with the loaders of `.json`, `.yaml`, `.yml`, `.js`, and `.cjs` in order, then the `secretlint` field of `package.json`, and repeats this in the parent directory up to the root.
 `configFileName` is `.secretlintrc`.
 
-When `configFilePath` is given (`--secretlintrc`), `loadConfigDescriptor()` does not search. It resolves `path.resolve(cwd, configFilePath)`, checks that the file exists, and reads only that file with the loader of its extension (`.json`, `.yaml`, `.yml`, `.js`, `.cjs`; a name without these extensions is read as JSON, YAML, then JavaScript, like `.secretlintrc`).
+When `configFilePath` is given (`--secretlintrc`), `loadConfigDescriptor()` does not search. It reads only `path.resolve(cwd, configFilePath)` with an API of `rc-config-loader` that loads exactly one file, requested from rc-config-loader for this change. That API chooses the loader by the extension (`.json`, `.yaml`, `.yml`, `.js`, `.cjs`; a name without these extensions is read as JSON, YAML, then JavaScript, like `.secretlintrc`), so Secretlint does not have its own loaders.
 Before this change, `configFilePath` was passed to `rcFile()` as `configFileName`, which joined it to each directory, so a relative path was also looked for in the parent directories with the extensions appended.
 When the file is not found, `loadConfigDescriptor()` decides by `configFilePath`:
 

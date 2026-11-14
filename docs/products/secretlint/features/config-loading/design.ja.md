@@ -32,7 +32,7 @@ Node.jsのモジュール解決と、[ルールとルールプリセット](../r
 `rcFile()`は`cwd`をディレクトリに分け、最も深いディレクトリから、`<configFileName>.cjs`、`.js`、`.json`、`.yaml`、`.yml`を試し（読み込み方の表のキーの順です）、次に`<configFileName>`を`.json`、`.yaml`、`.yml`、`.js`、`.cjs`の読み込み方で順に試し、最後に`package.json`の`secretlint`フィールドを試します。これを親ディレクトリでルートまで繰り返します。
 `configFileName`は`.secretlintrc`です。
 
-`configFilePath`が指定されたとき（`--secretlintrc`）は、`loadConfigDescriptor()`は探索しません。`path.resolve(cwd, configFilePath)`を解決してファイルがあることを確かめ、そのファイルだけを拡張子に合った読み込み方で読みます（`.json`、`.yaml`、`.yml`、`.js`、`.cjs`。これらの拡張子がない名前は、`.secretlintrc`と同じくJSON、YAML、JavaScriptの順に読みます）。
+`configFilePath`が指定されたとき（`--secretlintrc`）は、`loadConfigDescriptor()`は探索しません。この変更のためにrc-config-loaderへ依頼した、ちょうど1つのファイルを読むAPIで、`path.resolve(cwd, configFilePath)`だけを読みます。このAPIは拡張子で読み込み方を選ぶので（`.json`、`.yaml`、`.yml`、`.js`、`.cjs`。これらの拡張子がない名前は、`.secretlintrc`と同じくJSON、YAML、JavaScriptの順に読みます）、Secretlintは自前の読み込み方を持ちません。
 この変更の前は、`configFilePath`を`configFileName`として`rcFile()`に渡していたため、各ディレクトリと結合され、相対パスは親ディレクトリでも、拡張子を付けた名前でも探されていました。
 ファイルが見つからないと、`loadConfigDescriptor()`は`configFilePath`によって次のように決めます。
 
