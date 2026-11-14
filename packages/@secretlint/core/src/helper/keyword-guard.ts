@@ -156,29 +156,38 @@ const parseCount = (count: string): number => {
     if (count === "+") {
         throw new Error(`\`+\` is not supported. Write \`${setExample}{1,}\`.`);
     }
-    if (count === "*" || count === "?" || /^\{0+,?\d*\}$/.test(count)) {
+    const alwaysTrue = (): never => {
         throw new Error(`\`${count}\` makes the guard always true. The count should be \`{n,}\`, and n is 1 or more.`);
+    };
+    if (count === "*" || count === "?") {
+        return alwaysTrue();
     }
-    const exact = /^\{(\d+)\}$/.exec(count);
-    if (exact) {
-        throw new Error(
-            `\`${count}\` is not supported, because the guard does not check where the characters end. Write \`{${exact[1]},}\`.`,
-        );
-    }
-    const range = /^\{(\d+),\d+\}$/.exec(count);
-    if (range) {
-        throw new Error(
-            `\`${count}\` is not supported, because the guard does not check the most count. Write \`{${range[1]},}\`.`,
-        );
-    }
-    const matched = /^\{([1-9]\d*),\}$/.exec(count);
+    // `{n}`, `{n,}`, or `{n,m}`. Each part of the regular expression can match in one way only
+    const matched = /^\{(\d+)(,(\d*))?\}$/.exec(count);
     if (!matched) {
         if (count === "") {
             throw new Error("The set should be followed by a count, such as `{40,}`.");
         }
         throw new Error(`\`${count}\` is not supported. After the set, only a count such as \`{40,}\` is supported.`);
     }
-    const min = Number(matched[1]);
+    const least = matched[1] as string;
+    if (Number(least) === 0) {
+        return alwaysTrue();
+    }
+    if (matched[2] === undefined) {
+        throw new Error(
+            `\`${count}\` is not supported, because the guard does not check where the characters end. Write \`{${least},}\`.`,
+        );
+    }
+    if (matched[3] !== "") {
+        throw new Error(
+            `\`${count}\` is not supported, because the guard does not check the most count. Write \`{${least},}\`.`,
+        );
+    }
+    if (least.startsWith("0")) {
+        throw new Error(`\`${count}\` is not supported. Write the count without \`0\` at its start.`);
+    }
+    const min = Number(least);
     if (min > MAX_GUARD_MIN) {
         throw new Error(`The count should be ${MAX_GUARD_MIN} or less.`);
     }
