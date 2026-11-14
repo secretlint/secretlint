@@ -145,6 +145,7 @@ When the lint of many files takes long, worker threads read files and look for k
 The summary then shows each thread with its time and the number of the files that it read. The section is not shown when no worker thread started.
 The lint runs in the same way with and without `--profile`.
 The time of reading a file and of the keyword scan in the phases is only the work of the main thread. The work of the workers is in this section.
+The Patterns section includes the tests of lines that the workers did.
 The number of files in the first line of the summary is the number of the files of the run. A file that no rule runs for is not in the Files section.
 
 ##### Text of the summary

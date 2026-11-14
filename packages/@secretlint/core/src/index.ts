@@ -153,25 +153,39 @@ const checkBytes = (
     if (!matcher) {
         return undefined;
     }
-    const contentStart = hasUtf8BOM(bytes) ? 3 : 0;
     const profiling = secretLintProfiler.isEnabled;
+    const found = (keywordIndexes: Readonly<Uint8Array>): (() => boolean) => {
+        return () => {
+            return view.keywordPatterns.some((pattern) => {
+                return (
+                    pattern.scope === "file" &&
+                    isKeywordFound(pattern.keywordIndexes as readonly number[], keywordIndexes)
+                );
+            });
+        };
+    };
+    // Use the result of the caller only if it is for the same keywords and patterns.
+    // The result has the check of the lines, so the bytes are not scanned here
+    if (keywordScanResult !== undefined && keywordScanResult.planId === view.keywordScanPlan?.id) {
+        const hasFilePatternKeyword = found(keywordScanResult.found);
+        return {
+            found: keywordScanResult.found,
+            hasKeyword: keywordScanResult.hasKeyword,
+            runsPatterns:
+                view.hasAlwaysPattern ||
+                (keywordScanResult.hasKeyword &&
+                    ((view.hasFilePattern && hasFilePatternKeyword()) || keywordScanResult.lineMatched)),
+        };
+    }
+    const contentStart = hasUtf8BOM(bytes) ? 3 : 0;
     const scanStartTime = profiling ? secretLintProfiler.now() : 0;
-    // Use the result of the caller only if it is for the same keywords: the hits have the indexes of the keywords
-    const usesResult = keywordScanResult !== undefined && keywordScanResult.planId === view.keywordScanPlan?.id;
-    const hits = usesResult ? keywordScanResult.hits : matcher.scan(bytes, contentStart);
+    const hits = matcher.scan(bytes, contentStart);
     if (profiling) {
         secretLintProfiler.record("@core>keyword-scan", undefined, scanStartTime);
     }
     const hasKeyword = hits.count > 0;
-    const hasFilePatternKeyword = (): boolean => {
-        return view.keywordPatterns.some((pattern) => {
-            return pattern.scope === "file" && isKeywordFound(pattern.keywordIndexes as readonly number[], hits.found);
-        });
-    };
+    const hasFilePatternKeyword = found(hits.found);
     const hasLineMatch = (): boolean => {
-        if (usesResult && keywordScanResult.lineMatched !== undefined) {
-            return keywordScanResult.lineMatched;
-        }
         if (!profiling) {
             return hasLineMatchInBytes(view, hits, bytes, contentStart);
         }

@@ -90,11 +90,11 @@ It imports only the keyword matcher: no rule, no configuration, and no Node.js m
 `getKeywordScanPlan({ config })` of the core returns what to scan for as plain data: the keywords, which of them are case-sensitive, `requiresKeyword`, `ruleCheck`, and an id of all of these.
 `requiresKeyword` is true when no rule or pattern runs without keywords. Then a source without a keyword has no messages.
 `ruleCheck` is what tells if a rule runs for a source that has a keyword. It has the "line" scope patterns as the source and the flags of their regular expressions with the indexes of their keywords, and the indexes of the keywords that select a rule for the whole content: the keywords of a rule without patterns and of a "file" scope pattern.
-`createKeywordScanner(plan).scan(bytes)` returns the hits with the id of the plan, `runsRules`, and `lineMatched`.
-If a keyword for the whole content is found, `runsRules` is true and the lines are not checked. Otherwise the scanner decodes each line that has a keyword of a pattern and tests it with the regular expression of the pattern, and `lineMatched` and `runsRules` are true if one matches. It is the same check as the one in `lintSource()`: both call one function of the core.
-`lintSource()` uses `lineMatched` of the result in place of its own check of the lines.
-`lintSource()` accepts this result as `keywordScanResult`, and uses it in place of its own scan of the bytes if the id is the id of its own plan for the content type of the source.
-The matcher is built from the same keywords in the same order on each thread, so the hits mean the same on each thread.
+`createKeywordScanner(plan).scan(bytes)` returns the id of the plan, which keywords are in the bytes, `lineMatched`, and `runsRules`.
+The scanner decodes each line that has a keyword of a pattern and tests it with the regular expression of the pattern, and `lineMatched` is true if one matches. It is the same check as the one in `lintSource()`: both call one function of the core.
+`runsRules` is true if `lineMatched` is true or a keyword for the whole content is found.
+`lintSource()` accepts this result as `keywordScanResult`, and uses it in place of its own scan of the bytes and its own check of the lines if the id is the id of its own plan for the content type of the source.
+The result does not have the positions of the keywords. A position has a state of the matcher, and a matcher numbers its states as it meets them, so the numbers differ between the matchers of two threads. So the scanner always checks the lines by itself, with the matcher that found the positions, and the result has only what means the same on every thread.
 
 The core does not start workers by itself. A worker needs the URL of a script file, and sharing memory between threads in a browser needs cross-origin isolation, so only the caller knows how to start one. The Node.js engine does it for files, and a tool in a browser can do the same with Web Workers.
 
@@ -119,7 +119,7 @@ This matters where reading is the main cost: on some machines, reading the files
 A rule without keywords, such as a rule of patterns that a user writes, runs for every file. Then `requiresKeyword` is false, and the workers hand every file. The reads, the scans, and the checks of the lines are still done by the workers, and the main thread runs the rules. In this case the main thread is the limit, because the rules run only there.
 
 Between its own claims, the main thread lets the messages of the workers arrive and lints the handed files first, because they hold memory.
-A worker waits before it claims files while the main thread has more than 256MB of handed bytes to lint. So the memory has a limit when the main thread is slower than the workers.
+A worker waits before it claims files while the main thread has more than 256MB of handed bytes to lint. So the memory has a limit when the main thread is slower than the workers. Both threads count the size of the memory that is moved, not the size of the files in it, so the count returns to zero.
 
 #### The number of threads
 
@@ -134,14 +134,16 @@ The decision uses time, not the number of files, so it follows the size of the f
 #### Keeping the results the same
 
 - Messages are created only by the rules on the main thread. When patterns run, the core scans the decoded string as before.
-- The bytes that the rules see are the bytes that were scanned: the worker hands the same bytes that it scanned, so a file that changes during the lint can not make the hits and the content differ.
+- The bytes that the rules see are the bytes that were scanned: the worker hands the same bytes that it scanned, so a file that changes during the lint can not make the result of the scan and the content differ.
 - The result of the scan is used only for a text file, because the plan is for the text content type. A file that is not text is always handed, without a result. The worker detects the content type with the same function and the same bytes as the source creator.
 - The check of the lines is one function of the core for the worker and for `lintSource()`. The worker creates the regular expressions from the source and the flags of the ones that the main thread uses, so both test a line in the same way.
 - `lintSource()` ignores a result with the id of another plan. The id has the keywords and the patterns, so a result for other patterns of the same keywords is not used.
 - A file that a worker could not read, or that a failed worker claimed and did not hand, stays without a result. The main thread lints these files by itself at the end, so the error is the same.
 - The results are stored by the index of the file, so the order of the results is the order of the files.
+- The order in which the rules see the files is not the order of the files: the main thread lints a handed file when it arrives. A rule gets one source at a time and the core gives it nothing of another source, so a result does not depend on this order. A rule that keeps its own state between files is not supported.
+- The engine stops all workers and waits for them when the lint ends, also when it fails. A worker that waits for the main thread would keep the process alive.
 - Workers are not used with the `mask-result` formatter, which reads every file as a string.
-- The profiler does not change the path: with `--profile` the files are linted in the same way, so the profile shows the run that a user gets. Each worker measures its own time and files, and the engine adds them to the profiler as `@node>keyword-scan-thread`.
+- The profiler does not change the path: with `--profile` the files are linted in the same way, so the profile shows the run that a user gets. Each worker measures its own time and files, and the engine adds them to the profiler as `@node>keyword-scan-thread`. With `--profile` a worker also measures its tests of lines for each pattern, and the engine adds them to `@core>pattern-line-test`.
 
 #### The single-executable binary
 
@@ -272,7 +274,8 @@ A rule returns handlers, and the `file(source)` handler receives the source code
 
 ### `@secretlint/core/keyword-scan`
 
-`createKeywordScanner(plan)` returns a scanner, and `scanner.scan(bytes)` returns a `KeywordScanResult`: the id of the plan, the hits, `runsRules`, and `lineMatched`.
+`createKeywordScanner(plan)` returns a scanner, and `scanner.scan(bytes)` returns a `KeywordScanResult`: the id of the plan, the keywords that were found, `hasKeyword`, `lineMatched`, and `runsRules`.
+`createKeywordScanner(plan, { profile: true })` also counts the tests of lines for each pattern, and `scanner.lineTests()` returns them.
 `getKeywordScanPlan({ config, locale?, contentType? })` of `@secretlint/core` returns the `KeywordScanPlan` for a configuration, or `undefined` when no rule has keywords.
 The plan and the result are plain data and typed arrays, so they can be sent to another thread.
 `lintSource({ source, options, keywordScanResult })` uses the result as written in "The scan as a step of its own".

@@ -18,7 +18,8 @@ import { createKeywordScanWorkers, estimateWorkerCount } from "../src/parallel-k
 
 const configFileJSON = { rules: [{ id: "@secretlint/secretlint-rule-example" }] };
 const FILE_COUNT = 200;
-const PENDING_BYTES_LIMIT = 1024 * 1024;
+// More than the memory of the batches of all files, because the test does not lint the batches
+const PENDING_BYTES_LIMIT = 64 * 1024 * 1024;
 /**
  * Create files: every 10th file has the keyword of the example rule
  */
@@ -57,7 +58,7 @@ describe("parallel keyword scan", () => {
         delete process.env.SECRETLINT_KEYWORD_SCAN_THREADS;
     });
     const scan = (
-        options: { requiresKeyword: boolean; filePathList?: string[] },
+        options: { requiresKeyword: boolean; filePathList?: string[]; profile?: boolean },
         plan: Awaited<ReturnType<typeof loadPlan>>,
     ) => {
         const filePathList = options.filePathList ?? files.filePathList;
@@ -69,14 +70,22 @@ describe("parallel keyword scan", () => {
                 filePathList,
                 shared,
                 pendingBytesLimit: Number.MAX_SAFE_INTEGER,
+                profile: options.profile ?? false,
             },
             (message) => messages.push(message),
         );
         const batches = messages.flatMap((message) => (message.type === "files" ? [message.batch] : []));
         const handed = batches.flatMap((batch) => batch.files.map((file) => ({ batch, file })));
-        return { messages, handed, states: openSharedScanState(shared, filePathList.length).states };
+        return {
+            messages,
+            batches,
+            handed,
+            states: openSharedScanState(shared, filePathList.length).states,
+            // The second Int32 value of the shared buffer
+            pendingBytes: new Int32Array(shared, 0, 2)[1],
+        };
     };
-    it("should hand only the files that have a keyword, with the bytes and the hits", async () => {
+    it("should hand only the files that have a keyword, with the bytes and the result of the scan", async () => {
         const plan = await loadPlan();
         const missingIndex = 5;
         const filePathList = files.filePathList.map((filePath, index) => {
@@ -92,7 +101,7 @@ describe("parallel keyword scan", () => {
             assert.strictEqual(file.contentType, "text");
             assert.strictEqual(file.keywordScanResult?.runsRules, true);
             assert.strictEqual(file.keywordScanResult?.planId, plan.id);
-            assert.ok((file.keywordScanResult?.hits.count ?? 0) > 0);
+            assert.strictEqual(file.keywordScanResult?.hasKeyword, true);
         }
         states.forEach((state, index) => {
             const expected =
@@ -107,6 +116,7 @@ describe("parallel keyword scan", () => {
             type: "done",
             scannedCount: FILE_COUNT - 1,
             duration: (messages.at(-1) as { duration: number }).duration,
+            lineTests: [],
         });
     });
     it("should hand all files if a rule runs without keywords", async () => {
@@ -138,7 +148,7 @@ describe("parallel keyword scan", () => {
         assert.deepStrictEqual([...states], [FileScanState.NoMessages, FileScanState.Handed]);
         assert.strictEqual(handed.length, 1);
         assert.strictEqual(handed[0]?.file.contentType, "text");
-        assert.ok((handed[0]?.file.keywordScanResult?.hits.count ?? 0) > 0);
+        assert.strictEqual(handed[0]?.file.keywordScanResult?.hasKeyword, true);
     });
     it("should not hand a file that has a keyword on a line that no pattern matches", async () => {
         const { config } = await loadPackagesFromConfigDescriptor({
@@ -162,12 +172,67 @@ describe("parallel keyword scan", () => {
         assert.strictEqual(all.handed[0]?.file.keywordScanResult?.runsRules, false);
         assert.strictEqual(all.handed[0]?.file.keywordScanResult?.lineMatched, false);
     });
+    it("should count the memory of the handed batches as the pending bytes", async () => {
+        const plan = await loadPlan();
+        const { batches, handed, pendingBytes } = scan({ requiresKeyword: false }, plan);
+        const movedBytes = batches.reduce((total, batch) => total + batch.bytes.byteLength, 0);
+        const fileBytes = handed.reduce((total, { file }) => total + file.byteLength, 0);
+        // The main thread subtracts the size of the memory of each batch, so the worker adds the same number
+        assert.strictEqual(pendingBytes, movedBytes);
+        assert.ok(movedBytes > fileBytes);
+    });
+    it("should return the tests of lines of the worker with the profile", async () => {
+        const { config } = await loadPackagesFromConfigDescriptor({
+            configDescriptor: { rules: [{ id: "@secretlint/secretlint-rule-preset-recommend" }] },
+        });
+        const plan = getKeywordScanPlan({ config });
+        assert.ok(plan);
+        const urlFilePath = path.join(files.dir, "url.txt");
+        fs.writeFileSync(urlFilePath, "see https://example.com/\n");
+        const lineTestsOf = (profile: boolean) => {
+            const done = scan({ requiresKeyword: true, filePathList: [urlFilePath], profile }, plan).messages.at(-1);
+            return done?.type === "done" ? done.lineTests : undefined;
+        };
+        assert.deepStrictEqual(lineTestsOf(false), []);
+        const lineTests = lineTestsOf(true);
+        assert.ok(lineTests && lineTests.length > 0);
+        assert.ok(lineTests.every((lineTest) => lineTest.count === 1 && lineTest.profileId.includes("#")));
+    });
+    it("should stop a worker that waits for the main thread", async () => {
+        const plan = await loadPlan();
+        const workers = createKeywordScanWorkers({
+            plan,
+            filePathList: files.filePathList,
+            maxThreads: 2,
+            profile: false,
+        });
+        const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+        // The worker waits while the main thread has too many bytes to lint
+        workers.state.addPendingBytes(2 ** 30);
+        // Take two samples of the time, as the lint does, so that a worker is worth it
+        await wait(25);
+        workers.startWorkersIfWorth();
+        workers.state.claim();
+        await wait(25);
+        workers.startWorkersIfWorth();
+        assert.strictEqual(workers.isRunning(), true);
+        await workers.terminate();
+        await wait(0);
+        assert.strictEqual(workers.isRunning(), false);
+        assert.deepStrictEqual(workers.takeBatches(), []);
+    });
     it("should scan files in the worker thread", async () => {
         const plan = await loadPlan();
         const shared = createSharedScanBuffer(files.filePathList.length);
         // The test runs the source, so use the worker of the build
         const worker = new Worker(new URL("../module/keyword-scan-worker.js", import.meta.url), {
-            workerData: { plan, filePathList: files.filePathList, shared, pendingBytesLimit: PENDING_BYTES_LIMIT },
+            workerData: {
+                plan,
+                filePathList: files.filePathList,
+                shared,
+                pendingBytesLimit: PENDING_BYTES_LIMIT,
+                profile: false,
+            },
         });
         const fileIndexes: number[] = [];
         const done = await new Promise<WorkerMessage>((resolve, reject) => {
@@ -186,7 +251,12 @@ describe("parallel keyword scan", () => {
     });
     it("should not start a worker for a short lint", async () => {
         const plan = await loadPlan();
-        const workers = createKeywordScanWorkers({ plan, filePathList: files.filePathList, maxThreads: 4 });
+        const workers = createKeywordScanWorkers({
+            plan,
+            filePathList: files.filePathList,
+            maxThreads: 4,
+            profile: false,
+        });
         workers.startWorkersIfWorth();
         assert.strictEqual(workers.isRunning(), false);
         assert.deepStrictEqual(workers.takeBatches(), []);

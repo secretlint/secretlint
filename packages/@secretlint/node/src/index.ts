@@ -253,88 +253,111 @@ const lintFiles = async ({
         }
         return { results: results as SecretLintCoreResult[], contents };
     }
-    const workers = createKeywordScanWorkers({ plan, filePathList, maxThreads });
-    const state = workers.state;
-    // The result of the keyword scan for a text file that has no keyword
-    const noKeyword: KeywordScanResult = {
-        planId: plan.id,
-        hits: { found: new Uint8Array(plan.keywords.length), positions: new Int32Array(0), count: 0 },
-        runsRules: false,
-    };
-    // Lint the files that the workers read. The bytes are from the worker, so the file is not read again
-    const lintBatch = async (batch: HandedFiles) => {
-        for (const file of batch.files) {
-            const filePath = filePathList[file.fileIndex] as string;
-            const source = createRawSourceFromBytes(
-                filePath,
-                new Uint8Array(batch.bytes, file.offset, file.byteLength),
-                file.contentType,
-            );
-            // The keyword scan of the worker is for the text content type
-            const keywordScanResult = file.contentType === "text" ? (file.keywordScanResult ?? noKeyword) : undefined;
-            const result = await lintSource({ source, options: lintOptions, keywordScanResult });
-            results[file.fileIndex] = result;
-            if (source.contentType === "text" && result.messages.length > 0) {
-                contents.set(result.filePath, source.content);
+    const workers = createKeywordScanWorkers({
+        plan,
+        filePathList,
+        maxThreads,
+        profile: secretLintProfiler.isEnabled,
+    });
+    const lintWithWorkers = async () => {
+        const state = workers.state;
+        // The result of the keyword scan for a text file that has no keyword
+        const noKeyword: KeywordScanResult = {
+            planId: plan.id,
+            found: new Uint8Array(plan.keywords.length),
+            hasKeyword: false,
+            lineMatched: false,
+            runsRules: false,
+        };
+        // Lint the files that the workers read. The bytes are from the worker, so the file is not read again
+        const lintBatch = async (batch: HandedFiles) => {
+            for (const file of batch.files) {
+                const filePath = filePathList[file.fileIndex] as string;
+                const source = createRawSourceFromBytes(
+                    filePath,
+                    new Uint8Array(batch.bytes, file.offset, file.byteLength),
+                    file.contentType,
+                );
+                // The keyword scan of the worker is for the text content type
+                const keywordScanResult =
+                    file.contentType === "text" ? (file.keywordScanResult ?? noKeyword) : undefined;
+                const result = await lintSource({ source, options: lintOptions, keywordScanResult });
+                results[file.fileIndex] = result;
+                if (source.contentType === "text" && result.messages.length > 0) {
+                    contents.set(result.filePath, source.content);
+                }
+            }
+            state.addPendingBytes(-batch.bytes.byteLength);
+        };
+        const lintHandedFiles = async () => {
+            for (const batch of workers.takeBatches()) {
+                await lintBatch(batch);
+            }
+        };
+        let mainCount = 0;
+        const mainStartTime = performance.now();
+        while (true) {
+            workers.startWorkersIfWorth();
+            if (workers.isRunning()) {
+                // Let the messages of the workers arrive, and lint the handed files first: they hold memory
+                await new Promise<void>((resolve) => setImmediate(resolve));
+                await lintHandedFiles();
+            }
+            const start = state.claim();
+            if (start >= filePathList.length) {
+                break;
+            }
+            const end = Math.min(start + CLAIM_SIZE, filePathList.length);
+            for (let fileIndex = start; fileIndex < end; fileIndex++) {
+                await lintByMainThread(fileIndex);
+                mainCount++;
             }
         }
-        state.addPendingBytes(-batch.bytes.byteLength);
-    };
-    const lintHandedFiles = async () => {
-        for (const batch of workers.takeBatches()) {
-            await lintBatch(batch);
-        }
-    };
-    let mainCount = 0;
-    const mainStartTime = performance.now();
-    while (true) {
-        workers.startWorkersIfWorth();
-        if (workers.isRunning()) {
-            // Let the messages of the workers arrive, and lint the handed files first: they hold memory
-            await new Promise<void>((resolve) => setImmediate(resolve));
+        const mainDuration = performance.now() - mainStartTime;
+        while (workers.isRunning()) {
+            await workers.waitForMessage();
             await lintHandedFiles();
         }
-        const start = state.claim();
-        if (start >= filePathList.length) {
-            break;
-        }
-        const end = Math.min(start + CLAIM_SIZE, filePathList.length);
-        for (let fileIndex = start; fileIndex < end; fileIndex++) {
+        await lintHandedFiles();
+        for (let fileIndex = 0; fileIndex < filePathList.length; fileIndex++) {
+            if (results[fileIndex] !== undefined) {
+                continue;
+            }
+            if (state.states[fileIndex] === FileScanState.NoMessages) {
+                // No rule runs for the file. It is the same result as `lintSource()` returns for it
+                results[fileIndex] = {
+                    filePath: filePathList[fileIndex] as string,
+                    sourceContentType: "text",
+                    messages: [],
+                };
+                continue;
+            }
+            // A worker could not read the file, or failed before it handed the file. Lint it as before
             await lintByMainThread(fileIndex);
             mainCount++;
         }
-    }
-    const mainDuration = performance.now() - mainStartTime;
-    while (workers.isRunning()) {
-        await workers.waitForMessage();
-        await lintHandedFiles();
-    }
-    await lintHandedFiles();
-    for (let fileIndex = 0; fileIndex < filePathList.length; fileIndex++) {
-        if (results[fileIndex] !== undefined) {
-            continue;
-        }
-        if (state.states[fileIndex] === FileScanState.NoMessages) {
-            // No rule runs for the file. It is the same result as `lintSource()` returns for it
-            results[fileIndex] = {
-                filePath: filePathList[fileIndex] as string,
-                sourceContentType: "text",
-                messages: [],
-            };
-            continue;
-        }
-        // A worker could not read the file, or failed before it handed the file. Lint it as before
-        await lintByMainThread(fileIndex);
-        mainCount++;
-    }
-    if (secretLintProfiler.isEnabled && workers.threads.length > 0) {
-        secretLintProfiler.addTotal("@node>keyword-scan-thread", "main", { count: mainCount, duration: mainDuration });
-        for (const thread of workers.threads) {
-            secretLintProfiler.addTotal("@node>keyword-scan-thread", thread.name, {
-                count: thread.scannedCount,
-                duration: thread.duration,
+        if (secretLintProfiler.isEnabled && workers.threads.length > 0) {
+            secretLintProfiler.addTotal("@node>keyword-scan-thread", "main", {
+                count: mainCount,
+                duration: mainDuration,
             });
+            for (const thread of workers.threads) {
+                secretLintProfiler.addTotal("@node>keyword-scan-thread", thread.name, {
+                    count: thread.scannedCount,
+                    duration: thread.duration,
+                });
+                // The tests of lines that the worker did in place of the main thread
+                for (const lineTest of thread.lineTests) {
+                    secretLintProfiler.addTotal("@core>pattern-line-test", lineTest.profileId, lineTest);
+                }
+            }
         }
+    };
+    try {
+        await lintWithWorkers();
+    } finally {
+        // A worker that waits for the main thread would keep the process alive after a failure
+        await workers.terminate();
     }
     return { results: results as SecretLintCoreResult[], contents };
 };
@@ -350,8 +373,9 @@ const executeOnFiles = async ({
     configResults: SecretLintCoreResult[];
     options: SecretLintEngineOptions;
 }) => {
-    secretLintProfiler.count("@node>files", undefined, filePathList.length);
     const { results, contents } = await lintFiles({ filePathList, config, options });
+    // Count after the lint: if the lint fails, the profile does not count the files that were not linted
+    secretLintProfiler.count("@node>files", undefined, filePathList.length);
     debug("executeOnFiles result counts: %s", results.length);
     secretLintProfiler.mark({
         type: "@node>format::start",

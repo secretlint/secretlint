@@ -11,10 +11,9 @@
  * so it tells if a rule runs for the source.
  * It does not import rules or config, and it does not depend on Node.js.
  */
-import { getKeywordMatcher, type KeywordHits } from "./helper/keyword-matcher.js";
-import { hasLineMatchInBytes, isKeywordFound, type LinePattern } from "./helper/line-check.js";
+import { getKeywordMatcher } from "./helper/keyword-matcher.js";
+import { hasLineMatchInBytes, isKeywordFound } from "./helper/line-check.js";
 
-export type { KeywordHits };
 /**
  * What the keyword scan looks for. It is plain data, so it can be sent to a worker thread.
  * `getKeywordScanPlan()` of `@secretlint/core` creates it from a config.
@@ -57,6 +56,10 @@ export type KeywordScanRuleCheck = {
         readonly source: string;
         readonly flags: string;
         readonly keywordIndexes: readonly number[];
+        /**
+         * The id of the pattern in the profile
+         */
+        readonly profileId: string;
     }[];
 };
 /**
@@ -67,17 +70,26 @@ export type KeywordScanResult = {
      * `id` of the plan that the scan used
      */
     readonly planId: string;
-    readonly hits: KeywordHits;
+    /**
+     * `found[i] === 1` if `keywords[i]` of the plan is in the bytes.
+     * The result does not have the positions of the keywords: a position has an id that only the matcher
+     * of the scan knows, so another thread can not read it.
+     */
+    readonly found: Readonly<Uint8Array>;
+    /**
+     * true if a keyword of the plan is in the bytes
+     */
+    readonly hasKeyword: boolean;
+    /**
+     * true if a pattern matches a line that has its keyword
+     */
+    readonly lineMatched: boolean;
     /**
      * false if no rule that has keywords runs for the source:
      * the source has no keyword, or it has only keywords of patterns that do not match the lines of the keywords.
      * A rule or a pattern without keywords still runs. See `requiresKeyword` of the plan.
      */
     readonly runsRules: boolean;
-    /**
-     * true if a pattern matches a line that has its keyword. undefined if the scan did not check the lines.
-     */
-    readonly lineMatched?: boolean;
 };
 
 export const createKeywordScanPlan = ({
@@ -112,17 +124,38 @@ export type KeywordScanner = {
      * The byte order mark is not scanned.
      */
     scan(bytes: Uint8Array): KeywordScanResult;
+    /**
+     * The tests of lines that the scanner did for each pattern, if it was created with `profile: true`.
+     * The duration is in milliseconds.
+     */
+    lineTests(): KeywordScanLineTests[];
 };
+export type KeywordScanLineTests = { profileId: string; count: number; duration: number };
 
-export const createKeywordScanner = (plan: KeywordScanPlan): KeywordScanner => {
+export const createKeywordScanner = (plan: KeywordScanPlan, options: { profile?: boolean } = {}): KeywordScanner => {
     const matcher = getKeywordMatcher(plan.keywords, plan.caseSensitive);
     const ruleCheck = plan.ruleCheck;
     const linePatterns = ruleCheck.linePatterns.map((pattern) => {
-        return { tester: new RegExp(pattern.source, pattern.flags), keywordIndexes: pattern.keywordIndexes };
+        return {
+            tester: new RegExp(pattern.source, pattern.flags),
+            keywordIndexes: pattern.keywordIndexes,
+            tests: { profileId: pattern.profileId, count: 0, duration: 0 },
+        };
     });
+    type ScannerLinePattern = (typeof linePatterns)[number];
+    // Measure each test only for the profile, because it reads the clock twice for a line
+    const test = options.profile
+        ? (pattern: ScannerLinePattern, line: string): boolean => {
+              const startTime = performance.now();
+              const matched = pattern.tester.test(line);
+              pattern.tests.count++;
+              pattern.tests.duration += performance.now() - startTime;
+              return matched;
+          }
+        : undefined;
     const view = {
         matcher,
-        linePatternsOfKeyword: plan.keywords.map((_, keywordIndex): LinePattern[] => {
+        linePatternsOfKeyword: plan.keywords.map((_, keywordIndex): ScannerLinePattern[] => {
             return linePatterns.filter((pattern) => pattern.keywordIndexes.includes(keywordIndex));
         }),
     };
@@ -130,12 +163,15 @@ export const createKeywordScanner = (plan: KeywordScanPlan): KeywordScanner => {
         scan(bytes) {
             const contentStart = hasUtf8BOM(bytes) ? 3 : 0;
             const hits = matcher.scan(bytes, contentStart);
-            // The lines are checked only if no keyword selects a rule for the whole content
-            const selectsContent = hits.count > 0 && isKeywordFound(ruleCheck.contentKeywordIndexes, hits.found);
-            const lineMatched =
-                hits.count > 0 && !selectsContent ? hasLineMatchInBytes(view, hits, bytes, contentStart) : undefined;
-            const runsRules = selectsContent || lineMatched === true;
-            return { planId: plan.id, hits, runsRules, lineMatched };
+            const hasKeyword = hits.count > 0;
+            // The lines are always checked here, with the matcher that created the hits
+            const lineMatched = hasKeyword && hasLineMatchInBytes(view, hits, bytes, contentStart, test);
+            const runsRules =
+                hasKeyword && (lineMatched || isKeywordFound(ruleCheck.contentKeywordIndexes, hits.found));
+            return { planId: plan.id, found: hits.found, hasKeyword, lineMatched, runsRules };
+        },
+        lineTests() {
+            return linePatterns.filter((pattern) => pattern.tests.count > 0).map((pattern) => ({ ...pattern.tests }));
         },
     };
 };

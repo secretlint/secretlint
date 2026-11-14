@@ -11,7 +11,12 @@
  * so the main thread does not read that file again.
  */
 import fs from "node:fs";
-import { createKeywordScanner, type KeywordScanPlan, type KeywordScanResult } from "@secretlint/core/keyword-scan";
+import {
+    createKeywordScanner,
+    type KeywordScanLineTests,
+    type KeywordScanPlan,
+    type KeywordScanResult,
+} from "@secretlint/core/keyword-scan";
 import { detectContentType } from "@secretlint/source-creator";
 
 /**
@@ -128,6 +133,10 @@ export type WorkerMessage =
            * The time that the worker took, in milliseconds
            */
           duration: number;
+          /**
+           * The tests of lines for each pattern. It is empty without the profile
+           */
+          lineTests: KeywordScanLineTests[];
       };
 export type WorkerData = {
     plan: KeywordScanPlan;
@@ -137,14 +146,18 @@ export type WorkerData = {
      * A worker waits while the main thread has more bytes than this to lint
      */
     pendingBytesLimit: number;
+    /**
+     * true if the worker measures the tests of lines for the profile
+     */
+    profile: boolean;
 };
 
 export const scanFilesInWorker = (
-    { plan, filePathList, shared, pendingBytesLimit }: WorkerData,
+    { plan, filePathList, shared, pendingBytesLimit, profile }: WorkerData,
     post: (message: WorkerMessage, transfer: ArrayBuffer[]) => void,
 ): void => {
     const startTime = performance.now();
-    const scanner = createKeywordScanner(plan);
+    const scanner = createKeywordScanner(plan, { profile });
     const state = openSharedScanState(shared, filePathList.length);
     let scannedCount = 0;
     let buffer = Buffer.allocUnsafe(INITIAL_BUFFER_SIZE);
@@ -179,7 +192,15 @@ export const scanFilesInWorker = (
         state.waitForPendingBytes(pendingBytesLimit);
         const start = state.claim();
         if (start >= filePathList.length) {
-            post({ type: "done", scannedCount, duration: performance.now() - startTime }, []);
+            post(
+                {
+                    type: "done",
+                    scannedCount,
+                    duration: performance.now() - startTime,
+                    lineTests: scanner.lineTests(),
+                },
+                [],
+            );
             return;
         }
         const end = Math.min(start + CLAIM_SIZE, filePathList.length);
@@ -201,7 +222,7 @@ export const scanFilesInWorker = (
             const contentType = detectContentType(filePath, buffer.subarray(0, byteLength));
             // The plan is for the text content type
             const scan = contentType === "text" ? scanner.scan(buffer.subarray(0, byteLength)) : undefined;
-            const hasKeyword = scan !== undefined && scan.hits.count > 0;
+            const hasKeyword = scan !== undefined && scan.hasKeyword;
             if (scan !== undefined && !scan.runsRules && plan.requiresKeyword) {
                 // No rule runs for the file
                 state.states[fileIndex] = FileScanState.NoMessages;
@@ -215,25 +236,17 @@ export const scanFilesInWorker = (
                 batchBytes = grown;
             }
             batchBytes.set(buffer.subarray(0, byteLength), batchLength);
-            let keywordScanResult: KeywordScanResult | undefined;
-            if (hasKeyword) {
-                // Send only the used part of the positions
-                const positions = scan.hits.positions.slice(0, scan.hits.count * 2);
-                keywordScanResult = {
-                    planId: scan.planId,
-                    hits: { found: scan.hits.found, positions, count: scan.hits.count },
-                    runsRules: scan.runsRules,
-                    lineMatched: scan.lineMatched,
-                };
-                transfer.push(positions.buffer as ArrayBuffer);
-            }
+            // A file without keywords has no result: the main thread knows what the result is
+            const keywordScanResult = hasKeyword ? scan : undefined;
             files.push({ fileIndex, offset: batchLength, byteLength, keywordScanResult, contentType });
             batchLength += byteLength;
             state.states[fileIndex] = FileScanState.Handed;
         }
         if (files.length > 0) {
-            state.addPendingBytes(batchLength);
             const bytes = batchBytes.buffer as ArrayBuffer;
+            // Count the memory that is moved, which can be more than the bytes of the files.
+            // The main thread subtracts the same number after it lints the batch
+            state.addPendingBytes(bytes.byteLength);
             transfer.push(bytes);
             post({ type: "files", batch: { bytes, files } }, transfer);
         }

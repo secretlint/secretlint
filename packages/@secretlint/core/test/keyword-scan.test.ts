@@ -94,7 +94,7 @@ describe("keyword scan", () => {
         assert.ok(otherPlan);
         const content = "tok_ab12";
         const keywordScanResult = createKeywordScanner(otherPlan).scan(new TextEncoder().encode(content));
-        assert.strictEqual(keywordScanResult.hits.count, 0);
+        assert.strictEqual(keywordScanResult.hasKeyword, false);
         const result = await lintSource({
             source: createBytesSource(content),
             options: { config: tokenConfig },
@@ -109,7 +109,14 @@ describe("keyword scan", () => {
         const plan = getKeywordScanPlan({ config: tokenConfig });
         assert.deepStrictEqual(plan?.ruleCheck, {
             contentKeywordIndexes: [],
-            linePatterns: [{ source: "(?:tok|key)_[a-z0-9]{4}", flags: "", keywordIndexes: [0] }],
+            linePatterns: [
+                {
+                    source: "(?:tok|key)_[a-z0-9]{4}",
+                    flags: "",
+                    keywordIndexes: [0],
+                    profileId: "token#0 /(?:tok|key)_[a-z0-9]{4}/g",
+                },
+            ],
         });
     });
     it("should tell that no rule runs if no pattern matches the lines of the keywords", () => {
@@ -120,7 +127,7 @@ describe("keyword scan", () => {
             const { runsRules, lineMatched } = scanner.scan(new TextEncoder().encode(content));
             return { runsRules, lineMatched };
         };
-        assert.deepStrictEqual(scan("no keyword"), { runsRules: false, lineMatched: undefined });
+        assert.deepStrictEqual(scan("no keyword"), { runsRules: false, lineMatched: false });
         assert.deepStrictEqual(scan("tok_ only\ntok_ab"), { runsRules: false, lineMatched: false });
         assert.deepStrictEqual(scan("tok_ only\ntok_ab12"), { runsRules: true, lineMatched: true });
         // The byte order mark is not a part of the first line
@@ -144,9 +151,48 @@ describe("keyword scan", () => {
         assert.ok(plan);
         const scanner = createKeywordScanner(plan);
         const result = scanner.scan(new TextEncoder().encode("tok_ and secret"));
-        // The lines are not checked: the rule runs for the whole content
+        // No pattern matches the line, but the rule runs for the whole content
         assert.strictEqual(result.runsRules, true);
-        assert.strictEqual(result.lineMatched, undefined);
+        assert.strictEqual(result.lineMatched, false);
+    });
+    it("should return a result that does not depend on the scanner that created it", async () => {
+        const config = toConfig(createRule("token", "tok_"), createRule("key", "key_"));
+        const plan = getKeywordScanPlan({ config });
+        assert.ok(plan);
+        // A scanner of another thread has scanned other contents, so its matcher has other internal states
+        // than the matcher of lintSource()
+        const scanner = createKeywordScanner(structuredClone(plan));
+        scanner.scan(new TextEncoder().encode("key_ab12 tok_ key_\nKEY_ TOK_ab12"));
+        const content = "tok_ only\nkey_ab12 and tok_cd34\nkey_";
+        const keywordScanResult = structuredClone(scanner.scan(new TextEncoder().encode(content)));
+        // The result has no position of a keyword: only what any thread can read
+        assert.deepStrictEqual(Object.keys(keywordScanResult).sort(), [
+            "found",
+            "hasKeyword",
+            "lineMatched",
+            "planId",
+            "runsRules",
+        ]);
+        const expected = await lintSource({ source: createBytesSource(content), options: { config } });
+        const actual = await lintSource({ source: createBytesSource(content), options: { config }, keywordScanResult });
+        assert.deepStrictEqual(actual, expected);
+        assert.strictEqual(actual.messages.length, 2);
+    });
+    it("should count the tests of lines for each pattern only with the profile", () => {
+        const plan = getKeywordScanPlan({ config: tokenConfig });
+        assert.ok(plan);
+        const bytes = new TextEncoder().encode("tok_ only\ntok_ab\nno keyword");
+        const scanner = createKeywordScanner(plan);
+        scanner.scan(bytes);
+        assert.deepStrictEqual(scanner.lineTests(), []);
+        const profiled = createKeywordScanner(plan, { profile: true });
+        profiled.scan(bytes);
+        const lineTests = profiled.lineTests();
+        assert.deepStrictEqual(
+            lineTests.map(({ profileId, count }) => ({ profileId, count })),
+            [{ profileId: "token#0 /(?:tok|key)_[a-z0-9]{4}/g", count: 2 }],
+        );
+        assert.ok((lineTests[0]?.duration ?? -1) >= 0);
     });
     it("should not check the lines again if the result of the scan has the check", async () => {
         const plan = getKeywordScanPlan({ config: tokenConfig });

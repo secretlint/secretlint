@@ -3,14 +3,14 @@
  *
  * The lint of a file has two parts: narrow down (read the file and scan it for the keywords), and run the rules.
  * Most of the time goes to the first part, and it needs no rule. So worker threads without rules do the first part,
- * and hand the bytes and the hits of a file to the main thread only if a rule may run for it.
+ * and hand the bytes and the result of the scan of a file to the main thread only if a rule runs for it.
  * The main thread loads the rules once, and runs them as before.
  *
  * The number of the workers is decided while linting, from the time that the lint takes.
  */
 import os from "node:os";
 import { Worker } from "node:worker_threads";
-import type { KeywordScanPlan } from "@secretlint/core/keyword-scan";
+import type { KeywordScanLineTests, KeywordScanPlan } from "@secretlint/core/keyword-scan";
 import {
     createSharedScanBuffer,
     type HandedFiles,
@@ -98,21 +98,29 @@ export type KeywordScanWorkers = {
     /**
      * What each worker did, for the profile. A failed worker is not in it
      */
-    readonly threads: { name: string; scannedCount: number; duration: number }[];
+    readonly threads: { name: string; scannedCount: number; duration: number; lineTests: KeywordScanLineTests[] }[];
+    /**
+     * Stop all workers, and wait until they stopped. Call it when the lint ends or fails,
+     * because a worker that waits for the main thread keeps the process alive
+     */
+    terminate(): Promise<void>;
 };
 
 export const createKeywordScanWorkers = ({
     plan,
     filePathList,
     maxThreads,
+    profile,
 }: {
     plan: KeywordScanPlan;
     filePathList: readonly string[];
     maxThreads: number;
+    profile: boolean;
 }): KeywordScanWorkers => {
     const shared = createSharedScanBuffer(filePathList.length);
     const state = openSharedScanState(shared, filePathList.length);
-    const workerData: WorkerData = { plan, filePathList, shared, pendingBytesLimit: PENDING_BYTES_LIMIT };
+    const workerData: WorkerData = { plan, filePathList, shared, pendingBytesLimit: PENDING_BYTES_LIMIT, profile };
+    const startedWorkers: Worker[] = [];
     const threads: KeywordScanWorkers["threads"] = [];
     let batches: HandedFiles[] = [];
     let runningCount = 0;
@@ -137,13 +145,19 @@ export const createKeywordScanWorkers = ({
             // A bundle needs the worker as a file next to the bundle. The single-executable binary has it as an entry.
             // Without the file the worker fails to start, and the main thread lints all files
             const worker = new Worker(new URL("./keyword-scan-worker.js", import.meta.url), { workerData });
+            startedWorkers.push(worker);
             worker.on("message", (message: WorkerMessage) => {
                 if (message.type === "files") {
                     batches.push(message.batch);
                     notify();
                     return;
                 }
-                threads.push({ name, scannedCount: message.scannedCount, duration: message.duration });
+                threads.push({
+                    name,
+                    scannedCount: message.scannedCount,
+                    duration: message.duration,
+                    lineTests: message.lineTests,
+                });
                 end();
                 void worker.terminate();
             });
@@ -202,6 +216,10 @@ export const createKeywordScanWorkers = ({
             return new Promise<void>((resolve) => {
                 wake = resolve;
             });
+        },
+        async terminate() {
+            // terminate() of a worker that ended is a no-op
+            await Promise.allSettled(startedWorkers.map((worker) => worker.terminate()));
         },
     };
 };

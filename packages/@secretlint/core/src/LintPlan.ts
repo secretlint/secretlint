@@ -574,6 +574,7 @@ const createView = (plan: LintPlan, contentType: ContentType): PlanView => {
                                   source: pattern.tester.source,
                                   flags: pattern.tester.flags,
                                   keywordIndexes: pattern.keywordIndexes as readonly number[],
+                                  profileId: pattern.profileId,
                               })),
                       },
                   })
