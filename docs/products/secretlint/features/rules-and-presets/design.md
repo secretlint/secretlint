@@ -33,7 +33,7 @@ A built-in rule is a directory in `@secretlint/core`, so adding one needs no new
 ### Rule directories
 
 A built-in rule lives in `packages/@secretlint/core/src/builtin/rules/<name>/`, and its main module exports `creator` and `messages`.
-`creator.meta` has the rule id `@secretlint/secretlint-rule-<name>`, the type (`scanner` or `filter`), `recommended`, `supportedContentTypes`, and `docs.url`, which points to the README of the rule in the repository.
+`creator.meta` has the rule id `@secretlint/secretlint-rule-<name>`, the type (`scanner` or `filter`), `recommended`, `supportedContentTypes`, and `docs.url`, which points to the documentation of the rule, `https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/<name>.md`.
 `@secretlint/core` adds the message ID to `docs.url` to make the link of each message.
 
 A rule that finds secrets with regular expressions declares `patterns`, and `@secretlint/core` runs them.
@@ -179,6 +179,28 @@ Currently `canaryRules` is a copy of `recommendedRules`.
 Each package `@secretlint/secretlint-rule-<name>` of a built-in rule re-exports `@secretlint/core/builtin/rules/<name>`.
 The preset packages export `creator` and `rules` from `@secretlint/core/builtin`.
 These packages depend on `@secretlint/core` of the same version, and have no tests of their own.
+The README of each package is short: a sentence that says the rule or preset is built into Secretlint, the URL of its page in `docs/rules/`, and a heading for each message ID with the URL of that message on the page.
+The released versions of the rules point `docs.url` to these READMEs (`blob/master/packages/%40secretlint/secretlint-rule-<name>/README.md`), so the README stays as long as the directory, and stays alone when the directory is deleted.
+
+### Documentation of the rules
+
+The page of each built-in rule and preset is `docs/rules/<name>.md`. It has the description, the usage, the message IDs, and the options of the rule. It has no installation steps, and no sections of a package, such as the change log, the author, and the license.
+The page is in `docs/`, with the other documents for users, and not next to the code of the rule. So moving the code, as the move into `@secretlint/core` did, does not move the page, and the URL in the released packages stays valid.
+
+`docs.url` uses `blob/HEAD`. GitHub resolves `HEAD` to the default branch, so the URL does not depend on the name of the branch. A URL with `master` also keeps working after a rename, because GitHub redirects the URLs of files with the old name of a branch, but a URL with `HEAD` needs no redirect.
+`@secretlint/core` adds `#<message ID>` to `docs.url`, as before.
+
+### Check of the links
+
+`scripts/check-links.mts` checks the links to the files of the repository. It is TypeScript that Node.js runs by stripping the types, and it uses only the modules of Node.js, so it needs no install and no build. `pnpm run check-links` runs it, and the job `links` of the workflow `test` runs it on each pull request.
+
+1. It lists the files with `git ls-files`, and keeps the text files (`.md`, `.ts`, `.mts`, `.cts`, `.js`, `.mjs`, `.cjs`, `.json`, `.yml`, `.yaml`) that are not excluded: `CHANGELOG.md`, `snapshots/` and `test/fixtures/`, `archieves/`, `node_modules/`, and `examples/benchmark/targets/`.
+2. In each file, it finds the URLs `github.com/secretlint/secretlint/{blob,tree,raw}/{master,HEAD}/<path>` and `raw.githubusercontent.com/secretlint/secretlint/{master,HEAD}/<path>`, decodes `<path>`, and checks that the path exists in the working tree.
+3. In each Markdown file, it removes the code blocks and the inline code, finds the links `[text](path)` that are not URLs or anchors, and checks that the path exists relative to the file, or to the root when the path starts with `/`.
+4. It skips a path with a placeholder of a template (`{{` or `<`), and the part after `#` or `?`.
+5. It prints each link that points to a missing path, as `file:line: link -> path`, and exits with 1.
+
+The check reads the working tree, so a pull request that deletes a file and a link to it in the same commit passes, and a pull request that deletes only the file fails.
 
 ### Tests
 
@@ -192,7 +214,7 @@ A test fails when a rule directory has no snapshot directory.
 The presets have no test cases of their own. Their test runs each test case of each rule in the preset through the preset, with the options of the rule under the preset entry, and checks two things: the messages of the rule are the same as the `output.json` of the rule, with `ruleParentId` of the preset, and an `ok.*` case has no message of any rule in the preset. The second check finds a rule of the preset that reports a value that another rule treats as valid.
 Before, the test cases of the rules were copied into a snapshot directory of each preset by a script. The copies had the same content except `ruleParentId`, and had to be copied again when a rule changed, so the test reads the cases of the rules instead.
 
-`pnpm run gen:rule` creates the rule directory, its README, and the test cases `ng.secret` and `ok.valid` in `@secretlint/core`.
+`pnpm run gen:rule` creates the rule directory and the test cases `ng.secret` and `ok.valid` in `@secretlint/core`, and the page `docs/rules/<name>.md`.
 
 ## Architecture and sequence diagrams
 
@@ -211,6 +233,8 @@ No diagram is needed: a preset is a list of rules, and its only interaction is `
 - `@secretlint/core/builtin/rules/<name>`: `creator` and `messages` of one rule.
 - `@secretlint/core/testing`: `createSnapshotTestCases(options)`, which returns the test cases of a snapshot directory.
 - The packages of the same names export the same `creator` and `messages`, or `creator` and `rules` for a preset.
+- `docs.url` of a rule: `https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/<name>.md`.
+- `pnpm run check-links` (`node scripts/check-links.mts`): exits with 0 when every checked link points to an existing file, and with 1 otherwise.
 
 ## External service integration
 
@@ -231,6 +255,8 @@ A regular expression of a rule limits its repetition so that a crafted file does
 ## Deployment notes
 
 The packages of the same names are still published, so a configuration or a `package.json` that names them keeps working. Deprecating them is a separate change.
+The README of each package of the same name becomes the short README in the next release, and npm shows it on the page of the package.
+When the default branch is renamed, the triggers of the workflows that name `master` change in the same pull request. The URLs with `master` in the released packages keep working through the redirect of GitHub.
 The `--init` of the npm package writes the rules that it finds in `package.json`. Until it writes the recommended preset without them, the documentation still tells users to install the preset package.
 
 ## Alternatives considered
@@ -260,6 +286,13 @@ The `--init` of the npm package writes the rules that it finds in `package.json`
 - **A case-sensitive keyword:** An option would say if a keyword is case-sensitive, as `caseSensitive` of the keyword object or `caseSensitiveKeywords` of the pattern, or a keyword object would always be matched as written. Earlier versions of this design had each of them. They were not chosen by the maintainer: a rule that always matches without the case is simpler to write, and the cost is only that the regular expression can be tested on more lines. A guard, which is checked as written, takes that cost away where the secret has a fixed case.
 - **Keywords that follow the `i` flag of the regular expression:** A keyword would be case-sensitive when the regular expression of its pattern has no `i` flag. It was not chosen: no other tool that was looked at does this, and a missing `i` flag is often not a decision of the rule author.
 
+- **A URL with the version, such as `blob/v14.0.0/...`:** A tag does not move, so the URL never breaks, even when the file is deleted later. It was not chosen: the user reads the page of an old version, and a fix of the page does not reach it; the version has to be put into the code of the rule at build time; and the URL of a version that is not released yet does not open.
+- **A site for the documentation on GitHub Pages:** The URL would not depend on the files of the repository, as `eslint.org/docs/latest/rules/<name>` does for ESLint. It was not chosen now: a site needs a build and its own maintenance, and GitHub Pages of this repository already publishes the benchmark results from the branch `gh-pages`. A site can be added later; the pages in `docs/rules/` then link to it.
+- **The README next to the code, in `core/src/builtin/rules/<name>/README.md`:** The code and the page of a rule would be in one directory, as the packages had them. It was not chosen by the maintainer: users look for documents in `docs/`, and a page next to the code moves when the code moves.
+- **A URL with `main`:** `blob/main/...` names the branch that the maintainer wants. It was not chosen, because it does not open before the rename, and it would break again with another rename. `HEAD` opens before and after.
+- **A link checker that uses the network, such as lychee:** It also checks links to other sites. It was not chosen, because its result depends on the network and on other sites, so a pull request can fail for a reason outside it. The links that break when a file moves are the links into this repository, and they can be checked from the working tree.
+
 ## Open questions
 
+- The open questions of the Requirements: the rename of the default branch, the documentation of the four custom rules that Secretlint publishes, and the anchors of the message IDs.
 - The open questions of the Requirements: guards for `meta.keywords`, and the next rule that gets a guarded keyword.

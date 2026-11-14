@@ -33,7 +33,7 @@
 ### ルールのディレクトリ
 
 組み込みルールは`packages/@secretlint/core/src/builtin/rules/<name>/`にあり、メインモジュールは`creator`と`messages`をexportします。
-`creator.meta`には、ルールID`@secretlint/secretlint-rule-<name>`、種類（`scanner`または`filter`）、`recommended`、`supportedContentTypes`、リポジトリ内のルールのREADMEを指す`docs.url`があります。
+`creator.meta`には、ルールID`@secretlint/secretlint-rule-<name>`、種類（`scanner`または`filter`）、`recommended`、`supportedContentTypes`、ルールのドキュメント`https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/<name>.md`を指す`docs.url`があります。
 `@secretlint/core`は`docs.url`にメッセージIDを付け足して、各メッセージのリンクを作ります。
 
 正規表現で秘密情報を探すルールは`patterns`を宣言し、`@secretlint/core`がそのパターンを実行します。
@@ -179,6 +179,28 @@ planにないパターンは、キーワードを探す処理に登録されま�
 組み込みルールの各パッケージ`@secretlint/secretlint-rule-<name>`は、`@secretlint/core/builtin/rules/<name>`をre-exportします。
 プリセットのパッケージは、`@secretlint/core/builtin`の`creator`と`rules`をexportします。
 これらのパッケージは同じバージョンの`@secretlint/core`に依存し、パッケージ自体のテストは持ちません。
+各パッケージのREADMEは短く、そのルールやプリセットがSecretlintに組み込まれていることを伝える一文、`docs/rules/`にあるページのURL、メッセージIDごとの見出しとそのメッセージのページ上のURLだけを書きます。
+リリース済みのバージョンのルールは、`docs.url`でこれらのREADME（`blob/master/packages/%40secretlint/secretlint-rule-<name>/README.md`）を指しています。そのため、READMEはディレクトリがある限り残し、ディレクトリを削除するときもREADMEだけは残します。
+
+### ルールのドキュメント
+
+組み込みルールとプリセットのページは`docs/rules/<name>.md`です。ルールの説明、使い方、メッセージID、オプションを書きます。インストール手順や、変更履歴・作者・ライセンスといったパッケージのための節は書きません。
+このページは、ルールのコードの隣ではなく、ほかの利用者向けのドキュメントと同じ`docs/`に置きます。そのため、`@secretlint/core`への移動のようにコードを動かしてもページは動かず、リリース済みのパッケージにあるURLも有効なままです。
+
+`docs.url`には`blob/HEAD`を使います。GitHubは`HEAD`を既定のブランチとして解決するので、URLはブランチ名に依存しません。`master`を含むURLも、GitHubが古いブランチ名を含むファイルのURLをリダイレクトするので、名前を変えたあとも開けます。ただ、`HEAD`を使うURLならリダイレクトも要りません。
+`@secretlint/core`は、これまでどおり`docs.url`に`#<メッセージID>`を付け足します。
+
+### リンクのチェック
+
+`scripts/check-links.mts`が、リポジトリのファイルへのリンクを確かめます。Node.jsが型を取り除いて実行するTypeScriptで、Node.jsのモジュールだけを使うので、インストールもビルドも要りません。`pnpm run check-links`で実行でき、ワークフロー`test`のジョブ`links`がプルリクエストごとに実行します。
+
+1. `git ls-files`でファイルを列挙し、除外するもの（`CHANGELOG.md`、`snapshots/`と`test/fixtures/`、`archieves/`、`node_modules/`、`examples/benchmark/targets/`）を除いたテキストファイル（`.md`、`.ts`、`.mts`、`.cts`、`.js`、`.mjs`、`.cjs`、`.json`、`.yml`、`.yaml`）を対象にします。
+2. 各ファイルからURL`github.com/secretlint/secretlint/{blob,tree,raw}/{master,HEAD}/<path>`と`raw.githubusercontent.com/secretlint/secretlint/{master,HEAD}/<path>`を探し、`<path>`をデコードして、作業ツリーにそのパスがあるかを確かめます。
+3. 各Markdownファイルからコードブロックとインラインコードを取り除き、URLでもアンカーでもないリンク`[text](path)`を探して、そのパスがファイルからの相対パス（`/`で始まるときはルートからのパス）に存在するかを確かめます。
+4. テンプレートのプレースホルダー（`{{`または`<`）を含むパスと、`#`や`?`以降の部分は確かめません。
+5. 存在しないパスを指すリンクを`file:line: link -> path`の形でそれぞれ出力し、終了コード1で終わります。
+
+チェックは作業ツリーを読むので、ファイルとそこへのリンクを同じコミットで削除したプルリクエストは通り、ファイルだけを削除したプルリクエストは失敗します。
 
 ### テスト
 
@@ -192,7 +214,7 @@ planにないパターンは、キーワードを探す処理に登録されま�
 プリセットは自分のテストケースを持ちません。プリセットのテストでは、プリセットに含まれる各ルールのテストケースを、そのルールのオプションをプリセットの項目に入れた設定でプリセットとして実行し、次の2つを確認します。1つは、そのルールのメッセージがルールの`output.json`と一致すること（`ruleParentId`はプリセットのIDになる）です。もう1つは、`ok.*`のケースでプリセットのどのルールも報告しないことです。2つ目の確認で、あるルールが有効とする値をプリセットのほかのルールが報告していないかが分かります。
 以前は、スクリプトでルールのテストケースをプリセットごとのスナップショットのディレクトリにコピーしていました。コピーは`ruleParentId`以外はルールのものと同じ内容で、ルールを変えるたびにコピーし直す必要があったため、ルールのテストケースを直接読むようにしました。
 
-`pnpm run gen:rule`は、ルールのディレクトリ、README、テストケース`ng.secret`と`ok.valid`を`@secretlint/core`の中に作ります。
+`pnpm run gen:rule`は、ルールのディレクトリとテストケース`ng.secret`と`ok.valid`を`@secretlint/core`の中に、ページ`docs/rules/<name>.md`を`docs/rules/`に作ります。
 
 ## アーキテクチャ・シーケンス図
 
@@ -211,6 +233,8 @@ planにないパターンは、キーワードを探す処理に登録されま�
 - `@secretlint/core/builtin/rules/<name>`: 1つのルールの`creator`と`messages`。
 - `@secretlint/core/testing`: スナップショットのディレクトリからテストケースを作る`createSnapshotTestCases(options)`。
 - 同じ名前のパッケージは、ルールなら同じ`creator`と`messages`を、プリセットなら`creator`と`rules`をexportします。
+- ルールの`docs.url`: `https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/<name>.md`。
+- `pnpm run check-links`（`node scripts/check-links.mts`）: 確かめたリンクがすべて存在するファイルを指していれば終了コード0、そうでなければ1で終わります。
 
 ## 外部サービスとの連携方式
 
@@ -231,6 +255,8 @@ planにないパターンは、キーワードを探す処理に登録されま�
 ## デプロイに関する特記事項
 
 同じ名前のパッケージは引き続き公開されるため、それらを書いた設定や`package.json`はそのまま動きます。これらのパッケージの非推奨化は別の変更で扱います。
+同じ名前の各パッケージのREADMEは、次のリリースで短いREADMEになり、npmのパッケージのページにも表示されます。
+既定のブランチ名を変えるときは、`master`を書いているワークフローのトリガーを同じプルリクエストで直します。リリース済みのパッケージにある`master`を含むURLは、GitHubのリダイレクトで開けるままです。
 npmパッケージの`--init`は、`package.json`にあるルールを設定に書き込みます。ルールのパッケージがなくてもrecommendプリセットを書き込むようになるまでは、ドキュメントではプリセットのパッケージのインストールを案内したままにします。
 
 ## 検討した代替手段
@@ -260,6 +286,13 @@ npmパッケージの`--init`は、`package.json`にあるルールを設定に�
 - **大文字と小文字を区別するキーワード:** キーワードオブジェクトの`caseSensitive`やパターンの`caseSensitiveKeywords`というオプションで区別するかどうかを指定する方法と、キーワードオブジェクトを常に書いたとおりに照合する方法です。この設計の以前の版には、それぞれがありました。メンテナーの判断で採用しませんでした。常に区別しないほうがルールを書きやすく、その代わりに増えるのは、正規表現を試す行の数だけです。シークレットの大文字と小文字が決まっている場合は、書いたとおりに確かめるガードで、その分もなくせます。
 - **正規表現の`i`フラグに従うキーワード:** パターンの正規表現に`i`フラグがなければ、キーワードは大文字と小文字を区別する、という方法です。採用しませんでした。調べたほかのツールにこの動きをするものはなく、`i`フラグがないことは、ルールの作者が意図して決めたものでないことが多いからです。
 
+- **バージョンを含むURL（`blob/v14.0.0/...`など）:** タグは動かないので、あとでファイルを削除してもURLは切れません。採用しませんでした。利用者が読むのは古いバージョンのページで、ページを直しても届きません。また、ビルド時にバージョンをルールのコードに埋め込む必要があり、まだリリースしていないバージョンのURLは開けません。
+- **GitHub Pagesのドキュメントサイト:** ESLintの`eslint.org/docs/latest/rules/<name>`のように、URLをリポジトリのファイル配置から切り離せます。今回は採用しませんでした。サイトにはビルドとその保守が必要で、このリポジトリのGitHub Pagesはすでにブランチ`gh-pages`からベンチマークの結果を公開しています。サイトはあとから追加でき、そのときは`docs/rules/`のページからサイトへリンクします。
+- **コードの隣のREADME（`core/src/builtin/rules/<name>/README.md`）:** パッケージだったときと同じく、ルールのコードとページを1つのディレクトリに置く方法です。メンテナーの判断で採用しませんでした。利用者はドキュメントを`docs/`で探し、コードの隣のページはコードが動くと一緒に動くからです。
+- **`main`を含むURL:** `blob/main/...`はメンテナーが使いたいブランチ名を指します。採用しませんでした。名前を変える前は開けず、また名前を変えるとふたたび切れるからです。`HEAD`なら変える前も後も開けます。
+- **ネットワークを使うリンクチェッカー（lycheeなど）:** ほかのサイトへのリンクも確かめられます。採用しませんでした。結果がネットワークやほかのサイトに左右され、プルリクエストと関係のない理由で失敗することがあるからです。ファイルの移動で切れるのはこのリポジトリへのリンクで、それは作業ツリーから確かめられます。
+
 ## 未決事項
 
+- Requirementsの未決事項。既定のブランチ名の変更、Secretlintが公開している4つのカスタムルールのドキュメント、メッセージIDのアンカー。
 - Requirementsの未決事項。`meta.keywords`のガード、最初にガード付きキーワードを使うルール。

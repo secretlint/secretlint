@@ -15,7 +15,7 @@ The parent Product is [Secretlint](../../product.md).
 - Using the built-in rules without installing a package, and the packages of the same names
 - The recommended preset and the canary preset: which rules they contain and how they register them
 - Options, severities, allowed messages, and disabling of the rules in a preset
-- The documentation of each rule
+- The documentation of each rule, where it is, and the links to it
 - Adding a built-in rule to the Secretlint repository, and testing the built-in rules
 
 ### Out of scope
@@ -171,6 +171,42 @@ Scenario: When a rule reports a message, the message links to the documentation 
 - When: The developer reads the result.
 - Then: The message has a URL to the documentation of the rule and the message ID.
 
+Scenario: When the documentation of a rule moves in a later version, the link of an older version still leads to it
+
+- Given: A developer uses an older version of Secretlint, whose messages link to the place of the documentation in that version.
+- When: A later version moves the documentation of the rule, and the developer opens the link of a message.
+- Then: The page opens, and it links to the current documentation of the rule and its message ID.
+
+Scenario: When the default branch of the repository is renamed, the link still opens
+
+- Given: A message has the URL of the documentation of its rule.
+- When: The default branch of the Secretlint repository is renamed, for example from `master` to `main`, and the developer opens the URL.
+- Then: The documentation of the rule opens.
+
+### Keep the links to the files of the repository working
+
+As a maintainer, I want a pull request that deletes or moves a file to fail its checks when a link still points to the old path, so that I find the broken link before it is released in a package.
+
+**Acceptance criteria:**
+
+Scenario: When a pull request deletes the documentation of a rule, the check fails
+
+- Given: `docs.url` of the AWS rule points to `docs/rules/aws.md`.
+- When: A pull request deletes `docs/rules/aws.md` and does not change the links to it.
+- Then: The check of the links fails, and its output names each file and line that links to `docs/rules/aws.md`.
+
+Scenario: When a Markdown file links to a file that does not exist, the check fails
+
+- Given: A Markdown file has the relative link `[bug report](.github/ISSUE_TEMPLATE.md)`, and the file does not exist.
+- When: The check of the links runs.
+- Then: The check fails, and its output names the Markdown file, the line, and the link.
+
+Scenario: When every link points to an existing file, the check passes without the network
+
+- Given: Every link to a file of the repository points to an existing file.
+- When: The check of the links runs on a machine without network access.
+- Then: The check passes.
+
 ### Add a built-in rule to the Secretlint repository
 
 As a rule author, I want to add a rule for a new kind of secret to Secretlint without creating an npm package, so that the rule can be released without setting up a new package on npm.
@@ -181,7 +217,7 @@ Scenario: When the rule author generates a rule, the files of a built-in rule ar
 
 - Given: The rule author is in the Secretlint repository.
 - When: The rule author runs `pnpm run gen:rule` and enters the name `example`.
-- Then: The code and README of the rule, and the test cases `ng.secret` and `ok.valid`, are created in `@secretlint/core`, and no new package directory is created.
+- Then: The code of the rule and the test cases `ng.secret` and `ok.valid` are created in `@secretlint/core`, the documentation of the rule is created as `docs/rules/example.md`, and no new package directory is created.
 
 Scenario: When a built-in rule is registered, it is used by its rule id
 
@@ -256,6 +292,7 @@ When a package of the same name is installed, the built-in rule is used and the 
 ##### Packages of the same names
 
 The packages `@secretlint/secretlint-rule-<name>` of the built-in rules, and the packages of the two presets, are still published. Each exports the same rule as the built-in rule of the same version, so code that imports `creator` from them keeps working.
+The README of each of these packages says that the rule or preset is built into Secretlint, and links to its documentation in `docs/rules/`. It keeps the message IDs as headings, so that a link of a message from an older version, which points to this README, still has its target.
 Deprecating these packages is a separate change.
 
 ##### Browsers
@@ -313,7 +350,27 @@ The rule states the guard as data, as it states keywords, and Secretlint checks 
 
 ##### Documentation
 
-Each rule has a README that describes why it reports values, its messages, and its options.
+Each built-in rule and preset has a documentation page that describes why it reports values, its messages, and its options.
+Users read it, so it is with the other documents for users, at `docs/rules/<name>.md` of the repository, where `<name>` is the rule id without `@secretlint/secretlint-rule-`, such as `docs/rules/aws.md` and `docs/rules/preset-recommend.md`.
+The page does not tell the user to install a package for the rule.
+
+The URL of the documentation of a rule (`docs.url`) is `https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/<name>.md`.
+`HEAD` is the default branch of the repository, so the URL does not change when the default branch is renamed.
+
+A released version keeps its URLs, because they are in the published package and can not be changed. So a file that a released URL points to stays at its path:
+
+- The documentation of a rule is not deleted or moved without a reason.
+- When it is moved, or its package directory is deleted, a short file stays at the old path. It links to the new place and keeps the message IDs as headings.
+
+##### Links to the files of the repository
+
+The checks of a pull request include a check of the links to the files of the repository. It fails when a link points to a file that does not exist.
+
+- It checks the URLs `https://github.com/secretlint/secretlint/{blob,tree,raw}/{master,HEAD}/<path>` and `https://raw.githubusercontent.com/secretlint/secretlint/{master,HEAD}/<path>` in the text files of the repository, such as Markdown, code, and `package.json`. These URLs are the ones that reach users in packages and messages.
+- It checks the relative links of the Markdown files, outside code.
+- It does not use the network, so it gives the same result on every machine, and a site that is down does not make it fail.
+- It does not check the part after `#`, links to other sites, the change logs, the snapshots and fixtures of the tests, archived packages, and the files of other projects that the benchmark uses.
+- A placeholder of a template, such as `{{ inputs.name }}` or `<name>`, is not a path, and is not checked.
 
 #### Exceptional behavior
 
@@ -375,7 +432,7 @@ When a rule id is registered twice, for example by a preset and by its own entry
 
 **Overview:** A built-in rule is added as files of Secretlint, not as a new npm package.
 
-**Input:** The name of the rule, its code, its README, and its snapshot test cases.
+**Input:** The name of the rule, its code, its documentation, and its snapshot test cases.
 
 **Output:** A rule that is used by `@secretlint/secretlint-rule-<name>` without installing a package.
 
@@ -412,12 +469,20 @@ None. Rules read file content, and the reported values can be secrets; masking t
   - **Related user stories:** Enable the recommended rules with one id, Keep a configuration that installs the rule packages, Try new rules early
   - **Reason for dependency:** Secretlint, which has the built-in rules, and the packages of the same names are distributed as npm packages.
   - **Contractual and usage decisions:** Public packages on the npm registry, free of charge.
+- **GitHub**
+  - **Related user stories:** Read why a value is reported, Keep the links to the files of the repository working
+  - **Reason for dependency:** The documentation of the rules is read on the Secretlint repository on GitHub, and the URLs in the messages point to it.
+  - **Contractual and usage decisions:** A public repository, free of charge. When a branch is renamed, GitHub redirects the URLs of files that have the old name of the branch, but not the URLs of raw files ([Renaming a branch](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-branches-in-your-repository/renaming-a-branch)).
 
 ## Security considerations
 
 The provided rules read only the content that Secretlint passes to them, and do not use the network.
 
 ## Open questions
+
+- Is the default branch renamed from `master` to `main`? The maintainer wants it. The URLs of the documentation use `HEAD`, so they do not depend on the name. The files that name `master`, such as the triggers of the workflows, change at the same time as the rename.
+- Where is the documentation of the four rules that Secretlint publishes as custom rules (`no-dotenv`, `no-homedir`, `no-k8s-kind-secret`, and `secp256k1-privatekey`)? It stays in the README of their packages until it is decided whether they become built-in rules.
+- Does the anchor of a message ID, such as `#AWSAccessKeyID`, open the heading on GitHub, whose heading anchors are in lowercase? This is not checked yet, and the check of the links does not check anchors.
 
 - Should `meta.keywords` of a rule without patterns also have guards? No rule needs it today.
 - Which rule gets a guarded keyword next? The AWS rule is the first: the prefixes of its access key ID, such as `ASIA`, have a guard. The other keywords of the recommended preset are long, and a guard changes nothing for them.
