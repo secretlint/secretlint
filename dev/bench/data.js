@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794622158149,
+  "lastUpdate": 1794633968518,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -62396,6 +62396,44 @@ window.BENCHMARK_DATA = {
             "range": "±1.88%",
             "unit": "ops/sec",
             "extra": "26 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "9e4919d10de65f3390429f9f6be31c09804f9d2a",
+          "message": "feat(core): read the patterns of rule-pattern as declarative patterns with keywords (#1826)\n\n<!-- claude-projects-attribution: {\"github_login\":\"azu\"} -->\n_Requested by **azu** · [project\nthread](https://claude.ai/code/project/chan_01ChfsKF1sN6vYsJMPZ7PuDt?thread=cmsg_01ChfsKF1sN6vYsJMPZ7PuDtQno38WJbcjX3a24wWNrnJu)_\n\n## Summary\n\n`@secretlint/secretlint-rule-pattern` kept its patterns inside\n`create()`, so the core could not see them: the rule had no keywords and\nran on every file, even with no patterns (what `secretlint --init`\nwrites). With the parallel keyword scan (#1824), one such rule made the\nworkers hand every file to the main thread.\n\nThis replaces #1825 (an id-based exception). The core now reads the\noptions of the rule as declarative patterns of the lint plan:\n\n- The rule creator is data (`patterns: []`, no `create()`). The core\nfinds it by the creator object and compiles `options.patterns` with\n`compileUserPatterns()` (`src/user-patterns.ts`).\n- No patterns -> nothing in the plan, so `--init`'s entry costs nothing\nand `keywordScanPlan.requiresKeyword` stays true.\n- Per-entry `keywords` (new optional field, ASCII, case-insensitive).\nWithout it, `extractKeywords()` (`src/helper/extract-keywords.ts`) finds\nliterals that every match must contain, conservatively; otherwise the\npattern runs on every file as before. `keywords: []` forces every file.\n- `filePathGlobs` -> a path condition of the pattern; an entry with only\n`filePathGlobs` -> a path pattern (`view.pathPatterns`) that runs by\npath without keywords. The worker scan does not check paths, so\n`requiresKeyword` is false while a path pattern is enabled.\n- Rule id, message, `allows`, `pattern` (deprecated) unchanged. RegExp\nstrings still go through `createRegExp()` of\n`@textlint/regexp-string-matcher`.\n- `--profile` shows user patterns as\n`@secretlint/secretlint-rule-pattern#<n> <name>`, with ` (no keywords)`\nwhen they run on every file.\n- `@secretlint/core/testing` compares with `keywords: []` for this rule\n(the unoptimized run).\n\n## User impact\n\nNo migration is needed: existing `.secretlintrc` files keep working, and\n`keywords` is optional.\n\n- **Faster lint with rule-pattern.** A config with\n`@secretlint/secretlint-rule-pattern` without options (what `secretlint\n--init` writes) no longer runs a rule on every file. User patterns run\nonly on the files that contain their keywords. On the Linux kernel,\nrecommend + the README patterns went from 6,694 ms to 2,763 ms with\nidentical results.\n- **New option `keywords`.** An entry of `patterns` may have `keywords`\n(ASCII, case-insensitive). Without it, secretlint finds keywords in the\nregex; when it can not, the pattern runs on every file as before, shown\nas `<name> (no keywords)` in `--profile`. `\"keywords\": []` forces a\npattern to run on every file. When `keywords` is written, a match that\ncontains none of them is not reported.\n- **Possible missed match (accepted).** With the `i` flag, a match that\nexists only through a non-ASCII letter that folds to an ASCII letter\n(for example the Kelvin sign U+212A for `k`, or the long s U+017F for\n`s`) is not reported when the file has no ASCII keyword. secretlint\nprefers fewer false positives to fewer false negatives.\n- Example with `{ \"name\": \"token\", \"patterns\": [\"/token=\\\\w+/i\"] }`\n(keyword `token=` is found from the regex):\n\n    | content | before | after |\n    |---|---|---|\n    | `token=abc123` | reported | reported |\n    | `TOKEN=abc123` | reported | reported |\n| `to\\u212Aen=abc123` (Kelvin sign in place of `k`) | reported | **not\nreported** |\n    | `\\u017Fecret token=abc` (long s elsewhere) | reported | reported |\n\nThe regex with `iu` matches the third one, but the file has no ASCII\n`token=`, so the pattern does not run. `\"keywords\": []` on the entry\nrestores the old behavior.\n- **Errors in the options are reported earlier.** An invalid entry (both\n`patterns` and `pattern`, none of `patterns`/`pattern`/`filePathGlobs`,\nor an invalid `keywords`) stops secretlint when the config is loaded,\nbefore any file is linted, instead of at the first file.\n- **API: `creator.create()` of rule-pattern is removed.** The creator is\n`{ messages, meta, patterns: [] }`. Passing it to `@secretlint/core` of\nthe same version works as before; code that calls `creator.create()`\ndirectly breaks.\n- **`@secretlint/core` is a little larger.** The browser bundle of core\n+ recommend (e2e/core-browser, built with `minify: false`) grows 212.10\nkB -> 220.69 kB (gzip 45.69 -> 47.42 kB), compared with master after\n#1824. Minified with esbuild, it is +3.5 kB: `extract-keywords` 2.5 kB,\n`user-patterns` 1.6 kB, LintPlan/index 0.8 kB, and the rule without\n`create()` -1.4 kB. `picomatch` and `@textlint/regexp-string-matcher`\nwere already in the bundle.\n- **A config with an entry that has only `filePathGlobs`** makes the\nworker threads hand every file to the main thread, because the keyword\nscan does not check paths. This is the same cost as before this PR.\n\nDocs: sdev rules-and-presets requirements/design (en/ja), rule-pattern\nREADME (\"Using keywords\").\n\n## Test\n\n- `core/test/helper/extract-keywords.test.ts`: cases, every built-in\npattern gets keywords and no snapshot-input match lacks them, seeded\nrandom patterns/texts.\n- `core/test/user-patterns.test.ts`: no options, keywords, extracted\nkeywords, no keywords, `keywords: []`, filePathGlobs, path-only, allows,\nerrors, keyword scan plan. Uses byte sources whose `content` throws to\nshow files are not decoded.\n- `node/test/parallel-keyword-scan.test.ts`: the `--init` config\n(example rule + rule-pattern without options) hands only files with\nkeywords.\n- Existing pattern snapshot tests pass, including the\nbytes/text/unoptimized equality check.\n- core 568, node 29, CLI 64 tests pass locally; e2e/core-browser builds.\n- Timing on torvalds/linux (97,294 files, `--depth 1`), 4 vCPU Linux,\nworkers on, median of 5 (ms), before = master 70fb27a, after = this PR:\n  - recommend + rule-pattern without options (`--init`): 3,544 -> 2,441\n  - recommend only: 2,505 -> 2,366\n- recommend + rule-pattern with the 3 README patterns\n(password/apikey/token): 6,694 -> 2,763\n- Results (rule, message, range) are identical before/after for all\nthree configs (2 / 2 / 368 messages).\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nhttps://claude.ai/code/session_01TSdrAHsY982qX4epRcPePR\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-11-14T14:24:44+09:00",
+          "tree_id": "215ba34f93491e91935ae83c2b2fc17a18ab1ec0",
+          "url": "https://github.com/secretlint/secretlint/commit/9e4919d10de65f3390429f9f6be31c09804f9d2a"
+        },
+        "date": 1794633964767,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 6.98,
+            "range": "±2.19%",
+            "unit": "ops/sec",
+            "extra": "22 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 5.36,
+            "range": "±1.12%",
+            "unit": "ops/sec",
+            "extra": "18 samples"
           }
         ]
       }
