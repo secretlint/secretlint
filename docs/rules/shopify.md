@@ -1,6 +1,6 @@
 # @secretlint/secretlint-rule-shopify
 
-A secretlint rule for sendgrid.
+A secretlint rule for Shopify.
 
 This rule is built into secretlint (`@secretlint/core`), so you do not need to install a package for it.
 

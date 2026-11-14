@@ -1,6 +1,6 @@
 # @secretlint/secretlint-rule-1password
 
-An example rule for secretlint.
+A secretlint rule for [1Password](https://1password.com/) Service Account tokens.
 
 This rule is built into secretlint (`@secretlint/core`), so you do not need to install a package for it.
 
