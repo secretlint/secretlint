@@ -164,6 +164,56 @@ describe("the check of guards in @secretlint/core/testing", () => {
                 },
             );
         });
+        it("finds the keyword after a character whose lower case has another length", async () => {
+            // "İ" (U+0130) is two code units in lower case
+            assert.strictEqual(
+                await runTestCases(toConfig(rule), ["tok_abcd1234", "İ 00abcd1234", "İİ SKabcd1234"]),
+                "done",
+            );
+        });
+        it("does not need a test case for a pattern that is not enabled, even if another rule has the same keyword", async () => {
+            const createOptionRule = (id: string): SecretLintRuleCreator<{ enableSK?: boolean }> => {
+                return {
+                    messages,
+                    meta: { id, recommended: true, type: "scanner", supportedContentTypes: ["text"] },
+                    patterns: [
+                        {
+                            pattern: /tok_[a-z0-9]{8}/g,
+                            keywords: ["tok_"],
+                            scope: "line",
+                            report(match, context) {
+                                const t = context.createTranslator(messages);
+                                context.report({ message: t("FOUND", { TEXT: match.text }), range: match.range });
+                            },
+                        },
+                        {
+                            pattern: /SK[a-z0-9]{8}/g,
+                            keywords: [{ keyword: "SK", after: "[a-z0-9]{8,}" }],
+                            scope: "line",
+                            when: "options.enableSK",
+                            report() {},
+                        },
+                    ],
+                };
+            };
+            // rule-a reports "tok_", and its "SK" pattern is not enabled. rule-b enables the same guarded keyword
+            const config: SecretLintCoreConfig = {
+                rules: [
+                    { id: "rule-a", rule: createOptionRule("rule-a") as SecretLintRuleCreator },
+                    {
+                        id: "rule-b",
+                        rule: createOptionRule("rule-b") as SecretLintRuleCreator,
+                        options: { enableSK: true },
+                    },
+                ],
+            };
+            await assert.rejects(runTestCases(config, ["tok_abcd1234"]), (error: Error) => {
+                // rule-b reports "tok_" too, and its enabled "SK" has no test case
+                assert.match(error.message, /rule-b: the keyword "SK"/);
+                assert.doesNotMatch(error.message, /rule-a: the keyword "SK"/);
+                return true;
+            });
+        });
         it("does not fail when the rule reports nothing in the test cases", async () => {
             assert.strictEqual(await runTestCases(toConfig(rule), ["no secret", "00:00:00"]), "done");
         });

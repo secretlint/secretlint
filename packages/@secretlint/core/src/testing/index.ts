@@ -14,7 +14,8 @@ import type {
     SecretLintRulePresetCreator,
 } from "@secretlint/types";
 import { createGuardTable, isGuardMetInText, keywordGuardKey, parseKeywordObject } from "../helper/keyword-guard.js";
-import { getKeywordScanPlan, lintSource } from "../index.js";
+import { lintSource } from "../index.js";
+import { getLintPlan, getPlanView } from "../LintPlan.js";
 import { getBuiltinRule } from "../builtin/index.js";
 import { creator as rulePattern, type Options as RulePatternOptions } from "../builtin/rules/pattern/index.js";
 
@@ -199,6 +200,12 @@ type GuardedKeywordOfRule = {
 };
 const planKeyOf = (keyword: string, guardKey: string): string => JSON.stringify([keyword.toLowerCase(), guardKey]);
 /**
+ * Lower-case only the ASCII letters, as the keyword matcher does.
+ * `String#toLowerCase` can change the length of the text, such as for "İ" (U+0130), and then an index
+ * of the result is not an index of the content.
+ */
+const toAsciiLowerCase = (text: string): string => text.replace(/[A-Z]+/g, (letters) => letters.toLowerCase());
+/**
  * Which guarded keywords the test cases of a snapshot directory have a secret for
  */
 type GuardUse = {
@@ -225,14 +232,23 @@ const recordGuardUse = (
     if (guardedKeywords.length === 0) {
         return;
     }
-    // Only the patterns that are enabled for the options of the test case are in the plan
-    const plan = getKeywordScanPlan({ config });
-    const enabledKeys = new Set(
-        (plan?.keywords ?? []).map((keyword, index) => planKeyOf(keyword, keywordGuardKey(plan?.guards[index]))),
-    );
+    // Only the patterns that are enabled for the options of the test case are in the view of the plan.
+    // The view has the keywords of each rule, so a keyword that another rule enables is not counted for this rule
+    const view = getPlanView(getLintPlan(config, "en"), "text");
+    const enabledKeys = new Set<string>();
+    for (const viewRule of view.rules) {
+        const ruleId = viewRule.rule.descriptorRule.rule.meta.id;
+        for (const pattern of viewRule.patterns ?? []) {
+            for (const keywordIndex of pattern.keywordIndexes ?? []) {
+                const keyword = view.matcher?.keywords[keywordIndex] as string;
+                const guardKey = keywordGuardKey(view.matcher?.guards[keywordIndex]);
+                enabledKeys.add(JSON.stringify([ruleId, planKeyOf(keyword, guardKey)]));
+            }
+        }
+    }
     // The id of a message is the id of the config, which can differ from the id of the rule
     const ruleIdOfConfigId = new Map(config.rules.map((descriptor) => [descriptor.id, descriptor.rule.meta.id]));
-    const lowerContent = content.toLowerCase();
+    const lowerContent = toAsciiLowerCase(content);
     const messagesOfRule = new Map<string, SecretLintCoreResult["messages"]>();
     for (const message of result.messages) {
         const ruleId = ruleIdOfConfigId.get(message.ruleId) ?? message.ruleId;
@@ -240,10 +256,10 @@ const recordGuardUse = (
         messagesOfRule.set(ruleId, [...(messagesOfRule.get(ruleId) ?? []), message]);
     }
     for (const guarded of guardedKeywords) {
-        if (!enabledKeys.has(guarded.planKey)) {
+        const key = JSON.stringify([guarded.ruleId, guarded.planKey]);
+        if (!enabledKeys.has(key)) {
             continue;
         }
-        const key = JSON.stringify([guarded.ruleId, guarded.planKey]);
         const entry = use.guards.get(key) ?? { guarded, met: false };
         use.guards.set(key, entry);
         if (entry.met) {
@@ -407,7 +423,7 @@ const assertGuards = (
     if (rejected.length === 0) {
         return;
     }
-    const lowerContent = content.toLowerCase();
+    const lowerContent = toAsciiLowerCase(content);
     const positionOf = (index: number): string => {
         const lineStart = content.lastIndexOf("\n", index - 1) + 1;
         const line = content.slice(0, lineStart).split("\n").length;

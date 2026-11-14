@@ -69,7 +69,7 @@ The configuration of step 4 has no keywords, so it also has no guarded keywords.
 The runner also checks that every guarded keyword has a test case.
 
 - `createSnapshotTestCases()` returns one more test case after the cases of the directories: "every keyword with a guard has a test case". The test runner runs it last.
-- Each case records the guarded keywords of its configuration that are in the keyword scan plan, so a pattern that `when` disables is not recorded. It also records the rules that reported a message, and the guarded keywords that a message meets: the lines of the message have the keyword, with the guard met after it.
+- Each case records the guarded keywords of its configuration that the lint plan has for the same rule, so a pattern that `when` disables is not recorded, also when another rule has the same guarded keyword. It also records the rules that reported a message, and the guarded keywords that a message meets: the lines of the message have the keyword, with the guard met after it. The runner lower-cases only the ASCII letters to find the keyword, as the keyword matcher does, so an index of the content stays the same.
 - The last test case fails with the guarded keywords that no message meets, for the rules that reported a message in a case. It does nothing unless all cases ran.
 - The built-in AWS rule has a guarded keyword for each prefix of the access key ID, so its test cases have an ID for each prefix.
 
