@@ -89,6 +89,10 @@ jobs:
             exit 1
           fi
           node examples/benchmark/compare.mjs "${args[@]}" >> "$GITHUB_STEP_SUMMARY"
-          if [ "${#args[@]}" -lt 4 ]; then
-            echo "Some sets have no result. See the jobs of the sets." >> "$GITHUB_STEP_SUMMARY"
+          missing=()
+          for set in small medium large huge; do
+            [ -f "results/compare-$set.json" ] || missing+=("$set")
+          done
+          if [ "${#missing[@]}" -gt 0 ]; then
+            printf "\n⚠️ No result for: %s. See the jobs of these sets.\n" "${missing[*]}" >> "$GITHUB_STEP_SUMMARY"
           fi
