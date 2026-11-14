@@ -67,6 +67,38 @@ The strings are the second type parameter of `SecretLintRulePattern`, `SecretLin
 
 `when` is one of the properties of a pattern that the core knows, and the core throws on an unknown property. The runner `@secretlint/core/testing` keeps `when` when it removes the keywords and the scope for its comparison, because the property decides what the rule reports and is not an optimization.
 
+### User-defined patterns
+
+`@secretlint/core` reads the options of `@secretlint/secretlint-rule-pattern` as patterns of the lint plan, in the same way as the `patterns` of the other built-in rules.
+The creator of the rule has `patterns: []` and no `create()`. When the core makes the plan, it finds the rule by the creator object, not by the id, and compiles each entry of `options.patterns` with `compileUserPatterns()` of `src/user-patterns.ts`:
+
+- Each RegExp-like string of `patterns` (or `pattern`) becomes a plan pattern with the scope `file`. A string `/source/flags` becomes `new RegExp(source, flags + "ug")`, and another string is escaped, as `@textlint/regexp-string-matcher` does today, so a pattern matches the same text. The core parses the strings itself, so `@textlint/regexp-string-matcher` is no longer needed by the rule.
+- The keywords of a plan pattern are `keywords` of the entry when it has them. Otherwise they are the result of `extractKeywords(regex)` of `src/helper/extract-keywords.ts`, or none.
+- `report()` of a plan pattern checks the global `allows` and the `allows` of the entry, and reports the message `PATTERN` with the name of the entry, as the rule does today.
+- `filePathGlobs` becomes a condition on the file path of a plan pattern. The core checks it before it runs the pattern, and a pattern whose glob does not match does not run, even when its keywords are found. A path is matched by `picomatch` in the same way as today.
+- An entry with only `filePathGlobs` becomes a path pattern: when the path matches, it reports the file name with the range of the whole content. A path pattern does not need keywords, and the plan keeps the path patterns apart, so a file that matches no keyword and no path pattern runs no rule.
+- When `options.patterns` is missing or empty, the plan has no pattern of the rule. So `secretlint --init`, which writes the rule without options, adds nothing to the lint.
+- The checks of the options (both `patterns` and `pattern`, an entry without `patterns`, `pattern`, and `filePathGlobs`, and an invalid `keywords`) throw when the plan is made, before any file is linted.
+
+The plan is made once for a configuration, so each string is parsed and each keyword is found once, not for each file.
+The profile id of a plan pattern is `@secretlint/secretlint-rule-pattern#<index> <name>`, and the profile shows whether it has keywords.
+
+#### Finding keywords in a pattern
+
+`extractKeywords(regex)` returns strings that every match of `regex` must contain, or `undefined`. It reads `regex.source` from the start and keeps runs of ASCII characters that every match consumes one after another:
+
+- A literal character or an escaped punctuation character (such as `\.` or `\/`) adds to the current run. The flag `i` lower-cases it, because the keyword matcher is ASCII case-insensitive.
+- A character class, `.`, `^`, `$`, `\d`, `\w`, `\s`, `\b`, an escape such as `\x41` or `\u0041`, a back reference, and a non-ASCII character end the current run.
+- A character with `?`, `*`, or `{0,...}` is optional, so it is dropped and the run ends. A character with `+` or `{n,...}` (`n` >= 1) is kept, and the run ends.
+- A group that every match passes (no quantifier, or a quantifier with a minimum of 1 or more) gives the union of the best run of each alternative, when every alternative has one. A positive lookahead and lookbehind count as groups, because their text must be in the content. A negative lookaround ends the run.
+- `|` at the top level makes the result the union of the best run of each alternative, and `undefined` when one alternative has none.
+- Any syntax that it does not know, such as the flag `v` or a group with modifiers, gives `undefined`.
+
+A run shorter than 3 characters is not used, because a short keyword is found in most files and makes the scan report many positions.
+Of the runs, the one whose shortest keyword is the longest is used.
+
+A prototype was checked against the 38 patterns of the built-in rules: it found keywords for all of them, 24 were the same as the keywords that the rules declare, and the others were shorter (for example `http` for `http://`). On the 142 inputs of the snapshot tests, no match was in a file without one of the found keywords. 12,852 random patterns with random texts had no such match either. These checks do not prove it, so the extraction is conservative and is tested with the built-in rules.
+
 ### The built-in table and the presets
 
 `@secretlint/core/builtin` exports the lists `builtinRules`, `recommendedRules`, and `canaryRules`, the presets `presetRecommend` and `presetCanary`, and `getBuiltinRule(id)`, which returns the rule or preset for a full rule id, or `undefined`.
@@ -147,6 +179,11 @@ The `--init` of the npm package writes the rules that it finds in `package.json`
 - **An expression language such as CEL:** The condition would be any expression of the options. It was not chosen: an evaluator adds a dependency and size to `@secretlint/core`, which also runs in browsers, a free expression can not be checked by the type of the options, and the only use today is one boolean option. `when` is written so that it reads as a subset of such a language, and the core rejects what it does not support, so operators can be added later.
 - **Reading a truthy value as true:** The string `"true"` enabled the patterns of the AWS rule when the rule checked the option in `report()`. It was not kept, because `when` is a new property with no behavior to keep, and a condition on a boolean should not depend on how each value converts. A configuration with such a value stops with an error instead of changing its result silently.
 - **Returning early in `report()` when the option is not set:** This was the design before the change. The result is the same, but the keywords of the pattern were searched, the file was read as a string, and the pattern ran on it, only to discard every match.
+- **Finding the pattern rule by its id:** The core would skip `@secretlint/secretlint-rule-pattern` without patterns by its id. It was tried (#1825) and not chosen: it adds an exception for one rule to the plan and to the cache of the plan, a rule of another package with the same id would be skipped, and a rule without keywords still runs on every file when it has patterns.
+- **Patterns from a function of the rule:** The rule would return its patterns from a function of the options. It was not chosen, because a rule states what it finds as data and the core runs it. The pattern rule is the only rule whose patterns come from the configuration, so the core owns this one conversion.
+- **A new property of the configuration file for user-defined patterns:** Patterns could be written at the top level of the configuration file instead of the options of a rule. It was not chosen now, because existing configurations name the rule, and the messages have its rule id. It can be added later on top of the same conversion.
+- **Only the keywords that the user writes:** The core would not find keywords in a pattern. It was not chosen, because the existing configurations have no `keywords`, and they would still run on every file.
+- **Keywords for the non-ASCII letters that fold to an ASCII letter:** With the flag `i`, the core could add the Kelvin sign and the long s to the keywords that have `k` or `s`. It was not chosen: the keyword matcher is ASCII only, the number of keywords would grow with each `k` and `s`, and Secretlint prefers no false positive to no false negative.
 
 ## Open questions
 
