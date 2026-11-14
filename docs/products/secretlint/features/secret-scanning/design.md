@@ -95,37 +95,46 @@ The matcher is built from the same keywords in the same order on each thread, so
 
 The core does not start workers by itself. A worker needs the URL of a script file, and sharing memory between threads in a browser needs cross-origin isolation, so only the caller knows how to start one. The Node.js engine does it for files, and a tool in a browser can do the same with Web Workers.
 
-#### Scanning the files
+#### Reading and scanning the files
 
-The engine (`@secretlint/node`) scans the files before the lint loop.
-The main thread and the workers run the same function. They share the list of files and a `SharedArrayBuffer` that has the index of the next file and one byte of state for each file.
-A thread claims the next 32 files with `Atomics.add`, reads each file into a buffer that it reuses, scans it, and writes the state: not scanned, no keyword, or has a keyword.
-A worker sends back only the hits of the files that have a keyword.
-Because the threads claim from one list, a thread that starts late or fails only scans fewer files, and no file is given to a thread ahead of time.
+The engine (`@secretlint/node`) lints files in one pass. The main thread and the workers share the list of files and a `SharedArrayBuffer` that has the index of the next file and one byte of state for each file.
+A thread claims the next 32 files with `Atomics.add`. Because the threads claim from one list, a thread that starts late or fails only handles fewer files, and no file is given to a thread ahead of time.
 
-Then the main thread goes through the files in their order.
-A file that is text by its name, has no keyword, and has a plan with `requiresKeyword` gets a result without messages and is not read again.
-Any other file is read and linted with `lintSource()` as before, with the hits of the file if it has them.
+The main thread does what it did before for the files that it claims: it reads a file and calls `lintSource()`.
+
+A worker does the part that narrows down. It reads a file into a buffer that it reuses, and scans it if the file is text by its name. Then it does one of two things.
+
+- If no rule runs for the file, it only writes the state "no messages". This is the case when the file is text by its name, has no keyword, and the plan has `requiresKeyword`. The file gets a result without messages, and nobody reads it again.
+- Otherwise it hands the file to the main thread: it copies the bytes into the memory of a batch, and when the 32 files are done it moves the batch to the main thread with the hits. The memory is moved, not copied, and the main thread lints the file from these bytes with `lintSource({ source, keywordScanResult })`.
+
+So a file is read once, by the thread that claimed it, and the main thread never reads a file that a worker read.
+This matters where reading is the main cost: on one macOS machine a read took about 96µs for a file, ten times the Linux machine of the measurements, and it was more than half of the time of the lint.
+
+A rule without keywords, such as a rule of patterns that a user writes, runs for every file. Then `requiresKeyword` is false, and the workers hand every file. The reads and the scans are still done by the workers, and the main thread decodes the content and runs the rules. In this case the main thread is the limit, because the rules run only there.
+
+Between its own claims, the main thread lets the messages of the workers arrive and lints the handed files first, because they hold memory.
+A worker waits before it claims files while the main thread has more than 256MB of handed bytes to lint. So the memory has a limit when the main thread is slower than the workers.
 
 #### The number of threads
 
 The Requirements only say that a worker is not started when it gives no gain. How the work is divided is decided here from experiments, and the numbers below are the result of the measurements so far. They can change when the measurements change.
 
-The main thread starts the scan alone, so a short lint never pays for a worker.
-After a warm-up of 20ms, it measures how many files it scans in the next 20ms, and estimates the time for the rest of the files.
+The main thread starts the lint alone, so a short lint never pays for a worker, and it runs in the same way as without workers.
+After a warm-up of 20ms, it measures how many files it lints in the next 20ms, and estimates the time for the rest of the files.
 It starts `floor(rest time / 100ms)` workers, at most `os.availableParallelism() - 1`. 100ms is the start-up of a worker (70-100ms measured), so each worker has work for longer than its start-up.
-The warm-up is not used for the estimate, because the scan is several times slower until the runtime has optimized it.
+The warm-up is not used for the estimate, because the lint is several times slower until the runtime has optimized it.
 The decision uses time, not the number of files, so it follows the size of the files and the speed of the disk.
 
 #### Keeping the results the same
 
-- Messages are created only by the rules on the main thread, from the content that the main thread read. When patterns run, the core scans the decoded string as before.
-- The hits are used only for a file that is text by its name, because the plan is for the text content type, and the content type of other files depends on their bytes.
-- The hits are used only if the main thread reads the same number of bytes as the thread that scanned. Otherwise the core scans the bytes itself.
+- Messages are created only by the rules on the main thread. When patterns run, the core scans the decoded string as before.
+- The bytes that the rules see are the bytes that were scanned: the worker hands the same bytes that it scanned, so a file that changes during the lint can not make the hits and the content differ.
+- The hits are used only for a file that is text by its name, because the plan is for the text content type. A file that is not text by its name is always handed, without hits, and the main thread decides its content type from the bytes as before.
 - `lintSource()` ignores hits with the id of another plan.
-- A file that a thread could not read, or that a failed worker claimed, stays "not scanned" and is linted as before, so the error is the same.
-- The scan is not used with the `mask-result` formatter, which reads every file as a string.
-- The profiler does not change the path: with `--profile` the files are scanned in the same way, so the profile shows the run that a user gets. Each thread measures its own time and files, and the engine adds them to the profiler as `@node>keyword-scan-thread`.
+- A file that a worker could not read, or that a failed worker claimed and did not hand, stays without a result. The main thread lints these files by itself at the end, so the error is the same.
+- The results are stored by the index of the file, so the order of the results is the order of the files.
+- Workers are not used with the `mask-result` formatter, which reads every file as a string.
+- The profiler does not change the path: with `--profile` the files are linted in the same way, so the profile shows the run that a user gets. Each worker measures its own time and files, and the engine adds them to the profiler as `@node>keyword-scan-thread`.
 
 #### The single-executable binary
 
@@ -134,7 +143,7 @@ The single-executable binary is one bundle built with Bun, so it has no such fil
 The test of the binary checks that a worker starts in it.
 A bundle of another tool that does not have the file still works: the worker fails to start, and the files are linted without it.
 
-Measured on 4 cores with the binary (median): about 21,000 files 915ms with one thread and 610ms with workers, and about 96,000 files 4.4 seconds and 2.0 seconds.
+Measured on 4 cores with the binary (median): about 21,000 files 956ms with one thread and 529ms with workers, and about 96,000 files 4.5 seconds and 1.8 seconds.
 
 ### What a rule receives
 
@@ -196,7 +205,7 @@ sequenceDiagram
     Engine->>Reader: read next file (buffer is reused)
 ```
 
-The scan on several threads, before the lint loop:
+The lint with worker threads:
 
 ```mermaid
 sequenceDiagram
@@ -205,20 +214,24 @@ sequenceDiagram
     participant Core as @secretlint/core and rules
     Main->>Core: getKeywordScanPlan(config)
     Core-->>Main: plan (keywords as data)
-    Main->>Main: scan alone, measure the speed
+    Main->>Main: lint alone, measure the speed
     opt the rest takes longer than the start-up of a worker
         Main->>Worker: plan, file list, SharedArrayBuffer
     end
     par threads claim 32 files at a time
-        Worker->>Worker: read file, scan keywords
-        Main->>Main: read file, scan keywords
-    end
-    Worker-->>Main: hits of the files that have a keyword
-    loop each file, in order
-        alt text by name, no keyword, requiresKeyword
-            Main->>Main: result without messages
-        else
-            Main->>Core: lintSource({ source, keywordScanResult })
+        loop files of a worker
+            Worker->>Worker: read file, scan keywords
+            alt no rule runs for the file
+                Worker->>Worker: write the state "no messages"
+            else
+                Worker-->>Main: bytes and hits of the file (memory is moved)
+                Main->>Core: lintSource({ source from the bytes, keywordScanResult })
+                Core-->>Main: result
+            end
+        end
+        loop files of the main thread
+            Main->>Main: read file
+            Main->>Core: lintSource({ source })
             Core-->>Main: result
         end
     end
@@ -325,6 +338,11 @@ One native thread was as fast as one JavaScript thread for this work, so the gai
 `lintSource()` or the core would start workers by itself.
 It was not chosen because the core runs in browsers and has no way to start a thread that works everywhere. The caller starts the threads, and the core only splits the scan from the lint.
 
+### Scan all files first, and let the main thread read the files again
+
+The main thread and the workers would scan all files before the lint, and then the main thread would read and lint the files that have a keyword.
+This was the first version of this design. It was not chosen because of a configuration with a rule without keywords: then every file has to be linted, so every file was read twice, and the lint became slower than with one thread (about 21,000 files with such a rule: 1,494ms with one thread, 1,550ms with this version, and 1,137ms with the chosen design).
+
 ### Workers that only tell which files have a keyword
 
 A worker would send back one flag for each file, and the main thread would scan the files that have a keyword again.
@@ -345,5 +363,4 @@ A sieve that chooses rare bytes from a table of how common each byte is was also
 ## Open questions
 
 - The open questions of the Requirements: an option, and a limit for many cores.
-- The workers also scan the files that are not text by name, and those hits are not used. A worker could skip them by name.
-- There is no test for a file that changes between the scan and the lint.
+- With a rule without keywords, the main thread is the limit: about 96,000 files took 5.9 seconds with one thread and 3.8 seconds with workers, and about 7,000 files became 28ms slower. Whether such a rule can declare keywords is a separate question.

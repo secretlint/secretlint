@@ -51,8 +51,7 @@ When a change adds a measured point to code that runs for each file or each patt
 | `@node>load-config` | | engine | Load the configuration. It includes the `@config-loader>*` types |
 | `@node>execute` | | engine | Lint the files and format the results |
 | `@node>files` | | engine | The number of the files of the run. It has no time |
-| `@node>keyword-scan` | | engine | Scan the files for the keywords of the rules before the lint, on the main thread and worker threads |
-| `@node>keyword-scan-thread` | thread name | engine | The time and the files of a thread in `@node>keyword-scan`. A worker measures them and the engine adds them with `addTotal()` |
+| `@node>keyword-scan-thread` | thread name | engine | The time of a thread and the files that it read, when worker threads were used. A worker measures them and the engine adds them with `addTotal()` |
 | `@node>read-file` | | engine | Read a file |
 | `@node>format` | | engine | Format the results |
 | `@core>lint` | file path | core | Lint a content |

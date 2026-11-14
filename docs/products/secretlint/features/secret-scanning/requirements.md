@@ -268,6 +268,16 @@ Most of that time goes to looking for keywords: in a repository of about 96,000 
 Running the rules costs little, because the rules run only for the few sources that the keywords select.
 So what Secretlint does at the same time on several CPU cores is the part that narrows down the sources: reading the files and looking for keywords.
 
+##### A file is read once
+
+Reading files can be the largest part of the time, more than looking for keywords, depending on the machine.
+So reading is also done on several CPU cores, and no file is read twice.
+
+##### Rules without keywords
+
+A rule without keywords runs for every file, so every file reaches the rules.
+Reading the files and looking for keywords are still done on several CPU cores. The rules run in one place, so in this case the time of the rules sets the limit.
+
 ##### The cost of starting
 
 Starting work on another CPU core takes time, and that time is lost when the lint is short.
@@ -326,8 +336,7 @@ The error is the same as with one CPU core.
 
 ##### A file that changes during the lint
 
-When a file changes after Secretlint looked for keywords in it, the rules run on the content that they read, and Secretlint looks for keywords in that content again.
-When Secretlint found no keyword in a file, it does not read the file again, so the result is the result for the content at that time.
+Secretlint reads a file once. The keywords and the rules use the same content, so a change of the file during the lint can not make them differ.
 
 ### Look for keywords apart from the lint
 
@@ -427,4 +436,4 @@ The content of a source can have secrets. Secretlint reads it only in memory, an
 
 - Is an option needed to turn off other CPU cores or to limit their number? ESLint has `--concurrency`.
 - Should the number of CPU cores have a limit on a machine with many cores? It was measured only on 4 cores. ripgrep limits it to 12.
-- When no other CPU core is used, a repository of medium size (about 7,000 files) became 10-20ms slower in a prototype, because looking for keywords is a pass of its own. Is this acceptable?
+- With a rule without keywords, the rules on one thread are the limit. Should such a rule be able to declare keywords?
