@@ -1,0 +1,56 @@
+name: compare
+# Compare the base and the head of a pull request on fixed sets of files,
+# and put the differences in the job summary.
+# See docs/products/secretlint/features/change-comparison/
+#
+# This workflow runs the code of the pull request, including a pull request from a fork.
+# Do not change it to pull_request_target, and do not give it secrets or write permissions.
+on:
+  pull_request:
+    paths:
+      - "packages/**"
+      - "examples/benchmark/**"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - "pnpm-workspace.yaml"
+      - ".github/workflows/compare.yml"
+      - "!**/*.md"
+permissions:
+  contents: read
+env:
+  TURBO_TELEMETRY_DISABLED: 1
+  DO_NOT_TRACK: 1
+jobs:
+  compare:
+    name: "Compare: ${{ matrix.set }}"
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        set: [small, medium, large, huge]
+    steps:
+      - name: checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Install pnpm
+        uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+      - name: setup Node
+        uses: actions/setup-node@3235b876344d2a9aa001b8d1453c930bba69e610 # v3.9.1
+        with:
+          node-version-file: .node-version
+      - name: Install hyperfine
+        run: sudo apt-get update && sudo apt-get install -y hyperfine
+      - name: Compare
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          SET: ${{ matrix.set }}
+        run: node examples/benchmark/compare.mjs --base "$BASE_SHA" --set "$SET" --json "compare-$SET.json" >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload the result
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: compare-${{ matrix.set }}
+          path: compare-${{ matrix.set }}.json
+          if-no-files-found: error

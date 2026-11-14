@@ -39,8 +39,8 @@
 2. **セット。** smallのセットはheadの`examples/benchmark/targets`である。他のセットでは、スクリプトはキャッシュディレクトリにディレクトリを作り、`git init`、`git fetch --depth 1 <url> <commit>`、`git checkout FETCH_HEAD`を実行し、チェックアウトが終わったら目印のファイルを書く。目印のあるディレクトリは再利用するので、セットのダウンロードは1回で済む。`--set`はカンマ区切りでセットを選ぶ。既定はすべてのセットである。
 3. **検査の実行。** スクリプトは、セットとビルドの組ごとに、セットのディレクトリでビルドのCLIを1回実行する。
    `node <build>/packages/secretlint/bin/secretlint.js "**/*" --secretlintrc <head>/examples/benchmark/.secretlintrc.json --profile --format json --output <tmp>/results.json`
-   `--profile`を指定すると標準出力はJSONのプロファイルになり、`--output`には検査結果が書かれるので、1回の実行で両方を得られる。両方のビルドがheadの設定ファイルを使い、各ビルドはcanaryプリセットを自身のルールに解決する。
-4. **実行時間。** `hyperfine`が`PATH`にある場合、スクリプトは`--profile`なしの検査の2つのコマンド（`--format json --output /dev/null`）で`hyperfine -N -i --warmup 1 --runs <n> --export-json <tmp>/time.json`を実行する。検査がシークレットを見つけると終了ステータスは1になるので、`-i`が必要である。`-N`はシェルなしでコマンドを実行するので、globはそのままSecretlintに渡る。既定の実行回数はsmallとmediumが10、largeが5、hugeが3で、`--runs`で上書きできる。
+   `--profile`を指定すると標準出力はJSONのプロファイルになり、`--output`には検査結果が書かれるので、1回の実行で両方を得られる。この実行では`SECRETLINT_KEYWORD_SCAN_THREADS=1`を指定する。ワーカースレッドがあると、行テストの数はどのスレッドがどのファイルを読むかで変わるからである（vscodeでの計測: 同じビルドの2回の実行で18,993と18,955、1スレッドでは毎回17,624）。実行時間は既定のスレッド数で別に測る。両方のビルドがheadの設定ファイルを使い、各ビルドはcanaryプリセットを自身のルールに解決する。
+4. **実行時間。** `hyperfine`が`PATH`にある場合、スクリプトはセットのディレクトリで、`--profile`なしの検査の2つのコマンド（`--format json --output /dev/null`）で`hyperfine --ignore-failure --warmup 1 --runs <n> --export-json <tmp>/time.json`を実行する。先にbaseをすべて実行し、次にheadをすべて実行する。検査がシークレットを見つけると終了ステータスは1になるので、`--ignore-failure`が必要である。コマンドの引数はそれぞれシェル向けにクォートするので、globはそのままSecretlintに渡り、空白を含むパスも動く。既定の実行回数はsmallとmediumが10、largeが5、hugeが3で、`--runs`で上書きできる。
 5. **違い。** スクリプトは2つのプロファイルと2つの検査結果を比べ（データモデルを参照）、標準出力にMarkdownを、`--json <path>`（既定は現在のディレクトリの`compare-result.json`）にJSONを書く。
 
 ビルドの失敗、セットのダウンロードの失敗、終了ステータス2で終わる検査の実行があった場合、スクリプトはビルドまたはセットの名前を示すメッセージとともに終了ステータス2で止まる。このとき出力は書かない。`hyperfine`が見つからない場合、実行時間の節は測っていないことを示し、終了ステータスは0である。
@@ -63,7 +63,7 @@ sequenceDiagram
         Script->>Git: fetch --depth 1 commit（セットごとに1回）
         Script->>Base: secretlint --profile --format json --output
         Script->>Head: secretlint --profile --format json --output
-        Script->>HF: baseとheadのコマンドを交互に
+        Script->>HF: baseを実行し、次にheadを実行
     end
     Script-->>Dev: Markdown（標準出力）、JSON（--json）
 ```
@@ -138,7 +138,7 @@ pnpm run compare [--base <ref>] [--set small,medium,large,huge] [--runs <n>] [--
 
 ### AGENTS.md
 
-Agent Workflowsの1行。ルールや検査のコードに触れる変更では、`pnpm run compare`（手早く確かめるなら`--set small,medium`）を実行し、Markdownの出力をプルリクエストの説明に貼る。
+Quick Referenceの1行。ルールや検査のコードに触れる変更では、`pnpm run compare`（手早く確かめるなら`--set small,medium`）を実行し、Markdownの出力をプルリクエストの説明に貼る。
 
 ## 外部サービスとの連携方式
 

@@ -51,6 +51,7 @@ pnpm catalog (`pnpm-workspace.yaml` with `strictCatalog: true`) manages shared d
 - **CI check**: `pnpm run ci` (build + test + lint)
 - **Browser test**: `pnpm turbo run build --filter=@secretlint/e2e-browser... && cd e2e/core-browser && pnpm exec playwright install chromium && pnpm run test:browser` (bundles `@secretlint/core` + the recommend preset without Node.js polyfills and runs them in Chromium)
 - **Generate new rule**: `pnpm run gen:rule`
+- **Compare with master**: `pnpm run compare` (`--set small,medium` for a quick check) builds `master` and the working tree, lints fixed repositories with both, and prints the differences of pattern work, findings, and run time. When a change touches a rule or the code of the lint, run it and paste its Markdown output into the description of the pull request
 
 ## Monorepo Structure
 

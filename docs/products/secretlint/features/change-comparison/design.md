@@ -39,8 +39,8 @@ The main flow of the script is:
 2. **Sets.** The small set is `examples/benchmark/targets` of the head. For another set, the script creates a directory in the cache directory, runs `git init`, `git fetch --depth 1 <url> <commit>`, and `git checkout FETCH_HEAD`, and writes a marker file when the checkout is complete. A directory with the marker is reused, so a set is downloaded once. `--set` selects the sets, separated by commas; the default is all sets.
 3. **Lint runs.** For each set and each build, the script runs the CLI of the build once in the directory of the set:
    `node <build>/packages/secretlint/bin/secretlint.js "**/*" --secretlintrc <head>/examples/benchmark/.secretlintrc.json --profile --format json --output <tmp>/results.json`.
-   With `--profile`, the standard output is the profile as JSON and `--output` gets the lint results, so one run gives both. Both builds use the configuration file of the head, and each build resolves the canary preset to its own rules.
-4. **Run time.** When `hyperfine` is on `PATH`, the script runs `hyperfine -N -i --warmup 1 --runs <n> --export-json <tmp>/time.json` with the two commands of the lint without `--profile` (`--format json --output /dev/null`). `-i` is needed because the exit status is 1 when the lint finds a secret. `-N` runs the commands without a shell, so the glob is passed to Secretlint as it is. The default runs are 10 for small and medium, 5 for large, and 3 for huge; `--runs` overrides them.
+   With `--profile`, the standard output is the profile as JSON and `--output` gets the lint results, so one run gives both. This run sets `SECRETLINT_KEYWORD_SCAN_THREADS=1`: with worker threads, the number of line tests depends on which thread reads which file (measured on vscode: 18,993 and 18,955 in two runs of the same build, 17,624 in every run with one thread). The run time is measured separately with the default threads. Both builds use the configuration file of the head, and each build resolves the canary preset to its own rules.
+4. **Run time.** When `hyperfine` is on `PATH`, the script runs `hyperfine --ignore-failure --warmup 1 --runs <n> --export-json <tmp>/time.json` in the directory of the set with the two commands of the lint without `--profile` (`--format json --output /dev/null`): first all runs of the base, then all runs of the head. `--ignore-failure` is needed because the exit status is 1 when the lint finds a secret. Each argument of the commands is quoted for the shell, so the glob is passed to Secretlint as it is and a path with a space works. The default runs are 10 for small and medium, 5 for large, and 3 for huge; `--runs` overrides them.
 5. **Differences.** The script compares the two profiles and the two lint results (see Data model) and writes Markdown to the standard output and JSON to `--json <path>` (default: `compare-result.json` in the current directory).
 
 A build failure, a failure to download a set, or a lint run that ends with the exit status 2 stops the script with the exit status 2 and a message that names the build or the set. The script writes no output then. When `hyperfine` is not found, the run time section says that it was not measured, and the exit status is 0.
@@ -63,7 +63,7 @@ sequenceDiagram
         Script->>Git: fetch --depth 1 commit (once per set)
         Script->>Base: secretlint --profile --format json --output
         Script->>Head: secretlint --profile --format json --output
-        Script->>HF: base and head commands in turns
+        Script->>HF: base runs, then head runs
     end
     Script-->>Dev: Markdown (stdout), JSON (--json)
 ```
@@ -138,7 +138,7 @@ Exit status: 0 when the comparison is written, whatever the differences are; 2 w
 
 ### AGENTS.md
 
-A line in Agent Workflows: when a change touches a rule or the code of the lint, run `pnpm run compare` (or `--set small,medium` for a quick check) and paste the Markdown output into the description of the pull request.
+A line in Quick Reference: when a change touches a rule or the code of the lint, run `pnpm run compare` (or `--set small,medium` for a quick check) and paste the Markdown output into the description of the pull request.
 
 ## External service integration
 

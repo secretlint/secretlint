@@ -113,7 +113,7 @@ None. No metric is defined for this feature.
 | --- | --- | --- |
 | Work of each pattern | The profile of each build: how many times each pattern ran, matched, and tested a line | The same files give the same numbers in each run, so a difference is a change of the code, not noise. A new pattern with many runs and no matches shows that its keywords are too common |
 | Findings | The lint results of each build | A rule change that adds many findings is likely to add false positives. Secretlint prefers fewer false positives |
-| Run time | Each build runs several times, in turns, on the same machine | It is the time that a user sees. It changes between runs, so only a large ratio is shown as a warning |
+| Run time | Each build runs several times on the same machine, one build after the other | It is the time that a user sees. It changes between runs, so only a large ratio is shown as a warning |
 
 The output does not include the value of a secret: a finding is shown by the rule id, the file, and the line.
 
