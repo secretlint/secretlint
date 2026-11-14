@@ -1,5 +1,5 @@
 import { parseArgs } from "node:util";
-import { runSecretLint, SecretLintOptions } from "./index.js";
+import { runSecretLint, SecretLintOptions, SecretLintRunResult } from "./index.js";
 import { runConfigCreator } from "./create-secretlintrc.js";
 import { secretLintProfiler } from "@secretlint/profiler";
 import { createProfileReport, formatProfileReport } from "./profile-report.js";
@@ -25,7 +25,7 @@ Options
       .map((item) => item.name)
       .join(", ")}
   --output           [path:String] output file path that is written of reported result.
-  --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
+  --secretlintrc     [path:String] path to the config file. Default: .secretlintrc.* from the current directory up to the root, or the recommended rules
   --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
   --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
   --no-color         disable ANSI-color of output.
@@ -238,10 +238,7 @@ const readCliOptions = async ({ input = cli.input, flags = cli.flags }): Promise
         };
     }
 };
-export const run = async (
-    input = cli.input,
-    flags = cli.flags,
-): Promise<{ exitStatus: number; stdout: string | null; stderr: Error | null }> => {
+export const run = async (input = cli.input, flags = cli.flags): Promise<SecretLintRunResult> => {
     if (flags.help) {
         return {
             exitStatus: 0,

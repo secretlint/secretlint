@@ -40,7 +40,7 @@ Node.jsのモジュール解決と、[ルールとルールプリセット](../r
 - 指定されていないときは、`DEFAULT_CONFIG_DESCRIPTOR`を`configFilePath: undefined`と`isDefault: true`で返します。
 
 `DEFAULT_CONFIG_DESCRIPTOR`は`{ rules: [{ id: "@secretlint/secretlint-rule-preset-recommend" }] }`で、`@secretlint/config-loader`がexportします。
-`--init`のファイルを書き出す`@secretlint/config-creator`も同じ定数を使うので、既定の設定と`--init`のファイルが食い違うことはありません。
+`--init`のファイルを書き出す`@secretlint/config-creator`はプリセットのIDを`@secretlint/core/builtin`の`presetRecommend.meta.id`から取り、読み込みのテストで`DEFAULT_CONFIG_DESCRIPTOR`が同じIDを持つことを確かめるので、既定の設定と`--init`のファイルが食い違うことはありません。読み込みをimportしただけで組み込みルールまでimportされないように、読み込み側はIDを文字列で持ちます。
 既定の設定も設定ファイルと同じく`loadPackagesFromConfigDescriptor()`を通るので、recommendプリセットは`@secretlint/core`の組み込みの対応表から取得され、パッケージはimportされません。
 
 構文エラーなど、見つかったファイルのエラーはこれまでどおり`rcFile()`が投げるので、壊れた設定が既定の設定に置き換わることはありません。
@@ -48,7 +48,7 @@ Node.jsのモジュール解決と、[ルールとルールプリセット](../r
 ### 既定の設定の通知
 
 `createEngine()`が返すエンジンは`configSource`を持ちます。ファイルが見つかったか指定されたときは`"file"`、`configFileJSON`のときは`"json"`、既定の設定のときは`"default"`です。
-`secretlint`パッケージの`runSecretLint()`は文字列の一覧`notices`を返し、`configSource`が`"default"`のときは次の通知を加えます。
+`secretlint`パッケージの`runSecretLint()`は、通知があるときだけ文字列の一覧`notices`を返します。`configSource`が`"default"`のときは、次の通知が入ります。
 
 ```
 secretlint: No configuration file was found. The recommended rules (@secretlint/secretlint-rule-preset-recommend) are used. Run `secretlint --init` to create .secretlintrc.json.
@@ -122,7 +122,7 @@ sequenceDiagram
 - `loadConfigDescriptor({ cwd, configFilePath })`は、ルールを読み込まずに`{ ok, configDescriptor, configFilePath, isDefault }`を返します。同じ場合に例外を投げます。
 - `DEFAULT_CONFIG_DESCRIPTOR`は、設定が見つからないときに使う設定です。
 - 結果の`configFilePath`の型は`string`から`string | undefined`に変わります。結果を使うプログラムにとってはAPIの破壊的変更なので、メジャーバージョンでリリースします。
-- `@secretlint/node`のエンジンは`configSource: "file" | "json" | "default"`を持ちます。`secretlint`の`runSecretLint()`は、`exitStatus`、`stdout`、`stderr`と一緒に`notices: string[]`を返します。
+- `@secretlint/node`のエンジンは`configSource: "file" | "json" | "default"`を持ちます。`secretlint`の`runSecretLint()`と`run()`は`SecretLintRunResult`、つまり`exitStatus`、`stdout`、`stderr`、`notices?: string[]`を返します。CLIと単一実行ファイルは、通知をstderrに書きます。
 - `loadPackagesFromConfigDescriptor({ configDescriptor, node_moduleDir, testReplaceDefinitions })`は、読み込み済みの設定の記述から同じ処理をします。
 - `node_moduleDir`は、`SecretLintModuleResolver`がパッケージ名と結合する基準のディレクトリです。
 

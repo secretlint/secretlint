@@ -20,8 +20,36 @@ describe("createEngine", () => {
                 configFilePath: "/not/found/config",
                 formatter: "stylish",
             }),
-            /secretlint config is not found/,
+            /secretlint config file is not found/,
         );
+    });
+    it("should use the recommend preset when no config is found", async () => {
+        // os.tmpdir() and its parents have no .secretlintrc
+        const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "secretlint-node-"));
+        try {
+            const engine = await createEngine({
+                color: false,
+                cwd: tmpDir,
+                formatter: "json",
+            });
+            assert.strictEqual(engine.configSource, "default");
+        } finally {
+            fs.rmSync(tmpDir, { recursive: true, force: true });
+        }
+    });
+    it("should have configSource of the config", async () => {
+        const fileEngine = await createEngine({
+            color: false,
+            cwd: path.join(__dirname, "fixtures/valid-config"),
+            formatter: "json",
+        });
+        assert.strictEqual(fileEngine.configSource, "file");
+        const jsonEngine = await createEngine({
+            color: false,
+            configFileJSON: { rules: [] },
+            formatter: "json",
+        });
+        assert.strictEqual(jsonEngine.configSource, "json");
     });
     it("should create an Engine and execute on files", async () => {
         const engine = await createEngine({

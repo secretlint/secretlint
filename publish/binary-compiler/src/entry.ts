@@ -60,7 +60,11 @@ if (cli.flags.version) {
 }
 // secretlint CLI wrapper
 try {
-    const { exitStatus, stderr, stdout } = await run(cli.input, cli.flags);
+    const { exitStatus, stderr, stdout, notices } = await run(cli.input, cli.flags);
+    // notices are not lint results, so they go to stderr and stdout keeps only the results
+    for (const notice of notices ?? []) {
+        await writeOutput(`${notice}\n`, "stderr");
+    }
     if (stdout) {
         await writeOutput(`${stdout}\n`, "stdout");
     }

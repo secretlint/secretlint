@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import { createEngine, SecretLintEngineOptions } from "@secretlint/node";
+import { createEngine, SecretLintConfigSource, SecretLintEngineOptions } from "@secretlint/node";
 import { searchFiles } from "./search.js";
 import { secretLintProfiler } from "@secretlint/profiler";
 
@@ -31,8 +31,9 @@ const lintFileOrText = async ({
 }: {
     cliOptions: SecretLintOptions;
     engineOptions: SecretLintEngineOptions;
-}): Promise<{ ok: boolean; output: string }> => {
+}): Promise<{ ok: boolean; output: string; configSource: SecretLintConfigSource }> => {
     const engine = await createEngine(engineOptions);
+    const configSource = engine.configSource;
     if ("filePathOrGlobList" in cliOptions) {
         secretLintProfiler.mark({ type: "secretlint>search-files::start" });
         const { ok, items } = await searchFiles(cliOptions.filePathOrGlobList, {
@@ -45,14 +46,16 @@ const lintFileOrText = async ({
         if (!ok) {
             throw new Error("Not found target files");
         }
-        return engine.executeOnFiles({
+        const result = await engine.executeOnFiles({
             filePathList: items,
         });
+        return { ...result, configSource };
     } else if ("stdinFileName" in cliOptions) {
-        return engine.executeOnContent({
+        const result = await engine.executeOnContent({
             content: cliOptions.stdinContent,
             filePath: cliOptions.stdinFileName,
         });
+        return { ...result, configSource };
     }
     throw new Error("Unexpected cliOptions", {
         cause: {
@@ -60,17 +63,35 @@ const lintFileOrText = async ({
         },
     });
 };
+/**
+ * The result of a run of the CLI
+ * `notices` are messages for the user that are not lint results, such as the use of the default config.
+ * The CLI writes them to stderr, so stdout has only the results.
+ */
+export type SecretLintRunResult = {
+    exitStatus: number;
+    stdout: string | null;
+    stderr: Error | null;
+    notices?: string[];
+};
+/**
+ * The notice when no config is found and the recommend preset is used
+ */
+export const DEFAULT_CONFIG_NOTICE =
+    "secretlint: No configuration file was found. The recommended rules (@secretlint/secretlint-rule-preset-recommend) are used. Run `secretlint --init` to create .secretlintrc.json.";
 export const runSecretLint = async ({
     cliOptions,
     engineOptions,
 }: {
     cliOptions: SecretLintOptions;
     engineOptions: SecretLintEngineOptions;
-}): Promise<{ exitStatus: number; stdout: string | null; stderr: Error | null }> => {
-    const { ok, output } = await lintFileOrText({
+}): Promise<SecretLintRunResult> => {
+    const { ok, output, configSource } = await lintFileOrText({
         cliOptions,
         engineOptions,
     });
+    // `notices` is set only when there is a notice
+    const notices = configSource === "default" ? { notices: [DEFAULT_CONFIG_NOTICE] } : {};
     // TODO: if has error, this should be stderr
     const outputFilePath = cliOptions.outputFilePath;
     if (outputFilePath !== undefined) {
@@ -81,11 +102,13 @@ export const runSecretLint = async ({
             exitStatus: 0,
             stdout: null,
             stderr: null,
+            ...notices,
         };
     }
     return {
         exitStatus: ok ? 0 : 1,
         stdout: output,
         stderr: null,
+        ...notices,
     };
 };

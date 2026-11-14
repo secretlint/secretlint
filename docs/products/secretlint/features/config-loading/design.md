@@ -40,7 +40,7 @@ When the file is not found, `loadConfigDescriptor()` decides by `configFilePath`
 - When it is not given, it returns `DEFAULT_CONFIG_DESCRIPTOR` with `configFilePath: undefined` and `isDefault: true`.
 
 `DEFAULT_CONFIG_DESCRIPTOR` is `{ rules: [{ id: "@secretlint/secretlint-rule-preset-recommend" }] }`, exported by `@secretlint/config-loader`.
-`@secretlint/config-creator`, which writes the file of `--init`, uses the same constant, so the default configuration and the file of `--init` cannot differ.
+`@secretlint/config-creator`, which writes the file of `--init`, takes the preset id from `presetRecommend.meta.id` of `@secretlint/core/builtin`, and a test of the loader checks that `DEFAULT_CONFIG_DESCRIPTOR` has the same id, so the default configuration and the file of `--init` cannot differ. The loader keeps the id as a string, so that importing the loader does not import the built-in rules.
 The default configuration goes through `loadPackagesFromConfigDescriptor()` like a configuration file, so the recommend preset is taken from the built-in table of `@secretlint/core`, and no package is imported.
 
 Errors of a found file, such as a syntax error, are thrown by `rcFile()` as before, so a broken configuration never falls back to the default.
@@ -48,7 +48,7 @@ Errors of a found file, such as a syntax error, are thrown by `rcFile()` as befo
 ### The notice of the default configuration
 
 The engine returned by `createEngine()` has `configSource`: `"file"` when a file was found or given, `"json"` for `configFileJSON`, and `"default"` for the default configuration.
-`runSecretLint()` of the `secretlint` package returns `notices`, a list of strings, and adds this one when `configSource` is `"default"`:
+`runSecretLint()` of the `secretlint` package returns `notices`, a list of strings, only when there is a notice, and has this one when `configSource` is `"default"`:
 
 ```
 secretlint: No configuration file was found. The recommended rules (@secretlint/secretlint-rule-preset-recommend) are used. Run `secretlint --init` to create .secretlintrc.json.
@@ -122,7 +122,7 @@ sequenceDiagram
 - `loadConfigDescriptor({ cwd, configFilePath })` returns `{ ok, configDescriptor, configFilePath, isDefault }` without loading the rules, and throws in the same case.
 - `DEFAULT_CONFIG_DESCRIPTOR` is the configuration used when none is found.
 - The type of `configFilePath` in the results changes from `string` to `string | undefined`. This is a breaking change of the API for programs that use the results, and it is released in a major version.
-- The engine of `@secretlint/node` has `configSource: "file" | "json" | "default"`. `runSecretLint()` of `secretlint` returns `notices: string[]` with `exitStatus`, `stdout`, and `stderr`.
+- The engine of `@secretlint/node` has `configSource: "file" | "json" | "default"`. `runSecretLint()` and `run()` of `secretlint` return `SecretLintRunResult`: `exitStatus`, `stdout`, `stderr`, and `notices?: string[]`. The CLI and the single-executable binary write the notices to stderr.
 - `loadPackagesFromConfigDescriptor({ configDescriptor, node_moduleDir, testReplaceDefinitions })` does the same from a descriptor that is already read.
 - `node_moduleDir` is the base directory that `SecretLintModuleResolver` joins with the package name.
 

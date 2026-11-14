@@ -12,7 +12,11 @@
 try {
     // if imported code is syntax error, throw error -> exit 2
     const { run, cli } = await import("../module/cli.js");
-    const { exitStatus, stderr, stdout } = await run(cli.input, cli.flags);
+    const { exitStatus, stderr, stdout, notices } = await run(cli.input, cli.flags);
+    // notices are not lint results, so they go to stderr and stdout keeps only the results
+    for (const notice of notices ?? []) {
+        console.error(notice);
+    }
     if (stdout) {
         console.log(stdout);
     }
