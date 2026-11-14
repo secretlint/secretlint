@@ -103,7 +103,7 @@ A prototype was checked against the 38 patterns of the built-in rules: it found 
 
 ### Keywords with a guard
 
-An item of `keywords` of a pattern is a string or an object `{ keyword, after }`. The object is a guarded keyword.
+An item of `keywords` of a pattern is a string or a keyword object `{ keyword, after?, caseSensitive? }`. A keyword object with `after` is a guarded keyword.
 
 ```ts
 {
@@ -141,12 +141,14 @@ It is an object, and not a new syntax in the string, because the meaning of a st
 `@secretlint/core` reads the items when it makes the lint plan, and reads `after` with a small parser of its own (`src/helper/keyword-guard.ts`). The parser has no dependency, because the core also runs in browsers.
 
 - The parser returns the characters of the set and `n`. The characters are sorted, so `[a-z0-9]{32,}` and `[0-9a-z]{32,}` are the same guard, and two patterns that declare them for the same keyword share one entry of the keyword matcher.
-- For an object that is not a guarded keyword, making the plan throws an error with the rule id and the item: `keyword` or `after` is not a string, the object has another property, a character is not ASCII, the set starts with `^`, the count is `{n}`, `{n,m}`, `+`, `*`, `?`, 0, or over 255, the set has `\w` or `\d`, or `after` has anything else. The error for a form that has a supported form with the same meaning, such as `{40}`, `+`, and `\d`, gives that form. So a guard that a newer core supports is never read in another way, and a condition such as what is before the keyword can be added later as a property with a new name.
-- `caseSensitiveKeywords` is for both parts. Without it, the keyword is lower-cased as a keyword is, and the parser adds the other case of each letter of the set. This is the meaning of `after` in a regular expression with the `i` flag for ASCII. A set that matches more is always safe, so a rule whose regular expression has the `i` flag does not need to write both cases.
+- For an object that is not a guarded keyword, making the plan throws an error with the rule id and the item: `keyword` or `after` is not a string, `caseSensitive` is not a boolean, the object has neither `after` nor `caseSensitive`, the object has another property, a character is not ASCII, the set starts with `^`, the count is `{n}`, `{n,m}`, `+`, `*`, `?`, 0, or over 255, the set has `\w` or `\d`, or `after` has anything else. The error for a form that has a supported form with the same meaning, such as `{40}`, `+`, and `\d`, gives that form. So a guard that a newer core supports is never read in another way, and a condition such as what is before the keyword can be added later as a property with a new name.
+- `caseSensitive` of a keyword object says if the item is case-sensitive, for both parts of a guarded keyword. An object without it follows `caseSensitiveKeywords` of the pattern. `caseSensitiveKeywords` keeps its meaning for the strings, and a new rule can state the case in the object of the keyword that needs it, such as `{ keyword: "SG.", caseSensitive: true }`. The keyword matcher already has the case for each keyword, so this needs no change of the scan.
+- An object has `after`, `caseSensitive`, or both. `{ keyword: "sk-" }` is an error, because `"sk-"` says the same.
+- When an item is not case-sensitive, the keyword is lower-cased as a keyword is, and the parser adds the other case of each letter of the set. This is the meaning of `after` in a regular expression with the `i` flag for ASCII. A set that matches more is always safe, so a rule whose regular expression has the `i` flag does not need to write both cases.
 - A pattern is selected for a source if one of its keywords is found, and for a guarded keyword only where its guard is met. `scope: "line"` needs valid keywords, and a guarded keyword is one.
 - `when` works as before: a pattern that is not in the plan has no entry in the matcher.
 
-The type of an item is `SecretLintRulePatternKeyword` of `@secretlint/types`: `string | { keyword: string; after: string }`, and `keywords` of a pattern is a list of it. `meta.keywords` stays a list of strings.
+The type of an item is `SecretLintRulePatternKeyword` of `@secretlint/types`: `string | { keyword: string; after?: string; caseSensitive?: boolean }`, and `keywords` of a pattern is a list of it. `meta.keywords` stays a list of strings.
 Code that reads `keywords` of a pattern as strings has to handle an object. In the Secretlint repository, this is the lint plan and the runner of the tests.
 
 A core that does not know guarded keywords reads an item that is not a string as a keyword that is not valid. Then it does not use the keywords of the pattern, and runs the pattern on the whole content in the "file" scope. The results are the same, and the lint is slower.
@@ -196,7 +198,7 @@ No diagram is needed: a preset is a list of rules, and its only interaction is `
 ## Data model and ER diagrams
 
 - **Rule creator:** `meta` (id, type, recommended, supportedContentTypes, docs.url, optional keywords), `messages`, and either `patterns` or `create()`.
-- **Pattern:** `pattern`, optional `keywords` (strings, or objects `{ keyword, after }` for guarded keywords), `caseSensitiveKeywords`, `scope`, and `when`, and `report()`.
+- **Pattern:** `pattern`, optional `keywords` (strings, or keyword objects `{ keyword, after?, caseSensitive? }`), `caseSensitiveKeywords`, `scope`, and `when`, and `report()`.
 - **Preset creator:** `meta` (id, type `preset`), `rules` (rule creators), and `create(context, options)`.
 - **Preset entry of the configuration:** `id`, `options`, and `rules`, a list of entries with `id`, `options`, `severity`, `allowMessageIds`, and `disabled`.
 
@@ -252,7 +254,7 @@ The `--init` of the npm package writes the rules that it finds in `package.json`
 - **Short forms such as `+`, `\w`, and `\d`:** They are common in regular expressions, and the first proposal had them. They were not chosen by the maintainer: each is a second way to write a guard that the syntax can already state.
 - **A count with a most that is not used:** `{n}` and `{n,m}` would be accepted and mean `{n,}`, so that the start of `pattern` can be copied as it is. A regular expression that is tested at one place also matches the start of a longer run. It was not chosen by the maintainer: `{40}` reads as "40 characters", and the guard would mean something else than it reads.
 - **More syntax: a most of the count that is checked, what follows the run, what is before the keyword, and a set with `^`:** A regular expression can state these, and they can drop more places. They were not added. A most and an end are true only if the regular expression of the pattern also states an end, so they are easy to write wrong. A set with `^` has characters that are not ASCII, and then the bytes and the string count differently. The core rejects all of them now, so each can be added later without changing the meaning of an existing string.
-- **A set that is always case-sensitive:** The set would match as written, and only the keyword would follow `caseSensitiveKeywords`. It was not chosen, because a rule author who copies `[a-f0-9]{32}` from a regular expression with the `i` flag would get a guard that rejects upper-case keys.
+- **A set that is always case-sensitive:** The set would match as written, and only the keyword would follow `caseSensitive`. It was not chosen, because a rule author who copies `[a-f0-9]{32}` from a regular expression with the `i` flag would get a guard that rejects upper-case keys.
 
 ## Open questions
 
