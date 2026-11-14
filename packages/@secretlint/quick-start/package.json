@@ -56,7 +56,6 @@
         "tabWidth": 4
     },
     "dependencies": {
-        "@secretlint/secretlint-rule-preset-recommend": "workspace:*",
         "secretlint": "workspace:*"
     },
     "devDependencies": {

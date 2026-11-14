@@ -40,7 +40,7 @@
     "prepare": "git config --local core.hooksPath .githooks",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
     "compare": "node examples/benchmark/compare.mjs",
-    "gen:rule": "scaffdog generate new-rule --output packages/ --answer \"owner:$(git config user.name)\" --answer \"version:$(node -e 'console.log(require(\"./package.json\").version)')\""
+    "gen:rule": "scaffdog generate new-rule --output . --answer \"owner:$(git config user.name)\" --answer \"version:$(node -e 'console.log(require(\"./package.json\").version)')\""
   },
   "devDependencies": {
     "lint-staged": "catalog:",

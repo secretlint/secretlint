@@ -21,7 +21,7 @@
             },
             "severity": "error",
             "messageId": "AWSAccessKeyID",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md#AWSAccessKeyID",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/aws.md#AWSAccessKeyID",
             "data": {
                 "ID": "A3TXIOSFODNN7SECRETS"
             }
@@ -46,7 +46,7 @@
             },
             "severity": "error",
             "messageId": "AWSAccessKeyID",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md#AWSAccessKeyID",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/aws.md#AWSAccessKeyID",
             "data": {
                 "ID": "AGPAIOSFODNN7SECRETS"
             }
@@ -71,7 +71,7 @@
             },
             "severity": "error",
             "messageId": "AWSAccessKeyID",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md#AWSAccessKeyID",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/aws.md#AWSAccessKeyID",
             "data": {
                 "ID": "AIDAIOSFODNN7SECRETS"
             }
@@ -96,7 +96,7 @@
             },
             "severity": "error",
             "messageId": "AWSAccessKeyID",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md#AWSAccessKeyID",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/aws.md#AWSAccessKeyID",
             "data": {
                 "ID": "AROAIOSFODNN7SECRETS"
             }
@@ -121,7 +121,7 @@
             },
             "severity": "error",
             "messageId": "AWSAccessKeyID",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md#AWSAccessKeyID",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/aws.md#AWSAccessKeyID",
             "data": {
                 "ID": "AIPAIOSFODNN7SECRETS"
             }
@@ -146,7 +146,7 @@
             },
             "severity": "error",
             "messageId": "AWSAccessKeyID",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md#AWSAccessKeyID",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/aws.md#AWSAccessKeyID",
             "data": {
                 "ID": "ANPAIOSFODNN7SECRETS"
             }
@@ -171,7 +171,7 @@
             },
             "severity": "error",
             "messageId": "AWSAccessKeyID",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md#AWSAccessKeyID",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/aws.md#AWSAccessKeyID",
             "data": {
                 "ID": "ANVAIOSFODNN7SECRETS"
             }
@@ -196,7 +196,7 @@
             },
             "severity": "error",
             "messageId": "AWSAccessKeyID",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md#AWSAccessKeyID",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/aws.md#AWSAccessKeyID",
             "data": {
                 "ID": "ASIAIOSFODNN7SECRETS"
             }

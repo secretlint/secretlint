@@ -21,7 +21,7 @@
             },
             "severity": "error",
             "messageId": "DOCKER_PERSONAL_ACCESS_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-docker/README.md#DOCKER_PERSONAL_ACCESS_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/docker.md#DOCKER_PERSONAL_ACCESS_TOKEN",
             "data": {
                 "TOKEN": "dckr_pat_Example1234567890AbCdEfGhjK"
             }

@@ -21,7 +21,7 @@
             },
             "severity": "error",
             "messageId": "DATABRICKS_PERSONAL_ACCESS_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-databricks/README.md#DATABRICKS_PERSONAL_ACCESS_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/databricks.md#DATABRICKS_PERSONAL_ACCESS_TOKEN",
             "data": {
                 "ID": "dapi1234567890ABCDEF1234567890ABCDEF"
             }
@@ -46,7 +46,7 @@
             },
             "severity": "error",
             "messageId": "DATABRICKS_PERSONAL_ACCESS_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-databricks/README.md#DATABRICKS_PERSONAL_ACCESS_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/databricks.md#DATABRICKS_PERSONAL_ACCESS_TOKEN",
             "data": {
                 "ID": "dapi0123456789ABCDEF0123456789ABCDEF-3"
             }
@@ -71,7 +71,7 @@
             },
             "severity": "error",
             "messageId": "DATABRICKS_PERSONAL_ACCESS_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-databricks/README.md#DATABRICKS_PERSONAL_ACCESS_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/databricks.md#DATABRICKS_PERSONAL_ACCESS_TOKEN",
             "data": {
                 "ID": "dapiFEDCBA9876543210FEDCBA9876543210"
             }

@@ -21,7 +21,7 @@
             },
             "severity": "error",
             "messageId": "HUGGINGFACE_USER_ACCESS_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-huggingface/README.md#HUGGINGFACE_USER_ACCESS_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/huggingface.md#HUGGINGFACE_USER_ACCESS_TOKEN",
             "data": {
                 "TOKEN": "hf_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
             }

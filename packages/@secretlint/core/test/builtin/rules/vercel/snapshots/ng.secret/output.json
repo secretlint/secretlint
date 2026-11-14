@@ -21,7 +21,7 @@
             },
             "severity": "error",
             "messageId": "VERCEL_PERSONAL_ACCESS_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-vercel/README.md#VERCEL_PERSONAL_ACCESS_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/vercel.md#VERCEL_PERSONAL_ACCESS_TOKEN",
             "data": {
                 "ID": "vcp_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghij"
             }
@@ -46,7 +46,7 @@
             },
             "severity": "error",
             "messageId": "VERCEL_INTEGRATION_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-vercel/README.md#VERCEL_INTEGRATION_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/vercel.md#VERCEL_INTEGRATION_TOKEN",
             "data": {
                 "ID": "vci_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghij"
             }
@@ -71,7 +71,7 @@
             },
             "severity": "error",
             "messageId": "VERCEL_APP_ACCESS_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-vercel/README.md#VERCEL_APP_ACCESS_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/vercel.md#VERCEL_APP_ACCESS_TOKEN",
             "data": {
                 "ID": "vca_BQuu9ChDu3n6Pfh6YQnCshpoYkWDSFKogLqmBtQ0tC8NAA5rXt340sjz"
             }
@@ -96,7 +96,7 @@
             },
             "severity": "error",
             "messageId": "VERCEL_APP_REFRESH_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-vercel/README.md#VERCEL_APP_REFRESH_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/vercel.md#VERCEL_APP_REFRESH_TOKEN",
             "data": {
                 "ID": "vcr_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghij"
             }
@@ -121,7 +121,7 @@
             },
             "severity": "error",
             "messageId": "VERCEL_AI_GATEWAY_API_KEY",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-vercel/README.md#VERCEL_AI_GATEWAY_API_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/vercel.md#VERCEL_AI_GATEWAY_API_KEY",
             "data": {
                 "ID": "vck_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghij"
             }

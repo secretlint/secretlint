@@ -21,7 +21,7 @@
             },
             "severity": "error",
             "messageId": "GITHUB_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-github/README.md#GITHUB_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/github.md#GITHUB_TOKEN",
             "data": {
                 "KEY": "ghs_12345_eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3NDU1NjgwMDAsImV4cCI6MTc0NTU2ODM2MCwiaXNzIjoiMTIzNDUiLCJzdWIiOiJnaXRodWJ8MTIzNDUifQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
                 "typeName": "GitHub server-to-server tokens"

@@ -21,7 +21,7 @@
             },
             "severity": "error",
             "messageId": "BasicAuth",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-basicauth/README.md#BasicAuth",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/basicauth.md#BasicAuth",
             "data": {
                 "CREDENTIAL": "https://apiuser:r3alP4ssw0rd@api.production.com"
             }
@@ -46,7 +46,7 @@
             },
             "severity": "error",
             "messageId": "BasicAuth",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-basicauth/README.md#BasicAuth",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/basicauth.md#BasicAuth",
             "data": {
                 "CREDENTIAL": "ftps://deployment:s3cur3K3y2024@files.company.com"
             }
@@ -71,7 +71,7 @@
             },
             "severity": "error",
             "messageId": "BasicAuth",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-basicauth/README.md#BasicAuth",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/basicauth.md#BasicAuth",
             "data": {
                 "CREDENTIAL": "https://backup-user:BackupK3y987@backup.example.com"
             }

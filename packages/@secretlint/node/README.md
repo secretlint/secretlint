@@ -15,11 +15,7 @@ Install with [npm](https://www.npmjs.com/):
 
 ## Usage
 
-Install the rules you want to use and create a `.secretlintrc.json` in the working directory. For example:
-
-```sh
-npm install @secretlint/secretlint-rule-preset-recommend
-```
+Create a `.secretlintrc.json` in the working directory. The [built-in rules](https://github.com/secretlint/secretlint#built-in-rules) need no install. For example:
 
 ```json
 {

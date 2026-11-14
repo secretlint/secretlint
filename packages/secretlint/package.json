@@ -72,7 +72,6 @@
     },
     "devDependencies": {
         "@secretlint/secretlint-rule-example": "workspace:*",
-        "@secretlint/secretlint-rule-preset-recommend": "workspace:*",
         "@secretlint/types": "workspace:*",
         "@types/debug": "catalog:",
         "@types/node": "catalog:",

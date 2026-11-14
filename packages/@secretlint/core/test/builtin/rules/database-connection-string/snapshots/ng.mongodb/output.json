@@ -21,7 +21,7 @@
             },
             "severity": "error",
             "messageId": "MongoDBConnection",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#MongoDBConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/database-connection-string.md#MongoDBConnection",
             "data": {
                 "URI": "mongodb://realuser:s3cr3tP4ss@db1.example.net:27017/production\";"
             }
@@ -46,7 +46,7 @@
             },
             "severity": "error",
             "messageId": "MongoDBConnection",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#MongoDBConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/database-connection-string.md#MongoDBConnection",
             "data": {
                 "URI": "mongodb+srv://appuser:myR3alP@ssw0rd@cluster0.mongodb.net/mydb?retryWrites=true\";"
             }
@@ -71,7 +71,7 @@
             },
             "severity": "error",
             "messageId": "MongoDBConnection",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#MongoDBConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/database-connection-string.md#MongoDBConnection",
             "data": {
                 "URI": "mongodb://root:m42ploz2wd@google.com:5434/thegift\""
             }
@@ -96,7 +96,7 @@
             },
             "severity": "error",
             "messageId": "MongoDBConnection",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#MongoDBConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/database-connection-string.md#MongoDBConnection",
             "data": {
                 "URI": "mongodb+srv://testuser:hub24aoeu@gg-is-awesome-xm273.mongodb.net/test?retryWrites=true&w=majority"
             }
@@ -121,7 +121,7 @@
             },
             "severity": "error",
             "messageId": "MongoDBConnection",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#MongoDBConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/database-connection-string.md#MongoDBConnection",
             "data": {
                 "URI": "mongodb://admin:secretKey456@cluster.mongodb.net:27017/admin"
             }
@@ -146,7 +146,7 @@
             },
             "severity": "error",
             "messageId": "MongoDBConnection",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#MongoDBConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/database-connection-string.md#MongoDBConnection",
             "data": {
                 "URI": "mongodb+srv://user:passW0rd123@prod-cluster.mongodb.net/production?retryWrites=true"
             }
@@ -171,7 +171,7 @@
             },
             "severity": "error",
             "messageId": "MongoDBConnection",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#MongoDBConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/database-connection-string.md#MongoDBConnection",
             "data": {
                 "URI": "mongodb://devuser:mySecret789@dev.mongodb.com:27017/dev_db"
             }

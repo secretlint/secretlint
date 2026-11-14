@@ -253,6 +253,7 @@ After all participants on pull request are satisfied to the changes, we will mer
 
 ## Add New Rule
 
+A new rule is a built-in rule of `@secretlint/core`. It is not a new npm package.
 This project has a template for creating a new rule.
 
 ```sh
@@ -260,104 +261,30 @@ pnpm run gen:rule
 ```
 
 1. Enter rule name
-   - e.g.) `aws`
-   - This generator create `@secretlint/secretlint-rule-aws` package
-2. Implement it and run tests!
-3. Update README.md
+   - e.g.) `example`
+   - This generator creates the rule in `packages/@secretlint/core/src/builtin/rules/example/`, its test cases in `packages/@secretlint/core/test/builtin/rules/example/snapshots/`, and its documentation in `docs/rules/example.md`
+   - The rule id is `@secretlint/secretlint-rule-example`
+2. Implement it and run tests: `pnpm test --filter="@secretlint/core"`
+3. Add the rule to [Built-in Rules](./README.md#built-in-rules) of README.md
 
 ## Add a rule to preset rules
 
 This project has two preset rules:
 
-- [secretlint-rule-preset-canary](./packages/@secretlint/secretlint-rule-preset-canary): Experimental preset for testing new rules
-- [secretlint-rule-preset-recommend](./packages/@secretlint/secretlint-rule-preset-recommend): Stable preset for production use
+- [secretlint-rule-preset-canary](./docs/rules/preset-canary.md): Experimental preset for testing new rules
+- [secretlint-rule-preset-recommend](./docs/rules/preset-recommend.md): Stable preset for production use
 
-### Rule Addition Flow
+Both presets are defined in `packages/@secretlint/core/src/builtin/index.ts`.
 
-New rules follow a two-stage deployment process:
-
-1. **Stage 1: Canary Testing** - Add to canary preset for experimental testing
-2. **Stage 2: Production Release** - Sync to recommended preset for stable release (usually in major versions)
-
-### Step 1: Add a rule to canary preset
-
-First, add your rule to [secretlint-rule-preset-canary](./packages/@secretlint/secretlint-rule-preset-canary):
-
-1. Add the rule package to devDependencies in `packages/@secretlint/secretlint-rule-preset-canary/package.json`:
-   ```json
-   "devDependencies": {
-     // ... existing dependencies
-     "@secretlint/secretlint-rule-your-rule": "workspace:*"
-   }
-   ```
-   Then run `pnpm install` to update dependencies.
-
-2. Import and add the rule to `packages/@secretlint/secretlint-rule-preset-canary/src/index.ts`:
-   ```typescript
-   import { creator as ruleYourRule } from "@secretlint/secretlint-rule-your-rule";
-   
-   export const rules = [
-       // ... existing rules
-       ruleYourRule,  // Add your rule here
-   ];
-   ```
-
-3. Import test snapshots and run tests (from project root):
-   ```sh
-   # From any directory in the project
-   pnpm run -r --filter "@secretlint/secretlint-rule-preset-canary" import-test
-   pnpm run -r --filter "@secretlint/secretlint-rule-preset-canary" test
-   ```
-
-### Step 2: Sync to recommended preset (for major releases)
-
-After the rule has been tested in canary, sync it to [secretlint-rule-preset-recommend](./packages/@secretlint/secretlint-rule-preset-recommend):
-
-1. Run the sync script (from project root):
-   ```sh
-   # From any directory in the project
-   pnpm run -r --filter "@secretlint/secretlint-rule-preset-recommend" sync-canary
-   ```
-
-2. Verify the sync:
-   - Check that `packages/@secretlint/secretlint-rule-preset-recommend/src/index.ts` includes your new rule
-   - Check that test snapshots were copied
-   - Check that devDependencies were added
-
-3. Fix any version downgrades:
-   - The sync script may downgrade some dependencies
-   - Manually update `package.json` if needed (e.g., `@rollup/plugin-node-resolve`)
-   - Run `pnpm install` to update the lock file
-
-4. Run tests to ensure everything works:
-   ```sh
-   # From any directory in the project
-   pnpm run -r --filter "@secretlint/secretlint-rule-preset-recommend" test
-   ```
-
-### Alternative: Direct navigation approach
-
-If you prefer to work directly in the package directories:
-
-```sh
-# For canary preset
-cd packages/@secretlint/secretlint-rule-preset-canary
-pnpm add -D @secretlint/secretlint-rule-your-rule
-pnpm run import-test
-pnpm test
-
-# For recommended preset
-cd packages/@secretlint/secretlint-rule-preset-recommend
-pnpm run sync-canary
-pnpm test
-```
+1. **Canary:** Register the rule in `builtinRules`, and add it to `canaryRules`. The test of the presets runs the test cases of the rule through the preset.
+2. **Recommended:** Add the rule to `recommendedRules` in a major release.
 
 ### Important Notes
 
 - **Breaking Changes**: Adding new rules to the recommended preset is a breaking change as it may introduce new secret detections
-- **Major Versions Only**: Sync to recommended preset should typically be done only for major version releases (e.g., v11.0.0)
+- **Major Versions Only**: Adding a rule to the recommended preset should typically be done only for major version releases (e.g., v11.0.0)
 - **Test Coverage**: Ensure all rules have adequate test coverage before adding to presets
-- **Documentation**: Update the rule's README with examples and configuration options
+- **Documentation**: Update `docs/rules/<name>.md` with examples and configuration options
 
 ## Benchmark
 

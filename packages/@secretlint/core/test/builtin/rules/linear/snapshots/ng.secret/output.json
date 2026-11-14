@@ -21,7 +21,7 @@
             },
             "severity": "error",
             "messageId": "LINEAR_API_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-linear/README.md#LINEAR_API_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/linear.md#LINEAR_API_TOKEN",
             "data": {
                 "ID": "lin_api_f1g2kLGLqdezihCUTzgIAUk6d9wvCnStWrvEXAMPLE"
             }

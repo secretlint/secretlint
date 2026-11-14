@@ -1,0 +1,102 @@
+# @secretlint/secretlint-rule-database-connection-string
+
+A Secretlint rule to detect hardcoded passwords in database connection strings for MongoDB, MySQL, and PostgreSQL.
+
+This rule detects URI format database connection strings that contain hardcoded credentials for MongoDB, MySQL, and PostgreSQL.
+
+This rule is built into secretlint (`@secretlint/core`), so you do not need to install a package for it.
+
+## MessageIDs
+
+### MongoDBConnection
+
+Report when hardcoded credentials are found in MongoDB connection strings.
+
+Detects:
+- Standard URI format: `mongodb://user:password@host:port/database`
+- MongoDB Atlas SRV format: `mongodb+srv://user:password@cluster.mongodb.net/database`
+- Connection strings within quoted strings and environment variable assignments
+
+**Good:**
+```
+const uri = "mongodb://localhost:27017/mydb";
+const uri = "mongodb://username:${PASSWORD}@host:27017/mydb";
+const uri = "mongodb://username:REPLACE_WITH_PASSWORD@localhost:27017/mydb";  // placeholder
+const uri = "mongodb+srv://user:{password}@cluster.mongodb.net/test";
+const uri = "mongodb://mongodb:mongodb@localhost:27017/mydb";  // identical example credentials
+```
+
+**Bad:**
+```
+const uri = "mongodb://user:s3cr3tP4ss@cluster.mongodb.net/mydb";
+MONGO_URI="mongodb://admin:realP@ssw0rd@cluster.mongodb.net/production";
+mongodb+srv://app:c0mpl3xPwd@cluster0.mongodb.net/mydb?retryWrites=true;
+```
+
+### MySQLConnection
+
+Report when hardcoded credentials are found in MySQL connection strings.
+
+Detects:
+- URI format: `mysql://user:password@host:port/database`
+- JDBC format: `jdbc:mysql://user:password@host:port/database`
+- X DevAPI format: `mysqlx://user:password@host:port/database`
+
+**Good:**
+```
+const uri = "mysql://localhost:3306/mydb";
+const uri = "mysql://user:${PASSWORD}@host:3306/mydb";
+const uri = "mysql://user:REPLACE_WITH_PASSWORD@localhost:3306/mydb";  // placeholder
+const uri = "mysql://mysql:mysql@localhost:3306/mydb";  // identical example credentials
+```
+
+**Bad:**
+```
+const uri = "mysql://user:hardcodedpass@db.example.com:3306/mydb";
+const jdbc = "jdbc:mysql://admin:s3cr3tPwd@db.company.com:3306/app";
+```
+
+### PostgreSQLConnection
+
+Report when hardcoded credentials are found in PostgreSQL connection strings.
+
+Detects:
+- URI format: `postgresql://user:password@host:port/database`
+- Alternative URI format: `postgres://user:password@host:port/database`
+
+**Good:**
+```
+const uri = "postgresql://localhost:5432/mydb";
+const uri = "postgres://user:${PASSWORD}@host:5432/mydb";
+const uri = "postgres://user:REPLACE_WITH_PASSWORD@localhost:5432/mydb";  // placeholder
+const uri = "postgres://postgres:postgres@localhost:5432/mydb";  // identical example credentials
+```
+
+**Bad:**
+```
+const uri = "postgres://user:secretpass@db.example.com:5432/mydb";
+create_engine('postgresql://postgres:c0mpl3xPwd@host:5432/mydb')
+```
+
+## Options
+
+- `allows: string[]`
+    - Allows a list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string) to exclude specific patterns from detection.
+
+## False Positive Prevention
+
+This rule includes several mechanisms to prevent false positives:
+
+1. **Variable Pattern Detection**: Automatically ignores common variable patterns like `${PASSWORD}`, `{password}`, `{{username}}`
+2. **Placeholder Detection**: Skips common placeholder values like `password`, `username`, `YOUR_PASSWORD`, etc.
+3. **Identical Credential Detection**: Skips credentials whose username and password are exactly the same
+4. **Repetitive Password Detection**: Skips passwords made by repeating the same character
+5. **Minimum Length**: Requires passwords to be at least 4 characters long to reduce noise
+
+Example patterns that are **ignored**:
+```
+mongodb://username:password@localhost:27017/database
+mysql://user:${PASSWORD}@host:3306/db
+postgresql://{username}:{password}@host:5432/db
+postgresql://postgres:postgres@localhost:5432/db
+```

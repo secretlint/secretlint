@@ -29,7 +29,6 @@
         "benchmark": "node index.js"
     },
     "dependencies": {
-        "@secretlint/secretlint-rule-preset-canary": "workspace:*",
         "benchmark": "catalog:",
         "secretlint": "workspace:*"
     },

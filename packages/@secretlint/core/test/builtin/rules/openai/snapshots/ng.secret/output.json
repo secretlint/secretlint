@@ -21,7 +21,7 @@
             },
             "severity": "error",
             "messageId": "OPENAI_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-openai/README.md#OPENAI_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/openai.md#OPENAI_TOKEN",
             "data": {
                 "TOKEN": "sk-sUeBP9asw6GiYHXqtg70T3BlbkFJJuLwJFco90bOpU0Ntest"
             }
@@ -46,7 +46,7 @@
             },
             "severity": "error",
             "messageId": "OPENAI_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-openai/README.md#OPENAI_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/openai.md#OPENAI_TOKEN",
             "data": {
                 "TOKEN": "sk-proj-f5-UKZNwZTgzRb8ZucIrNqTs9oT6D1DMRv_0Zq3WY7G1J1O-wPsXwgv6WFxEn8XrZu2vvosfG7T3BlbkFJBYX7TPseHaYE6r3ljpCBurd6U6qpJeRk8UqQ1ORj5DFHReHaF6mstbOCirkkl9vsHWLw23test"
             }
@@ -71,7 +71,7 @@
             },
             "severity": "error",
             "messageId": "OPENAI_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-openai/README.md#OPENAI_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/openai.md#OPENAI_TOKEN",
             "data": {
                 "TOKEN": "sk-svcacct-f5-UKZNwZTgzRb8ZucIrNqTs9oT6D1DMRv_0Zq3WY7G1J1O-wPsXwgv6WFxEn8XrZu2vvosfG7T3BlbkFJBYX7TPseHaYE6r3ljpCBurd6U6qpJeRk8UqQ1ORj5DFHReHaF6mstbOCirkkl9vsHWLw23test"
             }
@@ -96,7 +96,7 @@
             },
             "severity": "error",
             "messageId": "OPENAI_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-openai/README.md#OPENAI_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/openai.md#OPENAI_TOKEN",
             "data": {
                 "TOKEN": "sk-admin-f5-UKZNwZTgzRb8ZucIrNqTs9oT6D1DMRv_0Zq3WY7G1J1O-wPsXwgv6WFxEn8XrZu2vvosfG7T3BlbkFJBYX7TPseHaYE6r3ljpCBurd6U6qpJeRk8UqQ1ORj5DFHReHaF6mstbOCirkkl9vsHWLw23test"
             }

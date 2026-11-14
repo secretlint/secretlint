@@ -140,7 +140,7 @@ export const creator: SecretLintRuleCreator<Options> = {
         supportedContentTypes: ["text"],
         keywords: ["tenant", "client"],
         docs: {
-            url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-azure/README.md",
+            url: "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/azure.md",
         },
     },
     create(context: any, options: any) {

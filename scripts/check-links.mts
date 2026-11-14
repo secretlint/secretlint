@@ -86,9 +86,7 @@ for (const file of files) {
 if (errors.length > 0) {
     console.error(`Found ${errors.length} link(s) to files that do not exist:\n`);
     console.error(errors.join("\n"));
-    console.error(
-        "\nIf you moved or deleted a file, update the links. Released packages may still link to the old path, so consider keeping a file there that points to the new place."
-    );
+    console.error("\nIf you moved or deleted a file, update the links to it.");
     process.exit(1);
 }
 console.log(`Checked links in ${files.length} files.`);

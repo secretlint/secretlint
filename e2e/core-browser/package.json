@@ -12,7 +12,6 @@
     "devDependencies": {
         "@playwright/test": "catalog:",
         "@secretlint/core": "workspace:*",
-        "@secretlint/secretlint-rule-preset-recommend": "workspace:*",
         "@secretlint/types": "workspace:*",
         "@types/node": "catalog:",
         "typescript": "catalog:",
