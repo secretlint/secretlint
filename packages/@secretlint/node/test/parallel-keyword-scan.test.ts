@@ -128,6 +128,21 @@ describe("parallel keyword scan", () => {
         const withoutKeyword = handed.filter(({ file }) => file.keywordScanResult === undefined);
         assert.strictEqual(withoutKeyword.length, FILE_COUNT - files.secretIndexes.length);
     });
+    it("should not hand all files for the pattern rule without patterns, as `secretlint --init` writes it", async () => {
+        const { config } = await loadPackagesFromConfigDescriptor({
+            configDescriptor: {
+                rules: [{ id: "@secretlint/secretlint-rule-example" }, { id: "@secretlint/secretlint-rule-pattern" }],
+            },
+        });
+        const plan = getKeywordScanPlan({ config });
+        assert.ok(plan);
+        assert.strictEqual(plan.requiresKeyword, true);
+        const { handed } = scan({ requiresKeyword: plan.requiresKeyword }, plan);
+        assert.deepStrictEqual(
+            handed.map(({ file }) => file.fileIndex),
+            files.secretIndexes,
+        );
+    });
     it("should hand a file that is not text without the result of the scan", async () => {
         const plan = await loadPlan();
         const binaryFilePath = path.join(files.dir, "secret.png");

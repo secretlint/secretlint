@@ -76,6 +76,37 @@ You can use `filePathGlobs` to match against file paths using glob patterns:
 - When only `patterns` is specified, the rule reports if the file content matches any of the regex patterns
 - When both are specified, the rule reports only if both the file path matches the glob AND the content matches any of the patterns
 
+### Using keywords
+
+secretlint runs a pattern only on the files that contain one of its keywords, as it does for the built-in rules.
+Without `keywords`, secretlint finds them in the patterns: for example, `/password\s*=\s*\S+/i` gets the keyword `password`.
+When no keyword is found, such as for `/[0-9a-f]{64}/`, the pattern runs on every file. Write `keywords` to make it faster:
+
+```json
+{
+  "rules": [
+    {
+      "id": "@secretlint/secretlint-rule-pattern",
+      "options": {
+        "patterns": [
+          {
+            "name": "internal token",
+            "patterns": ["/itk_[a-z0-9]{32}/"],
+            "keywords": ["itk_"]
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
+- Keywords are ASCII strings, matched case-insensitively.
+- Every match of the patterns must contain one of the keywords. A match without one is not reported.
+- `"keywords": []` runs the patterns on every file.
+- `secretlint --profile` shows a pattern that runs on every file as `<name> (no keywords)`.
+- Keywords are ASCII, so a pattern with the `i` flag can miss a match that uses a non-ASCII letter in place of a letter of the keyword. secretlint adds the `u` flag to every pattern, and with `iu`, `k` also matches the Kelvin sign `K` (U+212A) and `s` also matches the long s `ſ` (U+017F). For example, `/token=\w+/i` gets the keyword `token=`, and `to\u212Aen=abc123` (written with the Kelvin sign) is not reported, because the file does not contain `token=`. Write `"keywords": []` if a pattern should also find such text.
+
 ## MessageIDs
 
 ### Pattern
@@ -125,6 +156,7 @@ Array of pattern configurations. Each pattern can have:
 - `patterns?: string[]` - Array of RegExp-like strings to match against file content
 - `pattern?: string` - **[DEPRECATED]** Single RegExp-like string to match against file content (use `patterns` instead)
 - `filePathGlobs?: string[]` - Array of glob patterns to match against file paths
+- `keywords?: string[]` - Keywords for pre-filtering. See [Using keywords](#using-keywords)
 - `allows?: string[]` - Per-pattern allow list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string), applied in addition to the global `allows`
 
 ### Deprecated options

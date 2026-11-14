@@ -127,6 +127,23 @@ const runPattern = (
 };
 
 /**
+ * Call `report()` of a path pattern once for the file, with the whole content as the match
+ */
+const reportPath = (pattern: PlanPattern, content: string, context: SecretLintRulePatternContext<any>): void => {
+    const startTime = secretLintProfiler.isEnabled ? secretLintProfiler.now() : 0;
+    pattern.report(
+        {
+            text: content,
+            range: [0, content.length],
+            captures: [content],
+            groups: undefined,
+        },
+        context,
+    );
+    secretLintProfiler.record("@core>pattern", pattern.profileId, startTime);
+};
+
+/**
  * The result of checking UTF-8 bytes without decoding the whole content
  */
 type BytesCheck = {
@@ -259,7 +276,18 @@ const lintWithPlan = (
     const bytes = source.contentBytes;
     // Check the bytes if the source has them, because decoding the content costs more than scanning it.
     const bytesCheck = bytes === undefined ? undefined : checkBytes(view, bytes, keywordScanResult);
-    if (bytes !== undefined && !bytesCheck?.hasKeyword && !view.hasAlwaysPattern && !view.hasAlwaysRule) {
+    const isPathPatternTarget = (pattern: PlanPattern): boolean => {
+        return pattern.filePathFilter === undefined || pattern.filePathFilter(source.filePath);
+    };
+    // A path pattern reports the file by its path, so it runs without keywords
+    const hasPathMatch = view.pathPatterns.some(isPathPatternTarget);
+    if (
+        bytes !== undefined &&
+        !bytesCheck?.hasKeyword &&
+        !view.hasAlwaysPattern &&
+        !view.hasAlwaysRule &&
+        !hasPathMatch
+    ) {
         // Most files end here: no rule runs, and nothing is created for the file except the result
         return Promise.resolve(createResult(source, []));
     }
@@ -292,11 +320,12 @@ const lintWithPlan = (
     };
     const textHits = scanText();
     const found = textHits?.found ?? bytesCheck?.found;
-    const runsPatterns =
+    const runsContentPatterns =
         view.hasAlwaysPattern ||
         (bytes === undefined ? textHits !== undefined && textHits.count > 0 : bytesCheck?.runsPatterns === true);
+    const runsPatterns = runsContentPatterns || hasPathMatch;
     const keywordLines =
-        runsPatterns && textHits !== undefined
+        runsContentPatterns && textHits !== undefined
             ? collectKeywordLines(view, textHits, sourceCode.content)
             : NO_KEYWORD_LINES;
     const reportedMessages: SecretLintCoreResultMessage[] = [];
@@ -354,7 +383,16 @@ const lintWithPlan = (
     /**
      * Return where the pattern runs: the whole content, some lines, or nowhere
      */
-    const targetsOfPattern = (pattern: PlanPattern): "content" | readonly number[] => {
+    const targetsOfPattern = (pattern: PlanPattern): "path" | "content" | readonly number[] => {
+        if (pattern.filePathFilter !== undefined && !pattern.filePathFilter(source.filePath)) {
+            return [];
+        }
+        if (pattern.pathOnly) {
+            return "path";
+        }
+        if (!runsContentPatterns) {
+            return [];
+        }
         if (pattern.keywordIndexes === undefined) {
             return "content";
         }
@@ -383,6 +421,10 @@ const lintWithPlan = (
                         source: sourceCode,
                     };
                     for (const { pattern, target } of targets) {
+                        if (target === "path") {
+                            reportPath(pattern, content, context);
+                            continue;
+                        }
                         if (target === "content") {
                             runPattern(pattern, content, 0, context);
                             continue;

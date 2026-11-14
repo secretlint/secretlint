@@ -117,6 +117,36 @@ Scenario: When the option is not a boolean, Secretlint stops
 - When: The developer runs Secretlint.
 - Then: Secretlint stops with an error that says the option `enableIDScanRule` of `@secretlint/secretlint-rule-aws` should be a boolean, and no file is linted.
 
+### Write my own patterns without slowing down the lint
+
+As a developer, I want to add patterns of my own secrets with `@secretlint/secretlint-rule-pattern`, and to have them cost no more than the patterns of the built-in rules, so that a pattern of my own, or an entry that `secretlint --init` added without patterns, does not make every file run.
+
+**Acceptance criteria:**
+
+Scenario: When the pattern rule has no patterns, it is not a part of the lint
+
+- Given: The configuration file has the recommended preset and `{ "id": "@secretlint/secretlint-rule-pattern" }` without options, as `secretlint --init` writes it.
+- When: The developer lints a repository where most files have no keyword of any rule.
+- Then: The result is the same as with the recommended preset alone, and Secretlint does not read a file as a string only for the pattern rule.
+
+Scenario: When a pattern has `keywords`, it runs only on files that contain one of them
+
+- Given: The pattern rule has `{ "name": "internal token", "patterns": ["/itk_[a-z0-9]{32}/"], "keywords": ["itk_"] }`.
+- When: The developer lints a file that contains `itk_` followed by 32 characters, and a file that does not contain `itk_`.
+- Then: The first file has a message of the pattern rule, and the pattern does not run on the second file.
+
+Scenario: When a pattern has no `keywords`, Secretlint finds them in the pattern
+
+- Given: The pattern rule has `{ "name": "password", "patterns": ["/password\\s*=\\s*\\S+/i"] }` without `keywords`.
+- When: The developer lints a file with `PASSWORD = hunter2` and a file without the word `password`.
+- Then: The first file has a message of the pattern rule, and the pattern does not run on the second file.
+
+Scenario: When no keyword can be found in a pattern, the pattern runs on every file
+
+- Given: The pattern rule has `{ "name": "hex", "patterns": ["/[0-9a-f]{64}/"] }` without `keywords`.
+- When: The developer lints the repository with `--profile`.
+- Then: The pattern reports in the same way as before, and the profile shows the pattern as `hex (no keywords)`.
+
 ### Try new rules early
 
 As a developer, I want to use the rules that may be added to the recommended preset in the next major release, so that I can check them on my repository before they become recommended.
@@ -229,6 +259,19 @@ Secretlint reads the option and decides whether the pattern is a part of the lin
 - The option must be a boolean option of the rule. In TypeScript, a name that is not a boolean option of the rule is a type error.
 - The condition is a small subset of an expression language such as CEL: a reference to an option, and `!`. Other operators, such as `&&`, `||`, and `==`, are not supported. If one is needed, it is added to the condition, and a Secretlint that does not know it stops with an error instead of reading the condition in another way.
 
+##### User-defined patterns
+
+`@secretlint/secretlint-rule-pattern` reports the matches of the patterns that the configuration file defines in its options.
+Secretlint reads these options as patterns, in the same way as the patterns that the built-in rules declare: the patterns are data, and Secretlint runs them.
+
+- An entry without `patterns`, `pattern`, and `filePathGlobs` is not allowed, as before. When the options have no entry, the rule is not a part of the lint: it adds no keyword, and no file runs it.
+- An entry may have `keywords`, a list of ASCII strings. The pattern runs only on a file that contains one of them, matched ASCII case-insensitively. Every match of the pattern must contain one of the keywords; a match without one is not reported. A non-ASCII or empty keyword is an error. `keywords: []` runs the pattern on every file.
+- When an entry has no `keywords`, Secretlint finds strings that every match of a pattern must contain, and uses them as the keywords of that pattern. It only uses a string when it is sure: when a pattern has a part that it does not understand, the pattern has no keywords and runs on every file, as before.
+- The keywords are found only in the ASCII letters of a pattern. A pattern with the flag `i` also matches some non-ASCII letters that fold to an ASCII letter, such as the Kelvin sign (U+212A) for `k`. Such a match is not reported when the file has no keyword in ASCII. Secretlint is a linter and prefers no false positive to no false negative, so this is accepted.
+- An entry with only `filePathGlobs` reports a file whose path matches, without keywords and without matching its content.
+- The rule id, the message ID `PATTERN`, the message, `allows`, and `filePathGlobs` of an entry keep their meaning.
+- `--profile` shows each pattern of the rule by its name, and ` (no keywords)` after the name of a pattern that runs on every file.
+
 ##### Documentation
 
 Each rule has a README that describes why it reports values, its messages, and its options.
@@ -242,6 +285,10 @@ When the condition of a pattern is not a string, or is a string other than `opti
 ##### The value of the option of a condition is not a boolean
 
 When the value of the option that a condition names is set and is not `true` or `false`, such as the string `"true"`, Secretlint stops with an error that names the rule and the option, and no file is linted. Secretlint does not read another value as `true` or `false`.
+
+##### A keyword of a user-defined pattern is not valid
+
+When `keywords` of an entry of `@secretlint/secretlint-rule-pattern` is not a list of non-empty ASCII strings, Secretlint stops with an error that names the entry, and no file is linted.
 
 ### Rule presets
 
