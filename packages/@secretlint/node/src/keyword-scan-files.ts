@@ -59,10 +59,15 @@ export const scanFilesForKeywords = ({
     plan,
     filePathList,
     shared,
+    onClaim,
 }: {
     plan: KeywordScanPlan;
     filePathList: readonly string[];
     shared: SharedArrayBuffer;
+    /**
+     * It is called before the thread claims the next files, with the number of the files that the threads claimed
+     */
+    onClaim?: (claimedCount: number) => void;
 }): FileKeywordScans => {
     const scanner = createKeywordScanner(plan);
     const nextIndex = new Int32Array(shared, 0, 1);
@@ -98,6 +103,7 @@ export const scanFilesForKeywords = ({
         }
     };
     while (true) {
+        onClaim?.(Math.min(Atomics.load(nextIndex, 0), filePathList.length));
         const start = Atomics.add(nextIndex, 0, CLAIM_SIZE);
         if (start >= filePathList.length) {
             return { fileIndexes, scans };

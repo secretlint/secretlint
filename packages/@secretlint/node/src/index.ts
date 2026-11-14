@@ -13,7 +13,7 @@ import path from "node:path";
 import { secretLintProfiler } from "@secretlint/profiler";
 import debug0 from "debug";
 import { FileScanState, type FileKeywordScan } from "./keyword-scan-files.js";
-import { getKeywordScanThreads, type ParallelKeywordScan, scanKeywordsInParallel } from "./parallel-keyword-scan.js";
+import { getMaxKeywordScanThreads, type ParallelKeywordScan, scanKeywordsInParallel } from "./parallel-keyword-scan.js";
 
 const debug = debug0("@secretlint/node");
 export type SecretLintEngineOptionsBase = {
@@ -235,16 +235,16 @@ const scanKeywordsBeforeLint = async ({
     if (options.formatter === "mask-result" || secretLintProfiler.isEnabled) {
         return undefined;
     }
-    const threads = getKeywordScanThreads(filePathList.length);
-    if (threads <= 1) {
+    const maxThreads = getMaxKeywordScanThreads();
+    if (maxThreads <= 1) {
         return undefined;
     }
     const plan = getKeywordScanPlan({ config, locale: options.locale, contentType: "text" });
     if (plan === undefined) {
         return undefined;
     }
-    const scan = await scanKeywordsInParallel({ plan, filePathList, threads });
-    debug("executeOnFiles keyword scan threads: %d, files with keywords: %d", threads, scan.scans.size);
+    const scan = await scanKeywordsInParallel({ plan, filePathList, maxThreads });
+    debug("executeOnFiles files with keywords: %d", scan.scans.size);
     return { ...scan, skipsNoKeyword: plan.requiresKeyword };
 };
 

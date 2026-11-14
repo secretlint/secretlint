@@ -13,7 +13,7 @@ import {
     getFileScanStates,
     scanFilesForKeywords,
 } from "../src/keyword-scan-files.js";
-import { scanKeywordsInParallel } from "../src/parallel-keyword-scan.js";
+import { estimateWorkerCount, scanKeywordsInParallel } from "../src/parallel-keyword-scan.js";
 
 const configFileJSON = { rules: [{ id: "@secretlint/secretlint-rule-example" }] };
 const FILE_COUNT = 200;
@@ -93,10 +93,26 @@ describe("parallel keyword scan", () => {
     });
     it("should scan all files even if the workers fail", async () => {
         const plan = await loadPlan();
-        // The test runs the source, and the source has no file of the worker: the workers fail to start
-        const result = await scanKeywordsInParallel({ plan, filePathList: files.filePathList, threads: 3 });
+        // The test runs the source, and the source has no file of the worker: a started worker fails
+        const result = await scanKeywordsInParallel({ plan, filePathList: files.filePathList, maxThreads: 3 });
         assert.deepStrictEqual([...result.scans.keys()], files.secretIndexes);
         assert.ok(result.states.every((state) => state !== FileScanState.NotScanned));
+    });
+    it("should start workers only if the rest of the scan is longer than the start-up of a worker", () => {
+        const estimate = (elapsed: number, claimedCount: number, restCount: number, maxThreads = 8) => {
+            return estimateWorkerCount({ elapsed, claimedCount, restCount, maxThreads });
+        };
+        // 20ms for 1,000 files: the rest of 1,000 files takes 20ms
+        assert.strictEqual(estimate(20, 1000, 1000), 0);
+        // the rest of 9,000 files takes 180ms: a worker
+        assert.strictEqual(estimate(20, 1000, 9000), 1);
+        // the rest takes 2s: all threads
+        assert.strictEqual(estimate(20, 1000, 100000), 7);
+        assert.strictEqual(estimate(20, 1000, 100000, 2), 1);
+        assert.strictEqual(estimate(20, 1000, 100000, 1), 0);
+        // few large files are the same as many small files
+        assert.strictEqual(estimate(200, 32, 32), 2);
+        assert.strictEqual(estimate(20, 0, 100), 0);
     });
     it("should output the same results as the lint without the parallel scan", async () => {
         const execute = async (threads: number) => {

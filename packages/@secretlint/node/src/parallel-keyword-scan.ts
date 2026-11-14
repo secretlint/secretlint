@@ -11,6 +11,8 @@
  * - A file is skipped only if a thread read it and found no keyword, and no rule runs without a keyword.
  * - The scan of a file is used only if the main thread reads the same size of content.
  * - If a thread fails, its files are linted as before.
+ *
+ * The number of the threads is decided while scanning, from the time that the scan takes.
  */
 import os from "node:os";
 import { Worker } from "node:worker_threads";
@@ -26,10 +28,15 @@ import debug0 from "debug";
 
 const debug = debug0("@secretlint/node");
 /**
- * A thread is worth its start-up time only for this many files
+ * The time to start a worker thread, in milliseconds. It is a measured value on a 4 vCPU machine: 70-100ms.
+ * A worker is started only if the rest of the scan takes longer than this.
  */
-const FILES_PER_THREAD = 2000;
-const MAX_THREADS = 4;
+const WORKER_START_COST = 100;
+/**
+ * The main thread scans alone for this time twice, in milliseconds, and then estimates the rest of the scan
+ * from the second time. The first time is not used: the scan is slow until the runtime has optimized it.
+ */
+const ESTIMATE_INTERVAL = 20;
 
 export type ParallelKeywordScan = {
     /**
@@ -42,10 +49,10 @@ export type ParallelKeywordScan = {
     scans: Map<number, FileKeywordScan>;
 };
 /**
- * The number of the threads for the files, including the main thread.
+ * The max number of the threads, including the main thread.
  * `SECRETLINT_KEYWORD_SCAN_THREADS` overrides it. It is for the measurement of this proof of concept.
  */
-export const getKeywordScanThreads = (fileCount: number): number => {
+export const getMaxKeywordScanThreads = (): number => {
     const specified = Number(process.env.SECRETLINT_KEYWORD_SCAN_THREADS);
     if (Number.isInteger(specified) && specified >= 1) {
         return specified;
@@ -54,42 +61,101 @@ export const getKeywordScanThreads = (fileCount: number): number => {
     if (process.versions.bun !== undefined) {
         return 1;
     }
-    return Math.max(1, Math.min(MAX_THREADS, os.availableParallelism(), Math.floor(fileCount / FILES_PER_THREAD)));
+    return os.availableParallelism();
+};
+/**
+ * The number of the workers to start, from the time that the main thread has taken.
+ * It does not use the number of the files: the time depends on the size of the files and the speed of the disk.
+ */
+export const estimateWorkerCount = ({
+    elapsed,
+    claimedCount,
+    restCount,
+    maxThreads,
+}: {
+    /**
+     * The time that the main thread took for `claimedCount` files, in milliseconds
+     */
+    elapsed: number;
+    claimedCount: number;
+    /**
+     * The number of the files that no thread has claimed
+     */
+    restCount: number;
+    maxThreads: number;
+}): number => {
+    if (claimedCount === 0) {
+        return 0;
+    }
+    const restTime = (elapsed / claimedCount) * restCount;
+    // Each worker should have work for longer than its start-up time
+    return Math.max(0, Math.min(maxThreads - 1, Math.floor(restTime / WORKER_START_COST)));
+};
+
+const startWorker = (workerData: unknown): Promise<FileKeywordScans | undefined> => {
+    return new Promise<FileKeywordScans | undefined>((resolve) => {
+        // A failed worker resolves with undefined: the files that it claimed are linted without the scan
+        try {
+            const worker = new Worker(new URL("./keyword-scan-worker.js", import.meta.url), { workerData });
+            worker.once("message", (result: FileKeywordScans) => {
+                resolve(result);
+                void worker.terminate();
+            });
+            worker.once("error", (error) => {
+                debug("keyword scan worker error: %o", error);
+                resolve(undefined);
+            });
+            worker.once("exit", () => resolve(undefined));
+        } catch (error) {
+            debug("keyword scan worker can not start: %o", error);
+            resolve(undefined);
+        }
+    });
 };
 
 export const scanKeywordsInParallel = async ({
     plan,
     filePathList,
-    threads,
+    maxThreads,
 }: {
     plan: KeywordScanPlan;
     filePathList: readonly string[];
-    threads: number;
+    maxThreads: number;
 }): Promise<ParallelKeywordScan> => {
     const shared = createSharedScanState(filePathList.length);
     const workerData = { plan, filePathList, shared };
-    const workerResults = Array.from({ length: threads - 1 }, () => {
-        return new Promise<FileKeywordScans | undefined>((resolve) => {
-            // A failed worker resolves with undefined: the files that it claimed are linted without the scan
-            try {
-                const worker = new Worker(new URL("./keyword-scan-worker.js", import.meta.url), { workerData });
-                worker.once("message", (result: FileKeywordScans) => {
-                    resolve(result);
-                    void worker.terminate();
-                });
-                worker.once("error", (error) => {
-                    debug("keyword scan worker error: %o", error);
-                    resolve(undefined);
-                });
-                worker.once("exit", () => resolve(undefined));
-            } catch (error) {
-                debug("keyword scan worker can not start: %o", error);
-                resolve(undefined);
+    let workerResults: Promise<FileKeywordScans | undefined>[] | undefined;
+    let sampleTime = performance.now();
+    let sampleCount = -1;
+    // The main thread starts the scan alone. The threads claim files from the same list,
+    // so workers can join later: start them once, when the time so far tells that the rest is worth it
+    const mainResult = scanFilesForKeywords({
+        ...workerData,
+        onClaim: (claimedCount) => {
+            if (workerResults !== undefined) {
+                return;
             }
-        });
+            const now = performance.now();
+            const elapsed = now - sampleTime;
+            if (elapsed < ESTIMATE_INTERVAL) {
+                return;
+            }
+            if (sampleCount === -1) {
+                sampleTime = now;
+                sampleCount = claimedCount;
+                return;
+            }
+            const workerCount = estimateWorkerCount({
+                elapsed,
+                claimedCount: claimedCount - sampleCount,
+                restCount: filePathList.length - claimedCount,
+                maxThreads,
+            });
+            debug("keyword scan workers: %d (%dms for %d files)", workerCount, elapsed, claimedCount - sampleCount);
+            workerResults = Array.from({ length: workerCount }, () => startWorker(workerData));
+        },
     });
-    // The main thread scans too, until no file is left. The workers start while it scans
-    const results = [scanFilesForKeywords(workerData), ...(await Promise.all(workerResults))];
+    const results = [mainResult, ...(await Promise.all(workerResults ?? []))];
     const scans = new Map<number, FileKeywordScan>();
     for (const result of results) {
         if (result === undefined) {
