@@ -302,15 +302,14 @@ The rule states the guard as data, as it states keywords, and Secretlint checks 
 - Its syntax is a small subset of the syntax of regular expressions: one set of ASCII characters and one count. The set is written with `[` and `]`, and the count is `{n,}`: it says how many characters follow at least, and a guard states nothing more. A count that reads as a most or as an exact number, such as `{32,40}` or `{40}`, is not supported, because the guard would not check what the count says.
 - The syntax is strict: one thing has one way to write it. A short form that means the same as another form, such as `+` for `{1,}` or `\d` for `0-9`, is not supported.
 - Other syntax, such as a set with `^`, a group, or a second set, is not supported, and the object has no other property. If more is needed, it is added to the syntax or as a property with a new name, and a Secretlint that does not know it does not read the guard in another way.
-- A keyword object can also state that its keyword is case-sensitive, with or without a guard. So a pattern states it for one keyword, and not only for all its keywords at once. For a guarded keyword, it is for both the keyword and the set.
-- A keyword object that does not state it follows the pattern: case-sensitive when the pattern declares its keywords as case-sensitive, and without the case of ASCII letters otherwise. The declaration of the pattern keeps its meaning.
+- A keyword object can also state that its keyword is case-sensitive, with or without a guard. For a guarded keyword, it is for both the keyword and the set.
+- The keyword object is the only place for it. A keyword that is a string, and a keyword object that does not state it, are matched without the case of ASCII letters. A pattern has no declaration for all its keywords at once, so the case of a keyword has one way to write it.
 - A keyword object has a guard, the statement about the case, or both. An object with only the keyword is not supported, because the string says the same.
 - Every match of the pattern must contain one of its keywords, and for a guarded keyword also the characters that meet the guard. This is the same duty as for keywords, and the tests of the rule check it. See [Custom rules](../custom-rules/requirements.md).
 - A pattern can have strings and objects together in its keywords. The pattern runs where one of them is found.
 - A guarded keyword counts as a keyword for the "line" scope.
 - A guard is for a pattern. `meta.keywords` of a rule without patterns has no guard.
 - A user can write a guarded keyword. The object is data, so it can be in a configuration file: `keywords` of an entry of `@secretlint/secretlint-rule-pattern` has the same items. See "User-defined patterns".
-- A custom rule with a guarded keyword gives the same results on a Secretlint that does not know guarded keywords. Such a Secretlint does not use the keywords of that pattern, and runs the pattern for all content, so it is only slower.
 
 ##### Documentation
 
@@ -332,7 +331,7 @@ When `keywords` of an entry of `@secretlint/secretlint-rule-pattern` is not a li
 
 ##### A guarded keyword is not supported
 
-When an item of the keywords is an object, and it does not have a keyword as a string, has neither a guard nor a statement about the case, has a guard that is not a string or a statement about the case that is not `true` or `false`, has another property, has a character that is not ASCII, or has a guard that the syntax does not support, Secretlint stops with an error that names the rule and the item, and no file is linted.
+When an item of the keywords is an object, and it does not have a keyword as a string, has neither a guard nor a statement about the case, has a guard that is not a string or a statement about the case that is not `true`, has another property, has a character that is not ASCII, or has a guard that the syntax does not support, Secretlint stops with an error that names the rule and the item, and no file is linted.
 A count that the guard does not check as written, such as `{40}` or `{32,40}`, is an error, and the message says to write `{40,}` or `{32,}`.
 A second way to write the same guard, such as `+` or `\d`, is an error, and the message gives the supported form.
 A count that makes the guard always true, such as `*`, `?`, or `{0,}`, is also an error.
