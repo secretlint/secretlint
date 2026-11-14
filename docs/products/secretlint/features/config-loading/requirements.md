@@ -67,13 +67,7 @@ Scenario: When no configuration is found, the recommend preset runs
 
 - Given: No `.secretlintrc*` file and no `secretlint` field of `package.json` exist in the current directory or its parent directories, no option gives a configuration, and `token.txt` has a GitHub token.
 - When: The developer runs `secretlint "**/*"`.
-- Then: The result has a message of the GitHub rule of `@secretlint/secretlint-rule-preset-recommend`, and the exit status is 1.
-
-Scenario: When the default configuration is used, Secretlint says so on stderr
-
-- Given: No configuration is found, as above.
-- When: The developer runs `secretlint "**/*" --format json`.
-- Then: stderr has one notice that no configuration file was found, that the recommended rules are used, and that `secretlint --init` creates a configuration file. stdout has only the JSON results.
+- Then: The result has a message of the GitHub rule of `@secretlint/secretlint-rule-preset-recommend`, and the exit status is 1. Nothing is written to stderr.
 
 Scenario: When the default configuration is used and no secret is found, Secretlint succeeds
 
@@ -205,7 +199,7 @@ The option gives the configuration as a JSON string. No file is looked for, and 
 
 When no option gives a configuration and the search finds nothing up to the root, Secretlint uses the default configuration: the recommend preset `@secretlint/secretlint-rule-preset-recommend` with its default options.
 It is the same configuration that `secretlint --init` writes, so creating the file with `--init` does not change the results.
-Secretlint writes one notice to stderr that says no configuration file was found, the recommended rules are used, and `secretlint --init` creates a configuration file. The notice does not change the results or the exit status, and stdout has only the results.
+Secretlint writes no notice about the default configuration, like other linters that run default rules. The output is the same as with the file that `--init` writes. The `--debug` log says that the default configuration is used.
 The same applies to every distribution that uses the Node.js engine: the npm package, the Docker image, and the single-executable binary.
 
 The reason for the default is that the recommend preset is part of Secretlint itself, not a separate package to install, and it is designed to report far fewer false positives than secret scanners in general.

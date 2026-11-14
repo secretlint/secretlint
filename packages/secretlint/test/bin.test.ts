@@ -104,7 +104,7 @@ describe("secretlint bin", () => {
         afterEach(() => {
             fs.rmSync(temporaryDirectory, { recursive: true, force: true });
         });
-        it("lints with the recommend preset and writes a notice to stderr", async () => {
+        it("lints with the recommend preset", async () => {
             // a GitHub token that is not real: the rule checks only its format
             fs.writeFileSync(path.join(temporaryDirectory, "token.txt"), `token=ghp_${"A".repeat(36)}`);
             const { exitCode, stdout, stderr } = await runBin(["--format=json", "token.txt"], temporaryDirectory);
@@ -112,32 +112,20 @@ describe("secretlint bin", () => {
             const results = JSON.parse(stdout);
             assert.strictEqual(results[0].messages[0].ruleId, "@secretlint/secretlint-rule-github");
             assert.strictEqual(results[0].messages[0].ruleParentId, "@secretlint/secretlint-rule-preset-recommend");
-            assert.match(stderr, /No configuration file was found/);
-            assert.match(stderr, /secretlint --init/);
+            assert.strictEqual(stderr, "");
         });
         it("succeeds when no secret is found", async () => {
             fs.writeFileSync(path.join(temporaryDirectory, "input.txt"), "no secret");
             const { exitCode, stdout, stderr } = await runBin(["input.txt"], temporaryDirectory);
             assert.strictEqual(exitCode, 0, stderr);
             assert.strictEqual(stdout, "");
-            assert.match(stderr, /No configuration file was found/);
+            assert.strictEqual(stderr, "");
         });
         it("fails when the file of --secretlintrc is not found", async () => {
             fs.writeFileSync(path.join(temporaryDirectory, "input.txt"), "no secret");
             const { exitCode, stderr } = await runBin(["--secretlintrc=missing.json", "input.txt"], temporaryDirectory);
             assert.strictEqual(exitCode, 2);
             assert.match(stderr, /secretlint config file is not found: .*missing\.json/);
-            assert.doesNotMatch(stderr, /No configuration file was found/);
-        });
-        it("does not write the notice when a configuration file exists", async () => {
-            fs.writeFileSync(
-                path.join(temporaryDirectory, ".secretlintrc.json"),
-                JSON.stringify({ rules: [{ id: "@secretlint/secretlint-rule-preset-recommend" }] }),
-            );
-            fs.writeFileSync(path.join(temporaryDirectory, "input.txt"), "no secret");
-            const { exitCode, stderr } = await runBin(["input.txt"], temporaryDirectory);
-            assert.strictEqual(exitCode, 0, stderr);
-            assert.strictEqual(stderr, "");
         });
     });
 });

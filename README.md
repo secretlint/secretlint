@@ -73,7 +73,7 @@ You can run Secretlint on any file or directory like this:
 npx secretlint "**/*"
 ```
 
-Without a configuration file, Secretlint uses the [recommended rules](./docs/rules/preset-recommend.md) and writes a notice to stderr.
+Without a configuration file, Secretlint uses the [recommended rules](./docs/rules/preset-recommend.md).
 To choose the rules and their options, set up a configuration file:
 
 ```

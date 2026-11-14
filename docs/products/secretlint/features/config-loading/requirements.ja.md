@@ -67,13 +67,7 @@ Scenario: 設定が見つからないと、recommendプリセットが動く
 
 - Given: カレントディレクトリにも親ディレクトリにも、`.secretlintrc*`ファイルと`package.json`の`secretlint`フィールドがなく、オプションでも設定を渡しておらず、`token.txt`にGitHubのトークンがある。
 - When: 開発者が`secretlint "**/*"`を実行する。
-- Then: 結果に`@secretlint/secretlint-rule-preset-recommend`のGitHubルールのメッセージがあり、終了ステータスは1になる。
-
-Scenario: 既定の設定を使うと、Secretlintはそのことをstderrに出す
-
-- Given: 上と同じく、設定が見つからない。
-- When: 開発者が`secretlint "**/*" --format json`を実行する。
-- Then: stderrに、設定ファイルが見つからなかったこと、recommendのルールを使うこと、`secretlint --init`で設定ファイルを作れることを伝える通知が1つ出る。stdoutにはJSONの結果だけが出る。
+- Then: 結果に`@secretlint/secretlint-rule-preset-recommend`のGitHubルールのメッセージがあり、終了ステータスは1になる。stderrには何も出ない。
 
 Scenario: 既定の設定で秘密情報が見つからなければ、Secretlintは成功する
 
@@ -205,7 +199,7 @@ Secretlintはカレントディレクトリで次のものをこの順に探し�
 
 オプションで設定を渡しておらず、ルートまで探しても何も見つからないとき、Secretlintは既定の設定を使います。既定の設定は、recommendプリセット`@secretlint/secretlint-rule-preset-recommend`を既定のオプションで使うものです。
 これは`secretlint --init`が書き出す設定と同じなので、`--init`で設定ファイルを作っても結果は変わりません。
-Secretlintは、設定ファイルが見つからなかったこと、recommendのルールを使うこと、`secretlint --init`で設定ファイルを作れることを伝える通知を1つstderrに出します。通知は結果と終了ステータスを変えず、stdoutには結果だけが出ます。
+既定のルールで動くほかのlintツールと同じく、Secretlintは既定の設定についての通知を出しません。出力は`--init`が書き出すファイルを使ったときと同じです。`--debug`のログには、既定の設定を使ったことが出ます。
 Node.jsのエンジンを使うすべての配布形態、つまりnpmパッケージ、Dockerイメージ、単一実行ファイルで同じ動作になります。
 
 既定にする理由は、recommendプリセットが別にインストールするパッケージではなくSecretlint自体の一部であり、一般的な秘密情報のスキャナーよりも誤検知がはるかに少なくなるように設計されているからです。

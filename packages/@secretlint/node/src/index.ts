@@ -77,10 +77,6 @@ export type SecretLintEngineOptionsConfigFileJSON = SecretLintEngineOptionsBase 
 };
 
 export type SecretLintEngineOptions = SecretLintEngineOptionsConfigFilePath | SecretLintEngineOptionsConfigFileJSON;
-/**
- * Where the config of the engine came from
- */
-export type SecretLintConfigSource = "file" | "json" | "default";
 
 const isConfigFileJSON = (v: any): v is SecretLintEngineOptionsConfigFileJSON => {
     return "configFileJSON" in v && v.configFileJSON !== undefined;
@@ -435,17 +431,18 @@ export const createEngine = async (engineOptions: SecretLintEngineOptions) => {
                 configDescriptor: options.configFileJSON,
             });
             // config JSON has no file path to report messages for
-            return { ...result, configFilePath: undefined, configSource: "json" as const };
+            return { ...result, configFilePath: undefined };
         }
         const loadConfigResult = await loadConfig({
             cwd: options.cwd,
             configFilePath: options.configFilePath,
         });
-        debug("Loaded ConfigFilePath: %s", loadConfigResult.configFilePath);
-        return {
-            ...loadConfigResult,
-            configSource: loadConfigResult.isDefault ? ("default" as const) : ("file" as const),
-        };
+        if (loadConfigResult.isDefault) {
+            debug("No config is found. Use the default config: %O", loadConfigResult.configDescriptor);
+        } else {
+            debug("Loaded ConfigFilePath: %s", loadConfigResult.configFilePath);
+        }
+        return loadConfigResult;
     })();
     secretLintProfiler.mark({
         type: "@node>load-config::end",
@@ -467,13 +464,6 @@ export const createEngine = async (engineOptions: SecretLintEngineOptions) => {
               ]
             : [];
     return {
-        /**
-         * Where the config came from
-         * - "file": a config file that was found or given by configFilePath
-         * - "json": configFileJSON
-         * - "default": no config was found, and the recommend preset is used
-         */
-        configSource: loadedResult.configSource satisfies SecretLintConfigSource,
         /**
          * Lint a content and return the formatted results
          * @param content

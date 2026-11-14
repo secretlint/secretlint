@@ -45,19 +45,9 @@ Node.jsのモジュール解決と、[ルールとルールプリセット](../r
 
 構文エラーなど、見つかったファイルのエラーはこれまでどおり`rcFile()`が投げるので、壊れた設定が既定の設定に置き換わることはありません。
 
-### 既定の設定の通知
+Dockerイメージは、ルートまでの探索を利用しています。recommendの設定を`/.secretlintrc.json`にコピーしているため、自分の設定がないディレクトリでもそのファイルが見つかります。この変更ではこのファイルを残します（デプロイに関する特記事項を参照）。
 
-`createEngine()`が返すエンジンは`configSource`を持ちます。ファイルが見つかったか指定されたときは`"file"`、`configFileJSON`のときは`"json"`、既定の設定のときは`"default"`です。
-`secretlint`パッケージの`runSecretLint()`は、通知があるときだけ文字列の一覧`notices`を返します。`configSource`が`"default"`のときは、次の通知が入ります。
-
-```
-secretlint: No configuration file was found. The recommended rules (@secretlint/secretlint-rule-preset-recommend) are used. Run `secretlint --init` to create .secretlintrc.json.
-```
-
-CLIの入り口は、stdoutを書く前に、各通知を`console.error()`で書きます。通知は結果のメッセージではないので、フォーマッター、終了ステータス、`--output`、`--format mask-result`には影響しません。
-`@secretlint/node`を使うプログラムは自分で出力を決めるので、エンジン自身はstderrに書きません。
-
-Dockerイメージは、ルートまでの探索を利用しています。recommendの設定を`/.secretlintrc.json`にコピーしているため、自分の設定がないディレクトリでもそのファイルが見つかり、通知は出ません。この変更ではこのファイルを残します（デプロイに関する特記事項を参照）。
+`@secretlint/node`の`createEngine()`は、既定の設定を使ったことを`--debug`のログに書くだけで、エンジンとCLIはほかに変わりません。通知は出さないので、CLI、その結果の型、エンジンのAPIは変わりません。
 
 ### ルールIDの解決
 
@@ -122,7 +112,6 @@ sequenceDiagram
 - `loadConfigDescriptor({ cwd, configFilePath })`は、ルールを読み込まずに`{ ok, configDescriptor, configFilePath, isDefault }`を返します。同じ場合に例外を投げます。
 - `DEFAULT_CONFIG_DESCRIPTOR`は、設定が見つからないときに使う設定です。
 - 結果の`configFilePath`の型は`string`から`string | undefined`に変わります。結果を使うプログラムにとってはAPIの破壊的変更なので、メジャーバージョンでリリースします。
-- `@secretlint/node`のエンジンは`configSource: "file" | "json" | "default"`を持ちます。`secretlint`の`runSecretLint()`と`run()`は`SecretLintRunResult`、つまり`exitStatus`、`stdout`、`stderr`、`notices?: string[]`を返します。CLIと単一実行ファイルは、通知をstderrに書きます。
 - `loadPackagesFromConfigDescriptor({ configDescriptor, node_moduleDir, testReplaceDefinitions })`は、読み込み済みの設定の記述から同じ処理をします。
 - `node_moduleDir`は、`SecretLintModuleResolver`がパッケージ名と結合する基準のディレクトリです。
 
@@ -155,8 +144,8 @@ Dockerイメージは、Node.jsなしで使える配布形態として引き続�
 - **設定が見つからないときのエラーを残し、メッセージだけを改善する:** 採用しませんでした。recommendプリセットはSecretlintの一部で、誤検知が少なくなるように設計されているので、すべての利用者に先にファイルを作らせる負担のほうが、それで防げるものより大きいからです。
 - **オプションを付けたときだけ既定の設定を使う:** オプションを知っている利用者なら`--init`を使えるので、最初の実行の助けにならないため、採用しませんでした。
 - **既定の設定を読み込みではなく`@secretlint/node`で決める:** エディターとの連携など、`loadConfig()`を使うすべてのプログラムがCLIと同じ設定を得られるように、採用しませんでした。
+- **stderrに通知を出す:** 採用しませんでした（azu、2026-11-14）。既定の設定は`--init`のファイルと同じなので利用者が知る必要は少なく、oxlint、Biome、Ruffも何も出さず、`runSecretLint()`からCLIへ通知を渡すと公開APIが増えるからです。
 - **通知を`EMPTY_RULES`のように結果のメッセージとして報告する:** 報告先のファイルがなく、JSON、SARIF、`mask-result`の出力にも現れてしまうため、採用しませんでした。
-- **oxlintのように通知を出さない:** 設定ファイルで選んだルールではないことと、設定ファイルの作り方を利用者が分かるように、採用しませんでした。
 
 ## 未決事項
 

@@ -45,19 +45,9 @@ The default configuration goes through `loadPackagesFromConfigDescriptor()` like
 
 Errors of a found file, such as a syntax error, are thrown by `rcFile()` as before, so a broken configuration never falls back to the default.
 
-### The notice of the default configuration
+The Docker image relies on the search up to the root: it copies the recommend configuration to `/.secretlintrc.json`, so a directory without its own configuration finds that file. This change keeps the file, see Deployment notes.
 
-The engine returned by `createEngine()` has `configSource`: `"file"` when a file was found or given, `"json"` for `configFileJSON`, and `"default"` for the default configuration.
-`runSecretLint()` of the `secretlint` package returns `notices`, a list of strings, only when there is a notice, and has this one when `configSource` is `"default"`:
-
-```
-secretlint: No configuration file was found. The recommended rules (@secretlint/secretlint-rule-preset-recommend) are used. Run `secretlint --init` to create .secretlintrc.json.
-```
-
-The CLI entry point writes each notice with `console.error()` before it writes stdout. The notice is not a message of the results, so the formatters, the exit status, `--output`, and `--format mask-result` are not affected.
-The engine itself does not write to stderr, because programs that use `@secretlint/node` decide their own output.
-
-The Docker image relies on the search up to the root: it copies the recommend configuration to `/.secretlintrc.json`, so a directory without its own configuration finds that file, and no notice is shown. This change keeps the file, see Deployment notes.
+`createEngine()` of `@secretlint/node` writes the use of the default configuration to the `--debug` log, and nothing else changes in the engine or the CLI. No notice is written, so the CLI, its result type, and the engine API do not change.
 
 ### Resolving rule ids
 
@@ -122,7 +112,6 @@ sequenceDiagram
 - `loadConfigDescriptor({ cwd, configFilePath })` returns `{ ok, configDescriptor, configFilePath, isDefault }` without loading the rules, and throws in the same case.
 - `DEFAULT_CONFIG_DESCRIPTOR` is the configuration used when none is found.
 - The type of `configFilePath` in the results changes from `string` to `string | undefined`. This is a breaking change of the API for programs that use the results, and it is released in a major version.
-- The engine of `@secretlint/node` has `configSource: "file" | "json" | "default"`. `runSecretLint()` and `run()` of `secretlint` return `SecretLintRunResult`: `exitStatus`, `stdout`, `stderr`, and `notices?: string[]`. The CLI and the single-executable binary write the notices to stderr.
 - `loadPackagesFromConfigDescriptor({ configDescriptor, node_moduleDir, testReplaceDefinitions })` does the same from a descriptor that is already read.
 - `node_moduleDir` is the base directory that `SecretLintModuleResolver` joins with the package name.
 
@@ -155,8 +144,8 @@ The Docker image is still needed as the distribution without Node.js. It keeps `
 - **Keep the error when no configuration is found, and only improve its message:** It was not chosen. The recommend preset is part of Secretlint and designed for few false positives, so making every user create a file first costs more than it protects.
 - **Use the default configuration only with an option:** It was not chosen, because a user who knows the option can run `--init` instead, so it would not help the first run.
 - **Decide the default configuration in `@secretlint/node` instead of the loader:** It was not chosen, so that every program that uses `loadConfig()`, such as editor integrations, gets the same configuration as the CLI.
+- **Write a notice to stderr:** It was not chosen (azu, 2026-11-14). The default configuration is the same as the file of `--init`, so a user rarely needs to know, oxlint, Biome, and Ruff write nothing, and passing a notice from `runSecretLint()` to the CLI would add a public API.
 - **Report the notice as a message of the results, like `EMPTY_RULES`:** It was not chosen. There is no file to report it for, and it would appear in JSON, SARIF, and `mask-result` output.
-- **Show no notice, like oxlint:** It was not chosen, so that a user can tell that the rules were not chosen by a configuration file and how to create one.
 
 ## Open questions
 

@@ -1,5 +1,5 @@
 import { parseArgs } from "node:util";
-import { runSecretLint, SecretLintOptions, SecretLintRunResult } from "./index.js";
+import { runSecretLint, SecretLintOptions } from "./index.js";
 import { runConfigCreator } from "./create-secretlintrc.js";
 import { secretLintProfiler } from "@secretlint/profiler";
 import { createProfileReport, formatProfileReport } from "./profile-report.js";
@@ -238,7 +238,10 @@ const readCliOptions = async ({ input = cli.input, flags = cli.flags }): Promise
         };
     }
 };
-export const run = async (input = cli.input, flags = cli.flags): Promise<SecretLintRunResult> => {
+export const run = async (
+    input = cli.input,
+    flags = cli.flags,
+): Promise<{ exitStatus: number; stdout: string | null; stderr: Error | null }> => {
     if (flags.help) {
         return {
             exitStatus: 0,
