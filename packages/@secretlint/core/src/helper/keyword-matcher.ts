@@ -2,8 +2,9 @@
  * Find where keywords appear in a text or in UTF-8 bytes, in a single pass.
  *
  * This is the Aho-Corasick algorithm.
- * Keywords are matched ASCII case-insensitively by default: "a-z" and "A-Z" are the same character.
- * A case-sensitive keyword is found case-insensitively first, and then compared with the input.
+ * Keywords are always matched ASCII case-insensitively: "a-z" and "A-Z" are the same character.
+ * A keyword can have a guard: a set of ASCII characters and a least count of them after the keyword.
+ * The guard is checked in the scan loop, and a place whose guard is not met is not recorded.
  * Non-ASCII characters never match a keyword character.
  * Keywords are ASCII only, so scanning the UTF-8 bytes finds the same keywords as scanning the decoded text.
  *
@@ -11,6 +12,14 @@
  * instead of running each rule's regular expressions over the whole content.
  * Secret scanners such as gitleaks and TruffleHog use the same keyword pre-filter.
  */
+import {
+    createGuardTable,
+    isGuardMetInBytes,
+    isGuardMetInText,
+    type KeywordGuard,
+    keywordGuardKey,
+} from "./keyword-guard.js";
+
 /**
  * The result of a scan. It is not changed after the scan.
  */
@@ -33,10 +42,14 @@ export type KeywordHits = {
 };
 export type KeywordMatcher = {
     /**
-     * The keywords. `found` of the hits is in this order.
-     * A case-insensitive keyword is lower-cased.
+     * The keywords, lower-cased. `found` of the hits is in this order.
+     * A keyword can be in the list more than once, with different guards.
      */
     readonly keywords: readonly string[];
+    /**
+     * `guards[i]` is the guard of `keywords[i]`, or undefined
+     */
+    readonly guards: readonly (KeywordGuard | undefined)[];
     /**
      * Return `found[i] === 1` if `keywords[i]` appears in the text.
      */
@@ -51,7 +64,13 @@ export type KeywordMatcher = {
      * Return the indexes of the keywords that end at the state
      */
     keywordsOfState(state: number): readonly number[];
+    /**
+     * For each keyword with a guard, the number of the places where the keyword was found
+     * and where its guard was met. It is counted only if the matcher was created with `countGuards: true`.
+     */
+    guardCounts(): KeywordGuardCount[];
 };
+export type KeywordGuardCount = { keywordIndex: number; found: number; met: number };
 
 const ASCII_SIZE = 128;
 const BYTE_SIZE = 256;
@@ -61,7 +80,7 @@ const INITIAL_POSITIONS_SIZE = 64;
  * Normalize a keyword for matching.
  * Return `undefined` if the keyword can not be matched by {@link KeywordMatcher}.
  */
-export const normalizeKeyword = (keyword: unknown, caseSensitive: boolean = false): string | undefined => {
+export const normalizeKeyword = (keyword: unknown): string | undefined => {
     if (typeof keyword !== "string" || keyword.length === 0) {
         return undefined;
     }
@@ -70,17 +89,18 @@ export const normalizeKeyword = (keyword: unknown, caseSensitive: boolean = fals
             return undefined;
         }
     }
-    return caseSensitive ? keyword : keyword.toLowerCase();
+    return keyword.toLowerCase();
 };
 
 /**
  * Create a matcher for the keywords.
- * If `caseSensitive[i]` is true, `keywords[i]` is matched case-sensitively.
- * Other keywords should be lower-cased by {@link normalizeKeyword}.
+ * Keywords should be lower-cased by {@link normalizeKeyword}.
+ * If `guards[i]` is defined, `keywords[i]` is found only where the guard is met.
  */
 export const createKeywordMatcher = (
     keywords: readonly string[],
-    caseSensitive: readonly boolean[] = [],
+    guards: readonly (KeywordGuard | undefined)[] = [],
+    options: { countGuards?: boolean } = {},
 ): KeywordMatcher => {
     const trieKeywords = keywords.map((keyword) => keyword.toLowerCase());
     // Map each byte to a small character class. 0 means "not used by any keyword".
@@ -179,45 +199,72 @@ export const createKeywordMatcher = (
         outputs.push(trieOutputs[oldState] as number[]);
     });
     const firstOutputOffset = firstOutputState * classCount;
-    // Case-sensitive keywords: the automaton finds them case-insensitively,
-    // then `verify()` compares the input with the keyword and returns the id of the keywords that really match.
+    // Keywords with a guard: when the automaton completes a keyword, `checkGuards()` reads the characters after it
+    // and returns the id of the keywords whose guard is met (or that have no guard).
     // `outputs` gets a new entry for each subset of the keywords of a state, so an id is `state` or an added entry.
-    const hasCaseSensitive = keywords.some((_, index) => caseSensitive[index] === true);
-    const needsVerify = new Uint8Array(stateCount);
+    const guardTables = keywords.map((_, index) => {
+        const guard = guards[index];
+        return guard === undefined ? undefined : createGuardTable(guard);
+    });
+    const guardMins = keywords.map((_, index) => guards[index]?.min ?? 0);
+    const hasGuards = guardTables.some((table) => table !== undefined);
+    const needsCheck = new Uint8Array(stateCount);
     outputs.forEach((output, state) => {
-        if (output.some((keywordIndex) => caseSensitive[keywordIndex] === true)) {
-            needsVerify[state] = 1;
+        if (output.some((keywordIndex) => guardTables[keywordIndex] !== undefined)) {
+            needsCheck[state] = 1;
         }
     });
+    // [found, met] for each keyword. It is counted only for the profile
+    const guardCounts = options.countGuards ? new Float64Array(keywords.length * 2) : undefined;
     const subsetIds = new Map<string, number>();
-    const isSameCase = (input: string | Uint8Array, lastIndex: number, keyword: string): boolean => {
-        const start = lastIndex - keyword.length + 1;
-        if (typeof input === "string") {
-            return input.startsWith(keyword, start);
-        }
-        for (let i = 0; i < keyword.length; i++) {
-            if (input[start + i] !== keyword.charCodeAt(i)) {
-                return false;
+    /**
+     * Return the id of the keywords of the state that are found at the place, or -1 if none is found.
+     * `lastIndex` is the index of the last character of the keywords.
+     * It reads at most 255 characters after the place for each guard, and it does not change the state of the scan.
+     */
+    const checkGuards = (input: string | Uint8Array, state: number, lastIndex: number): number => {
+        const output = outputs[state] as number[];
+        const isText = typeof input === "string";
+        let metCount = 0;
+        for (let i = 0; i < output.length; i++) {
+            const keywordIndex = output[i] as number;
+            const table = guardTables[keywordIndex];
+            if (table === undefined) {
+                metCount++;
+                continue;
+            }
+            const min = guardMins[keywordIndex] as number;
+            const met = isText
+                ? isGuardMetInText(input, lastIndex + 1, table, min)
+                : isGuardMetInBytes(input, lastIndex + 1, table, min);
+            if (guardCounts) {
+                (guardCounts[keywordIndex * 2] as number)++;
+                if (met) {
+                    (guardCounts[keywordIndex * 2 + 1] as number)++;
+                }
+            }
+            if (met) {
+                metCount++;
             }
         }
-        return true;
-    };
-    /**
-     * Return the id of the keywords of the state that match the input, or -1 if no keyword matches
-     */
-    const verify = (input: string | Uint8Array, state: number, lastIndex: number): number => {
-        const output = outputs[state] as number[];
-        const matched = output.filter((keywordIndex) => {
-            return (
-                caseSensitive[keywordIndex] !== true || isSameCase(input, lastIndex, keywords[keywordIndex] as string)
-            );
-        });
-        if (matched.length === output.length) {
+        if (metCount === output.length) {
             return state;
         }
-        if (matched.length === 0) {
+        if (metCount === 0) {
             return -1;
         }
+        // Some keywords of the state are found: the id is for these keywords.
+        // This is rare: two patterns share a keyword and differ in the guard
+        const matched = output.filter((keywordIndex) => {
+            const table = guardTables[keywordIndex];
+            if (table === undefined) {
+                return true;
+            }
+            const min = guardMins[keywordIndex] as number;
+            return isText
+                ? isGuardMetInText(input, lastIndex + 1, table, min)
+                : isGuardMetInBytes(input, lastIndex + 1, table, min);
+        });
         const key = `${state}:${matched.join(",")}`;
         const knownId = subsetIds.get(key);
         if (knownId !== undefined) {
@@ -246,10 +293,18 @@ export const createKeywordMatcher = (
         for (let i = start, length = bytes.length; i < length; i++) {
             offset = transitions[offset + (charClass[bytes[i] as number] as number)] as number;
             if (offset >= firstOutputOffset) {
+                let id = offset / classCount;
+                if (hasGuards && needsCheck[id] === 1) {
+                    id = checkGuards(bytes, id, i);
+                    if (id < 0) {
+                        // no keyword is found here: nothing is recorded
+                        continue;
+                    }
+                }
                 if (written >= buffer.length) {
                     growBuffer();
                 }
-                buffer[written] = offset / classCount;
+                buffer[written] = id;
                 buffer[written + 1] = i;
                 written += 2;
             }
@@ -263,32 +318,22 @@ export const createKeywordMatcher = (
             const code = text.charCodeAt(i);
             offset = transitions[offset + (code < ASCII_SIZE ? (charClass[code] as number) : 0)] as number;
             if (offset >= firstOutputOffset) {
+                let id = offset / classCount;
+                if (hasGuards && needsCheck[id] === 1) {
+                    id = checkGuards(text, id, i);
+                    if (id < 0) {
+                        continue;
+                    }
+                }
                 if (written >= buffer.length) {
                     growBuffer();
                 }
-                buffer[written] = offset / classCount;
+                buffer[written] = id;
                 buffer[written + 1] = i;
                 written += 2;
             }
         }
         return written;
-    };
-    /**
-     * Drop the hits of the case-sensitive keywords that differ in case, and return the length of the kept part
-     */
-    const dropDifferentCase = (input: string | Uint8Array, written: number): number => {
-        let kept = 0;
-        for (let i = 0; i < written; i += 2) {
-            const state = buffer[i] as number;
-            const index = buffer[i + 1] as number;
-            const id = needsVerify[state] === 1 ? verify(input, state, index) : state;
-            if (id >= 0) {
-                buffer[kept] = id;
-                buffer[kept + 1] = index;
-                kept += 2;
-            }
-        }
-        return kept;
     };
     const noHits: KeywordHits = {
         found: new Uint8Array(keywords.length),
@@ -299,8 +344,7 @@ export const createKeywordMatcher = (
         if (keywords.length === 0) {
             return noHits;
         }
-        const written = typeof input === "string" ? scanText(input, start) : scanBytes(input, start);
-        const length = hasCaseSensitive ? dropDifferentCase(input, written) : written;
+        const length = typeof input === "string" ? scanText(input, start) : scanBytes(input, start);
         if (length === 0) {
             // Most inputs have no keyword. Nothing is created for them
             return noHits;
@@ -317,6 +361,23 @@ export const createKeywordMatcher = (
     };
     return {
         keywords,
+        guards: keywords.map((_, index) => guards[index]),
+        guardCounts(): KeywordGuardCount[] {
+            if (!guardCounts) {
+                return [];
+            }
+            const counts: KeywordGuardCount[] = [];
+            guardTables.forEach((table, keywordIndex) => {
+                if (table !== undefined) {
+                    counts.push({
+                        keywordIndex,
+                        found: guardCounts[keywordIndex * 2] as number,
+                        met: guardCounts[keywordIndex * 2 + 1] as number,
+                    });
+                }
+            });
+            return counts;
+        },
         match(text: string): Readonly<Uint8Array> {
             return scan(text).found;
         },
@@ -334,10 +395,10 @@ const matcherCache = new Map<string, KeywordMatcher>();
  */
 export const getKeywordMatcher = (
     keywords: readonly string[],
-    caseSensitive: readonly boolean[] = [],
+    guards: readonly (KeywordGuard | undefined)[] = [],
 ): KeywordMatcher => {
     // keywords may contain "\n", so join() is ambiguous
-    const key = JSON.stringify([keywords, keywords.map((_, index) => caseSensitive[index] === true)]);
+    const key = JSON.stringify([keywords, keywords.map((_, index) => keywordGuardKey(guards[index]))]);
     const cached = matcherCache.get(key);
     if (cached) {
         return cached;
@@ -345,7 +406,7 @@ export const getKeywordMatcher = (
     if (matcherCache.size >= MAX_CACHE_SIZE) {
         matcherCache.clear();
     }
-    const matcher = createKeywordMatcher(keywords, caseSensitive);
+    const matcher = createKeywordMatcher(keywords, guards);
     matcherCache.set(key, matcher);
     return matcher;
 };

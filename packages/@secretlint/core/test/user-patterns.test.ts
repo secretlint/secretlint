@@ -120,6 +120,33 @@ describe("user-defined patterns of @secretlint/secretlint-rule-pattern", () => {
             ["found matching password: password=real"],
         );
     });
+    it("runs a pattern only where the guard of a keyword is met", async () => {
+        const options: Options = {
+            patterns: [
+                {
+                    name: "internal key",
+                    patterns: ["/00[A-Za-z0-9]{8}/"],
+                    keywords: [{ keyword: "00", after: "[A-Za-z0-9]{8,}" }],
+                },
+            ],
+        };
+        // "00" is in the file, but no place meets the guard, so the content is not decoded
+        assert.deepStrictEqual(await lint(options, bytesSource("/a.txt", "100\n00:00:00", { decodable: false })), []);
+        assert.deepStrictEqual(await lint(options, bytesSource("/a.txt", "100\nkey = 00abcdEF12")), [
+            "found matching internal key: 00abcdEF12",
+        ]);
+    });
+    it("throws for a keyword object that is not supported, with the name of the entry", () => {
+        const view = (keyword: unknown) => {
+            return textView({
+                patterns: [{ name: "bad", patterns: ["/00[a-z]{8}/"], keywords: [keyword] as string[] }],
+            });
+        };
+        assert.throws(() => view({ keyword: "00", after: "[a-z]{8}" }), /Pattern "bad" has a keyword.*Write `\{8,\}`/s);
+        assert.throws(() => view({ keyword: "00" }), /Pattern "bad" has a keyword.*`after` is required/s);
+        assert.throws(() => view({ keyword: "00", after: "[a-z]{8,}", caseSensitive: true }), /unknown properties/);
+        assert.throws(() => view(null), /Pattern "bad" has a keyword that is not a non-empty ASCII string/);
+    });
     it("throws for a keyword that is not a non-empty ASCII string", () => {
         for (const keywords of [[""], ["パスワード"], "password"]) {
             assert.throws(

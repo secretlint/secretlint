@@ -3,14 +3,17 @@ import * as path from "node:path";
 import * as assert from "node:assert";
 import { pathToFileURL } from "node:url";
 import type {
+    SecretLintCoreResult,
     SecretLintConfigDescriptor,
     SecretLintConfigDescriptorRulePreset,
     SecretLintCoreConfig,
     SecretLintCoreConfigUnionRule,
     SecretLintRawSource,
     SecretLintRuleCreator,
+    SecretLintRulePatternKeyword,
     SecretLintRulePresetCreator,
 } from "@secretlint/types";
+import { createGuardTable, isGuardMetInText, parseKeywordObject } from "../helper/keyword-guard.js";
 import { lintSource } from "../index.js";
 import { getBuiltinRule } from "../builtin/index.js";
 import { creator as rulePattern, type Options as RulePatternOptions } from "../builtin/rules/pattern/index.js";
@@ -180,6 +183,190 @@ const toUnoptimizedConfig = (config: SecretLintCoreConfig): SecretLintCoreConfig
     };
 };
 
+/**
+ * A guarded keyword of a rule of the config
+ */
+type GuardedKeywordOfRule = {
+    ruleId: string;
+    keyword: string;
+    after: string;
+    scope: "line" | "file";
+    isMet: (text: string, start: number) => boolean;
+};
+/**
+ * Return the keywords without their guards: `{ keyword, after }` becomes the string `keyword`.
+ * The guarded keywords are added to `guardedKeywords`.
+ */
+const toUnguardedKeywords = (
+    keywords: readonly SecretLintRulePatternKeyword[],
+    ruleId: string,
+    scope: "line" | "file",
+    guardedKeywords: GuardedKeywordOfRule[],
+): SecretLintRulePatternKeyword[] => {
+    return keywords.map((item) => {
+        if (typeof item !== "object" || item === null) {
+            return item;
+        }
+        const { keyword, after, guard } = parseKeywordObject(item);
+        const table = createGuardTable(guard);
+        guardedKeywords.push({
+            ruleId,
+            keyword,
+            after,
+            scope,
+            isMet: (text, start) => isGuardMetInText(text, start, table, guard.min),
+        });
+        return keyword;
+    });
+};
+const toUnguardedRule = <T>(
+    rule: SecretLintRuleCreator<T>,
+    guardedKeywords: GuardedKeywordOfRule[],
+): SecretLintRuleCreator<T> => {
+    const hasGuard = rule.patterns?.some((pattern) => {
+        return Array.isArray(pattern.keywords) && pattern.keywords.some((item) => typeof item === "object");
+    });
+    if (rule.patterns === undefined || !hasGuard) {
+        return rule;
+    }
+    return {
+        ...rule,
+        patterns: rule.patterns.map((pattern) => {
+            if (!Array.isArray(pattern.keywords)) {
+                return pattern;
+            }
+            const scope = pattern.scope === "line" ? "line" : "file";
+            return {
+                ...pattern,
+                keywords: toUnguardedKeywords(pattern.keywords, rule.meta.id, scope, guardedKeywords),
+            };
+        }),
+    };
+};
+/**
+ * Return the config in which each guarded keyword is the same keyword without its guard.
+ * `guardedKeywords` gets the guarded keywords of the rules. A preset adds its rules when the config is linted.
+ */
+const toUnguardedConfig = (
+    config: SecretLintCoreConfig,
+    guardedKeywords: GuardedKeywordOfRule[],
+): SecretLintCoreConfig => {
+    return {
+        ...config,
+        rules: config.rules.map((descriptor) => {
+            if (descriptor.rule === rulePattern) {
+                const options = (descriptor.options ?? {}) as RulePatternOptions;
+                return {
+                    ...descriptor,
+                    options: {
+                        ...options,
+                        patterns: options.patterns?.map((entry) => {
+                            if (!Array.isArray(entry.keywords)) {
+                                return entry;
+                            }
+                            return {
+                                ...entry,
+                                keywords: toUnguardedKeywords(
+                                    entry.keywords,
+                                    rulePattern.meta.id,
+                                    "file",
+                                    guardedKeywords,
+                                ),
+                            };
+                        }),
+                    },
+                } as SecretLintCoreConfigUnionRule;
+            }
+            if (descriptor.rule.meta.type === "preset") {
+                const preset = descriptor.rule as SecretLintRulePresetCreator;
+                const unguardedPreset: SecretLintRulePresetCreator = {
+                    ...preset,
+                    create(context, options) {
+                        return preset.create(
+                            {
+                                ...context,
+                                registerRule(rule, defaultValue) {
+                                    return context.registerRule(toUnguardedRule(rule, guardedKeywords), defaultValue);
+                                },
+                            },
+                            options,
+                        );
+                    },
+                };
+                return { ...descriptor, rule: unguardedPreset } as SecretLintCoreConfigUnionRule;
+            }
+            return {
+                ...descriptor,
+                rule: toUnguardedRule(descriptor.rule as SecretLintRuleCreator, guardedKeywords),
+            } as SecretLintCoreConfigUnionRule;
+        }),
+    };
+};
+/**
+ * Throw if a guard rejects a secret: the lint without guards reports a message that the lint does not report.
+ * The error names the rule, the guarded keyword, and the place of the keyword whose guard is not met.
+ */
+const assertGuards = (
+    content: string,
+    result: SecretLintCoreResult,
+    unguardedResult: SecretLintCoreResult,
+    guardedKeywords: readonly GuardedKeywordOfRule[],
+): void => {
+    const keyOf = (message: SecretLintCoreResult["messages"][number]) => {
+        return JSON.stringify([message.ruleId, message.messageId, message.range]);
+    };
+    const reported = new Set(result.messages.map(keyOf));
+    const rejected = unguardedResult.messages.filter((message) => !reported.has(keyOf(message)));
+    if (rejected.length === 0) {
+        return;
+    }
+    const lowerContent = content.toLowerCase();
+    const positionOf = (index: number): string => {
+        const lineStart = content.lastIndexOf("\n", index - 1) + 1;
+        const line = content.slice(0, lineStart).split("\n").length;
+        return `${line}:${index - lineStart + 1}`;
+    };
+    const errors = rejected.map((message) => {
+        const ofRule = guardedKeywords.filter((guarded) => guarded.ruleId === message.ruleId);
+        // The id of a message can be the id of the config. Then look at the guarded keywords of all rules
+        const candidates = ofRule.length > 0 ? ofRule : guardedKeywords;
+        const secretAt = `${positionOf(message.range[0])}-${positionOf(message.range[1])}`;
+        const notMet: string[] = [];
+        for (const guarded of candidates) {
+            // A "line" scope pattern runs on the lines of its keywords, and a "file" scope pattern on the content
+            const from = guarded.scope === "line" ? content.lastIndexOf("\n", message.range[0] - 1) + 1 : 0;
+            const nextLineFeed = content.indexOf("\n", Math.max(message.range[1] - 1, message.range[0]));
+            const to = guarded.scope === "line" && nextLineFeed >= 0 ? nextLineFeed : content.length;
+            const keyword = guarded.keyword.toLowerCase();
+            const places: number[] = [];
+            let isMetSomewhere = false;
+            for (let index = lowerContent.indexOf(keyword, from); index >= 0 && index < to; ) {
+                if (guarded.isMet(content, index + keyword.length)) {
+                    isMetSomewhere = true;
+                } else {
+                    places.push(index);
+                }
+                index = lowerContent.indexOf(keyword, index + 1);
+            }
+            if (!isMetSomewhere && places.length > 0) {
+                notMet.push(
+                    `${guarded.ruleId}: the guard "${guarded.after}" of the keyword "${guarded.keyword}" is not met at ${places
+                        .slice(0, 5)
+                        .map(positionOf)
+                        .join(", ")}, but the rule reports a secret at ${secretAt}.`,
+                );
+            }
+        }
+        if (notMet.length === 0) {
+            return `${message.ruleId}: a guard of a keyword rejects the secret at ${secretAt}.`;
+        }
+        return notMet.join("\n");
+    });
+    assert.fail(`A guard of a keyword rejects a secret that the rule reports without the guard.
+${errors.join("\n")}
+Every secret of the pattern must have the characters that meet the guard after the keyword. Check \`after\` of the keyword.`);
+};
+
 export type SnapshotTestCase = {
     name: string;
     /**
@@ -232,6 +419,20 @@ export const createSnapshotTestCases = (options: SnapshotOptions): SnapshotTestC
                         source: textSource,
                         options: { config: toUnoptimizedConfig(config) },
                     });
+                    // A guard of a keyword is checked by itself, before the comparison with the unoptimized result,
+                    // so that the error names the guard.
+                    if (textSource.contentType === "text") {
+                        const guardedKeywords: GuardedKeywordOfRule[] = [];
+                        const unguardedConfig = toUnguardedConfig(config, guardedKeywords);
+                        const hasPreset = config.rules.some((descriptor) => descriptor.rule.meta.type === "preset");
+                        if (guardedKeywords.length > 0 || hasPreset) {
+                            const unguardedResult = await lintSource({
+                                source: textSource,
+                                options: { config: unguardedConfig },
+                            });
+                            assertGuards(textSource.content, textResult, unguardedResult, guardedKeywords);
+                        }
+                    }
                     const normalizeResult = (result: unknown) => JSON.parse(JSON.stringify(result));
                     // For text (and unknown), the bytes are only for speed, so the results should be the same without them.
                     // For binary, a rule needs the bytes: the decoded string has lost them.

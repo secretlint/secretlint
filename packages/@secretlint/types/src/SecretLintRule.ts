@@ -74,6 +74,33 @@ type SecretLintRuleCreatorBase = {
     };
 };
 /**
+ * A keyword of a pattern: a string, or a keyword with a guard.
+ *
+ * A guard is for a keyword that is short or common, such as `00`. Such a keyword is in most files,
+ * so the keyword alone does not tell where the secret can be.
+ * `{ keyword: "00", after: "[A-Za-z0-9_-]{40,}" }` is the keyword `00` only where 40 or more characters
+ * of the set follow it. Secretlint checks the guard while it looks for the keywords.
+ *
+ * - `keyword` is written as a keyword of a string is, and it is matched ASCII case-insensitively.
+ * - `after` is one set of ASCII characters and one least count, in the syntax of regular expressions:
+ *   `[` and `]` around characters and ranges, and `{n,}` (n is from 1 to 255).
+ *   In the set, `\` is written only before `\` and `]`, and a `-` as a character is the last item.
+ * - The set is compared as it is written: `[a-f0-9]` does not have `A`.
+ * - The syntax is strict. Other forms, such as `{40}`, `{32,40}`, `+`, `\d`, and `[^...]`, are an error.
+ * - Every match of the pattern that contains the keyword must also have the characters that meet the guard
+ *   after it. The tests of `@secretlint/tester` fail if a guard rejects a secret that the pattern reports.
+ *
+ * @example
+ * // The regular expression has 40 characters after "00", so every match meets the guard
+ * {
+ *     pattern: /(?<![A-Za-z0-9_-])00[A-Za-z0-9_-]{40}(?![A-Za-z0-9_-])/g,
+ *     keywords: [{ keyword: "00", after: "[A-Za-z0-9_-]{40,}" }],
+ *     scope: "line",
+ *     report(match, context) {}
+ * }
+ */
+export type SecretLintRulePatternKeyword = string | { keyword: string; after: string };
+/**
  * A rule that is defined with code.
  * It is for a rule that can not be written as `patterns`, for example a rule that parses the content.
  */
@@ -187,22 +214,15 @@ export type SecretLintRulePattern<
      * Keywords for pre-filtering.
      * Secretlint runs the pattern only when the content contains at least one of the keywords.
      *
-     * - Keywords are matched ASCII case-insensitively, unless `caseSensitiveKeywords` is true.
+     * - Keywords are always matched ASCII case-insensitively.
      * - Every match of the pattern must contain one of the keywords.
      *   If `scope` is "line", the line of the match must contain one of the keywords.
      * - Empty keywords and non-ASCII keywords disable the pre-filter for the pattern.
+     * - An item can be a keyword with a guard. See {@link SecretLintRulePatternKeyword}.
      *
      * Default: undefined (the pattern runs for all content)
      */
-    keywords?: string[];
-    /**
-     * If true, the keywords are matched case-sensitively.
-     * Use it when the pattern is case-sensitive and the keywords appear often in another case.
-     * For example, `/SG\.\w+/` with `["SG."]` should not run for "msg.".
-     *
-     * Default: false (ASCII case-insensitive)
-     */
-    caseSensitiveKeywords?: boolean;
+    keywords?: SecretLintRulePatternKeyword[];
     /**
      * The scope that the pattern needs to see.
      *
