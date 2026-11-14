@@ -138,23 +138,14 @@ const buildRepository = (description, dir) => {
     pnpm(`pnpm run build of the ${description}`, ["run", "build"], dir);
 };
 
-const isProcessAlive = (pid) => {
-    try {
-        process.kill(pid, 0);
-        return true;
-    } catch (error) {
-        return error.code === "EPERM";
-    }
-};
-
 /**
  * Prepare an entry of the cache while no other comparison prepares the same entry.
  * The lock is a directory, because making a directory is atomic.
- * A lock of a process that ended is removed.
+ * The script never removes a lock that it did not make, so two comparisons never prepare the same entry.
+ * A lock left by a comparison that was killed is removed by the user.
  */
 const withCacheLock = (dir, prepare) => {
     const lockDir = `${dir}.lock`;
-    const pidFile = path.join(lockDir, "pid");
     fs.mkdirSync(path.dirname(dir), { recursive: true });
     try {
         fs.mkdirSync(lockDir);
@@ -162,23 +153,18 @@ const withCacheLock = (dir, prepare) => {
         if (error.code !== "EEXIST") {
             throw error;
         }
-        const pid = fs.existsSync(pidFile) ? Number(fs.readFileSync(pidFile, "utf8")) : Number.NaN;
-        // a lock without a pid was made just now, and its process has not written the pid yet
-        const isActive =
-            Number.isInteger(pid) && pid > 0
-                ? isProcessAlive(pid)
-                : Date.now() - fs.statSync(lockDir).mtimeMs < 60 * 1000;
-        if (isActive) {
-            throw new CompareError(
-                `Another comparison (process ${Number.isNaN(pid) ? "unknown" : pid}) is preparing ${dir}. Run again after it ends.`
-            );
-        }
-        log(`removing the lock of a comparison that ended: ${lockDir}`);
-        fs.rmSync(lockDir, { recursive: true, force: true });
-        fs.mkdirSync(lockDir);
+        const pidFile = path.join(lockDir, "pid");
+        const pid = fs.existsSync(pidFile) ? fs.readFileSync(pidFile, "utf8").trim() : "unknown";
+        throw new CompareError(
+            [
+                `Another comparison (process ${pid}) is preparing ${dir}.`,
+                "Run again after it ends.",
+                `If no comparison is running, a comparison was stopped while it prepared the entry: remove ${lockDir} and run again.`
+            ].join(" ")
+        );
     }
     try {
-        fs.writeFileSync(pidFile, String(process.pid));
+        fs.writeFileSync(path.join(lockDir, "pid"), String(process.pid));
         return prepare();
     } finally {
         fs.rmSync(lockDir, { recursive: true, force: true });
