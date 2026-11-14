@@ -299,6 +299,22 @@ const compilePatterns = (
 };
 
 /**
+ * Return true if the rule is `@secretlint/secretlint-rule-pattern` without patterns.
+ * The rule reports nothing without patterns, but it has no keywords, so it would run for every file.
+ * `secretlint --init` adds the rule without options, so such a rule is not registered.
+ * The rule is found by its id, because importing the built-in rule would add its dependencies to the core.
+ * Every version of the rule, including the versions before it was built into the core, reports nothing without patterns.
+ */
+const RULE_PATTERN_ID = "@secretlint/secretlint-rule-pattern";
+const isRulePatternWithoutPatterns = (descriptorRule: SecretLintCoreConfigRule): boolean => {
+    if (descriptorRule.rule.meta.id !== RULE_PATTERN_ID) {
+        return false;
+    }
+    const patterns: unknown = (descriptorRule.options as { patterns?: unknown } | undefined)?.patterns;
+    return patterns === undefined || (Array.isArray(patterns) && patterns.length === 0);
+};
+
+/**
  * Values of the config that the plan depends on.
  * A config is a plain object, and it can be changed between `lintSource()` calls.
  */
@@ -372,6 +388,10 @@ Duplicated rule.id is something wrong in .secretlintrc.
 `);
         }
         registered.add(descriptorRule.id);
+        if (isRulePatternWithoutPatterns(descriptorRule)) {
+            debug("Skip registerRule %s, because it has no patterns", descriptorRule.id);
+            return;
+        }
         rules.push({
             descriptorRule,
             ruleParentId,

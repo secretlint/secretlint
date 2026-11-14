@@ -47,6 +47,7 @@ A program that calls `lintSource()` directly, such as a tool in a browser, creat
 The core builds a plan from the configuration once, and keeps a view of the plan for each content type.
 A view has the rules whose `meta.supportedContentTypes` include the content type or `all`. For `unknown`, it has all rules.
 `meta.keywords` are used only for text. A rule that runs for binary content always runs, because it checks the structure of the content or the file name, not keywords.
+`@secretlint/secretlint-rule-pattern` without `patterns` is not in the plan. It reports nothing, but it has no keywords, so it would make every file run a rule. `secretlint --init` adds it without options. The core finds it by its id, so that the core does not import the rule and its dependencies.
 
 ### What a rule receives
 
