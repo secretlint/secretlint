@@ -1,88 +1,150 @@
 /**
- * Scan files for the keywords of the rules. The main thread and worker threads run the same function.
+ * The work of a worker thread: read files and scan them for the keywords of the rules.
  *
- * It does not import rules or config: a worker thread only needs the keyword scan of `@secretlint/core`.
- * The threads share the list of the files and a SharedArrayBuffer, and each thread claims the next files
- * until no file is left. So a thread that starts late, or that fails, only scans fewer files.
+ * It does not import rules or config: a worker needs only the keyword scan of `@secretlint/core`.
+ * The main thread and the workers share the list of the files and a SharedArrayBuffer,
+ * and each thread claims the next files until no file is left.
+ * So a thread that starts late, or that fails, only handles fewer files.
+ *
+ * A worker hands the bytes of a file to the main thread only if a rule may run for the file,
+ * so the main thread does not read that file again.
  */
 import fs from "node:fs";
 import { createKeywordScanner, type KeywordScanPlan, type KeywordScanResult } from "@secretlint/core/keyword-scan";
+import { detectContentTypeByFileName } from "@secretlint/source-creator";
 
 /**
  * The state of a file in the shared buffer
  */
 export const FileScanState = {
     /**
-     * No thread scanned the file, or the file could not be read
+     * No worker handled the file, or a worker could not read it. The main thread lints the file by itself
      */
     NotScanned: 0,
-    NoKeyword: 1,
-    HasKeyword: 2,
+    /**
+     * A worker read the file, and no rule runs for it: the result has no messages
+     */
+    NoMessages: 1,
+    /**
+     * A worker hands the bytes of the file to the main thread
+     */
+    Handed: 2,
 } as const;
 /**
  * The number of the files that a thread claims at once
  */
-const CLAIM_SIZE = 32;
+export const CLAIM_SIZE = 32;
 const INITIAL_BUFFER_SIZE = 64 * 1024;
-
-export type FileKeywordScan = {
-    /**
-     * The result of the keyword scan of the file
-     */
-    scan: KeywordScanResult;
-    /**
-     * The size of the content that was scanned
-     */
-    byteLength: number;
-};
-export type FileKeywordScans = {
-    /**
-     * The indexes of the files that have a keyword
-     */
-    fileIndexes: number[];
-    /**
-     * `scans[i]` is the scan of the file of `fileIndexes[i]`
-     */
-    scans: FileKeywordScan[];
-    /**
-     * The number of the files that the thread scanned
-     */
-    scannedCount: number;
-    /**
-     * The time that the thread took, in milliseconds
-     */
-    duration: number;
-};
+const INITIAL_BATCH_SIZE = 256 * 1024;
 /**
- * The buffer that the threads share: the index of the next file to claim, then the state of each file
+ * The layout of the shared buffer: Int32 values, and then one byte of state for each file
  */
-export const createSharedScanState = (fileCount: number): SharedArrayBuffer => {
-    return new SharedArrayBuffer(4 + fileCount);
+const NEXT_INDEX = 0;
+const PENDING_BYTES = 1;
+const HEADER_SIZE = 8;
+
+export type SharedScanState = {
+    /**
+     * Claim the next files. It returns the index of the first file, which is not less than the number of the files
+     * if no file is left
+     */
+    claim(): number;
+    /**
+     * The number of the files that the threads claimed
+     */
+    claimedCount(): number;
+    readonly states: Uint8Array;
+    /**
+     * The bytes that the workers handed and the main thread has not linted yet
+     */
+    addPendingBytes(bytes: number): void;
+    /**
+     * Wait while the pending bytes are more than the limit. Only a worker thread can wait
+     */
+    waitForPendingBytes(limit: number): void;
 };
-export const getFileScanStates = (shared: SharedArrayBuffer): Uint8Array => {
-    return new Uint8Array(shared, 4);
+export const createSharedScanBuffer = (fileCount: number): SharedArrayBuffer => {
+    return new SharedArrayBuffer(HEADER_SIZE + fileCount);
+};
+export const openSharedScanState = (shared: SharedArrayBuffer, fileCount: number): SharedScanState => {
+    const header = new Int32Array(shared, 0, HEADER_SIZE / 4);
+    return {
+        claim: () => Atomics.add(header, NEXT_INDEX, CLAIM_SIZE),
+        claimedCount: () => Math.min(Atomics.load(header, NEXT_INDEX), fileCount),
+        states: new Uint8Array(shared, HEADER_SIZE),
+        addPendingBytes(bytes) {
+            Atomics.add(header, PENDING_BYTES, bytes);
+            Atomics.notify(header, PENDING_BYTES);
+        },
+        waitForPendingBytes(limit) {
+            while (true) {
+                const pending = Atomics.load(header, PENDING_BYTES);
+                if (pending <= limit) {
+                    return;
+                }
+                // The timeout is for a main thread that stops reading: the worker checks again
+                Atomics.wait(header, PENDING_BYTES, pending, 1000);
+            }
+        },
+    };
 };
 
-export const scanFilesForKeywords = ({
-    plan,
-    filePathList,
-    shared,
-    onClaim,
-}: {
+/**
+ * The files of one claim that a worker hands to the main thread
+ */
+export type HandedFiles = {
+    /**
+     * The bytes of all files of the batch, one after another
+     */
+    bytes: ArrayBuffer;
+    files: {
+        fileIndex: number;
+        /**
+         * Where the file is in `bytes`
+         */
+        offset: number;
+        byteLength: number;
+        /**
+         * The result of the keyword scan for the text content type.
+         * undefined if the file has no keyword, or if the file is not text by its name
+         */
+        keywordScanResult: KeywordScanResult | undefined;
+        /**
+         * true if the file is text by its name, so the keyword scan is for the content type of the file
+         */
+        isTextByName: boolean;
+    }[];
+};
+export type WorkerMessage =
+    | { type: "files"; batch: HandedFiles }
+    | {
+          type: "done";
+          /**
+           * The number of the files that the worker read
+           */
+          scannedCount: number;
+          /**
+           * The time that the worker took, in milliseconds
+           */
+          duration: number;
+      };
+export type WorkerData = {
     plan: KeywordScanPlan;
     filePathList: readonly string[];
     shared: SharedArrayBuffer;
     /**
-     * It is called before the thread claims the next files, with the number of the files that the threads claimed
+     * A worker waits while the main thread has more bytes than this to lint
      */
-    onClaim?: (claimedCount: number) => void;
-}): FileKeywordScans => {
-    const scanner = createKeywordScanner(plan);
-    const nextIndex = new Int32Array(shared, 0, 1);
-    const states = getFileScanStates(shared);
-    const fileIndexes: number[] = [];
-    const scans: FileKeywordScan[] = [];
+    pendingBytesLimit: number;
+};
+
+export const scanFilesInWorker = (
+    { plan, filePathList, shared, pendingBytesLimit }: WorkerData,
+    post: (message: WorkerMessage, transfer: ArrayBuffer[]) => void,
+): void => {
     const startTime = performance.now();
+    const scanner = createKeywordScanner(plan);
+    const state = openSharedScanState(shared, filePathList.length);
     let scannedCount = 0;
     let buffer = Buffer.allocUnsafe(INITIAL_BUFFER_SIZE);
     // Read the file into the buffer, and return the size of the content
@@ -113,40 +175,64 @@ export const scanFilesForKeywords = ({
         }
     };
     while (true) {
-        onClaim?.(Math.min(Atomics.load(nextIndex, 0), filePathList.length));
-        const start = Atomics.add(nextIndex, 0, CLAIM_SIZE);
+        state.waitForPendingBytes(pendingBytesLimit);
+        const start = state.claim();
         if (start >= filePathList.length) {
-            return { fileIndexes, scans, scannedCount, duration: performance.now() - startTime };
+            post({ type: "done", scannedCount, duration: performance.now() - startTime }, []);
+            return;
         }
         const end = Math.min(start + CLAIM_SIZE, filePathList.length);
+        // The batch has its own memory, because it is moved to the main thread
+        let batchBytes = new Uint8Array(new ArrayBuffer(INITIAL_BATCH_SIZE));
+        let batchLength = 0;
+        const files: HandedFiles["files"] = [];
+        const transfer: ArrayBuffer[] = [];
         for (let fileIndex = start; fileIndex < end; fileIndex++) {
+            const filePath = filePathList[fileIndex] as string;
             let byteLength: number;
             try {
-                byteLength = readFile(filePathList[fileIndex] as string);
+                byteLength = readFile(filePath);
             } catch {
-                // The state stays NotScanned: the lint of the file reads it again and reports the error
+                // The state stays NotScanned: the main thread reads the file and reports the error
                 continue;
             }
-            const scan = scanner.scan(buffer.subarray(0, byteLength));
             scannedCount++;
-            if (scan.hits.count === 0) {
-                states[fileIndex] = FileScanState.NoKeyword;
+            const isTextByName = detectContentTypeByFileName(filePath) === "text";
+            // The plan is for the text content type. The content type of other files depends on the bytes
+            const scan = isTextByName ? scanner.scan(buffer.subarray(0, byteLength)) : undefined;
+            const hasKeyword = scan !== undefined && scan.hits.count > 0;
+            if (isTextByName && !hasKeyword && plan.requiresKeyword) {
+                // No rule runs for the file
+                state.states[fileIndex] = FileScanState.NoMessages;
                 continue;
             }
-            fileIndexes.push(fileIndex);
-            scans.push({
-                scan: {
+            if (batchLength + byteLength > batchBytes.length) {
+                const grown = new Uint8Array(
+                    new ArrayBuffer(Math.max(batchBytes.length * 2, batchLength + byteLength)),
+                );
+                grown.set(batchBytes.subarray(0, batchLength));
+                batchBytes = grown;
+            }
+            batchBytes.set(buffer.subarray(0, byteLength), batchLength);
+            let keywordScanResult: KeywordScanResult | undefined;
+            if (hasKeyword) {
+                // Send only the used part of the positions
+                const positions = scan.hits.positions.slice(0, scan.hits.count * 2);
+                keywordScanResult = {
                     planId: scan.planId,
-                    // Keep only the used part: the hits are kept until the file is linted, and a worker sends them
-                    hits: {
-                        found: scan.hits.found,
-                        positions: scan.hits.positions.slice(0, scan.hits.count * 2),
-                        count: scan.hits.count,
-                    },
-                },
-                byteLength,
-            });
-            states[fileIndex] = FileScanState.HasKeyword;
+                    hits: { found: scan.hits.found, positions, count: scan.hits.count },
+                };
+                transfer.push(positions.buffer as ArrayBuffer);
+            }
+            files.push({ fileIndex, offset: batchLength, byteLength, keywordScanResult, isTextByName });
+            batchLength += byteLength;
+            state.states[fileIndex] = FileScanState.Handed;
+        }
+        if (files.length > 0) {
+            state.addPendingBytes(batchLength);
+            const bytes = batchBytes.buffer as ArrayBuffer;
+            transfer.push(bytes);
+            post({ type: "files", batch: { bytes, files } }, transfer);
         }
     }
 };

@@ -178,7 +178,6 @@ Time(ms)  File
             stat("secretlint>cli", undefined, 1, 100),
             stat("@node>execute", undefined, 1, 80),
             stat("@node>files", undefined, 300, 0),
-            stat("@node>keyword-scan", undefined, 1, 50),
             stat("@node>keyword-scan-thread", "main", 120, 49.5),
             stat("@node>keyword-scan-thread", "worker 1", 180, 30),
             stat("@core>lint", "/cwd/a.txt", 1, 2),
@@ -193,7 +192,6 @@ Time(ms)  File
             [
                 ["secretlint>cli", 0],
                 ["@node>execute", 1],
-                ["@node>keyword-scan", 2],
                 ["@core>lint", 2],
             ],
         );
@@ -201,9 +199,7 @@ Time(ms)  File
         assert.ok(output.startsWith("secretlint profile: 100.00ms, 300 files\n"));
         assert.ok(
             output.includes(
-                ["Time(ms)  Files  Keyword scan thread (2)", "   49.50    120  main", "   30.00    180  worker 1"].join(
-                    "\n",
-                ),
+                ["Time(ms)  Files  Thread (2)", "   49.50    120  main", "   30.00    180  worker 1"].join("\n"),
             ),
         );
     });

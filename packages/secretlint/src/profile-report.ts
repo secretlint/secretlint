@@ -76,11 +76,12 @@ export type SecretLintProfileReportKeywordScanThread = {
      */
     thread: string;
     /**
-     * The time that the thread scanned in milliseconds
+     * The time of the thread in milliseconds. A worker reads files and scans them for keywords.
+     * The main thread reads and lints files, and lints the files that the workers hand to it
      */
     duration: number;
     /**
-     * The number of the files that the thread scanned
+     * The number of the files that the thread read
      */
     files: number;
 };
@@ -106,9 +107,8 @@ export type SecretLintProfileReport = {
     files: number;
     phases: SecretLintProfileReportPhase[];
     /**
-     * The threads that scanned the files for keywords before the lint, in `@node>keyword-scan`.
-     * One thread is the main thread alone: no worker thread started.
-     * It is empty if the files are not scanned before the lint.
+     * The threads that read the files, if worker threads read files and scanned them for keywords.
+     * It is empty if no worker thread started.
      */
     keywordScanThreads: SecretLintProfileReportKeywordScanThread[];
     /**
@@ -136,7 +136,6 @@ const PHASES: readonly (readonly [type: SecretLintProfilerStatType, depth: numbe
     ["@config-loader>load-packages", 2],
     ["secretlint>search-files", 1],
     ["@node>execute", 1],
-    ["@node>keyword-scan", 2],
     ["@node>read-file", 2],
     ["@core>lint", 2],
     ["@core>setup-rules", 3],
@@ -241,7 +240,7 @@ export const createProfileReport = (stats: readonly SecretLintProfilerStat[]): S
             return { thread: stat.id ?? "", duration: round(stat.duration), files: stat.count };
         },
     );
-    // A file without keywords is not linted when the files are scanned before the lint, so count the files of the run
+    // A worker does not hand a file that no rule runs for, so count the files of the run
     const fileCount = totalOf("@node>files").count;
     return {
         total: round(total),
@@ -348,7 +347,7 @@ export const formatProfileReport = (
                 [
                     { title: "Time(ms)", align: "right" },
                     { title: "Files", align: "right" },
-                    { title: `Keyword scan thread (${report.keywordScanThreads.length})`, align: "left" },
+                    { title: `Thread (${report.keywordScanThreads.length})`, align: "left" },
                 ],
                 report.keywordScanThreads.map((thread) => [ms(thread.duration), String(thread.files), thread.thread]),
             ),

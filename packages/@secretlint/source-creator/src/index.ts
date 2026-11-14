@@ -64,6 +64,30 @@ export const createRawSource = async (filePath: string): Promise<SecretLintRawSo
 };
 
 /**
+ * Create the source of a file from the bytes that the caller read.
+ * The source keeps the bytes, and decodes them lazily when `content` is accessed.
+ */
+export const createRawSourceFromBytes = (filePath: string, bytes: Uint8Array): SecretLintRawSource => {
+    const buffer = Buffer.from(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+    const contentType = detectContentType(filePath, buffer);
+    let decodedContent: string | undefined;
+    return defineContentBytes(
+        {
+            filePath,
+            get content(): string {
+                if (decodedContent === undefined) {
+                    decodedContent = buffer.toString();
+                }
+                return decodedContent;
+            },
+            ext: path.extname(filePath),
+            contentType,
+        },
+        () => buffer,
+    );
+};
+
+/**
  * Read a file and return the source for linting. See {@link createFileSourceReader}.
  */
 export type FileSourceReader = (filePath: string) => SecretLintRawSource;

@@ -102,8 +102,8 @@ type SecretLintProfilerMarkedSpanType = SpanOfMarker<SecretLintProfilerMarker>;
  * because they run too many times to create a marker object for each:
  *
  * - "@node>files": the number of the files of `executeOnFiles()`. It has no duration
- * - "@node>keyword-scan": scan the files for the keywords of the rules before the lint, on the main thread and worker threads
- * - "@node>keyword-scan-thread": the files and the time of a thread in "@node>keyword-scan". `id` is the name of the thread
+ * - "@node>keyword-scan-thread": the files that a thread read, and the time of the thread, when worker threads
+ *    read files and scan them for the keywords of the rules. `id` is the name of the thread: "main" or "worker {number}"
  * - "@node>read-file": read a file and decide if it is text or binary
  * - "@core>keyword-scan": scan the content once for the keywords of all rules. It is shared by all rules
  * - "@core>line-check": check the lines that have a keyword with the patterns, before decoding the whole content.
@@ -115,7 +115,6 @@ type SecretLintProfilerMarkedSpanType = SpanOfMarker<SecretLintProfilerMarker>;
 export type SecretLintProfilerStatType =
     | SecretLintProfilerMarkedSpanType
     | "@node>files"
-    | "@node>keyword-scan"
     | "@node>keyword-scan-thread"
     | "@node>read-file"
     | "@core>keyword-scan"
