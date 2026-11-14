@@ -108,7 +108,7 @@ An item of `keywords` of a pattern is a string or an object `{ keyword, after }`
 ```ts
 {
     pattern: /(?<![A-Za-z0-9_-])00[A-Za-z0-9_-]{40}(?![A-Za-z0-9_-])/g,
-    keywords: [{ keyword: "00", after: "[A-Za-z0-9_-]{40}" }],
+    keywords: [{ keyword: "00", after: "[A-Za-z0-9_-]{40,}" }],
     scope: "line",
     report(match, context) { /* ... */ },
 }
@@ -117,14 +117,21 @@ An item of `keywords` of a pattern is a string or an object `{ keyword, after }`
 `keyword` is a keyword, with the same rules as an item that is a string: ASCII, and no character has a special meaning.
 `after` is the guard. It has two parts, in this order:
 
-| Part  | Syntax                                                                                            | Example                        |
-| ----- | ------------------------------------------------------------------------------------------------- | ------------------------------ |
-| Set   | `[` and `]` around ASCII characters, ranges such as `a-z`, `\w`, and `\d`. Or `\w` or `\d` alone. | `[A-Za-z0-9_-]`, `[\w-]`, `\d` |
-| Count | `{n}`, `{n,}`, `{n,m}`, or `+`. `n` is from 1 to 255.                                             | `{40}`, `{20,}`, `+`           |
+| Part  | Syntax                                                                                                                                  | Example                     |
+| ----- | --------------------------------------------------------------------------------------------------------------------------------------- | --------------------------- |
+| Set   | `[` and `]` around ASCII characters and ranges such as `a-z`. `\` is written before `\` and `]`. A `-` as a character is the last item. | `[A-Za-z0-9_-]`, `[0-9a-f]` |
+| Count | `{n,}`. `n` is from 1 to 255.                                                                                                           | `{40,}`, `{20,}`            |
 
-The guard is met where at least `n` characters of the set follow the keyword. `+` is `n` = 1, and `m` of `{n,m}` is not used.
-This is what `after` means as a part of a regular expression that is tested at the place of the keyword: `/00[A-Za-z0-9_-]{40}/` and `/00[A-Za-z0-9_-]{40,60}/` both match there if and only if 40 such characters follow.
-So `after` is a subset of the syntax of regular expressions with the same meaning, and a rule author copies it from `pattern`, from the part after the keyword. A set and a count is also all that the scan can check without going back.
+The guard is met where at least `n` characters of the set follow the keyword.
+`after` is a subset of the syntax of regular expressions, and it means what it says there: `[A-Za-z0-9_-]{40,}` is 40 or more characters of the set. A set and a least count is also all that the scan can check without going back.
+
+The count has no `{n}` and no `{n,m}`. The guard checks only that `n` characters follow, and it does not check where the run ends: the key of the example has 40 characters, and the guard is also met in a run of 50.
+So `{40}` in a guard would read as "40 characters" and mean "40 or more", and `{40,60}` would have a number that is not used. The maintainer decided that a guard must not read differently from what it checks, so the syntax has only the form that says "or more".
+A rule author who copies `[A-Za-z0-9_-]{40}` from `pattern` adds the `,`, and the error for `{40}` says so.
+
+The syntax is strict, by the decision of the maintainer: one guard has one way to write it, apart from the order of the items of the set.
+So there is no `+` for `{1,}`, no `\w` and `\d` for the ranges, and no set without `[` and `]`. In the set, `\` is only before `\` and `]`, and a `-` that is a character of the set is the last item, as in `[A-Za-z0-9_-]`.
+Fewer forms keep the parser small, make two guards easy to compare, and leave every other form free for a later meaning.
 
 The pattern of the example is the reason for the guard. Its keyword `00` is in most files, so with `keywords: ["00"]` the lines of all these places are tested with the regular expression. With the guarded keyword, the scan drops these places by itself.
 
@@ -133,8 +140,8 @@ It is an object, and not a new syntax in the string, because the meaning of a st
 
 `@secretlint/core` reads the items when it makes the lint plan, and reads `after` with a small parser of its own (`src/helper/keyword-guard.ts`). The parser has no dependency, because the core also runs in browsers.
 
-- The parser returns the characters of the set and `n`. The characters are sorted, so `[a-z0-9]{32}` and `[0-9a-z]{32,}` are the same guard, and two patterns that declare them for the same keyword share one entry of the keyword matcher.
-- For an object that is not a guarded keyword, making the plan throws an error with the rule id and the item: `keyword` or `after` is not a string, the object has another property, a character is not ASCII, the set starts with `^`, the count is `*`, `?`, 0, or over 255, `m` is under `n`, or `after` has anything else. So a guard that a newer core supports is never read in another way, and a condition such as what is before the keyword can be added later as a property with a new name.
+- The parser returns the characters of the set and `n`. The characters are sorted, so `[a-z0-9]{32,}` and `[0-9a-z]{32,}` are the same guard, and two patterns that declare them for the same keyword share one entry of the keyword matcher.
+- For an object that is not a guarded keyword, making the plan throws an error with the rule id and the item: `keyword` or `after` is not a string, the object has another property, a character is not ASCII, the set starts with `^`, the count is `{n}`, `{n,m}`, `+`, `*`, `?`, 0, or over 255, the set has `\w` or `\d`, or `after` has anything else. The error for a form that has a supported form with the same meaning, such as `{40}`, `+`, and `\d`, gives that form. So a guard that a newer core supports is never read in another way, and a condition such as what is before the keyword can be added later as a property with a new name.
 - `caseSensitiveKeywords` is for both parts. Without it, the keyword is lower-cased as a keyword is, and the parser adds the other case of each letter of the set. This is the meaning of `after` in a regular expression with the `i` flag for ASCII. A set that matches more is always safe, so a rule whose regular expression has the `i` flag does not need to write both cases.
 - A pattern is selected for a source if one of its keywords is found, and for a guarded keyword only where its guard is met. `scope: "line"` needs valid keywords, and a guarded keyword is one.
 - `when` works as before: a pattern that is not in the plan has no entry in the matcher.
@@ -242,7 +249,9 @@ The `--init` of the npm package writes the rules that it finds in `package.json`
 - **A property of its own, `guardedKeywords`, with one string for the keyword and the guard:** This was the first proposal. An older core stops with an error on the unknown property, where it is only slower with an object in `keywords`. It was not chosen by the maintainer: a guard is an extension of a keyword, so it is in `keywords`. One string would also need `\` before the characters of the keyword that have a meaning in a regular expression, such as `pk\.`, while `keyword` of the object is written as it is.
 - **An object without a syntax, such as `{ keyword: "00", chars: "A-Za-z0-9_-", min: 40 }`:** It needs no parser for the count. It was not chosen, because the set still needs a syntax for ranges, and it can not be copied from the regular expression.
 - **A keyword that is not a part of the secret:** The pattern would use the name of the service as its keyword, and report the value near it. It was not chosen by the maintainer: Secretlint does not add a rule that reports a value because of a word near it. A rule finds a secret by the format of the secret.
-- **More syntax: a most of the count, what follows the run, what is before the keyword, and a set with `^`:** A regular expression can state these, and they can drop more places. They were not added. A most and an end are true only if the regular expression of the pattern also states an end, so they are easy to write wrong. A set with `^` has characters that are not ASCII, and then the bytes and the string count differently. The core rejects all of them now, so each can be added later without changing the meaning of an existing string.
+- **Short forms such as `+`, `\w`, and `\d`:** They are common in regular expressions, and the first proposal had them. They were not chosen by the maintainer: each is a second way to write a guard that the syntax can already state.
+- **A count with a most that is not used:** `{n}` and `{n,m}` would be accepted and mean `{n,}`, so that the start of `pattern` can be copied as it is. A regular expression that is tested at one place also matches the start of a longer run. It was not chosen by the maintainer: `{40}` reads as "40 characters", and the guard would mean something else than it reads.
+- **More syntax: a most of the count that is checked, what follows the run, what is before the keyword, and a set with `^`:** A regular expression can state these, and they can drop more places. They were not added. A most and an end are true only if the regular expression of the pattern also states an end, so they are easy to write wrong. A set with `^` has characters that are not ASCII, and then the bytes and the string count differently. The core rejects all of them now, so each can be added later without changing the meaning of an existing string.
 - **A set that is always case-sensitive:** The set would match as written, and only the keyword would follow `caseSensitiveKeywords`. It was not chosen, because a rule author who copies `[a-f0-9]{32}` from a regular expression with the `i` flag would get a guard that rejects upper-case keys.
 
 ## Open questions

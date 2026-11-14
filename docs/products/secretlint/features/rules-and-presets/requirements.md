@@ -203,13 +203,13 @@ As a rule author, I want to state what follows the keyword of my pattern, so tha
 
 Scenario: When a pattern declares a guarded keyword, the rule reports the same secrets
 
-- Given: A pattern has the regular expression `/00[A-Za-z0-9_-]{40}/` and the guarded keyword `{ keyword: "00", after: "[A-Za-z0-9_-]{40}" }` in its keywords.
+- Given: A pattern has the regular expression `/00[A-Za-z0-9_-]{40}/` and the guarded keyword `{ keyword: "00", after: "[A-Za-z0-9_-]{40,}" }` in its keywords.
 - When: A file that has such a key is linted.
 - Then: The rule reports the key, the same as with the keyword `00`.
 
 Scenario: When the guard of a guarded keyword is not supported, the lint stops with an error
 
-- Given: A pattern has the guarded keyword `{ keyword: "00", after: "[^ ]{40}" }`, which uses a syntax that Secretlint does not support.
+- Given: A pattern has the guarded keyword `{ keyword: "00", after: "[^ ]{40,}" }`, which uses a syntax that Secretlint does not support.
 - When: A developer lints with the rule.
 - Then: Secretlint stops with an error that names the rule and the guarded keyword, and no file is linted.
 
@@ -296,10 +296,11 @@ A pattern can declare guarded keywords: a keyword with a guard, a condition on t
 The rule states the guard as data, as it states keywords, and Secretlint checks it.
 
 - A guarded keyword is an item of the keywords of a pattern. An item is a string, as before, or an object for a guarded keyword. A string means what it meant before: no string is read in a new way.
-- The object has the keyword, and what comes after it: a set of characters and a count. For example, `{ keyword: "00", after: "[A-Za-z0-9_-]{40}" }` is the keyword `00` and 40 or more characters of letters, digits, `_`, and `-` after it.
+- The object has the keyword, and what comes after it: a set of characters and a count. For example, `{ keyword: "00", after: "[A-Za-z0-9_-]{40,}" }` is the keyword `00` and 40 or more characters of letters, digits, `_`, and `-` after it.
 - The keyword of the object is written as a keyword of a string is, with no special characters.
-- What comes after is written as a part of a regular expression, and it means what that part means. So a rule author can copy the part after the keyword from the regular expression of the pattern.
-- Its syntax is a small subset of the syntax of regular expressions: one set of ASCII characters and one count. The count says how many characters follow at least. A count with a most, such as `{32,40}`, is accepted and means `{32,}`, because a regular expression that matches at the start of a longer run says the same.
+- What comes after is written in the syntax of regular expressions, and it means what it says: `[A-Za-z0-9_-]{40,}` is 40 or more of these characters.
+- Its syntax is a small subset of the syntax of regular expressions: one set of ASCII characters and one count. The set is written with `[` and `]`, and the count is `{n,}`: it says how many characters follow at least, and a guard states nothing more. A count that reads as a most or as an exact number, such as `{32,40}` or `{40}`, is not supported, because the guard would not check what the count says.
+- The syntax is strict: one thing has one way to write it. A short form that means the same as another form, such as `+` for `{1,}` or `\d` for `0-9`, is not supported.
 - Other syntax, such as a set with `^`, a group, or a second set, is not supported, and the object has no other property. If more is needed, it is added to the syntax or as a property with a new name, and a Secretlint that does not know it does not read the guard in another way.
 - A guarded keyword is matched without the case of ASCII letters by default, both the keyword and the set. When the pattern declares its keywords as case-sensitive, both are case-sensitive.
 - Every match of the pattern must contain one of its keywords, and for a guarded keyword also the characters that meet the guard. This is the same duty as for keywords, and the tests of the rule check it. See [Custom rules](../custom-rules/requirements.md).
@@ -330,6 +331,8 @@ When `keywords` of an entry of `@secretlint/secretlint-rule-pattern` is not a li
 ##### A guarded keyword is not supported
 
 When an item of the keywords is an object, and it does not have a keyword and a guard as strings, has another property, has a character that is not ASCII, or has a guard that the syntax does not support, Secretlint stops with an error that names the rule and the item, and no file is linted.
+A count that the guard does not check as written, such as `{40}` or `{32,40}`, is an error, and the message says to write `{40,}` or `{32,}`.
+A second way to write the same guard, such as `+` or `\d`, is an error, and the message gives the supported form.
 A count that makes the guard always true, such as `*`, `?`, or `{0,}`, is also an error.
 Secretlint does not run the pattern without the guard instead, so a mistake in the guard is found at the first lint and not as a slow lint.
 

@@ -80,7 +80,7 @@ Scenario: When a match does not contain any keyword, the test fails
 
 Scenario: When a guard rejects a secret that the rule reports, the test fails and names the guard
 
-- Given: A pattern of the rule has the guarded keyword `{ keyword: "00", after: "[A-Za-z0-9]{40}" }`, and the pattern also matches a key that has `_` in these 40 characters. One input of the tests has such a key.
+- Given: A pattern of the rule has the guarded keyword `{ keyword: "00", after: "[A-Za-z0-9]{40,}" }`, and the pattern also matches a key that has `_` in these 40 characters. One input of the tests has such a key.
 - When: The rule author runs the tests.
 - Then: The test case fails with a message that names the rule, the guarded keyword, and the line and column of the keyword whose guard is not met.
 
