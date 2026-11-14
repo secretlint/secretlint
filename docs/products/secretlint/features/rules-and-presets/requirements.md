@@ -420,4 +420,4 @@ The provided rules read only the content that Secretlint passes to them, and do 
 ## Open questions
 
 - Should `meta.keywords` of a rule without patterns also have guards? No rule needs it today.
-- Which rule uses a guarded keyword first? The keywords of the recommended preset are long, and a guard changes nothing for them.
+- Which rule gets a guarded keyword next? The AWS rule is the first: the prefixes of its access key ID, such as `ASIA`, have a guard. The other keywords of the recommended preset are long, and a guard changes nothing for them.

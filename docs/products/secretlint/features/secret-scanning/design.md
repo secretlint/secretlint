@@ -127,6 +127,8 @@ The profile shows the count of each guarded keyword, so a rule author sees it.
 
 A matcher that is created for the profile counts, for each entry with a guard, the places where the keyword was found and the places where the guard was met.
 Without the profile it does not count, so the loop has no cost for it.
+`takeGuardCounts()` of the matcher returns the counts since the last call. The core creates such a matcher for a view when the profiler is enabled, and records the counts after each scan as `@core>keyword-guard` and `@core>keyword-guard-met`. `createKeywordScanner(plan, { profile: true })` creates one for a worker, and `scanner.takeGuardCounts()` returns the counts with the keyword and the guard as text.
+The text is written from the characters of the set, in the syntax of `after`, such as `00 [0-9A-Za-z_-]{40,}`.
 
 ### Looking for keywords on several threads
 

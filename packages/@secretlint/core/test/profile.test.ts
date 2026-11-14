@@ -90,11 +90,13 @@ describe("profile", () => {
         };
         const content = "100\ntime = 00:00:00\nkey = 00abcdEF12\n";
         const config = { rules: [{ id: "profile-guard", rule: guardedRule }] };
-        // the bytes are scanned, and then the string is scanned for the patterns
+        // The bytes are scanned, and then the string is scanned for the patterns. The places are counted once
         await lintSource({
             source: { content, contentBytes: new TextEncoder().encode(content), filePath: "/a", contentType: "text" },
             options: { config },
         });
+        // a source without bytes
+        await lintSource({ source: { content, filePath: "/b", contentType: "text" }, options: { config } });
         const stats = secretLintProfiler.getStats();
         const statOf = (type: string, id?: string) => stats.find((stat) => stat.type === type && stat.id === id);
         const guardId = "00 [0-9A-Za-z]{8,}";

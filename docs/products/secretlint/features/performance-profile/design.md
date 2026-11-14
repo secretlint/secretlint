@@ -57,6 +57,8 @@ When a change adds a measured point to code that runs for each file or each patt
 | `@core>lint` | file path | core | Lint a content |
 | `@core>setup-rules` | | core | Create the lint plan. It runs once for a configuration |
 | `@core>keyword-scan` | | core | Scan the content for the keywords of all rules |
+| `@core>keyword-guard` | keyword and guard | core | The places where a keyword with a guard was found. It has no time. When worker threads were used, it includes the places of the workers: a worker counts them and the engine adds them with `count()` |
+| `@core>keyword-guard-met` | keyword and guard | core | The places where the guard of the keyword was met. It has no time |
 | `@core>line-check` | | core | Test the lines that have a keyword. It includes `@core>pattern-line-test` |
 | `@core>pattern-line-test` | pattern id | core | Test a line with a pattern. When worker threads were used, it includes the tests of the workers: a worker measures them and the engine adds them with `addTotal()`. They are not in `@core>line-check`, which is the time of the main thread |
 | `@core>pattern` | pattern id | core | Run a pattern and report the matches |
@@ -89,6 +91,7 @@ The summary is `{ total, files, phases, rules, patterns, slowestFiles }`:
 - `phases`: `{ name, depth, duration, percent, count }`
 - `rules`: `{ ruleId, duration, files }`
 - `patterns`: `{ ruleId, index, pattern, duration, runDuration, runs, matches, lineTestDuration, lineTests }`. `duration` is `runDuration + lineTestDuration`
+- `keywordGuards`: `{ keyword, found, met }`, in the order of `found`
 - `slowestFiles`: `{ filePath, duration }`
 
 ## APIs and interfaces

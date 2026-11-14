@@ -379,6 +379,25 @@ type Options = { enableIDScan?: boolean };
 
 `@secretlint/tester` checks `keywords` and `scope` of your patterns: it fails if the result differs from running the patterns on the whole content.
 
+Keywords are matched ASCII case-insensitively. If the prefix of a secret is short or common, such as `00` or `SK`, the keyword is in most files and the pattern runs for many lines.
+For such a keyword, write the characters that follow it in the secret as a guard: `{ keyword, after }`. Secretlint finds the keyword only where the guard is met, while it scans for the keywords.
+
+```ts
+{
+    // "00" and 40 characters
+    pattern: /(?<![A-Za-z0-9_-])00[A-Za-z0-9_-]{40}(?![A-Za-z0-9_-])/g,
+    keywords: [{ keyword: "00", after: "[A-Za-z0-9_-]{40,}" }],
+    scope: "line",
+    report(match, context) { /* ... */ },
+}
+```
+
+- `after` is one set of ASCII characters and one least count, in the syntax of regular expressions: `[...]` and `{n,}`. `n` is from 1 to 255.
+- In the set, write characters and ranges such as `a-z`. `\` is written only before `\` and `]`, and a `-` as a character is the last item.
+- The set is compared as it is written: `[a-f0-9]` does not have `A`. So a guard also keeps a pattern from a common word in another case: `{ keyword: "ASIA", after: "[A-Z0-9]{16,}" }` is not found in `asia-northeast1`.
+- The syntax is strict: a guard has one way to write it. Other forms, such as `{40}`, `{32,40}`, `+`, `\d`, and `[^...]`, are an error, and the error tells the supported form.
+- A guard must be true for every secret of the pattern. `@secretlint/tester` fails with the rule, the keyword, the guard, and the position if a guard rejects a secret that the pattern reports. A guard that is too loose only makes the lint slower.
+
 ## Performance
 
 Use `--profile` option for checking performance of your rule.
@@ -393,6 +412,7 @@ $ secretlint --profile "**/*"
 - **Rule**: the time of each rule
 - **Pattern**: the time of each pattern of `patterns`, how many times it ran, and how many matches it found.
   A pattern with many `Runs` and no `Matches` may need more specific `keywords`
+- **Keyword with a guard**: how many places of a keyword with a guard were found, and how many met the guard
 - **File**: the files that took the longest time to lint
 
 The text output shows the top 10 of the rules, the patterns, and the files.

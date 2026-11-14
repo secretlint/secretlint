@@ -60,10 +60,10 @@ Step 4 also finds a guard of a guarded keyword that rejects a secret, because th
 - If `keywords` of a pattern of the configuration has a guarded keyword, the runner lints the string once more with a configuration in which each guarded keyword `{ keyword, after }` is the string `keyword`: the same keyword without its guard.
 - A message of this result that is not in the result of step 3, by its rule id, message id, and range, is a secret that a guard rejected.
 - For such a message, the runner looks at the guarded keywords of the patterns of that rule. It finds the places of each keyword in the line of the message, or in the content for the "file" scope, and tests the guard there with the function that the keyword matcher uses.
-- It throws an error with the places whose guard is not met, such as: `@secretlint/secretlint-rule-example: the guard "[A-Za-z0-9]{40,}" of the keyword "00" is not met at 3:12, but the rule reports a secret at 3:12-3:54. Every secret of the pattern must meet the guard.`
+- It throws an error with the places whose guard is not met. The error has a line such as: `@secretlint/secretlint-rule-example: the guard "[A-Za-z0-9]{40,}" of the keyword "00" is not met at 3:12, but the rule reports a secret at 3:12-3:54.` A place is the line and the column, both from 1.
 
 The check uses the parser and the guard function of the core, so the tests check what the lint does.
-The lint without guards is skipped when no pattern has a guarded keyword, so the tests of other rules take the same time as before.
+The lint without guards is skipped when the configuration has no guarded keyword and no preset, so the tests of other rules take the same time as before. A preset registers its rules when the lint runs, so the runner does not know its keywords before.
 The configuration of step 4 has no keywords, so it also has no guarded keywords.
 
 ### Presets

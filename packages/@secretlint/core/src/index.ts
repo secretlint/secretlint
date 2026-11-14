@@ -332,7 +332,12 @@ const lintWithPlan = (
         const startTime = secretLintProfiler.now();
         const hits = matcher.scan(content);
         secretLintProfiler.record("@core>keyword-scan", undefined, startTime);
-        recordGuardCounts(matcher);
+        if (bytes === undefined) {
+            recordGuardCounts(matcher);
+        } else {
+            // The scan of the bytes counted the places of the keywords with a guard. Do not count them twice
+            matcher.takeGuardCounts();
+        }
         return hits;
     };
     const textHits = scanText();

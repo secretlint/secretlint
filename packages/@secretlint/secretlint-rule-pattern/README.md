@@ -107,6 +107,27 @@ When no keyword is found, such as for `/[0-9a-f]{64}/`, the pattern runs on ever
 - `secretlint --profile` shows a pattern that runs on every file as `<name> (no keywords)`.
 - Keywords are ASCII, so a pattern with the `i` flag can miss a match that uses a non-ASCII letter in place of a letter of the keyword. secretlint adds the `u` flag to every pattern, and with `iu`, `k` also matches the Kelvin sign `K` (U+212A) and `s` also matches the long s `ſ` (U+017F). For example, `/token=\w+/i` gets the keyword `token=`, and `to\u212Aen=abc123` (written with the Kelvin sign) is not reported, because the file does not contain `token=`. Write `"keywords": []` if a pattern should also find such text.
 
+#### A keyword that is short or common
+
+A short keyword such as `00` is in most files, so it does not tell where the secret can be.
+For such a keyword, write the characters that follow it as a guard: `{ "keyword": ..., "after": ... }`.
+secretlint finds the keyword only where the guard is met.
+
+```json
+{
+  "name": "internal key",
+  "patterns": ["/00[A-Za-z0-9_-]{40}/"],
+  "keywords": [{ "keyword": "00", "after": "[A-Za-z0-9_-]{40,}" }]
+}
+```
+
+- `after` is one set of ASCII characters and one least count: `[...]` and `{n,}`. `n` is from 1 to 255.
+- In the set, write characters and ranges such as `a-z`. Write `\` only before `\` and `]`, and write a `-` as the last item.
+- The keyword is matched case-insensitively, and the set is compared as it is written: `[a-f0-9]` does not have `A`.
+- The syntax is strict. Other forms, such as `{40}`, `{32,40}`, `+`, `\d`, and `[^...]`, are an error, and the error tells the supported form.
+- Every match of the patterns that contains the keyword must have the characters that meet the guard after it. Otherwise the match is not reported.
+- `secretlint --profile` shows how many places of the keyword were found, and how many met the guard.
+
 ## MessageIDs
 
 ### Pattern
@@ -156,7 +177,7 @@ Array of pattern configurations. Each pattern can have:
 - `patterns?: string[]` - Array of RegExp-like strings to match against file content
 - `pattern?: string` - **[DEPRECATED]** Single RegExp-like string to match against file content (use `patterns` instead)
 - `filePathGlobs?: string[]` - Array of glob patterns to match against file paths
-- `keywords?: string[]` - Keywords for pre-filtering. See [Using keywords](#using-keywords)
+- `keywords?: (string | { keyword: string; after: string })[]` - Keywords for pre-filtering. See [Using keywords](#using-keywords)
 - `allows?: string[]` - Per-pattern allow list of [RegExp-like String](https://github.com/textlint/regexp-string-matcher#regexp-like-string), applied in addition to the global `allows`
 
 ### Deprecated options
