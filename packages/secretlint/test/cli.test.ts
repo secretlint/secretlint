@@ -174,7 +174,15 @@ describe("--profile", () => {
         const result = await runWithProfile("json");
         // the standard output is one JSON document: the summary
         const report = JSON.parse(result.stdout as string);
-        assert.deepStrictEqual(Object.keys(report), ["total", "files", "phases", "rules", "patterns", "slowestFiles"]);
+        assert.deepStrictEqual(Object.keys(report), [
+            "total",
+            "files",
+            "phases",
+            "keywordScanThreads",
+            "rules",
+            "patterns",
+            "slowestFiles",
+        ]);
         assert.strictEqual(report.files, 1);
         assert.strictEqual(report.phases[0].name, "secretlint>cli");
         // the file path of a searched file uses "/" on Windows

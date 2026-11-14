@@ -16,6 +16,10 @@ import { ContextEvents, createRuleContext } from "./RuleContext.js";
 import { secretLintProfiler } from "@secretlint/profiler";
 import { cleanupMessages } from "./messages/index.js";
 import { getLintPlan, getPlanView, LintPlan, PlanPattern, PlanView, ViewRule } from "./LintPlan.js";
+import { hasUtf8BOM, type KeywordScanPlan, type KeywordScanResult } from "./keyword-scan.js";
+import { hasLineMatchInBytes, isKeywordFound, someKeywordLine } from "./helper/line-check.js";
+
+export type { KeywordScanPlan, KeywordScanResult };
 import debug0 from "debug";
 
 const debug = debug0("@secretlint/core");
@@ -24,6 +28,15 @@ export type SecretLintSourceOptions = {
      * Lint target source
      */
     source: SecretLintRawSource;
+    /**
+     * The result of the keyword scan of `source.contentBytes`, from `createKeywordScanner()` of
+     * `@secretlint/core/keyword-scan` with the plan of `getKeywordScanPlan()`.
+     * If it is passed, `lintSource()` does not scan the bytes or check the lines that have a keyword again.
+     * It is ignored if it is not for the keywords and the patterns of the config and the content type of the source,
+     * so a result of another config costs time and does not change the result of the lint.
+     * The caller passes it only if it scanned the same bytes as `source.contentBytes`.
+     */
+    keywordScanResult?: KeywordScanResult;
     options: {
         /**
          * local for translate
@@ -47,114 +60,6 @@ export type SecretLintSourceOptions = {
          */
         noPhysicFilePath?: boolean;
     };
-};
-
-const LINE_FEED = 0x0a;
-const hasUtf8BOM = (bytes: Uint8Array): boolean => {
-    return bytes.length >= 3 && bytes[0] === 0xef && bytes[1] === 0xbb && bytes[2] === 0xbf;
-};
-// TextDecoder is in browsers and Node.js. `ignoreBOM: true` keeps a BOM as a character, as `Buffer#toString` does
-const textDecoder = new TextDecoder("utf-8", { ignoreBOM: true });
-/**
- * Decode a part of UTF-8 bytes.
- * The part is a line: it starts after a line feed and ends with a line feed,
- * so the result is the same as the part of the decoded whole content.
- */
-const decodeBytes = (bytes: Uint8Array, start: number, end: number): string => {
-    // Buffer of Node.js decodes a part of it without creating a view
-    const utf8Slice = (bytes as { utf8Slice?: (start: number, end: number) => string }).utf8Slice;
-    if (typeof utf8Slice === "function") {
-        return utf8Slice.call(bytes, start, end);
-    }
-    return textDecoder.decode(bytes.subarray(start, end));
-};
-
-const isKeywordFound = (keywordIndexes: readonly number[], found: Readonly<Uint8Array>): boolean => {
-    return keywordIndexes.some((keywordIndex) => found[keywordIndex] === 1);
-};
-
-/**
- * Call `visit` for each line that has a keyword of a "line" scope pattern, with the patterns of the keywords.
- * A line is [start, end), and it includes its line feed.
- * Stop and return true if `visit` returns true.
- */
-const someKeywordLine = (
-    view: PlanView,
-    hits: KeywordHits,
-    lineStartOf: (index: number) => number,
-    lineEndOf: (index: number) => number,
-    visit: (lineStart: number, lineEnd: number, patterns: readonly PlanPattern[]) => boolean,
-): boolean => {
-    const { matcher, linePatternsOfKeyword } = view;
-    if (!matcher) {
-        return false;
-    }
-    const positions = hits.positions;
-    const end = hits.count * 2;
-    // Add the "line" scope patterns of the keywords of the state to `patterns` of a line.
-    // It is written with loops because it runs for each hit.
-    const addLinePatterns = (patterns: PlanPattern[], state: number): void => {
-        const keywordIndexes = matcher.keywordsOfState(state);
-        for (let i = 0; i < keywordIndexes.length; i++) {
-            const linePatterns = linePatternsOfKeyword[keywordIndexes[i] as number] as readonly PlanPattern[];
-            for (let j = 0; j < linePatterns.length; j++) {
-                const pattern = linePatterns[j] as PlanPattern;
-                if (!patterns.includes(pattern)) {
-                    patterns.push(pattern);
-                }
-            }
-        }
-    };
-    // `cursor` is the first hit of a line. Each turn takes all hits of the line.
-    for (let cursor = 0; cursor < end; ) {
-        const patterns: PlanPattern[] = [];
-        addLinePatterns(patterns, positions[cursor] as number);
-        if (patterns.length === 0) {
-            // the keyword is not for a "line" scope pattern
-            cursor += 2;
-            continue;
-        }
-        const index = positions[cursor + 1] as number;
-        const lineStart = lineStartOf(index);
-        const lineEnd = lineEndOf(index);
-        cursor += 2;
-        for (; cursor < end && (positions[cursor + 1] as number) < lineEnd; cursor += 2) {
-            addLinePatterns(patterns, positions[cursor] as number);
-        }
-        if (visit(lineStart, lineEnd, patterns)) {
-            return true;
-        }
-    }
-    return false;
-};
-
-/**
- * Return true if a "line" scope pattern matches a line that has its keyword.
- * It decodes only the lines that have a keyword, so the whole content is not decoded for the files without secrets.
- * `hits` is the result of scanning the bytes.
- */
-const hasLineMatchInBytes = (view: PlanView, hits: KeywordHits, bytes: Uint8Array, contentStart: number): boolean => {
-    return someKeywordLine(
-        view,
-        hits,
-        (index) => Math.max((index === 0 ? -1 : bytes.lastIndexOf(LINE_FEED, index - 1)) + 1, contentStart),
-        (index) => {
-            const nextLineFeed = bytes.indexOf(LINE_FEED, index);
-            return nextLineFeed < 0 ? bytes.length : nextLineFeed + 1;
-        },
-        (lineStart, lineEnd, patterns) => {
-            const line = decodeBytes(bytes, lineStart, lineEnd);
-            if (secretLintProfiler.isEnabled) {
-                return patterns.some((pattern) => {
-                    const startTime = secretLintProfiler.now();
-                    const matched = pattern.tester.test(line);
-                    secretLintProfiler.record("@core>pattern-line-test", pattern.profileId, startTime);
-                    return matched;
-                });
-            }
-            return patterns.some((pattern) => pattern.tester.test(line));
-        },
-    );
 };
 
 /**
@@ -239,30 +144,58 @@ type BytesCheck = {
  * 1. Scan the bytes once for the keywords of all rules.
  * 2. Check the patterns on the lines that have a keyword, without decoding the whole content.
  */
-const checkBytes = (view: PlanView, bytes: Uint8Array): BytesCheck | undefined => {
+const checkBytes = (
+    view: PlanView,
+    bytes: Uint8Array,
+    keywordScanResult: KeywordScanResult | undefined,
+): BytesCheck | undefined => {
     const matcher = view.matcher;
     if (!matcher) {
         return undefined;
     }
-    const contentStart = hasUtf8BOM(bytes) ? 3 : 0;
     const profiling = secretLintProfiler.isEnabled;
+    const found = (keywordIndexes: Readonly<Uint8Array>): (() => boolean) => {
+        return () => {
+            return view.keywordPatterns.some((pattern) => {
+                return (
+                    pattern.scope === "file" &&
+                    isKeywordFound(pattern.keywordIndexes as readonly number[], keywordIndexes)
+                );
+            });
+        };
+    };
+    // Use the result of the caller only if it is for the same keywords and patterns.
+    // The result has the check of the lines, so the bytes are not scanned here
+    if (keywordScanResult !== undefined && keywordScanResult.planId === view.keywordScanPlan?.id) {
+        const hasFilePatternKeyword = found(keywordScanResult.found);
+        return {
+            found: keywordScanResult.found,
+            hasKeyword: keywordScanResult.hasKeyword,
+            runsPatterns:
+                view.hasAlwaysPattern ||
+                (keywordScanResult.hasKeyword &&
+                    ((view.hasFilePattern && hasFilePatternKeyword()) || keywordScanResult.lineMatched)),
+        };
+    }
+    const contentStart = hasUtf8BOM(bytes) ? 3 : 0;
     const scanStartTime = profiling ? secretLintProfiler.now() : 0;
     const hits = matcher.scan(bytes, contentStart);
     if (profiling) {
         secretLintProfiler.record("@core>keyword-scan", undefined, scanStartTime);
     }
     const hasKeyword = hits.count > 0;
-    const hasFilePatternKeyword = (): boolean => {
-        return view.keywordPatterns.some((pattern) => {
-            return pattern.scope === "file" && isKeywordFound(pattern.keywordIndexes as readonly number[], hits.found);
-        });
-    };
+    const hasFilePatternKeyword = found(hits.found);
     const hasLineMatch = (): boolean => {
         if (!profiling) {
             return hasLineMatchInBytes(view, hits, bytes, contentStart);
         }
         const startTime = secretLintProfiler.now();
-        const matched = hasLineMatchInBytes(view, hits, bytes, contentStart);
+        const matched = hasLineMatchInBytes(view, hits, bytes, contentStart, (pattern, line) => {
+            const testStartTime = secretLintProfiler.now();
+            const lineMatched = pattern.tester.test(line);
+            secretLintProfiler.record("@core>pattern-line-test", pattern.profileId, testStartTime);
+            return lineMatched;
+        });
         secretLintProfiler.record("@core>line-check", undefined, startTime);
         return matched;
     };
@@ -317,6 +250,7 @@ const lintWithPlan = (
     plan: LintPlan,
     source: SecretLintRawSource,
     options: { maskSecrets: boolean; noPhysicFilePath: boolean },
+    keywordScanResult?: KeywordScanResult,
 ): Promise<SecretLintCoreResult> => {
     const contentType = source.contentType;
     const view = getPlanView(plan, contentType);
@@ -324,7 +258,7 @@ const lintWithPlan = (
     // The bytes may be available only at the start of the lint. See createFileSourceReader() of source-creator
     const bytes = source.contentBytes;
     // Check the bytes if the source has them, because decoding the content costs more than scanning it.
-    const bytesCheck = bytes === undefined ? undefined : checkBytes(view, bytes);
+    const bytesCheck = bytes === undefined ? undefined : checkBytes(view, bytes, keywordScanResult);
     if (bytes !== undefined && !bytesCheck?.hasKeyword && !view.hasAlwaysPattern && !view.hasAlwaysRule) {
         // Most files end here: no rule runs, and nothing is created for the file except the result
         return Promise.resolve(createResult(source, []));
@@ -501,16 +435,42 @@ const lintWithPlan = (
     return Promise.all(promises).then(finish);
 };
 
-export const lintSource = ({ source, options }: SecretLintSourceOptions): Promise<SecretLintCoreResult> => {
+/**
+ * Get what the keyword scan looks for with the config, for sources of the content type.
+ * Pass it to `createKeywordScanner()` of `@secretlint/core/keyword-scan`.
+ * It returns undefined if no rule has keywords: then there is nothing to scan.
+ */
+export const getKeywordScanPlan = ({
+    config,
+    locale,
+    contentType = "text",
+}: {
+    config: SecretLintCoreConfig;
+    locale?: SecretLintRuleLocaleTag;
+    contentType?: SecretLintRawSource["contentType"];
+}): KeywordScanPlan | undefined => {
+    return getPlanView(getLintPlan(config, locale ?? "en"), contentType).keywordScanPlan;
+};
+
+export const lintSource = ({
+    source,
+    options,
+    keywordScanResult,
+}: SecretLintSourceOptions): Promise<SecretLintCoreResult> => {
     // Each call has its own start time, because the calls can overlap
     const startTime = secretLintProfiler.isEnabled ? secretLintProfiler.now() : 0;
     debug(`source filePath: %O`, source.filePath);
     debug(`options: %O`, options);
     const plan = getLintPlan(options.config, options.locale ?? "en");
-    const promise = lintWithPlan(plan, source, {
-        maskSecrets: options.maskSecrets ?? false,
-        noPhysicFilePath: options.noPhysicFilePath ?? false,
-    });
+    const promise = lintWithPlan(
+        plan,
+        source,
+        {
+            maskSecrets: options.maskSecrets ?? false,
+            noPhysicFilePath: options.noPhysicFilePath ?? false,
+        },
+        keywordScanResult,
+    );
     if (!secretLintProfiler.isEnabled) {
         return promise;
     }

@@ -128,6 +128,7 @@ With `--output`, the lint results are written to the file as without `--profile`
 | Section | A row is | Values of a row | Rows in text | Rows in JSON |
 | --- | --- | --- | --- | --- |
 | Phases | A phase of the run | Total time, percentage of the total time of the command, count | All phases that ran | All phases that ran |
+| Threads | A thread that read files, when worker threads were used: the main thread, or a worker thread | Time of the thread, number of files that it read | All | All |
 | Rules | A rule that ran for a file | Total time, number of files | 10 with the longest time | All |
 | Patterns | A pattern that ran or was tested for a line | Total time, time and number of runs, number of matches, time and number of line tests | 10 with the longest time | All |
 | Files | A linted file | Time of the lint of the file, without reading it | 10 with the longest time | 10 with the longest time |
@@ -137,7 +138,15 @@ A phase can run in another phase, and the summary shows it with the indent of th
 ##### Shared cost
 
 Secretlint looks for the keywords of all rules in one scan of the content. The time of this scan is a phase, and it is not divided between the rules.
-The time of a rule and a pattern is only the work that runs for that rule: testing lines, running the regular expression, and reporting the matches.
+
+##### Threads
+
+When the lint of many files takes long, worker threads read files and look for keywords, and the main thread runs the rules.
+The summary then shows each thread with its time and the number of the files that it read. The section is not shown when no worker thread started.
+The lint runs in the same way with and without `--profile`.
+The time of reading a file and of the keyword scan in the phases is only the work of the main thread. The work of the workers is in this section.
+The Patterns section includes the tests of lines that the workers did.
+The number of files in the first line of the summary is the number of the files of the run. A file that no rule runs for is not in the Files section.
 
 ##### Text of the summary
 

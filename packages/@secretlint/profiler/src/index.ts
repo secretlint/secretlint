@@ -101,6 +101,9 @@ type SecretLintProfilerMarkedSpanType = SpanOfMarker<SecretLintProfilerMarker>;
  * The types of `mark()` and the types that are recorded with `record()` and `count()`,
  * because they run too many times to create a marker object for each:
  *
+ * - "@node>files": the number of the files of `executeOnFiles()`. It has no duration
+ * - "@node>keyword-scan-thread": the files that a thread read, and the time of the thread, when worker threads
+ *    read files and scan them for the keywords of the rules. `id` is the name of the thread: "main" or "worker {number}"
  * - "@node>read-file": read a file and decide if it is text or binary
  * - "@core>keyword-scan": scan the content once for the keywords of all rules. It is shared by all rules
  * - "@core>line-check": check the lines that have a keyword with the patterns, before decoding the whole content.
@@ -111,6 +114,8 @@ type SecretLintProfilerMarkedSpanType = SpanOfMarker<SecretLintProfilerMarker>;
  */
 export type SecretLintProfilerStatType =
     | SecretLintProfilerMarkedSpanType
+    | "@node>files"
+    | "@node>keyword-scan-thread"
     | "@node>read-file"
     | "@core>keyword-scan"
     | "@core>line-check"
@@ -257,6 +262,21 @@ export class SecretLintProfiler {
             return;
         }
         this.add(type, id, this.nowFn() - startTime);
+    }
+
+    /**
+     * Add a total that was measured somewhere else, such as in a worker thread
+     */
+    addTotal(type: SecretLintProfilerStatType, id: string | undefined, total: { count: number; duration: number }) {
+        if (!this.enabled) {
+            return;
+        }
+        const stat = this.statOf(type, id);
+        stat.count += total.count;
+        stat.duration += total.duration;
+        if (total.duration > stat.maxDuration) {
+            stat.maxDuration = total.duration;
+        }
     }
 
     /**

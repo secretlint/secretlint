@@ -50,13 +50,15 @@ When a change adds a measured point to code that runs for each file or each patt
 | `secretlint>search-files` | | command | Search the files to lint |
 | `@node>load-config` | | engine | Load the configuration. It includes the `@config-loader>*` types |
 | `@node>execute` | | engine | Lint the files and format the results |
+| `@node>files` | | engine | The number of the files of the run, added after the lint of the files ends. It has no time |
+| `@node>keyword-scan-thread` | thread name | engine | The time of a thread and the files that it read, when worker threads were used. A worker measures them and the engine adds them with `addTotal()` |
 | `@node>read-file` | | engine | Read a file |
 | `@node>format` | | engine | Format the results |
 | `@core>lint` | file path | core | Lint a content |
 | `@core>setup-rules` | | core | Create the lint plan. It runs once for a configuration |
 | `@core>keyword-scan` | | core | Scan the content for the keywords of all rules |
 | `@core>line-check` | | core | Test the lines that have a keyword. It includes `@core>pattern-line-test` |
-| `@core>pattern-line-test` | pattern id | core | Test a line with a pattern |
+| `@core>pattern-line-test` | pattern id | core | Test a line with a pattern. When worker threads were used, it includes the tests of the workers: a worker measures them and the engine adds them with `addTotal()`. They are not in `@core>line-check`, which is the time of the main thread |
 | `@core>pattern` | pattern id | core | Run a pattern and report the matches |
 | `@core>pattern-match` | pattern id | core | The number of matches. It has no time |
 | `@core>rule-handler` | rule id | core | Run a rule for a content: its patterns, or its handler |

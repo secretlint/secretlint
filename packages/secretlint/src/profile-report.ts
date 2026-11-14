@@ -70,6 +70,21 @@ export type SecretLintProfileReportPattern = {
      */
     lineTests: number;
 };
+export type SecretLintProfileReportKeywordScanThread = {
+    /**
+     * "main" for the main thread, and "worker {number}" for a worker thread
+     */
+    thread: string;
+    /**
+     * The time of the thread in milliseconds. A worker reads files and scans them for keywords.
+     * The main thread reads and lints files, and lints the files that the workers hand to it
+     */
+    duration: number;
+    /**
+     * The number of the files that the thread read
+     */
+    files: number;
+};
 export type SecretLintProfileReportFile = {
     filePath: string;
     /**
@@ -91,6 +106,11 @@ export type SecretLintProfileReport = {
      */
     files: number;
     phases: SecretLintProfileReportPhase[];
+    /**
+     * The threads that read the files, if worker threads read files and scanned them for keywords.
+     * It is empty if no worker thread started.
+     */
+    keywordScanThreads: SecretLintProfileReportKeywordScanThread[];
     /**
      * All rules that ran, in the order of the time
      */
@@ -215,10 +235,18 @@ export const createProfileReport = (stats: readonly SecretLintProfilerStat[]): S
         .map((stat): SecretLintProfileReportFile => ({ filePath: stat.id ?? "", duration: round(stat.duration) }))
         .sort(byDuration)
         .slice(0, SLOWEST_FILES_COUNT);
+    const keywordScanThreads = statsOfType("@node>keyword-scan-thread").map(
+        (stat): SecretLintProfileReportKeywordScanThread => {
+            return { thread: stat.id ?? "", duration: round(stat.duration), files: stat.count };
+        },
+    );
+    // A worker does not hand a file that no rule runs for, so count the files of the run
+    const fileCount = totalOf("@node>files").count;
     return {
         total: round(total),
-        files: files.length,
+        files: fileCount > 0 ? fileCount : files.length,
         phases,
+        keywordScanThreads,
         rules,
         patterns: sortedPatterns,
         slowestFiles,
@@ -312,6 +340,19 @@ export const formatProfileReport = (
             ]),
         ),
     );
+    if (report.keywordScanThreads.length > 0) {
+        lines.push("");
+        lines.push(
+            ...formatTable(
+                [
+                    { title: "Time(ms)", align: "right" },
+                    { title: "Files", align: "right" },
+                    { title: `Thread (${report.keywordScanThreads.length})`, align: "left" },
+                ],
+                report.keywordScanThreads.map((thread) => [ms(thread.duration), String(thread.files), thread.thread]),
+            ),
+        );
+    }
     const rules = report.rules.slice(0, TOP_COUNT);
     if (rules.length > 0) {
         lines.push("");
