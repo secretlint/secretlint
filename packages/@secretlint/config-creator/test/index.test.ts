@@ -44,9 +44,31 @@ describe("@secretlint/config-creator", () => {
         it("Run config-creator successfully", async () => {
             const pkg = await readPkg(path.join(tmpConfigDir, "package.json"));
             const actual = createConfig({ packageJSON: pkg });
-            actual.rules.forEach((rule) => {
-                assert.strictEqual(rule.id, "@secretlint/secretlint-rule-preset-recommend");
+            assert.deepStrictEqual(actual.rules, [{ id: "@secretlint/secretlint-rule-preset-recommend" }]);
+        });
+        it("writes the recommended preset when package.json has no rule package", () => {
+            const actual = createConfig({ packageJSON: { devDependencies: { secretlint: "^14.0.0" } } });
+            assert.deepStrictEqual(actual.rules, [{ id: "@secretlint/secretlint-rule-preset-recommend" }]);
+        });
+        it("writes the recommended preset when package.json has no dependencies", () => {
+            const actual = createConfig({ packageJSON: {} });
+            assert.deepStrictEqual(actual.rules, [{ id: "@secretlint/secretlint-rule-preset-recommend" }]);
+        });
+        it("writes the recommended preset first, followed by the rule packages", () => {
+            const actual = createConfig({
+                packageJSON: {
+                    dependencies: { "secretlint-rule-custom": "^1.0.0" },
+                    devDependencies: {
+                        secretlint: "^14.0.0",
+                        "@secretlint/secretlint-rule-no-homedir": "^13.0.0",
+                    },
+                },
             });
+            assert.deepStrictEqual(actual.rules, [
+                { id: "@secretlint/secretlint-rule-preset-recommend" },
+                { id: "secretlint-rule-custom" },
+                { id: "@secretlint/secretlint-rule-no-homedir" },
+            ]);
         });
     });
 });

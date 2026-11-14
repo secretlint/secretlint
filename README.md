@@ -193,10 +193,11 @@ In it, you'll see some rules configured like this:
 }
 ```
 
-The `id` property is the name of secretlint rule package. 
+`secretlint --init` always writes the recommended preset, and adds the rule packages that it finds in your `package.json`.
 
-Secretlint does not have built-in rule.
-You want to add some rule and You should **install** the package and **add** the rule to `.secretlintrc` file.
+The `id` property is the id of a rule.
+The [built-in rules](#built-in-rules) and presets need no installation; add their ids to the `.secretlintrc` file.
+To use a rule that is not built in, **install** its package and **add** the rule to the `.secretlintrc` file.
 
 Each rule has same configuration pattern:
 

@@ -180,7 +180,7 @@ The directories `packages/@secretlint/secretlint-rule-<name>` of the built-in ru
 The packages in the repository that depend on them stop depending on them:
 
 - `secretlint` and `@secretlint/quick-start` depend on `@secretlint/secretlint-rule-preset-recommend`. They do not need it, because the configuration loader finds the preset in `@secretlint/core`.
-- `--init` (`@secretlint/config-creator`) writes the rules that it finds in `package.json`, and writes no rule when it finds none. It should write the recommended preset when it finds none, so that a new user does not need the preset package. This is a separate change.
+- `--init` (`@secretlint/config-creator`) writes the recommended preset first, followed by the rule packages that it finds in `package.json`. It writes the preset even when `package.json` does not have the preset package, so that a new user does not need the preset package. It does not write the preset twice when `package.json` has the preset package.
 - The Docker image, the binary, the examples, and the browser test name the preset package in their `package.json` or configuration, and stop naming it as a package.
 
 The released versions of the rules point `docs.url` to the READMEs of these directories (`blob/master/packages/%40secretlint/secretlint-rule-<name>/README.md`). These links of the older versions break when the directories are deleted. This is accepted, because the link is only a link of a message.
@@ -259,7 +259,7 @@ A regular expression of a rule limits its repetition so that a crafted file does
 The packages of the same names are removed in the next major release, which is a breaking change for code that imports from them. A configuration or a `package.json` that names them keeps working, because the built-in rules are used.
 After the release, the maintainer deprecates the packages on npm (`npm deprecate`) with a message that the rule is built into Secretlint and the package can be removed. Deprecation can not be done before the release, because the last published versions are still the ones that users install.
 When the default branch is renamed, the triggers of the workflows that name `master` change in the same pull request.
-The documentation tells users to install only `secretlint`, after `--init` writes the recommended preset without the preset package.
+Because `--init` writes the recommended preset without the preset package, the documentation tells users to install only `secretlint`.
 
 ## Alternatives considered
 

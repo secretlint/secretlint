@@ -33,10 +33,18 @@ export const createConfigDescriptor = ({ ruleNames }: { ruleNames: string[] }): 
 export type CreateConfigFileOption = {
     packageJSON: any;
 };
+
+/**
+ * The recommended preset is built into @secretlint/core, so it is available without installing a package.
+ */
+const RECOMMENDED_PRESET_ID = "@secretlint/secretlint-rule-preset-recommend";
+
 /**
  * Create Config Object from package.json
+ * The config always has the recommended preset first, followed by the rule packages found in package.json.
  */
 export const createConfig = (options: CreateConfigFileOption) => {
-    const ruleNames = getSecretLintPackageNames(options.packageJSON);
+    const packageNames = getSecretLintPackageNames(options.packageJSON);
+    const ruleNames = [RECOMMENDED_PRESET_ID, ...packageNames.filter((name) => name !== RECOMMENDED_PRESET_ID)];
     return createConfigDescriptor({ ruleNames: ruleNames });
 };

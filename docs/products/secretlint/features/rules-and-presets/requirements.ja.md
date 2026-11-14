@@ -45,6 +45,18 @@ Scenario: 設定ファイルにルールを1つだけ書くと、そのルール
 - When: 開発者が、AWSのアクセスキーとGitHubのトークンを含むファイルをlintする。
 - Then: 結果に`@secretlint/secretlint-rule-aws`のメッセージがあり、`@secretlint/secretlint-rule-github`のメッセージはない。
 
+Scenario: `--init`は、プリセットのパッケージがなくてもrecommendプリセットを書き込む
+
+- Given: `secretlint`だけがインストールされていて、設定ファイルがない。
+- When: 開発者が`secretlint --init`を実行する。
+- Then: 設定ファイルに`{ "id": "@secretlint/secretlint-rule-preset-recommend" }`がある。
+
+Scenario: `--init`は、recommendプリセットと`package.json`にあるルールのパッケージを書き込む
+
+- Given: `package.json`に`secretlint`と`@secretlint/secretlint-rule-no-homedir`があり、設定ファイルがない。
+- When: 開発者が`secretlint --init`を実行する。
+- Then: 設定ファイルには、最初にrecommendプリセットがあり、その後に`{ "id": "@secretlint/secretlint-rule-no-homedir" }`がある。
+
 ### ルールのパッケージを入れた設定をそのまま使い続ける
 
 ドキュメントに従ってプリセットのパッケージをインストールした開発者として、設定と`package.json`をそのまま使い続けたい。Secretlintを更新するときに何も変えなくて済むからだ。

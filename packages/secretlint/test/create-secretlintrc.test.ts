@@ -43,7 +43,7 @@ describe("create-secretlintrc", () => {
             assert.match(actual.stdout, /Create .*\.secretlintrc\.json/);
             assert.strictEqual(actual.stderr, null);
         });
-        it("writes the secretlint rule packages in package.json to .secretlintrc.json", async () => {
+        it("writes the recommended preset and the secretlint rule packages in package.json to .secretlintrc.json", async () => {
             await fs.writeFile(
                 path.join(tmpConfigDir, "package.json"),
                 JSON.stringify({
@@ -54,7 +54,11 @@ describe("create-secretlintrc", () => {
             await runConfigCreator({ cwd: tmpConfigDir });
             const config = JSON.parse(await fs.readFile(path.join(tmpConfigDir, ".secretlintrc.json"), "utf-8"));
             assert.deepStrictEqual(config, {
-                rules: [{ id: "secretlint-rule-a" }, { id: "@scope/secretlint-rule-b" }],
+                rules: [
+                    { id: "@secretlint/secretlint-rule-preset-recommend" },
+                    { id: "secretlint-rule-a" },
+                    { id: "@scope/secretlint-rule-b" },
+                ],
             });
         });
     });
