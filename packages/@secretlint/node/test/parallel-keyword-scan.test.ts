@@ -55,7 +55,7 @@ describe("parallel keyword scan", () => {
     });
     afterEach(() => {
         fs.rmSync(files.dir, { recursive: true, force: true });
-        delete process.env.SECRETLINT_KEYWORD_SCAN_THREADS;
+        vi.restoreAllMocks();
     });
     const scan = (
         options: { requiresKeyword: boolean; filePathList?: string[]; profile?: boolean },
@@ -296,7 +296,7 @@ describe("parallel keyword scan", () => {
     });
     it("should output the same results with any max number of threads", async () => {
         const execute = async (threads: number) => {
-            process.env.SECRETLINT_KEYWORD_SCAN_THREADS = String(threads);
+            vi.spyOn(os, "availableParallelism").mockReturnValue(threads);
             const engine = await createEngine({ color: false, configFileJSON, formatter: "json", maskSecrets: false });
             return engine.executeOnFiles({ filePathList: [...files.filePathList, path.join(files.dir, "none.bin")] });
         };

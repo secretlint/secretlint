@@ -39,13 +39,8 @@ const PENDING_BYTES_LIMIT = 256 * 1024 * 1024;
 
 /**
  * The max number of the threads, including the main thread.
- * `SECRETLINT_KEYWORD_SCAN_THREADS` overrides it. It is for the measurement of this proof of concept.
  */
 export const getMaxKeywordScanThreads = (): number => {
-    const specified = Number(process.env.SECRETLINT_KEYWORD_SCAN_THREADS);
-    if (Number.isInteger(specified) && specified >= 1) {
-        return specified;
-    }
     return os.availableParallelism();
 };
 /**

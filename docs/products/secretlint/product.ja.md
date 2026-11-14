@@ -128,6 +128,7 @@ GitHubのsecret scanningはコミットやpushの後にGitHub側で動きます�
 | Dockerイメージ | Node.jsや設定なしで`secretlint/secretlint`を実行する。組み込みルールとSARIFフォーマッターを使える | 未作成 |
 | 単一実行ファイル | GitHub ReleasesのLinux、macOS、Windows向けの実行ファイルを、Node.jsなしで実行する。組み込みルールとSARIFフォーマッターを使える | [Requirements](features/single-executable-binary/requirements.ja.md) |
 | 性能プロファイル | `--profile`で時間のかかった処理を表示する | [Requirements](features/performance-profile/requirements.ja.md) |
+| 変更の比較 | 変更のbaseとheadを固定したリポジトリで比べる：パターンの仕事量、検出結果、実行時間 | [Requirements](features/change-comparison/requirements.ja.md) |
 
 ## 成功の定義
 
