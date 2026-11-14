@@ -12,7 +12,7 @@ People and agents who implement or change the comparison script, its CI workflow
 
 ### Prerequisites
 
-- [Performance profile](../performance-profile/requirements.md) and its [Design](../performance-profile/design.md): the JSON summary of `--profile --format json`
+- [Performance profile](../performance-profile/requirements.md): the JSON summary of `--profile --format json`
 - [Result output](../result-output/requirements.md): `--format json` and `--output`
 - GitHub Actions: the `pull_request` event, `permissions`, the job summary (`GITHUB_STEP_SUMMARY`), and artifacts
 

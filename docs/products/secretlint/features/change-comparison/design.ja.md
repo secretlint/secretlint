@@ -12,7 +12,7 @@
 
 ### 前提知識
 
-- [性能プロファイル](../performance-profile/requirements.ja.md)とその[設計](../performance-profile/design.ja.md): `--profile --format json`のJSONの要約
+- [性能プロファイル](../performance-profile/requirements.ja.md): `--profile --format json`のJSONの要約
 - [結果の出力](../result-output/requirements.ja.md): `--format json`と`--output`
 - GitHub Actions: `pull_request`イベント、`permissions`、ジョブサマリー（`GITHUB_STEP_SUMMARY`）、artifact
 
