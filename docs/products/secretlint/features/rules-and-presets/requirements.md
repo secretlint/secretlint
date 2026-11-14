@@ -171,12 +171,6 @@ Scenario: When a rule reports a message, the message links to the documentation 
 - When: The developer reads the result.
 - Then: The message has a URL to the documentation of the rule and the message ID.
 
-Scenario: When the documentation of a rule moves in a later version, the link of an older version still leads to it
-
-- Given: A developer uses an older version of Secretlint, whose messages link to the place of the documentation in that version.
-- When: A later version moves the documentation of the rule, and the developer opens the link of a message.
-- Then: The page opens, and it links to the current documentation of the rule and its message ID.
-
 Scenario: When the default branch of the repository is renamed, the link still opens
 
 - Given: A message has the URL of the documentation of its rule.
@@ -292,8 +286,7 @@ When a package of the same name is installed, the built-in rule is used and the 
 ##### Packages of the same names
 
 The packages `@secretlint/secretlint-rule-<name>` of the built-in rules, and the packages of the two presets, are still published. Each exports the same rule as the built-in rule of the same version, so code that imports `creator` from them keeps working.
-The README of each of these packages says that the rule or preset is built into Secretlint, and links to its documentation in `docs/rules/`. It keeps the message IDs as headings, so that a link of a message from an older version, which points to this README, still has its target.
-Deprecating these packages is a separate change.
+The README of each of these packages says that the rule or preset is built into Secretlint, and links to its documentation in `docs/rules/`. Deprecating these packages is a separate change.
 
 ##### Browsers
 
@@ -357,10 +350,8 @@ The page does not tell the user to install a package for the rule.
 The URL of the documentation of a rule (`docs.url`) is `https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/<name>.md`.
 `HEAD` is the default branch of the repository, so the URL does not change when the default branch is renamed.
 
-A released version keeps its URLs, because they are in the published package and can not be changed. So a file that a released URL points to stays at its path:
-
-- The documentation of a rule is not deleted or moved without a reason.
-- When it is moved, or its package directory is deleted, a short file stays at the old path. It links to the new place and keeps the message IDs as headings.
+The pages in `docs/rules/` are not deleted or moved without a reason, because the released versions from now on link to them.
+The links of the versions released before this change point to the READMEs of the packages of the same names. Secretlint does not keep those READMEs for these links: when a package directory is deleted, its README is deleted with it. The link is shown only as a link of a message, such as a link in the terminal, so a broken link of an older version is accepted.
 
 ##### Links to the files of the repository
 

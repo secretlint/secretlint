@@ -179,15 +179,15 @@ Currently `canaryRules` is a copy of `recommendedRules`.
 Each package `@secretlint/secretlint-rule-<name>` of a built-in rule re-exports `@secretlint/core/builtin/rules/<name>`.
 The preset packages export `creator` and `rules` from `@secretlint/core/builtin`.
 These packages depend on `@secretlint/core` of the same version, and have no tests of their own.
-The README of each package is short: a sentence that says the rule or preset is built into Secretlint, the URL of its page in `docs/rules/`, and a heading for each message ID with the URL of that message on the page.
-The released versions of the rules point `docs.url` to these READMEs (`blob/master/packages/%40secretlint/secretlint-rule-<name>/README.md`), so the README stays as long as the directory, and stays alone when the directory is deleted.
+The README of each package is short: a sentence that says the rule or preset is built into Secretlint, and the URL of its page in `docs/rules/`.
+The released versions of the rules point `docs.url` to these READMEs (`blob/master/packages/%40secretlint/secretlint-rule-<name>/README.md`). The README is deleted with its package directory, and these links of the older versions break then. This is accepted, because the link is only a link of a message.
 
 ### Documentation of the rules
 
 The page of each built-in rule and preset is `docs/rules/<name>.md`. It has the description, the usage, the message IDs, and the options of the rule. It has no installation steps, and no sections of a package, such as the change log, the author, and the license.
 The page is in `docs/`, with the other documents for users, and not next to the code of the rule. So moving the code, as the move into `@secretlint/core` did, does not move the page, and the URL in the released packages stays valid.
 
-`docs.url` uses `blob/HEAD`. GitHub resolves `HEAD` to the default branch, so the URL does not depend on the name of the branch. A URL with `master` also keeps working after a rename, because GitHub redirects the URLs of files with the old name of a branch, but a URL with `HEAD` needs no redirect.
+`docs.url` uses `blob/HEAD`. GitHub resolves `HEAD` to the default branch, so the URL does not depend on the name of the branch. A URL with a branch name, such as `master` or `main`, depends on the name; with `HEAD`, a rename of the branch does not matter.
 `@secretlint/core` adds `#<message ID>` to `docs.url`, as before.
 
 ### Check of the links
@@ -256,7 +256,7 @@ A regular expression of a rule limits its repetition so that a crafted file does
 
 The packages of the same names are still published, so a configuration or a `package.json` that names them keeps working. Deprecating them is a separate change.
 The README of each package of the same name becomes the short README in the next release, and npm shows it on the page of the package.
-When the default branch is renamed, the triggers of the workflows that name `master` change in the same pull request. The URLs with `master` in the released packages keep working through the redirect of GitHub.
+When the default branch is renamed, the triggers of the workflows that name `master` change in the same pull request.
 The `--init` of the npm package writes the rules that it finds in `package.json`. Until it writes the recommended preset without them, the documentation still tells users to install the preset package.
 
 ## Alternatives considered
