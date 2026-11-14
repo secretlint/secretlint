@@ -16,7 +16,7 @@ The key concepts of the Product, and the Requirements of this feature.
 
 ### Outside this document
 
-How files are chosen, how the configuration is loaded, how keywords and declarative patterns are checked, how messages are masked, and how results are shown.
+How files are chosen, how the configuration is loaded, how declarative patterns are checked after the keywords are found, how messages are masked, and how results are shown.
 
 ## Implementation approach
 
@@ -47,6 +47,25 @@ A program that calls `lintSource()` directly, such as a tool in a browser, creat
 The core builds a plan from the configuration once, and keeps a view of the plan for each content type.
 A view has the rules whose `meta.supportedContentTypes` include the content type or `all`. For `unknown`, it has all rules.
 `meta.keywords` are used only for text. A rule that runs for binary content always runs, because it checks the structure of the content or the file name, not keywords.
+
+### Looking for keywords
+
+The lint of a source has two steps: the keyword scan finds the keywords of the rules in the content, and then the rules and patterns that the keywords select run.
+Most sources have no keyword, so most sources end after the first step.
+
+The core collects the keywords of the rules and patterns in the view for text, and builds one keyword matcher for them. The matcher is cached by its keywords.
+The matcher is an Aho-Corasick automaton: it reads the content once from the start to the end, and finds all keywords in that one pass.
+Keywords are ASCII. They match without the case of ASCII letters by default, and a case-sensitive keyword is compared with the content again after it is found.
+Because keywords are ASCII, scanning the UTF-8 bytes finds the same keywords as scanning the decoded string.
+
+When the source has bytes, the core scans the bytes, from after the byte order mark.
+If no keyword is found and no rule or pattern runs without keywords, the result has no messages, and the content is never decoded.
+If a keyword is found, the core checks the lines that have a keyword on the bytes, and decodes the content only when a pattern or a rule runs.
+When patterns run, the core scans the decoded string again, because the patterns need indexes in the string and these differ from indexes in the bytes.
+
+The automaton does one table lookup for each byte, whatever the keywords are.
+So its time depends on the size of the content and barely on the number of keywords: on 60MB of text, 65 keywords took 97ms and 1,065 keywords took 111ms.
+It also has no knowledge about the content. This is why it meets "Any content" and "The number of keywords" of the Requirements.
 
 ### What a rule receives
 
@@ -184,6 +203,13 @@ It was not chosen because source-creator already gives the bytes of the file as 
 
 A rule that checks binary content would read the file when `contentBytes` is `undefined`, as the gcp rule did.
 It was not chosen by the maintainer: the command always gives the bytes, the rules are released with the core, and reading the file ignores `noPhysicFilePath` and keeps a Node.js import in the rule.
+
+### A sieve before the automaton
+
+A sieve with SIMD instructions in WebAssembly would look at 16 bytes at once and drop the blocks that can not have a keyword, and the automaton would check only the rest.
+It was faster with the keywords of today: the sieve kept 5% of the blocks for 65 keywords.
+It was not chosen by the maintainer, because the number of keywords grows. With 100 more keywords the sieve kept 66% of the blocks, and with the keywords of another secret scanner (285) it kept 94%, so the sieve only adds work.
+A sieve that chooses rare bytes from a table of how common each byte is was also not chosen: Secretlint does not limit the content, so the core does not assume which bytes are common.
 
 ## Open questions
 

@@ -16,6 +16,7 @@ This document is written for the part of the feature that a change needs: what c
 - Which rules run for each content type
 - The content and the information about the source that a rule receives
 - The same results in Node.js and in browsers
+- Looking for the keywords of rules in the content, which decides the rules that run for a source
 
 ### Out of scope
 
@@ -26,7 +27,8 @@ This document is written for the part of the feature that a change needs: what c
 - Masking secret values in messages. It belongs to the feature "Secret masking in results".
 - Showing the results. It belongs to [Result output](../result-output/requirements.md).
 - Text encodings other than UTF-8. The Product limits text to UTF-8.
-- How keywords and declarative patterns of rules are checked, and how the lint is kept fast. They are not written yet.
+- How a rule declares keywords and declarative patterns. It belongs to the feature "Rules and rule presets".
+- How the declarative patterns of rules are checked after the keywords are found. It is not written yet.
 
 ## User stories
 
@@ -152,6 +154,45 @@ For unknown content, all rules run.
 ##### Rules that check binary content
 
 Among the rules that Secretlint provides, only the gcp rule checks binary content, for `.p12` files.
+
+### Look for the keywords of rules in the content
+
+**Overview:** A rule can declare keywords: words that every secret it reports has. Secretlint looks for the keywords of all enabled rules in the content, and runs a rule only for content that has one of its keywords. This keeps the lint fast, and it does not change the results.
+
+**Input:** The content of a source and the keywords of the enabled rules.
+
+**Output:** The rules and the patterns that run for the source.
+
+#### Applicable conditions
+
+##### The same results
+
+The results are the same as the results of running every rule on the whole content.
+Looking for keywords only skips work that reports nothing.
+
+##### Any content
+
+Secretlint does not limit the content that it lints: source code in any language, data, logs, and generated files are all linted.
+So looking for keywords does not assume what the content is like, such as which characters are common in it.
+It uses only the keywords of the enabled rules.
+
+##### The number of keywords
+
+The number of keywords grows as rules are added.
+The time of looking for keywords stays about the same when keywords are added.
+
+##### Content without keywords
+
+For a source that has no keyword, a rule that declares keywords does not run.
+A rule or a pattern that declares no keyword runs for every source.
+
+##### Text only
+
+Keywords are used for text content. A rule that runs for binary content runs for every binary source.
+
+##### Nothing to set up
+
+A user does not enable it or configure it.
 
 ### Give the source to a rule
 
