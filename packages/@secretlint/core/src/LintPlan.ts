@@ -299,21 +299,39 @@ const compilePatterns = (
 };
 
 /**
+ * `options.patterns` of `@secretlint/secretlint-rule-pattern`
+ */
+const RULE_PATTERN_ID = "@secretlint/secretlint-rule-pattern";
+const rulePatternOptionPatterns = (options: unknown): unknown => {
+    return (options as { patterns?: unknown } | undefined)?.patterns;
+};
+/**
  * Return true if the rule is `@secretlint/secretlint-rule-pattern` without patterns.
  * The rule reports nothing without patterns, but it has no keywords, so it would run for every file.
  * `secretlint --init` adds the rule without options, so such a rule is not registered.
  * The rule is found by its id, because importing the built-in rule would add its dependencies to the core.
  * Every version of the rule, including the versions before it was built into the core, reports nothing without patterns.
+ * A rule with the same id and declarative `patterns` is not the rule, so it is registered.
  */
-const RULE_PATTERN_ID = "@secretlint/secretlint-rule-pattern";
 const isRulePatternWithoutPatterns = (descriptorRule: SecretLintCoreConfigRule): boolean => {
-    if (descriptorRule.rule.meta.id !== RULE_PATTERN_ID) {
+    if (descriptorRule.rule.meta.id !== RULE_PATTERN_ID || Array.isArray(descriptorRule.rule.patterns)) {
         return false;
     }
-    const patterns: unknown = (descriptorRule.options as { patterns?: unknown } | undefined)?.patterns;
+    const patterns = rulePatternOptionPatterns(descriptorRule.options);
     return patterns === undefined || (Array.isArray(patterns) && patterns.length === 0);
 };
 
+/**
+ * The plan does not register `@secretlint/secretlint-rule-pattern` without patterns, and the rule reads its options for each source.
+ * So the plan depends on `options.patterns` of the rule, including its length: adding a pattern to the array registers the rule.
+ */
+const pushRulePatternOptions = (snapshot: unknown[], id: string, options: unknown): void => {
+    if (id !== RULE_PATTERN_ID) {
+        return;
+    }
+    const patterns = rulePatternOptionPatterns(options);
+    snapshot.push(patterns, Array.isArray(patterns) ? patterns.length : undefined);
+};
 /**
  * Values of the config that the plan depends on.
  * A config is a plain object, and it can be changed between `lintSource()` calls.
@@ -322,12 +340,14 @@ const createConfigSnapshot = (config: SecretLintCoreConfig): unknown[] => {
     const snapshot: unknown[] = [config.sharedOptions, config.rules, config.rules.length];
     for (const descriptor of config.rules) {
         snapshot.push(descriptor, descriptor.id, descriptor.rule, descriptor.options, descriptor.disabled);
+        pushRulePatternOptions(snapshot, descriptor.rule.meta.id, descriptor.options);
         if (isRulePreset(descriptor)) {
             const presetRules = descriptor.rules;
             snapshot.push(presetRules);
             if (Array.isArray(presetRules)) {
                 snapshot.push(presetRules.length);
                 for (const presetRule of presetRules) {
+                    pushRulePatternOptions(snapshot, presetRule.id, presetRule.options);
                     snapshot.push(
                         presetRule,
                         presetRule.id,

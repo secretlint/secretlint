@@ -60,4 +60,35 @@ describe("@secretlint/secretlint-rule-pattern without patterns", () => {
         const result = await lintSource({ source, options: { config: toConfig() } });
         assert.deepStrictEqual(result.messages, []);
     });
+    it("runs after a pattern is added to the same options", async () => {
+        const options: Options = { patterns: [] };
+        const config = toConfig(options);
+        assert.deepStrictEqual((await lintSource({ source, options: { config } })).messages, []);
+        options.patterns?.push({ name: "password", patterns: ["/password=\\w+/"] });
+        const result = await lintSource({ source, options: { config } });
+        assert.deepStrictEqual(
+            result.messages.map((message) => message.ruleId),
+            [rulePattern.meta.id],
+        );
+    });
+    it("runs a rule that has the same id and declarative patterns", async () => {
+        const declarativeRule: SecretLintRuleCreator = {
+            messages: {},
+            meta: { id: rulePattern.meta.id, recommended: false, type: "scanner", supportedContentTypes: ["text"] },
+            patterns: [
+                {
+                    pattern: /password/,
+                    report(match, context) {
+                        context.report({ message: "found", range: match.range });
+                    },
+                },
+            ],
+        };
+        const config: SecretLintCoreConfig = { rules: [{ id: declarativeRule.meta.id, rule: declarativeRule }] };
+        const result = await lintSource({ source, options: { config } });
+        assert.deepStrictEqual(
+            result.messages.map((message) => message.ruleId),
+            [rulePattern.meta.id],
+        );
+    });
 });
