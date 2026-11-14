@@ -28,7 +28,7 @@ The deliverables are:
 
 - `examples/benchmark/compare.mjs`: the comparison script. It is in the private benchmark package, next to the small set (`targets/`) and the configuration of the lint (`.secretlintrc.json`, the canary preset). The root `package.json` has `"compare": "node examples/benchmark/compare.mjs"`.
 - `examples/benchmark/compare-sets.json`: the sets other than small, each with its repository URL and the commit.
-- `.github/workflows/compare.yml`: the CI workflow.
+- `.github/workflows/profile-benchmark.yml`: the CI workflow.
 - A line in `AGENTS.md` that tells an agent to run `pnpm run compare` and to paste its Markdown output into the description of the pull request.
 
 The script uses only the built-in modules of Node.js, so it runs on a fresh checkout without installing a package, and the same file compares any two commits.
@@ -89,6 +89,7 @@ type SetResult = {
     rules: RuleDiff[]; // the number of files of each rule, only when it differs
     keywordGuards: GuardDiff[]; // only when it differs
     findings: { added: Finding[]; removed: Finding[]; base: number; head: number };
+    profiles: { base: ProfileReport; head: ProfileReport }; // the output of `--profile --format json` of each build
     time: { base: Stats; head: Stats; ratio: number; mark: "slower" | "faster" | null } | null; // null when not measured
 };
 type PatternDiff = {
@@ -99,6 +100,7 @@ type PatternDiff = {
 };
 type Finding = { ruleId: string; messageId: string; file: string; line: number }; // file is relative to the set
 type Stats = { median: number; mean: number; stddev: number; runs: number }; // milliseconds
+type ProfileReport = SecretLintProfileReport; // packages/secretlint/src/profile-report.ts
 ```
 
 A pattern is identified by `<ruleId>#<index>`, the id that the profile uses. Only the counts are compared: the times of the profile are not, because they change between runs. A pattern that is missing from one profile did no work there (the profile lists only the patterns that ran or tested a line), and it is shown as `-`.
@@ -107,7 +109,16 @@ Findings are compared as multisets of `ruleId`, `messageId`, file, and line. The
 
 `mark` is `slower` when `ratio >= 1.3`, `faster` when `ratio <= 0.77`, and otherwise `null`. `ratio` is the median of the head divided by the median of the base.
 
-The Markdown output has, for each set: a header with the set, the commit, and the number of files; the run time with the ratio and a mark (`⚠️ slower` or `faster`); a table of the patterns that differ, or "No change in pattern work"; and the added and removed findings, at most 50 rows each, or "No change in findings". The JSON has all rows.
+The Markdown output starts with the heading "Profile and benchmark: base vs head". It has, for each set, in this order:
+
+1. A heading with the set, the commit, and the number of files.
+2. One line that says what changed: `✅ No change in findings and pattern work` with the ratio of the run time, or `⚠️ Changed:` with the list of what changed (findings, pattern work, files of rules, keyword guards, or a slower run time).
+3. A summary table of the base, the head, and the change: the run time with the ratio and a mark (`⚠️ slower` or `faster`), the findings, the files, the sum of the pattern runs, the sum of the pattern matches, and the keywords found by a guard.
+4. Only when they differ: the patterns, the rules, and the keyword guards that differ, and the added and removed findings, at most 50 rows each.
+5. The time of each phase of the base and the head, from the one profiled run of each.
+6. The profile of the head as `secretlint --profile` prints it (open), and the profile of the base (closed). Both are formatted by the formatter of the head.
+
+The times of the profile come from one run and are only for reading; the run time of the summary is the measured one. The JSON has all rows.
 
 ## APIs and interfaces
 
@@ -128,12 +139,12 @@ Exit status: 0 when the comparison is written, whatever the differences are; 2 w
 
 ### CI workflow
 
-`.github/workflows/compare.yml`:
+`.github/workflows/profile-benchmark.yml`:
 
-- `on: pull_request` with `paths`: `packages/**`, `examples/benchmark/**`, `package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, `.github/workflows/compare.yml`, and `!**/*.md`.
+- `on: pull_request` with `paths`: `packages/**`, `examples/benchmark/**`, `package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, `.github/workflows/profile-benchmark.yml`, and `!**/*.md`.
 - `permissions: contents: read` for the workflow. No step uses `secrets`.
 - One job with `strategy.matrix.set: [small, medium, large, huge]` and `fail-fast: false`, on `ubuntu-latest`, `timeout-minutes: 30`.
-- Steps: checkout with `persist-credentials: false` and `fetch-depth: 0` (the base commit is needed); pnpm and Node.js as in `test.yml`; `sudo apt-get install -y hyperfine`; `pnpm install --frozen-lockfile`; then the script with `--set ${{ matrix.set }}`, with its standard output appended to `$GITHUB_STEP_SUMMARY`; then the JSON uploaded as the artifact `compare-<set>`.
+- Steps: checkout with `persist-credentials: false` and `fetch-depth: 0` (the base commit is needed); pnpm and Node.js as in `test.yml`; `sudo apt-get install -y hyperfine`; `pnpm install --frozen-lockfile`; then the script with `--set ${{ matrix.set }}`, with its standard output appended to `$GITHUB_STEP_SUMMARY`; then the JSON uploaded as the artifact `profile-benchmark-<set>`.
 - The base commit is passed through an environment variable from `github.event.pull_request.base.sha`, not written into the shell command.
 
 ### AGENTS.md

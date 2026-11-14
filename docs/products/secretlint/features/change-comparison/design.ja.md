@@ -28,7 +28,7 @@
 
 - `examples/benchmark/compare.mjs`: 比較スクリプト。privateなベンチマークのパッケージの中で、smallのセット（`targets/`）と検査の設定（`.secretlintrc.json`、canaryプリセット）の隣に置く。ルートの`package.json`は`"compare": "node examples/benchmark/compare.mjs"`を持つ。
 - `examples/benchmark/compare-sets.json`: small以外のセット。セットごとにリポジトリのURLとコミットを持つ。
-- `.github/workflows/compare.yml`: CIのワークフロー。
+- `.github/workflows/profile-benchmark.yml`: CIのワークフロー。
 - `AGENTS.md`の1行。エージェントに`pnpm run compare`を実行させ、Markdownの出力をプルリクエストの説明に貼らせる。
 
 スクリプトはNode.jsの組み込みモジュールだけを使う。そのため、パッケージをインストールしなくても新しくチェックアウトしたリポジトリで動き、同じファイルで任意の2つのコミットを比べられる。
@@ -89,6 +89,7 @@ type SetResult = {
     rules: RuleDiff[]; // ルールごとのファイル数。異なる場合だけ
     keywordGuards: GuardDiff[]; // 異なる場合だけ
     findings: { added: Finding[]; removed: Finding[]; base: number; head: number };
+    profiles: { base: ProfileReport; head: ProfileReport }; // それぞれのビルドの`--profile --format json`の出力
     time: { base: Stats; head: Stats; ratio: number; mark: "slower" | "faster" | null } | null; // 測っていない場合はnull
 };
 type PatternDiff = {
@@ -99,6 +100,7 @@ type PatternDiff = {
 };
 type Finding = { ruleId: string; messageId: string; file: string; line: number }; // fileはセットからの相対パス
 type Stats = { median: number; mean: number; stddev: number; runs: number }; // ミリ秒
+type ProfileReport = SecretLintProfileReport; // packages/secretlint/src/profile-report.ts
 ```
 
 パターンはプロファイルが使うIDである`<ruleId>#<index>`で識別する。比べるのは回数だけである。プロファイルの時間は実行ごとに変わるので比べない。片方のプロファイルにないパターンは、そちらでは仕事をしなかった（プロファイルは実行されたか行をテストしたパターンだけを持つ）ので、`-`として示す。
@@ -107,7 +109,16 @@ type Stats = { median: number; mean: number; stddev: number; runs: number }; // 
 
 `mark`は、`ratio >= 1.3`なら`slower`、`ratio <= 0.77`なら`faster`、それ以外は`null`である。`ratio`はheadの中央値をbaseの中央値で割った値である。
 
-Markdownの出力は、セットごとに次を持つ。セット、コミット、ファイル数の見出し。比と印（`⚠️ slower`または`faster`）を伴う実行時間。異なるパターンの表、または「No change in pattern work」。追加と削除の検出結果をそれぞれ最大50行、または「No change in findings」。JSONはすべての行を持つ。
+Markdownの出力は見出し「Profile and benchmark: base vs head」で始まる。セットごとに、次の順で持つ。
+
+1. セット、コミット、ファイル数の見出し。
+2. 何が変わったかを示す1行。`✅ No change in findings and pattern work`と実行時間の比、または`⚠️ Changed:`と変わったもの（検出結果、パターンの仕事、ルールのファイル数、キーワードのガード、遅くなった実行時間）の一覧。
+3. base、head、変化の要約の表。比と印（`⚠️ slower`または`faster`）を伴う実行時間、検出結果、ファイル数、パターンの実行回数の合計、パターンのマッチ数の合計、ガードで見つかったキーワード。
+4. 違いがある場合だけ、異なるパターン、ルール、キーワードのガードの表と、追加と削除の検出結果（それぞれ最大50行）。
+5. プロファイルを取った1回の実行での、baseとheadのフェーズごとの時間。
+6. `secretlint --profile`が表示するとおりのheadのプロファイル（開いた状態）と、baseのプロファイル（閉じた状態）。どちらもheadのフォーマッターで整形する。
+
+プロファイルの時間は1回の実行のもので、読むためだけに使う。要約の実行時間が測った値である。JSONはすべての行を持つ。
 
 ## API・インターフェース
 
@@ -128,12 +139,12 @@ pnpm run compare [--base <ref>] [--set small,medium,large,huge] [--runs <n>] [--
 
 ### CIのワークフロー
 
-`.github/workflows/compare.yml`:
+`.github/workflows/profile-benchmark.yml`:
 
-- `on: pull_request`で、`paths`は`packages/**`、`examples/benchmark/**`、`package.json`、`pnpm-lock.yaml`、`pnpm-workspace.yaml`、`.github/workflows/compare.yml`、`!**/*.md`。
+- `on: pull_request`で、`paths`は`packages/**`、`examples/benchmark/**`、`package.json`、`pnpm-lock.yaml`、`pnpm-workspace.yaml`、`.github/workflows/profile-benchmark.yml`、`!**/*.md`。
 - ワークフローの`permissions`は`contents: read`。`secrets`を使うステップはない。
 - `strategy.matrix.set: [small, medium, large, huge]`と`fail-fast: false`の1つのジョブ。`ubuntu-latest`、`timeout-minutes: 30`。
-- ステップ: `persist-credentials: false`と`fetch-depth: 0`（baseのコミットが必要）でチェックアウトし、`test.yml`と同じようにpnpmとNode.jsを用意し、`sudo apt-get install -y hyperfine`、`pnpm install --frozen-lockfile`を実行する。次に`--set ${{ matrix.set }}`でスクリプトを実行し、標準出力を`$GITHUB_STEP_SUMMARY`に追記する。最後にJSONをartifact `compare-<set>`としてアップロードする。
+- ステップ: `persist-credentials: false`と`fetch-depth: 0`（baseのコミットが必要）でチェックアウトし、`test.yml`と同じようにpnpmとNode.jsを用意し、`sudo apt-get install -y hyperfine`、`pnpm install --frozen-lockfile`を実行する。次に`--set ${{ matrix.set }}`でスクリプトを実行し、標準出力を`$GITHUB_STEP_SUMMARY`に追記する。最後にJSONをartifact `profile-benchmark-<set>`としてアップロードする。
 - baseのコミットは`github.event.pull_request.base.sha`から環境変数で渡し、シェルのコマンドに直接書かない。
 
 ### AGENTS.md

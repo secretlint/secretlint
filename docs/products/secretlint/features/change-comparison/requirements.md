@@ -115,6 +115,8 @@ None. No metric is defined for this feature.
 | Findings | The lint results of each build | A rule change that adds many findings is likely to add false positives. Secretlint prefers fewer false positives |
 | Run time | Each build runs several times on the same machine, one build after the other | It is the time that a user sees. It changes between runs, so only a large ratio is shown as a warning |
 
+The output starts with what changed, so a reader sees at a glance whether anything changed, and then shows the details. It also shows the profile of the base and the head as `secretlint --profile` shows it, so a reader can see where the time goes without running the profile again. The times of the profile come from one run and are not compared.
+
 The output does not include the value of a secret: a finding is shown by the rule id, the file, and the line.
 
 ##### Sets of files

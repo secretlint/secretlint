@@ -6,7 +6,7 @@ import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { parseArgs } from "node:util";
 
 const BENCHMARK_DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -458,6 +458,7 @@ const compareSet = ({ set, baseDir, headDir, runs, hasHyperfine, tmpDir }) => {
             (guard) => ({ found: guard.found, met: guard.met })
         ),
         findings: diffFindings(base.findings, head.findings),
+        profiles: { base: base.profile, head: head.profile },
         time: hasHyperfine ? measureTime(baseDir, headDir, set, runs ?? set.runs, tmpDir) : null
     };
 };
@@ -499,49 +500,97 @@ const markdownFindings = (title, findings) => {
 
 const guardCounts = (value) => (value ? `${formatCount(value.found)} / ${formatCount(value.met)}` : "-");
 
-const markdownSet = (result, sets) => {
-    const definition = sets.find((set) => set.name === result.name);
-    const source = result.repository
-        ? `${result.repository.replace("https://github.com/", "")} ${definition?.label ?? ""} (${shortCommit(result.commit)})`
-        : "examples/benchmark/targets";
-    const lines = [`### ${result.name}: ${source}`, ""];
-    lines.push(
-        result.files.base === result.files.head
-            ? `Files: ${formatCount(result.files.head)}`
-            : `Files: base ${formatCount(result.files.base)}, head ${formatCount(result.files.head)}`,
-        ""
-    );
+/**
+ * The profile as `secretlint --profile` prints it, formatted by the formatter of the head.
+ * The times of the profile come from one run; the run time above is the measured one.
+ */
+const sumOf = (items, key) => items.reduce((sum, item) => sum + item[key], 0);
+
+const formatChange = (base, head) => {
+    const change = head - base;
+    return change === 0 ? "±0" : `${change > 0 ? "+" : ""}${formatCount(change)}`;
+};
+
+const markText = (mark) => (mark === "slower" ? " ⚠️ slower" : mark === "faster" ? " faster" : "");
+
+/**
+ * One line that says what changed, so a reader does not have to read the tables.
+ */
+const plural = (count, word) => `${count} ${word}${count === 1 ? "" : "s"}`;
+
+const verdictOf = (result) => {
+    const changes = [];
+    const { added, removed } = result.findings;
+    if (added.length > 0 || removed.length > 0) {
+        changes.push(`findings (+${added.length} / -${removed.length})`);
+    }
+    if (result.patterns.length > 0) {
+        changes.push(`pattern work of ${plural(result.patterns.length, "pattern")}`);
+    }
+    if (result.rules.length > 0) {
+        changes.push(`files of ${plural(result.rules.length, "rule")}`);
+    }
+    if (result.keywordGuards.length > 0) {
+        changes.push(plural(result.keywordGuards.length, "keyword guard"));
+    }
+    if (result.time?.mark === "slower") {
+        changes.push(`run time (${result.time.ratio.toFixed(2)}x)`);
+    }
+    if (changes.length === 0) {
+        const time = result.time ? `, run time ${result.time.ratio.toFixed(2)}x` : "";
+        return `✅ No change in findings and pattern work${time}.`;
+    }
+    return `⚠️ Changed: ${changes.join(", ")}.`;
+};
+
+const markdownSummaryTable = (result) => {
+    const { base, head } = result.profiles;
+    const rows = [];
     if (result.time) {
-        const { base, head, ratio, mark } = result.time;
-        const markText = mark === "slower" ? " ⚠️ slower" : mark === "faster" ? " faster" : "";
-        lines.push(
-            `Run time (median of ${head.runs} runs): base ${formatMs(base.median)}, head ${formatMs(head.median)}, ratio **${ratio.toFixed(2)}**${markText}`,
-            ""
+        const { base: baseTime, head: headTime, ratio, mark } = result.time;
+        rows.push(
+            `| Run time (median of ${headTime.runs} runs) | ${formatMs(baseTime.median)} | ${formatMs(headTime.median)} | **${ratio.toFixed(2)}x**${markText(mark)} |`
         );
     } else {
-        lines.push("Run time: not measured (hyperfine is not installed)", "");
+        rows.push("| Run time | - | - | not measured (hyperfine is not installed) |");
     }
-    if (result.patterns.length === 0) {
-        lines.push("No change in pattern work.", "");
-    } else {
+    const countRow = (title, baseValue, headValue) =>
+        `| ${title} | ${formatCount(baseValue)} | ${formatCount(headValue)} | ${formatChange(baseValue, headValue)} |`;
+    rows.push(
+        countRow("Findings", result.findings.base, result.findings.head),
+        countRow("Files", base.files, head.files),
+        countRow("Pattern runs", sumOf(base.patterns, "runs"), sumOf(head.patterns, "runs")),
+        countRow("Pattern matches", sumOf(base.patterns, "matches"), sumOf(head.patterns, "matches")),
+        countRow(
+            "Keywords found by a guard",
+            sumOf(base.keywordGuards ?? [], "found"),
+            sumOf(head.keywordGuards ?? [], "found")
+        )
+    );
+    return ["| | Base | Head | Change |", "| --- | ---: | ---: | ---: |", ...rows, ""];
+};
+
+const markdownChanges = (result) => {
+    const lines = [];
+    if (result.patterns.length > 0) {
+        const counts = (value) => (value ? `${formatCount(value.runs)} / ${formatCount(value.matches)}` : "-");
         lines.push(
-            "**Pattern work** (runs / matches)",
+            "**Patterns with a change** (runs / matches)",
             "",
             "| Pattern | Base | Head |",
-            "| --- | --- | --- |",
-            ...result.patterns.map((pattern) => {
-                const counts = (value) => (value ? `${formatCount(value.runs)} / ${formatCount(value.matches)}` : "-");
-                return `| ${escapeCell(pattern.id)} | ${counts(pattern.base)} | ${counts(pattern.head)} |`;
-            }),
+            "| --- | ---: | ---: |",
+            ...result.patterns.map(
+                (pattern) => `| ${escapeCell(pattern.id)} | ${counts(pattern.base)} | ${counts(pattern.head)} |`
+            ),
             ""
         );
     }
     if (result.rules.length > 0) {
         lines.push(
-            "**Files of each rule**",
+            "**Rules with a change** (files that the rule checked)",
             "",
             "| Rule | Base | Head |",
-            "| --- | --- | --- |",
+            "| --- | ---: | ---: |",
             ...result.rules.map(
                 (rule) => `| ${escapeCell(rule.id)} | ${formatCount(rule.base)} | ${formatCount(rule.head)} |`
             ),
@@ -550,42 +599,102 @@ const markdownSet = (result, sets) => {
     }
     if (result.keywordGuards.length > 0) {
         lines.push(
-            "**Keywords with a guard** (found / met the guard)",
+            "**Keyword guards with a change** (found / met the guard)",
             "",
             "| Keyword | Base | Head |",
-            "| --- | --- | --- |",
+            "| --- | ---: | ---: |",
             ...result.keywordGuards.map(
                 (guard) => `| ${escapeCell(guard.id)} | ${guardCounts(guard.base)} | ${guardCounts(guard.head)} |`
             ),
             ""
         );
     }
-    const { added, removed } = result.findings;
-    if (added.length === 0 && removed.length === 0) {
-        lines.push(`No change in findings (${formatCount(result.findings.head)}).`, "");
-    } else {
-        lines.push(
-            `Findings: base ${formatCount(result.findings.base)}, head ${formatCount(result.findings.head)}`,
-            "",
-            ...markdownFindings("Only in the head", added),
-            ...markdownFindings("Only in the base", removed)
-        );
-    }
+    lines.push(...markdownFindings("Findings only in the head", result.findings.added));
+    lines.push(...markdownFindings("Findings only in the base", result.findings.removed));
     return lines;
 };
 
-const toMarkdown = (compareResult, sets) => {
+/**
+ * The time of each phase in one profiled run of the base and the head.
+ * Times of one run are noisy; the run time in the summary is the measured one.
+ */
+const markdownPhases = (result) => {
+    const basePhases = new Map(result.profiles.base.phases.map((phase) => [`${phase.depth}:${phase.name}`, phase]));
+    const rows = result.profiles.head.phases.map((phase) => {
+        const basePhase = basePhases.get(`${phase.depth}:${phase.name}`);
+        const name = `${"&nbsp;&nbsp;".repeat(phase.depth)}${escapeCell(phase.name)}`;
+        return `| ${name} | ${basePhase ? formatMs(basePhase.duration) : "-"} | ${formatMs(phase.duration)} | ${formatCount(phase.count)} |`;
+    });
+    return [
+        "**Phases** (one profiled run each)",
+        "",
+        "| Phase | Base | Head | Count (head) |",
+        "| --- | ---: | ---: | ---: |",
+        ...rows,
+        ""
+    ];
+};
+
+/**
+ * The profile as `secretlint --profile` prints it, formatted by the formatter of the head.
+ */
+const markdownProfiles = (result, setDir, formatProfileReport) => {
+    const format = (profile) => formatProfileReport(profile, { cwd: setDir });
+    const block = (title, profile, open) => [
+        `<details${open ? " open" : ""}><summary>${title}</summary>`,
+        "",
+        "````text",
+        format(profile),
+        "````",
+        "",
+        "</details>",
+        ""
+    ];
+    return [
+        ...block("<code>secretlint --profile</code> of the head", result.profiles.head, true),
+        ...block("<code>secretlint --profile</code> of the base", result.profiles.base, false)
+    ];
+};
+
+const markdownSet = (result, sets, formatProfileReport) => {
+    const definition = sets.find((set) => set.name === result.name);
+    const source = result.repository
+        ? `${result.repository.replace("https://github.com/", "")} ${definition?.label ?? ""} (${shortCommit(result.commit)})`
+        : "examples/benchmark/targets";
+    return [
+        `### ${result.name}: ${source}, ${formatCount(result.profiles.head.files)} files`,
+        "",
+        verdictOf(result),
+        "",
+        ...markdownSummaryTable(result),
+        ...markdownChanges(result),
+        ...markdownPhases(result),
+        ...markdownProfiles(result, definition.dir, formatProfileReport)
+    ];
+};
+
+const toMarkdown = (compareResult, sets, formatProfileReport) => {
     const head = `${shortCommit(compareResult.head.commit)}${compareResult.head.dirty ? " with uncommitted changes" : ""}`;
     return [
-        "## Secretlint change comparison",
+        "## Profile and benchmark: base vs head",
         "",
         `Base: ${escapeCell(compareResult.base.ref)} (${shortCommit(compareResult.base.commit)}), head: ${head}`,
         "",
-        ...compareResult.sets.flatMap((result) => markdownSet(result, sets))
+        ...compareResult.sets.flatMap((result) => markdownSet(result, sets, formatProfileReport))
     ].join("\n");
 };
 
-const main = () => {
+const loadProfileFormatter = async () => {
+    const modulePath = path.join(REPO_ROOT, "packages/secretlint/module/profile-report.js");
+    try {
+        const { formatProfileReport } = await import(pathToFileURL(modulePath).href);
+        return formatProfileReport;
+    } catch (error) {
+        throw new CompareError(`Can not load the profile formatter of the head (${modulePath}): ${error.message}`);
+    }
+};
+
+const main = async () => {
     const options = parseOptions();
     const base = resolveBase(options.base);
     const head = { commit: git(["rev-parse", "HEAD"]), dirty: git(["status", "--porcelain"]) !== "" };
@@ -601,13 +710,14 @@ const main = () => {
     }
     const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "secretlint-compare-"));
     try {
+        const formatProfileReport = await loadProfileFormatter();
         const results = sets.map((set) =>
             compareSet({ set, baseDir, headDir: REPO_ROOT, runs: options.runs, hasHyperfine, tmpDir })
         );
         const compareResult = { base, head, sets: results };
         const setsWithLabel = sets.map((set) => ({ ...set, label: definitions[set.name]?.label }));
         fs.writeFileSync(options.jsonPath, `${JSON.stringify(compareResult, null, 2)}\n`);
-        process.stdout.write(`${toMarkdown(compareResult, setsWithLabel)}\n`);
+        process.stdout.write(`${toMarkdown(compareResult, setsWithLabel, formatProfileReport)}\n`);
         log(`wrote ${options.jsonPath}`);
     } finally {
         fs.rmSync(tmpDir, { recursive: true, force: true });
@@ -615,7 +725,7 @@ const main = () => {
 };
 
 try {
-    main();
+    await main();
 } catch (error) {
     process.stderr.write(`[compare] ${error instanceof CompareError ? error.message : error.stack}\n`);
     process.exit(2);
