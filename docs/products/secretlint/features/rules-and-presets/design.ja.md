@@ -70,7 +70,7 @@ planにないパターンは、キーワードを探す処理に登録されま�
 ### ユーザー定義のパターン
 
 `@secretlint/core`は、`@secretlint/secretlint-rule-pattern`のオプションを、他の組み込みルールの`patterns`と同じように、lint計画のパターンとして読みます。
-このルールのcreatorは`patterns: []`を持ち、`create()`を持ちません。coreは計画を作るときに、idではなくcreatorのオブジェクトでこのルールを見分け、`options.patterns`の各エントリを`src/user-patterns.ts`の`compileUserPatterns()`で変換します。
+このルールのcreatorは`patterns: []`を持ち、`create()`を持ちません。coreは計画を作るときに、idではなくcreatorのオブジェクトでこのルールを見分け、`options.patterns`の各エントリを`src/builtin/rules/pattern/user-patterns.ts`の`compileUserPatterns()`で変換します。
 
 - `patterns`(または`pattern`)の各RegExp風の文字列は、スコープ`file`の計画のパターンになります。文字列は、これまで`matchPatterns()`が使っていた`@textlint/regexp-string-matcher`の`createRegExp()`でRegExpにするので、同じテキストに一致します。`/source/flags`は`new RegExp(source, flags + "ug")`になり、それ以外の文字列はエスケープします。
 - 計画のパターンのキーワードは、エントリに`keywords`があればそれです。なければ`src/helper/extract-keywords.ts`の`extractKeywords(regex)`の結果で、見つからなければキーワードなしです。`keywords: []`はキーワードなしを意味し、パターンはすべてのファイルで実行します。見つけたキーワードが誤っているときの逃げ道になります。

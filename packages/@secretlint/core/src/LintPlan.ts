@@ -24,7 +24,7 @@ import { getKeywordMatcher, KeywordMatcher, normalizeKeyword } from "./helper/ke
 import { createKeywordScanPlan, type KeywordScanPlan } from "./keyword-scan.js";
 import { AllowMessage } from "./messages/filter-message-id.js";
 import { creator as rulePattern, type Options as RulePatternOptions } from "./builtin/rules/pattern/index.js";
-import { compileUserPatterns } from "./user-patterns.js";
+import { compileUserPatterns } from "./builtin/rules/pattern/user-patterns.js";
 
 const debug = debug0("@secretlint/core");
 

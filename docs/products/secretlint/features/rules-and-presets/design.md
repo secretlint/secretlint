@@ -70,7 +70,7 @@ The strings are the second type parameter of `SecretLintRulePattern`, `SecretLin
 ### User-defined patterns
 
 `@secretlint/core` reads the options of `@secretlint/secretlint-rule-pattern` as patterns of the lint plan, in the same way as the `patterns` of the other built-in rules.
-The creator of the rule has `patterns: []` and no `create()`. When the core makes the plan, it finds the rule by the creator object, not by the id, and compiles each entry of `options.patterns` with `compileUserPatterns()` of `src/user-patterns.ts`:
+The creator of the rule has `patterns: []` and no `create()`. When the core makes the plan, it finds the rule by the creator object, not by the id, and compiles each entry of `options.patterns` with `compileUserPatterns()` of `src/builtin/rules/pattern/user-patterns.ts`:
 
 - Each RegExp-like string of `patterns` (or `pattern`) becomes a plan pattern with the scope `file`. The string becomes a RegExp with `createRegExp()` of `@textlint/regexp-string-matcher`, which `matchPatterns()` used before, so a pattern matches the same text: `/source/flags` becomes `new RegExp(source, flags + "ug")`, and another string is escaped.
 - The keywords of a plan pattern are `keywords` of the entry when it has them. Otherwise they are the result of `extractKeywords(regex)` of `src/helper/extract-keywords.ts`, or none. `keywords: []` means none: the pattern runs on every file, which is a way out when a found keyword is wrong.
