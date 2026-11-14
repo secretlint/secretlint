@@ -7,7 +7,7 @@
         "secretlint",
         "benchmark"
     ],
-    "homepage": "https://github.com/secretlint/secretlint/tree/master/benchmark/",
+    "homepage": "https://github.com/secretlint/secretlint/tree/master/examples/benchmark/",
     "bugs": {
         "url": "https://github.com/secretlint/secretlint/issues"
     },

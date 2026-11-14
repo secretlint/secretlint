@@ -14,7 +14,7 @@ Although we are accepting pull request, we recommend creating an issue first as 
 
 Please [create a new issue](https://github.com/secretlint/secretlint/issues/new) on GitHub if you found a bug, got a question, or had an idea for improvement. All work on secretlint happens on GitHub in English.
 
-As described at the [`ISSUE_TEMPLATE.md`](https://github.com/secretlint/secretlint/blob/master/.github/ISSUE_TEMPLATE.md), please include following information when reporting a bug:
+As described at the [bug report template](.github/ISSUE_TEMPLATE/bug-report.md), please include following information when reporting a bug:
 
 - What version of secretlint are you using? (`secretlint -v`)
 - What file type (Markdown, plain text, etc.) are you using?

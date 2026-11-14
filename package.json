@@ -34,6 +34,7 @@
     "updateSnapshot": "turbo run updateSnapshot",
     "test": "turbo run test",
     "lint": "secretlint \"**/*\"",
+    "check-links": "node scripts/check-links.mjs",
     "ci": "turbo run build test secretlint",
     "clean": "turbo run clean",
     "prepare": "git config --local core.hooksPath .githooks",
