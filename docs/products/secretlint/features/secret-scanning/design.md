@@ -55,7 +55,7 @@ Most sources have no keyword, so most sources end after the first step.
 
 The core collects the keywords of the rules and patterns in the view for text, and builds one keyword matcher for them. The matcher is cached by its keywords.
 The matcher is an Aho-Corasick automaton: it reads the content once from the start to the end, and finds all keywords in that one pass.
-Keywords are ASCII. They match without the case of ASCII letters by default, and a case-sensitive keyword is compared with the content again after it is found.
+Keywords are ASCII, and they always match without the case of ASCII letters: the matcher lower-cases the keywords and the ASCII letters of the content. A rule has no way to state a case-sensitive keyword.
 Because keywords are ASCII, scanning the UTF-8 bytes finds the same keywords as scanning the decoded string.
 
 When the source has bytes, the core scans the bytes, from after the byte order mark.
@@ -74,20 +74,20 @@ The Design of [Rules and rule presets](../rules-and-presets/requirements.md) des
 
 #### An entry of the matcher
 
-The matcher is built from entries. An entry is a keyword, whether it is case-sensitive, and a guard or no guard.
+The matcher is built from entries. An entry is a keyword and a guard or no guard.
 Two patterns that declare the same keyword with different guards are two entries that end at the same state of the automaton, and a pattern that declares the keyword without a guard is a third one.
 `found` of the hits has one flag for each entry, so a pattern is selected only by its own entry.
 The automaton itself does not change: it is built from the keywords, and a guard adds no state.
 
 #### The check is in the scan loop
 
-When the automaton reaches a state that completes a keyword, and an entry of that state has a guard or is case-sensitive, the matcher checks these entries at once, before it records the place.
+When the automaton reaches a state that completes a keyword, and an entry of that state has a guard, the matcher checks these entries at once, before it records the place.
 
 - If no entry of the state is left, nothing is recorded, and the loop goes on with the next character. This is the case that the guard is for: a keyword such as `00` has millions of places in a large repository, and each of them costs one check and no memory.
-- If some entries are left, the place is recorded with an id for the entries that are left. The matcher already creates such ids for the case-sensitive keywords, and the guard uses the same ids.
+- If some entries are left, the place is recorded with an id for the entries that are left.
 - A state that has an entry without a guard is always recorded, as before.
 
-The comparison of a case-sensitive keyword moves into this check. Before, it ran after the scan, over the recorded places.
+The keyword is found without the case of ASCII letters, and the guard is checked as written: the set `[A-Z0-9]` is not met by `a`. So a guard is also how a rule keeps its pattern from a common word in another case, such as `asia` for the prefix `ASIA` of an AWS access key ID.
 
 The check of a guard reads the next `n` characters of the input and looks each one up in a table of 128 flags. It fails at the first character that is not in the set, at a character that is not ASCII, and at the end of the input.
 It does not change the state of the automaton, and the scan goes on from the same place, so keywords that overlap are all found.
@@ -148,7 +148,7 @@ The rules stay on the main thread, are loaded once, and run for one file at a ti
 
 The core has an entry `@secretlint/core/keyword-scan` for the first step of the lint alone.
 It imports only the keyword matcher: no rule, no configuration, and no Node.js module.
-`getKeywordScanPlan({ config })` of the core returns what to scan for as plain data: the keywords, which of them are case-sensitive, `requiresKeyword`, `ruleCheck`, and an id of all of these.
+`getKeywordScanPlan({ config })` of the core returns what to scan for as plain data: the keywords, `requiresKeyword`, `ruleCheck`, and an id of all of these.
 `requiresKeyword` is true when no rule or pattern runs without keywords. Then a source without a keyword has no messages.
 `ruleCheck` is what tells if a rule runs for a source that has a keyword. It has the "line" scope patterns as the source and the flags of their regular expressions with the indexes of their keywords, and the indexes of the keywords that select a rule for the whole content: the keywords of a rule without patterns and of a "file" scope pattern.
 `createKeywordScanner(plan).scan(bytes)` returns the id of the plan, which keywords are in the bytes, `lineMatched`, and `runsRules`.
@@ -341,7 +341,7 @@ A rule returns handlers, and the `file(source)` handler receives the source code
 The plan and the result are plain data and typed arrays, so they can be sent to another thread.
 `lintSource({ source, options, keywordScanResult })` uses the result as written in "The scan as a step of its own".
 
-`KeywordScanPlan` has `guards` next to `keywords` and `caseSensitive`: `guards[i]` is `undefined`, or `{ chars, min }` for a keyword with a guard.
+`KeywordScanPlan` has `guards` next to `keywords`: `guards[i]` is `undefined`, or `{ chars, min }` for a keyword with a guard. It has no `caseSensitive`, because no keyword is case-sensitive.
 
 ## External service integration
 

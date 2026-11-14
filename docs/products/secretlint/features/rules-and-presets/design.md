@@ -103,7 +103,7 @@ A prototype was checked against the 38 patterns of the built-in rules: it found 
 
 ### Keywords with a guard
 
-An item of `keywords` of a pattern is a string or a keyword object `{ keyword, after? }`. A keyword object with `after` is a guarded keyword.
+An item of `keywords` of a pattern is a string or a keyword object `{ keyword, after }`, which is a guarded keyword.
 
 ```ts
 {
@@ -114,7 +114,7 @@ An item of `keywords` of a pattern is a string or a keyword object `{ keyword, a
 }
 ```
 
-`keyword` is a keyword, with the same rules as an item that is a string: ASCII, and no character has a special meaning. It differs only in the case, as described below.
+`keyword` is a keyword, with the same rules as an item that is a string: ASCII, no character has a special meaning, and it is matched without the case of ASCII letters.
 `after` is the guard. It has two parts, in this order:
 
 | Part  | Syntax                                                                                                                                  | Example                     |
@@ -142,14 +142,17 @@ It is an object, and not a new syntax in the string, because the meaning of a st
 
 - The parser returns the characters of the set and `n`. The characters are sorted, so `[a-z0-9]{32,}` and `[0-9a-z]{32,}` are the same guard, and two patterns that declare them for the same keyword share one entry of the keyword matcher.
 - For an object that is not a guarded keyword, making the plan throws an error with the rule id and the item: `keyword` or `after` is not a string, the object has another property, a character is not ASCII, the set starts with `^`, the count is `{n}`, `{n,m}`, `+`, `*`, `?`, 0, or over 255, the set has `\w` or `\d`, or `after` has anything else. The error for a form that has a supported form with the same meaning, such as `{40}`, `+`, and `\d`, gives that form. So a guard that a newer core supports is never read in another way, and a condition such as what is before the keyword can be added later as a property with a new name.
-- A keyword object is matched as written. The core gives its keyword to the keyword matcher as a case-sensitive keyword, which the matcher already has, and the parser returns the set as written: `[a-f0-9]` is not met by `A`. A rule whose regular expression has the `i` flag writes both cases in the set, as `[A-Fa-f0-9]`, or it uses a string. A set that is too narrow fails the tests when a test case has such a key.
-- A string is lower-cased and matched without the case of ASCII letters, as before. So the two kinds of items differ in one thing that a rule author can remember: a string is loose, and an object is exact.
-- `after` is optional. `{ keyword: "SG." }` is the keyword `SG.` as written. The SendGrid rule needs it, so that its pattern does not run for `msg.`: a guard can not do this, because the regular expression of the rule allows one character after `SG.`, and `msg.x` meets such a guard.
-- The property `caseSensitiveKeywords` of a pattern is removed, by the decision of the maintainer. It stated the case for all keywords of a pattern, and its only use was to keep a pattern from running for a common word in another case: `SG.` of the SendGrid rule, and the prefixes `AKIA` and others and `ACCOUNT` of the AWS rule. A keyword object does this for one keyword without an option. Declarative patterns have not been released, so no released rule has the property. The two rules change to keyword objects, and a core that gets the property throws on it as on any unknown property.
+- A keyword is lower-cased and matched without the case of ASCII letters, as a string and as `keyword` of an object. The keyword matcher has no case-sensitive keyword any more. gitleaks, Betterleaks, and TruffleHog also lower-case their keywords and the content, and have no option for it ([gitleaks detect.go](https://raw.githubusercontent.com/gitleaks/gitleaks/master/detect/detect.go), [TruffleHog ahocorasickcore.go](https://raw.githubusercontent.com/trufflesecurity/trufflehog/main/pkg/engine/ahocorasick/ahocorasickcore.go)).
+- The parser returns the set as written, and the scan compares the content with it as it is: `[a-f0-9]` is not met by `A`. A rule whose regular expression has the `i` flag writes both cases in the set, as `[A-Fa-f0-9]`. A set that is too narrow fails the tests when a test case has such a key.
+- `after` is required. `{ keyword: "SG." }` is an error, because it would be a second way to write `"SG."`.
+- The property `caseSensitiveKeywords` of a pattern is removed, by the decision of the maintainer, and nothing replaces it. It stated the case for all keywords of a pattern, and its only use was to keep a pattern from running for a common word in another case: `SG.` of the SendGrid rule, and the prefixes `AKIA` and others and `ACCOUNT` of the AWS rule. Declarative patterns have not been released, so no released rule has the property, and a core that gets the property throws on it as on any unknown property. The results of the rules do not change, because a keyword only selects where the regular expression runs. What can change is how many lines the regular expression is tested on:
+    - The prefixes of the AWS access key ID become guarded keywords, such as `{ keyword: "AKIA", after: "[A-Z0-9]{16,}" }`. The set is checked as written, so `asia-northeast1` does not meet it.
+    - The AWS account ID declared `ACCOUNT`, `account`, and `Account`. It declares `account` once, and almost nothing changes.
+    - `SG.` of the SendGrid rule is also found in `msg.`, and its regular expression has `\w{1,128}` after `SG.`, so no guard can drop these places. The rule runs on more lines until its regular expression states the lengths of the parts of the key. That changes what the rule reports, so it is not a part of this design.
 - A pattern is selected for a source if one of its keywords is found, and for a guarded keyword only where its guard is met. `scope: "line"` needs valid keywords, and a guarded keyword is one.
 - `when` works as before: a pattern that is not in the plan has no entry in the matcher.
 
-The type of an item is `SecretLintRulePatternKeyword` of `@secretlint/types`: `string | { keyword: string; after?: string }`, and `keywords` of a pattern is a list of it. `meta.keywords` stays a list of strings.
+The type of an item is `SecretLintRulePatternKeyword` of `@secretlint/types`: `string | { keyword: string; after: string }`, and `keywords` of a pattern is a list of it. `meta.keywords` stays a list of strings.
 Code that reads `keywords` of a pattern as strings has to handle an object. In the Secretlint repository, this is the lint plan and the runner of the tests.
 
 Declarative patterns have not been released, so keyword objects are a part of their first release, and no released core reads `keywords` of a pattern in another way.
@@ -198,7 +201,7 @@ No diagram is needed: a preset is a list of rules, and its only interaction is `
 ## Data model and ER diagrams
 
 - **Rule creator:** `meta` (id, type, recommended, supportedContentTypes, docs.url, optional keywords), `messages`, and either `patterns` or `create()`.
-- **Pattern:** `pattern`, optional `keywords` (strings, or keyword objects `{ keyword, after? }`), `scope`, and `when`, and `report()`.
+- **Pattern:** `pattern`, optional `keywords` (strings, or keyword objects `{ keyword, after }`), `scope`, and `when`, and `report()`.
 - **Preset creator:** `meta` (id, type `preset`), `rules` (rule creators), and `create(context, options)`.
 - **Preset entry of the configuration:** `id`, `options`, and `rules`, a list of entries with `id`, `options`, `severity`, `allowMessageIds`, and `disabled`.
 
@@ -254,7 +257,8 @@ The `--init` of the npm package writes the rules that it finds in `package.json`
 - **Short forms such as `+`, `\w`, and `\d`:** They are common in regular expressions, and the first proposal had them. They were not chosen by the maintainer: each is a second way to write a guard that the syntax can already state.
 - **A count with a most that is not used:** `{n}` and `{n,m}` would be accepted and mean `{n,}`, so that the start of `pattern` can be copied as it is. A regular expression that is tested at one place also matches the start of a longer run. It was not chosen by the maintainer: `{40}` reads as "40 characters", and the guard would mean something else than it reads.
 - **More syntax: a most of the count that is checked, what follows the run, what is before the keyword, and a set with `^`:** A regular expression can state these, and they can drop more places. They were not added. A most and an end are true only if the regular expression of the pattern also states an end, so they are easy to write wrong. A set with `^` has characters that are not ASCII, and then the bytes and the string count differently. The core rejects all of them now, so each can be added later without changing the meaning of an existing string.
-- **A property `caseSensitive` of the keyword object, or `caseSensitiveKeywords` of the pattern:** An option would say if a keyword is case-sensitive, and the set of a guard would follow it. An earlier version of this design had it. It was not chosen by the maintainer: the option is not needed when the object itself is the exact way to write a keyword, and a set that follows an option reads differently from what it checks, as `[a-f0-9]` would be met by `A`.
+- **A case-sensitive keyword:** An option would say if a keyword is case-sensitive, as `caseSensitive` of the keyword object or `caseSensitiveKeywords` of the pattern, or a keyword object would always be matched as written. Earlier versions of this design had each of them. They were not chosen by the maintainer: a rule that always matches without the case is simpler to write, and the cost is only that the regular expression can be tested on more lines. A guard, which is checked as written, takes that cost away where the secret has a fixed case.
+- **Keywords that follow the `i` flag of the regular expression:** A keyword would be case-sensitive when the regular expression of its pattern has no `i` flag. It was not chosen: no other tool that was looked at does this, and a missing `i` flag is often not a decision of the rule author.
 
 ## Open questions
 

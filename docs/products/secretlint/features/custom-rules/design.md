@@ -57,7 +57,7 @@ Step 4 is how a wrong keyword or a `line` scope that needs other lines makes the
 
 Step 4 also finds a guard of a guarded keyword that rejects a secret, because the lint without keywords reports it. But its message is about keywords and scope in general, so the runner checks guards by themselves before the comparison of step 4.
 
-- If `keywords` of a pattern of the configuration has a guarded keyword, the runner lints the string once more with a configuration in which each guarded keyword `{ keyword, after }` is `{ keyword }`: the same keyword, as written, without its guard.
+- If `keywords` of a pattern of the configuration has a guarded keyword, the runner lints the string once more with a configuration in which each guarded keyword `{ keyword, after }` is the string `keyword`: the same keyword without its guard.
 - A message of this result that is not in the result of step 3, by its rule id, message id, and range, is a secret that a guard rejected.
 - For such a message, the runner looks at the guarded keywords of the patterns of that rule. It finds the places of each keyword in the line of the message, or in the content for the "file" scope, and tests the guard there with the function that the keyword matcher uses.
 - It throws an error with the places whose guard is not met, such as: `@secretlint/secretlint-rule-example: the guard "[A-Za-z0-9]{40,}" of the keyword "00" is not met at 3:12, but the rule reports a secret at 3:12-3:54. Every secret of the pattern must meet the guard.`
