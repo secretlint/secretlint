@@ -180,7 +180,7 @@ The directories `packages/@secretlint/secretlint-rule-<name>` of the built-in ru
 The packages in the repository that depend on them stop depending on them:
 
 - `secretlint` and `@secretlint/quick-start` depend on `@secretlint/secretlint-rule-preset-recommend`. They do not need it, because the configuration loader finds the preset in `@secretlint/core`.
-- `--init` (`@secretlint/config-creator`) writes the recommended preset first, followed by the rule packages that it finds in `package.json`. It writes the preset even when `package.json` does not have the preset package, so that a new user does not need the preset package. It does not write the preset twice when `package.json` has the preset package.
+- `--init` (`@secretlint/config-creator`) writes the recommended preset first, followed by the rule packages that it finds in `package.json`. It writes the preset even when `package.json` does not have the preset package, so that a new user does not need the preset package. When `package.json` has the canary preset package, it writes the canary preset instead of the recommended preset. It does not write the presets again, nor a rule package of a rule that the preset has, because a rule registered twice makes the lint fail.
 - The Docker image, the binary, the examples, and the browser test name the preset package in their `package.json` or configuration, and stop naming it as a package.
 
 The released versions of the rules point `docs.url` to the READMEs of these directories (`blob/master/packages/%40secretlint/secretlint-rule-<name>/README.md`). These links of the older versions break when the directories are deleted. This is accepted, because the link is only a link of a message.

@@ -193,7 +193,7 @@ In it, you'll see some rules configured like this:
 }
 ```
 
-`secretlint --init` always writes the recommended preset, and adds the rule packages that it finds in your `package.json`.
+`secretlint --init` always writes the recommended preset (or the canary preset when your `package.json` has it), and adds the other rule packages that it finds in your `package.json`.
 
 The `id` property is the id of a rule.
 The [built-in rules](#built-in-rules) and presets need no installation; add their ids to the `.secretlintrc` file.

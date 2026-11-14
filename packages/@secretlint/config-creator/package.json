@@ -52,6 +52,7 @@
         "tabWidth": 4
     },
     "dependencies": {
+        "@secretlint/core": "workspace:*",
         "@secretlint/types": "workspace:*"
     },
     "devDependencies": {

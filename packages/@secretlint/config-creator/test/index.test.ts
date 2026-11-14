@@ -54,6 +54,29 @@ describe("@secretlint/config-creator", () => {
             const actual = createConfig({ packageJSON: {} });
             assert.deepStrictEqual(actual.rules, [{ id: "@secretlint/secretlint-rule-preset-recommend" }]);
         });
+        it("does not write a rule package that the recommended preset has", () => {
+            const actual = createConfig({
+                packageJSON: {
+                    devDependencies: {
+                        "@secretlint/secretlint-rule-aws": "^13.0.0",
+                        "@secretlint/secretlint-rule-preset-recommend": "^13.0.0",
+                    },
+                },
+            });
+            assert.deepStrictEqual(actual.rules, [{ id: "@secretlint/secretlint-rule-preset-recommend" }]);
+        });
+        it("writes the canary preset instead of the recommended preset when package.json has it", () => {
+            const actual = createConfig({
+                packageJSON: {
+                    devDependencies: {
+                        "@secretlint/secretlint-rule-preset-canary": "^13.0.0",
+                        "@secretlint/secretlint-rule-preset-recommend": "^13.0.0",
+                        "@secretlint/secretlint-rule-github": "^13.0.0",
+                    },
+                },
+            });
+            assert.deepStrictEqual(actual.rules, [{ id: "@secretlint/secretlint-rule-preset-canary" }]);
+        });
         it("writes the recommended preset first, followed by the rule packages", () => {
             const actual = createConfig({
                 packageJSON: {
