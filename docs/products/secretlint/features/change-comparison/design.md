@@ -84,6 +84,7 @@ type SetResult = {
     name: "small" | "medium" | "large" | "huge";
     repository: string | null; // null for small
     commit: string | null;
+    label: string | null; // the label in compare-sets.json; null for small
     files: { base: number; head: number };
     patterns: PatternDiff[]; // only the patterns whose numbers differ
     rules: RuleDiff[]; // the number of files of each rule, only when it differs
@@ -100,7 +101,7 @@ type PatternDiff = {
 };
 type Finding = { ruleId: string; messageId: string; file: string; line: number }; // file is relative to the set
 type Stats = { median: number; mean: number; stddev: number; runs: number }; // milliseconds
-type ProfileReport = SecretLintProfileReport; // packages/secretlint/src/profile-report.ts
+type ProfileReport = SecretLintProfileReport; // packages/secretlint/src/profile-report.ts; the paths of slowestFiles are relative to the set
 ```
 
 A pattern is identified by `<ruleId>#<index>`, the id that the profile uses. Only the counts are compared: the times of the profile are not, because they change between runs. A pattern that is missing from one profile did no work there (the profile lists only the patterns that ran or tested a line), and it is shown as `-`.
@@ -109,7 +110,7 @@ Findings are compared as multisets of `ruleId`, `messageId`, file, and line. The
 
 `mark` is `slower` when `ratio >= 1.3`, `faster` when `ratio <= 0.77`, and otherwise `null`. `ratio` is the median of the head divided by the median of the base.
 
-The Markdown output starts with the heading "Profile and benchmark: base vs head". It has, for each set, in this order:
+The Markdown output starts with the heading "Profile and benchmark: base vs head" and the linked commits of the base and the head. With more than one set, a table follows with one row for each set: the result (`✅ No change` or what changed), the run time, and the number of findings. Then it has, for each set, in this order:
 
 1. A heading with the set, the commit, and the number of files.
 2. One line that says what changed: `✅ No change in findings and pattern work` with the ratio of the run time, or `⚠️ Changed:` with the list of what changed (findings, pattern work, files of rules, keyword guards, or a slower run time).
@@ -133,6 +134,7 @@ pnpm run compare [--base <ref>] [--set small,medium,large,huge] [--runs <n>] [--
 - `--json`: the path of the JSON output.
 - `--cache-dir`: where the base worktree and the sets are kept. Default: `$XDG_CACHE_HOME/secretlint-compare`, or `~/.cache/secretlint-compare`. It is outside the repository, so the formatter, the lint of the repository, and the pnpm workspace do not see it.
 - `--no-build`: do not build the head (it is already built).
+- `--render <json>`: print the Markdown of the JSON outputs of earlier runs as one comparison, and build or lint nothing. It is repeated for each JSON output. The outputs must have the same base and head commits.
 
 Exit status: 0 when the comparison is written, whatever the differences are; 2 when it can not run.
 
@@ -142,8 +144,9 @@ Exit status: 0 when the comparison is written, whatever the differences are; 2 w
 
 - `on: pull_request` with `paths`: `packages/**`, `examples/benchmark/**`, `package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`, `.github/workflows/profile-benchmark.yml`, and `!**/*.md`.
 - `permissions: contents: read` for the workflow. No step uses `secrets`.
-- One job with `strategy.matrix.set: [small, medium, large, huge]` and `fail-fast: false`, on `ubuntu-latest`, `timeout-minutes: 30`.
-- Steps: checkout with `persist-credentials: false` and `fetch-depth: 0` (the base commit is needed); pnpm and Node.js as in `test.yml`; `sudo apt-get install -y hyperfine`; `pnpm install --frozen-lockfile`; then the script with `--set ${{ matrix.set }}`, with its standard output appended to `$GITHUB_STEP_SUMMARY`; then the JSON uploaded as the artifact `profile-benchmark-<set>`.
+- The job `compare` with `strategy.matrix.set: [small, medium, large, huge]` and `fail-fast: false`, on `ubuntu-latest`, `timeout-minutes: 30`. The name of each job is the set, so a check of the pull request reads `Profile and benchmark / medium`.
+- Steps: checkout with `persist-credentials: false` and `fetch-depth: 0` (the base commit is needed); pnpm and Node.js as in `test.yml`; `sudo apt-get install -y hyperfine`; `pnpm install --frozen-lockfile`; then the script with `--set ${{ matrix.set }}` (its Markdown goes to the log); then the JSON uploaded as the artifact `profile-benchmark-<set>`.
+- The job `summary` (`Profile and benchmark / summary`) runs after the jobs of the sets, also when one of them failed. It downloads the JSON outputs and appends the Markdown of `--render` with all of them to `$GITHUB_STEP_SUMMARY`, so the summary of the run has one comparison with all sets. It says so when a set has no result.
 - The base commit is passed through an environment variable from `github.event.pull_request.base.sha`, not written into the shell command.
 
 ### AGENTS.md

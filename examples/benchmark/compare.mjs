@@ -71,6 +71,7 @@ const parseOptions = () => {
             json: { type: "string", default: "compare-result.json" },
             "cache-dir": { type: "string" },
             "no-build": { type: "boolean", default: false },
+            render: { type: "string", multiple: true, default: [] },
             help: { type: "boolean", default: false }
         }
     });
@@ -85,6 +86,8 @@ const parseOptions = () => {
                 "  --json <path>       path of the JSON output (default: compare-result.json)",
                 "  --cache-dir <dir>   where the base build and the sets are kept",
                 "  --no-build          do not build the head",
+                "  --render <json>     print the Markdown of JSON outputs of earlier runs as one comparison;",
+                "                      repeat it for each JSON output. Nothing is built or linted",
                 ""
             ].join("\n")
         );
@@ -109,7 +112,8 @@ const parseOptions = () => {
         runs,
         jsonPath: path.resolve(values.json),
         cacheDir: path.resolve(cacheDir),
-        build: !values["no-build"]
+        build: !values["no-build"],
+        render: values.render.map((jsonPath) => path.resolve(jsonPath))
     };
 };
 
@@ -201,7 +205,14 @@ const readSetDefinitions = () => JSON.parse(fs.readFileSync(path.join(BENCHMARK_
 
 const prepareSet = (name, definitions, cacheDir) => {
     if (name === "small") {
-        return { name, repository: null, commit: null, dir: path.join(BENCHMARK_DIR, "targets"), runs: SMALL_RUNS };
+        return {
+            name,
+            repository: null,
+            commit: null,
+            label: null,
+            dir: path.join(BENCHMARK_DIR, "targets"),
+            runs: SMALL_RUNS
+        };
     }
     const definition = definitions[name];
     if (!definition) {
@@ -236,6 +247,7 @@ const prepareSet = (name, definitions, cacheDir) => {
         name,
         repository: definition.repository,
         commit: definition.commit,
+        label: definition.label,
         dir,
         runs: definition.runs
     };
@@ -439,10 +451,19 @@ const diffFindings = (baseFindings, headFindings) => {
 const compareSet = ({ set, baseDir, headDir, runs, hasHyperfine, tmpDir }) => {
     const base = lintWithProfile("base", baseDir, set, tmpDir);
     const head = lintWithProfile("head", headDir, set, tmpDir);
+    // the paths of the slowest files are relative to the set, so the JSON does not depend on the machine
+    const relativeProfile = (profile) => ({
+        ...profile,
+        slowestFiles: (profile.slowestFiles ?? []).map((file) => ({
+            ...file,
+            filePath: path.relative(set.dir, file.filePath).split(path.sep).join("/")
+        }))
+    });
     return {
         name: set.name,
         repository: set.repository,
         commit: set.commit,
+        label: set.label,
         files: { base: base.profile.files, head: head.profile.files },
         patterns: diffPatterns(base.profile, head.profile),
         rules: diffByKey(
@@ -458,7 +479,7 @@ const compareSet = ({ set, baseDir, headDir, runs, hasHyperfine, tmpDir }) => {
             (guard) => ({ found: guard.found, met: guard.met })
         ),
         findings: diffFindings(base.findings, head.findings),
-        profiles: { base: base.profile, head: head.profile },
+        profiles: { base: relativeProfile(base.profile), head: relativeProfile(head.profile) },
         time: hasHyperfine ? measureTime(baseDir, headDir, set, runs ?? set.runs, tmpDir) : null
     };
 };
@@ -669,7 +690,7 @@ const topTitle = (title, shown, all) =>
  * The times come from one profiled run of each build and are only for reading;
  * the run time of the summary is the measured one.
  */
-const markdownProfile = (result, setDir) => {
+const markdownProfile = (result) => {
     const { base, head } = result.profiles;
     const lines = [
         "<details open><summary><b>Profile</b> (<code>secretlint --profile</code>, one run of each build)</summary>",
@@ -713,14 +734,13 @@ const markdownProfile = (result, setDir) => {
             ""
         );
     }
-    const relative = (filePath) => path.relative(setDir, filePath).split(path.sep).join("/");
     // the base lists only its own slowest files, so the files are shown for the head only
     const files = head.slowestFiles.slice(0, TOP_PROFILE_ROWS);
     if (files.length > 0) {
         lines.push(
             `| ${files.length < head.files ? `Slowest files of the head (top ${files.length} of ${formatCount(head.files)})` : "Files of the head"} | Head |`,
             "| --- | ---: |",
-            ...files.map((file) => `| ${escapeCell(relative(file.filePath))} | ${formatMs(file.duration)} |`),
+            ...files.map((file) => `| ${escapeCell(file.filePath)} | ${formatMs(file.duration)} |`),
             ""
         );
     }
@@ -728,36 +748,85 @@ const markdownProfile = (result, setDir) => {
     return lines;
 };
 
-const markdownSet = (result, sets) => {
-    const definition = sets.find((set) => set.name === result.name);
-    const source = result.repository
-        ? `${result.repository.replace("https://github.com/", "")} ${definition?.label ?? ""} (${commitLink(result.repository, result.commit)})`
+const setSource = (result) =>
+    result.repository
+        ? `${result.repository.replace("https://github.com/", "")} ${result.label ?? ""} (${commitLink(result.repository, result.commit)})`
         : "examples/benchmark/targets";
-    return [
-        `### ${result.name}: ${source}, ${formatCount(result.profiles.head.files)} files`,
-        "",
-        verdictOf(result),
-        "",
-        ...markdownSummaryTable(result),
-        ...markdownChanges(result),
-        ...markdownProfile(result, definition.dir)
-    ];
-};
 
-const toMarkdown = (compareResult, sets) => {
+const markdownSet = (result) => [
+    `### ${result.name}: ${setSource(result)}, ${formatCount(result.profiles.head.files)} files`,
+    "",
+    verdictOf(result),
+    "",
+    ...markdownSummaryTable(result),
+    ...markdownChanges(result),
+    ...markdownProfile(result)
+];
+
+/**
+ * One row for each set, so a reader sees all sets at once.
+ */
+const markdownOverview = (results) => [
+    "| Set | Result | Run time (base → head) | Findings (base → head) |",
+    "| --- | --- | ---: | ---: |",
+    ...results.map((result) => {
+        const time = result.time
+            ? `${formatMs(result.time.base.median)} → ${formatMs(result.time.head.median)} (**${result.time.ratio.toFixed(2)}x**${markText(result.time.mark)})`
+            : "-";
+        const verdict = verdictOf(result);
+        const short = verdict.startsWith("✅") ? "✅ No change" : verdict.replace(/\.$/, "");
+        return `| ${result.name} | ${short} | ${time} | ${formatCount(result.findings.base)} → ${formatCount(result.findings.head)} |`;
+    }),
+    ""
+];
+
+const SET_ORDER = new Map(SET_NAMES.map((name, index) => [name, index]));
+
+const toMarkdown = (compareResult) => {
     const repository = repositoryUrl();
     const head = `${commitLink(repository, compareResult.head.commit)}${compareResult.head.dirty ? " with uncommitted changes" : ""}`;
+    const results = [...compareResult.sets].sort((a, b) => SET_ORDER.get(a.name) - SET_ORDER.get(b.name));
     return [
         "## Profile and benchmark: base vs head",
         "",
         `Base: ${escapeCell(compareResult.base.ref)} ${commitLink(repository, compareResult.base.commit)}, head: ${head}`,
         "",
-        ...compareResult.sets.flatMap((result) => markdownSet(result, sets))
+        ...(results.length > 1 ? markdownOverview(results) : []),
+        ...results.flatMap((result) => markdownSet(result))
     ].join("\n");
+};
+
+/**
+ * Print the Markdown of JSON outputs of earlier runs, as one comparison.
+ * CI runs one job for each set, and a last job puts the results of all sets in one summary.
+ */
+const renderJsonFiles = (jsonPaths) => {
+    const compareResults = jsonPaths.map((jsonPath) => {
+        try {
+            return JSON.parse(fs.readFileSync(jsonPath, "utf8"));
+        } catch (error) {
+            throw new CompareError(`Can not read the JSON output ${jsonPath}: ${error.message}`);
+        }
+    });
+    if (compareResults.length === 0) {
+        throw new CompareError("--render needs one or more JSON outputs");
+    }
+    const [first] = compareResults;
+    for (const compareResult of compareResults) {
+        if (compareResult.base.commit !== first.base.commit || compareResult.head.commit !== first.head.commit) {
+            throw new CompareError("The JSON outputs are of different base or head commits");
+        }
+    }
+    const merged = { ...first, sets: compareResults.flatMap((compareResult) => compareResult.sets) };
+    process.stdout.write(`${toMarkdown(merged)}\n`);
 };
 
 const main = async () => {
     const options = parseOptions();
+    if (options.render.length > 0) {
+        renderJsonFiles(options.render);
+        return;
+    }
     const base = resolveBase(options.base);
     const head = { commit: git(["rev-parse", "HEAD"]), dirty: git(["status", "--porcelain"]) !== "" };
     const hasHyperfine = commandExists("hyperfine");
@@ -776,9 +845,8 @@ const main = async () => {
             compareSet({ set, baseDir, headDir: REPO_ROOT, runs: options.runs, hasHyperfine, tmpDir })
         );
         const compareResult = { base, head, sets: results };
-        const setsWithLabel = sets.map((set) => ({ ...set, label: definitions[set.name]?.label }));
         fs.writeFileSync(options.jsonPath, `${JSON.stringify(compareResult, null, 2)}\n`);
-        process.stdout.write(`${toMarkdown(compareResult, setsWithLabel)}\n`);
+        process.stdout.write(`${toMarkdown(compareResult)}\n`);
         log(`wrote ${options.jsonPath}`);
     } finally {
         fs.rmSync(tmpDir, { recursive: true, force: true });

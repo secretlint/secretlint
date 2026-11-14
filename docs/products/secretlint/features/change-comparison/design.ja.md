@@ -84,6 +84,7 @@ type SetResult = {
     name: "small" | "medium" | "large" | "huge";
     repository: string | null; // smallではnull
     commit: string | null;
+    label: string | null; // compare-sets.jsonのラベル。smallはnull
     files: { base: number; head: number };
     patterns: PatternDiff[]; // 数値が異なるパターンだけ
     rules: RuleDiff[]; // ルールごとのファイル数。異なる場合だけ
@@ -100,7 +101,7 @@ type PatternDiff = {
 };
 type Finding = { ruleId: string; messageId: string; file: string; line: number }; // fileはセットからの相対パス
 type Stats = { median: number; mean: number; stddev: number; runs: number }; // ミリ秒
-type ProfileReport = SecretLintProfileReport; // packages/secretlint/src/profile-report.ts
+type ProfileReport = SecretLintProfileReport; // packages/secretlint/src/profile-report.ts slowestFilesのパスはセットからの相対パス
 ```
 
 パターンはプロファイルが使うIDである`<ruleId>#<index>`で識別する。比べるのは回数だけである。プロファイルの時間は実行ごとに変わるので比べない。片方のプロファイルにないパターンは、そちらでは仕事をしなかった（プロファイルは実行されたか行をテストしたパターンだけを持つ）ので、`-`として示す。
@@ -109,7 +110,7 @@ type ProfileReport = SecretLintProfileReport; // packages/secretlint/src/profile
 
 `mark`は、`ratio >= 1.3`なら`slower`、`ratio <= 0.77`なら`faster`、それ以外は`null`である。`ratio`はheadの中央値をbaseの中央値で割った値である。
 
-Markdownの出力は見出し「Profile and benchmark: base vs head」で始まる。セットごとに、次の順で持つ。
+Markdownの出力は見出し「Profile and benchmark: base vs head」と、リンクにしたbaseとheadのコミットで始まる。セットが2つ以上なら、セットごとに1行の表が続く。各行は結果（`✅ No change`または変わったもの）、実行時間、検出結果の数を持つ。そのあと、セットごとに次の順で持つ。
 
 1. セット、コミット、ファイル数の見出し。
 2. 何が変わったかを示す1行。`✅ No change in findings and pattern work`と実行時間の比、または`⚠️ Changed:`と変わったもの（検出結果、パターンの仕事、ルールのファイル数、キーワードのガード、遅くなった実行時間）の一覧。
@@ -133,6 +134,7 @@ pnpm run compare [--base <ref>] [--set small,medium,large,huge] [--runs <n>] [--
 - `--json`: JSONの出力のパス。
 - `--cache-dir`: baseのworktreeとセットを置く場所。既定は`$XDG_CACHE_HOME/secretlint-compare`、または`~/.cache/secretlint-compare`。リポジトリの外なので、フォーマッター、リポジトリの検査、pnpmのworkspaceはこれを見ない。
 - `--no-build`: headをビルドしない（ビルド済みである）。
+- `--render <json>`: 以前の実行のJSON出力のMarkdownを1つの比較として出力し、ビルドも検査もしない。JSON出力ごとに繰り返す。出力のbaseとheadのコミットは同じでなければならない。
 
 終了ステータスは、違いにかかわらず比較を書いた場合は0、実行できない場合は2である。
 
@@ -142,8 +144,9 @@ pnpm run compare [--base <ref>] [--set small,medium,large,huge] [--runs <n>] [--
 
 - `on: pull_request`で、`paths`は`packages/**`、`examples/benchmark/**`、`package.json`、`pnpm-lock.yaml`、`pnpm-workspace.yaml`、`.github/workflows/profile-benchmark.yml`、`!**/*.md`。
 - ワークフローの`permissions`は`contents: read`。`secrets`を使うステップはない。
-- `strategy.matrix.set: [small, medium, large, huge]`と`fail-fast: false`の1つのジョブ。`ubuntu-latest`、`timeout-minutes: 30`。
-- ステップ: `persist-credentials: false`と`fetch-depth: 0`（baseのコミットが必要）でチェックアウトし、`test.yml`と同じようにpnpmとNode.jsを用意し、`sudo apt-get install -y hyperfine`、`pnpm install --frozen-lockfile`を実行する。次に`--set ${{ matrix.set }}`でスクリプトを実行し、標準出力を`$GITHUB_STEP_SUMMARY`に追記する。最後にJSONをartifact `profile-benchmark-<set>`としてアップロードする。
+- `strategy.matrix.set: [small, medium, large, huge]`と`fail-fast: false`のジョブ`compare`。`ubuntu-latest`、`timeout-minutes: 30`。各ジョブの名前はセットなので、プルリクエストのチェックは`Profile and benchmark / medium`のように読める。
+- ステップ: `persist-credentials: false`と`fetch-depth: 0`（baseのコミットが必要）でチェックアウトし、`test.yml`と同じようにpnpmとNode.jsを用意し、`sudo apt-get install -y hyperfine`、`pnpm install --frozen-lockfile`を実行する。次に`--set ${{ matrix.set }}`でスクリプトを実行する（Markdownはログに出る）。最後にJSONをartifact `profile-benchmark-<set>`としてアップロードする。
+- ジョブ`summary`（`Profile and benchmark / summary`）は、セットのジョブのあとに、そのどれかが失敗した場合も実行する。JSON出力をダウンロードし、それらすべてを渡した`--render`のMarkdownを`$GITHUB_STEP_SUMMARY`に追記する。そのため、実行のサマリーはすべてのセットを1つの比較として持つ。結果のないセットがあれば、そう書く。
 - baseのコミットは`github.event.pull_request.base.sha`から環境変数で渡し、シェルのコマンドに直接書かない。
 
 ### AGENTS.md
