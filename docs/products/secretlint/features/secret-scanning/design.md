@@ -64,18 +64,18 @@ If a keyword is found, the core checks the lines that have a keyword on the byte
 When patterns run, the core scans the decoded string again, because the patterns need indexes in the string and these differ from indexes in the bytes.
 
 The automaton does one table lookup for each byte, whatever the keywords are.
-So its time depends on the size of the content and barely on the number of keywords: on 60MB of text, 65 keywords took 97ms and 1,065 keywords took 111ms.
+So its time depends on the size of the content and barely on the number of keywords.
 It also has no knowledge about the content. This is why it meets "Any content" and "The number of keywords" of the Requirements.
 
 ### Looking for keywords on several threads
 
 Node.js runs JavaScript on one thread, so the engine lints files one after another.
-A profile of a large repository (about 96,000 files, 4.5 seconds) shows where that one thread spends its time: about 2.9 seconds in the keyword scan and 0.8 seconds in reading files. The rules take little, because they run only for the sources that the keywords select.
+A profile of a large repository shows where that one thread spends its time: most of it in the keyword scan, and then in reading files. The rules take little, because they run only for the sources that the keywords select.
 So the step to run on several threads is the one that narrows down the sources: read a file and scan it for keywords.
 
 The scan can be made parallel in several ways, and the choice follows from two costs: distribution and start-up.
 
-- A native program or a native add-on needs a build for each platform and a way to ship it. WebAssembly has no platform builds, but it has its own ways to load in Node.js, browsers, and the single-executable binary, and its threads are still started by the host. Per thread, a native scan was also as fast as the JavaScript scan (read 155ms and scan 580ms, against 230ms and 542ms), so only the threads gave a gain.
+- A native program or a native add-on needs a build for each platform and a way to ship it. WebAssembly has no platform builds, but it has its own ways to load in Node.js, browsers, and the single-executable binary, and its threads are still started by the host. Per thread, a native scan was also about as fast as the JavaScript scan in the measurements, so only the threads gave a gain.
 - Worker threads of Node.js need nothing to ship. Their cost is the start-up: a worker loads its code before it works.
 
 So the scan runs on worker threads, and the design keeps the start-up of a worker small and constant.
@@ -110,11 +110,11 @@ A worker does the part that narrows down. It reads a file into a buffer that it 
 - If no rule runs for the file, it only writes the state "no messages". This is the case when the file is text, the scan returns `runsRules: false`, and the plan has `requiresKeyword`. The file gets a result without messages, and nobody reads it again.
 - Otherwise it hands the file to the main thread: it copies the bytes into the memory of a batch, and when the 32 files are done it moves the batch to the main thread with the content type and the result of the scan. The memory is moved, not copied, and the main thread lints the file from these bytes with `lintSource({ source, keywordScanResult })`. It does not detect the content type or check the lines again.
 
-The check of the lines is in the worker because a keyword selects many more files than a pattern matches, and a line can be very long. On one macOS machine with about 118,000 files, about 24,000 files had a keyword and a rule ran for 893 of them. When the main thread checked the lines, the check took 1.6 seconds there, and the main thread was the limit.
+The check of the lines is in the worker because a keyword selects many more files than a pattern matches, and a line can be very long. If the main thread checked the lines, it would get every file that has a keyword, and it would be the limit.
 The content type is detected in the worker for the same reason: a file whose name does not tell the type would otherwise be scanned by the main thread.
 
 So a file is read once, by the thread that claimed it, and the main thread never reads a file that a worker read.
-This matters where reading is the main cost: on one macOS machine a read took about 96µs for a file, ten times the Linux machine of the measurements, and it was more than half of the time of the lint.
+This matters where reading is the main cost: on some machines, reading the files takes more than half of the time of the lint.
 
 A rule without keywords, such as a rule of patterns that a user writes, runs for every file. Then `requiresKeyword` is false, and the workers hand every file. The reads, the scans, and the checks of the lines are still done by the workers, and the main thread runs the rules. In this case the main thread is the limit, because the rules run only there.
 
@@ -127,7 +127,7 @@ The Requirements only say that a worker is not started when it gives no gain. Ho
 
 The main thread starts the lint alone, so a short lint never pays for a worker, and it runs in the same way as without workers.
 After a warm-up of 20ms, it measures how many files it lints in the next 20ms, and estimates the time for the rest of the files.
-It starts `floor(rest time / 100ms)` workers, at most `os.availableParallelism() - 1`. 100ms is the start-up of a worker (70-100ms measured), so each worker has work for longer than its start-up.
+It starts `floor(rest time / 100ms)` workers, at most `os.availableParallelism() - 1`. 100ms is about the start-up of a worker, so each worker has work for longer than its start-up.
 The warm-up is not used for the estimate, because the lint is several times slower until the runtime has optimized it.
 The decision uses time, not the number of files, so it follows the size of the files and the speed of the disk.
 
@@ -150,8 +150,7 @@ The single-executable binary is one bundle built with Bun, so it has no such fil
 The test of the binary checks that a worker starts in it.
 A bundle of another tool that does not have the file still works: the worker fails to start, and the files are linted without it.
 
-Measured on 4 cores with the binary (median): about 21,000 files 956ms with one thread and 529ms with workers, and about 96,000 files 4.5 seconds and 1.8 seconds.
-Measured on one macOS machine with 10 threads and the binary (one run each): about 118,000 files 4.6 seconds with workers. One thread was not measured there.
+The measurements of each version are in the pull request of the change, not here, because they depend on the machine and get old.
 
 ### What a rule receives
 
@@ -332,14 +331,14 @@ It was not chosen by the maintainer: the command always gives the bytes, the rul
 ### Workers that run the rules
 
 Each worker would load the configuration and the rules and run `lintSource()` for a part of the files.
-It was not chosen because the start-up of a worker then depends on the rules: it was 100-250ms with the built-in rules, and custom rules can be of any size, so the cost is not constant.
+It was not chosen because the start-up of a worker then depends on the rules: it was longer than the start-up of a worker without rules even with only the built-in rules, and custom rules can be of any size, so the cost is not constant.
 A rule would also have to load and run in a worker, and results with content would be copied between threads.
 
 ### A native program or WebAssembly for the scan
 
 A program in a native language would read the files and scan them on its own threads.
 It was not chosen because it needs a build and a way to ship for each platform, and WebAssembly needs a way to load in each environment.
-One native thread was as fast as one JavaScript thread for this work, so the gain was only from threads, which worker threads also give: with 4 threads, about 96,000 files took 3.0 seconds with the native program and 2.3 seconds with workers.
+One native thread was about as fast as one JavaScript thread for this work, so the gain was only from threads, which worker threads also give.
 
 ### Start workers in the core
 
@@ -349,18 +348,18 @@ It was not chosen because the core runs in browsers and has no way to start a th
 ### Scan all files first, and let the main thread read the files again
 
 The main thread and the workers would scan all files before the lint, and then the main thread would read and lint the files that have a keyword.
-This was the first version of this design. It was not chosen because of a configuration with a rule without keywords: then every file has to be linted, so every file was read twice, and the lint became slower than with one thread (about 21,000 files with such a rule: 1,494ms with one thread, 1,550ms with this version, and 1,137ms with the chosen design).
+This was the first version of this design. It was not chosen because of a configuration with a rule without keywords: then every file has to be linted, so every file was read twice, and the lint became slower than with one thread.
 
 ### Check the lines on the main thread
 
 A worker would hand every file that has a keyword, and the main thread would check the lines that have the keyword.
-This was the version before the worker got the regular expressions. It was not chosen because a keyword selects many more files than a rule runs for, so the main thread became the limit: on one macOS machine with about 118,000 files and a rule without keywords, the lint took 5.8 seconds with the check on the main thread (1.6 seconds of it in the check) and 5.0 seconds with the check in the workers.
-Sending the regular expressions did not make the start-up of a worker longer in the measurements: a lint of about 7,000 files took 283ms before and 274ms after.
+This was the version before the worker got the regular expressions. It was not chosen because a keyword selects many more files than a rule runs for, so the main thread became the limit where many files have a keyword or lines are long.
+Sending the regular expressions did not make the start-up of a worker longer in the measurements.
 
 ### Workers that only tell which files have a keyword
 
 A worker would send back one flag for each file, and the main thread would scan the files that have a keyword again.
-It was not chosen because the files with a keyword are then scanned twice: with 4 threads, about 96,000 files took 3.5 seconds with flags and 2.3 seconds with hits.
+It was not chosen because the files with a keyword are then scanned twice, and it was slower than sending the hits.
 
 ### A fixed number of files for each thread
 
@@ -377,4 +376,4 @@ A sieve that chooses rare bytes from a table of how common each byte is was also
 ## Open questions
 
 - The open questions of the Requirements: an option, and a limit for many cores.
-- With a rule without keywords, the main thread is the limit: about 96,000 files took 5.9 seconds with one thread and 3.8 seconds with workers, and about 7,000 files became 28ms slower. Whether such a rule can declare keywords is a separate question.
+- With a rule without keywords, the main thread is the limit: workers still make a large lint shorter, but less, and a lint that is just long enough to start workers can become a little slower. Whether such a rule can declare keywords is a separate question.

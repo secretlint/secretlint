@@ -264,7 +264,7 @@ The lint of a small number of files does not become slower for this.
 
 Secretlint runs on Node.js, and Node.js runs JavaScript on one thread.
 So files are linted one after another, and with many files the time of the lint has a limit that one CPU core sets.
-Most of that time goes to looking for keywords: in a repository of about 96,000 files, it was about 2.9 seconds of 4.5 seconds.
+Most of that time goes to looking for keywords.
 Running the rules costs little, because the rules run only for the few sources that the keywords select.
 So what Secretlint does at the same time on several CPU cores is the part that narrows down the sources: reading the files and looking for keywords.
 
