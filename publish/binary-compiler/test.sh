@@ -65,7 +65,40 @@ else
 fi
 ./secretlint --help
 # run "**/*" test
-./secretlint "**/*"
+# This step hung in CI a few times (the cause is not known yet).
+# Stop it after 120 seconds and print the debug log and the state of its threads, to show where it waits.
+# The logs are outside of the current directory, so "**/*" does not lint them
+LINT_ALL_LOG_DIR=$(mktemp -d)
+set +e
+DEBUG=secretlint,@secretlint/node,@secretlint/core ./secretlint "**/*" >"$LINT_ALL_LOG_DIR/stdout.txt" 2>"$LINT_ALL_LOG_DIR/debug.txt" &
+LINT_ALL_PID=$!
+for _ in $(seq 1 120); do
+    kill -0 "$LINT_ALL_PID" 2>/dev/null || break
+    sleep 1
+done
+if kill -0 "$LINT_ALL_PID" 2>/dev/null; then
+    echo "❌ secretlint \"**/*\" did not end in 120 seconds"
+    if [ -d "/proc/$LINT_ALL_PID/task" ]; then
+        echo "Threads (name, state, wait channel):"
+        for task in /proc/"$LINT_ALL_PID"/task/*; do
+            echo "  $(cat "$task/comm") $(awk '/^State:/ {print $2}' "$task/status") $(cat "$task/wchan" 2>/dev/null)"
+        done
+    fi
+    echo "Debug log (the last 100 lines):"
+    tail -n 100 "$LINT_ALL_LOG_DIR/debug.txt"
+    kill -9 "$LINT_ALL_PID"
+    exit 1
+fi
+wait "$LINT_ALL_PID"
+LINT_ALL_STATUS=$?
+set -e
+cat "$LINT_ALL_LOG_DIR/stdout.txt"
+if [ "$LINT_ALL_STATUS" -ne 0 ]; then
+    echo "❌ secretlint \"**/*\" failed (status: $LINT_ALL_STATUS)"
+    tail -n 100 "$LINT_ALL_LOG_DIR/debug.txt"
+    exit 1
+fi
+rm -rf "$LINT_ALL_LOG_DIR"
 
 # Verify that large output is fully flushed before the process exits.
 # mask-result outputs the whole content of the file. JSON output does not have the content.
