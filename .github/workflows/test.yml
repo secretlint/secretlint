@@ -39,7 +39,7 @@ jobs:
         with:
           node-version: 24
       - name: Check links
-        run: node scripts/check-links.mjs
+        run: node scripts/check-links.mts
 
   test:
     name: "Test on Node.js ${{ matrix.node-version }} OS: ${{matrix.os}}"
