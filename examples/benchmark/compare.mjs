@@ -26,9 +26,10 @@ const log = (message) => {
 /**
  * Run a command. Its output goes to stderr, so stdout has only the Markdown of this script.
  */
-const run = (command, args, { cwd, capture = false, env } = {}) => {
+const run = (command, args, { cwd, capture = false, env, shell = false } = {}) => {
     const result = spawnSync(command, args, {
         cwd,
+        shell,
         env: env ? { ...process.env, ...env } : process.env,
         encoding: "utf8",
         maxBuffer: 1024 * 1024 * 1024,
@@ -123,29 +124,90 @@ const resolveBase = (ref) => {
     throw new CompareError(`Can not resolve the base: ${candidates.join(" or ")}`);
 };
 
+/**
+ * Run pnpm with fixed arguments.
+ * On Windows, pnpm is usually a .cmd file, and Node.js runs a .cmd file only through a shell.
+ * The arguments are fixed strings, so the shell does not see any input of the user.
+ */
+const pnpm = (description, args, cwd) =>
+    runOrFail(description, "pnpm", args, { cwd, shell: process.platform === "win32" });
+
 const buildRepository = (description, dir) => {
     log(`building the ${description} in ${dir}`);
-    runOrFail(`pnpm install of the ${description}`, "pnpm", ["install", "--frozen-lockfile"], { cwd: dir });
-    runOrFail(`pnpm run build of the ${description}`, "pnpm", ["run", "build"], { cwd: dir });
+    pnpm(`pnpm install of the ${description}`, ["install", "--frozen-lockfile"], dir);
+    pnpm(`pnpm run build of the ${description}`, ["run", "build"], dir);
+};
+
+const isProcessAlive = (pid) => {
+    try {
+        process.kill(pid, 0);
+        return true;
+    } catch (error) {
+        return error.code === "EPERM";
+    }
+};
+
+/**
+ * Prepare an entry of the cache while no other comparison prepares the same entry.
+ * The lock is a directory, because making a directory is atomic.
+ * A lock of a process that ended is removed.
+ */
+const withCacheLock = (dir, prepare) => {
+    const lockDir = `${dir}.lock`;
+    const pidFile = path.join(lockDir, "pid");
+    fs.mkdirSync(path.dirname(dir), { recursive: true });
+    try {
+        fs.mkdirSync(lockDir);
+    } catch (error) {
+        if (error.code !== "EEXIST") {
+            throw error;
+        }
+        const pid = fs.existsSync(pidFile) ? Number(fs.readFileSync(pidFile, "utf8")) : Number.NaN;
+        // a lock without a pid was made just now, and its process has not written the pid yet
+        const isActive =
+            Number.isInteger(pid) && pid > 0
+                ? isProcessAlive(pid)
+                : Date.now() - fs.statSync(lockDir).mtimeMs < 60 * 1000;
+        if (isActive) {
+            throw new CompareError(
+                `Another comparison (process ${Number.isNaN(pid) ? "unknown" : pid}) is preparing ${dir}. Run again after it ends.`
+            );
+        }
+        log(`removing the lock of a comparison that ended: ${lockDir}`);
+        fs.rmSync(lockDir, { recursive: true, force: true });
+        fs.mkdirSync(lockDir);
+    }
+    try {
+        fs.writeFileSync(pidFile, String(process.pid));
+        return prepare();
+    } finally {
+        fs.rmSync(lockDir, { recursive: true, force: true });
+    }
 };
 
 const prepareBase = (base, cacheDir) => {
     const dir = path.join(cacheDir, "builds", base.commit);
     const marker = `${dir}.built`;
-    if (fs.existsSync(marker) && fs.existsSync(dir)) {
+    const isReady = () => fs.existsSync(marker) && fs.existsSync(dir);
+    if (isReady()) {
         log(`using the base build in ${dir}`);
         return dir;
     }
-    fs.rmSync(marker, { force: true });
-    if (fs.existsSync(dir)) {
-        tryGit(["worktree", "remove", "--force", dir]);
-        fs.rmSync(dir, { recursive: true, force: true });
-    }
-    tryGit(["worktree", "prune"]);
-    fs.mkdirSync(path.dirname(dir), { recursive: true });
-    git(["worktree", "add", "--detach", dir, base.commit]);
-    buildRepository(`base (${base.commit.slice(0, 7)})`, dir);
-    fs.writeFileSync(marker, "");
+    withCacheLock(dir, () => {
+        // check again: another comparison may have built it before this one got the lock
+        if (isReady()) {
+            return;
+        }
+        fs.rmSync(marker, { force: true });
+        if (fs.existsSync(dir)) {
+            tryGit(["worktree", "remove", "--force", dir]);
+            fs.rmSync(dir, { recursive: true, force: true });
+        }
+        tryGit(["worktree", "prune"]);
+        git(["worktree", "add", "--detach", dir, base.commit]);
+        buildRepository(`base (${base.commit.slice(0, 7)})`, dir);
+        fs.writeFileSync(marker, "");
+    });
     return dir;
 };
 
@@ -162,20 +224,27 @@ const prepareSet = (name, definitions, cacheDir) => {
     const dir = path.join(cacheDir, "sets", `${name}-${definition.commit}`);
     // the marker is outside the directory, so it is not linted
     const marker = `${dir}.ready`;
-    if (!(fs.existsSync(marker) && fs.existsSync(dir))) {
-        log(`downloading ${definition.repository} at ${definition.commit} (${definition.label})`);
-        fs.rmSync(marker, { force: true });
-        fs.rmSync(dir, { recursive: true, force: true });
-        fs.mkdirSync(dir, { recursive: true });
-        git(["init", "--quiet"], dir);
-        runOrFail(
-            `download of the set ${name}`,
-            "git",
-            ["fetch", "--quiet", "--depth", "1", "--no-tags", definition.repository, definition.commit],
-            { cwd: dir }
-        );
-        git(["-c", "advice.detachedHead=false", "checkout", "--quiet", "FETCH_HEAD"], dir);
-        fs.writeFileSync(marker, "");
+    const isReady = () => fs.existsSync(marker) && fs.existsSync(dir);
+    if (!isReady()) {
+        withCacheLock(dir, () => {
+            // check again: another comparison may have downloaded it before this one got the lock
+            if (isReady()) {
+                return;
+            }
+            log(`downloading ${definition.repository} at ${definition.commit} (${definition.label})`);
+            fs.rmSync(marker, { force: true });
+            fs.rmSync(dir, { recursive: true, force: true });
+            fs.mkdirSync(dir, { recursive: true });
+            git(["init", "--quiet"], dir);
+            runOrFail(
+                `download of the set ${name}`,
+                "git",
+                ["fetch", "--quiet", "--depth", "1", "--no-tags", definition.repository, definition.commit],
+                { cwd: dir }
+            );
+            git(["-c", "advice.detachedHead=false", "checkout", "--quiet", "FETCH_HEAD"], dir);
+            fs.writeFileSync(marker, "");
+        });
     }
     return {
         name,
