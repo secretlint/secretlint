@@ -84,6 +84,12 @@ Scenario: When a guard rejects a secret that the rule reports, the test fails an
 - When: The rule author runs the tests.
 - Then: The test case fails with a message that names the rule, the guarded keyword, and the line and column of the keyword whose guard is not met.
 
+Scenario: When no test case has a secret for a guarded keyword, the tests fail
+
+- Given: A pattern of the rule has the guarded keywords `{ keyword: "00", after: "[a-z0-9]{40,}" }` and `{ keyword: "SK", after: "[a-z0-9]{32,}" }`. The test cases have a key that starts with `00`, and no key that starts with `SK`.
+- When: The rule author runs the tests.
+- Then: The tests fail with a message that names the rule, the keyword `SK`, and its guard, and asks to add a test case with such a secret.
+
 ## KPIs
 
 None. No metric has been defined for rule authoring.
@@ -120,6 +126,11 @@ A guard of a keyword must be met by every secret that the pattern reports. See "
 Each case is also linted with each guarded keyword as a keyword without its guard. A message that this lint reports and the first lint does not report is a secret that a guard rejected.
 Then the case fails, and the message of the failure names the rule, the guarded keyword, and the position of the keyword. So the rule author sees that the guard is the cause, and which one.
 The rule author writes no test for this. A case with a secret that the guard rejects is enough.
+
+The tests can find a wrong guard only if a case has a secret for the guarded keyword. So the tests also fail when a guarded keyword has no such case.
+After all cases of the snapshot directory, each guarded keyword of the rules that report a message in these cases must have a case in which the rule reports a secret that has the keyword, with the guard met after it. The failure names the rule, the keyword, and the guard.
+A guarded keyword of a pattern that is not enabled in any case is not checked, and a rule that reports nothing in the directory is not checked: the cases of one rule also run with a preset that has other rules.
+When only some of the cases run, such as with a filter of the test runner, this check does nothing.
 
 A guard that is looser than needed does not fail a test, because the results are the same. It is seen with `--profile`.
 
@@ -175,4 +186,4 @@ Test inputs must not contain real secrets.
 
 ## Open questions
 
-- Should the tests fail when no case of a rule has a secret that meets a guard of the rule? Without such a case, the tests can not find a wrong guard.
+None.

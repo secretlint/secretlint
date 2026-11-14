@@ -397,6 +397,7 @@ For such a keyword, write the characters that follow it in the secret as a guard
 - The set is compared as it is written: `[a-f0-9]` does not have `A`. So a guard also keeps a pattern from a common word in another case: `{ keyword: "ASIA", after: "[A-Z0-9]{16,}" }` is not found in `asia-northeast1`.
 - The syntax is strict: a guard has one way to write it. Other forms, such as `{40}`, `{32,40}`, `+`, `\d`, and `[^...]`, are an error, and the error tells the supported form.
 - A guard must be true for every secret of the pattern. `@secretlint/tester` fails with the rule, the keyword, the guard, and the position if a guard rejects a secret that the pattern reports. A guard that is too loose only makes the lint slower.
+- The tests need a test case for each keyword with a guard: a secret that the rule reports, with the keyword and the characters that meet the guard. `@secretlint/tester` fails if a keyword with a guard has no such test case, because the tests can not tell if that guard is right.
 
 ## Performance
 

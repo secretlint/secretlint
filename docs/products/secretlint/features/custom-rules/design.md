@@ -66,6 +66,13 @@ The check uses the parser and the guard function of the core, so the tests check
 The lint without guards is skipped when the configuration has no guarded keyword and no preset, so the tests of other rules take the same time as before. A preset registers its rules when the lint runs, so the runner does not know its keywords before.
 The configuration of step 4 has no keywords, so it also has no guarded keywords.
 
+The runner also checks that every guarded keyword has a test case.
+
+- `createSnapshotTestCases()` returns one more test case after the cases of the directories: "every keyword with a guard has a test case". The test runner runs it last.
+- Each case records the guarded keywords of its configuration that are in the keyword scan plan, so a pattern that `when` disables is not recorded. It also records the rules that reported a message, and the guarded keywords that a message meets: the lines of the message have the keyword, with the guard met after it.
+- The last test case fails with the guarded keywords that no message meets, for the rules that reported a message in a case. It does nothing unless all cases ran.
+- The built-in AWS rule has a guarded keyword for each prefix of the access key ID, so its test cases have an ID for each prefix.
+
 ### Presets
 
 A third-party preset can be tested with the same `snapshot()`, with one snapshot directory per rule of the preset. The built-in presets are tested in `@secretlint/core`, not with `@secretlint/tester`.
@@ -124,4 +131,4 @@ There is no record of alternatives to snapshot tests with one directory per case
 
 ## Open questions
 
-- The open question of the Requirements: a test that fails when no case meets a guard.
+None.

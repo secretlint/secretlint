@@ -1,0 +1,207 @@
+{
+    "filePath": "[SNAPSHOT]/ng.AWS Access Key ID prefixes/input",
+    "messages": [
+        {
+            "message": "found AWS Access Key ID: A3TXIOSFODNN7SECRETS",
+            "range": [
+                37,
+                57
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-aws",
+            "loc": {
+                "start": {
+                    "line": 2,
+                    "column": 0
+                },
+                "end": {
+                    "line": 2,
+                    "column": 20
+                }
+            },
+            "severity": "error",
+            "messageId": "AWSAccessKeyID",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md#AWSAccessKeyID",
+            "data": {
+                "ID": "A3TXIOSFODNN7SECRETS"
+            }
+        },
+        {
+            "message": "found AWS Access Key ID: AGPAIOSFODNN7SECRETS",
+            "range": [
+                58,
+                78
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-aws",
+            "loc": {
+                "start": {
+                    "line": 3,
+                    "column": 0
+                },
+                "end": {
+                    "line": 3,
+                    "column": 20
+                }
+            },
+            "severity": "error",
+            "messageId": "AWSAccessKeyID",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md#AWSAccessKeyID",
+            "data": {
+                "ID": "AGPAIOSFODNN7SECRETS"
+            }
+        },
+        {
+            "message": "found AWS Access Key ID: AIDAIOSFODNN7SECRETS",
+            "range": [
+                79,
+                99
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-aws",
+            "loc": {
+                "start": {
+                    "line": 4,
+                    "column": 0
+                },
+                "end": {
+                    "line": 4,
+                    "column": 20
+                }
+            },
+            "severity": "error",
+            "messageId": "AWSAccessKeyID",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md#AWSAccessKeyID",
+            "data": {
+                "ID": "AIDAIOSFODNN7SECRETS"
+            }
+        },
+        {
+            "message": "found AWS Access Key ID: AROAIOSFODNN7SECRETS",
+            "range": [
+                100,
+                120
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-aws",
+            "loc": {
+                "start": {
+                    "line": 5,
+                    "column": 0
+                },
+                "end": {
+                    "line": 5,
+                    "column": 20
+                }
+            },
+            "severity": "error",
+            "messageId": "AWSAccessKeyID",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md#AWSAccessKeyID",
+            "data": {
+                "ID": "AROAIOSFODNN7SECRETS"
+            }
+        },
+        {
+            "message": "found AWS Access Key ID: AIPAIOSFODNN7SECRETS",
+            "range": [
+                121,
+                141
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-aws",
+            "loc": {
+                "start": {
+                    "line": 6,
+                    "column": 0
+                },
+                "end": {
+                    "line": 6,
+                    "column": 20
+                }
+            },
+            "severity": "error",
+            "messageId": "AWSAccessKeyID",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md#AWSAccessKeyID",
+            "data": {
+                "ID": "AIPAIOSFODNN7SECRETS"
+            }
+        },
+        {
+            "message": "found AWS Access Key ID: ANPAIOSFODNN7SECRETS",
+            "range": [
+                142,
+                162
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-aws",
+            "loc": {
+                "start": {
+                    "line": 7,
+                    "column": 0
+                },
+                "end": {
+                    "line": 7,
+                    "column": 20
+                }
+            },
+            "severity": "error",
+            "messageId": "AWSAccessKeyID",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md#AWSAccessKeyID",
+            "data": {
+                "ID": "ANPAIOSFODNN7SECRETS"
+            }
+        },
+        {
+            "message": "found AWS Access Key ID: ANVAIOSFODNN7SECRETS",
+            "range": [
+                163,
+                183
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-aws",
+            "loc": {
+                "start": {
+                    "line": 8,
+                    "column": 0
+                },
+                "end": {
+                    "line": 8,
+                    "column": 20
+                }
+            },
+            "severity": "error",
+            "messageId": "AWSAccessKeyID",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md#AWSAccessKeyID",
+            "data": {
+                "ID": "ANVAIOSFODNN7SECRETS"
+            }
+        },
+        {
+            "message": "found AWS Access Key ID: ASIAIOSFODNN7SECRETS",
+            "range": [
+                184,
+                204
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-aws",
+            "loc": {
+                "start": {
+                    "line": 9,
+                    "column": 0
+                },
+                "end": {
+                    "line": 9,
+                    "column": 20
+                }
+            },
+            "severity": "error",
+            "messageId": "AWSAccessKeyID",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md#AWSAccessKeyID",
+            "data": {
+                "ID": "ASIAIOSFODNN7SECRETS"
+            }
+        }
+    ],
+    "sourceContent": "Each prefix of an AWS Access Key ID:\nA3TXIOSFODNN7SECRETS\nAGPAIOSFODNN7SECRETS\nAIDAIOSFODNN7SECRETS\nAROAIOSFODNN7SECRETS\nAIPAIOSFODNN7SECRETS\nANPAIOSFODNN7SECRETS\nANVAIOSFODNN7SECRETS\nASIAIOSFODNN7SECRETS\n",
+    "sourceContentType": "text"
+}

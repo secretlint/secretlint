@@ -13,8 +13,8 @@ import type {
     SecretLintRulePatternKeyword,
     SecretLintRulePresetCreator,
 } from "@secretlint/types";
-import { createGuardTable, isGuardMetInText, parseKeywordObject } from "../helper/keyword-guard.js";
-import { lintSource } from "../index.js";
+import { createGuardTable, isGuardMetInText, keywordGuardKey, parseKeywordObject } from "../helper/keyword-guard.js";
+import { getKeywordScanPlan, lintSource } from "../index.js";
 import { getBuiltinRule } from "../builtin/index.js";
 import { creator as rulePattern, type Options as RulePatternOptions } from "../builtin/rules/pattern/index.js";
 
@@ -191,7 +191,93 @@ type GuardedKeywordOfRule = {
     keyword: string;
     after: string;
     scope: "line" | "file";
+    /**
+     * The lower-cased keyword and the guard, as the keyword scan plan has them
+     */
+    planKey: string;
     isMet: (text: string, start: number) => boolean;
+};
+const planKeyOf = (keyword: string, guardKey: string): string => JSON.stringify([keyword.toLowerCase(), guardKey]);
+/**
+ * Which guarded keywords the test cases of a snapshot directory have a secret for
+ */
+type GuardUse = {
+    /**
+     * The guarded keywords of the patterns that are enabled in a test case, by the rule and the keyword
+     */
+    guards: Map<string, { guarded: GuardedKeywordOfRule; met: boolean }>;
+    /**
+     * The ids of the rules that reported a message in a test case
+     */
+    reportedRuleIds: Set<string>;
+};
+/**
+ * Record the guarded keywords of the test case, and the ones that a reported secret meets.
+ * A guard is met by a test case if a message of its rule has the keyword in its lines, with the guard met there.
+ */
+const recordGuardUse = (
+    use: GuardUse,
+    config: SecretLintCoreConfig,
+    content: string,
+    result: SecretLintCoreResult,
+    guardedKeywords: readonly GuardedKeywordOfRule[],
+): void => {
+    if (guardedKeywords.length === 0) {
+        return;
+    }
+    // Only the patterns that are enabled for the options of the test case are in the plan
+    const plan = getKeywordScanPlan({ config });
+    const enabledKeys = new Set(
+        (plan?.keywords ?? []).map((keyword, index) => planKeyOf(keyword, keywordGuardKey(plan?.guards[index]))),
+    );
+    // The id of a message is the id of the config, which can differ from the id of the rule
+    const ruleIdOfConfigId = new Map(config.rules.map((descriptor) => [descriptor.id, descriptor.rule.meta.id]));
+    const lowerContent = content.toLowerCase();
+    const messagesOfRule = new Map<string, SecretLintCoreResult["messages"]>();
+    for (const message of result.messages) {
+        const ruleId = ruleIdOfConfigId.get(message.ruleId) ?? message.ruleId;
+        use.reportedRuleIds.add(ruleId);
+        messagesOfRule.set(ruleId, [...(messagesOfRule.get(ruleId) ?? []), message]);
+    }
+    for (const guarded of guardedKeywords) {
+        if (!enabledKeys.has(guarded.planKey)) {
+            continue;
+        }
+        const key = JSON.stringify([guarded.ruleId, guarded.planKey]);
+        const entry = use.guards.get(key) ?? { guarded, met: false };
+        use.guards.set(key, entry);
+        if (entry.met) {
+            continue;
+        }
+        const keyword = guarded.keyword.toLowerCase();
+        entry.met = (messagesOfRule.get(guarded.ruleId) ?? []).some((message) => {
+            const from = content.lastIndexOf("\n", message.range[0] - 1) + 1;
+            const nextLineFeed = content.indexOf("\n", Math.max(message.range[1] - 1, message.range[0]));
+            const to = nextLineFeed >= 0 ? nextLineFeed : content.length;
+            for (let index = lowerContent.indexOf(keyword, from); index >= 0 && index < to; ) {
+                if (guarded.isMet(content, index + keyword.length)) {
+                    return true;
+                }
+                index = lowerContent.indexOf(keyword, index + 1);
+            }
+            return false;
+        });
+    }
+};
+/**
+ * Throw if a rule that reports a secret in the test cases has a guarded keyword that no reported secret meets.
+ * Without such a test case, the tests can not find a guard that is written wrong.
+ */
+const assertGuardUse = (use: GuardUse): void => {
+    const unused = [...use.guards.values()].filter(({ guarded, met }) => {
+        return !met && use.reportedRuleIds.has(guarded.ruleId);
+    });
+    if (unused.length === 0) {
+        return;
+    }
+    assert.fail(`No test case has a secret for a keyword with a guard, so the tests can not tell if the guard is right.
+${unused.map(({ guarded }) => `${guarded.ruleId}: the keyword "${guarded.keyword}" with the guard "${guarded.after}"`).join("\n")}
+Add a test case that the rule reports, with a secret that has the keyword and the characters that meet the guard after it.`);
 };
 /**
  * Return the keywords without their guards: `{ keyword, after }` becomes the string `keyword`.
@@ -214,6 +300,7 @@ const toUnguardedKeywords = (
             keyword,
             after,
             scope,
+            planKey: planKeyOf(keyword, keywordGuardKey(guard)),
             isMet: (text, start) => isGuardMetInText(text, start, table, guard.min),
         });
         return keyword;
@@ -389,13 +476,16 @@ export const createSnapshotTestCases = (options: SnapshotOptions): SnapshotTestC
         }
         return value;
     };
-    return fs
+    const guardUse: GuardUse = { guards: new Map(), reportedRuleIds: new Set() };
+    const finishedCases = new Set<string>();
+    const testCases = fs
         .readdirSync(snapshotDirectory, { withFileTypes: true })
         .filter((dirent) => dirent.isDirectory() && !dirent.name.startsWith("."))
-        .map(({ name: caseName }) => {
+        .map(({ name: caseName }): SnapshotTestCase => {
             return {
                 name: caseName.replace(/[-_]/g, " "),
                 run: async () => {
+                    finishedCases.add(caseName);
                     const testCaseDir = path.join(snapshotDirectory, caseName);
                     const secretlintrcFilePath = path.join(testCaseDir, ".secretlintrc.json");
                     const testCaseOptions = await loadTestCaseOptions(testCaseDir);
@@ -431,6 +521,7 @@ export const createSnapshotTestCases = (options: SnapshotOptions): SnapshotTestC
                                 options: { config: unguardedConfig },
                             });
                             assertGuards(textSource.content, textResult, unguardedResult, guardedKeywords);
+                            recordGuardUse(guardUse, config, textSource.content, textResult, guardedKeywords);
                         }
                     }
                     const normalizeResult = (result: unknown) => JSON.parse(JSON.stringify(result));
@@ -469,4 +560,18 @@ export const createSnapshotTestCases = (options: SnapshotOptions): SnapshotTestC
                 },
             };
         });
+    return [
+        ...testCases,
+        {
+            // It runs after the test cases, and it looks at all of them
+            name: "every keyword with a guard has a test case",
+            run: async () => {
+                // If only some test cases ran, such as with a filter of the test runner, nothing can be told
+                if (finishedCases.size === testCases.length) {
+                    assertGuardUse(guardUse);
+                }
+                return "done";
+            },
+        },
+    ];
 };
