@@ -417,7 +417,7 @@ $ secretlint --profile "**/*"
 - **File**: the files that took the longest time to lint
 
 The text output shows the top 10 of the rules, the patterns, and the files.
-`--profile --format json` prints all of them as JSON, before the results.
+`--profile --format json` prints all of them as JSON. With `--profile`, the standard output has only the summary and no lint results.
 
 
 ## Tips
