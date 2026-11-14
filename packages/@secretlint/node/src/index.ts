@@ -267,6 +267,7 @@ const lintFiles = async ({
             const source = createRawSourceFromBytes(
                 filePath,
                 new Uint8Array(batch.bytes, file.offset, file.byteLength),
+                file.contentType,
             );
             // The keyword scan of the worker is for the text content type
             const keywordScanResult = file.isTextByName ? (file.keywordScanResult ?? noKeyword) : undefined;

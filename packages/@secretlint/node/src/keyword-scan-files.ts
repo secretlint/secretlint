@@ -11,7 +11,7 @@
  */
 import fs from "node:fs";
 import { createKeywordScanner, type KeywordScanPlan, type KeywordScanResult } from "@secretlint/core/keyword-scan";
-import { detectContentTypeByFileName } from "@secretlint/source-creator";
+import { detectContentType } from "@secretlint/source-creator";
 
 /**
  * The state of a file in the shared buffer
@@ -113,6 +113,7 @@ export type HandedFiles = {
          * true if the file is text by its name, so the keyword scan is for the content type of the file
          */
         isTextByName: boolean;
+        contentType: "text" | "binary" | "unknown";
     }[];
 };
 export type WorkerMessage =
@@ -197,11 +198,12 @@ export const scanFilesInWorker = (
                 continue;
             }
             scannedCount++;
-            const isTextByName = detectContentTypeByFileName(filePath) === "text";
-            // The plan is for the text content type. The content type of other files depends on the bytes
+            const contentType = detectContentType(filePath, buffer.subarray(0, byteLength));
+            const isTextByName = contentType === "text";
+            // The plan is for the text content type
             const scan = isTextByName ? scanner.scan(buffer.subarray(0, byteLength)) : undefined;
             const hasKeyword = scan !== undefined && scan.hits.count > 0;
-            if (isTextByName && !hasKeyword && plan.requiresKeyword) {
+            if (isTextByName && plan.requiresKeyword && (!hasKeyword || scan.runsRules === false)) {
                 // No rule runs for the file
                 state.states[fileIndex] = FileScanState.NoMessages;
                 continue;
@@ -221,10 +223,12 @@ export const scanFilesInWorker = (
                 keywordScanResult = {
                     planId: scan.planId,
                     hits: { found: scan.hits.found, positions, count: scan.hits.count },
+                    runsRules: scan.runsRules,
+                    lineMatched: scan.lineMatched,
                 };
                 transfer.push(positions.buffer as ArrayBuffer);
             }
-            files.push({ fileIndex, offset: batchLength, byteLength, keywordScanResult, isTextByName });
+            files.push({ fileIndex, offset: batchLength, byteLength, keywordScanResult, isTextByName, contentType });
             batchLength += byteLength;
             state.states[fileIndex] = FileScanState.Handed;
         }

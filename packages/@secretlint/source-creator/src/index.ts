@@ -4,7 +4,10 @@ import { SecretLintRawSource } from "@secretlint/types";
 
 import { isBinary, isText } from "istextorbinary";
 
-const detectContentType = (filePath: string, content: Buffer): SecretLintRawSource["contentType"] => {
+/**
+ * Detect the content type of a file from its name and its bytes, as the source of the file has.
+ */
+export const detectContentType = (filePath: string, content: Buffer): SecretLintRawSource["contentType"] => {
     if (isBinary(filePath, content)) {
         return "binary";
     } else if (isText(filePath, content)) {
@@ -67,9 +70,14 @@ export const createRawSource = async (filePath: string): Promise<SecretLintRawSo
  * Create the source of a file from the bytes that the caller read.
  * The source keeps the bytes, and decodes them lazily when `content` is accessed.
  */
-export const createRawSourceFromBytes = (filePath: string, bytes: Uint8Array): SecretLintRawSource => {
+export const createRawSourceFromBytes = (
+    filePath: string,
+    bytes: Uint8Array,
+    detectedContentType?: SecretLintRawSource["contentType"],
+): SecretLintRawSource => {
     const buffer = Buffer.from(bytes.buffer, bytes.byteOffset, bytes.byteLength);
-    const contentType = detectContentType(filePath, buffer);
+    // The caller passes the content type if it detected the type from the same bytes
+    const contentType = detectedContentType ?? detectContentType(filePath, buffer);
     let decodedContent: string | undefined;
     return defineContentBytes(
         {

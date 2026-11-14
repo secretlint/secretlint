@@ -559,6 +559,23 @@ const createView = (plan: LintPlan, contentType: ContentType): PlanView => {
                       keywords: matcherKeywords,
                       caseSensitive: matcherCaseSensitive,
                       requiresKeyword: !hasAlwaysPattern && !hasAlwaysRule,
+                      ruleCheck: {
+                          contentKeywordIndexes: [
+                              ...rules.flatMap((rule) =>
+                                  rule.patterns === undefined ? (rule.keywordIndexes ?? []) : [],
+                              ),
+                              ...keywordPatterns.flatMap((pattern) => {
+                                  return pattern.scope === "file" ? (pattern.keywordIndexes as readonly number[]) : [];
+                              }),
+                          ],
+                          linePatterns: keywordPatterns
+                              .filter((pattern) => pattern.scope === "line")
+                              .map((pattern) => ({
+                                  source: pattern.tester.source,
+                                  flags: pattern.tester.flags,
+                                  keywordIndexes: pattern.keywordIndexes as readonly number[],
+                              })),
+                      },
                   })
                 : undefined,
         keywordPatterns,
