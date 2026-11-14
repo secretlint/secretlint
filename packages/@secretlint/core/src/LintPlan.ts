@@ -21,6 +21,7 @@ import type {
 import { secretLintProfiler } from "@secretlint/profiler";
 import debug0 from "debug";
 import { getKeywordMatcher, KeywordMatcher, normalizeKeyword } from "./helper/keyword-matcher.js";
+import { type KeywordGuard, keywordGuardKey, parseKeywordObject } from "./helper/keyword-guard.js";
 import { createKeywordScanPlan, type KeywordScanPlan } from "./keyword-scan.js";
 import { AllowMessage } from "./messages/filter-message-id.js";
 import { creator as rulePattern, type Options as RulePatternOptions } from "./builtin/rules/pattern/index.js";
@@ -90,16 +91,23 @@ export type PlanRule = {
     metaKeywords: unknown;
     metaPatterns: unknown;
 };
+/**
+ * A keyword of a pattern: the lower-cased keyword, and its guard if the pattern declares a guarded keyword
+ */
+export type PlanKeyword = {
+    readonly keyword: string;
+    readonly guard: KeywordGuard | undefined;
+    /**
+     * `after` of the guarded keyword, as the pattern declares it
+     */
+    readonly after: string | undefined;
+};
 type CompiledPattern = {
     source: SecretLintRulePattern;
     regex: RegExp;
     tester: RegExp;
     scope: "line" | "file";
-    keywords: string[] | undefined;
-    /**
-     * true if the keywords are matched case-sensitively
-     */
-    caseSensitiveKeywords: boolean;
+    keywords: PlanKeyword[] | undefined;
     /**
      * The name of the pattern for the profiler. undefined to use the regular expression.
      */
@@ -182,19 +190,51 @@ const isRule = (ruleDescriptor: SecretLintCoreConfigUnionRule): ruleDescriptor i
  * Normalize keywords.
  * Return undefined if the pre-filter can not be used: no keywords, empty keywords, or an invalid keyword.
  */
-const normalizeKeywords = (keywords: unknown, caseSensitive: boolean = false): string[] | undefined => {
+const normalizeKeywords = (keywords: unknown): string[] | undefined => {
     if (!Array.isArray(keywords) || keywords.length === 0) {
         return undefined;
     }
     const normalized: string[] = [];
     for (const keyword of keywords) {
-        const normalizedKeyword = normalizeKeyword(keyword, caseSensitive);
+        const normalizedKeyword = normalizeKeyword(keyword);
         if (normalizedKeyword === undefined) {
             return undefined;
         }
         normalized.push(normalizedKeyword);
     }
     return normalized;
+};
+/**
+ * Normalize `keywords` of a pattern. An item is a string, or a keyword object `{ keyword, after }`.
+ * Return undefined if the pre-filter can not be used: no keywords, empty keywords, or an invalid string.
+ * It throws if a keyword object is not supported: running the pattern without the guard would hide the mistake
+ * as a slow lint, and a guard of a newer secretlint must not be read in another way.
+ */
+const normalizePatternKeywords = (ruleId: string, keywords: unknown): PlanKeyword[] | undefined => {
+    if (!Array.isArray(keywords) || keywords.length === 0) {
+        return undefined;
+    }
+    const normalized: (PlanKeyword | undefined)[] = keywords.map((item: unknown) => {
+        if (typeof item === "object" && item !== null) {
+            try {
+                const guarded = parseKeywordObject(item);
+                return { keyword: guarded.keyword.toLowerCase(), guard: guarded.guard, after: guarded.after };
+            } catch (error) {
+                // The message has the reason, because a CLI shows only the message. `cause` is the error of the parser
+                throw new Error(
+                    `The rule "${ruleId}" has a pattern with a keyword that is not supported.
+${error instanceof Error ? error.message : String(error)}`,
+                    { cause: error },
+                );
+            }
+        }
+        const keyword = normalizeKeyword(item);
+        return keyword === undefined ? undefined : { keyword, guard: undefined, after: undefined };
+    });
+    if (normalized.includes(undefined)) {
+        return undefined;
+    }
+    return normalized as PlanKeyword[];
 };
 
 /**
@@ -218,7 +258,6 @@ export const toStatelessRegExp = (pattern: RegExp): RegExp => {
 const KNOWN_PATTERN_PROPERTIES: ReadonlySet<string> = new Set([
     "pattern",
     "keywords",
-    "caseSensitiveKeywords",
     "scope",
     "when",
     "report",
@@ -289,20 +328,20 @@ If it is a \`when\` of a newer secretlint, please update secretlint.`,
     const optionValue = value === true;
     return isNegated ? !optionValue : optionValue;
 };
-const compilePattern = (pattern: SecretLintRulePattern<any>): CompiledPattern => {
-    const caseSensitiveKeywords = pattern.caseSensitiveKeywords === true;
-    const keywords = normalizeKeywords(pattern.keywords, caseSensitiveKeywords);
+const compilePattern = (ruleId: string, pattern: SecretLintRulePattern<any>): CompiledPattern => {
+    const keywords = normalizePatternKeywords(ruleId, pattern.keywords);
     // A line is found by its keyword, so "line" needs keywords.
     // A keyword with a line break does not tell which line the pattern should run on.
     const canUseLineScope =
-        pattern.scope === "line" && keywords !== undefined && keywords.every((keyword) => !keyword.includes("\n"));
+        pattern.scope === "line" &&
+        keywords !== undefined &&
+        keywords.every((keyword) => !keyword.keyword.includes("\n"));
     return {
         source: pattern,
         regex: toGlobalRegExp(pattern.pattern),
         tester: toStatelessRegExp(pattern.pattern),
         scope: canUseLineScope ? "line" : "file",
         keywords,
-        caseSensitiveKeywords,
         name: undefined,
         filePathFilter: undefined,
         pathOnly: false,
@@ -320,7 +359,7 @@ const compilePatterns = (
         // The patterns of `@secretlint/secretlint-rule-pattern` are its options
         return compileUserPatterns(options as RulePatternOptions).map((userPattern) => {
             return {
-                ...compilePattern(userPattern.pattern),
+                ...compilePattern(rule.meta.id, userPattern.pattern),
                 name: userPattern.name,
                 filePathFilter: userPattern.filePathFilter,
                 pathOnly: userPattern.pathOnly,
@@ -332,7 +371,9 @@ const compilePatterns = (
         return undefined;
     }
     patterns.forEach((pattern) => assertKnownPatternProperties(rule, pattern));
-    return patterns.filter((pattern) => isEnabledPattern(rule, pattern, options)).map(compilePattern);
+    return patterns
+        .filter((pattern) => isEnabledPattern(rule, pattern, options))
+        .map((pattern) => compilePattern(rule.meta.id, pattern));
 };
 
 /**
@@ -522,30 +563,31 @@ const createView = (plan: LintPlan, contentType: ContentType): PlanView => {
     const keywordsOfRule = (rule: PlanRule): string[] | undefined => {
         return contentType === "text" ? rule.keywords : undefined;
     };
-    // A keyword is identified by its text and whether it is case-sensitive
-    const keywordKey = (keyword: string, caseSensitive: boolean) => `${caseSensitive ? "S" : "I"}${keyword}`;
-    const allKeywords = new Map<string, { keyword: string; caseSensitive: boolean }>();
-    const addKeywords = (keywords: string[] | undefined, caseSensitive: boolean) => {
+    // A keyword is identified by its text and its guard: the same keyword with another guard is another entry
+    const keywordKey = (keyword: PlanKeyword) => JSON.stringify([keyword.keyword, keywordGuardKey(keyword.guard)]);
+    const withoutGuard = (keywords: string[] | undefined): PlanKeyword[] | undefined => {
+        return keywords?.map((keyword) => ({ keyword, guard: undefined, after: undefined }));
+    };
+    const allKeywords = new Map<string, PlanKeyword>();
+    const addKeywords = (keywords: PlanKeyword[] | undefined) => {
         keywords?.forEach((keyword) => {
-            allKeywords.set(keywordKey(keyword, caseSensitive), { keyword, caseSensitive });
+            allKeywords.set(keywordKey(keyword), keyword);
         });
     };
     for (const rule of targets) {
         if (rule.patterns) {
-            rule.patterns.forEach((pattern) => addKeywords(pattern.keywords, pattern.caseSensitiveKeywords));
+            rule.patterns.forEach((pattern) => addKeywords(pattern.keywords));
         } else {
-            addKeywords(keywordsOfRule(rule), false);
+            addKeywords(withoutGuard(keywordsOfRule(rule)));
         }
     }
     const sortedKeys = [...allKeywords.keys()].sort();
-    const matcherKeywords = sortedKeys.map((key) => (allKeywords.get(key) as { keyword: string }).keyword);
-    const matcherCaseSensitive = sortedKeys.map(
-        (key) => (allKeywords.get(key) as { caseSensitive: boolean }).caseSensitive,
-    );
-    const matcher = sortedKeys.length > 0 ? getKeywordMatcher(matcherKeywords, matcherCaseSensitive) : undefined;
+    const matcherKeywords = sortedKeys.map((key) => (allKeywords.get(key) as PlanKeyword).keyword);
+    const matcherGuards = sortedKeys.map((key) => (allKeywords.get(key) as PlanKeyword).guard);
+    const matcher = sortedKeys.length > 0 ? getKeywordMatcher(matcherKeywords, matcherGuards) : undefined;
     const indexOf = new Map(sortedKeys.map((key, index) => [key, index]));
-    const toIndexes = (keywords: string[] | undefined, caseSensitive: boolean = false): number[] | undefined => {
-        return keywords?.map((keyword) => indexOf.get(keywordKey(keyword, caseSensitive)) as number);
+    const toIndexes = (keywords: PlanKeyword[] | undefined): number[] | undefined => {
+        return keywords?.map((keyword) => indexOf.get(keywordKey(keyword)) as number);
     };
     // Number the patterns with keywords in the order of the rules
     const patternIndexes = new Map(
@@ -556,7 +598,7 @@ const createView = (plan: LintPlan, contentType: ContentType): PlanView => {
     );
     const rules = targets.map((rule): ViewRule => {
         if (!rule.patterns) {
-            return { rule, keywordIndexes: toIndexes(keywordsOfRule(rule)), patterns: undefined };
+            return { rule, keywordIndexes: toIndexes(withoutGuard(keywordsOfRule(rule))), patterns: undefined };
         }
         const patterns = rule.patterns.map((pattern, patternNumber): PlanPattern => {
             // A user-defined pattern is shown by its name, and the profile tells that it has no keywords
@@ -571,7 +613,7 @@ const createView = (plan: LintPlan, contentType: ContentType): PlanView => {
                 regex: pattern.regex,
                 tester: pattern.tester,
                 scope: pattern.scope,
-                keywordIndexes: toIndexes(pattern.keywords, pattern.caseSensitiveKeywords),
+                keywordIndexes: toIndexes(pattern.keywords),
                 report: pattern.source.report,
                 filePathFilter: pattern.filePathFilter,
                 pathOnly: pattern.pathOnly,
@@ -593,12 +635,12 @@ const createView = (plan: LintPlan, contentType: ContentType): PlanView => {
     return {
         rules,
         matcher,
-        // The scanner of the plan uses the same matcher: the matcher is cached by its keywords
+        // The scanner of the plan uses the same matcher: the matcher is cached by its keywords and guards
         keywordScanPlan:
             matcher !== undefined
                 ? createKeywordScanPlan({
                       keywords: matcherKeywords,
-                      caseSensitive: matcherCaseSensitive,
+                      guards: matcherGuards,
                       // A path pattern runs by the file path, which the scan does not check
                       requiresKeyword: !hasAlwaysPattern && !hasAlwaysRule && pathPatterns.length === 0,
                       ruleCheck: {

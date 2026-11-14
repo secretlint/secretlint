@@ -350,6 +350,11 @@ const lintFiles = async ({
                 for (const lineTest of thread.lineTests) {
                     secretLintProfiler.addTotal("@core>pattern-line-test", lineTest.profileId, lineTest);
                 }
+                // The places of the keywords with a guard that the worker found
+                for (const guardCount of thread.guardCounts) {
+                    secretLintProfiler.count("@core>keyword-guard", guardCount.id, guardCount.found);
+                    secretLintProfiler.count("@core>keyword-guard-met", guardCount.id, guardCount.met);
+                }
             }
         }
     };

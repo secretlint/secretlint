@@ -5,12 +5,13 @@
  * so the patterns have keywords as the patterns of the other built-in rules have, and the rule without entries
  * adds nothing to the lint.
  */
-import type { SecretLintRulePattern } from "@secretlint/types";
+import type { SecretLintRulePattern, SecretLintRulePatternKeyword } from "@secretlint/types";
 import { createRegExp, matchPatterns } from "@textlint/regexp-string-matcher";
 import picomatch from "picomatch";
 import { basename } from "../../path-util.js";
 import { extractKeywords } from "../../../helper/extract-keywords.js";
 import { normalizeKeyword } from "../../../helper/keyword-matcher.js";
+import { parseKeywordObject } from "../../../helper/keyword-guard.js";
 
 /**
  * Return true if the file path matches the globs, in the same way as `micromatch([filePath], globs).length > 0`.
@@ -66,8 +67,10 @@ export type PatternType = {
      * Keywords for pre-filtering: the patterns run only on a file that contains one of them (ASCII case-insensitive).
      * Every match of the patterns must contain one of the keywords.
      * If it is not set, secretlint finds keywords in the patterns. `[]` runs the patterns on every file.
+     * An item can be a keyword with a guard, for a keyword that is short or common:
+     * `{ "keyword": "00", "after": "[A-Za-z0-9_-]{40,}" }` is "00" only where 40 or more characters of the set follow it.
      */
-    keywords?: string[];
+    keywords?: SecretLintRulePatternKeyword[];
 };
 
 export type Options = {
@@ -108,19 +111,33 @@ const collectPatternStrings = (entry: PatternType): string[] => {
  * Return the keywords of the entry, or undefined if the entry has no `keywords`.
  * `[]` means that the patterns have no keywords.
  */
-const keywordsOfEntry = (entry: PatternType): string[] | undefined => {
+const keywordsOfEntry = (entry: PatternType): SecretLintRulePatternKeyword[] | undefined => {
     const keywords: unknown = entry.keywords;
     if (keywords === undefined) {
         return undefined;
     }
     if (!Array.isArray(keywords)) {
-        throw new Error(`Pattern "${entry.name}" has "keywords" that is not an array of strings.`);
+        throw new Error(`Pattern "${entry.name}" has "keywords" that is not an array.`);
     }
-    return keywords.map((keyword: unknown) => {
+    return keywords.map((keyword: unknown): SecretLintRulePatternKeyword => {
+        if (typeof keyword === "object" && keyword !== null) {
+            // a keyword with a guard: { keyword, after }
+            try {
+                const guarded = parseKeywordObject(keyword);
+                return { keyword: guarded.keyword, after: guarded.after };
+            } catch (error) {
+                // The message has the reason, because a CLI shows only the message. `cause` is the error of the parser
+                throw new Error(
+                    `Pattern "${entry.name}" has a keyword that is not supported.
+${error instanceof Error ? error.message : String(error)}`,
+                    { cause: error },
+                );
+            }
+        }
         // check the keyword in the same way as the keyword matcher. The matcher lower-cases it later.
-        if (normalizeKeyword(keyword, true) === undefined) {
+        if (normalizeKeyword(keyword) === undefined) {
             throw new Error(
-                `Pattern "${entry.name}" has a keyword that is not a non-empty ASCII string: ${JSON.stringify(keyword)}`,
+                `Pattern "${entry.name}" has a keyword that is not a non-empty ASCII string or a keyword with a guard: ${JSON.stringify(keyword)}`,
             );
         }
         return keyword as string;

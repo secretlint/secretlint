@@ -31,8 +31,8 @@ export const creator: SecretLintRuleCreator<Options> = {
         {
             pattern: /(?<!\p{L})SG\.\w{1,128}\.\w{1,128}([-_]?)\w{1,128}(?!\w)/gu,
             keywords: ["SG."],
-            // "sg." appears often in lower case, such as "msg."
-            caseSensitiveKeywords: true,
+            // Keywords are case-insensitive, so the pattern also runs for the lines that have "msg.".
+            // A guard can not drop them, because the regular expression allows one character after "SG."
             scope: "line",
             report(match, context) {
                 // send grid api key is 69 characters long

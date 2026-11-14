@@ -11,7 +11,8 @@
  * so it tells if a rule runs for the source.
  * It does not import rules or config, and it does not depend on Node.js.
  */
-import { getKeywordMatcher } from "./helper/keyword-matcher.js";
+import { createKeywordMatcher, getKeywordMatcher } from "./helper/keyword-matcher.js";
+import { formatGuardedKeyword, type KeywordGuard } from "./helper/keyword-guard.js";
 import { hasLineMatchInBytes, isKeywordFound } from "./helper/line-check.js";
 
 /**
@@ -26,9 +27,11 @@ export type KeywordScanPlan = {
     readonly id: string;
     readonly keywords: readonly string[];
     /**
-     * `caseSensitive[i]` is true if `keywords[i]` is case-sensitive
+     * `guards[i]` is the guard of `keywords[i]`: the characters of a set, and the least count of them
+     * after the keyword. It is undefined if the keyword has no guard.
+     * A keyword can be in `keywords` more than once, with different guards.
      */
-    readonly caseSensitive: readonly boolean[];
+    readonly guards: readonly (KeywordGuard | undefined)[];
     /**
      * true if no rule runs for a source that has none of the keywords.
      * Then the result of the lint of such a source has no messages, and the caller does not need to lint it.
@@ -94,21 +97,25 @@ export type KeywordScanResult = {
 
 export const createKeywordScanPlan = ({
     keywords,
-    caseSensitive,
+    guards,
     requiresKeyword,
     ruleCheck,
 }: {
     keywords: readonly string[];
-    caseSensitive: readonly boolean[];
+    guards: readonly (KeywordGuard | undefined)[];
     requiresKeyword: boolean;
     ruleCheck: KeywordScanRuleCheck;
 }): KeywordScanPlan => {
-    const flags = keywords.map((_, index) => caseSensitive[index] === true);
+    // `null` for a keyword without a guard, so that the plan is the same after JSON
+    const planGuards = keywords.map((_, index): KeywordGuard | undefined => {
+        const guard = guards[index];
+        return guard ? { chars: guard.chars, min: guard.min } : undefined;
+    });
     // The keywords and the regular expressions may contain any character, so the id is the JSON of them
     return {
-        id: JSON.stringify([keywords, flags, ruleCheck]),
+        id: JSON.stringify([keywords, planGuards, ruleCheck]),
         keywords: [...keywords],
-        caseSensitive: flags,
+        guards: planGuards,
         requiresKeyword,
         ruleCheck,
     };
@@ -129,11 +136,25 @@ export type KeywordScanner = {
      * The duration is in milliseconds.
      */
     lineTests(): KeywordScanLineTests[];
+    /**
+     * The places of each keyword with a guard since the last call, if the scanner was created with `profile: true`.
+     */
+    takeGuardCounts(): KeywordScanGuardCount[];
 };
 export type KeywordScanLineTests = { profileId: string; count: number; duration: number };
+/**
+ * The places of a keyword with a guard: where the keyword was found, and where its guard was met.
+ * `id` is the keyword and its guard, such as `00 [0-9A-Za-z_-]{40,}`.
+ */
+export type KeywordScanGuardCount = { id: string; found: number; met: number };
 
 export const createKeywordScanner = (plan: KeywordScanPlan, options: { profile?: boolean } = {}): KeywordScanner => {
-    const matcher = getKeywordMatcher(plan.keywords, plan.caseSensitive);
+    // The matcher counts the places of the guarded keywords only for the profile
+    // A plan that was sent as JSON has `null` for a keyword without a guard
+    const guards = plan.keywords.map((_, index) => plan.guards?.[index] ?? undefined);
+    const matcher = options.profile
+        ? createKeywordMatcher(plan.keywords, guards, { countGuards: true })
+        : getKeywordMatcher(plan.keywords, guards);
     const ruleCheck = plan.ruleCheck;
     const linePatterns = ruleCheck.linePatterns.map((pattern) => {
         return {
@@ -169,6 +190,15 @@ export const createKeywordScanner = (plan: KeywordScanPlan, options: { profile?:
             const runsRules =
                 hasKeyword && (lineMatched || isKeywordFound(ruleCheck.contentKeywordIndexes, hits.found));
             return { planId: plan.id, found: hits.found, hasKeyword, lineMatched, runsRules };
+        },
+        takeGuardCounts() {
+            return matcher.takeGuardCounts().map(({ keywordIndex, found, met }) => {
+                const id = formatGuardedKeyword(
+                    plan.keywords[keywordIndex] as string,
+                    guards[keywordIndex] as KeywordGuard,
+                );
+                return { id, found, met };
+            });
         },
         lineTests() {
             return linePatterns.filter((pattern) => pattern.tests.count > 0).map((pattern) => ({ ...pattern.tests }));

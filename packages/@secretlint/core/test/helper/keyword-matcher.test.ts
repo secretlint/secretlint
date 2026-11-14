@@ -1,5 +1,6 @@
 import assert from "node:assert";
 import { createKeywordMatcher, getKeywordMatcher, normalizeKeyword } from "../../src/helper/keyword-matcher.js";
+import { parseKeywordGuard } from "../../src/helper/keyword-guard.js";
 
 const found = (keywords: string[], text: string): string[] => {
     const matcher = createKeywordMatcher(keywords.map((keyword) => normalizeKeyword(keyword) as string));
@@ -133,99 +134,147 @@ describe("keyword-matcher", () => {
             assert.deepStrictEqual(scanPositions([], "abc"), { found: false, positions: [], flags: [] });
         });
     });
-    describe("case-sensitive keywords", () => {
-        const scanKeywords = (keywords: string[], caseSensitive: boolean[], input: string | Uint8Array) => {
-            const matcher = createKeywordMatcher(keywords, caseSensitive);
-            const hits = matcher.scan(input);
-            const found = hits.count > 0;
-            const positions: [string[], number][] = [];
+    describe("keywords with a guard", () => {
+        const scanKeywords = (
+            keywords: string[],
+            afters: (string | undefined)[],
+            input: string | Uint8Array,
+            start?: number,
+        ) => {
+            const guards = afters.map((after) => (after === undefined ? undefined : parseKeywordGuard(after)));
+            const matcher = createKeywordMatcher(keywords, guards);
+            const hits = matcher.scan(input, start);
+            const positions: [number[], number][] = [];
             for (let i = 0; i < hits.count; i++) {
                 positions.push([
-                    matcher.keywordsOfState(hits.positions[i * 2] as number).map((index) => keywords[index] as string),
+                    [...matcher.keywordsOfState(hits.positions[i * 2] as number)],
                     hits.positions[i * 2 + 1] as number,
                 ]);
             }
-            return { found, positions, flags: [...hits.found] };
+            return { positions, flags: [...hits.found] };
         };
         const forTextAndBytes = (text: string, test: (input: string | Uint8Array) => void) => {
             test(text);
             test(new TextEncoder().encode(text));
         };
-        it("finds a case-sensitive keyword only in the same case", () => {
-            forTextAndBytes("msg.x sg.y SG.z Sg.", (input) => {
-                assert.deepStrictEqual(scanKeywords(["SG."], [true], input), {
-                    found: true,
-                    positions: [[["SG."], 13]],
+        it("records a keyword only where its guard is met", () => {
+            forTextAndBytes("100 00:00 00abcd 00ab", (input) => {
+                assert.deepStrictEqual(scanKeywords(["00"], ["[a-z]{4,}"], input), {
+                    positions: [[[0], 11]],
                     flags: [1],
                 });
             });
-            forTextAndBytes("msg.x sg.y", (input) => {
-                assert.deepStrictEqual(scanKeywords(["SG."], [true], input), {
-                    found: false,
-                    positions: [],
-                    flags: [0],
-                });
+            forTextAndBytes("100 00:00 00ab", (input) => {
+                assert.deepStrictEqual(scanKeywords(["00"], ["[a-z]{4,}"], input), { positions: [], flags: [0] });
             });
         });
-        it("finds case-insensitive keywords as before", () => {
-            forTextAndBytes("AKIA akia GHP_ ghp_", (input) => {
-                assert.deepStrictEqual(scanKeywords(["AKIA", "ghp_"], [true, false], input), {
-                    found: true,
+        it("is met by a run that is longer than the count, and not by the end of the input", () => {
+            forTextAndBytes("00abcdefgh", (input) => {
+                assert.deepStrictEqual(scanKeywords(["00"], ["[a-z]{4,}"], input).flags, [1]);
+            });
+            forTextAndBytes("00abc", (input) => {
+                assert.deepStrictEqual(scanKeywords(["00"], ["[a-z]{4,}"], input).flags, [0]);
+            });
+        });
+        it("finds the keyword case-insensitively and compares the set as it is written", () => {
+            forTextAndBytes("asia-northeast1 ASIAwxyz asiaWXYZ", (input) => {
+                assert.deepStrictEqual(scanKeywords(["asia"], ["[A-Z0-9]{4,}"], input).positions, [[[0], 28]]);
+            });
+        });
+        it("is not met by a character that is not ASCII, in a string and in bytes", () => {
+            // U+212A (Kelvin sign) and "é" are not in a set of ASCII characters
+            forTextAndBytes("00abKcd 00abécd 00abcd", (input) => {
+                const result = scanKeywords(["00"], ["[a-zA-Z]{4,}"], input);
+                assert.strictEqual(result.positions.length, 1);
+                assert.deepStrictEqual(result.flags, [1]);
+            });
+        });
+        it("keeps a keyword without a guard, and the keywords that overlap", () => {
+            // "00" with a guard, "00" without a guard, and "x00" end at the same index
+            const keywords = ["00", "00", "x00", "0a"];
+            const afters = ["[a-z]{2,}", undefined, undefined, undefined];
+            forTextAndBytes("x00ab 00.", (input) => {
+                assert.deepStrictEqual(scanKeywords(keywords, afters, input).positions, [
+                    [[2, 0, 1], 2],
+                    [[3], 3],
+                    [[1], 7],
+                ]);
+            });
+        });
+        it("selects each entry of the same keyword by its own guard", () => {
+            const keywords = ["00", "00"];
+            const afters = ["[a-z]{4,}", "[0-9]{4,}"];
+            forTextAndBytes("00abcd 001234 00ab12", (input) => {
+                assert.deepStrictEqual(scanKeywords(keywords, afters, input), {
                     positions: [
-                        [["AKIA"], 3],
-                        [["ghp_"], 13],
-                        [["ghp_"], 18],
+                        [[0], 1],
+                        [[1], 8],
                     ],
                     flags: [1, 1],
                 });
             });
         });
-        it("keeps the other keywords that end at the same index", () => {
-            // "abc" (case-sensitive), "ABC" (case-sensitive), "bc" (case-insensitive) end at the same index
-            const keywords = ["abc", "ABC", "bc"];
-            const caseSensitive = [true, true, false];
-            forTextAndBytes("abc ABC aBc Abc", (input) => {
-                assert.deepStrictEqual(scanKeywords(keywords, caseSensitive, input).positions, [
-                    [["abc", "bc"], 2],
-                    [["ABC", "bc"], 6],
-                    [["bc"], 10],
-                    [["bc"], 14],
-                ]);
+        it("goes on from the same place after a check", () => {
+            // the guard reads "0000" after the first "00", and the scan still finds the keywords in it
+            forTextAndBytes("000000", (input) => {
+                assert.deepStrictEqual(
+                    scanKeywords(["00"], ["[0-9]{2,}"], input).positions.map(([, index]) => index),
+                    [1, 2, 3],
+                );
             });
         });
-        it("returns new hits for each scan", () => {
-            const matcher = createKeywordMatcher(["SG."], [true]);
-            const sameCase = matcher.scan("SG. SG.");
-            const differentCase = matcher.scan("sg. sg.");
-            assert.strictEqual(sameCase.count, 2);
-            assert.deepStrictEqual([...sameCase.found], [1]);
-            assert.strictEqual(differentCase.count, 0);
-            assert.deepStrictEqual([...differentCase.found], [0]);
+        it("counts the places of a guarded keyword only when it is asked", () => {
+            const guards = [parseKeywordGuard("[a-z]{4,}"), undefined, parseKeywordGuard("[a-z]{4,}")];
+            const counting = createKeywordMatcher(["00", "tok_", "zz"], guards, { countGuards: true });
+            counting.scan("00abcd 00 00 tok_");
+            counting.scan(new TextEncoder().encode("00abcd 00"));
+            // "zz" is not found, so it is not in the result
+            assert.deepStrictEqual(counting.takeGuardCounts(), [{ keywordIndex: 0, found: 5, met: 2 }]);
+            // the counts start again after they are taken
+            assert.deepStrictEqual(counting.takeGuardCounts(), []);
+            const matcher = createKeywordMatcher(["00", "tok_", "zz"], guards);
+            matcher.scan("00abcd 00 00 tok_");
+            assert.deepStrictEqual(matcher.takeGuardCounts(), []);
         });
-        it("caches the matcher by the keywords and their case-sensitivity", () => {
-            assert.strictEqual(getKeywordMatcher(["x"], [true]), getKeywordMatcher(["x"], [true]));
-            assert.notStrictEqual(getKeywordMatcher(["x"], [true]), getKeywordMatcher(["x"]));
-            assert.strictEqual(getKeywordMatcher(["x"], [false]), getKeywordMatcher(["x"]));
+        it("caches the matcher by the keywords and their guards", () => {
+            const guard = parseKeywordGuard("[a-z0-9]{4,}");
+            assert.strictEqual(
+                getKeywordMatcher(["x"], [guard]),
+                getKeywordMatcher(["x"], [parseKeywordGuard("[0-9a-z]{4,}")]),
+            );
+            assert.notStrictEqual(getKeywordMatcher(["x"], [guard]), getKeywordMatcher(["x"]));
+            assert.strictEqual(getKeywordMatcher(["x"], [undefined]), getKeywordMatcher(["x"]));
         });
-        it("matches the same as String#includes on random texts", () => {
-            const alphabet = "abAB_.";
+        it("matches the same as a regular expression on random texts", () => {
+            const alphabet = "abAB01_.é";
             const random = (length: number) =>
                 Array.from({ length }, () => alphabet[Math.floor(Math.random() * alphabet.length)]).join("");
+            const sets = ["[a-b]", "[A-Ba-b]", "[0-1_]", "[a-bA-B0-1_.]"];
+            const escape = (text: string) => text.replace(/[.\\[\]]/g, "\\$&");
             for (let i = 0; i < 300; i++) {
-                const keywords = Array.from(new Set(Array.from({ length: 5 }, () => random(1 + (i % 4)))));
-                const caseSensitive = keywords.map(() => Math.random() < 0.5);
-                const normalized = keywords.map((keyword, index) =>
-                    caseSensitive[index] ? keyword : keyword.toLowerCase(),
-                );
+                const keywords = Array.from(new Set(Array.from({ length: 4 }, () => random(1 + (i % 3)))))
+                    .filter((keyword) => !keyword.includes("é"))
+                    .map((keyword) => keyword.toLowerCase());
+                const afters = keywords.map(() => {
+                    return Math.random() < 0.3
+                        ? undefined
+                        : `${sets[Math.floor(Math.random() * sets.length)]}{${1 + Math.floor(Math.random() * 3)},}`;
+                });
                 const text = random(Math.floor(Math.random() * 40));
-                const expected = normalized.map((keyword, index) =>
-                    (caseSensitive[index] ? text.includes(keyword) : text.toLowerCase().includes(keyword)) ? 1 : 0,
-                );
+                const expected = keywords.map((keyword, index) => {
+                    const after = afters[index];
+                    const source = `${escape(keyword)}${after === undefined ? "" : `(?=${after.replace(/\{(\d+),\}/, "{$1}")})`}`;
+                    // the keyword is case-insensitive, and the set is not
+                    const keywordSource = source.replace(/[a-z]/g, (char, offset: number) => {
+                        return offset < escape(keyword).length ? `[${char}${char.toUpperCase()}]` : char;
+                    });
+                    return new RegExp(keywordSource).test(text) ? 1 : 0;
+                });
                 forTextAndBytes(text, (input) => {
                     assert.deepStrictEqual(
-                        scanKeywords(normalized, caseSensitive, input).flags,
+                        scanKeywords(keywords, afters, input).flags,
                         expected,
-                        JSON.stringify({ normalized, caseSensitive, text }),
+                        JSON.stringify({ keywords, afters, text }),
                     );
                 });
             }

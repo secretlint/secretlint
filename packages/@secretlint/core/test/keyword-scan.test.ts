@@ -49,6 +49,40 @@ describe("keyword scan", () => {
         assert.strictEqual(plan.requiresKeyword, true);
         assert.deepStrictEqual(structuredClone(plan), plan);
     });
+    it("should have the guards of the keywords as data, and check them in the scan", () => {
+        const rule = createRule("guarded", "tok_");
+        (rule.patterns as NonNullable<SecretLintRuleCreator["patterns"]>)[0]!.keywords = [
+            "tok_",
+            { keyword: "KEY_", after: "[a-z0-9]{4,}" },
+        ];
+        const plan = getKeywordScanPlan({ config: toConfig(rule) });
+        assert.ok(plan);
+        assert.deepStrictEqual(plan.keywords, ["key_", "tok_"]);
+        assert.deepStrictEqual(plan.guards, [{ chars: "0123456789abcdefghijklmnopqrstuvwxyz", min: 4 }, undefined]);
+        // a worker thread gets a copy of the plan
+        const scanner = createKeywordScanner(structuredClone(plan));
+        const scan = (content: string) => scanner.scan(new TextEncoder().encode(content));
+        assert.strictEqual(scan("key_ab KEY_AB12 key_").hasKeyword, false);
+        assert.deepStrictEqual([...scan("Key_ab12").found], [1, 0]);
+        assert.strictEqual(scan("x key_ab12").runsRules, true);
+        // the places of a guarded keyword are counted only for the profile
+        assert.deepStrictEqual(scanner.takeGuardCounts(), []);
+        const profiled = createKeywordScanner(plan, { profile: true });
+        profiled.scan(new TextEncoder().encode("key_ab KEY_AB12 key_ key_ab12"));
+        assert.deepStrictEqual(profiled.takeGuardCounts(), [{ id: "key_ [0-9a-z]{4,}", found: 4, met: 1 }]);
+        // a plan that was sent as JSON has `null` for a keyword without a guard
+        const jsonPlan = JSON.parse(JSON.stringify(plan));
+        assert.deepStrictEqual(jsonPlan.guards[1], null);
+        for (const profile of [false, true]) {
+            const jsonScanner = createKeywordScanner(jsonPlan, { profile });
+            const result = jsonScanner.scan(new TextEncoder().encode("key_ab tok_ab12 key_ab12"));
+            assert.deepStrictEqual([...result.found], [1, 1]);
+        }
+        // the id of the plan has the guards
+        (rule.patterns as NonNullable<SecretLintRuleCreator["patterns"]>)[0]!.keywords = ["tok_", "KEY_"];
+        const unguardedPlan = getKeywordScanPlan({ config: toConfig({ ...rule }) });
+        assert.notStrictEqual(unguardedPlan?.id, plan.id);
+    });
     it("should return no plan if no rule has keywords", () => {
         assert.strictEqual(getKeywordScanPlan({ config: toConfig(createRule("always", undefined)) }), undefined);
     });

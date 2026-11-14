@@ -55,6 +55,24 @@ The function of a case does the following:
 
 Step 4 is how a wrong keyword or a `line` scope that needs other lines makes the test fail, because the unoptimized result reports a secret that the optimized result missed.
 
+Step 4 also finds a guard of a guarded keyword that rejects a secret, because the lint without keywords reports it. But its message is about keywords and scope in general, so the runner checks guards by themselves before the comparison of step 4.
+
+- If `keywords` of a pattern of the configuration has a guarded keyword, the runner lints the string once more with a configuration in which each guarded keyword `{ keyword, after }` is the string `keyword`: the same keyword without its guard.
+- A message of this result that is not in the result of step 3, by its rule id, message id, and range, is a secret that a guard rejected.
+- For such a message, the runner looks at the guarded keywords of the patterns of that rule. It finds the places of each keyword in the line of the message, or in the content for the "file" scope, and tests the guard there with the function that the keyword matcher uses.
+- It throws an error with the places whose guard is not met. The error has a line such as: `@secretlint/secretlint-rule-example: the guard "[A-Za-z0-9]{40,}" of the keyword "00" is not met at 3:12, but the rule reports a secret at 3:12-3:54.` A place is the line and the column, both from 1.
+
+The check uses the parser and the guard function of the core, so the tests check what the lint does.
+The lint without guards is skipped when the configuration has no guarded keyword and no preset, so the tests of other rules take the same time as before. A preset registers its rules when the lint runs, so the runner does not know its keywords before.
+The configuration of step 4 has no keywords, so it also has no guarded keywords.
+
+The runner also checks that every guarded keyword has a test case.
+
+- `createSnapshotTestCases()` returns one more test case after the cases of the directories: "every keyword with a guard has a test case". The test runner runs it last.
+- Each case records the guarded keywords of its configuration that the lint plan has for the same rule, so a pattern that `when` disables is not recorded, also when another rule has the same guarded keyword. It also records the rules that reported a message, and the guarded keywords that a message meets: the lines of the message have the keyword, with the guard met after it. The runner lower-cases only the ASCII letters to find the keyword, as the keyword matcher does, so an index of the content stays the same.
+- The last test case fails with the guarded keywords that no message meets, for the rules that reported a message in a case. It does nothing unless all cases ran.
+- The built-in AWS rule has a guarded keyword for each prefix of the access key ID, so its test cases have an ID for each prefix.
+
 ### Presets
 
 A third-party preset can be tested with the same `snapshot()`, with one snapshot directory per rule of the preset. The built-in presets are tested in `@secretlint/core`, not with `@secretlint/tester`.

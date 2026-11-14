@@ -131,9 +131,16 @@ With `--output`, the lint results are written to the file as without `--profile`
 | Threads | A thread that read files, when worker threads were used: the main thread, or a worker thread | Time of the thread, number of files that it read | All | All |
 | Rules | A rule that ran for a file | Total time, number of files | 10 with the longest time | All |
 | Patterns | A pattern that ran or was tested for a line | Total time, time and number of runs, number of matches, time and number of line tests | 10 with the longest time | All |
+| Keywords with a guard | A keyword with a guard that was found | Number of the places where the keyword was found, number of the places where its guard was met | 10 with the most places | All |
 | Files | A linted file | Time of the lint of the file, without reading it | 10 with the longest time | 10 with the longest time |
 
 A phase can run in another phase, and the summary shows it with the indent of the name (text) or with `depth` (JSON). The time of a phase includes the phases in it.
+
+##### Keywords with a guard
+
+A keyword with a guard is shown as the keyword and its guard, such as `00 [0-9A-Za-z_-]{40,}`. The keyword is in lower case, and the set is written in the order of the characters.
+The patterns of the keyword run only for the places where the guard was met. A guard whose two numbers are close drops few places, so a rule author sees a guard that is too loose here.
+The section is not shown when no keyword with a guard was found.
 
 ##### Shared cost
 
@@ -145,7 +152,7 @@ When the lint of many files takes long, worker threads read files and look for k
 The summary then shows each thread with its time and the number of the files that it read. The section is not shown when no worker thread started.
 The lint runs in the same way with and without `--profile`.
 The time of reading a file and of the keyword scan in the phases is only the work of the main thread. The work of the workers is in this section.
-The Patterns section includes the tests of lines that the workers did.
+The Patterns section includes the tests of lines that the workers did, and the Keywords with a guard section includes the places that the workers found.
 The number of files in the first line of the summary is the number of the files of the run. A file that no rule runs for is not in the Files section.
 
 ##### Text of the summary

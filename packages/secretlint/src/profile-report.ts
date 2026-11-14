@@ -85,6 +85,21 @@ export type SecretLintProfileReportKeywordScanThread = {
      */
     files: number;
 };
+export type SecretLintProfileReportKeywordGuard = {
+    /**
+     * The keyword and its guard, such as `00 [0-9A-Za-z_-]{40,}`
+     */
+    keyword: string;
+    /**
+     * The number of the places where the keyword was found
+     */
+    found: number;
+    /**
+     * The number of the places where the guard was met. The patterns of the keyword run only for these places.
+     * A guard whose `met` is close to `found` drops few places
+     */
+    met: number;
+};
 export type SecretLintProfileReportFile = {
     filePath: string;
     /**
@@ -119,6 +134,10 @@ export type SecretLintProfileReport = {
      * All patterns that ran, in the order of the time
      */
     patterns: SecretLintProfileReportPattern[];
+    /**
+     * The keywords with a guard that were found, in the order of the number of the places
+     */
+    keywordGuards: SecretLintProfileReportKeywordGuard[];
     /**
      * The files that took the longest time to lint
      */
@@ -240,6 +259,12 @@ export const createProfileReport = (stats: readonly SecretLintProfilerStat[]): S
             return { thread: stat.id ?? "", duration: round(stat.duration), files: stat.count };
         },
     );
+    const metOfGuard = new Map(statsOfType("@core>keyword-guard-met").map((stat) => [stat.id, stat.count]));
+    const keywordGuards = statsOfType("@core>keyword-guard")
+        .map((stat): SecretLintProfileReportKeywordGuard => {
+            return { keyword: stat.id ?? "", found: stat.count, met: metOfGuard.get(stat.id) ?? 0 };
+        })
+        .sort((a, b) => b.found - a.found || a.keyword.localeCompare(b.keyword));
     // A worker does not hand a file that no rule runs for, so count the files of the run
     const fileCount = totalOf("@node>files").count;
     return {
@@ -249,6 +274,7 @@ export const createProfileReport = (stats: readonly SecretLintProfilerStat[]): S
         keywordScanThreads,
         rules,
         patterns: sortedPatterns,
+        keywordGuards,
         slowestFiles,
     };
 };
@@ -396,6 +422,23 @@ export const formatProfileReport = (
                         `${pattern.ruleId}#${pattern.index} ${source}`,
                     ];
                 }),
+            ),
+        );
+    }
+    const keywordGuards = report.keywordGuards.slice(0, TOP_COUNT);
+    if (keywordGuards.length > 0) {
+        lines.push("");
+        lines.push(
+            ...formatTable(
+                [
+                    { title: "Found", align: "right" },
+                    { title: "Met", align: "right" },
+                    {
+                        title: topTitle("Keyword with a guard", keywordGuards.length, report.keywordGuards.length),
+                        align: "left",
+                    },
+                ],
+                keywordGuards.map((guard) => [String(guard.found), String(guard.met), guard.keyword]),
             ),
         );
     }

@@ -10,7 +10,7 @@
  */
 import os from "node:os";
 import { Worker } from "node:worker_threads";
-import type { KeywordScanLineTests, KeywordScanPlan } from "@secretlint/core/keyword-scan";
+import type { KeywordScanGuardCount, KeywordScanLineTests, KeywordScanPlan } from "@secretlint/core/keyword-scan";
 import {
     createSharedScanBuffer,
     type HandedFiles,
@@ -98,7 +98,13 @@ export type KeywordScanWorkers = {
     /**
      * What each worker did, for the profile. A failed worker is not in it
      */
-    readonly threads: { name: string; scannedCount: number; duration: number; lineTests: KeywordScanLineTests[] }[];
+    readonly threads: {
+        name: string;
+        scannedCount: number;
+        duration: number;
+        lineTests: KeywordScanLineTests[];
+        guardCounts: KeywordScanGuardCount[];
+    }[];
     /**
      * Stop all workers, and wait until they stopped. Call it when the lint ends or fails,
      * because a worker that waits for the main thread keeps the process alive
@@ -157,6 +163,7 @@ export const createKeywordScanWorkers = ({
                     scannedCount: message.scannedCount,
                     duration: message.duration,
                     lineTests: message.lineTests,
+                    guardCounts: message.guardCounts,
                 });
                 end();
                 void worker.terminate();

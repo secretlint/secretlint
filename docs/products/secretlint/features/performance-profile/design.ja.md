@@ -57,6 +57,8 @@
 | `@core>lint` | ファイルパス | コア | 1つの内容を検査する |
 | `@core>setup-rules` | | コア | 検査計画を作る。1つの設定につき1回動く |
 | `@core>keyword-scan` | | コア | 内容を走査して全ルールのキーワードを探す |
+| `@core>keyword-guard` | キーワードとガード | コア | ガード付きキーワードが見つかった場所の数。時間は持たない。ワーカースレッドを使ったときは、ワーカーの分を含む。ワーカーが数え、エンジンが`count()`で足す |
+| `@core>keyword-guard-met` | キーワードとガード | コア | そのキーワードのガードを満たした場所の数。時間は持たない |
 | `@core>line-check` | | コア | キーワードのある行をテストする。`@core>pattern-line-test`を含む |
 | `@core>pattern-line-test` | パターンのID | コア | 1つの行を1つのパターンでテストする。ワーカースレッドを使ったときは、ワーカーの分を含む。ワーカーが測り、エンジンが`addTotal()`で足す。メインスレッドの時間である`@core>line-check`には入らない |
 | `@core>pattern` | パターンのID | コア | パターンを実行し、マッチを報告する |
@@ -89,6 +91,7 @@
 - `phases`: `{ name, depth, duration, percent, count }`
 - `rules`: `{ ruleId, duration, files }`
 - `patterns`: `{ ruleId, index, pattern, duration, runDuration, runs, matches, lineTestDuration, lineTests }`。`duration`は`runDuration + lineTestDuration`である
+- `keywordGuards`: `{ keyword, found, met }`。`found`の多い順である
 - `slowestFiles`: `{ filePath, duration }`
 
 ## API・インターフェース

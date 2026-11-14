@@ -1,4 +1,5 @@
-import type { KeywordHits } from "./helper/keyword-matcher.js";
+import type { KeywordHits, KeywordMatcher } from "./helper/keyword-matcher.js";
+import { formatGuardedKeyword, type KeywordGuard } from "./helper/keyword-guard.js";
 import type {
     SecretLintCoreConfig,
     SecretLintCoreConfigRule,
@@ -158,6 +159,20 @@ type BytesCheck = {
     readonly runsPatterns: boolean;
 };
 /**
+ * Add the places of the keywords with a guard to the profile.
+ * The matcher counts them while the profiler is enabled.
+ */
+const recordGuardCounts = (matcher: KeywordMatcher): void => {
+    for (const { keywordIndex, found, met } of matcher.takeGuardCounts()) {
+        const id = formatGuardedKeyword(
+            matcher.keywords[keywordIndex] as string,
+            matcher.guards[keywordIndex] as KeywordGuard,
+        );
+        secretLintProfiler.count("@core>keyword-guard", id, found);
+        secretLintProfiler.count("@core>keyword-guard-met", id, met);
+    }
+};
+/**
  * 1. Scan the bytes once for the keywords of all rules.
  * 2. Check the patterns on the lines that have a keyword, without decoding the whole content.
  */
@@ -196,9 +211,12 @@ const checkBytes = (
     }
     const contentStart = hasUtf8BOM(bytes) ? 3 : 0;
     const scanStartTime = profiling ? secretLintProfiler.now() : 0;
+    // The matcher counts the places of the keywords with a guard only while the profiler is enabled
+    matcher.setGuardCounting(profiling);
     const hits = matcher.scan(bytes, contentStart);
     if (profiling) {
         secretLintProfiler.record("@core>keyword-scan", undefined, scanStartTime);
+        recordGuardCounts(matcher);
     }
     const hasKeyword = hits.count > 0;
     const hasFilePatternKeyword = found(hits.found);
@@ -308,6 +326,7 @@ const lintWithPlan = (
         if (matcher === undefined || !needsTextHits) {
             return undefined;
         }
+        matcher.setGuardCounting(secretLintProfiler.isEnabled);
         if (!secretLintProfiler.isEnabled) {
             return matcher.scan(sourceCode.content);
         }
@@ -316,6 +335,12 @@ const lintWithPlan = (
         const startTime = secretLintProfiler.now();
         const hits = matcher.scan(content);
         secretLintProfiler.record("@core>keyword-scan", undefined, startTime);
+        if (bytes === undefined) {
+            recordGuardCounts(matcher);
+        } else {
+            // The scan of the bytes counted the places of the keywords with a guard. Do not count them twice
+            matcher.takeGuardCounts();
+        }
         return hits;
     };
     const textHits = scanText();

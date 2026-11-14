@@ -17,6 +17,7 @@ This document is written for the part of the feature that a change needs: what c
 - The content and the information about the source that a rule receives
 - The same results in Node.js and in browsers
 - Looking for the keywords of rules in the content, which decides the rules that run for a source
+- Keeping a keyword useful when it is short or common, with a guard: a condition on the characters after the keyword
 - Scaling to a very large number of files, by using several CPU cores to look for keywords
 - Looking for keywords apart from the lint, for a program that calls `@secretlint/core`
 
@@ -154,6 +155,24 @@ Scenario: When the given result is for other keywords, it is not used
 - When: The tool calls `lintSource()` with the source and that result.
 - Then: The result is the same as `lintSource()` without it.
 
+### Keep the lint fast when a secret has a short prefix
+
+As a developer, I want the lint to stay fast when a rule for a service whose keys start with a short or common string, such as `00` or `SK`, is enabled, so that the support of such a service does not make every lint slower. The results are the same, and there is nothing to set up.
+
+**Acceptance criteria:**
+
+Scenario: When the keyword is in the content but its guard is not met, the pattern does not run
+
+- Given: An enabled rule has a pattern for a key that is `00` and then 40 letters, digits, `_`, or `-`, and the pattern declares this as a guarded keyword. A file has `00` in many places, such as `1000`, and no place has 40 such characters after it.
+- When: The developer runs `secretlint` for the file.
+- Then: The result of the file has no message, and the pattern does not run for the file.
+
+Scenario: When the guard is met, the secret is reported as without the guard
+
+- Given: The same rule, and a file that has a key of that form.
+- When: The developer runs `secretlint` for the file.
+- Then: The result has the message of the rule, with the same line and column as a rule that declares only the keyword `00`.
+
 ## KPIs
 
 None for this part of the feature.
@@ -230,6 +249,25 @@ It uses only the keywords of the enabled rules.
 
 The number of keywords grows as rules are added.
 The time of looking for keywords stays about the same when keywords are added.
+
+##### Keywords that are short or common
+
+A keyword keeps the lint fast only when it is rare in content that has no secret.
+The service decides the format of its keys, and Secretlint can not change it. A key of a well-known service can start with a short or common string, such as `00` or `SK`, and such a string is in almost every file.
+With such a keyword, the pattern runs for almost every file, and the lint becomes slower for every user of the rule.
+
+Secretlint does not solve this by reporting a value because a word such as the name of the service is near it. A rule finds a secret by the format of the secret itself, following "Reduce false positives" of the [Product](../../product.md).
+So a keyword can have a guard: a condition on the characters that follow the keyword, which every secret of the pattern meets. A keyword with a guard is a guarded keyword.
+Where the guard is not met, Secretlint treats the keyword as not found.
+
+- **Only what is always true.** A guard says which characters follow the keyword, and how many of them at least. Where the guard is not met, the pattern can not match. So a guard only skips work that reports nothing, and "The same results" holds with guards.
+- **A cost with a limit.** Secretlint checks a guard by reading the characters after the keyword, at most the count that the guard states, and it never goes back in the content. The time of looking for keywords still grows only with the size of the content.
+- **Any content.** A guard uses only what the rule declares. It does not assume what the content is like.
+- **Everywhere keywords are looked for.** A guard is data, as a keyword is. It is checked in the lint, on several CPU cores, and in the step that a program runs apart from the lint, and no rule is loaded for it.
+- **A guard that is looser than needed only costs time.** The results are still the same. `--profile` shows how many times a guarded keyword was found and how many times its guard was met, so a rule author can see a guard that does not help. See [Performance profile](../performance-profile/requirements.md).
+
+How a pattern declares a guarded keyword belongs to [Rules and rule presets](../rules-and-presets/requirements.md).
+How the tests of a rule find a guard that rejects a secret belongs to [Custom rules](../custom-rules/requirements.md).
 
 ##### Content without keywords
 

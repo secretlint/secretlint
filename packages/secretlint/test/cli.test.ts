@@ -181,6 +181,7 @@ describe("--profile", () => {
             "keywordScanThreads",
             "rules",
             "patterns",
+            "keywordGuards",
             "slowestFiles",
         ]);
         assert.strictEqual(report.files, 1);

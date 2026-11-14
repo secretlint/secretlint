@@ -133,39 +133,117 @@ describe("lintSource with patterns", () => {
         assert.deepStrictEqual(result.messages, []);
         assert.strictEqual(state.contentReads, 0);
     });
-    it("should match keywords case-sensitively if caseSensitiveKeywords is true", async () => {
-        const createRule = (caseSensitiveKeywords: boolean) => {
-            return createPatternRule([
-                tokenPattern({ pattern: /SG\.[a-z0-9]{4}/g, keywords: ["SG."], caseSensitiveKeywords }),
-                // the same keyword text of another pattern stays case-insensitive
-                tokenPattern({ pattern: /sg\.[A-Z]{4}/gi, keywords: ["sg."] }),
-            ]);
-        };
-        const content = "msg.x()\nkey = SG.ab12\nsg.WXYZ\n";
-        for (const caseSensitiveKeywords of [true, false]) {
-            const { messages } = await lintBoth(content, toConfig(createRule(caseSensitiveKeywords)));
-            assert.deepStrictEqual(toRangeTexts(content, messages), ["SG.ab12", "sg.WXYZ"]);
-        }
-        // a file that has the keyword only in another case is not read
+    it("should match keywords case-insensitively", async () => {
+        const rule = createPatternRule([tokenPattern({ pattern: /sg\.[a-z0-9]{4}/gi, keywords: ["SG."] })]);
+        const content = "key = SG.ab12\nsg.WXYZ\n";
+        const { messages } = await lintBoth(content, toConfig(rule));
+        assert.deepStrictEqual(toRangeTexts(content, messages), ["SG.ab12", "sg.WXYZ"]);
+    });
+    it("should throw on `caseSensitiveKeywords`, which is not a property of a pattern", async () => {
         const rule = createPatternRule([
-            tokenPattern({
-                pattern: /SG\.[a-z0-9]{4}/g,
-                keywords: ["SG."],
-                scope: "file",
-                caseSensitiveKeywords: true,
-            }),
+            tokenPattern({ caseSensitiveKeywords: true } as Partial<SecretLintRulePattern<Options>>),
         ]);
-        const { bytesSource, state } = createSources("msg.send()\nsg.ab12\n");
-        const result = await lintSource({ source: bytesSource, options: { config: toConfig(rule) } });
-        assert.deepStrictEqual(result.messages, []);
-        assert.strictEqual(state.contentReads, 0);
-        // without the option, the "file" scope pattern needs the content
-        const insensitiveRule = createPatternRule([
-            tokenPattern({ pattern: /SG\.[a-z0-9]{4}/g, keywords: ["SG."], scope: "file" }),
-        ]);
-        const insensitive = createSources("msg.send()\nsg.ab12\n");
-        await lintSource({ source: insensitive.bytesSource, options: { config: toConfig(insensitiveRule) } });
-        assert.ok(insensitive.state.contentReads > 0);
+        const { textSource } = createSources("tok_ab12\n");
+        await assert.rejects(
+            async () => lintSource({ source: textSource, options: { config: toConfig(rule) } }),
+            /unknown properties: caseSensitiveKeywords/,
+        );
+    });
+    describe("a keyword with a guard", () => {
+        // "00" is in most files. The guard keeps the keyword where 8 characters of the key follow it
+        const guardedPattern = (overrides: Partial<SecretLintRulePattern<Options>> = {}) => {
+            return tokenPattern({
+                pattern: /(?<![A-Za-z0-9])00[A-Za-z0-9]{8}(?![A-Za-z0-9])/g,
+                keywords: [{ keyword: "00", after: "[A-Za-z0-9]{8,}" }],
+                ...overrides,
+            });
+        };
+        it("should report a match whose keyword meets the guard", async () => {
+            const content = "id = 100\ntime = 00:00:00\nkey = 00abcdEF12\n0x0000\n";
+            for (const scope of ["line", "file"] as const) {
+                const { messages } = await lintBoth(content, toConfig(createPatternRule([guardedPattern({ scope })])));
+                assert.deepStrictEqual(toRangeTexts(content, messages), ["00abcdEF12"]);
+            }
+        });
+        it("should not read the content when the guard is met nowhere", async () => {
+            const rule = createPatternRule([guardedPattern({ scope: "file" })]);
+            const { bytesSource, state } = createSources(
+                "id = 100\ntime = 00:00:00\n0x0000 00abc 00日本語日本語日本\n",
+            );
+            const result = await lintSource({ source: bytesSource, options: { config: toConfig(rule) } });
+            assert.deepStrictEqual(result.messages, []);
+            assert.strictEqual(state.contentReads, 0);
+            // without the guard, the "file" scope pattern needs the content
+            const unguarded = createSources("id = 100\n");
+            const unguardedRule = createPatternRule([guardedPattern({ scope: "file", keywords: ["00"] })]);
+            await lintSource({ source: unguarded.bytesSource, options: { config: toConfig(unguardedRule) } });
+            assert.ok(unguarded.state.contentReads > 0);
+        });
+        it("should match the keyword case-insensitively and the set as it is written", async () => {
+            const rule = createPatternRule([
+                tokenPattern({
+                    pattern: /asia[A-Z0-9]{4}/gi,
+                    keywords: [{ keyword: "ASIA", after: "[A-Z0-9]{4,}" }],
+                }),
+            ]);
+            // "asiaWXYZ" has the keyword in lower case. "ASIAwxyz" does not meet the set, so the pattern does not run
+            const content = "asia-northeast1\nASIAwxyz\nasiaWXYZ\nASIAAB12\n";
+            const { messages } = await lintBoth(content, toConfig(rule));
+            assert.deepStrictEqual(toRangeTexts(content, messages), ["asiaWXYZ", "ASIAAB12"]);
+        });
+        it("should select each pattern by its own guard when patterns share a keyword", async () => {
+            const rule = createPatternRule([
+                tokenPattern({ pattern: /00[a-z]{4}/g, keywords: [{ keyword: "00", after: "[a-z]{4,}" }] }),
+                tokenPattern({ pattern: /00[0-9]{6}/g, keywords: [{ keyword: "00", after: "[0-9]{6,}" }] }),
+                tokenPattern({ pattern: /x00!/g, keywords: ["00"] }),
+            ]);
+            const content = "00abcd\n00123456\nx00!\n00ab 0012\n";
+            const { messages } = await lintBoth(content, toConfig(rule));
+            assert.deepStrictEqual(toRangeTexts(content, messages), ["00abcd", "00123456", "x00!"]);
+        });
+        it("should use strings and keyword objects together", async () => {
+            const rule = createPatternRule([
+                tokenPattern({
+                    pattern: /(?:tok_[a-z0-9]{4}|00[a-z]{4})/g,
+                    keywords: ["tok_", { keyword: "00", after: "[a-z]{4,}" }],
+                }),
+            ]);
+            const content = "tok_ab12\n00abcd\n0012\n";
+            const { messages } = await lintBoth(content, toConfig(rule));
+            assert.deepStrictEqual(toRangeTexts(content, messages), ["tok_ab12", "00abcd"]);
+        });
+        it("should throw on a keyword object that is not supported, with the rule and the supported form", async () => {
+            const cases: [unknown, RegExp][] = [
+                [{ keyword: "00", after: "[a-z]{40}" }, /Write `\{40,\}`/],
+                [{ keyword: "00", after: "[a-z]{32,40}" }, /Write `\{32,\}`/],
+                [{ keyword: "00", after: "[a-z]+" }, /Write `\[\.\.\.\]\{1,\}`/],
+                [{ keyword: "00", after: "[a-z]*" }, /always true/],
+                [{ keyword: "00", after: "[a-z]{0,}" }, /always true/],
+                [{ keyword: "00", after: "[\\d]{4,}" }, /Write `0-9`/],
+                [{ keyword: "00", after: "[\\w]{4,}" }, /Write `A-Za-z0-9_`/],
+                [{ keyword: "00", after: "[^a-z]{4,}" }, /`\^` is not supported/],
+                [{ keyword: "00", after: "[a-z]{256,}" }, /255 or less/],
+                [{ keyword: "00", after: "[a-z]{4,}$" }, /is not supported/],
+                [{ keyword: "00", after: "a{4,}" }, /should start with a set/],
+                [{ keyword: "00", after: "[-a]{4,}" }, /last item/],
+                [{ keyword: "00", after: "[あ]{4,}" }, /only ASCII/],
+                [{ keyword: "00", after: 4 }, /`after` should be a string/],
+                [{ keyword: "00" }, /`after` is required/],
+                [{ keyword: "", after: "[a-z]{4,}" }, /non-empty ASCII string/],
+                [{ keyword: "00", after: "[a-z]{4,}", caseSensitive: true }, /unknown properties: caseSensitive/],
+            ];
+            for (const [keyword, expected] of cases) {
+                const rule = createPatternRule([
+                    tokenPattern({ keywords: [keyword] as SecretLintRulePattern<Options>["keywords"] }),
+                ]);
+                const { textSource } = createSources("tok_ab12\n");
+                const lint = async () => lintSource({ source: textSource, options: { config: toConfig(rule) } });
+                await assert.rejects(lint, expected, JSON.stringify(keyword));
+                await assert.rejects(lint, /The rule "pattern-rule" has a pattern with a keyword/);
+                // the error of the parser is the cause
+                await assert.rejects(lint, (error: Error) => error.cause instanceof Error);
+            }
+        });
     });
     it("should run a 'line' scope pattern on each line", async () => {
         // `^` and `$` are the start and the end of a line in the "line" scope
