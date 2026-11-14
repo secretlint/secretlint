@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794647835555,
+  "lastUpdate": 1794648146097,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -62508,6 +62508,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 5.25,
             "range": "±1.42%",
+            "unit": "ops/sec",
+            "extra": "18 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "2a809f0f31b6f81e1b3e7468c5e3c7e78fdefc52",
+          "message": "feat(benchmark): profile and benchmark the base and the head of a change, and update AGENTS.md (#1828)\n\n<!-- claude-projects-attribution: {\"github_login\":\"azu\"} -->\n_Requested by **azu** · [project\nthread](https://claude.ai/code/project/chan_01ChfsKF1sN6vYsJMPZ7PuDt?thread=cmsg_01ChfsKF1sN6vYsJMPZ7PuDt7BEMGkajRne8qXmjfj3C1h)_\n\n## What\n\nLets an author, an AI agent, and a reviewer notice a large change from a\nnew or changed rule before merging, including for pull requests from\nforks.\n\n### Profile and benchmark of base vs head (`pnpm run compare`)\n\n- `examples/benchmark/compare.mjs` (Node.js built-ins only) builds the\nbase (`origin/master` by default) in a worktree in\n`~/.cache/secretlint-compare`, uses the working tree as the head, and\nlints fixed sets with both:\n\n  | Set | Repository | Files |\n  | --- | --- | --- |\n  | small | `examples/benchmark/targets` | ~600 |\n  | medium | facebook/react v19.3.1 | 7,222 |\n  | large | microsoft/vscode 1.146.0 | 21,005 |\n  | huge | torvalds/linux v7.3 | 96,080 |\n\nSets are pinned by commit in `examples/benchmark/compare-sets.json` and\nfetched with `git fetch --depth 1` once (3 s / 10 s / 21 s here).\n- It compares the runs and matches of each pattern from `--profile\n--format json` (same in every run), the findings (rule id, message id,\nfile, line; no secret values), and the run time with hyperfine (ratio ≥\n1.3 or ≤ 0.77 is marked). Markdown goes to stdout, JSON to `--json`.\n`--render <json>` (repeated) prints the Markdown of earlier JSON outputs\nas one comparison.\n- The Markdown starts with the linked base/head commits and, with\nseveral sets, one row per set (`✅ No change` or what changed, run time,\nfindings). Each set then has one line (`✅ No change ...` or `⚠️ Changed:\n...`), a summary table (base / head / change), only the rows that\ndiffer, and one profile section with base and head side by side (phases,\ntop rules, top patterns with a ratio column marked ⚠️ when the head is ≥\n1.3x and ≥ 5 ms slower, slowest files of the head).\n- A lock directory keeps two comparisons from preparing the same cache\nentry; pnpm runs through a shell only on Windows.\n- All four sets take about 70 s locally after the first build and\ndownload.\n- Example: removing the keywords of the slack pattern gave react ratio\n2.02 `⚠️ slower`, the new pattern's runs, and 903 new findings.\n\n### CI (`.github/workflows/profile-benchmark.yml`)\n\n- `pull_request` only, `permissions: contents: read`, no secrets,\n`persist-credentials: false`, so the code of a fork PR gets nothing to\nsteal or push with.\n- One job per set (`Profile and benchmark / small` … `/ huge`,\n`fail-fast: false`), each uploading `profile-benchmark-<set>` (JSON,\nincluding both profiles).\n- `Profile and benchmark / summary` runs after them (also when a set\nfailed), downloads the JSON outputs, and puts all sets in one job\nsummary. It never fails because of a difference.\n\n### Other changes\n\n- `SECRETLINT_KEYWORD_SCAN_THREADS` is removed from `@secretlint/node`\n(it was for the proof of concept). The test mocks\n`os.availableParallelism` instead.\n- Line tests of the profile are not compared: with worker threads their\nnumber depends on which thread reads which file (vscode: 18,993 vs\n18,955 in two runs of the same build). Whether the profile should count\nthem the same way in workers and the main thread is left for a\nfollow-up.\n- AGENTS.md: stale items fixed (`caseSensitiveKeywords` removed in\n#1827, keyword guards, `\"all\"` content type, old checklist, engine\ndescription after #1822/#1824), rule format details point to\n`docs/secretlint-rule.md`, checklists merged, and a Quick Reference line\nto run `pnpm run compare` and paste its output into the PR.\n- sdev docs:\n`docs/products/secretlint/features/change-comparison/{requirements,design}{,.ja}.md`.\n\n## Not in this PR\n\nA PR comment (would need a separate `workflow_run` workflow that only\nreads the artifact) and a history of results on `master`.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nhttps://claude.ai/code/session_01TSdrAHBDkRgtWKGgpuTGWu\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-11-14T18:21:05+09:00",
+          "tree_id": "a8b0770a80b3eda4f622699713c8feb3fcc66c1d",
+          "url": "https://github.com/secretlint/secretlint/commit/2a809f0f31b6f81e1b3e7468c5e3c7e78fdefc52"
+        },
+        "date": 1794648142612,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 7.04,
+            "range": "±1.25%",
+            "unit": "ops/sec",
+            "extra": "22 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 5.34,
+            "range": "±1.17%",
             "unit": "ops/sec",
             "extra": "18 samples"
           }
