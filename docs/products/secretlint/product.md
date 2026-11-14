@@ -128,6 +128,7 @@ GitHub secret scanning works on the GitHub side, after a commit is made or pushe
 | Docker image | Run `secretlint/secretlint` without Node.js or configuration, with the built-in rules and the SARIF formatter | Not written |
 | Single-executable binary | Run a binary from GitHub Releases for Linux, macOS, and Windows without Node.js, with the built-in rules and the SARIF formatter | [Requirements](features/single-executable-binary/requirements.md) |
 | Performance profile | Show where time is spent with `--profile` | [Requirements](features/performance-profile/requirements.md) |
+| Change comparison | Compare the base and the head of a change on fixed repositories: pattern work, findings, and run time | [Requirements](features/change-comparison/requirements.md) |
 
 ## Definition of success
 
