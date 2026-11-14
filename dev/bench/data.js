@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794649340863,
+  "lastUpdate": 1794658243093,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -62584,6 +62584,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 7.06,
             "range": "±0.94%",
+            "unit": "ops/sec",
+            "extra": "22 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "1fdc1ad881ceeeb13cd75cf0748c9b6578f1ea59",
+          "message": "feat!: move the documentation of the built-in rules to docs/rules, remove their packages, and check links (#1832)\n\n<!-- claude-projects-attribution: {\"github_login\":\"azu\"} -->\n_Requested by **azu** · [project\nthread](https://claude.ai/code/project/chan_01ChfsKF1sN6vYsJMPZ7PuDt?thread=cmsg_01ChfsKF1sN6vYsJMPZ7PuDtHv6nh1d7JT8KQ9T1JuLq8v)_\n\n## Why\n\nThe built-in rules and presets are in `@secretlint/core` (#1798), but\n`docs.url` still pointed to\n`blob/master/packages/@secretlint/secretlint-rule-<name>/README.md`, and\nthe packages of the same names were kept as re-exports. Two places for\nthe same rule are confusing, and docs that live with the packages break\nwhen the packages go.\n\n## What\n\nSpecs first (sdev, `rules-and-presets` Requirements / Design, en + ja),\nthen the implementation.\n\n- **Docs:** the READMEs of the 30 built-in rules and 2 presets move to\n`docs/rules/<name>.md` (install / changelog / author sections dropped).\n`docs.url` =\n`https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/<name>.md`\n(`HEAD` = default branch, so a rename to `main` does not change it).\nSnapshots updated.\n- **Packages removed (BREAKING):**\n`packages/@secretlint/secretlint-rule-<name>` of the built-in rules and\nthe two preset packages are deleted, so they are not published anymore.\nRule ids do not change, configs keep working, an installed old package\nis not loaded. Code that imported `creator` from them imports from\n`@secretlint/core/builtin/rules/<name>` / `@secretlint/core/builtin`.\nLinks of older versions to the old READMEs break (accepted: terminal\nlinks only).\n- **Dependents:** `secretlint` and `@secretlint/quick-start` no longer\ndepend on `@secretlint/secretlint-rule-preset-recommend`;\ne2e/core-browser imports `presetRecommend` from\n`@secretlint/core/builtin`; examples drop the preset packages; README\n(install = `npm install secretlint`, \"Built-in Rules\" / \"Rule\nPackages\"), docs/configuration.md, `@secretlint/node` README,\nDocker/binary READMEs, CONTRIBUTING (adding a rule / presets),\nAGENTS.md, and the `gen:rule` template (now also creates\n`docs/rules/<name>.md`, `--output .`).\n- **Link check:** `scripts/check-links.mts` (no network, no deps) checks\n`github.com/secretlint/secretlint/{blob,tree,raw}/{master,HEAD}/<path>`\nURLs and Markdown relative links; CI job `links`, `pnpm run\ncheck-links`.\n\n## Not in this PR\n\n- `--init` writes no rules when `package.json` has no\n`secretlint-rule-*` (separate PR; README now says `npm install\nsecretlint` then `--init`, so they should land together).\n- `.github/workflows/release.yml` still waits for\n`@secretlint/secretlint-rule-preset-recommend` / `-pattern` before the\nDocker build; they will not be published, so this must change to\n`secretlint @secretlint/core @secretlint/secretlint-formatter-sarif`\nbefore the release.\n- `npm deprecate` of the old packages after the release.\n- The 4 rule packages that stay (no-dotenv, no-homedir,\nno-k8s-kind-secret, secp256k1-privatekey).\n\n## Test\n\n- `pnpm run build`, `pnpm run test` (46 tasks), `turbo run secretlint`:\npass locally.\n- e2e/core-browser: `vite build` and `tsc` pass; Playwright could not\nlaunch Chromium locally (browser version mismatch), left to CI.\n- `pnpm run gen:rule` with a test name creates `docs/rules/<name>.md`\nand the files in core.\n- `node scripts/check-links.mts`, `./bin/sdev lint`: pass.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nhttps://claude.ai/code/session_01TSdrAH2UdTKfY2HBVKgYis\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-11-14T21:09:53+09:00",
+          "tree_id": "4eaa1e83155fb4478a5b0fc6db6478f9b0fa09fa",
+          "url": "https://github.com/secretlint/secretlint/commit/1fdc1ad881ceeeb13cd75cf0748c9b6578f1ea59"
+        },
+        "date": 1794658239972,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 8.98,
+            "range": "±0.91%",
+            "unit": "ops/sec",
+            "extra": "27 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 7.13,
+            "range": "±0.79%",
             "unit": "ops/sec",
             "extra": "22 samples"
           }
