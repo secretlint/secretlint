@@ -2,8 +2,8 @@
 
 ## .secretlintrc file
 
-`.secretlintrc.json` is configuration file on secretlint.
-Also, secretlint support `.secretlintrc.{yml,yaml,js}` file.
+JSON (`.secretlintrc.json`) is the recommended configuration format.
+Secretlint also supports `.secretlintrc.{yml,yaml,js,cjs}` files.
 
 ```json
 {
@@ -27,6 +27,30 @@ Each rule has common configuration patterns:
 - `disabled`: If `disabled` is `true`, disable the rule
 - `allowMessageIds`: `allowMessageIds` is an array of message id that you want to suppress error report
     - message id is defined in each rule and please see the rule documentation
+
+### JavaScript configuration files
+
+JavaScript configuration files use CommonJS (`module.exports`), even if your project's `package.json` has `"type": "module"`. Export the configuration with `module.exports`; `export default` is not a supported configuration format.
+
+For example, save the following as `.secretlintrc.cjs` (or `.secretlintrc.js`):
+
+```js
+module.exports = {
+    rules: [
+        {
+            id: "@secretlint/secretlint-rule-preset-recommend"
+        }
+    ]
+};
+```
+
+Install the rule packages referenced by `id`, just as for JSON configuration. Secretlint discovers this file automatically; you can also select it explicitly:
+
+```sh
+secretlint --secretlintrc .secretlintrc.cjs "**/*"
+```
+
+The CommonJS requirement applies to the configuration file. Rule packages can use ESM, as described in [Creating a secretlint rule](./secretlint-rule.md).
 
 ### `options`
 
