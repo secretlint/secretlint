@@ -41,7 +41,7 @@ jobs:
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -51,17 +51,17 @@ jobs:
       - name: Set Current Version
         run: |
           CURRENT_VERSION=$(node -p 'require("./package.json").version')
-          echo "CURRENT_VERSION=${CURRENT_VERSION}" >> $GITHUB_ENV
+          echo "CURRENT_VERSION=${CURRENT_VERSION}" >> "$GITHUB_ENV"
       - name: Tag Check
         id: tag_check
         run: |
           GET_API_URL="https://api.github.com/repos/${GITHUB_REPOSITORY}/git/ref/tags/v${CURRENT_VERSION}"
-          http_status_code=$(curl -LI $GET_API_URL -o /dev/null -w '%{http_code}\n' -s \
+          http_status_code=$(curl -LI "$GET_API_URL" -o /dev/null -w '%{http_code}\n' -s \
             -H "Authorization: token ${GITHUB_TOKEN}")
           if [ "$http_status_code" -ne "404" ] ; then
-            echo "exists_tag=true" >> $GITHUB_OUTPUT
+            echo "exists_tag=true" >> "$GITHUB_OUTPUT"
           else
-            echo "exists_tag=false" >> $GITHUB_OUTPUT
+            echo "exists_tag=false" >> "$GITHUB_OUTPUT"
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -140,13 +140,13 @@ jobs:
           VERSION: ${{ needs.publish.outputs.version }}
           PLATFORM: ${{ matrix.platform }}
         run: |
-          echo "PLATFORM_PAIR=${PLATFORM//\//-}" >> $GITHUB_ENV
-          echo "SECRETLINT_VERSION=${VERSION}" >> $GITHUB_ENV
+          echo "PLATFORM_PAIR=${PLATFORM//\//-}" >> "$GITHUB_ENV"
+          echo "SECRETLINT_VERSION=${VERSION}" >> "$GITHUB_ENV"
       # `pnpm publish` can return before the npm registry serves the new version,
       # so wait until every package installed by the Dockerfile is resolvable.
       - name: Wait for npm packages to be available
         run: |
-          packages="secretlint @secretlint/secretlint-rule-preset-recommend @secretlint/secretlint-rule-pattern @secretlint/secretlint-formatter-sarif"
+          packages="secretlint @secretlint/core @secretlint/secretlint-formatter-sarif"
           for pkg in $packages; do
             for i in $(seq 1 30); do
               if npm view "${pkg}@${SECRETLINT_VERSION}" version --prefer-online > /dev/null 2>&1; then
@@ -170,7 +170,7 @@ jobs:
         run: |
           mkdir -p /tmp/digests
           docker buildx build . \
-            --build-arg SECRETLINT_VERSION=${SECRETLINT_VERSION} \
+            --build-arg "SECRETLINT_VERSION=${SECRETLINT_VERSION}" \
             --platform ${{ matrix.platform }} \
             --output "type=docker,name=secretlint:smoke" \
             --output "type=image,name=${DOCKER_BASE_NAME},push-by-digest=true,name-canonical=true,push=true" \
@@ -197,10 +197,12 @@ jobs:
         env:
           VERSION: ${{ needs.publish.outputs.version }}
         run: |
-          echo "PKG_TAG=${DOCKER_BASE_NAME}:v${VERSION}" >> $GITHUB_ENV
-          echo "PKG_LATEST_TAG=${DOCKER_BASE_NAME}:latest" >> $GITHUB_ENV
-          echo "HUB_TAG=${DOCKER_HUB_BASE_NAME}:v${VERSION}" >> $GITHUB_ENV
-          echo "HUB_LATEST_TAG=${DOCKER_HUB_BASE_NAME}:latest" >> $GITHUB_ENV
+          {
+            echo "PKG_TAG=${DOCKER_BASE_NAME}:v${VERSION}"
+            echo "PKG_LATEST_TAG=${DOCKER_BASE_NAME}:latest"
+            echo "HUB_TAG=${DOCKER_HUB_BASE_NAME}:v${VERSION}"
+            echo "HUB_LATEST_TAG=${DOCKER_HUB_BASE_NAME}:latest"
+          } >> "$GITHUB_ENV"
       - name: Download digests
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
@@ -219,12 +221,17 @@ jobs:
       - name: Create manifest list and push
         working-directory: /tmp/digests
         run: |
+          # Each file name in /tmp/digests is a digest
+          digests=()
+          for digest in *; do
+            digests+=("${DOCKER_BASE_NAME}@sha256:${digest}")
+          done
           docker buildx imagetools create \
             -t "${PKG_TAG}" \
             -t "${PKG_LATEST_TAG}" \
             -t "${HUB_TAG}" \
             -t "${HUB_LATEST_TAG}" \
-            $(printf "${DOCKER_BASE_NAME}@sha256:%s " *)
+            "${digests[@]}"
       - name: Verify
         run: |
           docker buildx imagetools inspect "${PKG_TAG}"

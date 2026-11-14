@@ -4,7 +4,7 @@
 
 ## Built-in
 
-This image has the built-in rules of secretlint, such as [@secretlint/secretlint-rule-preset-recommend](https://www.npmjs.com/package/@secretlint/secretlint-rule-preset-recommend) and [@secretlint/secretlint-rule-pattern](https://www.npmjs.com/package/@secretlint/secretlint-rule-pattern), and this package:
+This image has the built-in rules of secretlint, such as [@secretlint/secretlint-rule-preset-recommend](https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/preset-recommend.md) and [@secretlint/secretlint-rule-pattern](https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/pattern.md), and this package:
 
 - [@secretlint/secretlint-formatter-sarif](https://www.npmjs.com/package/@secretlint/secretlint-formatter-sarif)
 

@@ -98,7 +98,8 @@ pnpm run gen:rule
 
 This uses scaffdog (`.scaffdog/new-rule.md`) to generate a built-in rule:
 
-- `packages/@secretlint/core/src/builtin/rules/<name>/index.ts` and `README.md`
+- `packages/@secretlint/core/src/builtin/rules/<name>/index.ts`
+- `docs/rules/<name>.md` (the documentation of the rule; `docs.url` points to it)
 - `packages/@secretlint/core/test/builtin/rules/<name>/snapshots/` (snapshot tests)
 
 **Do not add a new npm package for a rule.** Official rules are built into `@secretlint/core`, and a new package needs a manual npm trusted publishing setup.
@@ -135,7 +136,7 @@ export const creator: SecretLintRuleCreator<Options> = {
         type: "scanner",
         supportedContentTypes: ["text"],
         docs: {
-            url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-<name>/README.md",
+            url: "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/<name>.md",
         },
     },
     patterns: [
@@ -238,7 +239,7 @@ Check every item of [Rules for a rule](#rules-for-a-rule), and:
 1. The rule is registered in `packages/@secretlint/core/src/builtin/index.ts` (`builtinRules` and `canaryRules`)
 2. The snapshot directory has `ng.*` cases (secrets found) and `ok.*` cases (no message), including strings that look like the secret but are not
 3. Snapshots are generated with `cd packages/@secretlint/core && npm run updateSnapshot`, and each `output.json` is read, not only generated
-4. `README.md` of the rule documents its purpose, the detected formats, and the options
+4. `docs/rules/<name>.md` documents its purpose, the detected formats, and the options
 5. Prettier formatting (printWidth: 120, tabWidth: 4)
 
 ### Bug Fixer

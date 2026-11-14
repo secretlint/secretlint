@@ -21,7 +21,7 @@
             },
             "severity": "error",
             "messageId": "GRAFANA_SERVICE_ACCOUNT_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-grafana/README.md#GRAFANA_SERVICE_ACCOUNT_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/grafana.md#GRAFANA_SERVICE_ACCOUNT_TOKEN",
             "data": {
                 "TOKEN": "glsa_abcdefghijklmnopqrstuvwxyz012345_89abcdef"
             }

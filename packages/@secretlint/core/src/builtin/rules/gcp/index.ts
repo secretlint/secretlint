@@ -86,7 +86,7 @@ export const creator: SecretLintRuleCreator<Options> = {
         // Keywords are not checked for binary content, so the rule always runs for a binary file.
         keywords: ["private_key_id"],
         docs: {
-            url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-gcp/README.md",
+            url: "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/gcp.md",
         },
     },
     create(context, options) {

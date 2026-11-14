@@ -21,7 +21,7 @@
             },
             "severity": "error",
             "messageId": "GROQ_API_KEY",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-groq/README.md#GROQ_API_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/groq.md#GROQ_API_KEY",
             "data": {
                 "KEY": "gsk_aBcDeFgHiJkLmNoPqRsT1234567890abcdefghijklmnopqrstuv"
             }
@@ -46,7 +46,7 @@
             },
             "severity": "error",
             "messageId": "GROQ_API_KEY",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-groq/README.md#GROQ_API_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/groq.md#GROQ_API_KEY",
             "data": {
                 "KEY": "gsk_0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOP"
             }
@@ -71,7 +71,7 @@
             },
             "severity": "error",
             "messageId": "GROQ_API_KEY",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-groq/README.md#GROQ_API_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/groq.md#GROQ_API_KEY",
             "data": {
                 "KEY": "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"
             }

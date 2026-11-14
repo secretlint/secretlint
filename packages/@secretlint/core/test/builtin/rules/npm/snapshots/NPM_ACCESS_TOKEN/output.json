@@ -21,7 +21,7 @@
             },
             "severity": "error",
             "messageId": "NPM_ACCESS_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-npm/README.md#NPM_ACCESS_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/npm.md#NPM_ACCESS_TOKEN",
             "data": {
                 "TOKEN": "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"
             }

@@ -8,7 +8,7 @@ This package for Quick Start. It is not production use.
 
 - No Configuration
 - Built-in rules
-    - [@secretlint/secretlint-rule-preset-recommend](https://www.npmjs.com/package/@secretlint/secretlint-rule-preset-recommend)
+    - [@secretlint/secretlint-rule-preset-recommend](https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/preset-recommend.md)
 
 ## Install & Usage
 

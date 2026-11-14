@@ -178,13 +178,10 @@ For example, you can use `.gitignore` file because it has the same format:
 
 ## Ignoring error by comments
 
-[@secretlint/secretlint-rule-filter-comments](https://www.npmjs.com/package/@secretlint/secretlint-rule-filter-comments) support ignoring comment like `secretlint-disable`.
+[@secretlint/secretlint-rule-filter-comments](./rules/filter-comments.md) support ignoring comment like `secretlint-disable`.
+It is a built-in rule, and the recommended preset includes it.
 
-Install with [npm](https://www.npmjs.com/):
-
-    npm install @secretlint/secretlint-rule-filter-comments
-
-And setting to `.secretlintrc.json`:
+To use it without the preset, add it to `.secretlintrc.json`:
 
 ```json
 {
@@ -196,8 +193,8 @@ And setting to `.secretlintrc.json`:
 }
 ```
 
-[@secretlint/secretlint-rule-preset-recommend](https://www.npmjs.com/package/@secretlint/secretlint-rule-preset-recommend) includes [@secretlint/secretlint-rule-filter-comments](https://www.npmjs.com/package/@secretlint/secretlint-rule-filter-comments).
-If you have used [@secretlint/secretlint-rule-preset-recommend](../packages/@secretlint/secretlint-rule-preset-recommend), you not need to setup `@secretlint/secretlint-rule-filter-comments`.
+[@secretlint/secretlint-rule-preset-recommend](./rules/preset-recommend.md) includes [@secretlint/secretlint-rule-filter-comments](./rules/filter-comments.md).
+If you have used [@secretlint/secretlint-rule-preset-recommend](./rules/preset-recommend.md), you not need to setup `@secretlint/secretlint-rule-filter-comments`.
 
 ```json
 {

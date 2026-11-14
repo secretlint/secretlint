@@ -17,7 +17,7 @@ export const creator: SecretLintRuleCreator = {
         // The rule runs only if the content contains one of the keywords. Every reported string must contain one.
         keywords: ["SECRET"],
         docs: {
-            url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/core/src/builtin/rules/{{ inputs.name }}/README.md"
+            url: "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/{{ inputs.name }}.md"
         }
     },
     create(context) {

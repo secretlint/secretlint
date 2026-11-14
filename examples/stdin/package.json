@@ -27,7 +27,6 @@
         "test": "cat ./credential | secretlint --stdinFileName=secret.txt --format json && exit 1 || exit 0"
     },
     "devDependencies": {
-        "@secretlint/secretlint-rule-preset-recommend": "workspace:*",
         "secretlint": "workspace:*"
     },
     "publishConfig": {

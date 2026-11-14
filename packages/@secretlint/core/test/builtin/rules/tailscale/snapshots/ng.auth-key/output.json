@@ -21,7 +21,7 @@
             },
             "severity": "error",
             "messageId": "TAILSCALE_AUTH_KEY",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-tailscale/README.md#TAILSCALE_AUTH_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/tailscale.md#TAILSCALE_AUTH_KEY",
             "data": {
                 "KEY": "tskey-auth-CCCCCCCCCCCC-DDDDDDDDDDDDDDDDDDDDDDDD"
             }
