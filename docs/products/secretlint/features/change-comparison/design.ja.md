@@ -39,7 +39,7 @@
 2. **セット。** smallのセットはheadの`examples/benchmark/targets`である。他のセットでは、スクリプトはキャッシュディレクトリにディレクトリを作り、`git init`、`git fetch --depth 1 <url> <commit>`、`git checkout FETCH_HEAD`を実行し、チェックアウトが終わったら目印のファイルを書く。目印のあるディレクトリは再利用するので、セットのダウンロードは1回で済む。`--set`はカンマ区切りでセットを選ぶ。既定はすべてのセットである。
 3. **検査の実行。** スクリプトは、セットとビルドの組ごとに、セットのディレクトリでビルドのCLIを1回実行する。
    `node <build>/packages/secretlint/bin/secretlint.js "**/*" --secretlintrc <head>/examples/benchmark/.secretlintrc.json --profile --format json --output <tmp>/results.json`
-   `--profile`を指定すると標準出力はJSONのプロファイルになり、`--output`には検査結果が書かれるので、1回の実行で両方を得られる。この実行では`SECRETLINT_KEYWORD_SCAN_THREADS=1`を指定する。ワーカースレッドがあると、行テストの数はどのスレッドがどのファイルを読むかで変わるからである（vscodeでの計測: 同じビルドの2回の実行で18,993と18,955、1スレッドでは毎回17,624）。実行時間は既定のスレッド数で別に測る。両方のビルドがheadの設定ファイルを使い、各ビルドはcanaryプリセットを自身のルールに解決する。
+   `--profile`を指定すると標準出力はJSONのプロファイルになり、`--output`には検査結果が書かれるので、1回の実行で両方を得られる。プロファイルの行テストの数は比べない。ワーカースレッドがあると、どのスレッドがどのファイルを読むかで変わるからである（vscodeでの計測: 同じビルドの2回の実行で18,993と18,955）。パターンの実行回数とマッチ数は毎回同じである。両方のビルドがheadの設定ファイルを使い、各ビルドはcanaryプリセットを自身のルールに解決する。
 4. **実行時間。** `hyperfine`が`PATH`にある場合、スクリプトはセットのディレクトリで、`--profile`なしの検査の2つのコマンド（`--format json --output /dev/null`）で`hyperfine --ignore-failure --warmup 1 --runs <n> --export-json <tmp>/time.json`を実行する。先にbaseをすべて実行し、次にheadをすべて実行する。検査がシークレットを見つけると終了ステータスは1になるので、`--ignore-failure`が必要である。コマンドの引数はそれぞれシェル向けにクォートするので、globはそのままSecretlintに渡り、空白を含むパスも動く。既定の実行回数はsmallとmediumが10、largeが5、hugeが3で、`--runs`で上書きできる。
 5. **違い。** スクリプトは2つのプロファイルと2つの検査結果を比べ（データモデルを参照）、標準出力にMarkdownを、`--json <path>`（既定は現在のディレクトリの`compare-result.json`）にJSONを書く。
 
@@ -94,8 +94,8 @@ type SetResult = {
 type PatternDiff = {
     id: string; // "<ruleId>#<index>"
     pattern: string;
-    base: { runs: number; matches: number; lineTests: number } | null; // null: パターンが仕事をしなかった、または存在しない
-    head: { runs: number; matches: number; lineTests: number } | null;
+    base: { runs: number; matches: number } | null; // null: パターンが仕事をしなかった、または存在しない
+    head: { runs: number; matches: number } | null;
 };
 type Finding = { ruleId: string; messageId: string; file: string; line: number }; // fileはセットからの相対パス
 type Stats = { median: number; mean: number; stddev: number; runs: number }; // ミリ秒

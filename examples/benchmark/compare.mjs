@@ -208,9 +208,7 @@ const lintWithProfile = (buildName, buildDir, set, tmpDir) => {
             "--output",
             resultsPath
         ],
-        // With worker threads, the number of line tests depends on which thread reads which file.
-        // One thread gives the same numbers in each run.
-        { cwd: set.dir, capture: true, env: { SECRETLINT_KEYWORD_SCAN_THREADS: "1" } }
+        { cwd: set.dir, capture: true }
     );
     if (result.status !== 0 && result.status !== 1) {
         throw new CompareError(
@@ -308,7 +306,9 @@ const patternCounts = (profile) =>
             `${pattern.ruleId}#${pattern.index}`,
             {
                 pattern: pattern.pattern,
-                counts: { runs: pattern.runs, matches: pattern.matches, lineTests: pattern.lineTests }
+                // Line tests are not compared: with worker threads, their number depends on
+                // which thread reads which file, so it changes between runs of the same build
+                counts: { runs: pattern.runs, matches: pattern.matches }
             }
         ])
     );
@@ -470,15 +470,12 @@ const markdownSet = (result, sets) => {
         lines.push("No change in pattern work.", "");
     } else {
         lines.push(
-            "**Pattern work** (runs / matches / line tests)",
+            "**Pattern work** (runs / matches)",
             "",
             "| Pattern | Base | Head |",
             "| --- | --- | --- |",
             ...result.patterns.map((pattern) => {
-                const counts = (value) =>
-                    value
-                        ? `${formatCount(value.runs)} / ${formatCount(value.matches)} / ${formatCount(value.lineTests)}`
-                        : "-";
+                const counts = (value) => (value ? `${formatCount(value.runs)} / ${formatCount(value.matches)}` : "-");
                 return `| ${escapeCell(pattern.id)} | ${counts(pattern.base)} | ${counts(pattern.head)} |`;
             }),
             ""

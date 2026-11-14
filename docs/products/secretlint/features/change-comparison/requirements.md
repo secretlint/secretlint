@@ -35,7 +35,7 @@ Scenario: When the head adds a pattern, the output shows the work of the new pat
 
 - Given: The head adds a rule with a pattern that `master` does not have, and the base is `master`.
 - When: The author runs the comparison script with the small set of files.
-- Then: The Markdown output has a row for the new pattern with its number of runs, matches, and line tests in the base (none) and in the head.
+- Then: The Markdown output has a row for the new pattern with its number of runs and matches in the base (none) and in the head.
 
 Scenario: When the head does not change the lint, the output says that nothing changed
 
@@ -111,7 +111,7 @@ None. No metric is defined for this feature.
 
 | Item | Source | Why |
 | --- | --- | --- |
-| Work of each pattern | The profile of each build: how many times each pattern ran, matched, and tested a line | The same files give the same numbers in each run, so a difference is a change of the code, not noise. A new pattern with many runs and no matches shows that its keywords are too common |
+| Work of each pattern | The profile of each build: how many times each pattern ran and matched | The same files give the same numbers in each run, so a difference is a change of the code, not noise. A new pattern with many runs and no matches shows that its keywords are too common |
 | Findings | The lint results of each build | A rule change that adds many findings is likely to add false positives. Secretlint prefers fewer false positives |
 | Run time | Each build runs several times on the same machine, one build after the other | It is the time that a user sees. It changes between runs, so only a large ratio is shown as a warning |
 
