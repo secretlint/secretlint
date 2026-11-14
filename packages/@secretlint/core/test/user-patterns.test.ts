@@ -127,6 +127,14 @@ describe("user-defined patterns of @secretlint/secretlint-rule-pattern", () => {
                     textView({ patterns: [{ name: "bad", patterns: ["/password/"], keywords: keywords as string[] }] }),
                 /Pattern "bad" has/,
             );
+            // an entry with only `filePathGlobs` does not use keywords, but they are checked too
+            assert.throws(
+                () =>
+                    textView({
+                        patterns: [{ name: "bad", filePathGlobs: ["**/.env"], keywords: keywords as string[] }],
+                    }),
+                /Pattern "bad" has/,
+            );
         }
     });
     it("throws for an entry without patterns and filePathGlobs", () => {

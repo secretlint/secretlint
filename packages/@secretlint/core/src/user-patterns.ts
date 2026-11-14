@@ -88,6 +88,8 @@ export const compileUserPatterns = (options: Options): UserPattern[] => {
     const entries = options.patterns ?? [];
     return entries.flatMap((entry): UserPattern[] => {
         assertEntry(entry);
+        // validate `keywords` for every entry, even if a path-only entry does not use them
+        const entryKeywords = keywordsOfEntry(entry);
         const filePathGlobs = entry.filePathGlobs && entry.filePathGlobs.length > 0 ? entry.filePathGlobs : undefined;
         // A source without a file path is not filtered by the globs, as the rule did before
         const filePathFilter = filePathGlobs
@@ -118,7 +120,6 @@ export const compileUserPatterns = (options: Options): UserPattern[] => {
             ];
         }
         const allows = [...globalAllows, ...(entry.allows ?? [])];
-        const entryKeywords = keywordsOfEntry(entry);
         return patternStrings.map((patternString): UserPattern => {
             // the same RegExp as `matchPatterns()` of @textlint/regexp-string-matcher creates
             const regex = createRegExp(patternString);
