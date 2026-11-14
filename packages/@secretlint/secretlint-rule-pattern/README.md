@@ -105,6 +105,7 @@ When no keyword is found, such as for `/[0-9a-f]{64}/`, the pattern runs on ever
 - Every match of the patterns must contain one of the keywords. A match without one is not reported.
 - `"keywords": []` runs the patterns on every file.
 - `secretlint --profile` shows a pattern that runs on every file as `<name> (no keywords)`.
+- Keywords are ASCII, so a pattern with the `i` flag can miss a match that uses a non-ASCII letter in place of a letter of the keyword. secretlint adds the `u` flag to every pattern, and with `iu`, `k` also matches the Kelvin sign `K` (U+212A) and `s` also matches the long s `ſ` (U+017F). For example, `/token=\w+/i` gets the keyword `token=`, and `to\u212Aen=abc123` (written with the Kelvin sign) is not reported, because the file does not contain `token=`. Write `"keywords": []` if a pattern should also find such text.
 
 ## MessageIDs
 
