@@ -285,6 +285,34 @@ export const isGuardMetInText = (text: string, start: number, table: Uint8Array,
     return true;
 };
 /**
+ * Write the guard in the syntax of `after`, with the keyword before it: `00 [0-9A-Za-z_-]{40,}`.
+ * It is the name of a guarded keyword in the profile.
+ */
+export const formatGuardedKeyword = (keyword: string, guard: KeywordGuard): string => {
+    const codes = Array.from(guard.chars, (char) => char.charCodeAt(0)).filter((code) => code !== 0x2d);
+    const write = (code: number): string => {
+        const char = String.fromCharCode(code);
+        return char === "\\" || char === "]" ? `\\${char}` : char;
+    };
+    let set = "";
+    for (let i = 0; i < codes.length; ) {
+        let end = i;
+        while (end + 1 < codes.length && codes[end + 1] === (codes[end] as number) + 1) {
+            end++;
+        }
+        // three or more characters in a row are written as a range
+        if (end - i >= 2) {
+            set += `${write(codes[i] as number)}-${write(codes[end] as number)}`;
+        } else {
+            for (let j = i; j <= end; j++) {
+                set += write(codes[j] as number);
+            }
+        }
+        i = end + 1;
+    }
+    return `${keyword} [${set}${guard.chars.includes("-") ? "-" : ""}]{${guard.min},}`;
+};
+/**
  * The key of a guard: two guards with the same key check the same thing
  */
 export const keywordGuardKey = (guard: KeywordGuard | undefined): string => {

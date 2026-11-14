@@ -13,6 +13,7 @@
 import fs from "node:fs";
 import {
     createKeywordScanner,
+    type KeywordScanGuardCount,
     type KeywordScanLineTests,
     type KeywordScanPlan,
     type KeywordScanResult,
@@ -137,6 +138,10 @@ export type WorkerMessage =
            * The tests of lines for each pattern. It is empty without the profile
            */
           lineTests: KeywordScanLineTests[];
+          /**
+           * The places of each keyword with a guard. It is empty without the profile
+           */
+          guardCounts: KeywordScanGuardCount[];
       };
 export type WorkerData = {
     plan: KeywordScanPlan;
@@ -198,6 +203,7 @@ export const scanFilesInWorker = (
                     scannedCount,
                     duration: performance.now() - startTime,
                     lineTests: scanner.lineTests(),
+                    guardCounts: scanner.takeGuardCounts(),
                 },
                 [],
             );

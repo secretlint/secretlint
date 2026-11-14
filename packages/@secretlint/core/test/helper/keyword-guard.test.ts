@@ -1,5 +1,5 @@
 import assert from "node:assert";
-import { parseKeywordGuard, parseKeywordObject } from "../../src/helper/keyword-guard.js";
+import { formatGuardedKeyword, parseKeywordGuard, parseKeywordObject } from "../../src/helper/keyword-guard.js";
 
 describe("keyword-guard", () => {
     describe("parseKeywordGuard", () => {
@@ -56,6 +56,18 @@ describe("keyword-guard", () => {
             assert.throws(() => parseKeywordGuard("[a-z]{4,}[0-9]{2,}"), /is not supported/);
             assert.throws(() => parseKeywordGuard("[a-z]{4,}$"), /is not supported/);
             assert.throws(() => parseKeywordGuard("[a-z]{4,}?"), /is not supported/);
+        });
+    });
+    describe("formatGuardedKeyword", () => {
+        it("writes the guard in the syntax of `after`", () => {
+            const format = (after: string) => formatGuardedKeyword("00", parseKeywordGuard(after));
+            assert.strictEqual(format("[A-Za-z0-9_-]{40,}"), "00 [0-9A-Z_a-z-]{40,}");
+            assert.strictEqual(format("[ab]{1,}"), "00 [ab]{1,}");
+            assert.strictEqual(format("[\\\\\\]x]{2,}"), "00 [\\\\\\]x]{2,}");
+            // the result is a guard with the same meaning
+            for (const after of ["[A-Za-z0-9_-]{40,}", "[+-/]{3,}", "[a\\]\\\\[.+*-]{1,}", "[-]{2,}"]) {
+                assert.deepStrictEqual(parseKeywordGuard(format(after).slice(3)), parseKeywordGuard(after), after);
+            }
         });
     });
     describe("parseKeywordObject", () => {

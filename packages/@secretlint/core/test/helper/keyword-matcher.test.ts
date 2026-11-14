@@ -224,14 +224,17 @@ describe("keyword-matcher", () => {
             });
         });
         it("counts the places of a guarded keyword only when it is asked", () => {
-            const guards = [parseKeywordGuard("[a-z]{4,}"), undefined];
-            const counting = createKeywordMatcher(["00", "tok_"], guards, { countGuards: true });
+            const guards = [parseKeywordGuard("[a-z]{4,}"), undefined, parseKeywordGuard("[a-z]{4,}")];
+            const counting = createKeywordMatcher(["00", "tok_", "zz"], guards, { countGuards: true });
             counting.scan("00abcd 00 00 tok_");
             counting.scan(new TextEncoder().encode("00abcd 00"));
-            assert.deepStrictEqual(counting.guardCounts(), [{ keywordIndex: 0, found: 5, met: 2 }]);
-            const matcher = createKeywordMatcher(["00", "tok_"], guards);
+            // "zz" is not found, so it is not in the result
+            assert.deepStrictEqual(counting.takeGuardCounts(), [{ keywordIndex: 0, found: 5, met: 2 }]);
+            // the counts start again after they are taken
+            assert.deepStrictEqual(counting.takeGuardCounts(), []);
+            const matcher = createKeywordMatcher(["00", "tok_", "zz"], guards);
             matcher.scan("00abcd 00 00 tok_");
-            assert.deepStrictEqual(matcher.guardCounts(), []);
+            assert.deepStrictEqual(matcher.takeGuardCounts(), []);
         });
         it("caches the matcher by the keywords and their guards", () => {
             const guard = parseKeywordGuard("[a-z0-9]{4,}");

@@ -77,6 +77,7 @@ describe("profile-report", () => {
                     lineTests: 4,
                 },
             ],
+            keywordGuards: [],
             slowestFiles: [
                 { filePath: "/cwd/a.txt", duration: 40 },
                 { filePath: "/cwd/b.txt", duration: 2 },
@@ -203,6 +204,35 @@ Time(ms)  File
             ),
         );
     });
+    it("should report the keywords with a guard, in the order of the places where they were found", () => {
+        const report = createProfileReport([
+            stat("secretlint>cli", undefined, 1, 100),
+            stat("@core>keyword-guard", "sk [0-9a-f]{32,}", 20, 0),
+            stat("@core>keyword-guard-met", "sk [0-9a-f]{32,}", 0, 0),
+            stat("@core>keyword-guard", "00 [0-9A-Z_a-z-]{40,}", 1200, 0),
+            stat("@core>keyword-guard-met", "00 [0-9A-Z_a-z-]{40,}", 3, 0),
+        ]);
+        assert.deepStrictEqual(report.keywordGuards, [
+            { keyword: "00 [0-9A-Z_a-z-]{40,}", found: 1200, met: 3 },
+            { keyword: "sk [0-9a-f]{32,}", found: 20, met: 0 },
+        ]);
+        // the counts are not phases
+        assert.deepStrictEqual(
+            report.phases.map((phase) => phase.name),
+            ["secretlint>cli"],
+        );
+        const output = formatProfileReport(report, { cwd: "/cwd", pathSeparator: "/" });
+        assert.ok(
+            output.endsWith(
+                [
+                    "Found  Met  Keyword with a guard",
+                    " 1200    3  00 [0-9A-Z_a-z-]{40,}",
+                    "   20    0  sk [0-9a-f]{32,}",
+                ].join("\n"),
+            ),
+            output,
+        );
+    });
     it("should create an empty report if nothing is recorded", () => {
         const report = createProfileReport([]);
         assert.deepStrictEqual(report, {
@@ -212,6 +242,7 @@ Time(ms)  File
             keywordScanThreads: [],
             rules: [],
             patterns: [],
+            keywordGuards: [],
             slowestFiles: [],
         });
         assert.strictEqual(

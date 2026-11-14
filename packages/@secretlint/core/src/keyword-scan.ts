@@ -11,8 +11,8 @@
  * so it tells if a rule runs for the source.
  * It does not import rules or config, and it does not depend on Node.js.
  */
-import { getKeywordMatcher } from "./helper/keyword-matcher.js";
-import type { KeywordGuard } from "./helper/keyword-guard.js";
+import { createKeywordMatcher, getKeywordMatcher } from "./helper/keyword-matcher.js";
+import { formatGuardedKeyword, type KeywordGuard } from "./helper/keyword-guard.js";
 import { hasLineMatchInBytes, isKeywordFound } from "./helper/line-check.js";
 
 /**
@@ -136,11 +136,23 @@ export type KeywordScanner = {
      * The duration is in milliseconds.
      */
     lineTests(): KeywordScanLineTests[];
+    /**
+     * The places of each keyword with a guard since the last call, if the scanner was created with `profile: true`.
+     */
+    takeGuardCounts(): KeywordScanGuardCount[];
 };
 export type KeywordScanLineTests = { profileId: string; count: number; duration: number };
+/**
+ * The places of a keyword with a guard: where the keyword was found, and where its guard was met.
+ * `id` is the keyword and its guard, such as `00 [0-9A-Za-z_-]{40,}`.
+ */
+export type KeywordScanGuardCount = { id: string; found: number; met: number };
 
 export const createKeywordScanner = (plan: KeywordScanPlan, options: { profile?: boolean } = {}): KeywordScanner => {
-    const matcher = getKeywordMatcher(plan.keywords, plan.guards);
+    // The matcher counts the places of the guarded keywords only for the profile
+    const matcher = options.profile
+        ? createKeywordMatcher(plan.keywords, plan.guards, { countGuards: true })
+        : getKeywordMatcher(plan.keywords, plan.guards);
     const ruleCheck = plan.ruleCheck;
     const linePatterns = ruleCheck.linePatterns.map((pattern) => {
         return {
@@ -176,6 +188,15 @@ export const createKeywordScanner = (plan: KeywordScanPlan, options: { profile?:
             const runsRules =
                 hasKeyword && (lineMatched || isKeywordFound(ruleCheck.contentKeywordIndexes, hits.found));
             return { planId: plan.id, found: hits.found, hasKeyword, lineMatched, runsRules };
+        },
+        takeGuardCounts() {
+            return matcher.takeGuardCounts().map(({ keywordIndex, found, met }) => {
+                const id = formatGuardedKeyword(
+                    plan.keywords[keywordIndex] as string,
+                    plan.guards[keywordIndex] as KeywordGuard,
+                );
+                return { id, found, met };
+            });
         },
         lineTests() {
             return linePatterns.filter((pattern) => pattern.tests.count > 0).map((pattern) => ({ ...pattern.tests }));

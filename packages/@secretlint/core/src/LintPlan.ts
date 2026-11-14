@@ -20,7 +20,7 @@ import type {
 } from "@secretlint/types";
 import { secretLintProfiler } from "@secretlint/profiler";
 import debug0 from "debug";
-import { getKeywordMatcher, KeywordMatcher, normalizeKeyword } from "./helper/keyword-matcher.js";
+import { createKeywordMatcher, getKeywordMatcher, KeywordMatcher, normalizeKeyword } from "./helper/keyword-matcher.js";
 import { type KeywordGuard, keywordGuardKey, parseKeywordObject } from "./helper/keyword-guard.js";
 import { createKeywordScanPlan, type KeywordScanPlan } from "./keyword-scan.js";
 import { AllowMessage } from "./messages/filter-message-id.js";
@@ -582,7 +582,15 @@ const createView = (plan: LintPlan, contentType: ContentType): PlanView => {
     const sortedKeys = [...allKeywords.keys()].sort();
     const matcherKeywords = sortedKeys.map((key) => (allKeywords.get(key) as PlanKeyword).keyword);
     const matcherGuards = sortedKeys.map((key) => (allKeywords.get(key) as PlanKeyword).guard);
-    const matcher = sortedKeys.length > 0 ? getKeywordMatcher(matcherKeywords, matcherGuards) : undefined;
+    // For the profile, the matcher counts the places of the keywords with a guard.
+    // Such a matcher is not shared, and it is created only if the profiler is enabled when the view is created
+    const countsGuards = secretLintProfiler.isEnabled && matcherGuards.some((guard) => guard !== undefined);
+    const createMatcher = (): KeywordMatcher => {
+        return countsGuards
+            ? createKeywordMatcher(matcherKeywords, matcherGuards, { countGuards: true })
+            : getKeywordMatcher(matcherKeywords, matcherGuards);
+    };
+    const matcher = sortedKeys.length > 0 ? createMatcher() : undefined;
     const indexOf = new Map(sortedKeys.map((key, index) => [key, index]));
     const toIndexes = (keywords: PlanKeyword[] | undefined): number[] | undefined => {
         return keywords?.map((keyword) => indexOf.get(keywordKey(keyword)) as number);
@@ -633,7 +641,7 @@ const createView = (plan: LintPlan, contentType: ContentType): PlanView => {
     return {
         rules,
         matcher,
-        // The scanner of the plan uses the same matcher: the matcher is cached by its keywords
+        // The scanner of the plan uses the same matcher: the matcher is cached by its keywords and guards
         keywordScanPlan:
             matcher !== undefined
                 ? createKeywordScanPlan({

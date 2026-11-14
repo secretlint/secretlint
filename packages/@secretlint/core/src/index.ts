@@ -1,4 +1,5 @@
-import type { KeywordHits } from "./helper/keyword-matcher.js";
+import type { KeywordHits, KeywordMatcher } from "./helper/keyword-matcher.js";
+import { formatGuardedKeyword, type KeywordGuard } from "./helper/keyword-guard.js";
 import type {
     SecretLintCoreConfig,
     SecretLintCoreConfigRule,
@@ -158,6 +159,20 @@ type BytesCheck = {
     readonly runsPatterns: boolean;
 };
 /**
+ * Add the places of the keywords with a guard to the profile.
+ * The matcher counts them only if it was created for the profile.
+ */
+const recordGuardCounts = (matcher: KeywordMatcher): void => {
+    for (const { keywordIndex, found, met } of matcher.takeGuardCounts()) {
+        const id = formatGuardedKeyword(
+            matcher.keywords[keywordIndex] as string,
+            matcher.guards[keywordIndex] as KeywordGuard,
+        );
+        secretLintProfiler.count("@core>keyword-guard", id, found);
+        secretLintProfiler.count("@core>keyword-guard-met", id, met);
+    }
+};
+/**
  * 1. Scan the bytes once for the keywords of all rules.
  * 2. Check the patterns on the lines that have a keyword, without decoding the whole content.
  */
@@ -199,6 +214,7 @@ const checkBytes = (
     const hits = matcher.scan(bytes, contentStart);
     if (profiling) {
         secretLintProfiler.record("@core>keyword-scan", undefined, scanStartTime);
+        recordGuardCounts(matcher);
     }
     const hasKeyword = hits.count > 0;
     const hasFilePatternKeyword = found(hits.found);
@@ -316,6 +332,7 @@ const lintWithPlan = (
         const startTime = secretLintProfiler.now();
         const hits = matcher.scan(content);
         secretLintProfiler.record("@core>keyword-scan", undefined, startTime);
+        recordGuardCounts(matcher);
         return hits;
     };
     const textHits = scanText();

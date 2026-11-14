@@ -117,6 +117,7 @@ describe("parallel keyword scan", () => {
             scannedCount: FILE_COUNT - 1,
             duration: (messages.at(-1) as { duration: number }).duration,
             lineTests: [],
+            guardCounts: [],
         });
     });
     it("should hand all files if a rule runs without keywords", async () => {

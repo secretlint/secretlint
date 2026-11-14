@@ -66,9 +66,10 @@ export type KeywordMatcher = {
     keywordsOfState(state: number): readonly number[];
     /**
      * For each keyword with a guard, the number of the places where the keyword was found
-     * and where its guard was met. It is counted only if the matcher was created with `countGuards: true`.
+     * and where its guard was met, since the last call. A keyword that was not found is not in the result.
+     * It is counted only if the matcher was created with `countGuards: true`.
      */
-    guardCounts(): KeywordGuardCount[];
+    takeGuardCounts(): KeywordGuardCount[];
 };
 export type KeywordGuardCount = { keywordIndex: number; found: number; met: number };
 
@@ -362,20 +363,18 @@ export const createKeywordMatcher = (
     return {
         keywords,
         guards: keywords.map((_, index) => guards[index]),
-        guardCounts(): KeywordGuardCount[] {
+        takeGuardCounts(): KeywordGuardCount[] {
             if (!guardCounts) {
                 return [];
             }
             const counts: KeywordGuardCount[] = [];
-            guardTables.forEach((table, keywordIndex) => {
-                if (table !== undefined) {
-                    counts.push({
-                        keywordIndex,
-                        found: guardCounts[keywordIndex * 2] as number,
-                        met: guardCounts[keywordIndex * 2 + 1] as number,
-                    });
+            for (let keywordIndex = 0; keywordIndex < keywords.length; keywordIndex++) {
+                const found = guardCounts[keywordIndex * 2] as number;
+                if (found > 0) {
+                    counts.push({ keywordIndex, found, met: guardCounts[keywordIndex * 2 + 1] as number });
                 }
-            });
+            }
+            guardCounts.fill(0);
             return counts;
         },
         match(text: string): Readonly<Uint8Array> {

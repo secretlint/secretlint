@@ -106,6 +106,9 @@ type SecretLintProfilerMarkedSpanType = SpanOfMarker<SecretLintProfilerMarker>;
  *    read files and scan them for the keywords of the rules. `id` is the name of the thread: "main" or "worker {number}"
  * - "@node>read-file": read a file and decide if it is text or binary
  * - "@core>keyword-scan": scan the content once for the keywords of all rules. It is shared by all rules
+ * - "@core>keyword-guard": the number of the places where a keyword with a guard was found. It has no duration.
+ *    `id` is the keyword and its guard, such as `00 [0-9A-Za-z_-]{40,}`
+ * - "@core>keyword-guard-met": the number of the places where the guard of the keyword was met. It has no duration
  * - "@core>line-check": check the lines that have a keyword with the patterns, before decoding the whole content.
  *    It includes "@core>pattern-line-test"
  * - "@core>pattern-line-test": test a line with a pattern, in "@core>line-check". `id` is the id of the pattern
@@ -118,6 +121,8 @@ export type SecretLintProfilerStatType =
     | "@node>keyword-scan-thread"
     | "@node>read-file"
     | "@core>keyword-scan"
+    | "@core>keyword-guard"
+    | "@core>keyword-guard-met"
     | "@core>line-check"
     | "@core>pattern-line-test"
     | "@core>pattern"

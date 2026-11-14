@@ -65,6 +65,11 @@ describe("keyword scan", () => {
         assert.strictEqual(scan("key_ab KEY_AB12 key_").hasKeyword, false);
         assert.deepStrictEqual([...scan("Key_ab12").found], [1, 0]);
         assert.strictEqual(scan("x key_ab12").runsRules, true);
+        // the places of a guarded keyword are counted only for the profile
+        assert.deepStrictEqual(scanner.takeGuardCounts(), []);
+        const profiled = createKeywordScanner(plan, { profile: true });
+        profiled.scan(new TextEncoder().encode("key_ab KEY_AB12 key_ key_ab12"));
+        assert.deepStrictEqual(profiled.takeGuardCounts(), [{ id: "key_ [0-9a-z]{4,}", found: 4, met: 1 }]);
         // the id of the plan has the guards
         (rule.patterns as NonNullable<SecretLintRuleCreator["patterns"]>)[0]!.keywords = ["tok_", "KEY_"];
         const unguardedPlan = getKeywordScanPlan({ config: toConfig({ ...rule }) });
