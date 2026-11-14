@@ -13,7 +13,7 @@
 
 ### スコープ
 
-- 無視ルールの出どころ: 組み込みのルール、`.secretlintignore`、`.gitignore`
+- 無視ルールの出どころ: 組み込みのルール、`.secretlintignore`、`--secretlintignore`で渡した無視ファイル、`.gitignore`
 - 無視ルールの意味
 - 無視ルールでの大文字と小文字の扱い
 
@@ -74,6 +74,36 @@ Scenario: ルールとファイル名の違いが大文字と小文字だけの�
 - When: 開発者がLinux、macOS、Windowsのいずれかで`secretlint "**/*"`を実行する。
 - Then: どのOSでも`fixtures/`の中のファイルはlintされない。
 
+### 開発者が渡した一つの無視ファイルを使う
+
+開発者として、`--secretlintignore`で無視ファイルを一つ追加したい。それによって、プロジェクトの外にある共有の無視ファイルや、プロジェクトの別のディレクトリにある無視ファイルのルールで、`.secretlintignore`に加えてファイルを外せる。
+
+**受け入れ条件:**
+
+Scenario: 絶対パスを渡した場合、そのファイルのルールを作業ディレクトリから使う
+
+- Given: `/shared/ignore`にルール`test/fixtures/`があり、作業ディレクトリの`test/fixtures/key.pem`に秘密情報がある。
+- When: 開発者が`secretlint "**/*" --secretlintignore=/shared/ignore`を実行する。
+- Then: `test/fixtures/key.pem`はlintされない。
+
+Scenario: ディレクトリを含む相対パスを渡した場合、作業ディレクトリから探す
+
+- Given: `config/ignore`にルール`dist/`があり、`dist/app.js`に秘密情報がある。
+- When: 開発者が`secretlint "**/*" --secretlintignore=config/ignore`を実行する。
+- Then: `dist/app.js`はlintされない。
+
+Scenario: ファイルを渡した場合も、プロジェクトの`.secretlintignore`は読む
+
+- Given: `.secretlintignore`にルール`a.txt`、`sub/.secretlintignore`にルール`c.txt`、`config/ignore`にルール`b.txt`がある。
+- When: 開発者が`secretlint "**/*" --secretlintignore=config/ignore`を実行する。
+- Then: `a.txt`、`b.txt`、`sub/c.txt`のどれもlintされない。
+
+Scenario: 渡したファイルが存在しない場合、警告を出し、そのファイルでは何も無視しない
+
+- Given: 作業ディレクトリに`missing-ignore`が存在しない。
+- When: 開発者が`secretlint "**/*" --secretlintignore=missing-ignore`を実行する。
+- Then: ファイル名を含む警告が標準エラーに出て、オプションを渡さなかったものとしてファイルがlintされる。
+
 ## KPI
 
 この部分についてはなし。
@@ -93,10 +123,11 @@ Scenario: ルールとファイル名の違いが大文字と小文字だけの�
 ##### 無視ルールの出どころ
 
 - **組み込みのルール:** `.git`と`node_modules`のディレクトリ、Secretlintの設定ファイル（`.secretlintrc`と、その`.json`、`.yaml`、`.yml`、`.js`の形）、名前が`.secretlintignore`で始まるファイル。これらは常に無視します。
-- **`.secretlintignore`:** `--secretlintignore`で渡した名前のファイル。既定は`.secretlintignore`です。
+- **`.secretlintignore`:** `.gitignore`と同じように各ディレクトリで読みます。
+- **`--secretlintignore`で渡したファイル:** Gitの`core.excludesFile`のファイルと同じように、ほかの無視ファイルに加えて読みます。相対パスは作業ディレクトリから解決し、ルールは作業ディレクトリから照合します。そのルールはGitと同じく最も弱く、`.secretlintignore`や`.gitignore`の`!`で始まるルールはパスを対象に戻せます。API（`ignoreFilePath`を渡した`runSecretLint()`と`searchFiles()`）も同じです。
 - **`.gitignore`:** 既定で使います。`--no-gitignore`で無効にできます。
 
-無視ファイルはどのディレクトリにも置けます。そのルールは、置いたディレクトリとその下のディレクトリに適用されます。
+`.secretlintignore`と`.gitignore`はどのディレクトリにも置けます。そのルールは、置いたディレクトリとその下のディレクトリに適用されます。
 
 ##### ルールの意味
 
@@ -122,7 +153,9 @@ Gitはリポジトリのファイルシステムによってこれを決めま�
 
 ##### 無視ファイルが読めない
 
-無視ファイルが存在しない場合や、権限がなくて読めない場合は、空のファイルとして扱い、コマンドは続行します。
+`.secretlintignore`や`.gitignore`が存在しない場合や、権限がなくて読めない場合は、空のファイルとして扱い、コマンドは続行します。
+
+`--secretlintignore`で渡したファイルが存在しない場合は、ファイル名を含む警告を標準エラーに出し、空のファイルとして扱い、コマンドは続行します。開発者が名前を指定したファイルなので、黙って読み飛ばしません。存在するが読めない場合は、コマンドは失敗します。開発者が渡したルールなしでlintすると、開発者が外したつもりのファイルを報告してしまうためです。
 
 ##### すべてのファイルが無視された
 

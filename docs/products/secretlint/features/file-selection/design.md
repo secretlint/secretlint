@@ -23,6 +23,14 @@ Expanding the globs of the user, symbolic links, and the lint of the chosen file
 ## Implementation approach
 
 `searchFiles()` of the `secretlint` package calls `walk()` of `@secretlint/walker` with the built-in rules, the names of the ignore files, and `ignoreCase: true`.
+
+### The ignore file given by `--secretlintignore`
+
+The walker looks for ignore files by name in each directory (`ignoreFiles`), so a path such as `config/ignore` or `/shared/ignore` can not be given to it as a name.
+`searchFiles()` always passes `.secretlintignore` in `ignoreFiles`, and the walker reads it in each directory.
+With `ignoreFilePath`, `searchFiles()` also resolves it from `cwd`, reads the file itself, and adds its lines after the built-in rules in `extraIgnorePatterns`. These rules belong to the top level at the working directory, so they are matched from it, and the levels of `.secretlintignore` and `.gitignore` (including the ones at the working directory) are stronger, like `core.excludesFile` in Git.
+A missing file (`ENOENT`) gives a warning by `console.warn` and no rules. Any other error of reading the file is thrown.
+The CLI option has no default value, so the CLI and the API take the same path.
 The walker reads directories from the top, and tests each entry before it goes into a directory. It does not read an ignored directory, which also gives the Git behavior that a file in an ignored directory can not be included again.
 
 ### The matcher has no dependency and follows Git
@@ -72,7 +80,8 @@ sequenceDiagram
     participant CLI as secretlint (CLI)
     participant Walker as @secretlint/walker walk()
     participant Matcher as gitignore.ts
-    CLI->>Walker: patterns, ignore file names, built-in rules, ignoreCase
+    CLI->>CLI: read the file of --secretlintignore, if given
+    CLI->>Walker: patterns, ignore file names, built-in rules (+ the given file), ignoreCase
     loop each directory
         Walker->>Walker: readdir
         Walker->>Matcher: compileGitignore(ignore files of the directory)
@@ -132,6 +141,14 @@ A walker written in Rust (the `ignore` crate of ripgrep) was measured at about t
 ### Follow the file system for the case of letters
 
 It is what Git does. It was not chosen because of the principle "Reduce false positives" of the Product.
+
+### Pass the path of the given file to the walker
+
+The walker could take paths of ignore files and their base directories. It would add an API to the walker only for this case, while `extraIgnorePatterns` already means "rules at the working directory".
+
+### Read only the given file
+
+The given file could replace the cascaded `.secretlintignore`, like `--ignore-path` of Prettier and oxlint. It was not chosen: the given file is used mostly as a shared file, and replacing would make the `.secretlintignore` of the project stop working when a shared file is given, so files that the project leaves out would be reported (the principle "Reduce false positives"). Git and ripgrep (`--ignore-file`) also add the given file.
 
 ## Open questions
 
