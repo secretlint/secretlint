@@ -1,12 +1,13 @@
 /**
- * The work of a worker thread: read files and scan them for the keywords of the rules.
+ * The work of a worker thread: read files, detect the content type, and scan them for the keywords of the rules.
  *
  * It does not import rules or config: a worker needs only the keyword scan of `@secretlint/core`.
  * The main thread and the workers share the list of the files and a SharedArrayBuffer,
  * and each thread claims the next files until no file is left.
  * So a thread that starts late, or that fails, only handles fewer files.
  *
- * A worker hands the bytes of a file to the main thread only if a rule may run for the file,
+ * A worker also checks the lines that have a keyword, with the regular expressions that the plan has as data.
+ * It hands the bytes of a file to the main thread only if a rule runs for the file,
  * so the main thread does not read that file again.
  */
 import fs from "node:fs";
@@ -105,15 +106,14 @@ export type HandedFiles = {
         offset: number;
         byteLength: number;
         /**
+         * The content type that the worker detected from the name and the bytes of the file
+         */
+        contentType: "text" | "binary" | "unknown";
+        /**
          * The result of the keyword scan for the text content type.
-         * undefined if the file has no keyword, or if the file is not text by its name
+         * undefined if the file has no keyword, or if the file is not text
          */
         keywordScanResult: KeywordScanResult | undefined;
-        /**
-         * true if the file is text by its name, so the keyword scan is for the content type of the file
-         */
-        isTextByName: boolean;
-        contentType: "text" | "binary" | "unknown";
     }[];
 };
 export type WorkerMessage =
@@ -199,11 +199,10 @@ export const scanFilesInWorker = (
             }
             scannedCount++;
             const contentType = detectContentType(filePath, buffer.subarray(0, byteLength));
-            const isTextByName = contentType === "text";
             // The plan is for the text content type
-            const scan = isTextByName ? scanner.scan(buffer.subarray(0, byteLength)) : undefined;
+            const scan = contentType === "text" ? scanner.scan(buffer.subarray(0, byteLength)) : undefined;
             const hasKeyword = scan !== undefined && scan.hits.count > 0;
-            if (isTextByName && plan.requiresKeyword && (!hasKeyword || scan.runsRules === false)) {
+            if (scan !== undefined && !scan.runsRules && plan.requiresKeyword) {
                 // No rule runs for the file
                 state.states[fileIndex] = FileScanState.NoMessages;
                 continue;
@@ -228,7 +227,7 @@ export const scanFilesInWorker = (
                 };
                 transfer.push(positions.buffer as ArrayBuffer);
             }
-            files.push({ fileIndex, offset: batchLength, byteLength, keywordScanResult, isTextByName, contentType });
+            files.push({ fileIndex, offset: batchLength, byteLength, keywordScanResult, contentType });
             batchLength += byteLength;
             state.states[fileIndex] = FileScanState.Handed;
         }

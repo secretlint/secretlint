@@ -89,7 +89,8 @@ describe("parallel keyword scan", () => {
         );
         for (const { batch, file } of handed) {
             assert.strictEqual(contentOf(batch, file), fs.readFileSync(filePathList[file.fileIndex] as string, "utf8"));
-            assert.strictEqual(file.isTextByName, true);
+            assert.strictEqual(file.contentType, "text");
+            assert.strictEqual(file.keywordScanResult?.runsRules, true);
             assert.strictEqual(file.keywordScanResult?.planId, plan.id);
             assert.ok((file.keywordScanResult?.hits.count ?? 0) > 0);
         }
@@ -117,14 +118,49 @@ describe("parallel keyword scan", () => {
         const withoutKeyword = handed.filter(({ file }) => file.keywordScanResult === undefined);
         assert.strictEqual(withoutKeyword.length, FILE_COUNT - files.secretIndexes.length);
     });
-    it("should hand a file that is not text by its name without the result of the scan", async () => {
+    it("should hand a file that is not text without the result of the scan", async () => {
         const plan = await loadPlan();
         const binaryFilePath = path.join(files.dir, "secret.png");
         fs.writeFileSync(binaryFilePath, "THIS IS SECRET");
         const { handed } = scan({ requiresKeyword: true, filePathList: [binaryFilePath] }, plan);
         assert.strictEqual(handed.length, 1);
-        assert.strictEqual(handed[0]?.file.isTextByName, false);
+        assert.strictEqual(handed[0]?.file.contentType, "binary");
         assert.strictEqual(handed[0]?.file.keywordScanResult, undefined);
+    });
+    it("should detect the content type from the bytes if the name does not tell it", async () => {
+        const plan = await loadPlan();
+        // The names have no known extension
+        const textFilePath = path.join(files.dir, "text-without-extension");
+        const secretFilePath = path.join(files.dir, "secret-without-extension");
+        fs.writeFileSync(textFilePath, "nothing\n");
+        fs.writeFileSync(secretFilePath, "THIS IS SECRET\n");
+        const { handed, states } = scan({ requiresKeyword: true, filePathList: [textFilePath, secretFilePath] }, plan);
+        assert.deepStrictEqual([...states], [FileScanState.NoMessages, FileScanState.Handed]);
+        assert.strictEqual(handed.length, 1);
+        assert.strictEqual(handed[0]?.file.contentType, "text");
+        assert.ok((handed[0]?.file.keywordScanResult?.hits.count ?? 0) > 0);
+    });
+    it("should not hand a file that has a keyword on a line that no pattern matches", async () => {
+        const { config } = await loadPackagesFromConfigDescriptor({
+            configDescriptor: { rules: [{ id: "@secretlint/secretlint-rule-preset-recommend" }] },
+        });
+        const plan = getKeywordScanPlan({ config });
+        assert.ok(plan);
+        // "https://" is a keyword of the pattern of basic auth
+        const urlFilePath = path.join(files.dir, "url.txt");
+        const basicAuthFilePath = path.join(files.dir, "basic-auth.txt");
+        fs.writeFileSync(urlFilePath, "see https://example.com/\n");
+        fs.writeFileSync(basicAuthFilePath, "see https://example.com/\nhttps://user:password@example.com/\n");
+        const { handed, states } = scan(
+            { requiresKeyword: true, filePathList: [urlFilePath, basicAuthFilePath] },
+            plan,
+        );
+        assert.deepStrictEqual([...states], [FileScanState.NoMessages, FileScanState.Handed]);
+        assert.strictEqual(handed[0]?.file.keywordScanResult?.lineMatched, true);
+        // If a rule runs without keywords, the file is handed with the result of the check
+        const all = scan({ requiresKeyword: false, filePathList: [urlFilePath] }, plan);
+        assert.strictEqual(all.handed[0]?.file.keywordScanResult?.runsRules, false);
+        assert.strictEqual(all.handed[0]?.file.keywordScanResult?.lineMatched, false);
     });
     it("should scan files in the worker thread", async () => {
         const plan = await loadPlan();

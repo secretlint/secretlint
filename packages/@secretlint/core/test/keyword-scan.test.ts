@@ -105,4 +105,82 @@ describe("keyword scan", () => {
             ["found: tok_ab12"],
         );
     });
+    it("should have the patterns of the rules as data", () => {
+        const plan = getKeywordScanPlan({ config: tokenConfig });
+        assert.deepStrictEqual(plan?.ruleCheck, {
+            contentKeywordIndexes: [],
+            linePatterns: [{ source: "(?:tok|key)_[a-z0-9]{4}", flags: "", keywordIndexes: [0] }],
+        });
+    });
+    it("should tell that no rule runs if no pattern matches the lines of the keywords", () => {
+        const plan = getKeywordScanPlan({ config: tokenConfig });
+        assert.ok(plan);
+        const scanner = createKeywordScanner(structuredClone(plan));
+        const scan = (content: string) => {
+            const { runsRules, lineMatched } = scanner.scan(new TextEncoder().encode(content));
+            return { runsRules, lineMatched };
+        };
+        assert.deepStrictEqual(scan("no keyword"), { runsRules: false, lineMatched: undefined });
+        assert.deepStrictEqual(scan("tok_ only\ntok_ab"), { runsRules: false, lineMatched: false });
+        assert.deepStrictEqual(scan("tok_ only\ntok_ab12"), { runsRules: true, lineMatched: true });
+        // The byte order mark is not a part of the first line
+        assert.deepStrictEqual(scan("\uFEFFtok_ab12"), { runsRules: true, lineMatched: true });
+    });
+    it("should tell that a rule runs if the content has a keyword of a rule without patterns", () => {
+        const handlerRule: SecretLintRuleCreator = {
+            messages,
+            meta: {
+                id: "handler",
+                recommended: true,
+                type: "scanner",
+                supportedContentTypes: ["text"],
+                keywords: ["SECRET"],
+            },
+            create() {
+                return {};
+            },
+        };
+        const plan = getKeywordScanPlan({ config: toConfig(createRule("token", "tok_"), handlerRule) });
+        assert.ok(plan);
+        const scanner = createKeywordScanner(plan);
+        const result = scanner.scan(new TextEncoder().encode("tok_ and secret"));
+        // The lines are not checked: the rule runs for the whole content
+        assert.strictEqual(result.runsRules, true);
+        assert.strictEqual(result.lineMatched, undefined);
+    });
+    it("should not check the lines again if the result of the scan has the check", async () => {
+        const plan = getKeywordScanPlan({ config: tokenConfig });
+        assert.ok(plan);
+        const content = "tok_ab12";
+        const scanned = createKeywordScanner(plan).scan(new TextEncoder().encode(content));
+        // A changed result shows that the check of the result is used. A caller should not do it
+        const result = await lintSource({
+            source: createBytesSource(content),
+            options: { config: tokenConfig },
+            keywordScanResult: { ...scanned, lineMatched: false },
+        });
+        assert.deepStrictEqual(result.messages, []);
+    });
+    it("should ignore the result of the scan for other patterns of the same keywords", async () => {
+        const otherRule = createRule("token", "tok_");
+        const otherPlan = getKeywordScanPlan({
+            config: toConfig({
+                ...otherRule,
+                patterns: otherRule.patterns?.map((pattern) => ({ ...pattern, pattern: /tok_never/g })),
+            }),
+        });
+        assert.ok(otherPlan);
+        const content = "tok_ab12";
+        const keywordScanResult = createKeywordScanner(otherPlan).scan(new TextEncoder().encode(content));
+        assert.strictEqual(keywordScanResult.lineMatched, false);
+        const result = await lintSource({
+            source: createBytesSource(content),
+            options: { config: tokenConfig },
+            keywordScanResult,
+        });
+        assert.deepStrictEqual(
+            result.messages.map((message) => message.message),
+            ["found: tok_ab12"],
+        );
+    });
 });

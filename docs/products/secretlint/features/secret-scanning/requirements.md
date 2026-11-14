@@ -268,6 +268,12 @@ Most of that time goes to looking for keywords: in a repository of about 96,000 
 Running the rules costs little, because the rules run only for the few sources that the keywords select.
 So what Secretlint does at the same time on several CPU cores is the part that narrows down the sources: reading the files and looking for keywords.
 
+##### Narrowing down to the files that a rule runs for
+
+A keyword alone selects more files than the rules report for. For example, a keyword such as `https://` is in many files, and a pattern matches only a few of them.
+So the part that is done on several CPU cores narrows down to the files that a rule runs for: it also tells the content type of a file, and it checks the lines that have a keyword with the regular expression of the pattern of that keyword.
+The place where the rules run gets only the files that a rule runs for, so it does not become the limit when many files have a keyword.
+
 ##### A file is read once
 
 Reading files can be the largest part of the time, more than looking for keywords, depending on the machine.
@@ -276,12 +282,13 @@ So reading is also done on several CPU cores, and no file is read twice.
 ##### Rules without keywords
 
 A rule without keywords runs for every file, so every file reaches the rules.
-Reading the files and looking for keywords are still done on several CPU cores. The rules run in one place, so in this case the time of the rules sets the limit.
+Reading the files, looking for keywords, and checking the lines are still done on several CPU cores. The rules run in one place, so in this case the time of the rules sets the limit.
 
 ##### The cost of starting
 
 Starting work on another CPU core takes time, and that time is lost when the lint is short.
-Secretlint keeps this cost small and constant: it does not grow with the number or the size of the rules in the configuration.
+Secretlint keeps this cost small: no rule is loaded on another CPU core, so the cost does not grow with the code of the rules in the configuration.
+What another CPU core gets from the rules is data: the keywords and the regular expressions of the patterns.
 
 ##### The same results
 
@@ -340,7 +347,7 @@ Secretlint reads a file once. The keywords and the rules use the same content, s
 
 ### Look for keywords apart from the lint
 
-**Overview:** A program that calls `@secretlint/core` can look for keywords as a separate step, and give the result to `lintSource()`. So the program can do this step in its own threads.
+**Overview:** A program that calls `@secretlint/core` can look for keywords as a separate step, and give the result to `lintSource()`. The step also tells if a rule runs for the source. So the program can do this step in its own threads.
 
 **Input:** A configuration, and the bytes of a source.
 
@@ -350,21 +357,22 @@ Secretlint reads a file once. The keywords and the rules use the same content, s
 
 ##### Without rules
 
-Looking for keywords needs only the keywords. It does not load rules or the configuration, and it does not depend on Node.js.
+Looking for keywords needs only the keywords, and checking the lines that have a keyword needs only the regular expressions of the patterns. Both are data. The step does not load rules or the configuration, and it does not depend on Node.js.
 
 ##### The same result
 
 `lintSource()` with the result of this step returns the same result as without it.
 
-##### Sources that have no keyword
+##### Sources that no rule runs for
 
-The program can tell from the configuration whether a source without a keyword can have messages. If it can not, the program does not need to lint that source.
+The result tells if a rule that has keywords runs for the source. No such rule runs if the source has no keyword, or if no pattern matches the lines that have its keyword.
+The program can tell from the configuration whether a rule runs without keywords. If no rule does, the program does not need to lint a source that no rule runs for.
 
 #### Exceptional behavior
 
-##### A result for other keywords
+##### A result for other keywords or patterns
 
-`lintSource()` does not use a result that is not for the keywords of its configuration and the content type of the source. It looks for keywords by itself.
+`lintSource()` does not use a result that is not for the keywords and the patterns of its configuration and the content type of the source. It looks for keywords by itself.
 
 ##### A result for other bytes
 

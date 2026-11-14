@@ -80,16 +80,19 @@ The scan can be made parallel in several ways, and the choice follows from two c
 
 So the scan runs on worker threads, and the design keeps the start-up of a worker small and constant.
 A worker that runs `lintSource()` has to load the configuration and every rule, and custom rules can be of any size. Its start-up grows with the rules and it is not constant.
-The keyword scan needs no rule: it needs only the keywords, which are strings. So a worker loads only the keyword matcher of the core, and it gets the keywords as data. This code does not grow when rules are added.
+The keyword scan needs no rule: it needs only the keywords, which are strings. The check of the lines that have a keyword needs only the regular expressions of the patterns, which a worker can create from their source and flags. So a worker loads only the keyword matcher and the line check of the core, and it gets the keywords and the regular expressions as data. This code does not grow when rules are added.
 The rules stay on the main thread, are loaded once, and run for one file at a time as before.
 
 #### The scan as a step of its own
 
 The core has an entry `@secretlint/core/keyword-scan` for the first step of the lint alone.
 It imports only the keyword matcher: no rule, no configuration, and no Node.js module.
-`getKeywordScanPlan({ config })` of the core returns what to scan for as plain data: the keywords, which of them are case-sensitive, an id of these keywords, and `requiresKeyword`.
+`getKeywordScanPlan({ config })` of the core returns what to scan for as plain data: the keywords, which of them are case-sensitive, `requiresKeyword`, `ruleCheck`, and an id of all of these.
 `requiresKeyword` is true when no rule or pattern runs without keywords. Then a source without a keyword has no messages.
-`createKeywordScanner(plan).scan(bytes)` returns the hits with the id of the plan.
+`ruleCheck` is what tells if a rule runs for a source that has a keyword. It has the "line" scope patterns as the source and the flags of their regular expressions with the indexes of their keywords, and the indexes of the keywords that select a rule for the whole content: the keywords of a rule without patterns and of a "file" scope pattern.
+`createKeywordScanner(plan).scan(bytes)` returns the hits with the id of the plan, `runsRules`, and `lineMatched`.
+If a keyword for the whole content is found, `runsRules` is true and the lines are not checked. Otherwise the scanner decodes each line that has a keyword of a pattern and tests it with the regular expression of the pattern, and `lineMatched` and `runsRules` are true if one matches. It is the same check as the one in `lintSource()`: both call one function of the core.
+`lintSource()` uses `lineMatched` of the result in place of its own check of the lines.
 `lintSource()` accepts this result as `keywordScanResult`, and uses it in place of its own scan of the bytes if the id is the id of its own plan for the content type of the source.
 The matcher is built from the same keywords in the same order on each thread, so the hits mean the same on each thread.
 
@@ -102,15 +105,18 @@ A thread claims the next 32 files with `Atomics.add`. Because the threads claim 
 
 The main thread does what it did before for the files that it claims: it reads a file and calls `lintSource()`.
 
-A worker does the part that narrows down. It reads a file into a buffer that it reuses, and scans it if the file is text by its name. Then it does one of two things.
+A worker does the part that narrows down. It reads a file into a buffer that it reuses, detects the content type from the name and the bytes as the source creator does, and scans the file if it is text. Then it does one of two things.
 
-- If no rule runs for the file, it only writes the state "no messages". This is the case when the file is text by its name, has no keyword, and the plan has `requiresKeyword`. The file gets a result without messages, and nobody reads it again.
-- Otherwise it hands the file to the main thread: it copies the bytes into the memory of a batch, and when the 32 files are done it moves the batch to the main thread with the hits. The memory is moved, not copied, and the main thread lints the file from these bytes with `lintSource({ source, keywordScanResult })`.
+- If no rule runs for the file, it only writes the state "no messages". This is the case when the file is text, the scan returns `runsRules: false`, and the plan has `requiresKeyword`. The file gets a result without messages, and nobody reads it again.
+- Otherwise it hands the file to the main thread: it copies the bytes into the memory of a batch, and when the 32 files are done it moves the batch to the main thread with the content type and the result of the scan. The memory is moved, not copied, and the main thread lints the file from these bytes with `lintSource({ source, keywordScanResult })`. It does not detect the content type or check the lines again.
+
+The check of the lines is in the worker because a keyword selects many more files than a pattern matches, and a line can be very long. On one macOS machine with about 118,000 files, about 24,000 files had a keyword and a rule ran for 893 of them. When the main thread checked the lines, the check took 1.6 seconds there, and the main thread was the limit.
+The content type is detected in the worker for the same reason: a file whose name does not tell the type would otherwise be scanned by the main thread.
 
 So a file is read once, by the thread that claimed it, and the main thread never reads a file that a worker read.
 This matters where reading is the main cost: on one macOS machine a read took about 96µs for a file, ten times the Linux machine of the measurements, and it was more than half of the time of the lint.
 
-A rule without keywords, such as a rule of patterns that a user writes, runs for every file. Then `requiresKeyword` is false, and the workers hand every file. The reads and the scans are still done by the workers, and the main thread decodes the content and runs the rules. In this case the main thread is the limit, because the rules run only there.
+A rule without keywords, such as a rule of patterns that a user writes, runs for every file. Then `requiresKeyword` is false, and the workers hand every file. The reads, the scans, and the checks of the lines are still done by the workers, and the main thread runs the rules. In this case the main thread is the limit, because the rules run only there.
 
 Between its own claims, the main thread lets the messages of the workers arrive and lints the handed files first, because they hold memory.
 A worker waits before it claims files while the main thread has more than 256MB of handed bytes to lint. So the memory has a limit when the main thread is slower than the workers.
@@ -129,8 +135,9 @@ The decision uses time, not the number of files, so it follows the size of the f
 
 - Messages are created only by the rules on the main thread. When patterns run, the core scans the decoded string as before.
 - The bytes that the rules see are the bytes that were scanned: the worker hands the same bytes that it scanned, so a file that changes during the lint can not make the hits and the content differ.
-- The hits are used only for a file that is text by its name, because the plan is for the text content type. A file that is not text by its name is always handed, without hits, and the main thread decides its content type from the bytes as before.
-- `lintSource()` ignores hits with the id of another plan.
+- The result of the scan is used only for a text file, because the plan is for the text content type. A file that is not text is always handed, without a result. The worker detects the content type with the same function and the same bytes as the source creator.
+- The check of the lines is one function of the core for the worker and for `lintSource()`. The worker creates the regular expressions from the source and the flags of the ones that the main thread uses, so both test a line in the same way.
+- `lintSource()` ignores a result with the id of another plan. The id has the keywords and the patterns, so a result for other patterns of the same keywords is not used.
 - A file that a worker could not read, or that a failed worker claimed and did not hand, stays without a result. The main thread lints these files by itself at the end, so the error is the same.
 - The results are stored by the index of the file, so the order of the results is the order of the files.
 - Workers are not used with the `mask-result` formatter, which reads every file as a string.
@@ -144,6 +151,7 @@ The test of the binary checks that a worker starts in it.
 A bundle of another tool that does not have the file still works: the worker fails to start, and the files are linted without it.
 
 Measured on 4 cores with the binary (median): about 21,000 files 956ms with one thread and 529ms with workers, and about 96,000 files 4.5 seconds and 1.8 seconds.
+Measured on one macOS machine with 10 threads and the binary (one run each): about 118,000 files 4.6 seconds with workers. One thread was not measured there.
 
 ### What a rule receives
 
@@ -213,18 +221,18 @@ sequenceDiagram
     participant Worker as worker threads (no rules)
     participant Core as @secretlint/core and rules
     Main->>Core: getKeywordScanPlan(config)
-    Core-->>Main: plan (keywords as data)
+    Core-->>Main: plan (keywords and regular expressions as data)
     Main->>Main: lint alone, measure the speed
     opt the rest takes longer than the start-up of a worker
         Main->>Worker: plan, file list, SharedArrayBuffer
     end
     par threads claim 32 files at a time
         loop files of a worker
-            Worker->>Worker: read file, scan keywords
+            Worker->>Worker: read file, detect the content type, scan keywords, check lines
             alt no rule runs for the file
                 Worker->>Worker: write the state "no messages"
             else
-                Worker-->>Main: bytes and hits of the file (memory is moved)
+                Worker-->>Main: bytes, content type, and result of the scan (memory is moved)
                 Main->>Core: lintSource({ source from the bytes, keywordScanResult })
                 Core-->>Main: result
             end
@@ -265,7 +273,7 @@ A rule returns handlers, and the `file(source)` handler receives the source code
 
 ### `@secretlint/core/keyword-scan`
 
-`createKeywordScanner(plan)` returns a scanner, and `scanner.scan(bytes)` returns a `KeywordScanResult`: the id of the plan and the hits.
+`createKeywordScanner(plan)` returns a scanner, and `scanner.scan(bytes)` returns a `KeywordScanResult`: the id of the plan, the hits, `runsRules`, and `lineMatched`.
 `getKeywordScanPlan({ config, locale?, contentType? })` of `@secretlint/core` returns the `KeywordScanPlan` for a configuration, or `undefined` when no rule has keywords.
 The plan and the result are plain data and typed arrays, so they can be sent to another thread.
 `lintSource({ source, options, keywordScanResult })` uses the result as written in "The scan as a step of its own".
@@ -342,6 +350,12 @@ It was not chosen because the core runs in browsers and has no way to start a th
 
 The main thread and the workers would scan all files before the lint, and then the main thread would read and lint the files that have a keyword.
 This was the first version of this design. It was not chosen because of a configuration with a rule without keywords: then every file has to be linted, so every file was read twice, and the lint became slower than with one thread (about 21,000 files with such a rule: 1,494ms with one thread, 1,550ms with this version, and 1,137ms with the chosen design).
+
+### Check the lines on the main thread
+
+A worker would hand every file that has a keyword, and the main thread would check the lines that have the keyword.
+This was the version before the worker got the regular expressions. It was not chosen because a keyword selects many more files than a rule runs for, so the main thread became the limit: on one macOS machine with about 118,000 files and a rule without keywords, the lint took 5.8 seconds with the check on the main thread (1.6 seconds of it in the check) and 5.0 seconds with the check in the workers.
+Sending the regular expressions did not make the start-up of a worker longer in the measurements: a lint of about 7,000 files took 283ms before and 274ms after.
 
 ### Workers that only tell which files have a keyword
 

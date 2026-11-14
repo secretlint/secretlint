@@ -259,6 +259,7 @@ const lintFiles = async ({
     const noKeyword: KeywordScanResult = {
         planId: plan.id,
         hits: { found: new Uint8Array(plan.keywords.length), positions: new Int32Array(0), count: 0 },
+        runsRules: false,
     };
     // Lint the files that the workers read. The bytes are from the worker, so the file is not read again
     const lintBatch = async (batch: HandedFiles) => {
@@ -270,7 +271,7 @@ const lintFiles = async ({
                 file.contentType,
             );
             // The keyword scan of the worker is for the text content type
-            const keywordScanResult = file.isTextByName ? (file.keywordScanResult ?? noKeyword) : undefined;
+            const keywordScanResult = file.contentType === "text" ? (file.keywordScanResult ?? noKeyword) : undefined;
             const result = await lintSource({ source, options: lintOptions, keywordScanResult });
             results[file.fileIndex] = result;
             if (source.contentType === "text" && result.messages.length > 0) {

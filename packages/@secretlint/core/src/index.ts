@@ -31,9 +31,9 @@ export type SecretLintSourceOptions = {
     /**
      * The result of the keyword scan of `source.contentBytes`, from `createKeywordScanner()` of
      * `@secretlint/core/keyword-scan` with the plan of `getKeywordScanPlan()`.
-     * If it is passed, `lintSource()` does not scan the bytes again.
-     * It is ignored if it is not for the keywords of the config and the content type of the source,
-     * so a wrong result costs time and does not change the result of the lint.
+     * If it is passed, `lintSource()` does not scan the bytes or check the lines that have a keyword again.
+     * It is ignored if it is not for the keywords and the patterns of the config and the content type of the source,
+     * so a result of another config costs time and does not change the result of the lint.
      * The caller passes it only if it scanned the same bytes as `source.contentBytes`.
      */
     keywordScanResult?: KeywordScanResult;

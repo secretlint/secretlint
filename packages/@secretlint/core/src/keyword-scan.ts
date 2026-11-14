@@ -7,6 +7,8 @@
  *
  * `lintSource()` does both steps. This module is the first step alone, so that a caller can run it somewhere else,
  * such as in a worker thread, and pass the result to `lintSource()`.
+ * It also checks the lines that have a keyword with the regular expressions of the patterns,
+ * so it tells if a rule runs for the source.
  * It does not import rules or config, and it does not depend on Node.js.
  */
 import { getKeywordMatcher, type KeywordHits } from "./helper/keyword-matcher.js";
@@ -19,7 +21,8 @@ export type { KeywordHits };
  */
 export type KeywordScanPlan = {
     /**
-     * It identifies the keywords of the plan. `lintSource()` uses a result only if it has the id of its own plan.
+     * It identifies the keywords and the patterns of the plan.
+     * `lintSource()` uses a result only if it has the id of its own plan.
      */
     readonly id: string;
     readonly keywords: readonly string[];
@@ -34,11 +37,14 @@ export type KeywordScanPlan = {
      */
     readonly requiresKeyword: boolean;
     /**
-     * What decides if a rule runs for a source that has a keyword. It is data of the patterns, not the rules.
-     * With it, the scan also returns `runsRules`.
+     * What decides if a rule runs for a source that has a keyword
      */
-    readonly ruleCheck?: KeywordScanRuleCheck;
+    readonly ruleCheck: KeywordScanRuleCheck;
 };
+/**
+ * The data of the rules that the scan needs to tell if a rule runs for a source that has a keyword.
+ * It has the regular expressions of the patterns as strings, not the rules.
+ */
 export type KeywordScanRuleCheck = {
     /**
      * Indexes of the keywords that select a rule or a pattern for the whole content
@@ -63,10 +69,11 @@ export type KeywordScanResult = {
     readonly planId: string;
     readonly hits: KeywordHits;
     /**
-     * false if no rule runs for the source: no pattern matches the lines that have its keyword.
-     * undefined if the plan has no `ruleCheck`.
+     * false if no rule that has keywords runs for the source:
+     * the source has no keyword, or it has only keywords of patterns that do not match the lines of the keywords.
+     * A rule or a pattern without keywords still runs. See `requiresKeyword` of the plan.
      */
-    readonly runsRules?: boolean;
+    readonly runsRules: boolean;
     /**
      * true if a pattern matches a line that has its keyword. undefined if the scan did not check the lines.
      */
@@ -82,12 +89,12 @@ export const createKeywordScanPlan = ({
     keywords: readonly string[];
     caseSensitive: readonly boolean[];
     requiresKeyword: boolean;
-    ruleCheck?: KeywordScanRuleCheck;
+    ruleCheck: KeywordScanRuleCheck;
 }): KeywordScanPlan => {
     const flags = keywords.map((_, index) => caseSensitive[index] === true);
-    // keywords may contain any character, so the id is the JSON of them
+    // The keywords and the regular expressions may contain any character, so the id is the JSON of them
     return {
-        id: JSON.stringify([keywords, flags]),
+        id: JSON.stringify([keywords, flags, ruleCheck]),
         keywords: [...keywords],
         caseSensitive: flags,
         requiresKeyword,
@@ -101,7 +108,8 @@ export const hasUtf8BOM = (bytes: Uint8Array): boolean => {
 
 export type KeywordScanner = {
     /**
-     * Scan UTF-8 bytes for the keywords of the plan. The byte order mark is not scanned.
+     * Scan UTF-8 bytes for the keywords of the plan, and check the lines that have a keyword of a pattern.
+     * The byte order mark is not scanned.
      */
     scan(bytes: Uint8Array): KeywordScanResult;
 };
@@ -109,13 +117,6 @@ export type KeywordScanner = {
 export const createKeywordScanner = (plan: KeywordScanPlan): KeywordScanner => {
     const matcher = getKeywordMatcher(plan.keywords, plan.caseSensitive);
     const ruleCheck = plan.ruleCheck;
-    if (ruleCheck === undefined) {
-        return {
-            scan(bytes) {
-                return { planId: plan.id, hits: matcher.scan(bytes, hasUtf8BOM(bytes) ? 3 : 0) };
-            },
-        };
-    }
     const linePatterns = ruleCheck.linePatterns.map((pattern) => {
         return { tester: new RegExp(pattern.source, pattern.flags), keywordIndexes: pattern.keywordIndexes };
     });
