@@ -17,6 +17,8 @@ This document is written for the part of the feature that a change needs: what c
 - The content and the information about the source that a rule receives
 - The same results in Node.js and in browsers
 - Looking for the keywords of rules in the content, which decides the rules that run for a source
+- Scaling to a very large number of files, by using several CPU cores to look for keywords
+- Looking for keywords apart from the lint, for a program that calls `@secretlint/core`
 
 ### Out of scope
 
@@ -103,6 +105,54 @@ Scenario: When content is given from STDIN, it is linted as text with the given 
 - Given: Content with a secret.
 - When: The user runs `secretlint --stdinFileName=secret.txt` with the content on STDIN.
 - Then: The result has the file name `secret.txt` and the message of the rule.
+
+### Lint a very large number of files
+
+As a developer of a repository with a very large number of files, I want the time of the lint to scale with my machine, not only with one CPU core, so that Secretlint stays usable as the repository grows. The results are the same, and there is nothing to set up.
+
+**Acceptance criteria:**
+
+Scenario: When many files are linted, the results are the same and the lint ends sooner
+
+- Given: A repository has tens of thousands of files, and the machine has several CPU cores.
+- When: The developer runs `secretlint "**/*"`.
+- Then: The output and the exit status are the same as with one CPU core, with the results in the same order, and the lint takes less time.
+
+Scenario: When few files are linted, no other CPU core is used
+
+- Given: A repository has a few hundred small files.
+- When: The developer runs `secretlint "**/*"`.
+- Then: Secretlint does not start work on another CPU core, and the results are the same as before.
+
+Scenario: When a rule is a custom rule, it runs as before
+
+- Given: The configuration has a custom rule that keeps state in its module.
+- When: The developer lints many files.
+- Then: The rule is loaded once and runs for one file at a time, as with one CPU core.
+
+Scenario: When the work on another CPU core fails, the lint still ends with the same results
+
+- Given: Many files are linted, and the work that Secretlint started on another CPU core fails.
+- When: The lint goes on.
+- Then: The results are the same as with one CPU core, and no error is shown for the failure.
+
+### Look for keywords in the threads of a tool
+
+As a tool integrator, I want to look for keywords apart from running the rules so that my tool can do that work in its own threads, such as Web Workers, while the rules run in one place.
+
+**Acceptance criteria:**
+
+Scenario: When the result of looking for keywords is given, the lint has the same result
+
+- Given: A tool looked for the keywords of the configuration in the bytes of a source.
+- When: The tool calls `lintSource()` with the source and that result.
+- Then: The result is the same as `lintSource()` without it, and Secretlint does not look for keywords in the bytes again.
+
+Scenario: When the given result is for other keywords, it is not used
+
+- Given: A tool has a result of looking for the keywords of another configuration.
+- When: The tool calls `lintSource()` with the source and that result.
+- Then: The result is the same as `lintSource()` without it.
 
 ## KPIs
 
@@ -194,6 +244,128 @@ Keywords are used for text content. A rule that runs for binary content runs for
 
 A user does not enable it or configure it.
 
+### Scale to a very large number of files
+
+**Overview:** The time of the lint should not grow only in proportion to the number of files on one CPU core. When the command or the Node.js API lints many files, Secretlint looks for keywords on several CPU cores at the same time. The rules run in one place, one file at a time, as before.
+
+**Input:** The files to lint and the keywords of the enabled rules.
+
+**Output:** The same results as with one CPU core.
+
+#### Applicable conditions
+
+##### Scaling
+
+With one CPU core, the time of the lint grows in proportion to the number and the size of the files, and a very large repository has to wait for that one core.
+With several CPU cores, the lint of a very large number of files takes less time than with one core, and the more files there are, the larger the difference is.
+The lint of a small number of files does not become slower for this.
+
+##### Why looking for keywords is the part to do at the same time
+
+Secretlint runs on Node.js, and Node.js runs JavaScript on one thread.
+So files are linted one after another, and with many files the time of the lint has a limit that one CPU core sets.
+Most of that time goes to looking for keywords: in a repository of about 96,000 files, it was about 2.9 seconds of 4.5 seconds.
+Running the rules costs little, because the rules run only for the few sources that the keywords select.
+So what Secretlint does at the same time on several CPU cores is the part that narrows down the sources: reading the files and looking for keywords.
+
+##### The cost of starting
+
+Starting work on another CPU core takes time, and that time is lost when the lint is short.
+Secretlint keeps this cost small and constant: it does not grow with the number or the size of the rules in the configuration.
+
+##### The same results
+
+The messages, the order of the results, the output, and the exit status are the same as with one CPU core.
+A report is created only by a rule, from the content that the rule reads.
+
+##### When other CPU cores are used
+
+Secretlint decides it while it lints, from the time that looking for keywords takes.
+It uses another CPU core only when the rest of the work takes longer than starting the work on that core.
+It does not decide from a fixed number of files, because the time depends on the size of the files and the speed of the disk.
+
+##### The number of CPU cores
+
+Secretlint uses at most the number of CPU cores that the operating system gives to the process.
+
+##### Rules
+
+Rules are loaded once and run on one thread.
+A rule does not need to be safe for threads, and a custom rule needs no change.
+
+##### Where it applies
+
+It applies to linting files with the command and with `@secretlint/node`.
+It does not apply to the STDIN content, which is one source.
+
+##### The core starts no thread
+
+`@secretlint/core` does not start threads, so it runs in browsers as before.
+The caller of the core chooses where to look for keywords. See "Look for keywords apart from the lint".
+
+##### Nothing to set up
+
+A user does not enable it or configure it.
+
+#### Exceptional behavior
+
+##### The `mask-result` formatter
+
+Other CPU cores are not used, because the formatter needs the content of every file.
+
+##### The profile
+
+Other CPU cores are not used with `--profile`, so that the profile shows the time of each step of each file.
+
+##### The single-executable binary
+
+Other CPU cores are not used in the single-executable binary.
+
+##### A failure on another CPU core
+
+When the work on another CPU core fails, the files of that work are linted as with one CPU core.
+
+##### A file that can not be read
+
+The error is the same as with one CPU core.
+
+##### A file that changes during the lint
+
+When a file changes after Secretlint looked for keywords in it, the rules run on the content that they read, and Secretlint looks for keywords in that content again.
+When Secretlint found no keyword in a file, it does not read the file again, so the result is the result for the content at that time.
+
+### Look for keywords apart from the lint
+
+**Overview:** A program that calls `@secretlint/core` can look for keywords as a separate step, and give the result to `lintSource()`. So the program can do this step in its own threads.
+
+**Input:** A configuration, and the bytes of a source.
+
+**Output:** What to look for, as data that can be sent to another thread. The result of looking for it in the bytes. The result of the lint.
+
+#### Applicable conditions
+
+##### Without rules
+
+Looking for keywords needs only the keywords. It does not load rules or the configuration, and it does not depend on Node.js.
+
+##### The same result
+
+`lintSource()` with the result of this step returns the same result as without it.
+
+##### Sources that have no keyword
+
+The program can tell from the configuration whether a source without a keyword can have messages. If it can not, the program does not need to lint that source.
+
+#### Exceptional behavior
+
+##### A result for other keywords
+
+`lintSource()` does not use a result that is not for the keywords of its configuration and the content type of the source. It looks for keywords by itself.
+
+##### A result for other bytes
+
+The program gives a result only for the same bytes as the source. `lintSource()` can not check it.
+
 ### Give the source to a rule
 
 **Overview:** A rule receives the content of the source and information about it.
@@ -258,4 +430,7 @@ The content of a source can have secrets. Secretlint reads it only in memory, an
 
 ## Open questions
 
-None.
+- Is an option needed to turn off other CPU cores or to limit their number? ESLint has `--concurrency`.
+- Should the single-executable binary also use other CPU cores?
+- Should the number of CPU cores have a limit on a machine with many cores? It was measured only on 4 cores. ripgrep limits it to 12.
+- When no other CPU core is used, a repository of medium size (about 7,000 files) became 10-20ms slower in a prototype, because looking for keywords is a pass of its own. Is this acceptable?

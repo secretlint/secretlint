@@ -67,6 +67,63 @@ The automaton does one table lookup for each byte, whatever the keywords are.
 So its time depends on the size of the content and barely on the number of keywords: on 60MB of text, 65 keywords took 97ms and 1,065 keywords took 111ms.
 It also has no knowledge about the content. This is why it meets "Any content" and "The number of keywords" of the Requirements.
 
+### Looking for keywords on several threads
+
+Node.js runs JavaScript on one thread, so the engine lints files one after another.
+A profile of a large repository (about 96,000 files, 4.5 seconds) shows where that one thread spends its time: about 2.9 seconds in the keyword scan and 0.8 seconds in reading files. The rules take little, because they run only for the sources that the keywords select.
+So the step to run on several threads is the one that narrows down the sources: read a file and scan it for keywords.
+
+The scan can be made parallel in several ways, and the choice follows from two costs: distribution and start-up.
+
+- A native program or a native add-on needs a build for each platform and a way to ship it. WebAssembly has no platform builds, but it has its own ways to load in Node.js, browsers, and the single-executable binary, and its threads are still started by the host. Per thread, a native scan was also as fast as the JavaScript scan (read 155ms and scan 580ms, against 230ms and 542ms), so only the threads gave a gain.
+- Worker threads of Node.js need nothing to ship. Their cost is the start-up: a worker loads its code before it works.
+
+So the scan runs on worker threads, and the design keeps the start-up of a worker small and constant.
+A worker that runs `lintSource()` has to load the configuration and every rule, and custom rules can be of any size. Its start-up grows with the rules and it is not constant.
+The keyword scan needs no rule: it needs only the keywords, which are strings. So a worker loads only the keyword matcher of the core, and it gets the keywords as data. This code does not grow when rules are added.
+The rules stay on the main thread, are loaded once, and run for one file at a time as before.
+
+#### The scan as a step of its own
+
+The core has an entry `@secretlint/core/keyword-scan` for the first step of the lint alone.
+It imports only the keyword matcher: no rule, no configuration, and no Node.js module.
+`getKeywordScanPlan({ config })` of the core returns what to scan for as plain data: the keywords, which of them are case-sensitive, an id of these keywords, and `requiresKeyword`.
+`requiresKeyword` is true when no rule or pattern runs without keywords. Then a source without a keyword has no messages.
+`createKeywordScanner(plan).scan(bytes)` returns the hits with the id of the plan.
+`lintSource()` accepts this result as `keywordScanResult`, and uses it in place of its own scan of the bytes if the id is the id of its own plan for the content type of the source.
+The matcher is built from the same keywords in the same order on each thread, so the hits mean the same on each thread.
+
+The core does not start workers by itself. A worker needs the URL of a script file, and sharing memory between threads in a browser needs cross-origin isolation, so only the caller knows how to start one. The Node.js engine does it for files, and a tool in a browser can do the same with Web Workers.
+
+#### Scanning the files
+
+The engine (`@secretlint/node`) scans the files before the lint loop.
+The main thread and the workers run the same function. They share the list of files and a `SharedArrayBuffer` that has the index of the next file and one byte of state for each file.
+A thread claims the next 32 files with `Atomics.add`, reads each file into a buffer that it reuses, scans it, and writes the state: not scanned, no keyword, or has a keyword.
+A worker sends back only the hits of the files that have a keyword.
+Because the threads claim from one list, a thread that starts late or fails only scans fewer files, and no file is given to a thread ahead of time.
+
+Then the main thread goes through the files in their order.
+A file that is text by its name, has no keyword, and has a plan with `requiresKeyword` gets a result without messages and is not read again.
+Any other file is read and linted with `lintSource()` as before, with the hits of the file if it has them.
+
+#### The number of threads
+
+The main thread starts the scan alone, so a short lint never pays for a worker.
+After a warm-up of 20ms, it measures how many files it scans in the next 20ms, and estimates the time for the rest of the files.
+It starts `floor(rest time / 100ms)` workers, at most `os.availableParallelism() - 1`. 100ms is the start-up of a worker (70-100ms measured), so each worker has work for longer than its start-up.
+The warm-up is not used for the estimate, because the scan is several times slower until the runtime has optimized it.
+The decision uses time, not the number of files, so it follows the size of the files and the speed of the disk.
+
+#### Keeping the results the same
+
+- Messages are created only by the rules on the main thread, from the content that the main thread read. When patterns run, the core scans the decoded string as before.
+- The hits are used only for a file that is text by its name, because the plan is for the text content type, and the content type of other files depends on their bytes.
+- The hits are used only if the main thread reads the same number of bytes as the thread that scanned. Otherwise the core scans the bytes itself.
+- `lintSource()` ignores hits with the id of another plan.
+- A file that a thread could not read, or that a failed worker claimed, stays "not scanned" and is linted as before, so the error is the same.
+- The scan is not used with the `mask-result` formatter, which reads every file as a string, while the profiler is enabled, and on Bun, where the single-executable binary has no script file for the worker.
+
 ### What a rule receives
 
 A rule receives a source code object (`SecretLintSourceCode`).
@@ -127,6 +184,34 @@ sequenceDiagram
     Engine->>Reader: read next file (buffer is reused)
 ```
 
+The scan on several threads, before the lint loop:
+
+```mermaid
+sequenceDiagram
+    participant Main as main thread (@secretlint/node)
+    participant Worker as worker threads (no rules)
+    participant Core as @secretlint/core and rules
+    Main->>Core: getKeywordScanPlan(config)
+    Core-->>Main: plan (keywords as data)
+    Main->>Main: scan alone, measure the speed
+    opt the rest takes longer than the start-up of a worker
+        Main->>Worker: plan, file list, SharedArrayBuffer
+    end
+    par threads claim 32 files at a time
+        Worker->>Worker: read file, scan keywords
+        Main->>Main: read file, scan keywords
+    end
+    Worker-->>Main: hits of the files that have a keyword
+    loop each file, in order
+        alt text by name, no keyword, requiresKeyword
+            Main->>Main: result without messages
+        else
+            Main->>Core: lintSource({ source, keywordScanResult })
+            Core-->>Main: result
+        end
+    end
+```
+
 ## Data model and ER diagrams
 
 | Type | Properties | Note |
@@ -152,6 +237,13 @@ A rule returns handlers, and the `file(source)` handler receives the source code
 ### `@secretlint/source-creator`
 
 `createRawSource(filePath)` reads a file into its own buffer. `createFileSourceReader()` returns a reader that reads files into one shared buffer; `contentBytes` of a source is `undefined` after the reader reads the next file, and reading `content` for the first time after that throws.
+
+### `@secretlint/core/keyword-scan`
+
+`createKeywordScanner(plan)` returns a scanner, and `scanner.scan(bytes)` returns a `KeywordScanResult`: the id of the plan and the hits.
+`getKeywordScanPlan({ config, locale?, contentType? })` of `@secretlint/core` returns the `KeywordScanPlan` for a configuration, or `undefined` when no rule has keywords.
+The plan and the result are plain data and typed arrays, so they can be sent to another thread.
+`lintSource({ source, options, keywordScanResult })` uses the result as written in "The scan as a step of its own".
 
 ## External service integration
 
@@ -204,6 +296,33 @@ It was not chosen because source-creator already gives the bytes of the file as 
 A rule that checks binary content would read the file when `contentBytes` is `undefined`, as the gcp rule did.
 It was not chosen by the maintainer: the command always gives the bytes, the rules are released with the core, and reading the file ignores `noPhysicFilePath` and keeps a Node.js import in the rule.
 
+### Workers that run the rules
+
+Each worker would load the configuration and the rules and run `lintSource()` for a part of the files.
+It was not chosen because the start-up of a worker then depends on the rules: it was 100-250ms with the built-in rules, and custom rules can be of any size, so the cost is not constant.
+A rule would also have to load and run in a worker, and results with content would be copied between threads.
+
+### A native program or WebAssembly for the scan
+
+A program in a native language would read the files and scan them on its own threads.
+It was not chosen because it needs a build and a way to ship for each platform, and WebAssembly needs a way to load in each environment.
+One native thread was as fast as one JavaScript thread for this work, so the gain was only from threads, which worker threads also give: with 4 threads, about 96,000 files took 3.0 seconds with the native program and 2.3 seconds with workers.
+
+### Start workers in the core
+
+`lintSource()` or the core would start workers by itself.
+It was not chosen because the core runs in browsers and has no way to start a thread that works everywhere. The caller starts the threads, and the core only splits the scan from the lint.
+
+### Workers that only tell which files have a keyword
+
+A worker would send back one flag for each file, and the main thread would scan the files that have a keyword again.
+It was not chosen because the files with a keyword are then scanned twice: with 4 threads, about 96,000 files took 3.5 seconds with flags and 2.3 seconds with hits.
+
+### A fixed number of files for each thread
+
+The number of threads would be the number of files divided by a constant, as ESLint does with 50 files for each worker.
+It was not chosen because the time of the scan depends on the size of the files, and a constant that fits one repository does not fit another. The threads claim files from one list, so the decision can wait until the speed is measured.
+
 ### A sieve before the automaton
 
 A sieve with SIMD instructions in WebAssembly would look at 16 bytes at once and drop the blocks that can not have a keyword, and the automaton would check only the rest.
@@ -213,4 +332,6 @@ A sieve that chooses rare bytes from a table of how common each byte is was also
 
 ## Open questions
 
-None.
+- The open questions of the Requirements: an option, the single-executable binary, and a limit for many cores.
+- The workers also scan the files that are not text by name, and those hits are not used. A worker could skip them by name.
+- There is no test for a file that changes between the scan and the lint.
