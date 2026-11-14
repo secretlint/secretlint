@@ -45,6 +45,18 @@ Scenario: When the configuration file lists one rule, only that rule runs
 - When: The developer lints a file that contains an AWS access key and a GitHub token.
 - Then: The result has a message of `@secretlint/secretlint-rule-aws` and no message of `@secretlint/secretlint-rule-github`.
 
+Scenario: `--init` writes the recommended preset without the preset package
+
+- Given: Only `secretlint` is installed, and there is no configuration file.
+- When: The developer runs `secretlint --init`.
+- Then: The configuration file has `{ "id": "@secretlint/secretlint-rule-preset-recommend" }`.
+
+Scenario: `--init` writes the recommended preset and the rule packages in `package.json`
+
+- Given: `secretlint` and `@secretlint/secretlint-rule-no-homedir` are in `package.json`, and there is no configuration file.
+- When: The developer runs `secretlint --init`.
+- Then: The configuration file has the recommended preset first, followed by `{ "id": "@secretlint/secretlint-rule-no-homedir" }`.
+
 ### Keep a configuration that installs the rule packages
 
 As a developer who installed the preset package as the documentation said, I want my configuration and `package.json` to keep working, so that I do not have to change anything when I update Secretlint.

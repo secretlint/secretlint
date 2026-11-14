@@ -152,6 +152,9 @@ importers:
 
   packages/@secretlint/config-creator:
     dependencies:
+      '@secretlint/core':
+        specifier: workspace:*
+        version: link:../core
       '@secretlint/types':
         specifier: workspace:*
         version: link:../types
