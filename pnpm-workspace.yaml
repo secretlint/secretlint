@@ -26,7 +26,7 @@ catalog:
   "node-sarif-builder": "^4.1.0"
   "picomatch": "^4.0.7"
   "prettier": "^3.8.3"
-  "rc-config-loader": "^4.1.4"
+  "rc-config-loader": "^4.2.0"
   "rimraf": "^6.1.4"
   "rollup": "^4.68.2"
   "rollup-plugin-polyfill-node": "^0.13.0"

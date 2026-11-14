@@ -25,7 +25,7 @@ Options
       .map((item) => item.name)
       .join(", ")}
   --output           [path:String] output file path that is written of reported result.
-  --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
+  --secretlintrc     [path:String] path to the config file. Default: .secretlintrc.* from the current directory up to the root, or the recommended rules
   --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
   --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
   --no-color         disable ANSI-color of output.

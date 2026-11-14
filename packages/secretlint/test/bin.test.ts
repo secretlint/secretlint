@@ -10,9 +10,9 @@ import { fileURLToPath } from "node:url";
 const packageDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const binPath = path.join(packageDirectory, "bin", "secretlint.js");
 
-const runBin = async (args: string[]) => {
+const runBin = async (args: string[], cwd: string = packageDirectory) => {
     const child = spawn(process.execPath, [binPath, ...args], {
-        cwd: packageDirectory,
+        cwd,
         stdio: ["ignore", "pipe", "pipe"],
     });
     const [[exitCode], stdout, stderr] = await Promise.all([
@@ -94,5 +94,38 @@ describe("secretlint bin", () => {
         assert.ok(Buffer.byteLength(stdout) > 1024 * 1024, "stdout should contain more than 1 MiB");
         // mask-result outputs the whole content, and the secret is masked
         assert.strictEqual(stdout, `${input.replace("SECRET", "******")}\n`);
+    });
+    describe("without a configuration", () => {
+        // os.tmpdir() and its parents have no .secretlintrc
+        let temporaryDirectory: string;
+        beforeEach(() => {
+            temporaryDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "secretlint-bin-no-config-"));
+        });
+        afterEach(() => {
+            fs.rmSync(temporaryDirectory, { recursive: true, force: true });
+        });
+        it("lints with the recommend preset", async () => {
+            // a GitHub token that is not real: the rule checks only its format
+            fs.writeFileSync(path.join(temporaryDirectory, "token.txt"), `token=ghp_${"A".repeat(36)}`);
+            const { exitCode, stdout, stderr } = await runBin(["--format=json", "token.txt"], temporaryDirectory);
+            assert.strictEqual(exitCode, 1, stderr);
+            const results = JSON.parse(stdout);
+            assert.strictEqual(results[0].messages[0].ruleId, "@secretlint/secretlint-rule-github");
+            assert.strictEqual(results[0].messages[0].ruleParentId, "@secretlint/secretlint-rule-preset-recommend");
+            assert.strictEqual(stderr, "");
+        });
+        it("succeeds when no secret is found", async () => {
+            fs.writeFileSync(path.join(temporaryDirectory, "input.txt"), "no secret");
+            const { exitCode, stdout, stderr } = await runBin(["input.txt"], temporaryDirectory);
+            assert.strictEqual(exitCode, 0, stderr);
+            assert.strictEqual(stdout, "");
+            assert.strictEqual(stderr, "");
+        });
+        it("fails when the file of --secretlintrc is not found", async () => {
+            fs.writeFileSync(path.join(temporaryDirectory, "input.txt"), "no secret");
+            const { exitCode, stderr } = await runBin(["--secretlintrc=missing.json", "input.txt"], temporaryDirectory);
+            assert.strictEqual(exitCode, 2);
+            assert.match(stderr, /secretlint config file is not found: .*missing\.json/);
+        });
     });
 });

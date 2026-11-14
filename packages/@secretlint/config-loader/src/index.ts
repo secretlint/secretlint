@@ -1,4 +1,6 @@
-import { rcFile } from "rc-config-loader";
+import fs from "node:fs";
+import path from "node:path";
+import { loadConfigFile, rcFile } from "rc-config-loader";
 import {
     SecretLintConfigDescriptor,
     SecretLintConfigDescriptorRulePreset,
@@ -17,6 +19,18 @@ import { getConfigMessages, SecretLintConfigMessage } from "./config-messages.js
 import { createFullPackageName } from "./package-name-util.js";
 
 export type { SecretLintConfigMessage };
+
+/**
+ * The configuration that is used when no configuration is found.
+ * It is the recommend preset, the same configuration that `secretlint --init` writes.
+ */
+export const DEFAULT_CONFIG_DESCRIPTOR: SecretLintConfigDescriptor = Object.freeze({
+    rules: Object.freeze([
+        Object.freeze({
+            id: "@secretlint/secretlint-rule-preset-recommend",
+        }),
+    ]),
+}) as SecretLintConfigDescriptor;
 
 export function importSecretlintCreator(
     moduleExports?: SecretLintRuleModule | Record<string, unknown>,
@@ -72,7 +86,15 @@ export type SecretLintConfigLoaderResult = {
      * Partial config file represent
      */
     configDescriptor: SecretLintConfigDescriptor;
-    configFilePath: string;
+    /**
+     * The path of the config file
+     * `undefined` when the default config is used
+     */
+    configFilePath: string | undefined;
+    /**
+     * `true` when no config is found and DEFAULT_CONFIG_DESCRIPTOR is used
+     */
+    isDefault: boolean;
     /**
      * Problems in the config file that are reported like lint messages
      */
@@ -81,7 +103,15 @@ export type SecretLintConfigLoaderResult = {
 
 export type SecretLintConfigLoaderRawResult = {
     ok: true;
-    configFilePath: string;
+    /**
+     * The path of the config file
+     * `undefined` when the default config is used
+     */
+    configFilePath: string | undefined;
+    /**
+     * `true` when no config is found and DEFAULT_CONFIG_DESCRIPTOR is used
+     */
+    isDefault: boolean;
     // Config Raw object
     configDescriptor: SecretLintConfigDescriptor;
 };
@@ -244,7 +274,7 @@ export const loadConfig = async (options: SecretLintConfigLoaderOptions): Promis
     secretLintProfiler.mark({
         type: "@config-loader>load-config-file::start",
     });
-    const { configDescriptor, configFilePath } = await loadConfigDescriptor(options);
+    const { configDescriptor, configFilePath, isDefault } = await loadConfigDescriptor(options);
     secretLintProfiler.mark({
         type: "@config-loader>load-config-file::end",
     });
@@ -264,6 +294,7 @@ export const loadConfig = async (options: SecretLintConfigLoaderOptions): Promis
         config: configLoadResult.config,
         configDescriptor,
         configFilePath,
+        isDefault,
         messages: configLoadResult.messages,
     };
 };
@@ -275,25 +306,76 @@ export const loadConfig = async (options: SecretLintConfigLoaderOptions): Promis
 export const loadConfigDescriptor = async (
     options: SecretLintConfigLoaderOptions,
 ): Promise<SecretLintConfigLoaderRawResult> => {
+    // A given config file path names exactly one file: no search in the parent directories, no extension added
+    if (options.configFilePath !== undefined) {
+        try {
+            const result = loadConfigFile<SecretLintConfigDescriptor>(options.configFilePath, {
+                cwd: options.cwd,
+            });
+            return {
+                ok: true,
+                configDescriptor: result.config,
+                configFilePath: result.filePath,
+                isDefault: false,
+            };
+        } catch (error) {
+            if (isNotFoundError(error)) {
+                throw new Error(`secretlint config file is not found: ${error.path ?? options.configFilePath}`, {
+                    cause: error,
+                });
+            }
+            throw error;
+        }
+    }
     const results = rcFile<SecretLintConfigDescriptor>("secretlint", {
         cwd: options.cwd,
-        configFileName: options.configFilePath,
         packageJSON: {
             fieldName: "secretlint",
         },
     });
-    // Not Found
+    // No config is found from cwd up to the root: use the recommend preset
     if (!results) {
-        throw new Error(`secretlint config is not found
-                
-Secretlint require .secretlintrc config file.
-The config file define the use of rules.`);
+        // rcFile() skips a `.secretlintrc` without an extension that no loader can read,
+        // so read it again to throw its error instead of using the default config
+        const unreadableRcFilePath = findRcFileWithoutExtension(options.cwd ?? process.cwd());
+        if (unreadableRcFilePath !== undefined) {
+            loadConfigFile<SecretLintConfigDescriptor>(unreadableRcFilePath);
+        }
+        return {
+            ok: true,
+            configDescriptor: structuredClone(DEFAULT_CONFIG_DESCRIPTOR),
+            configFilePath: undefined,
+            isDefault: true,
+        };
     }
     return {
         ok: true,
         configDescriptor: results.config,
         configFilePath: results.filePath,
+        isDefault: false,
     };
+};
+
+/**
+ * Find `.secretlintrc` (without an extension) from the directory up to the root
+ */
+const findRcFileWithoutExtension = (cwd: string): string | undefined => {
+    let directory = path.resolve(cwd);
+    while (true) {
+        const filePath = path.join(directory, ".secretlintrc");
+        if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+            return filePath;
+        }
+        const parent = path.dirname(directory);
+        if (parent === directory) {
+            return undefined;
+        }
+        directory = parent;
+    }
+};
+
+const isNotFoundError = (error: unknown): error is NodeJS.ErrnoException => {
+    return error instanceof Error && (error as NodeJS.ErrnoException).code === "ENOENT";
 };
 
 export type validateConfigResult =

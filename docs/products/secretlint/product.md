@@ -5,7 +5,7 @@
 ## Overview
 
 Secretlint is a pluggable linting tool that finds secrets, such as tokens, private keys, and passwords, in files before they are committed or published.
-Each kind of secret is detected by a rule, and each repository chooses the rules it uses in a configuration file.
+Each kind of secret is detected by a rule. Without a configuration file, the rules of the recommend preset run, and each repository can choose the rules it uses in a configuration file.
 It runs on the developer's machine, in a pre-commit hook, in CI, and as a command run by AI agents, and is distributed as npm packages, a Docker image, and a single-executable binary.
 
 ## Background and problems
@@ -66,11 +66,11 @@ GitHub secret scanning works on the GitHub side, after a commit is made or pushe
 - **Offering:** Secretlint reports secrets in files on the local machine, and a pre-commit hook can stop the commit.
 - **Reason:** A secret is cheaper to handle before it is committed or published than after. GitHub secret scanning works after the commit or push.
 
-### Per-repository, opt-in configuration
+### Recommended rules by default, per-repository configuration
 
-- **Recipient:** Developers and CI and repository maintainers
-- **Offering:** Each repository chooses the rules, their options, allowed messages, and ignored files, and can add rules step by step.
-- **Reason:** Linting tools that report various errors by default are difficult to use. The opt-in approach lets a repository introduce Secretlint incrementally and reduce false positives by configuration.
+- **Recipient:** Developers, CI and repository maintainers, and AI agents
+- **Offering:** Without a configuration file, Secretlint runs the rules of the recommend preset. Each repository can choose other rules, their options, allowed messages, and ignored files in a configuration file, and can add rules step by step.
+- **Reason:** Linting tools that report various errors by default are difficult to use, so rules other than the recommend preset are opt-in. The recommend preset is part of Secretlint and is designed for far fewer false positives than secret scanners in general, so few users would find a downside in running it without a configuration, and requiring a file first would only make the first run harder.
 
 ### Rules as documentation
 
@@ -96,7 +96,7 @@ GitHub secret scanning works on the GitHub side, after a commit is made or pushe
 - **Credential:** A value that gives access to a service, such as a token, a password, or a private key, in a generally defined format. Most rules that Secretlint provides detect credentials.
 - **Rule:** A unit that detects one group of secrets, or that filters the reports of other rules. A rule is a built-in rule or a custom rule. A rule that reports secrets is a scanner rule, and a rule that suppresses reports is a filter rule.
 - **Rule preset:** A rule that groups other rules, such as `@secretlint/secretlint-rule-preset-recommend` and `@secretlint/secretlint-rule-preset-canary`.
-- **Configuration file (`.secretlintrc`):** The file that lists the rules to use, with their options.
+- **Configuration file (`.secretlintrc`):** The file that lists the rules to use, with their options. Without it, the recommend preset is used.
 - **Rule options:** Settings of each rule, such as `allows`, a list of values that the rule does not report.
 - **Message ID:** The identifier of a kind of message that a rule reports. `allowMessageIds` suppresses messages by their ID.
 - **Severity:** The level of a reported message: error, warning, or info. Only errors make the command fail.
@@ -138,7 +138,7 @@ Not decided yet. See [Open questions](#open-questions).
 
 - **Reduce false positives.** A rule reports a value only when it is likely to be a secret, and validates matches when possible. Secretlint is a linting tool that developers keep running, not a scanner that lists every candidate: when reporting less and finding more conflict, it chooses fewer false positives. A report in a file that the user excluded is also a false positive, so when an ignore rule can be read in two ways, the reading that ignores more files is taken.
 - **Ignore rules mean the same as in Git.** A user writes `.gitignore` for Git, and `.secretlintignore` has the same syntax. The reference is what Git itself does with a rule, not what a library does. Where this differs from reducing false positives, reducing false positives wins.
-- **Opt-in instead of opt-out.** Only the rules that are needed are enabled.
+- **Opt-in instead of opt-out, except for the recommend preset.** Only the rules that are needed are enabled. The recommend preset, which is designed for few false positives, runs when there is no configuration file.
 - **Integrate with the development workflow.** Secretlint works on the developer's machine, in a pre-commit hook, in CI, and as a command run by AI agents.
 - **Empower users to contribute.** Users can write their own rules and documentation.
 - **Rule as documentation.** Each rule documents why it reports a value.

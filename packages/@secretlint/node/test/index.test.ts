@@ -20,8 +20,28 @@ describe("createEngine", () => {
                 configFilePath: "/not/found/config",
                 formatter: "stylish",
             }),
-            /secretlint config is not found/,
+            /secretlint config file is not found/,
         );
+    });
+    it("should use the recommend preset when no config is found", async () => {
+        // os.tmpdir() and its parents have no .secretlintrc
+        const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "secretlint-node-"));
+        try {
+            const secretFilePath = path.join(tmpDir, "token.txt");
+            // a GitHub token that is not real: the rule checks only its format
+            fs.writeFileSync(secretFilePath, `token=ghp_${"A".repeat(36)}`);
+            const engine = await createEngine({
+                color: false,
+                cwd: tmpDir,
+                formatter: "json",
+            });
+            const result = await engine.executeOnFiles({ filePathList: [secretFilePath] });
+            assert.strictEqual(result.ok, false);
+            const [fileResult] = JSON.parse(result.output);
+            assert.strictEqual(fileResult.messages[0].ruleParentId, "@secretlint/secretlint-rule-preset-recommend");
+        } finally {
+            fs.rmSync(tmpDir, { recursive: true, force: true });
+        }
     });
     it("should create an Engine and execute on files", async () => {
         const engine = await createEngine({

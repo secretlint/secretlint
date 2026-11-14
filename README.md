@@ -67,16 +67,17 @@ You can install Secretlint using [npm](https://www.npmjs.com/):
 npm install secretlint --save-dev
 ```
 
-You should then set up a configuration file:
-
-```
-npx secretlint --init
-```
-
-Finally, you can run Secretlint on any file or directory like this:
+You can run Secretlint on any file or directory like this:
 
 ```
 npx secretlint "**/*"
+```
+
+Without a configuration file, Secretlint uses the [recommended rules](./docs/rules/preset-recommend.md).
+To choose the rules and their options, set up a configuration file:
+
+```
+npx secretlint --init
 ```
 
 :memo: Secretlint supports [glob pattern](https://github.com/mrmlnc/fast-glob#basic-syntax) and glob pattern should be wrapped by a double quote.
@@ -91,8 +92,8 @@ You can use `secretlint` command without Node.js by using a single-executable bi
 
 1. Download the latest binary from [Releases page](https://github.com/secretlint/secretlint/releases) 
 2. Change the file permission to executable: `chmod +x ./secretlint`
-3. Run `./secretlint --init` to create a configuration file
-4. Run `./secretlint "**/*"` to lint your project
+3. Run `./secretlint "**/*"` to lint your project with the recommended rules
+4. Run `./secretlint --init` to create a configuration file when you want to choose the rules
 
 For more details, please see [publish/binary-compiler](./publish/binary-compiler) README.
 
@@ -114,7 +115,7 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
     --init             setup config file. Create .secretlintrc.json file from your package.json
     --format           [String] formatter name. Default: "stylish". Available Formatter: checkstyle, compact, github, jslint-xml, junit, pretty-error, stylish, tap, unix, json, mask-result, table
     --output           [path:String] output file path that is written of reported result.
-    --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
+    --secretlintrc     [path:String] path to the config file. Default: .secretlintrc.* from the current directory up to the root, or the recommended rules
     --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
     --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
     --no-color         disable ANSI-color of output.
@@ -176,6 +177,8 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
 ## Configuration
 
 Secretlint has a configuration file `.secretlintrc.{json,yml,js}`.
+Secretlint looks for it from the current directory up to the root. When none is found, Secretlint uses the recommended rules (`@secretlint/secretlint-rule-preset-recommend`).
+`--secretlintrc <path>` names exactly one file: it is not looked for in the parent directories.
 
 - Document: [Configuring Secretlint](./docs/configuration.md)
 

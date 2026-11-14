@@ -4,13 +4,12 @@
 
 ## About this document
 
-This document describes how `@secretlint/config-loader` resolves the rule ids of [Configuration loading](requirements.md) to rules.
+This document describes how `@secretlint/config-loader` and `@secretlint/node` find the configuration of [Configuration loading](requirements.md), use the default configuration when there is none, and how the loader resolves the rule ids to rules.
 The parent Product is [Secretlint](../../product.md).
-Like the Requirements, it covers only the resolution of rule ids.
 
 ### Audience
 
-People and agents who change how rules are found and loaded.
+People and agents who change how the configuration and the rules are found and loaded.
 
 ### Prerequisites
 
@@ -18,9 +17,39 @@ Node.js module resolution, and the exports of rule packages described in [Rules 
 
 ### Outside this document
 
-Finding and validating the configuration file, and running the loaded rules in `@secretlint/core`.
+Validating the configuration file, and running the loaded rules in `@secretlint/core`.
 
 ## Implementation approach
+
+### Finding the configuration file
+
+`createEngine()` of `@secretlint/node` chooses how to get the configuration:
+
+- With `configFileJSON` (the CLI passes the parsed `--secretlintrcJSON`), it calls `loadPackagesFromConfigDescriptor()` with the object, and sets no `configFilePath`, so no config result is reported.
+- Otherwise it calls `loadConfig({ cwd, configFilePath })`, and the CLI passes `--secretlintrc` as `configFilePath`.
+
+`loadConfigDescriptor()` calls `rcFile("secretlint", { cwd, configFileName: configFilePath, packageJSON: { fieldName: "secretlint" } })` of `rc-config-loader`.
+`rcFile()` splits `cwd` into its directories and, from the deepest one, tries `<configFileName>.cjs`, `.js`, `.json`, `.yaml`, `.yml` (the key order of its loader table), then `<configFileName>` with the loaders of `.json`, `.yaml`, `.yml`, `.js`, and `.cjs` in order, then the `secretlint` field of `package.json`, and repeats this in the parent directory up to the root.
+`configFileName` is `.secretlintrc`.
+
+When `configFilePath` is given (`--secretlintrc`), `loadConfigDescriptor()` does not search. It reads only `path.resolve(cwd, configFilePath)` with an API of `rc-config-loader` that loads exactly one file, requested from rc-config-loader for this change. That API chooses the loader by the extension (`.json`, `.yaml`, `.yml`, `.js`, `.cjs`; a name without these extensions is read as JSON, YAML, then JavaScript, like `.secretlintrc`), so Secretlint does not have its own loaders.
+Before this change, `configFilePath` was passed to `rcFile()` as `configFileName`, which joined it to each directory, so a relative path was also looked for in the parent directories with the extensions appended.
+When the file is not found, `loadConfigDescriptor()` decides by `configFilePath`:
+
+- When `configFilePath` is given and the file does not exist, it throws `Error("secretlint config file is not found: <configFilePath>")`. The CLI entry point prints the error and sets the exit status 2, as for other errors of loading.
+- When it is not given, it returns `DEFAULT_CONFIG_DESCRIPTOR` with `configFilePath: undefined` and `isDefault: true`.
+
+`DEFAULT_CONFIG_DESCRIPTOR` is `{ rules: [{ id: "@secretlint/secretlint-rule-preset-recommend" }] }`, exported by `@secretlint/config-loader`.
+`@secretlint/config-creator`, which writes the file of `--init`, takes the preset id from `presetRecommend.meta.id` of `@secretlint/core/builtin`, and a test of the loader checks that `DEFAULT_CONFIG_DESCRIPTOR` has the same id, so the default configuration and the file of `--init` cannot differ. The loader keeps the id as a string, so that importing the loader does not import the built-in rules.
+The default configuration goes through `loadPackagesFromConfigDescriptor()` like a configuration file, so the recommend preset is taken from the built-in table of `@secretlint/core`, and no package is imported.
+
+Errors of a found file, such as a syntax error, are thrown by `rcFile()` as before, so a broken configuration never falls back to the default.
+
+The Docker image relies on the search up to the root: it copies the recommend configuration to `/.secretlintrc.json`, so a directory without its own configuration finds that file. This change keeps the file, see Deployment notes.
+
+`createEngine()` of `@secretlint/node` writes the use of the default configuration to the `--debug` log, and nothing else changes in the engine or the CLI. No notice is written, so the CLI, its result type, and the engine API do not change.
+
+### Resolving rule ids
 
 `loadConfig()` reads the configuration file into a configuration descriptor, and `loadPackagesFromConfigDescriptor()` turns each rule entry of the descriptor into an entry with a rule creator.
 The result is the configuration of `@secretlint/core`, which runs the creators without knowing where they came from.
@@ -34,13 +63,13 @@ For each rule entry, the loader takes the creator from the first of these that a
 A creator with `meta.type: "preset"` becomes a preset entry with the `rules` of its descriptor entry. Other creators become rule entries with `options`, `severity`, `disabled`, and `allowMessageIds`.
 The `id` of the descriptor entry is copied to the result, which is why the messages keep the id written in the configuration file.
 
-### Resolver hooks
+#### Resolver hooks
 
 `@secretlint/resolver` runs the resolve hooks and the import hooks that a program registered before it falls back to `require.resolve()` and `import()`.
 A hook can return a fixed URL for a package name, and the import hook can return the exports of a module that is already loaded.
 This lets a bundled program, such as the single-executable binary, provide packages that are not in a `node_modules` directory. Built-in rules do not need hooks, because they are found before the resolver runs.
 
-### Failures
+#### Failures
 
 An error of one entry is collected, and the loader continues with the other entries. After all entries, the loader throws an `AggregationError` with all errors, each prefixed with `Failed to load rule module: <id>`.
 After loading, the configuration is validated together with the creators, because `allowMessageIds` needs the messages of the rule.
@@ -53,7 +82,13 @@ sequenceDiagram
     participant Loader as config-loader
     participant Resolver as @secretlint/resolver
     participant Core as @secretlint/core
-    CLI->>Loader: loadConfig()
+    CLI->>Loader: loadConfig({ cwd, configFilePath })
+    Loader->>Loader: rcFile() from cwd up to the root
+    alt not found and configFilePath is given
+        Loader-->>CLI: throw "secretlint config file is not found: <path>"
+    else not found
+        Loader->>Loader: DEFAULT_CONFIG_DESCRIPTOR, isDefault
+    end
     loop each rule entry
         Loader->>Loader: testReplaceDefinitions?
         Loader->>Core: getBuiltinRule(id, then full id)
@@ -73,7 +108,10 @@ sequenceDiagram
 
 ## APIs and interfaces
 
-- `loadConfig({ cwd, configFilePath, node_moduleDir, testReplaceDefinitions })` returns `{ ok, config, configDescriptor, configFilePath, messages }`.
+- `loadConfig({ cwd, configFilePath, node_moduleDir, testReplaceDefinitions })` returns `{ ok, config, configDescriptor, configFilePath, isDefault, messages }`. `configFilePath` is `undefined` when `isDefault` is `true`. It throws when the given `configFilePath` is not found.
+- `loadConfigDescriptor({ cwd, configFilePath })` returns `{ ok, configDescriptor, configFilePath, isDefault }` without loading the rules, and throws in the same case.
+- `DEFAULT_CONFIG_DESCRIPTOR` is the configuration used when none is found.
+- The type of `configFilePath` in the results changes from `string` to `string | undefined`. This is a breaking change of the API for programs that use the results, and it is released in a major version.
 - `loadPackagesFromConfigDescriptor({ configDescriptor, node_moduleDir, testReplaceDefinitions })` does the same from a descriptor that is already read.
 - `node_moduleDir` is the base directory that `SecretLintModuleResolver` joins with the package name.
 
@@ -83,7 +121,7 @@ None.
 
 ## Data handling
 
-The loader reads the configuration file and the modules of the packages. It does not write files.
+The loader reads the configuration file, the `package.json` files on the way to the root, and the modules of the packages. It does not write files.
 
 ## Authentication and authorization notes
 
@@ -95,12 +133,19 @@ Importing a package runs its code, so the loader imports only the package names 
 
 ## Deployment notes
 
-None.
+The change is released in the next major version, v14, together with the release note that a run without a configuration no longer fails.
+The Docker image is still needed as the distribution without Node.js. It keeps `/.secretlintrc.json` in this change, which has the same rules as the default configuration.
+`@secretlint/quick-start` has no role left with the default configuration, and deprecating it is a follow-up.
 
 ## Alternatives considered
 
 - **Resolve built-in rules with resolver hooks:** The binary did this for its packages. It was not chosen, because every program would have to register the hooks, and the npm package would still need the packages installed.
 - **Let an installed package win over the built-in rule:** It was not chosen, so that the rules always have the version of the installed Secretlint, and an older preset package does not hide new rules.
+- **Keep the error when no configuration is found, and only improve its message:** It was not chosen. The recommend preset is part of Secretlint and designed for few false positives, so making every user create a file first costs more than it protects.
+- **Use the default configuration only with an option:** It was not chosen, because a user who knows the option can run `--init` instead, so it would not help the first run.
+- **Decide the default configuration in `@secretlint/node` instead of the loader:** It was not chosen, so that every program that uses `loadConfig()`, such as editor integrations, gets the same configuration as the CLI.
+- **Write a notice to stderr:** It was not chosen (azu, 2026-11-14). The default configuration is the same as the file of `--init`, so a user rarely needs to know, oxlint, Biome, and Ruff write nothing, and passing a notice from `runSecretLint()` to the CLI would add a public API.
+- **Report the notice as a message of the results, like `EMPTY_RULES`:** It was not chosen. There is no file to report it for, and it would appear in JSON, SARIF, and `mask-result` output.
 
 ## Open questions
 

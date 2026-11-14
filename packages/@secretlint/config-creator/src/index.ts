@@ -1,4 +1,4 @@
-import { canaryRules, recommendedRules } from "@secretlint/core/builtin";
+import { canaryRules, presetCanary, presetRecommend, recommendedRules } from "@secretlint/core/builtin";
 import { SecretLintConfigDescriptor } from "@secretlint/types";
 
 /**
@@ -35,8 +35,9 @@ export type CreateConfigFileOption = {
     packageJSON: any;
 };
 
-const RECOMMENDED_PRESET_ID = "@secretlint/secretlint-rule-preset-recommend";
-const CANARY_PRESET_ID = "@secretlint/secretlint-rule-preset-canary";
+// The default config of @secretlint/config-loader uses the same preset when no config is found
+const RECOMMENDED_PRESET_ID = presetRecommend.meta.id;
+const CANARY_PRESET_ID = presetCanary.meta.id;
 
 /**
  * Create Config Object from package.json

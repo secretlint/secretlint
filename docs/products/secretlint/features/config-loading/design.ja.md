@@ -4,13 +4,12 @@
 
 ## このドキュメントについて
 
-このドキュメントでは、`@secretlint/config-loader`が[設定の読み込み](requirements.ja.md)のルールIDをルールに解決する方法を説明します。
+このドキュメントでは、`@secretlint/config-loader`と`@secretlint/node`が[設定の読み込み](requirements.ja.md)の設定を探す方法、設定がないときに既定の設定を使う方法、読み込みがルールIDをルールに解決する方法を説明します。
 親のProductは[Secretlint](../../product.ja.md)です。
-Requirementsと同じく、ルールIDの解決だけを扱います。
 
 ### 対象読者
 
-ルールを探して読み込む処理を変更する人とエージェント。
+設定とルールを探して読み込む処理を変更する人とエージェント。
 
 ### 前提知識
 
@@ -18,9 +17,39 @@ Node.jsのモジュール解決と、[ルールとルールプリセット](../r
 
 ### このドキュメントで扱わないこと
 
-設定ファイルの探索と検証、および読み込んだルールを`@secretlint/core`で実行すること。
+設定ファイルの検証と、読み込んだルールを`@secretlint/core`で実行すること。
 
 ## 実装方針
+
+### 設定ファイルの探索
+
+`@secretlint/node`の`createEngine()`は、設定の取得方法を次のように選びます。
+
+- `configFileJSON`があるとき（CLIは`--secretlintrcJSON`をパースして渡します）は、そのオブジェクトで`loadPackagesFromConfigDescriptor()`を呼び、`configFilePath`を設定しません。そのため、設定についての結果は報告されません。
+- それ以外のときは`loadConfig({ cwd, configFilePath })`を呼びます。CLIは`--secretlintrc`を`configFilePath`として渡します。
+
+`loadConfigDescriptor()`は、`rc-config-loader`の`rcFile("secretlint", { cwd, configFileName: configFilePath, packageJSON: { fieldName: "secretlint" } })`を呼びます。
+`rcFile()`は`cwd`をディレクトリに分け、最も深いディレクトリから、`<configFileName>.cjs`、`.js`、`.json`、`.yaml`、`.yml`を試し（読み込み方の表のキーの順です）、次に`<configFileName>`を`.json`、`.yaml`、`.yml`、`.js`、`.cjs`の読み込み方で順に試し、最後に`package.json`の`secretlint`フィールドを試します。これを親ディレクトリでルートまで繰り返します。
+`configFileName`は`.secretlintrc`です。
+
+`configFilePath`が指定されたとき（`--secretlintrc`）は、`loadConfigDescriptor()`は探索しません。この変更のためにrc-config-loaderへ依頼した、ちょうど1つのファイルを読むAPIで、`path.resolve(cwd, configFilePath)`だけを読みます。このAPIは拡張子で読み込み方を選ぶので（`.json`、`.yaml`、`.yml`、`.js`、`.cjs`。これらの拡張子がない名前は、`.secretlintrc`と同じくJSON、YAML、JavaScriptの順に読みます）、Secretlintは自前の読み込み方を持ちません。
+この変更の前は、`configFilePath`を`configFileName`として`rcFile()`に渡していたため、各ディレクトリと結合され、相対パスは親ディレクトリでも、拡張子を付けた名前でも探されていました。
+ファイルが見つからないと、`loadConfigDescriptor()`は`configFilePath`によって次のように決めます。
+
+- `configFilePath`が指定されていてファイルがないときは、`Error("secretlint config file is not found: <configFilePath>")`を投げます。CLIの入り口は、ほかの読み込みのエラーと同じくエラーを出力し、終了ステータスを2にします。
+- 指定されていないときは、`DEFAULT_CONFIG_DESCRIPTOR`を`configFilePath: undefined`と`isDefault: true`で返します。
+
+`DEFAULT_CONFIG_DESCRIPTOR`は`{ rules: [{ id: "@secretlint/secretlint-rule-preset-recommend" }] }`で、`@secretlint/config-loader`がexportします。
+`--init`のファイルを書き出す`@secretlint/config-creator`はプリセットのIDを`@secretlint/core/builtin`の`presetRecommend.meta.id`から取り、読み込みのテストで`DEFAULT_CONFIG_DESCRIPTOR`が同じIDを持つことを確かめるので、既定の設定と`--init`のファイルが食い違うことはありません。読み込みをimportしただけで組み込みルールまでimportされないように、読み込み側はIDを文字列で持ちます。
+既定の設定も設定ファイルと同じく`loadPackagesFromConfigDescriptor()`を通るので、recommendプリセットは`@secretlint/core`の組み込みの対応表から取得され、パッケージはimportされません。
+
+構文エラーなど、見つかったファイルのエラーはこれまでどおり`rcFile()`が投げるので、壊れた設定が既定の設定に置き換わることはありません。
+
+Dockerイメージは、ルートまでの探索を利用しています。recommendの設定を`/.secretlintrc.json`にコピーしているため、自分の設定がないディレクトリでもそのファイルが見つかります。この変更ではこのファイルを残します（デプロイに関する特記事項を参照）。
+
+`@secretlint/node`の`createEngine()`は、既定の設定を使ったことを`--debug`のログに書くだけで、エンジンとCLIはほかに変わりません。通知は出さないので、CLI、その結果の型、エンジンのAPIは変わりません。
+
+### ルールIDの解決
 
 `loadConfig()`は設定ファイルを読んで設定の記述（descriptor）にし、`loadPackagesFromConfigDescriptor()`は記述の各ルールの項目を、ルールのcreatorを持つ項目に変換します。
 変換結果は`@secretlint/core`の設定になります。`@secretlint/core`は、creatorがどこから来たかを知らずに実行します。
@@ -34,13 +63,13 @@ Node.jsのモジュール解決と、[ルールとルールプリセット](../r
 `meta.type: "preset"`のcreatorは、記述の項目の`rules`を持つプリセットの項目になります。それ以外のcreatorは、`options`、`severity`、`disabled`、`allowMessageIds`を持つルールの項目になります。
 記述の項目の`id`を結果にそのままコピーするため、メッセージには設定ファイルに書いたIDが残ります。
 
-### resolverのフック
+#### resolverのフック
 
 `@secretlint/resolver`は、`require.resolve()`や`import()`を使う前に、プログラムが登録したresolveフックとimportフックを実行します。
 resolveフックはパッケージ名に対して決まったURLを返すことができ、importフックは読み込み済みのモジュールのexportを返すことができます。
 これにより、単一実行ファイルのようにバンドルされたプログラムでも、`node_modules`にないパッケージを提供できます。組み込みルールはresolverを使う前に見つかるため、フックは必要ありません。
 
-### 失敗
+#### 失敗
 
 1つの項目でエラーが起きても、そのエラーを記録してほかの項目の読み込みを続けます。すべての項目を処理したあと、各エラーの先頭に`Failed to load rule module: <id>`を付けた`AggregationError`を投げます。
 `allowMessageIds`の検証にはルールのメッセージが必要なため、設定の検証は読み込みのあとにcreatorと合わせて行います。
@@ -53,7 +82,13 @@ sequenceDiagram
     participant Loader as config-loader
     participant Resolver as @secretlint/resolver
     participant Core as @secretlint/core
-    CLI->>Loader: loadConfig()
+    CLI->>Loader: loadConfig({ cwd, configFilePath })
+    Loader->>Loader: cwdからルートまでrcFile()
+    alt 見つからず、configFilePathが指定されている
+        Loader-->>CLI: throw "secretlint config file is not found: <path>"
+    else 見つからない
+        Loader->>Loader: DEFAULT_CONFIG_DESCRIPTOR, isDefault
+    end
     loop each rule entry
         Loader->>Loader: testReplaceDefinitions?
         Loader->>Core: getBuiltinRule(id, then full id)
@@ -73,7 +108,10 @@ sequenceDiagram
 
 ## API・インターフェース
 
-- `loadConfig({ cwd, configFilePath, node_moduleDir, testReplaceDefinitions })`は`{ ok, config, configDescriptor, configFilePath, messages }`を返します。
+- `loadConfig({ cwd, configFilePath, node_moduleDir, testReplaceDefinitions })`は`{ ok, config, configDescriptor, configFilePath, isDefault, messages }`を返します。`isDefault`が`true`のとき、`configFilePath`は`undefined`です。指定された`configFilePath`が見つからないときは例外を投げます。
+- `loadConfigDescriptor({ cwd, configFilePath })`は、ルールを読み込まずに`{ ok, configDescriptor, configFilePath, isDefault }`を返します。同じ場合に例外を投げます。
+- `DEFAULT_CONFIG_DESCRIPTOR`は、設定が見つからないときに使う設定です。
+- 結果の`configFilePath`の型は`string`から`string | undefined`に変わります。結果を使うプログラムにとってはAPIの破壊的変更なので、メジャーバージョンでリリースします。
 - `loadPackagesFromConfigDescriptor({ configDescriptor, node_moduleDir, testReplaceDefinitions })`は、読み込み済みの設定の記述から同じ処理をします。
 - `node_moduleDir`は、`SecretLintModuleResolver`がパッケージ名と結合する基準のディレクトリです。
 
@@ -83,7 +121,7 @@ sequenceDiagram
 
 ## データの取り扱い設計
 
-設定ファイルとパッケージのモジュールを読み込むだけで、ファイルには書き込みません。
+設定ファイル、ルートまでの途中にある`package.json`、パッケージのモジュールを読み込むだけで、ファイルには書き込みません。
 
 ## 認証認可に関する特記事項
 
@@ -95,12 +133,19 @@ sequenceDiagram
 
 ## デプロイに関する特記事項
 
-なし。
+この変更は次のメジャーバージョンv14で、設定がなくても実行が失敗しなくなったというリリースノートと一緒にリリースします。
+Dockerイメージは、Node.jsなしで使える配布形態として引き続き必要です。この変更では、既定の設定と同じルールを持つ`/.secretlintrc.json`を残します。
+既定の設定があれば`@secretlint/quick-start`の役目はなくなるので、非推奨にするのは後続の作業とします。
 
 ## 検討した代替手段
 
 - **resolverのフックで組み込みルールを解決する:** 以前の単一実行ファイルがパッケージに対して使っていた方法です。すべてのプログラムがフックを登録する必要があり、npmパッケージでは結局ルールのパッケージのインストールが必要になるため、採用しませんでした。
 - **インストールしたパッケージを組み込みルールより優先する:** ルールのバージョンを常にインストールしたSecretlintと一致させ、古いプリセットのパッケージで新しいルールが隠れないようにするため、採用しませんでした。
+- **設定が見つからないときのエラーを残し、メッセージだけを改善する:** 採用しませんでした。recommendプリセットはSecretlintの一部で、誤検知が少なくなるように設計されているので、すべての利用者に先にファイルを作らせる負担のほうが、それで防げるものより大きいからです。
+- **オプションを付けたときだけ既定の設定を使う:** オプションを知っている利用者なら`--init`を使えるので、最初の実行の助けにならないため、採用しませんでした。
+- **既定の設定を読み込みではなく`@secretlint/node`で決める:** エディターとの連携など、`loadConfig()`を使うすべてのプログラムがCLIと同じ設定を得られるように、採用しませんでした。
+- **stderrに通知を出す:** 採用しませんでした（azu、2026-11-14）。既定の設定は`--init`のファイルと同じなので利用者が知る必要は少なく、oxlint、Biome、Ruffも何も出さず、`runSecretLint()`からCLIへ通知を渡すと公開APIが増えるからです。
+- **通知を`EMPTY_RULES`のように結果のメッセージとして報告する:** 報告先のファイルがなく、JSON、SARIF、`mask-result`の出力にも現れてしまうため、採用しませんでした。
 
 ## 未決事項
 

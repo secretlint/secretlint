@@ -62,7 +62,9 @@ export type SecretLintEngineOptionsBase = {
 };
 export type SecretLintEngineOptionsConfigFilePath = SecretLintEngineOptionsBase & {
     /**
-     * If configFilePath is not defined, search config file from cwd(current working dir)
+     * The path of the config file. It names exactly one file, resolved from cwd.
+     * If configFilePath is not defined, search config file from cwd(current working dir) up to the root,
+     * and use the recommend preset when no config is found.
      */
     configFilePath?: string;
 };
@@ -435,7 +437,11 @@ export const createEngine = async (engineOptions: SecretLintEngineOptions) => {
             cwd: options.cwd,
             configFilePath: options.configFilePath,
         });
-        debug("Loaded ConfigFilePath: %s", loadConfigResult.configFilePath);
+        if (loadConfigResult.isDefault) {
+            debug("No config is found. Use the default config: %O", loadConfigResult.configDescriptor);
+        } else {
+            debug("Loaded ConfigFilePath: %s", loadConfigResult.configFilePath);
+        }
         return loadConfigResult;
     })();
     secretLintProfiler.mark({
