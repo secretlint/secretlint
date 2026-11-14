@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import { loadConfigFile, rcFile } from "rc-config-loader";
 import {
     SecretLintConfigDescriptor,
@@ -333,6 +335,12 @@ export const loadConfigDescriptor = async (
     });
     // No config is found from cwd up to the root: use the recommend preset
     if (!results) {
+        // rcFile() skips a `.secretlintrc` without an extension that no loader can read,
+        // so read it again to throw its error instead of using the default config
+        const unreadableRcFilePath = findRcFileWithoutExtension(options.cwd ?? process.cwd());
+        if (unreadableRcFilePath !== undefined) {
+            loadConfigFile<SecretLintConfigDescriptor>(unreadableRcFilePath);
+        }
         return {
             ok: true,
             configDescriptor: structuredClone(DEFAULT_CONFIG_DESCRIPTOR),
@@ -346,6 +354,24 @@ export const loadConfigDescriptor = async (
         configFilePath: results.filePath,
         isDefault: false,
     };
+};
+
+/**
+ * Find `.secretlintrc` (without an extension) from the directory up to the root
+ */
+const findRcFileWithoutExtension = (cwd: string): string | undefined => {
+    let directory = path.resolve(cwd);
+    while (true) {
+        const filePath = path.join(directory, ".secretlintrc");
+        if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+            return filePath;
+        }
+        const parent = path.dirname(directory);
+        if (parent === directory) {
+            return undefined;
+        }
+        directory = parent;
+    }
 };
 
 const isNotFoundError = (error: unknown): error is NodeJS.ErrnoException => {

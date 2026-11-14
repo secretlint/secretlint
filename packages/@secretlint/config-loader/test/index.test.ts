@@ -125,6 +125,16 @@ describe("@secretlint/config-loader", () => {
             fs.writeFileSync(path.join(tmpDir, ".secretlintrc.json"), "{");
             await expect(loadConfig({ cwd: tmpDir })).rejects.toThrow(/Cannot read config file/);
         });
+        it("should throw when the found .secretlintrc without an extension is broken", async () => {
+            fs.writeFileSync(path.join(tmpDir, ".secretlintrc"), "{");
+            await expect(loadConfig({ cwd: tmpDir })).rejects.toThrow(/Cannot read config file/);
+        });
+        it("should throw when .secretlintrc of a parent directory is broken", async () => {
+            fs.writeFileSync(path.join(tmpDir, ".secretlintrc"), "{");
+            const subDir = path.join(tmpDir, "sub");
+            fs.mkdirSync(subDir);
+            await expect(loadConfig({ cwd: subDir })).rejects.toThrow(/Cannot read config file/);
+        });
     });
     describe("configFilePath", () => {
         let tmpDir: string;
