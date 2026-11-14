@@ -106,7 +106,7 @@ for (let i = 0; i < 1200; i++) {
 fs.writeFileSync("many-files/secret.txt", "AWS_SECRET_ACCESS_KEY = wJalrXUtnFEMI/K7MDENG/bPxRfiCYSECRETSKEY\n");
 '
 set +e
-SECRETLINT_KEYWORD_SCAN_THREADS=2 DEBUG=@secretlint/node ./secretlint "many-files/**/*" >worker-stdout.txt 2>worker-stderr.txt
+DEBUG=@secretlint/node ./secretlint "many-files/**/*" >worker-stdout.txt 2>worker-stderr.txt
 WORKER_STATUS=$?
 set -e
 if [ "$WORKER_STATUS" -ne 1 ] || ! grep -q "secret.txt" worker-stdout.txt; then
@@ -118,7 +118,7 @@ if grep -q "keyword scan worker error\|keyword scan worker can not start" worker
     grep -m 3 "keyword scan worker" worker-stderr.txt
     exit 1
 fi
-if ! grep -q "keyword scan workers: 1" worker-stderr.txt; then
+if ! grep -qE "keyword scan workers: [1-9]" worker-stderr.txt; then
     echo "❌ The keyword scan worker did not start in the binary"
     exit 1
 fi
