@@ -4,13 +4,12 @@
 
 ## このドキュメントについて
 
-このドキュメントでは、`@secretlint/config-loader`が[設定の読み込み](requirements.ja.md)のルールIDをルールに解決する方法を説明します。
+このドキュメントでは、`@secretlint/config-loader`と`@secretlint/node`が[設定の読み込み](requirements.ja.md)の設定を探す方法と、読み込みがそのルールIDをルールに解決する方法を説明します。
 親のProductは[Secretlint](../../product.ja.md)です。
-Requirementsと同じく、ルールIDの解決だけを扱います。
 
 ### 対象読者
 
-ルールを探して読み込む処理を変更する人とエージェント。
+設定とルールを探して読み込む処理を変更する人とエージェント。
 
 ### 前提知識
 
@@ -18,9 +17,25 @@ Node.jsのモジュール解決と、[ルールとルールプリセット](../r
 
 ### このドキュメントで扱わないこと
 
-設定ファイルの探索と検証、および読み込んだルールを`@secretlint/core`で実行すること。
+設定ファイルの検証と、読み込んだルールを`@secretlint/core`で実行すること。
 
 ## 実装方針
+
+### 設定ファイルの探索
+
+`@secretlint/node`の`createEngine()`は、設定の取得方法を次のように選びます。
+
+- `configFileJSON`があるとき（CLIは`--secretlintrcJSON`をパースして渡します）は、そのオブジェクトで`loadPackagesFromConfigDescriptor()`を呼び、`configFilePath`を設定しません。そのため、設定についての結果は報告されません。
+- それ以外のときは`loadConfig({ cwd, configFilePath })`を呼びます。CLIは`--secretlintrc`を`configFilePath`として渡します。
+
+`loadConfigDescriptor()`は、`rc-config-loader`の`rcFile("secretlint", { cwd, configFileName: configFilePath, packageJSON: { fieldName: "secretlint" } })`を呼びます。
+`rcFile()`は`cwd`をディレクトリに分け、最も深いディレクトリから、`<configFileName>`を`.json`、`.yaml`、`.yml`、`.js`、`.cjs`の読み込み方で順に試し、次に`<configFileName>.json`、`.yaml`、`.yml`、`.js`、`.cjs`を試し、最後に`package.json`の`secretlint`フィールドを試します。これを親ディレクトリでルートまで繰り返します。
+`configFileName`の既定値は`.secretlintrc`です。`--secretlintrc`の値は各ディレクトリと結合されるため、相対パスは親ディレクトリでも探されます。
+`rcFile()`が`undefined`を返すと、`loadConfigDescriptor()`は`Error("secretlint config is not found ...")`を投げます。CLIの入り口は投げられたエラーを`console.error()`で出力し（スタックトレースを含みます）、終了ステータスを2にします。
+
+Dockerイメージは、ルートまでの探索を利用しています。recommendの設定を`/.secretlintrc.json`にコピーしているため、自分の設定がないディレクトリでもそのファイルが見つかります。
+
+### ルールIDの解決
 
 `loadConfig()`は設定ファイルを読んで設定の記述（descriptor）にし、`loadPackagesFromConfigDescriptor()`は記述の各ルールの項目を、ルールのcreatorを持つ項目に変換します。
 変換結果は`@secretlint/core`の設定になります。`@secretlint/core`は、creatorがどこから来たかを知らずに実行します。
@@ -34,13 +49,13 @@ Node.jsのモジュール解決と、[ルールとルールプリセット](../r
 `meta.type: "preset"`のcreatorは、記述の項目の`rules`を持つプリセットの項目になります。それ以外のcreatorは、`options`、`severity`、`disabled`、`allowMessageIds`を持つルールの項目になります。
 記述の項目の`id`を結果にそのままコピーするため、メッセージには設定ファイルに書いたIDが残ります。
 
-### resolverのフック
+#### resolverのフック
 
 `@secretlint/resolver`は、`require.resolve()`や`import()`を使う前に、プログラムが登録したresolveフックとimportフックを実行します。
 resolveフックはパッケージ名に対して決まったURLを返すことができ、importフックは読み込み済みのモジュールのexportを返すことができます。
 これにより、単一実行ファイルのようにバンドルされたプログラムでも、`node_modules`にないパッケージを提供できます。組み込みルールはresolverを使う前に見つかるため、フックは必要ありません。
 
-### 失敗
+#### 失敗
 
 1つの項目でエラーが起きても、そのエラーを記録してほかの項目の読み込みを続けます。すべての項目を処理したあと、各エラーの先頭に`Failed to load rule module: <id>`を付けた`AggregationError`を投げます。
 `allowMessageIds`の検証にはルールのメッセージが必要なため、設定の検証は読み込みのあとにcreatorと合わせて行います。
@@ -53,7 +68,11 @@ sequenceDiagram
     participant Loader as config-loader
     participant Resolver as @secretlint/resolver
     participant Core as @secretlint/core
-    CLI->>Loader: loadConfig()
+    CLI->>Loader: loadConfig({ cwd, configFilePath })
+    Loader->>Loader: cwdからルートまでrcFile()
+    alt 見つからない
+        Loader-->>CLI: throw "secretlint config is not found"
+    end
     loop each rule entry
         Loader->>Loader: testReplaceDefinitions?
         Loader->>Core: getBuiltinRule(id, then full id)
@@ -73,7 +92,8 @@ sequenceDiagram
 
 ## API・インターフェース
 
-- `loadConfig({ cwd, configFilePath, node_moduleDir, testReplaceDefinitions })`は`{ ok, config, configDescriptor, configFilePath, messages }`を返します。
+- `loadConfig({ cwd, configFilePath, node_moduleDir, testReplaceDefinitions })`は`{ ok, config, configDescriptor, configFilePath, messages }`を返します。設定が見つからないときは例外を投げます。
+- `loadConfigDescriptor({ cwd, configFilePath })`は、ルールを読み込まずに`{ ok, configDescriptor, configFilePath }`を返します。同じ場合に例外を投げます。
 - `loadPackagesFromConfigDescriptor({ configDescriptor, node_moduleDir, testReplaceDefinitions })`は、読み込み済みの設定の記述から同じ処理をします。
 - `node_moduleDir`は、`SecretLintModuleResolver`がパッケージ名と結合する基準のディレクトリです。
 
@@ -83,7 +103,7 @@ sequenceDiagram
 
 ## データの取り扱い設計
 
-設定ファイルとパッケージのモジュールを読み込むだけで、ファイルには書き込みません。
+設定ファイル、ルートまでの途中にある`package.json`、パッケージのモジュールを読み込むだけで、ファイルには書き込みません。
 
 ## 認証認可に関する特記事項
 

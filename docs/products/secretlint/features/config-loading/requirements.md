@@ -5,11 +5,12 @@
 ## About this document
 
 Secretlint reads the configuration file of a repository and decides which rules run, with which options.
-This document describes how the rule ids listed in the configuration file become the rules that run.
+This document describes how Secretlint finds the configuration file, and how the rule ids listed in it become the rules that run.
 The parent Product is [Secretlint](../../product.md).
 
 ### Scope
 
+- Finding the configuration file, and the `--secretlintrc` and `--secretlintrcJSON` options
 - Resolving each rule id in the configuration file to a built-in rule, or to a rule or a preset of an installed package
 - The short form of a rule id
 - What happens when a rule id cannot be resolved
@@ -18,13 +19,65 @@ The parent Product is [Secretlint](../../product.md).
 
 This document does not yet describe the following parts of Configuration loading:
 
-- Finding the configuration file, and the `--secretlintrc` option
 - Validating the configuration file, and the messages about deprecated settings
 - `sharedOptions`
 
 The rules and presets themselves are described in [Rules and rule presets](../rules-and-presets/requirements.md).
 
 ## User stories
+
+### Use the configuration of the repository
+
+As a developer, I want Secretlint to find the configuration file of the repository without options, so that the same command uses the same rules in every directory of the repository.
+
+**Acceptance criteria:**
+
+Scenario: When the current directory has a configuration file, it is used
+
+- Given: The current directory has `.secretlintrc.json`.
+- When: The developer runs `secretlint "**/*"`.
+- Then: The rules of `.secretlintrc.json` run.
+
+Scenario: When a parent directory has the configuration file, it is used
+
+- Given: Only the root directory of the repository has `.secretlintrc.json`, and the developer is in a subdirectory.
+- When: The developer runs `secretlint "**/*"` in the subdirectory.
+- Then: The rules of the `.secretlintrc.json` in the root directory run.
+
+Scenario: When `package.json` has the `secretlint` field, it is used as the configuration
+
+- Given: The current directory has no `.secretlintrc*` file, and `package.json` has a `secretlint` field.
+- When: The developer runs Secretlint.
+- Then: The rules of the `secretlint` field run.
+
+Scenario: When no configuration is found, Secretlint stops
+
+- Given: No `.secretlintrc*` file and no `secretlint` field of `package.json` exist in the current directory or its parent directories, and no option gives a configuration.
+- When: The developer runs `secretlint "**/*"`.
+- Then: Secretlint stops with an error that says the configuration is not found, no file is linted, and the exit status is 2.
+
+### Choose the configuration in the command
+
+As a developer or a CI maintainer, I want to give the configuration in the command, so that I can use a configuration that is not in the repository.
+
+**Acceptance criteria:**
+
+Scenario: When `--secretlintrc` gives a file, that file is used
+
+- Given: `config/secretlint.json` has a configuration.
+- When: The developer runs `secretlint "**/*" --secretlintrc config/secretlint.json`.
+- Then: The rules of `config/secretlint.json` run, and the `.secretlintrc*` files of the directories are not read.
+
+Scenario: When `--secretlintrcJSON` gives a JSON string, it is used
+
+- When: The developer runs `secretlint "**/*" --secretlintrcJSON '{"rules":[{"id":"@secretlint/secretlint-rule-preset-recommend"}]}'`.
+- Then: The recommend preset runs, and no configuration file is read.
+
+Scenario: When the file of `--secretlintrc` is not found, Secretlint stops
+
+- Given: `missing.json` does not exist in the current directory or its parent directories.
+- When: The developer runs `secretlint "**/*" --secretlintrc missing.json`.
+- Then: Secretlint stops with the same error as when no configuration is found, and the exit status is 2.
 
 ### Use a rule by its id
 
@@ -73,6 +126,46 @@ Scenario: When a rule id is not installed, Secretlint stops with the id
 None. This feature is a step of every lint, and no metric has been defined for it.
 
 ## Functional requirements
+
+### Finding the configuration file
+
+**Overview:** Secretlint decides the configuration from the options of the command, or finds the configuration file from the current directory.
+
+**Input:** The current directory, and the `--secretlintrc` or `--secretlintrcJSON` option.
+
+**Output:** The configuration, and the path of the file it was read from.
+
+#### Applicable conditions
+
+##### Without options
+
+In the current directory, Secretlint looks for these, in this order, and uses the first one that it can read:
+
+1. `.secretlintrc`, read as JSON, YAML, or JavaScript
+2. `.secretlintrc.json`, `.secretlintrc.yaml`, `.secretlintrc.yml`, `.secretlintrc.js`, `.secretlintrc.cjs`
+3. The `secretlint` field of `package.json`
+
+If none is found, it looks in the parent directory in the same way, up to the root of the file system.
+Configurations of different directories are not merged.
+
+##### `--secretlintrc`
+
+The option replaces the file name `.secretlintrc` in the search above, and the `secretlint` field of `package.json` is still looked for.
+A relative path is looked for from the current directory and then from each parent directory, and the extensions above are also tried after the given name.
+
+##### `--secretlintrcJSON`
+
+The option gives the configuration as a JSON string. No file is looked for, and messages about the configuration are not reported, because there is no file to report them for.
+
+#### Exceptional behavior
+
+##### No configuration is found
+
+Secretlint stops with the error `secretlint config is not found`, with its stack trace, and no file is linted. The exit status is 2.
+
+##### The configuration file cannot be read
+
+When a found file has a syntax error, Secretlint stops with an error that names the file, and no file is linted. The exit status is 2.
 
 ### Rule id resolution
 
@@ -123,11 +216,12 @@ Loading fails with an error that says the rule must export `creator`.
 
 ### Required data
 
+- **Configuration:** The `rules` list and the other settings, read from a configuration file, the `secretlint` field of `package.json`, or the `--secretlintrcJSON` option.
 - **Rule entry:** The `id` of a rule or a preset, and its `options`, `severity`, `allowMessageIds`, `disabled`, and for a preset its `rules`.
 
 ### Relationships
 
-Each rule entry is resolved to one rule or one preset.
+One configuration is used for a run, and it has the rule entries. Each rule entry is resolved to one rule or one preset.
 
 ### Personal information
 
