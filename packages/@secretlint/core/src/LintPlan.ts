@@ -20,7 +20,7 @@ import type {
 } from "@secretlint/types";
 import { secretLintProfiler } from "@secretlint/profiler";
 import debug0 from "debug";
-import { createKeywordMatcher, getKeywordMatcher, KeywordMatcher, normalizeKeyword } from "./helper/keyword-matcher.js";
+import { getKeywordMatcher, KeywordMatcher, normalizeKeyword } from "./helper/keyword-matcher.js";
 import { type KeywordGuard, keywordGuardKey, parseKeywordObject } from "./helper/keyword-guard.js";
 import { createKeywordScanPlan, type KeywordScanPlan } from "./keyword-scan.js";
 import { AllowMessage } from "./messages/filter-message-id.js";
@@ -220,9 +220,11 @@ const normalizePatternKeywords = (ruleId: string, keywords: unknown): PlanKeywor
                 const guarded = parseKeywordObject(item);
                 return { keyword: guarded.keyword.toLowerCase(), guard: guarded.guard, after: guarded.after };
             } catch (error) {
+                // The message has the reason, because a CLI shows only the message. `cause` is the error of the parser
                 throw new Error(
                     `The rule "${ruleId}" has a pattern with a keyword that is not supported.
 ${error instanceof Error ? error.message : String(error)}`,
+                    { cause: error },
                 );
             }
         }
@@ -582,15 +584,7 @@ const createView = (plan: LintPlan, contentType: ContentType): PlanView => {
     const sortedKeys = [...allKeywords.keys()].sort();
     const matcherKeywords = sortedKeys.map((key) => (allKeywords.get(key) as PlanKeyword).keyword);
     const matcherGuards = sortedKeys.map((key) => (allKeywords.get(key) as PlanKeyword).guard);
-    // For the profile, the matcher counts the places of the keywords with a guard.
-    // Such a matcher is not shared, and it is created only if the profiler is enabled when the view is created
-    const countsGuards = secretLintProfiler.isEnabled && matcherGuards.some((guard) => guard !== undefined);
-    const createMatcher = (): KeywordMatcher => {
-        return countsGuards
-            ? createKeywordMatcher(matcherKeywords, matcherGuards, { countGuards: true })
-            : getKeywordMatcher(matcherKeywords, matcherGuards);
-    };
-    const matcher = sortedKeys.length > 0 ? createMatcher() : undefined;
+    const matcher = sortedKeys.length > 0 ? getKeywordMatcher(matcherKeywords, matcherGuards) : undefined;
     const indexOf = new Map(sortedKeys.map((key, index) => [key, index]));
     const toIndexes = (keywords: PlanKeyword[] | undefined): number[] | undefined => {
         return keywords?.map((keyword) => indexOf.get(keywordKey(keyword)) as number);

@@ -220,9 +220,12 @@ export const parseKeywordObject = (item: object): GuardedKeyword => {
             return String(item);
         }
     };
-    const fail = (reason: string): never => {
-        throw new Error(`The keyword ${describe()} is not supported. ${reason}
-A keyword with a guard is written as { keyword: "00", after: "[A-Za-z0-9_-]{40,}" }.`);
+    const fail = (reason: string, cause?: unknown): never => {
+        throw new Error(
+            `The keyword ${describe()} is not supported. ${reason}
+A keyword with a guard is written as { keyword: "00", after: "[A-Za-z0-9_-]{40,}" }.`,
+            cause === undefined ? undefined : { cause },
+        );
     };
     const unknownProperties = Object.keys(item).filter((property) => !KEYWORD_OBJECT_PROPERTIES.has(property));
     if (unknownProperties.length > 0) {
@@ -245,7 +248,7 @@ A keyword with a guard is written as { keyword: "00", after: "[A-Za-z0-9_-]{40,}
     try {
         return { keyword, after, guard: parseKeywordGuard(after) };
     } catch (error) {
-        return fail(`\`after\`: ${error instanceof Error ? error.message : String(error)}`);
+        return fail(`\`after\`: ${error instanceof Error ? error.message : String(error)}`, error);
     }
 };
 

@@ -125,9 +125,9 @@ The profile shows the count of each guarded keyword, so a rule author sees it.
 
 #### The profile
 
-A matcher that is created for the profile counts, for each entry with a guard, the places where the keyword was found and the places where the guard was met.
+A matcher that counts for the profile counts, for each entry with a guard, the places where the keyword was found and the places where the guard was met.
 Without the profile it does not count, so the loop has no cost for it.
-`takeGuardCounts()` of the matcher returns the counts since the last call. The core creates such a matcher for a view when the profiler is enabled, and records the counts after each scan as `@core>keyword-guard` and `@core>keyword-guard-met`. `createKeywordScanner(plan, { profile: true })` creates one for a worker, and `scanner.takeGuardCounts()` returns the counts with the keyword and the guard as text.
+`setGuardCounting()` of the matcher starts and stops the counting, and `takeGuardCounts()` returns the counts since the last call. Before each scan, the core sets the counting to the state of the profiler, so a matcher that was created without the profiler counts after the profiler is enabled, and the places of a lint without the profiler are never added. After each scan with the profiler, the core records the counts as `@core>keyword-guard` and `@core>keyword-guard-met`. `createKeywordScanner(plan, { profile: true })` creates one for a worker, and `scanner.takeGuardCounts()` returns the counts with the keyword and the guard as text.
 The text is written from the characters of the set, in the syntax of `after`, such as `00 [0-9A-Za-z_-]{40,}`.
 
 ### Looking for keywords on several threads
@@ -343,7 +343,7 @@ A rule returns handlers, and the `file(source)` handler receives the source code
 The plan and the result are plain data and typed arrays, so they can be sent to another thread.
 `lintSource({ source, options, keywordScanResult })` uses the result as written in "The scan as a step of its own".
 
-`KeywordScanPlan` has `guards` next to `keywords`: `guards[i]` is `undefined`, or `{ chars, min }` for a keyword with a guard. It has no `caseSensitive`, because no keyword is case-sensitive.
+`KeywordScanPlan` has `guards` next to `keywords`: `guards[i]` is `undefined`, or `{ chars, min }` for a keyword with a guard. `createKeywordScanner()` also reads `null` as no guard, which a plan has after it was sent as JSON. It has no `caseSensitive`, because no keyword is case-sensitive.
 
 ## External service integration
 

@@ -126,9 +126,11 @@ const keywordsOfEntry = (entry: PatternType): SecretLintRulePatternKeyword[] | u
                 const guarded = parseKeywordObject(keyword);
                 return { keyword: guarded.keyword, after: guarded.after };
             } catch (error) {
+                // The message has the reason, because a CLI shows only the message. `cause` is the error of the parser
                 throw new Error(
                     `Pattern "${entry.name}" has a keyword that is not supported.
 ${error instanceof Error ? error.message : String(error)}`,
+                    { cause: error },
                 );
             }
         }

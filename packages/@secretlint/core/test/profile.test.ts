@@ -104,6 +104,44 @@ describe("profile", () => {
         assert.strictEqual(statOf("@core>keyword-guard", guardId)?.count, 10);
         assert.strictEqual(statOf("@core>keyword-guard-met", guardId)?.count, 2);
     });
+    it("should count the places of a guard only while the profiler is enabled, for the same config", async () => {
+        const guardedRule: SecretLintRuleCreator = {
+            messages: {},
+            meta: { id: "profile-guard-toggle", recommended: false, type: "scanner", supportedContentTypes: ["text"] },
+            patterns: [
+                {
+                    pattern: /00[a-z]{4}/g,
+                    keywords: [{ keyword: "00", after: "[a-z]{4,}" }],
+                    scope: "line",
+                    report() {},
+                },
+            ],
+        };
+        const config = { rules: [{ id: "profile-guard-toggle", rule: guardedRule }] };
+        const lintGuarded = () => {
+            return lintSource({
+                source: { content: "00abcd 00", filePath: "/a", contentType: "text" },
+                options: { config },
+            });
+        };
+        const foundCount = () => {
+            const stat = secretLintProfiler.getStats().find((stat) => stat.type === "@core>keyword-guard");
+            return stat?.count ?? 0;
+        };
+        // the plan and its matcher are created without the profiler
+        secretLintProfiler.setEnabled(false);
+        await lintGuarded();
+        secretLintProfiler.setEnabled(true);
+        await lintGuarded();
+        assert.strictEqual(foundCount(), 2);
+        // the places of a lint without the profiler are not added later
+        secretLintProfiler.setEnabled(false);
+        await lintGuarded();
+        secretLintProfiler.setEnabled(true);
+        assert.strictEqual(foundCount(), 0);
+        await lintGuarded();
+        assert.strictEqual(foundCount(), 2);
+    });
     it("should record each of the lints that overlap", async () => {
         // the async rule keeps the two lints of the same file running at the same time
         await Promise.all([lint("SECRET_1", "/path/to/file"), lint("SECRET_1", "/path/to/file")]);

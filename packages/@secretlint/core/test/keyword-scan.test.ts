@@ -70,6 +70,14 @@ describe("keyword scan", () => {
         const profiled = createKeywordScanner(plan, { profile: true });
         profiled.scan(new TextEncoder().encode("key_ab KEY_AB12 key_ key_ab12"));
         assert.deepStrictEqual(profiled.takeGuardCounts(), [{ id: "key_ [0-9a-z]{4,}", found: 4, met: 1 }]);
+        // a plan that was sent as JSON has `null` for a keyword without a guard
+        const jsonPlan = JSON.parse(JSON.stringify(plan));
+        assert.deepStrictEqual(jsonPlan.guards[1], null);
+        for (const profile of [false, true]) {
+            const jsonScanner = createKeywordScanner(jsonPlan, { profile });
+            const result = jsonScanner.scan(new TextEncoder().encode("key_ab tok_ab12 key_ab12"));
+            assert.deepStrictEqual([...result.found], [1, 1]);
+        }
         // the id of the plan has the guards
         (rule.patterns as NonNullable<SecretLintRuleCreator["patterns"]>)[0]!.keywords = ["tok_", "KEY_"];
         const unguardedPlan = getKeywordScanPlan({ config: toConfig({ ...rule }) });

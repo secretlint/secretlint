@@ -125,9 +125,9 @@ recommendプリセットのキーワードだけでは、ガードによる違�
 
 #### プロファイル
 
-プロファイル用に作ったマッチャーは、ガードを持つエントリーごとに、キーワードが見つかった場所の数と、ガードを満たした場所の数を数える。
+プロファイルのために数えているマッチャーは、ガードを持つエントリーごとに、キーワードが見つかった場所の数と、ガードを満たした場所の数を数える。
 プロファイルがなければ数えないので、そのためのコストはループにかからない。
-マッチャーの`takeGuardCounts()`は、前回の呼び出しからの数を返す。coreは、プロファイラーが有効なときに、ビューのためにこのマッチャーを作り、走査のたびに数を`@core>keyword-guard`と`@core>keyword-guard-met`として記録する。`createKeywordScanner(plan, { profile: true })`はワーカーのためにこのマッチャーを作り、`scanner.takeGuardCounts()`は、キーワードとガードを文字列にしたものと一緒に数を返す。
+マッチャーの`setGuardCounting()`は数えることを始めたり止めたりし、`takeGuardCounts()`は前回の呼び出しからの数を返す。coreは走査の前に、数えるかどうかをプロファイラーの状態に合わせる。そのため、プロファイラーなしで作ったマッチャーも、プロファイラーを有効にしたあとは数える。プロファイラーなしのlintの分が、あとから足されることもない。プロファイラーが有効なときは、走査のたびに数を`@core>keyword-guard`と`@core>keyword-guard-met`として記録する。`createKeywordScanner(plan, { profile: true })`はワーカーのためにこのマッチャーを作り、`scanner.takeGuardCounts()`は、キーワードとガードを文字列にしたものと一緒に数を返す。
 この文字列は、集合の文字から`after`の構文で書いたもので、`00 [0-9A-Za-z_-]{40,}`のようになる。
 
 ### 複数のスレッドでキーワードを探す
@@ -343,7 +343,7 @@ coreの入口である。ソースと設定を受け取り、内容を含まな�
 計画と結果はただのデータと型付き配列なので、別のスレッドに送れる。
 `lintSource({ source, options, keywordScanResult })`は、「走査を独立したステージにする」に書いたとおりに結果を使う。
 
-`KeywordScanPlan`は、`keywords`に並んで`guards`を持つ。`guards[i]`は`undefined`か、ガードを持つキーワードに対する`{ chars, min }`である。大文字と小文字を区別するキーワードはないので、`caseSensitive`は持たない。
+`KeywordScanPlan`は、`keywords`に並んで`guards`を持つ。`guards[i]`は`undefined`か、ガードを持つキーワードに対する`{ chars, min }`である。`createKeywordScanner()`は、`null`もガードなしとして読む。計画をJSONで送ると、ガードなしは`null`になるからである。大文字と小文字を区別するキーワードはないので、`caseSensitive`は持たない。
 
 ## 外部サービスとの連携方式
 

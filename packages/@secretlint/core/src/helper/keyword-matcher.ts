@@ -67,9 +67,14 @@ export type KeywordMatcher = {
     /**
      * For each keyword with a guard, the number of the places where the keyword was found
      * and where its guard was met, since the last call. A keyword that was not found is not in the result.
-     * It is counted only if the matcher was created with `countGuards: true`.
+     * It is counted only while the matcher counts. See `setGuardCounting()`.
      */
     takeGuardCounts(): KeywordGuardCount[];
+    /**
+     * Start or stop counting the places of the keywords with a guard, for the profile.
+     * The counts start from 0 when the counting starts. A matcher does not count unless it is asked.
+     */
+    setGuardCounting(enabled: boolean): void;
 };
 export type KeywordGuardCount = { keywordIndex: number; found: number; met: number };
 
@@ -216,7 +221,7 @@ export const createKeywordMatcher = (
         }
     });
     // [found, met] for each keyword. It is counted only for the profile
-    const guardCounts = options.countGuards ? new Float64Array(keywords.length * 2) : undefined;
+    let guardCounts = options.countGuards ? new Float64Array(keywords.length * 2) : undefined;
     const subsetIds = new Map<string, number>();
     /**
      * Return the id of the keywords of the state that are found at the place, or -1 if none is found.
@@ -363,6 +368,12 @@ export const createKeywordMatcher = (
     return {
         keywords,
         guards: keywords.map((_, index) => guards[index]),
+        setGuardCounting(enabled: boolean): void {
+            if (enabled === (guardCounts !== undefined)) {
+                return;
+            }
+            guardCounts = enabled && hasGuards ? new Float64Array(keywords.length * 2) : undefined;
+        },
         takeGuardCounts(): KeywordGuardCount[] {
             if (!guardCounts) {
                 return [];

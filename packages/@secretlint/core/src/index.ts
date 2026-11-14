@@ -160,7 +160,7 @@ type BytesCheck = {
 };
 /**
  * Add the places of the keywords with a guard to the profile.
- * The matcher counts them only if it was created for the profile.
+ * The matcher counts them while the profiler is enabled.
  */
 const recordGuardCounts = (matcher: KeywordMatcher): void => {
     for (const { keywordIndex, found, met } of matcher.takeGuardCounts()) {
@@ -211,6 +211,8 @@ const checkBytes = (
     }
     const contentStart = hasUtf8BOM(bytes) ? 3 : 0;
     const scanStartTime = profiling ? secretLintProfiler.now() : 0;
+    // The matcher counts the places of the keywords with a guard only while the profiler is enabled
+    matcher.setGuardCounting(profiling);
     const hits = matcher.scan(bytes, contentStart);
     if (profiling) {
         secretLintProfiler.record("@core>keyword-scan", undefined, scanStartTime);
@@ -324,6 +326,7 @@ const lintWithPlan = (
         if (matcher === undefined || !needsTextHits) {
             return undefined;
         }
+        matcher.setGuardCounting(secretLintProfiler.isEnabled);
         if (!secretLintProfiler.isEnabled) {
             return matcher.scan(sourceCode.content);
         }

@@ -240,6 +240,8 @@ describe("lintSource with patterns", () => {
                 const lint = async () => lintSource({ source: textSource, options: { config: toConfig(rule) } });
                 await assert.rejects(lint, expected, JSON.stringify(keyword));
                 await assert.rejects(lint, /The rule "pattern-rule" has a pattern with a keyword/);
+                // the error of the parser is the cause
+                await assert.rejects(lint, (error: Error) => error.cause instanceof Error);
             }
         });
     });

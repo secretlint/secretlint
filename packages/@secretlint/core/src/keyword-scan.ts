@@ -150,9 +150,11 @@ export type KeywordScanGuardCount = { id: string; found: number; met: number };
 
 export const createKeywordScanner = (plan: KeywordScanPlan, options: { profile?: boolean } = {}): KeywordScanner => {
     // The matcher counts the places of the guarded keywords only for the profile
+    // A plan that was sent as JSON has `null` for a keyword without a guard
+    const guards = plan.keywords.map((_, index) => plan.guards?.[index] ?? undefined);
     const matcher = options.profile
-        ? createKeywordMatcher(plan.keywords, plan.guards, { countGuards: true })
-        : getKeywordMatcher(plan.keywords, plan.guards);
+        ? createKeywordMatcher(plan.keywords, guards, { countGuards: true })
+        : getKeywordMatcher(plan.keywords, guards);
     const ruleCheck = plan.ruleCheck;
     const linePatterns = ruleCheck.linePatterns.map((pattern) => {
         return {
@@ -193,7 +195,7 @@ export const createKeywordScanner = (plan: KeywordScanPlan, options: { profile?:
             return matcher.takeGuardCounts().map(({ keywordIndex, found, met }) => {
                 const id = formatGuardedKeyword(
                     plan.keywords[keywordIndex] as string,
-                    plan.guards[keywordIndex] as KeywordGuard,
+                    guards[keywordIndex] as KeywordGuard,
                 );
                 return { id, found, met };
             });
