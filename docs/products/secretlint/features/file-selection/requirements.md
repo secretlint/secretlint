@@ -76,7 +76,7 @@ Scenario: When a rule differs from the name of a file only in the case of letter
 
 ### Use one ignore file that the developer gives
 
-As a developer, I want to give one ignore file with `--secretlintignore` so that a shared ignore file outside the project, or one in another directory of the project, decides the files to leave out.
+As a developer, I want to give one more ignore file with `--secretlintignore` so that the rules of a shared ignore file outside the project, or of one in another directory of the project, leave out files in addition to `.secretlintignore`.
 
 **Acceptance criteria:**
 
@@ -92,17 +92,17 @@ Scenario: When the developer gives a relative path with a directory, it is found
 - When: The developer runs `secretlint "**/*" --secretlintignore=config/ignore`.
 - Then: `dist/app.js` is not linted.
 
-Scenario: When the developer gives a file, the `.secretlintignore` files of the project are not read
+Scenario: When the developer gives a file, the `.secretlintignore` files of the project are still read
 
 - Given: `.secretlintignore` has the rule `a.txt`, `sub/.secretlintignore` has the rule `c.txt`, and `config/ignore` has the rule `b.txt`.
 - When: The developer runs `secretlint "**/*" --secretlintignore=config/ignore`.
-- Then: `b.txt` is not linted, and `a.txt` and `sub/c.txt` are linted.
+- Then: None of `a.txt`, `b.txt`, and `sub/c.txt` is linted.
 
 Scenario: When the given file does not exist, a warning is shown and no file is ignored by it
 
 - Given: `missing-ignore` does not exist in the working directory.
 - When: The developer runs `secretlint "**/*" --secretlintignore=missing-ignore`.
-- Then: A warning that names the file is written to the standard error, and the files are linted as if the option and the `.secretlintignore` files were not there.
+- Then: A warning that names the file is written to the standard error, and the files are linted as if the option was not given.
 
 ## KPIs
 
@@ -123,8 +123,8 @@ None for this part of the feature.
 ##### The sources of ignore rules
 
 - **Built-in rules:** `.git` and `node_modules` directories, the configuration files of Secretlint (`.secretlintrc` and its `.json`, `.yaml`, `.yml`, and `.js` forms), and files whose names start with `.secretlintignore`. They are always ignored.
-- **`.secretlintignore`:** Read in every directory, like `.gitignore`, when `--secretlintignore` is not given.
-- **The file given by `--secretlintignore`:** Only this one file is read, and the `.secretlintignore` files are not. A relative path is resolved from the working directory, and the rules are matched from the working directory, like the file of `core.excludesFile` in Git. The API (`runSecretLint()` and `searchFiles()` with `ignoreFilePath`) works the same.
+- **`.secretlintignore`:** Read in every directory, like `.gitignore`.
+- **The file given by `--secretlintignore`:** Read in addition to the other ignore files, like the file of `core.excludesFile` in Git. A relative path is resolved from the working directory, and the rules are matched from the working directory. Its rules are the weakest, as in Git: a rule of `.secretlintignore` or `.gitignore` that starts with `!` can include a path again. The API (`runSecretLint()` and `searchFiles()` with `ignoreFilePath`) works the same.
 - **`.gitignore`:** Used by default. `--no-gitignore` turns it off.
 
 `.secretlintignore` and `.gitignore` can be in any directory. Their rules apply to that directory and the directories below it.

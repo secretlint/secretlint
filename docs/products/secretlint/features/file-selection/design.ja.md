@@ -27,8 +27,8 @@ Requirementsと同じく、無視ルールだけを扱います。
 ### `--secretlintignore`で渡した無視ファイル
 
 walkerは各ディレクトリで無視ファイルを名前で探します（`ignoreFiles`）。そのため、`config/ignore`や`/shared/ignore`のようなパスは名前として渡せません。
-`ignoreFilePath`がないとき、`searchFiles()`は`ignoreFiles`に`.secretlintignore`を渡し、walkerが各ディレクトリでそれを読みます。
-`ignoreFilePath`があるとき、`searchFiles()`はそれを`cwd`から解決して自分でファイルを読み、その行を`extraIgnorePatterns`の組み込みのルールの後ろに加えます。これらのルールは作業ディレクトリの階層に属するので、作業ディレクトリから照合されます。このとき`ignoreFiles`に`.secretlintignore`は渡しません。
+`searchFiles()`は常に`ignoreFiles`に`.secretlintignore`を渡し、walkerが各ディレクトリでそれを読みます。
+`ignoreFilePath`があるときは、さらにそれを`cwd`から解決して自分でファイルを読み、その行を`extraIgnorePatterns`の組み込みのルールの後ろに加えます。これらのルールは作業ディレクトリにある最上位の階層に属するので、作業ディレクトリから照合されます。また、Gitの`core.excludesFile`と同じように、`.secretlintignore`と`.gitignore`の階層（作業ディレクトリのものも含む）のほうが強くなります。
 ファイルが存在しない（`ENOENT`）ときは`console.warn`で警告し、ルールはなしにします。それ以外の読み込みのエラーはそのまま投げます。
 CLIのオプションには既定値がないので、CLIとAPIは同じ経路を通ります。
 walkerはディレクトリを上から読み、ディレクトリに入る前に各エントリを判定します。無視されたディレクトリは読みません。これによって、無視されたディレクトリの中のファイルは対象に戻せないというGitの挙動にもなります。
@@ -146,9 +146,9 @@ Gitの挙動です。Productの指針「誤検知を減らす」から、採用�
 
 walkerが無視ファイルのパスとその基準ディレクトリを受け取ることもできます。ただし、このためだけにwalkerのAPIが増えます。`extraIgnorePatterns`がすでに「作業ディレクトリのルール」を意味しています。
 
-### カスケードを残し、渡されたファイルを加える
+### 渡されたファイルだけを読む
 
-渡されたファイルを、カスケードする`.secretlintignore`に加えて読むこともできます。採用しませんでした。カスケードがあると、渡すファイルの用途はほぼ共有のファイルになります。また「渡したファイルだけ」という一つの規則のほうが、混ぜるより説明しやすいためです。
+Prettierやoxlintの`--ignore-path`のように、渡されたファイルでカスケードする`.secretlintignore`を置き換えることもできます。採用しませんでした。渡すファイルの用途はほぼ共有のファイルです。置き換えると、共有のファイルを渡しただけでプロジェクトの`.secretlintignore`が効かなくなり、プロジェクトが外しているファイルが報告されます（指針「誤検知を減らす」）。Gitの`core.excludesFile`とripgrepの`--ignore-file`も、渡されたファイルを追加します。
 
 ## 未決事項
 

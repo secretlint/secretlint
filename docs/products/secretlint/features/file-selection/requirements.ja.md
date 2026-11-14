@@ -76,7 +76,7 @@ Scenario: ルールとファイル名の違いが大文字と小文字だけの�
 
 ### 開発者が渡した一つの無視ファイルを使う
 
-開発者として、`--secretlintignore`で一つの無視ファイルを渡したい。それによって、プロジェクトの外にある共有の無視ファイルや、プロジェクトの別のディレクトリにある無視ファイルで、外すファイルを決められる。
+開発者として、`--secretlintignore`で無視ファイルを一つ追加したい。それによって、プロジェクトの外にある共有の無視ファイルや、プロジェクトの別のディレクトリにある無視ファイルのルールで、`.secretlintignore`に加えてファイルを外せる。
 
 **受け入れ条件:**
 
@@ -92,17 +92,17 @@ Scenario: ディレクトリを含む相対パスを渡した場合、作業デ�
 - When: 開発者が`secretlint "**/*" --secretlintignore=config/ignore`を実行する。
 - Then: `dist/app.js`はlintされない。
 
-Scenario: ファイルを渡した場合、プロジェクトの`.secretlintignore`は読まない
+Scenario: ファイルを渡した場合も、プロジェクトの`.secretlintignore`は読む
 
 - Given: `.secretlintignore`にルール`a.txt`、`sub/.secretlintignore`にルール`c.txt`、`config/ignore`にルール`b.txt`がある。
 - When: 開発者が`secretlint "**/*" --secretlintignore=config/ignore`を実行する。
-- Then: `b.txt`はlintされず、`a.txt`と`sub/c.txt`はlintされる。
+- Then: `a.txt`、`b.txt`、`sub/c.txt`のどれもlintされない。
 
 Scenario: 渡したファイルが存在しない場合、警告を出し、そのファイルでは何も無視しない
 
 - Given: 作業ディレクトリに`missing-ignore`が存在しない。
 - When: 開発者が`secretlint "**/*" --secretlintignore=missing-ignore`を実行する。
-- Then: ファイル名を含む警告が標準エラーに出て、オプションも`.secretlintignore`もないものとしてファイルがlintされる。
+- Then: ファイル名を含む警告が標準エラーに出て、オプションを渡さなかったものとしてファイルがlintされる。
 
 ## KPI
 
@@ -123,8 +123,8 @@ Scenario: 渡したファイルが存在しない場合、警告を出し、そ�
 ##### 無視ルールの出どころ
 
 - **組み込みのルール:** `.git`と`node_modules`のディレクトリ、Secretlintの設定ファイル（`.secretlintrc`と、その`.json`、`.yaml`、`.yml`、`.js`の形）、名前が`.secretlintignore`で始まるファイル。これらは常に無視します。
-- **`.secretlintignore`:** `--secretlintignore`を渡さないとき、`.gitignore`と同じように各ディレクトリで読みます。
-- **`--secretlintignore`で渡したファイル:** この一つのファイルだけを読み、`.secretlintignore`は読みません。相対パスは作業ディレクトリから解決し、ルールはGitの`core.excludesFile`のファイルと同じように作業ディレクトリから照合します。API（`ignoreFilePath`を渡した`runSecretLint()`と`searchFiles()`）も同じです。
+- **`.secretlintignore`:** `.gitignore`と同じように各ディレクトリで読みます。
+- **`--secretlintignore`で渡したファイル:** Gitの`core.excludesFile`のファイルと同じように、ほかの無視ファイルに加えて読みます。相対パスは作業ディレクトリから解決し、ルールは作業ディレクトリから照合します。そのルールはGitと同じく最も弱く、`.secretlintignore`や`.gitignore`の`!`で始まるルールはパスを対象に戻せます。API（`ignoreFilePath`を渡した`runSecretLint()`と`searchFiles()`）も同じです。
 - **`.gitignore`:** 既定で使います。`--no-gitignore`で無効にできます。
 
 `.secretlintignore`と`.gitignore`はどのディレクトリにも置けます。そのルールは、置いたディレクトリとその下のディレクトリに適用されます。
