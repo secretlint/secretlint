@@ -123,10 +123,12 @@ The sets are repositories at fixed commits, so the base and the head and two run
 
 | Set | Repository | Files | Use |
 | --- | --- | --- | --- |
-| small | `examples/benchmark/targets` (in this repository) | about 600 | Default, and CI |
-| medium | facebook/react | about 7,300 | CI |
-| large | microsoft/vscode | about 21,000 | Local |
-| huge | torvalds/linux | about 97,000 | Local |
+| small | `examples/benchmark/targets` (in this repository) | about 600 | Default of a local run |
+| medium | facebook/react | about 7,300 | |
+| large | microsoft/vscode | about 21,000 | |
+| huge | torvalds/linux | about 97,000 | |
+
+CI uses all sets. A local run uses the small set unless another set is selected.
 
 The configuration of the lint is the canary preset, so new rules are included.
 
@@ -156,7 +158,7 @@ The script compares the work of the patterns and the findings, and it says that 
 #### Applicable conditions
 
 The job runs on the `pull_request` event with a token that can only read the repository and without secrets, so the code of a pull request from a fork can not get a secret or change the repository.
-The base is the base branch of the pull request. The job uses the small and the medium sets.
+The base is the base branch of the pull request. CI compares each set in its own job, so the sets run in parallel, and a set that can not run does not hide the results of the other sets. The job summary of each job has the comparison of its set.
 The job does not fail because of a difference. It fails only if the comparison can not run.
 
 #### Exceptional behavior
@@ -189,7 +191,7 @@ None is collected. The result has file paths and rule ids of public repositories
 - **GitHub Actions**
   - **Related user stories:** Notice a large change in a pull request from someone else; Read the comparison from an AI agent
   - **Reason for dependency:** It runs the comparison for each pull request and keeps the JSON output as an artifact
-  - **Contractual and usage decisions:** The job uses the hosted runners that the other checks of the repository use. The comparison runs two builds on two sets, so it adds minutes of runner time to a pull request that changes the code of the lint
+  - **Contractual and usage decisions:** The job uses the hosted runners that the other checks of the repository use. The comparison runs two builds on four sets in four jobs, so it adds runner time to a pull request that changes the code of the lint
 - **GitHub (codeload.github.com)**
   - **Related user stories:** Notice a large change in a pull request from someone else; Measure on a large repository
   - **Reason for dependency:** The sets other than small are public repositories, downloaded as archives at their fixed commits
