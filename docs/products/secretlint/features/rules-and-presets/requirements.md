@@ -12,7 +12,7 @@ The parent Product is [Secretlint](../../product.md).
 ### Scope
 
 - The built-in rules and their rule ids
-- Using the built-in rules without installing a package, and the packages of the same names
+- Using the built-in rules without installing a package, and the removal of the packages of the same names
 - The recommended preset and the canary preset: which rules they contain and how they register them
 - Options, severities, allowed messages, and disabling of the rules in a preset
 - The documentation of each rule, where it is, and the links to it
@@ -57,9 +57,9 @@ Scenario: When an older preset package is installed, the built-in preset of Secr
 - When: The developer lints a file that contains a secret that a rule added in the newer Secretlint detects.
 - Then: The result has the message of that rule, because the preset of the installed Secretlint runs, not the installed package.
 
-Scenario: When code imports a rule from its package, it gets the built-in rule
+Scenario: When code imports a rule, it imports it from `@secretlint/core`
 
-- Given: A program imports `creator` from `@secretlint/secretlint-rule-aws` of the same version as `@secretlint/core`.
+- Given: A program imports `creator` from `@secretlint/core/builtin/rules/aws`.
 - When: The program passes the creator to `@secretlint/core` and lints a file with an AWS access key.
 - Then: The result is the same as the result of the built-in rule `@secretlint/secretlint-rule-aws`.
 
@@ -266,7 +266,7 @@ Scenario: When the guard of a guarded keyword is not supported, the lint stops w
 
 ##### Rule ids
 
-Each built-in rule has the rule id `@secretlint/secretlint-rule-<name>`, which is also the name of its npm package.
+Each built-in rule has the rule id `@secretlint/secretlint-rule-<name>`, which was the name of its npm package.
 The rule id is used in the configuration file and as `ruleId` of the messages.
 The short form, such as `@secretlint/aws`, also names the built-in rule.
 
@@ -285,8 +285,12 @@ When a package of the same name is installed, the built-in rule is used and the 
 
 ##### Packages of the same names
 
-The packages `@secretlint/secretlint-rule-<name>` of the built-in rules, and the packages of the two presets, are still published. Each exports the same rule as the built-in rule of the same version, so code that imports `creator` from them keeps working.
-The README of each of these packages says that the rule or preset is built into Secretlint, and links to its documentation in `docs/rules/`. Deprecating these packages is a separate change.
+The packages `@secretlint/secretlint-rule-<name>` of the built-in rules, and the packages of the two presets, are removed from the repository in the next major release, and are not published anymore. A rule is in one place, as a built-in rule. Two places for the same rule, a built-in rule and a package that may have another version, are confusing, and the configuration does not need the packages.
+
+- The rule ids stay, so a configuration file keeps working.
+- The released versions of the packages stay on npm. When one is installed, it is not loaded, as described in "Installation", so a `package.json` that has one keeps working.
+- Code that imports `creator` from one of the packages imports it from `@secretlint/core/builtin/rules/<name>`, or the presets from `@secretlint/core/builtin`, instead. This is a breaking change.
+- The packages are deprecated on npm after the major release, with a message that the rule is built into Secretlint.
 
 ##### Browsers
 
@@ -351,7 +355,7 @@ The URL of the documentation of a rule (`docs.url`) is `https://github.com/secre
 `HEAD` is the default branch of the repository, so the URL does not change when the default branch is renamed.
 
 The pages in `docs/rules/` are not deleted or moved without a reason, because the released versions from now on link to them.
-The links of the versions released before this change point to the READMEs of the packages of the same names. Secretlint does not keep those READMEs for these links: when a package directory is deleted, its README is deleted with it. The link is shown only as a link of a message, such as a link in the terminal, so a broken link of an older version is accepted.
+The links of the versions released before this change point to the READMEs of the packages of the same names. Secretlint does not keep those READMEs for these links: they are deleted with the packages. The link is shown only as a link of a message, such as a link in the terminal, so a broken link of an older version is accepted.
 
 ##### Links to the files of the repository
 
@@ -458,7 +462,7 @@ None. Rules read file content, and the reported values can be secrets; masking t
 
 - **npm registry**
   - **Related user stories:** Enable the recommended rules with one id, Keep a configuration that installs the rule packages, Try new rules early
-  - **Reason for dependency:** Secretlint, which has the built-in rules, and the packages of the same names are distributed as npm packages.
+  - **Reason for dependency:** Secretlint, which has the built-in rules, is distributed as npm packages. The released versions of the packages of the same names stay there.
   - **Contractual and usage decisions:** Public packages on the npm registry, free of charge.
 - **GitHub**
   - **Related user stories:** Read why a value is reported, Keep the links to the files of the repository working

@@ -25,7 +25,7 @@ The rule interface of `@secretlint/types` (`SecretLintRuleCreator` and `SecretLi
 
 The built-in rules and presets are part of `@secretlint/core`, together with the engine that runs them and their tests.
 `@secretlint/core` has a table from rule id to rule, and the configuration loader looks up this table before it looks for a package.
-The packages of the same names stay as thin packages that re-export the rules from `@secretlint/core`.
+The packages of the same names, which re-exported the rules from `@secretlint/core`, are removed.
 
 Publishing a new npm package with trusted publishing takes manual steps: publish an empty package first, set up its trusted publisher on npm, and only then release the rule. Writing the code of a rule is not enough to publish it, so adding rules this way does not scale.
 A built-in rule is a directory in `@secretlint/core`, so adding one needs no new package.
@@ -176,11 +176,14 @@ Currently `canaryRules` is a copy of `recommendedRules`.
 
 ### Packages of the same names
 
-Each package `@secretlint/secretlint-rule-<name>` of a built-in rule re-exports `@secretlint/core/builtin/rules/<name>`.
-The preset packages export `creator` and `rules` from `@secretlint/core/builtin`.
-These packages depend on `@secretlint/core` of the same version, and have no tests of their own.
-The README of each package is short: a sentence that says the rule or preset is built into Secretlint, and the URL of its page in `docs/rules/`.
-The released versions of the rules point `docs.url` to these READMEs (`blob/master/packages/%40secretlint/secretlint-rule-<name>/README.md`). The README is deleted with its package directory, and these links of the older versions break then. This is accepted, because the link is only a link of a message.
+The directories `packages/@secretlint/secretlint-rule-<name>` of the built-in rules and of the two presets are deleted. Their READMEs move to `docs/rules/`, and the rest of each directory, which only re-exported `@secretlint/core`, is not kept.
+The packages in the repository that depend on them stop depending on them:
+
+- `secretlint` and `@secretlint/quick-start` depend on `@secretlint/secretlint-rule-preset-recommend`. They do not need it, because the configuration loader finds the preset in `@secretlint/core`.
+- `--init` (`@secretlint/config-creator`) writes the rules that it finds in `package.json`, and writes no rule when it finds none. It should write the recommended preset when it finds none, so that a new user does not need the preset package. This is a separate change.
+- The Docker image, the binary, the examples, and the browser test name the preset package in their `package.json` or configuration, and stop naming it as a package.
+
+The released versions of the rules point `docs.url` to the READMEs of these directories (`blob/master/packages/%40secretlint/secretlint-rule-<name>/README.md`). These links of the older versions break when the directories are deleted. This is accepted, because the link is only a link of a message.
 
 ### Documentation of the rules
 
@@ -232,13 +235,12 @@ No diagram is needed: a preset is a list of rules, and its only interaction is `
 - `@secretlint/core/builtin`: `builtinRules`, `recommendedRules`, `canaryRules`, `presetRecommend`, `presetCanary`, `getBuiltinRule(id)`, and `builtinRuleIds`.
 - `@secretlint/core/builtin/rules/<name>`: `creator` and `messages` of one rule.
 - `@secretlint/core/testing`: `createSnapshotTestCases(options)`, which returns the test cases of a snapshot directory.
-- The packages of the same names export the same `creator` and `messages`, or `creator` and `rules` for a preset.
 - `docs.url` of a rule: `https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/<name>.md`.
 - `pnpm run check-links` (`node scripts/check-links.mts`): exits with 0 when every checked link points to an existing file, and with 1 otherwise.
 
 ## External service integration
 
-`@secretlint/core` and the packages of the same names are published to the npm registry from the release workflow of the repository.
+`@secretlint/core` is published to the npm registry from the release workflow of the repository. The packages of the same names are no longer in the workspace, so the workflow does not publish them.
 
 ## Data handling
 
@@ -254,10 +256,10 @@ A regular expression of a rule limits its repetition so that a crafted file does
 
 ## Deployment notes
 
-The packages of the same names are still published, so a configuration or a `package.json` that names them keeps working. Deprecating them is a separate change.
-The README of each package of the same name becomes the short README in the next release, and npm shows it on the page of the package.
+The packages of the same names are removed in the next major release, which is a breaking change for code that imports from them. A configuration or a `package.json` that names them keeps working, because the built-in rules are used.
+After the release, the maintainer deprecates the packages on npm (`npm deprecate`) with a message that the rule is built into Secretlint and the package can be removed. Deprecation can not be done before the release, because the last published versions are still the ones that users install.
 When the default branch is renamed, the triggers of the workflows that name `master` change in the same pull request.
-The `--init` of the npm package writes the rules that it finds in `package.json`. Until it writes the recommended preset without them, the documentation still tells users to install the preset package.
+The documentation tells users to install only `secretlint`, after `--init` writes the recommended preset without the preset package.
 
 ## Alternatives considered
 
@@ -286,6 +288,7 @@ The `--init` of the npm package writes the rules that it finds in `package.json`
 - **A case-sensitive keyword:** An option would say if a keyword is case-sensitive, as `caseSensitive` of the keyword object or `caseSensitiveKeywords` of the pattern, or a keyword object would always be matched as written. Earlier versions of this design had each of them. They were not chosen by the maintainer: a rule that always matches without the case is simpler to write, and the cost is only that the regular expression can be tested on more lines. A guard, which is checked as written, takes that cost away where the secret has a fixed case.
 - **Keywords that follow the `i` flag of the regular expression:** A keyword would be case-sensitive when the regular expression of its pattern has no `i` flag. It was not chosen: no other tool that was looked at does this, and a missing `i` flag is often not a decision of the rule author.
 
+- **Keep the packages as thin packages that re-export the built-in rules:** Code that imports from them keeps working. It was not chosen by the maintainer: two places for the same rule are confusing, the effect of the removal is small because a configuration does not need the packages, and each package costs a publish in every release.
 - **A URL with the version, such as `blob/v14.0.0/...`:** A tag does not move, so the URL never breaks, even when the file is deleted later. It was not chosen: the user reads the page of an old version, and a fix of the page does not reach it; the version has to be put into the code of the rule at build time; and the URL of a version that is not released yet does not open.
 - **A site for the documentation on GitHub Pages:** The URL would not depend on the files of the repository, as `eslint.org/docs/latest/rules/<name>` does for ESLint. It was not chosen now: a site needs a build and its own maintenance, and GitHub Pages of this repository already publishes the benchmark results from the branch `gh-pages`. A site can be added later; the pages in `docs/rules/` then link to it.
 - **The README next to the code, in `core/src/builtin/rules/<name>/README.md`:** The code and the page of a rule would be in one directory, as the packages had them. It was not chosen by the maintainer: users look for documents in `docs/`, and a page next to the code moves when the code moves.
