@@ -30,10 +30,13 @@ Validating the configuration file, and running the loaded rules in `@secretlint/
 
 `loadConfigDescriptor()` calls `rcFile("secretlint", { cwd, configFileName: configFilePath, packageJSON: { fieldName: "secretlint" } })` of `rc-config-loader`.
 `rcFile()` splits `cwd` into its directories and, from the deepest one, tries `<configFileName>` with the loaders of `.json`, `.yaml`, `.yml`, `.js`, and `.cjs` in order, then `<configFileName>.json`, `.yaml`, `.yml`, `.js`, `.cjs`, then the `secretlint` field of `package.json`, and repeats this in the parent directory up to the root.
-`configFileName` defaults to `.secretlintrc`. A `--secretlintrc` value is joined to each directory, so a relative path is also looked for in the parent directories.
-When `rcFile()` returns `undefined`, `loadConfigDescriptor()` decides by `configFilePath`:
+`configFileName` is `.secretlintrc`.
 
-- When `configFilePath` is given, it throws `Error("secretlint config file is not found: <configFilePath>")`. The CLI entry point prints the error and sets the exit status 2, as for other errors of loading.
+When `configFilePath` is given (`--secretlintrc`), `loadConfigDescriptor()` does not search. It resolves `path.resolve(cwd, configFilePath)`, checks that the file exists, and reads only that file with the loader of its extension (`.json`, `.yaml`, `.yml`, `.js`, `.cjs`; a name without these extensions is read as JSON, YAML, then JavaScript, like `.secretlintrc`).
+Before this change, `configFilePath` was passed to `rcFile()` as `configFileName`, which joined it to each directory, so a relative path was also looked for in the parent directories with the extensions appended.
+When the file is not found, `loadConfigDescriptor()` decides by `configFilePath`:
+
+- When `configFilePath` is given and the file does not exist, it throws `Error("secretlint config file is not found: <configFilePath>")`. The CLI entry point prints the error and sets the exit status 2, as for other errors of loading.
 - When it is not given, it returns `DEFAULT_CONFIG_DESCRIPTOR` with `configFilePath: undefined` and `isDefault: true`.
 
 `DEFAULT_CONFIG_DESCRIPTOR` is `{ rules: [{ id: "@secretlint/secretlint-rule-preset-recommend" }] }`, exported by `@secretlint/config-loader`.
@@ -142,7 +145,8 @@ Importing a package runs its code, so the loader imports only the package names 
 ## Deployment notes
 
 The change is released in the next major version, v14, together with the release note that a run without a configuration no longer fails.
-The Docker image keeps `/.secretlintrc.json` in this change. It has the same rules as the default configuration, and removing it is a follow-up.
+The Docker image is still needed as the distribution without Node.js. It keeps `/.secretlintrc.json` in this change, which has the same rules as the default configuration.
+`@secretlint/quick-start` has no role left with the default configuration, and deprecating it is a follow-up.
 
 ## Alternatives considered
 

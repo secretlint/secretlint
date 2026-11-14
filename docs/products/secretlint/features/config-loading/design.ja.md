@@ -30,10 +30,13 @@ Node.jsのモジュール解決と、[ルールとルールプリセット](../r
 
 `loadConfigDescriptor()`は、`rc-config-loader`の`rcFile("secretlint", { cwd, configFileName: configFilePath, packageJSON: { fieldName: "secretlint" } })`を呼びます。
 `rcFile()`は`cwd`をディレクトリに分け、最も深いディレクトリから、`<configFileName>`を`.json`、`.yaml`、`.yml`、`.js`、`.cjs`の読み込み方で順に試し、次に`<configFileName>.json`、`.yaml`、`.yml`、`.js`、`.cjs`を試し、最後に`package.json`の`secretlint`フィールドを試します。これを親ディレクトリでルートまで繰り返します。
-`configFileName`の既定値は`.secretlintrc`です。`--secretlintrc`の値は各ディレクトリと結合されるため、相対パスは親ディレクトリでも探されます。
-`rcFile()`が`undefined`を返すと、`loadConfigDescriptor()`は`configFilePath`によって次のように決めます。
+`configFileName`は`.secretlintrc`です。
 
-- `configFilePath`が指定されているときは、`Error("secretlint config file is not found: <configFilePath>")`を投げます。CLIの入り口は、ほかの読み込みのエラーと同じくエラーを出力し、終了ステータスを2にします。
+`configFilePath`が指定されたとき（`--secretlintrc`）は、`loadConfigDescriptor()`は探索しません。`path.resolve(cwd, configFilePath)`を解決してファイルがあることを確かめ、そのファイルだけを拡張子に合った読み込み方で読みます（`.json`、`.yaml`、`.yml`、`.js`、`.cjs`。これらの拡張子がない名前は、`.secretlintrc`と同じくJSON、YAML、JavaScriptの順に読みます）。
+この変更の前は、`configFilePath`を`configFileName`として`rcFile()`に渡していたため、各ディレクトリと結合され、相対パスは親ディレクトリでも、拡張子を付けた名前でも探されていました。
+ファイルが見つからないと、`loadConfigDescriptor()`は`configFilePath`によって次のように決めます。
+
+- `configFilePath`が指定されていてファイルがないときは、`Error("secretlint config file is not found: <configFilePath>")`を投げます。CLIの入り口は、ほかの読み込みのエラーと同じくエラーを出力し、終了ステータスを2にします。
 - 指定されていないときは、`DEFAULT_CONFIG_DESCRIPTOR`を`configFilePath: undefined`と`isDefault: true`で返します。
 
 `DEFAULT_CONFIG_DESCRIPTOR`は`{ rules: [{ id: "@secretlint/secretlint-rule-preset-recommend" }] }`で、`@secretlint/config-loader`がexportします。
@@ -142,7 +145,8 @@ sequenceDiagram
 ## デプロイに関する特記事項
 
 この変更は次のメジャーバージョンv14で、設定がなくても実行が失敗しなくなったというリリースノートと一緒にリリースします。
-この変更では、Dockerイメージの`/.secretlintrc.json`を残します。既定の設定と同じルールを持つので、削除は後続の作業とします。
+Dockerイメージは、Node.jsなしで使える配布形態として引き続き必要です。この変更では、既定の設定と同じルールを持つ`/.secretlintrc.json`を残します。
+既定の設定があれば`@secretlint/quick-start`の役目はなくなるので、非推奨にするのは後続の作業とします。
 
 ## 検討した代替手段
 

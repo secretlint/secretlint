@@ -104,9 +104,15 @@ Scenario: When `--secretlintrcJSON` gives a JSON string, it is used
 - When: The developer runs `secretlint "**/*" --secretlintrcJSON '{"rules":[{"id":"@secretlint/secretlint-rule-preset-recommend"}]}'`.
 - Then: The recommend preset runs, and no configuration file is read.
 
+Scenario: When `--secretlintrc` names a file in a parent directory, it is not found
+
+- Given: The parent directory has `rc.json`, and the current directory does not.
+- When: The developer runs `secretlint "**/*" --secretlintrc rc.json`.
+- Then: Secretlint stops with an error that names `rc.json`, and the exit status is 2. The `rc.json` of the parent directory is not used.
+
 Scenario: When the file of `--secretlintrc` is not found, Secretlint stops
 
-- Given: `missing.json` does not exist in the current directory or its parent directories.
+- Given: `missing.json` does not exist in the current directory.
 - When: The developer runs `secretlint "**/*" --secretlintrc missing.json`.
 - Then: Secretlint stops with an error that names `missing.json`, no file is linted, and the exit status is 2. The default configuration is not used.
 
@@ -187,8 +193,9 @@ Configurations of different directories are not merged.
 
 ##### `--secretlintrc`
 
-The option replaces the file name `.secretlintrc` in the search above, and the `secretlint` field of `package.json` is still looked for.
-A relative path is looked for from the current directory and then from each parent directory, and the extensions above are also tried after the given name.
+The option names exactly one file. A relative path is resolved from the current directory, and the file is read as it is named.
+No parent directory is searched, no extension is appended, and the `secretlint` field of `package.json` is not looked for.
+Before this change, the option replaced the file name `.secretlintrc` in the search above, so a relative path was also looked for in the parent directories with the extensions appended. The new behavior is released in a major version, because a command that relied on the search fails.
 
 ##### `--secretlintrcJSON`
 
@@ -288,5 +295,6 @@ A built-in rule cannot be replaced by installing a package of the same name.
 
 ## Open questions
 
-- **The search of `--secretlintrc`:** A relative path given to `--secretlintrc` is also looked for in the parent directories, with extensions appended. This change keeps it. Whether `--secretlintrc` should name exactly one file is a separate decision for azu.
-- **The Docker image and the quick start command:** Both give the recommend configuration themselves, which the default configuration makes unnecessary. The quick start command also uses its own configuration even when the repository has one. Simplifying them is a follow-up, and azu decides it.
+- **The quick start command:** With the default configuration, `@secretlint/quick-start` has no role left (azu, 2026-11-14). Deprecating it is a follow-up of this change.
+
+Decided in the review (azu, 2026-11-14): `--secretlintrc` names exactly one file, and the Docker image is still needed.

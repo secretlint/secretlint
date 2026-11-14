@@ -104,9 +104,15 @@ Scenario: `--secretlintrcJSON`でJSON文字列を渡すと、それを使う
 - When: 開発者が`secretlint "**/*" --secretlintrcJSON '{"rules":[{"id":"@secretlint/secretlint-rule-preset-recommend"}]}'`を実行する。
 - Then: recommendプリセットが動き、設定ファイルは読まれない。
 
+Scenario: `--secretlintrc`が親ディレクトリのファイルを指しても、見つからない
+
+- Given: 親ディレクトリに`rc.json`があり、カレントディレクトリにはない。
+- When: 開発者が`secretlint "**/*" --secretlintrc rc.json`を実行する。
+- Then: Secretlintは`rc.json`を示すエラーで止まり、終了ステータスは2になる。親ディレクトリの`rc.json`は使わない。
+
 Scenario: `--secretlintrc`のファイルが見つからないと、Secretlintは止まる
 
-- Given: カレントディレクトリにも親ディレクトリにも`missing.json`がない。
+- Given: カレントディレクトリに`missing.json`がない。
 - When: 開発者が`secretlint "**/*" --secretlintrc missing.json`を実行する。
 - Then: Secretlintは`missing.json`を示すエラーで止まり、ファイルはlintされず、終了ステータスは2になる。既定の設定は使わない。
 
@@ -187,8 +193,9 @@ Secretlintはカレントディレクトリで次のものをこの順に探し�
 
 ##### `--secretlintrc`
 
-このオプションは、上の探索のファイル名`.secretlintrc`を置き換えます。`package.json`の`secretlint`フィールドは引き続き探します。
-相対パスは、カレントディレクトリから探し、次に各親ディレクトリから探します。指定した名前の後ろに上の拡張子を付けたものも試します。
+このオプションは、ちょうど1つのファイルを指します。相対パスはカレントディレクトリから解決し、指定した名前のファイルをそのまま読みます。
+親ディレクトリは探さず、拡張子も付けず、`package.json`の`secretlint`フィールドも探しません。
+この変更の前は、このオプションが上の探索のファイル名`.secretlintrc`を置き換えていたため、相対パスは親ディレクトリでも探され、拡張子を付けたものも試されていました。探索に頼っていたコマンドは失敗するようになるので、新しい動作はメジャーバージョンでリリースします。
 
 ##### `--secretlintrcJSON`
 
@@ -288,5 +295,6 @@ Secretlintは指定されたパスを示すエラーで止まり、ファイル�
 
 ## 未決事項
 
-- **`--secretlintrc`の探索:** `--secretlintrc`に渡した相対パスは、親ディレクトリでも探され、拡張子を付けたものも試されます。この変更ではそのままにします。`--secretlintrc`がちょうど1つのファイルを指すようにするかは、azuが別に決めます。
-- **Dockerイメージとquick startコマンド:** どちらも自分でrecommendの設定を渡していますが、既定の設定があれば不要になります。quick startコマンドは、リポジトリに設定があっても自分の設定を使います。これらの簡略化は後続の作業で、azuが決めます。
+- **quick startコマンド:** 既定の設定があれば、`@secretlint/quick-start`の役目はなくなります（azu、2026-11-14）。非推奨にするのは、この変更の後続の作業です。
+
+レビューで決まったこと（azu、2026-11-14）: `--secretlintrc`はちょうど1つのファイルを指す。Dockerイメージは引き続き必要。
