@@ -280,9 +280,8 @@ A report is created only by a rule, from the content that the rule reads.
 
 ##### When other CPU cores are used
 
-Secretlint decides it while it lints, from the time that looking for keywords takes.
-It uses another CPU core only when the rest of the work takes longer than starting the work on that core.
-It does not decide from a fixed number of files, because the time depends on the size of the files and the speed of the disk.
+Starting work on another CPU core has a cost, so Secretlint does not start it when the lint is too short to gain from it, such as a lint of few files.
+How the work is divided between the CPU cores, and how many are used, is decided in the Design from measurements.
 
 ##### The number of CPU cores
 

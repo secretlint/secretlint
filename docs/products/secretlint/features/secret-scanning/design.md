@@ -109,6 +109,8 @@ Any other file is read and linted with `lintSource()` as before, with the hits o
 
 #### The number of threads
 
+The Requirements only say that a worker is not started when it gives no gain. How the work is divided is decided here from experiments, and the numbers below are the result of the measurements so far. They can change when the measurements change.
+
 The main thread starts the scan alone, so a short lint never pays for a worker.
 After a warm-up of 20ms, it measures how many files it scans in the next 20ms, and estimates the time for the rest of the files.
 It starts `floor(rest time / 100ms)` workers, at most `os.availableParallelism() - 1`. 100ms is the start-up of a worker (70-100ms measured), so each worker has work for longer than its start-up.
