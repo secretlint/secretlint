@@ -36,7 +36,7 @@ const DEFAULT_IGNORE_FILE_NAME = ".secretlintignore";
 
 /**
  * Read the ignore file at `ignoreFilePath` (resolved from `cwd`) and return its lines.
- * The lines are added to the rules of the working directory, so they are matched from `cwd`
+ * The lines are added to the top-level rules at the working directory, so they are matched from `cwd`
  * like the file of Git's `core.excludesFile`.
  * A missing file is reported on stderr instead of being skipped silently, because the user named it.
  * Any other error is thrown: linting without the rules that the user gave would report the files
@@ -59,8 +59,9 @@ const readIgnoreFileRules = async (ignoreFilePath: string, cwd: string): Promise
 export type SearchFilesOptions = {
     cwd: string;
     /**
-     * Ignore file to use instead of `.secretlintignore` in each directory.
-     * Only this file is read. A relative path is resolved from `cwd`, and its rules are matched from `cwd`.
+     * Ignore file to read in addition to `.secretlintignore` in each directory, like Git's `core.excludesFile`.
+     * A relative path is resolved from `cwd`, and its rules are matched from `cwd`.
+     * Its rules are the weakest: `.secretlintignore` and `.gitignore` files can include a path again with `!`.
      */
     ignoreFilePath?: string;
     noGlob?: boolean;
@@ -81,12 +82,10 @@ export type SearchFilesOptions = {
  * `[`, `(`, `{`, or `?` — set `noGlob: true` (CLI: `--no-glob`).
  */
 export const searchFiles = async (patterns: string[], options: SearchFilesOptions) => {
-    const ignoreFiles: string[] = [];
+    const ignoreFiles: string[] = [DEFAULT_IGNORE_FILE_NAME];
     const extraIgnorePatterns = [...DEFAULT_IGNORE_PATTERNS];
     if (options.ignoreFilePath) {
         extraIgnorePatterns.push(...(await readIgnoreFileRules(options.ignoreFilePath, options.cwd)));
-    } else {
-        ignoreFiles.push(DEFAULT_IGNORE_FILE_NAME);
     }
     if (options.respectGitignore !== false) ignoreFiles.push(".gitignore");
 

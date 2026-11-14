@@ -116,7 +116,7 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
     --format           [String] formatter name. Default: "stylish". Available Formatter: checkstyle, compact, github, jslint-xml, junit, pretty-error, stylish, tap, unix, json, mask-result, table
     --output           [path:String] output file path that is written of reported result.
     --secretlintrc     [path:String] path to the config file. Default: .secretlintrc.* from the current directory up to the root, or the recommended rules
-    --secretlintignore [path:String] path to an ignore file, relative to cwd. Default: .secretlintignore in each directory
+    --secretlintignore [path:String] path to an extra ignore file, relative to cwd. .secretlintignore in each directory is always read
     --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
     --no-color         disable ANSI-color of output.
     --no-terminalLink  disable terminalLink of output.
@@ -309,12 +309,12 @@ Secretlint walks the file system the same way Git does, honouring nested `.gitig
 `.secretlintignore` works the same way as `.gitignore` and is consulted in addition. The resolution order is:
 
 1. Built-in ignores: `.git`, `node_modules`, and the `.secretlintrc*` family.
-2. `.secretlintignore` in each directory (cascaded), or only the file given by `--secretlintignore`.
+2. `.secretlintignore` in each directory (cascaded), and the file given by `--secretlintignore`.
 3. Each directory's `.gitignore` (cascaded).
 
 #### `--secretlintignore`
 
-Everything is relative to the working directory (`cwd`). Without the option, secretlint reads `.secretlintignore` in every directory it walks. With the option, it reads only the given file, resolved from `cwd`, and its patterns are matched from `cwd` (like Git's [`core.excludesFile`](https://git-scm.com/docs/gitignore)). `.secretlintignore` files in the project are then not read.
+Everything is relative to the working directory (`cwd`). secretlint always reads `.secretlintignore` in every directory it walks. With the option, it also reads the given file, resolved from `cwd`, and its patterns are matched from `cwd` (like Git's [`core.excludesFile`](https://git-scm.com/docs/gitignore)). As in Git, the rules of the given file are the weakest: a `!` rule in `.secretlintignore` or `.gitignore` can include a path again.
 
 Example project (`cwd` is `project/`):
 
@@ -329,13 +329,12 @@ project/
     └── c.txt
 ```
 
-| Command (run in `project/`)                              | Ignore rules used                                 | Scanned `.txt` files          |
-| -------------------------------------------------------- | ------------------------------------------------- | ----------------------------- |
-| `secretlint "**/*"`                                      | `.secretlintignore`, `sub/.secretlintignore`      | `b.txt`                       |
-| `secretlint "**/*" --secretlintignore=config/ignore`     | `config/ignore` only                              | `a.txt`, `sub/c.txt`          |
-| `secretlint "**/*" --secretlintignore=/abs/path/ignore`  | `/abs/path/ignore` only, patterns from `project/` | depends on the file           |
-| `secretlint "**/*" --secretlintignore=.secretlintignore` | `project/.secretlintignore` only (no cascade)     | `b.txt`, `sub/c.txt`          |
-| `secretlint "**/*" --secretlintignore=missing`           | none; prints `ignore file not found` warning      | `a.txt`, `b.txt`, `sub/c.txt` |
+| Command (run in `project/`)                              | Ignore rules used                                                 | Scanned `.txt` files          |
+| -------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------- |
+| `secretlint "**/*"`                                      | `.secretlintignore`, `sub/.secretlintignore`                      | `b.txt`                       |
+| `secretlint "**/*" --secretlintignore=config/ignore`     | `.secretlintignore`, `sub/.secretlintignore`, and `config/ignore` | none                          |
+| `secretlint "**/*" --secretlintignore=/abs/path/ignore`  | `.secretlintignore` files, and `/abs/path/ignore` from `project/` | depends on the file           |
+| `secretlint "**/*" --secretlintignore=missing`           | `.secretlintignore` files; prints `ignore file not found` warning | `b.txt`                       |
 
 `.secretlintignore*` and `.secretlintrc*` files themselves are never scanned.
 

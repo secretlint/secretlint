@@ -26,7 +26,7 @@ Options
       .join(", ")}
   --output           [path:String] output file path that is written of reported result.
   --secretlintrc     [path:String] path to the config file. Default: .secretlintrc.* from the current directory up to the root, or the recommended rules
-  --secretlintignore [path:String] path to an ignore file, relative to cwd. Default: .secretlintignore in each directory
+  --secretlintignore [path:String] path to an extra ignore file, relative to cwd. .secretlintignore in each directory is always read
   --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
   --no-color         disable ANSI-color of output.
   --no-terminalLink  disable terminalLink of output.
