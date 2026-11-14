@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794633968518,
+  "lastUpdate": 1794637660939,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -62434,6 +62434,44 @@ window.BENCHMARK_DATA = {
             "range": "±1.12%",
             "unit": "ops/sec",
             "extra": "18 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "c6947745d2c84a42e0c459e3027ac98ae0dc36d6",
+          "message": "feat(core): add a guard to a keyword of a pattern (#1827)\n\n<!-- claude-projects-attribution: {\"github_login\":\"azu\"} -->\n_Requested by **azu** · [project\nthread](https://claude.ai/code/project/chan_01ChfsKF1sN6vYsJMPZ7PuDt?thread=cmsg_01ChfsKF1sN6vYsJMPZ7PuDt23QgjegQpqpPJEsqeWwYHA)_\n\nA keyword of a pattern can have a guard: a condition on the characters\nthat follow the keyword. This PR has the sdev Requirements and Design\n(en + ja) and the implementation.\n\n## Why\n\nThe service decides the format of its keys. When a well-known service\nuses a short or common prefix such as `00` or `SK`, a keyword of the\npattern is in almost every file and stops filtering.\nSecretlint keeps its policy: it does not add a rule that reports a value\nbecause a word such as the name of the service is near it. So a keyword\ngets a guard, which keeps the keyword useful.\n\n## What\n\nAn item of `keywords` of a pattern is a string, as before, or a keyword\nobject `{ keyword, after }`. No string of `keywords` is read in a new\nway.\n\n```ts\n{\n    pattern: /(?<[A-Za-z0-9_-])00[A-Za-z0-9_-]{40}(?[A-Za-z0-9_-])/g,\n    keywords: [{ keyword: \"00\", after: \"[A-Za-z0-9_-]{40,}\" }],\n    scope: \"line\",\n    report(match, context) { /* ... */ },\n}\n```\n\n- `after` is the guard: one set of ASCII characters in `[` `]` and the\ncount `{n,}` (n is from 1 to 255), \"n or more characters of the set\nfollow\".\n- The syntax is strict: one thing has one way to write it, and it means\nwhat it says. `{40}` and `{40,60}` are errors, because the guard does\nnot check where the run ends. `+`, `\\w`, and `\\d` are errors, because\nthey are a second way to write the same guard. `[^...]`, another\nproperty of the object, and an object without `after` are errors too. An\nerror names the rule and gives the supported form.\n- A keyword is always matched without the case of ASCII letters, as a\nstring and in an object. The set of a guard is compared as it is\nwritten: `[A-Z0-9]` does not have `a`.\n- `caseSensitiveKeywords` of a pattern is removed, and nothing replaces\nit. Declarative patterns have not been released, so no released rule has\nit. The results of the rules do not change, because a keyword only\nselects where the regular expression runs.\n- AWS access key ID: each prefix is a guarded keyword, such as `{\nkeyword: \"ASIA\", after: \"[A-Z0-9]{16,}\" }`, so `asia-northeast1` still\ndoes not select the pattern.\n    - AWS account ID: `account` once, in place of three cases.\n- SendGrid: `SG.` is now also found in `msg.`, so its pattern is tested\non more lines. Its regular expression allows one character after `SG.`,\nso a guard can not drop them. Stating the lengths of the key in the\nregular expression changes what the rule reports, so it is not in this\nPR.\n- The keyword matcher checks the guard inside the scan loop and does not\nrecord a place whose guard is not met. It never goes back, and it reads\nat most `n` characters for a place.\n- A guard is data: `KeywordScanPlan.guards` carries it to worker\nthreads, which check it without loading rules. `caseSensitive` of the\nplan is removed.\n- `keywords` of an entry of `@secretlint/secretlint-rule-pattern` gets\nthe same items, so a user can write a guard in the configuration file.\n- `@secretlint/tester` (and `@secretlint/core/testing`) checks guards in\ntwo ways:\n- A guard that rejects a secret: each test case is linted once more with\neach guarded keyword as a keyword without its guard, and the test case\nfails with the rule, the keyword, the guard, and the position.\n- A guard without a test case: after the test cases of a snapshot\ndirectory, one more test case \"every keyword with a guard has a test\ncase\" fails if a rule that reports a message has a guarded keyword that\nno reported secret meets. Without such a test case, the tests can not\nfind a wrong guard. The AWS rule gets a test case with an access key ID\nfor each prefix.\n- `--profile` has a new section \"Keyword with a guard\": the places where\nthe keyword was found, and the places where the guard was met.\n`--profile --format json` has it as `keywordGuards`.\n\n## Where\n\n| Part | What changes |\n| --- | --- |\n| `@secretlint/core` `helper/keyword-guard.ts` | The parser of `after`,\nand the check of a guard for bytes and strings |\n| `@secretlint/core` `helper/keyword-matcher.ts` | Guards in the scan\nloop; no case-sensitive keywords |\n| `@secretlint/core` `LintPlan.ts`, `keyword-scan.ts` | Keyword objects\nof patterns, `guards` of the plan |\n| `@secretlint/core` `testing/index.ts` | The checks of guards |\n| `@secretlint/types` | `SecretLintRulePatternKeyword` |\n| `@secretlint/node`, `@secretlint/profiler`, `secretlint` | The counts\nof guards in the profile |\n| docs | sdev features secret-scanning, rules-and-presets, custom-rules,\nperformance-profile; `docs/secretlint-rule.md`; README of the pattern\nrule |\n\n## Test\n\n- Unit tests of the parser, the matcher (also against a regular\nexpression on random texts, for strings and bytes), the plan, the\nscanner, the tester checks, and the profile report\n- The snapshot tests of the built-in rules pass with the guards of the\nAWS rule, and the tester checks run for them\n\n## Open questions\n\n- Guards for `meta.keywords` of a rule without patterns\n- The regular expression of the SendGrid rule (a separate change)\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nhttps://claude.ai/code/session_01TSdrAEnAcY15zDbjvHvpiT\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-11-14T15:26:25+09:00",
+          "tree_id": "2a699a0efcf731e6ec34fc426bc40d44b9ce4fbf",
+          "url": "https://github.com/secretlint/secretlint/commit/c6947745d2c84a42e0c459e3027ac98ae0dc36d6"
+        },
+        "date": 1794637656889,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 8.15,
+            "range": "±1.82%",
+            "unit": "ops/sec",
+            "extra": "24 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 6.41,
+            "range": "±1.52%",
+            "unit": "ops/sec",
+            "extra": "21 samples"
           }
         ]
       }
