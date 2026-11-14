@@ -13,6 +13,7 @@ import type {
 } from "@secretlint/types";
 import { lintSource } from "../index.js";
 import { getBuiltinRule } from "../builtin/index.js";
+import { creator as rulePattern, type Options as RulePatternOptions } from "../builtin/rules/pattern/index.js";
 
 /**
  * Snapshot testing of secretlint rules: `@secretlint/core/testing`.
@@ -157,6 +158,17 @@ const toUnoptimizedConfig = (config: SecretLintCoreConfig): SecretLintCoreConfig
     return {
         ...config,
         rules: config.rules.map((descriptor) => {
+            if (descriptor.rule === rulePattern) {
+                // The core reads the options of the pattern rule as its patterns: `keywords: []` runs them on every file
+                const options = (descriptor.options ?? {}) as RulePatternOptions;
+                return {
+                    ...descriptor,
+                    options: {
+                        ...options,
+                        patterns: options.patterns?.map((entry) => ({ ...entry, keywords: [] })),
+                    },
+                } as SecretLintCoreConfigUnionRule;
+            }
             return {
                 ...descriptor,
                 rule:

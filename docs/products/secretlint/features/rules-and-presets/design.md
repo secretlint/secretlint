@@ -37,7 +37,7 @@ A built-in rule lives in `packages/@secretlint/core/src/builtin/rules/<name>/`, 
 `@secretlint/core` adds the message ID to `docs.url` to make the link of each message.
 
 A rule that finds secrets with regular expressions declares `patterns`, and `@secretlint/core` runs them.
-Other rules, such as the pattern rule and the GCP rule, implement `create()` and report with `context.report()`.
+Other rules, such as the GCP rule, implement `create()` and report with `context.report()`. The patterns of the pattern rule come from its options; see [User-defined patterns](#user-defined-patterns).
 
 The built-in rules do not import Node.js modules at the top level, so that `@secretlint/core` loads in a browser.
 A small `basename` helper replaces `node:path`.
@@ -72,8 +72,8 @@ The strings are the second type parameter of `SecretLintRulePattern`, `SecretLin
 `@secretlint/core` reads the options of `@secretlint/secretlint-rule-pattern` as patterns of the lint plan, in the same way as the `patterns` of the other built-in rules.
 The creator of the rule has `patterns: []` and no `create()`. When the core makes the plan, it finds the rule by the creator object, not by the id, and compiles each entry of `options.patterns` with `compileUserPatterns()` of `src/user-patterns.ts`:
 
-- Each RegExp-like string of `patterns` (or `pattern`) becomes a plan pattern with the scope `file`. A string `/source/flags` becomes `new RegExp(source, flags + "ug")`, and another string is escaped, as `@textlint/regexp-string-matcher` does today, so a pattern matches the same text. The core parses the strings itself, so `@textlint/regexp-string-matcher` is no longer needed by the rule.
-- The keywords of a plan pattern are `keywords` of the entry when it has them. Otherwise they are the result of `extractKeywords(regex)` of `src/helper/extract-keywords.ts`, or none.
+- Each RegExp-like string of `patterns` (or `pattern`) becomes a plan pattern with the scope `file`. The string becomes a RegExp with `createRegExp()` of `@textlint/regexp-string-matcher`, which `matchPatterns()` used before, so a pattern matches the same text: `/source/flags` becomes `new RegExp(source, flags + "ug")`, and another string is escaped.
+- The keywords of a plan pattern are `keywords` of the entry when it has them. Otherwise they are the result of `extractKeywords(regex)` of `src/helper/extract-keywords.ts`, or none. `keywords: []` means none: the pattern runs on every file, which is a way out when a found keyword is wrong.
 - `report()` of a plan pattern checks the global `allows` and the `allows` of the entry, and reports the message `PATTERN` with the name of the entry, as the rule does today.
 - `filePathGlobs` becomes a condition on the file path of a plan pattern. The core checks it before it runs the pattern, and a pattern whose glob does not match does not run, even when its keywords are found. A path is matched by `picomatch` in the same way as today.
 - An entry with only `filePathGlobs` becomes a path pattern: when the path matches, it reports the file name with the range of the whole content. A path pattern does not need keywords, and the plan keeps the path patterns apart, so a file that matches no keyword and no path pattern runs no rule.
@@ -81,7 +81,9 @@ The creator of the rule has `patterns: []` and no `create()`. When the core make
 - The checks of the options (both `patterns` and `pattern`, an entry without `patterns`, `pattern`, and `filePathGlobs`, and an invalid `keywords`) throw when the plan is made, before any file is linted.
 
 The plan is made once for a configuration, so each string is parsed and each keyword is found once, not for each file.
-The profile id of a plan pattern is `@secretlint/secretlint-rule-pattern#<index> <name>`, and the profile shows whether it has keywords.
+The profile id of a plan pattern is `@secretlint/secretlint-rule-pattern#<index> <name>`, with ` (no keywords)` after the name when the pattern runs on every file.
+The snapshot runner of `@secretlint/core/testing` compares the result with the result without keywords. For this rule, it passes the same creator with `keywords: []` on each entry, because the core finds the rule by the creator object.
+`@secretlint/core` now imports the creator of the rule, `picomatch`, and `@textlint/regexp-string-matcher` from its main module, which were dependencies of the package already. The browser bundle of the core and the recommended preset grows from 209.75 kB to 218.21 kB (45.16 kB to 46.77 kB with gzip).
 
 #### Finding keywords in a pattern
 

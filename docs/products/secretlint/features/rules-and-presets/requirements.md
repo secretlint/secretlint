@@ -145,7 +145,7 @@ Scenario: When no keyword can be found in a pattern, the pattern runs on every f
 
 - Given: The pattern rule has `{ "name": "hex", "patterns": ["/[0-9a-f]{64}/"] }` without `keywords`.
 - When: The developer lints the repository with `--profile`.
-- Then: The pattern reports in the same way as before, and the profile shows that the pattern runs without keywords.
+- Then: The pattern reports in the same way as before, and the profile shows the pattern as `hex (no keywords)`.
 
 ### Try new rules early
 
@@ -265,12 +265,12 @@ Secretlint reads the option and decides whether the pattern is a part of the lin
 Secretlint reads these options as patterns, in the same way as the patterns that the built-in rules declare: the patterns are data, and Secretlint runs them.
 
 - An entry without `patterns`, `pattern`, and `filePathGlobs` is not allowed, as before. When the options have no entry, the rule is not a part of the lint: it adds no keyword, and no file runs it.
-- An entry may have `keywords`, a list of ASCII strings. The pattern runs only on a file that contains one of them, matched ASCII case-insensitively. Every match of the pattern must contain one of the keywords; a match without one is not reported. A non-ASCII or empty keyword is an error.
+- An entry may have `keywords`, a list of ASCII strings. The pattern runs only on a file that contains one of them, matched ASCII case-insensitively. Every match of the pattern must contain one of the keywords; a match without one is not reported. A non-ASCII or empty keyword is an error. `keywords: []` runs the pattern on every file.
 - When an entry has no `keywords`, Secretlint finds strings that every match of a pattern must contain, and uses them as the keywords of that pattern. It only uses a string when it is sure: when a pattern has a part that it does not understand, the pattern has no keywords and runs on every file, as before.
 - The keywords are found only in the ASCII letters of a pattern. A pattern with the flag `i` also matches some non-ASCII letters that fold to an ASCII letter, such as the Kelvin sign (U+212A) for `k`. Such a match is not reported when the file has no keyword in ASCII. Secretlint is a linter and prefers no false positive to no false negative, so this is accepted.
-- An entry with only `filePathGlobs` reports a file whose path matches, without reading its content.
+- An entry with only `filePathGlobs` reports a file whose path matches, without keywords and without matching its content.
 - The rule id, the message ID `PATTERN`, the message, `allows`, and `filePathGlobs` of an entry keep their meaning.
-- `--profile` shows each pattern of the rule by its name, and whether it has keywords.
+- `--profile` shows each pattern of the rule by its name, and ` (no keywords)` after the name of a pattern that runs on every file.
 
 ##### Documentation
 

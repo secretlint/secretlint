@@ -22,6 +22,8 @@ import { secretLintProfiler } from "@secretlint/profiler";
 import debug0 from "debug";
 import { getKeywordMatcher, KeywordMatcher, normalizeKeyword } from "./helper/keyword-matcher.js";
 import { AllowMessage } from "./messages/filter-message-id.js";
+import { creator as rulePattern, type Options as RulePatternOptions } from "./builtin/rules/pattern/index.js";
+import { compileUserPatterns } from "./user-patterns.js";
 
 const debug = debug0("@secretlint/core");
 
@@ -53,6 +55,15 @@ export type PlanPattern = {
      */
     readonly keywordIndexes: readonly number[] | undefined;
     readonly report: SecretLintRulePattern["report"];
+    /**
+     * Return false if the pattern does not run for the file path. undefined if it runs for any path.
+     */
+    readonly filePathFilter: ((filePath: string | undefined) => boolean) | undefined;
+    /**
+     * true if the pattern reports the file by its path, without matching the content.
+     * It has no keywords, and it runs when `filePathFilter` returns true.
+     */
+    readonly pathOnly: boolean;
 };
 /**
  * A registered rule
@@ -88,6 +99,12 @@ type CompiledPattern = {
      * true if the keywords are matched case-sensitively
      */
     caseSensitiveKeywords: boolean;
+    /**
+     * The name of the pattern for the profiler. undefined to use the regular expression.
+     */
+    name: string | undefined;
+    filePathFilter: ((filePath: string | undefined) => boolean) | undefined;
+    pathOnly: boolean;
 };
 /**
  * A rule in a view
@@ -130,6 +147,10 @@ export type PlanView = {
      * true if a pattern with keywords needs the whole content ("file" scope)
      */
     readonly hasFilePattern: boolean;
+    /**
+     * Patterns that report a file by its path. A file runs them when its path matches, even without keywords.
+     */
+    readonly pathPatterns: readonly PlanPattern[];
 };
 export type LintPlan = {
     config: SecretLintCoreConfig;
@@ -263,6 +284,25 @@ If it is a \`when\` of a newer secretlint, please update secretlint.`,
     const optionValue = value === true;
     return isNegated ? !optionValue : optionValue;
 };
+const compilePattern = (pattern: SecretLintRulePattern<any>): CompiledPattern => {
+    const caseSensitiveKeywords = pattern.caseSensitiveKeywords === true;
+    const keywords = normalizeKeywords(pattern.keywords, caseSensitiveKeywords);
+    // A line is found by its keyword, so "line" needs keywords.
+    // A keyword with a line break does not tell which line the pattern should run on.
+    const canUseLineScope =
+        pattern.scope === "line" && keywords !== undefined && keywords.every((keyword) => !keyword.includes("\n"));
+    return {
+        source: pattern,
+        regex: toGlobalRegExp(pattern.pattern),
+        tester: toStatelessRegExp(pattern.pattern),
+        scope: canUseLineScope ? "line" : "file",
+        keywords,
+        caseSensitiveKeywords,
+        name: undefined,
+        filePathFilter: undefined,
+        pathOnly: false,
+    };
+};
 /**
  * Compile the patterns of the rule that are enabled for the options.
  * A disabled pattern is not in the plan, so its keywords are not searched and it never runs.
@@ -271,31 +311,23 @@ const compilePatterns = (
     rule: SecretLintRuleCreator<any>,
     options: SecretLintRuleCreatorOptions,
 ): CompiledPattern[] | undefined => {
+    if (rule === rulePattern) {
+        // The patterns of `@secretlint/secretlint-rule-pattern` are its options
+        return compileUserPatterns(options as RulePatternOptions).map((userPattern) => {
+            return {
+                ...compilePattern(userPattern.pattern),
+                name: userPattern.name,
+                filePathFilter: userPattern.filePathFilter,
+                pathOnly: userPattern.pathOnly,
+            };
+        });
+    }
     const patterns = rule.patterns;
     if (!Array.isArray(patterns)) {
         return undefined;
     }
     patterns.forEach((pattern) => assertKnownPatternProperties(rule, pattern));
-    return patterns
-        .filter((pattern) => isEnabledPattern(rule, pattern, options))
-        .map((pattern) => {
-            const caseSensitiveKeywords = pattern.caseSensitiveKeywords === true;
-            const keywords = normalizeKeywords(pattern.keywords, caseSensitiveKeywords);
-            // A line is found by its keyword, so "line" needs keywords.
-            // A keyword with a line break does not tell which line the pattern should run on.
-            const canUseLineScope =
-                pattern.scope === "line" &&
-                keywords !== undefined &&
-                keywords.every((keyword) => !keyword.includes("\n"));
-            return {
-                source: pattern,
-                regex: toGlobalRegExp(pattern.pattern),
-                tester: toStatelessRegExp(pattern.pattern),
-                scope: canUseLineScope ? "line" : "file",
-                keywords,
-                caseSensitiveKeywords,
-            };
-        });
+    return patterns.filter((pattern) => isEnabledPattern(rule, pattern, options)).map(compilePattern);
 };
 
 /**
@@ -524,20 +556,28 @@ const createView = (plan: LintPlan, contentType: ContentType): PlanView => {
             return { rule, keywordIndexes: toIndexes(keywordsOfRule(rule)), patterns: undefined };
         }
         const patterns = rule.patterns.map((pattern, patternNumber): PlanPattern => {
+            // A user-defined pattern is shown by its name, and the profile tells that it has no keywords
+            const patternLabel =
+                pattern.name === undefined
+                    ? String(pattern.source.pattern)
+                    : `${pattern.name}${pattern.keywords === undefined && !pattern.pathOnly ? " (no keywords)" : ""}`;
             return {
                 // the id of the rule itself: the id of the config can be a short id such as "@secretlint/aws"
-                profileId: `${rule.descriptorRule.rule.meta.id}#${patternNumber} ${String(pattern.source.pattern)}`,
+                profileId: `${rule.descriptorRule.rule.meta.id}#${patternNumber} ${patternLabel}`,
                 index: patternIndexes.get(pattern) ?? -1,
                 regex: pattern.regex,
                 tester: pattern.tester,
                 scope: pattern.scope,
                 keywordIndexes: toIndexes(pattern.keywords, pattern.caseSensitiveKeywords),
                 report: pattern.source.report,
+                filePathFilter: pattern.filePathFilter,
+                pathOnly: pattern.pathOnly,
             };
         });
         return { rule, keywordIndexes: undefined, patterns };
     });
-    const allPatterns = rules.flatMap((rule) => rule.patterns ?? []);
+    // A path pattern does not read the content, so it is not one of the patterns that the content decides
+    const allPatterns = rules.flatMap((rule) => rule.patterns ?? []).filter((pattern) => !pattern.pathOnly);
     const keywordPatterns = allPatterns.filter((pattern) => pattern.keywordIndexes !== undefined);
     const linePatternsOfKeyword = (matcher?.keywords ?? []).map((_, keywordIndex) => {
         return keywordPatterns.filter((pattern) => {
@@ -552,6 +592,7 @@ const createView = (plan: LintPlan, contentType: ContentType): PlanView => {
         hasAlwaysPattern: allPatterns.some((pattern) => pattern.keywordIndexes === undefined),
         hasAlwaysRule: rules.some((rule) => rule.patterns === undefined && rule.keywordIndexes === undefined),
         hasFilePattern: keywordPatterns.some((pattern) => pattern.scope === "file"),
+        pathPatterns: rules.flatMap((rule) => rule.patterns ?? []).filter((pattern) => pattern.pathOnly),
     };
 };
 

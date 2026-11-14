@@ -1,12 +1,5 @@
-import {
-    SecretLintRuleContext,
-    SecretLintRuleCreator,
-    SecretLintRuleMessageTranslate,
-    SecretLintSourceCode,
-} from "@secretlint/types";
-import { matchPatterns } from "@textlint/regexp-string-matcher";
+import type { SecretLintRuleCreator } from "@secretlint/types";
 import picomatch from "picomatch";
-import { basename } from "../../path-util.js";
 
 /**
  * Return true if the file path matches the globs, in the same way as `micromatch([filePath], globs).length > 0`.
@@ -14,7 +7,7 @@ import { basename } from "../../path-util.js";
  * If all globs are negated, any path that none of them excludes matches.
  * This is the algorithm of micromatch() with picomatch, so that the rule does not need micromatch.
  */
-const matchFilePathGlobs = (filePath: string, globs: string[]): boolean => {
+export const matchFilePathGlobs = (filePath: string, globs: string[]): boolean => {
     let kept = false;
     let omitted = false;
     let negatives = 0;
@@ -58,6 +51,12 @@ export type PatternType = {
     pattern?: string;
     filePathGlobs?: string[];
     allows?: string[];
+    /**
+     * Keywords for pre-filtering: the patterns run only on a file that contains one of them (ASCII case-insensitive).
+     * Every match of the patterns must contain one of the keywords.
+     * If it is not set, secretlint finds keywords in the patterns. `[]` runs the patterns on every file.
+     */
+    keywords?: string[];
 };
 
 export type Options = {
@@ -65,85 +64,11 @@ export type Options = {
     patterns?: PatternType[];
 };
 
-function collectPatterns(patternConfig: PatternType): string[] {
-    // Error if both patterns and pattern are specified
-    if (patternConfig.patterns && patternConfig.patterns.length > 0 && patternConfig.pattern) {
-        throw new Error(
-            `Pattern "${patternConfig.name}" cannot have both "patterns" and "pattern" specified. Use "patterns" array instead.`,
-        );
-    }
-
-    // Prefer patterns array
-    if (patternConfig.patterns && patternConfig.patterns.length > 0) {
-        return patternConfig.patterns;
-    }
-
-    // Fallback to deprecated pattern field
-    if (patternConfig.pattern) {
-        return [patternConfig.pattern];
-    }
-
-    return [];
-}
-
-function reportIfFoundPattern({
-    source,
-    options,
-    context,
-    t,
-}: {
-    source: SecretLintSourceCode;
-    options: Required<Options>;
-    context: SecretLintRuleContext;
-    t: SecretLintRuleMessageTranslate<typeof messages>;
-}) {
-    for (const p of options.patterns) {
-        // Check filePathGlobs if specified
-        // Negation patterns (e.g., "!**/excluded/**") are supported in the same way as micromatch().
-        // `dot: true` is required so that `**` traverses segments that start with `.`
-        // (e.g., `.github`, `.ai`); otherwise negation patterns like `!**/excluded/**`
-        // fail to match files located under a dot-directory.
-        if (p.filePathGlobs && p.filePathGlobs.length > 0 && source.filePath) {
-            if (!matchFilePathGlobs(source.filePath, p.filePathGlobs)) {
-                continue; // Skip if file path doesn't match any glob pattern
-            }
-        }
-
-        const allPatterns = collectPatterns(p);
-
-        // Check patterns if specified
-        if (allPatterns.length > 0) {
-            const mergedAllows = [...options.allows, ...(p.allows ?? [])];
-            const results = matchPatterns(source.content, allPatterns);
-            for (const result of results) {
-                const index = result.startIndex || 0;
-                const match = result.match || "";
-                const range = [index, index + match.length] as const;
-                const allowedResults = matchPatterns(match, mergedAllows);
-                if (allowedResults.length > 0) {
-                    continue;
-                }
-                context.report({
-                    message: t("PATTERN", {
-                        PATTERN_NAME: p.name,
-                        CREDENTIAL: match,
-                    }),
-                    range,
-                });
-            }
-        } else if (p.filePathGlobs && p.filePathGlobs.length > 0) {
-            // If only filePathGlobs is specified (no patterns), report the file itself
-            context.report({
-                message: t("PATTERN", {
-                    PATTERN_NAME: p.name,
-                    CREDENTIAL: basename(source.filePath || ""),
-                }),
-                range: [0, source.content.length],
-            });
-        }
-    }
-}
-
+/**
+ * `@secretlint/core` reads the options of this rule as the patterns of the lint plan.
+ * See `compileUserPatterns()` of `src/user-patterns.ts`.
+ * The rule has no patterns of its own: without `options.patterns`, it is not a part of the lint.
+ */
 export const creator: SecretLintRuleCreator<Options> = {
     messages,
     meta: {
@@ -152,35 +77,5 @@ export const creator: SecretLintRuleCreator<Options> = {
         type: "scanner",
         supportedContentTypes: ["text"],
     },
-    create(context, options) {
-        const t = context.createTranslator(messages);
-        const normalizedOptions = {
-            allows: options.allows || [],
-            patterns: options.patterns || [],
-        };
-
-        // Validate patterns
-        for (const p of normalizedOptions.patterns) {
-            // Validate that patterns and pattern are not both specified
-            if (p.patterns && p.patterns.length > 0 && p.pattern) {
-                throw new Error(
-                    `Pattern "${p.name}" cannot have both "patterns" and "pattern" specified. Use "patterns" array instead.`,
-                );
-            }
-
-            const hasPatterns = (p.patterns && p.patterns.length > 0) || p.pattern;
-            const hasFilePathGlobs = p.filePathGlobs && p.filePathGlobs.length > 0;
-            if (!hasPatterns && !hasFilePathGlobs) {
-                throw new Error(
-                    `Pattern "${p.name}" must have either "patterns", "pattern" (deprecated), or "filePathGlobs" specified`,
-                );
-            }
-        }
-
-        return {
-            file(source: SecretLintSourceCode) {
-                reportIfFoundPattern({ source, options: normalizedOptions, context, t });
-            },
-        };
-    },
+    patterns: [],
 };
