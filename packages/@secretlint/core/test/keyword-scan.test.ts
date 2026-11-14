@@ -70,9 +70,9 @@ describe("keyword scan", () => {
             "",
         ]) {
             const source = createBytesSource(content);
-            const keywordScan = structuredClone(scanner.scan(source.contentBytes as Uint8Array));
+            const keywordScanResult = structuredClone(scanner.scan(source.contentBytes as Uint8Array));
             const expected = await lintSource({ source: createBytesSource(content), options: { config: tokenConfig } });
-            const actual = await lintSource({ source, options: { config: tokenConfig }, keywordScan });
+            const actual = await lintSource({ source, options: { config: tokenConfig }, keywordScanResult });
             assert.deepStrictEqual(actual, expected);
         }
     });
@@ -81,11 +81,11 @@ describe("keyword scan", () => {
         assert.ok(plan);
         const scanner = createKeywordScanner(plan);
         // The result of other bytes shows that the result is used. A caller should not do it
-        const keywordScan = scanner.scan(new TextEncoder().encode("no keyword"));
+        const keywordScanResult = scanner.scan(new TextEncoder().encode("no keyword"));
         const result = await lintSource({
             source: createBytesSource("tok_ab12"),
             options: { config: tokenConfig },
-            keywordScan,
+            keywordScanResult,
         });
         assert.deepStrictEqual(result.messages, []);
     });
@@ -93,12 +93,12 @@ describe("keyword scan", () => {
         const otherPlan = getKeywordScanPlan({ config: toConfig(createRule("key", "key_")) });
         assert.ok(otherPlan);
         const content = "tok_ab12";
-        const keywordScan = createKeywordScanner(otherPlan).scan(new TextEncoder().encode(content));
-        assert.strictEqual(keywordScan.hits.count, 0);
+        const keywordScanResult = createKeywordScanner(otherPlan).scan(new TextEncoder().encode(content));
+        assert.strictEqual(keywordScanResult.hits.count, 0);
         const result = await lintSource({
             source: createBytesSource(content),
             options: { config: tokenConfig },
-            keywordScan,
+            keywordScanResult,
         });
         assert.deepStrictEqual(
             result.messages.map((message) => message.message),

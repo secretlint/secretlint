@@ -35,7 +35,7 @@ export type SecretLintSourceOptions = {
      * so a wrong result costs time and does not change the result of the lint.
      * The caller passes it only if it scanned the same bytes as `source.contentBytes`.
      */
-    keywordScan?: KeywordScanResult;
+    keywordScanResult?: KeywordScanResult;
     options: {
         /**
          * local for translate
@@ -251,7 +251,7 @@ type BytesCheck = {
 const checkBytes = (
     view: PlanView,
     bytes: Uint8Array,
-    keywordScan: KeywordScanResult | undefined,
+    keywordScanResult: KeywordScanResult | undefined,
 ): BytesCheck | undefined => {
     const matcher = view.matcher;
     if (!matcher) {
@@ -262,8 +262,8 @@ const checkBytes = (
     const scanStartTime = profiling ? secretLintProfiler.now() : 0;
     // Use the result of the caller only if it is for the same keywords: the hits have the indexes of the keywords
     const hits =
-        keywordScan !== undefined && keywordScan.planId === view.keywordScanPlan?.id
-            ? keywordScan.hits
+        keywordScanResult !== undefined && keywordScanResult.planId === view.keywordScanPlan?.id
+            ? keywordScanResult.hits
             : matcher.scan(bytes, contentStart);
     if (profiling) {
         secretLintProfiler.record("@core>keyword-scan", undefined, scanStartTime);
@@ -334,7 +334,7 @@ const lintWithPlan = (
     plan: LintPlan,
     source: SecretLintRawSource,
     options: { maskSecrets: boolean; noPhysicFilePath: boolean },
-    keywordScan?: KeywordScanResult,
+    keywordScanResult?: KeywordScanResult,
 ): Promise<SecretLintCoreResult> => {
     const contentType = source.contentType;
     const view = getPlanView(plan, contentType);
@@ -342,7 +342,7 @@ const lintWithPlan = (
     // The bytes may be available only at the start of the lint. See createFileSourceReader() of source-creator
     const bytes = source.contentBytes;
     // Check the bytes if the source has them, because decoding the content costs more than scanning it.
-    const bytesCheck = bytes === undefined ? undefined : checkBytes(view, bytes, keywordScan);
+    const bytesCheck = bytes === undefined ? undefined : checkBytes(view, bytes, keywordScanResult);
     if (bytes !== undefined && !bytesCheck?.hasKeyword && !view.hasAlwaysPattern && !view.hasAlwaysRule) {
         // Most files end here: no rule runs, and nothing is created for the file except the result
         return Promise.resolve(createResult(source, []));
@@ -539,7 +539,7 @@ export const getKeywordScanPlan = ({
 export const lintSource = ({
     source,
     options,
-    keywordScan,
+    keywordScanResult,
 }: SecretLintSourceOptions): Promise<SecretLintCoreResult> => {
     // Each call has its own start time, because the calls can overlap
     const startTime = secretLintProfiler.isEnabled ? secretLintProfiler.now() : 0;
@@ -553,7 +553,7 @@ export const lintSource = ({
             maskSecrets: options.maskSecrets ?? false,
             noPhysicFilePath: options.noPhysicFilePath ?? false,
         },
-        keywordScan,
+        keywordScanResult,
     );
     if (!secretLintProfiler.isEnabled) {
         return promise;

@@ -121,11 +121,11 @@ const createFileLinter = ({ config, options }: { config: SecretLintCoreConfig; o
         }
         // Use the keyword scan of the file only if it scanned the same size of content:
         // the file may have been changed after the scan. Without it, `lintSource()` scans the bytes
-        const keywordScan: KeywordScanResult | undefined =
+        const keywordScanResult: KeywordScanResult | undefined =
             fileKeywordScan !== undefined && fileKeywordScan.byteLength === source.contentBytes?.length
                 ? fileKeywordScan.scan
                 : undefined;
-        const result = await lintSource({ source, options: lintOptions, keywordScan });
+        const result = await lintSource({ source, options: lintOptions, keywordScanResult });
         // The buffer still has the file here, because the next file is not read yet
         const hasContent = source.contentType === "text" && result.messages.length > 0;
         return { result, content: hasContent ? source.content : undefined };
