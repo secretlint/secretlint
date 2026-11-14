@@ -124,7 +124,8 @@ The decision uses time, not the number of files, so it follows the size of the f
 - The hits are used only if the main thread reads the same number of bytes as the thread that scanned. Otherwise the core scans the bytes itself.
 - `lintSource()` ignores hits with the id of another plan.
 - A file that a thread could not read, or that a failed worker claimed, stays "not scanned" and is linted as before, so the error is the same.
-- The scan is not used with the `mask-result` formatter, which reads every file as a string, and while the profiler is enabled.
+- The scan is not used with the `mask-result` formatter, which reads every file as a string.
+- The profiler does not change the path: with `--profile` the files are scanned in the same way, so the profile shows the run that a user gets. Each thread measures its own time and files, and the engine adds them to the profiler as `@node>keyword-scan-thread`.
 
 #### The single-executable binary
 

@@ -230,9 +230,8 @@ const scanKeywordsBeforeLint = async ({
     config: SecretLintCoreConfig;
     options: SecretLintEngineOptions;
 }): Promise<(ParallelKeywordScan & { skipsNoKeyword: boolean }) | undefined> => {
-    // "mask-result" needs the content of all files.
-    // The profiler measures the steps of the lint of each file, so the lint does all steps while profiling
-    if (options.formatter === "mask-result" || secretLintProfiler.isEnabled) {
+    // "mask-result" needs the content of all files
+    if (options.formatter === "mask-result") {
         return undefined;
     }
     const maxThreads = getMaxKeywordScanThreads();
@@ -243,7 +242,17 @@ const scanKeywordsBeforeLint = async ({
     if (plan === undefined) {
         return undefined;
     }
+    const startTime = secretLintProfiler.now();
     const scan = await scanKeywordsInParallel({ plan, filePathList, maxThreads });
+    if (secretLintProfiler.isEnabled) {
+        secretLintProfiler.record("@node>keyword-scan", undefined, startTime);
+        for (const thread of scan.threads) {
+            secretLintProfiler.addTotal("@node>keyword-scan-thread", thread.name, {
+                count: thread.scannedCount,
+                duration: thread.duration,
+            });
+        }
+    }
     debug("executeOnFiles files with keywords: %d", scan.scans.size);
     return { ...scan, skipsNoKeyword: plan.requiresKeyword };
 };
@@ -266,6 +275,7 @@ const executeOnFiles = async ({
     // The contents for the formatter: `filePath` of the result to the content
     const contents = new Map<string, string>();
     const lintFile = createFileLinter({ config, options });
+    secretLintProfiler.count("@node>files", undefined, filePathList.length);
     const parallelScan = await scanKeywordsBeforeLint({ filePathList, config, options });
     for (let fileIndex = 0; fileIndex < filePathList.length; fileIndex++) {
         const filePath = filePathList[fileIndex] as string;

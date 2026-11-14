@@ -50,6 +50,9 @@
 | `secretlint>search-files` | | コマンド | 検査するファイルを探す |
 | `@node>load-config` | | エンジン | 設定を読み込む。`@config-loader>*`の種類を含む |
 | `@node>execute` | | エンジン | ファイルを検査し、結果を整形する |
+| `@node>files` | | エンジン | その実行のファイルの数。時間は持たない |
+| `@node>keyword-scan` | | エンジン | 検査の前に、メインスレッドとワーカースレッドでファイルを走査してルールのキーワードを探す |
+| `@node>keyword-scan-thread` | スレッドの名前 | エンジン | `@node>keyword-scan`の中での1つのスレッドの時間とファイル数。ワーカーが測り、エンジンが`addTotal()`で足す |
 | `@node>read-file` | | エンジン | ファイルを読む |
 | `@node>format` | | エンジン | 結果を整形する |
 | `@core>lint` | ファイルパス | コア | 1つの内容を検査する |

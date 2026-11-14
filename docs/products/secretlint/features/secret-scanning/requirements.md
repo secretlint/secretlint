@@ -306,15 +306,15 @@ The caller of the core chooses where to look for keywords. See "Look for keyword
 
 A user does not enable it or configure it.
 
+##### Seeing what happened
+
+`--profile` runs the lint in the same way as without it, and shows how many threads looked for keywords, with the time and the number of files of each thread. See [Performance profile](../performance-profile/requirements.md).
+
 #### Exceptional behavior
 
 ##### The `mask-result` formatter
 
 Other CPU cores are not used, because the formatter needs the content of every file.
-
-##### The profile
-
-Other CPU cores are not used with `--profile`, so that the profile shows the time of each step of each file.
 
 ##### A failure on another CPU core
 

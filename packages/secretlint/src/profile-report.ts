@@ -70,6 +70,20 @@ export type SecretLintProfileReportPattern = {
      */
     lineTests: number;
 };
+export type SecretLintProfileReportKeywordScanThread = {
+    /**
+     * "main" for the main thread, and "worker {number}" for a worker thread
+     */
+    thread: string;
+    /**
+     * The time that the thread scanned in milliseconds
+     */
+    duration: number;
+    /**
+     * The number of the files that the thread scanned
+     */
+    files: number;
+};
 export type SecretLintProfileReportFile = {
     filePath: string;
     /**
@@ -91,6 +105,12 @@ export type SecretLintProfileReport = {
      */
     files: number;
     phases: SecretLintProfileReportPhase[];
+    /**
+     * The threads that scanned the files for keywords before the lint, in `@node>keyword-scan`.
+     * One thread is the main thread alone: no worker thread started.
+     * It is empty if the files are not scanned before the lint.
+     */
+    keywordScanThreads: SecretLintProfileReportKeywordScanThread[];
     /**
      * All rules that ran, in the order of the time
      */
@@ -116,6 +136,7 @@ const PHASES: readonly (readonly [type: SecretLintProfilerStatType, depth: numbe
     ["@config-loader>load-packages", 2],
     ["secretlint>search-files", 1],
     ["@node>execute", 1],
+    ["@node>keyword-scan", 2],
     ["@node>read-file", 2],
     ["@core>lint", 2],
     ["@core>setup-rules", 3],
@@ -215,10 +236,18 @@ export const createProfileReport = (stats: readonly SecretLintProfilerStat[]): S
         .map((stat): SecretLintProfileReportFile => ({ filePath: stat.id ?? "", duration: round(stat.duration) }))
         .sort(byDuration)
         .slice(0, SLOWEST_FILES_COUNT);
+    const keywordScanThreads = statsOfType("@node>keyword-scan-thread").map(
+        (stat): SecretLintProfileReportKeywordScanThread => {
+            return { thread: stat.id ?? "", duration: round(stat.duration), files: stat.count };
+        },
+    );
+    // A file without keywords is not linted when the files are scanned before the lint, so count the files of the run
+    const fileCount = totalOf("@node>files").count;
     return {
         total: round(total),
-        files: files.length,
+        files: fileCount > 0 ? fileCount : files.length,
         phases,
+        keywordScanThreads,
         rules,
         patterns: sortedPatterns,
         slowestFiles,
@@ -312,6 +341,19 @@ export const formatProfileReport = (
             ]),
         ),
     );
+    if (report.keywordScanThreads.length > 0) {
+        lines.push("");
+        lines.push(
+            ...formatTable(
+                [
+                    { title: "Time(ms)", align: "right" },
+                    { title: "Files", align: "right" },
+                    { title: `Keyword scan thread (${report.keywordScanThreads.length})`, align: "left" },
+                ],
+                report.keywordScanThreads.map((thread) => [ms(thread.duration), String(thread.files), thread.thread]),
+            ),
+        );
+    }
     const rules = report.rules.slice(0, TOP_COUNT);
     if (rules.length > 0) {
         lines.push("");

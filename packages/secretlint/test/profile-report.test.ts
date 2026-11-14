@@ -48,6 +48,7 @@ describe("profile-report", () => {
                 { name: "@core>rule-handler", depth: 3, duration: 8.7, percent: 8.7, count: 2 },
                 { name: "@node>format", depth: 2, duration: 3, percent: 3, count: 1 },
             ],
+            keywordScanThreads: [],
             rules: [
                 { ruleId: "@secretlint/secretlint-rule-b", duration: 8.1, files: 1 },
                 { ruleId: "@secretlint/secretlint-rule-a", duration: 0.6, files: 1 },
@@ -172,9 +173,51 @@ Time(ms)  File
         assert.ok(output.includes("  <cwd>/a.txt\n"));
         assert.ok(output.endsWith("  /cwd-backup/a.txt"));
     });
+    it("should report the threads of the keyword scan and count the files that are not linted", () => {
+        const report = createProfileReport([
+            stat("secretlint>cli", undefined, 1, 100),
+            stat("@node>execute", undefined, 1, 80),
+            stat("@node>files", undefined, 300, 0),
+            stat("@node>keyword-scan", undefined, 1, 50),
+            stat("@node>keyword-scan-thread", "main", 120, 49.5),
+            stat("@node>keyword-scan-thread", "worker 1", 180, 30),
+            stat("@core>lint", "/cwd/a.txt", 1, 2),
+        ]);
+        assert.strictEqual(report.files, 300);
+        assert.deepStrictEqual(report.keywordScanThreads, [
+            { thread: "main", duration: 49.5, files: 120 },
+            { thread: "worker 1", duration: 30, files: 180 },
+        ]);
+        assert.deepStrictEqual(
+            report.phases.map((phase) => [phase.name, phase.depth]),
+            [
+                ["secretlint>cli", 0],
+                ["@node>execute", 1],
+                ["@node>keyword-scan", 2],
+                ["@core>lint", 2],
+            ],
+        );
+        const output = formatProfileReport(report, { cwd: "/cwd", pathSeparator: "/" });
+        assert.ok(output.startsWith("secretlint profile: 100.00ms, 300 files\n"));
+        assert.ok(
+            output.includes(
+                ["Time(ms)  Files  Keyword scan thread (2)", "   49.50    120  main", "   30.00    180  worker 1"].join(
+                    "\n",
+                ),
+            ),
+        );
+    });
     it("should create an empty report if nothing is recorded", () => {
         const report = createProfileReport([]);
-        assert.deepStrictEqual(report, { total: 0, files: 0, phases: [], rules: [], patterns: [], slowestFiles: [] });
+        assert.deepStrictEqual(report, {
+            total: 0,
+            files: 0,
+            phases: [],
+            keywordScanThreads: [],
+            rules: [],
+            patterns: [],
+            slowestFiles: [],
+        });
         assert.strictEqual(
             formatProfileReport(report, { cwd: "/cwd", pathSeparator: "/" }),
             "secretlint profile: 0.00ms, 0 files\n\nPhase  Time(ms)  %  Count",

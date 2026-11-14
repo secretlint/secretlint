@@ -47,6 +47,10 @@ export type ParallelKeywordScan = {
      * The index of the file to the scan of the file. It has only the files that have a keyword
      */
     scans: Map<number, FileKeywordScan>;
+    /**
+     * What each thread did, for the profile. The first is the main thread. A failed worker is not in it
+     */
+    threads: { name: string; scannedCount: number; duration: number }[];
 };
 /**
  * The max number of the threads, including the main thread.
@@ -155,13 +159,19 @@ export const scanKeywordsInParallel = async ({
     });
     const results = [mainResult, ...(await Promise.all(workerResults ?? []))];
     const scans = new Map<number, FileKeywordScan>();
-    for (const result of results) {
+    const threads: ParallelKeywordScan["threads"] = [];
+    for (const [index, result] of results.entries()) {
         if (result === undefined) {
             continue;
         }
+        threads.push({
+            name: index === 0 ? "main" : `worker ${index}`,
+            scannedCount: result.scannedCount,
+            duration: result.duration,
+        });
         for (let i = 0; i < result.fileIndexes.length; i++) {
             scans.set(result.fileIndexes[i] as number, result.scans[i] as FileKeywordScan);
         }
     }
-    return { states: getFileScanStates(shared), scans };
+    return { states: getFileScanStates(shared), scans, threads };
 };

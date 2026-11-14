@@ -44,6 +44,14 @@ export type FileKeywordScans = {
      * `scans[i]` is the scan of the file of `fileIndexes[i]`
      */
     scans: FileKeywordScan[];
+    /**
+     * The number of the files that the thread scanned
+     */
+    scannedCount: number;
+    /**
+     * The time that the thread took, in milliseconds
+     */
+    duration: number;
 };
 /**
  * The buffer that the threads share: the index of the next file to claim, then the state of each file
@@ -74,6 +82,8 @@ export const scanFilesForKeywords = ({
     const states = getFileScanStates(shared);
     const fileIndexes: number[] = [];
     const scans: FileKeywordScan[] = [];
+    const startTime = performance.now();
+    let scannedCount = 0;
     let buffer = Buffer.allocUnsafe(INITIAL_BUFFER_SIZE);
     // Read the file into the buffer, and return the size of the content
     const readFile = (filePath: string): number => {
@@ -106,7 +116,7 @@ export const scanFilesForKeywords = ({
         onClaim?.(Math.min(Atomics.load(nextIndex, 0), filePathList.length));
         const start = Atomics.add(nextIndex, 0, CLAIM_SIZE);
         if (start >= filePathList.length) {
-            return { fileIndexes, scans };
+            return { fileIndexes, scans, scannedCount, duration: performance.now() - startTime };
         }
         const end = Math.min(start + CLAIM_SIZE, filePathList.length);
         for (let fileIndex = start; fileIndex < end; fileIndex++) {
@@ -118,6 +128,7 @@ export const scanFilesForKeywords = ({
                 continue;
             }
             const scan = scanner.scan(buffer.subarray(0, byteLength));
+            scannedCount++;
             if (scan.hits.count === 0) {
                 states[fileIndex] = FileScanState.NoKeyword;
                 continue;
