@@ -135,7 +135,7 @@ Importing a package runs its code, so the loader imports only the package names 
 
 The change is released in the next major version, v14, together with the release note that a run without a configuration no longer fails.
 The Docker image is still needed as the distribution without Node.js. It keeps `/.secretlintrc.json` in this change, which has the same rules as the default configuration.
-`@secretlint/quick-start` has no role left with the default configuration, and deprecating it is a follow-up.
+`@secretlint/quick-start` has no role left with the default configuration. It was removed after v14.0.0 and deprecated on npm.
 
 ## Alternatives considered
 

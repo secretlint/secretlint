@@ -124,7 +124,6 @@ GitHub secret scanning works on the GitHub side, after a commit is made or pushe
 | Custom rules | Create, test, publish, and use a rule as an npm package | [Requirements](features/custom-rules/requirements.md) |
 | Node.js API | Lint content from other programs with `@secretlint/node` | Not written |
 | npm packages | Install the CLI, rules, and formatters as npm packages and run them with Node.js | Not written |
-| Quick start | Run once with `npx @secretlint/quick-start` and the recommended preset, without a configuration file | Not written |
 | Docker image | Run `secretlint/secretlint` without Node.js or configuration, with the built-in rules and the SARIF formatter | Not written |
 | Single-executable binary | Run a binary from GitHub Releases for Linux, macOS, and Windows without Node.js, with the built-in rules and the SARIF formatter | [Requirements](features/single-executable-binary/requirements.md) |
 | Performance profile | Show where time is spent with `--profile` | [Requirements](features/performance-profile/requirements.md) |
