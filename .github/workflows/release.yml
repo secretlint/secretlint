@@ -153,11 +153,14 @@ jobs:
           echo "PLATFORM_PAIR=${PLATFORM//\//-}" >> "$GITHUB_ENV"
           echo "SECRETLINT_VERSION=${VERSION}" >> "$GITHUB_ENV"
       # `pnpm publish` can return before the npm registry serves the new version,
-      # so wait until every package installed by the Dockerfile is resolvable.
+      # so wait until every published package is resolvable.
+      # The Dockerfile installs secretlint and the sarif formatter, and they depend on the exact
+      # version of other @secretlint/* packages, so checking only those two is not enough.
       - name: Wait for npm packages to be available
         run: |
-          packages="secretlint @secretlint/core @secretlint/secretlint-formatter-sarif"
-          for pkg in $packages; do
+          mapfile -t packages < <(find packages -maxdepth 3 -name package.json -not -path '*/node_modules/*' \
+            -exec jq -r 'select(.private != true) | .name' {} + | sort)
+          for pkg in "${packages[@]}"; do
             for i in $(seq 1 30); do
               if npm view "${pkg}@${SECRETLINT_VERSION}" version --prefer-online > /dev/null 2>&1; then
                 echo "${pkg}@${SECRETLINT_VERSION} is available"
