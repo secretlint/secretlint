@@ -57,9 +57,9 @@ describe("searchFiles - ignoreFilePath", () => {
             ignoreFilePath: path.join(root, "outside", "custom-ignore"),
         });
         expect(result.ok).toBe(true);
-        // ignored.txt by the given file; root.txt and sub/nested.txt by .secretlintignore;
-        // sub/ignored.txt is included again by `!ignored.txt` of sub/.secretlintignore, which is stronger
-        expect(relative(result.items)).toEqual(["kept.txt", "sub/ignored.txt", "sub/kept.txt"]);
+        // ignored.txt and sub/ignored.txt by the given file; root.txt and sub/nested.txt by .secretlintignore.
+        // `!ignored.txt` of sub/.secretlintignore does not include again what the given file ignores
+        expect(relative(result.items)).toEqual(["kept.txt", "sub/kept.txt"]);
     });
 
     it("adds an ignore file given as a relative path with a directory", async () => {
@@ -68,7 +68,7 @@ describe("searchFiles - ignoreFilePath", () => {
             ignoreFilePath: "config/custom-ignore",
         });
         expect(result.ok).toBe(true);
-        expect(relative(result.items)).toEqual(["kept.txt", "sub/ignored.txt", "sub/kept.txt"]);
+        expect(relative(result.items)).toEqual(["kept.txt", "sub/kept.txt"]);
     });
 
     it("matches the rules of the given file from cwd, not from the directory of the file", async () => {
@@ -92,7 +92,7 @@ describe("searchFiles - ignoreFilePath", () => {
             cwd,
             ignoreFilePath: "config\\custom-ignore",
         });
-        expect(relative(result.items)).toEqual(["kept.txt", "sub/ignored.txt", "sub/kept.txt"]);
+        expect(relative(result.items)).toEqual(["kept.txt", "sub/kept.txt"]);
     });
 
     it("warns and keeps the cascade when the ignore file does not exist", async () => {
@@ -142,10 +142,14 @@ describe("searchFiles - ignoreFilePath", () => {
         const relativeTo = (base: string, items: string[]) =>
             items.map((p) => path.relative(base, p).replaceAll("\\", "/")).sort();
 
-        it("gives the same files with --secretlintignore=.gitignore as without it", async () => {
+        it("ignores with the given .gitignore too, which a nested .gitignore can not include again", async () => {
             const withoutOption = await searchFiles(["**/*"], { cwd: repo });
             const withGitignore = await searchFiles(["**/*"], { cwd: repo, ignoreFilePath: ".gitignore" });
-            expect(relativeTo(repo, withGitignore.items)).toEqual(relativeTo(repo, withoutOption.items));
+            // `*.log` of the given file ignores sub/b.log, and `!b.log` of sub/.gitignore includes it again
+            // only for the .gitignore files
+            expect(relativeTo(repo, withGitignore.items)).toEqual(
+                relativeTo(repo, withoutOption.items).filter((file) => file !== "sub/b.log"),
+            );
             expect(relativeTo(repo, withoutOption.items)).toEqual([
                 ".gitignore",
                 "a.txt",

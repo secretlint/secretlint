@@ -25,8 +25,52 @@ export type IgnoreChain = {
     matcher: Gitignore;
     /** Match case-insensitively. It is the same for all levels of a chain. */
     ignoreCase: boolean;
+    /**
+     * The source of the rules of this level: the built-in patterns (0), a set of extra rules,
+     * or the files of one name in `ignoreFiles`.
+     * The levels of each source decide by themselves, like the ignore files of Git:
+     * a deeper level is stronger, and `!` includes again only what the same source ignores.
+     * A path is ignored if any source ignores it.
+     */
+    source: number;
     /** Parent level, or null at the root. */
     parent: IgnoreChain | null;
+};
+
+/**
+ * The source of the files of the name `ignoreFiles[index]`.
+ * Negative, so it never equals the source of the built-in patterns (0) or of a set of extra rules (1, 2, ...).
+ */
+const sourceOfIgnoreFile = (index: number): number => -1 - index;
+
+/**
+ * Sort the levels (given leaf → root) by source, keeping leaf → root within a source,
+ * so that the levels of a source are next to each other.
+ */
+const groupBySource = <T extends { level: IgnoreChain }>(items: T[]): T[] => {
+    // Array.prototype.sort is stable, so the leaf → root order is kept within a source.
+    return items.length > 1 ? items.sort((a, b) => a.level.source - b.level.source) : items;
+};
+
+/**
+ * Decide from the results of the levels, grouped by source and leaf → root within a source.
+ * Within a source, the first level that has a matching rule decides.
+ * A path is ignored if any source ignores it.
+ */
+const isIgnoredBySources = <T extends { level: IgnoreChain }>(
+    items: readonly T[],
+    test: (item: T) => { ignored: boolean; unignored: boolean },
+): boolean => {
+    let decidedSource: number | null = null;
+    for (let index = 0; index < items.length; index++) {
+        const item = items[index] as T;
+        // This source already included the path again
+        if (item.level.source === decidedSource) continue;
+        const r = test(item);
+        if (r.ignored) return true;
+        if (r.unignored) decidedSource = item.level.source;
+    }
+    return false;
 };
 
 /**
@@ -43,17 +87,29 @@ const createMatcher = (
  * Build the root level of the cascade for a walk rooted at `cwd`.
  * `extraPatterns` are evaluated at the root, so they behave as if the
  * caller dropped a synthetic `.gitignore` at `cwd`.
+ * Each of `extraSources` is also anchored at `cwd`, and it is a source of its own (see {@link IgnoreChain.source}).
  */
 export const createRootIgnore = (
     cwd: string,
     extraPatterns: readonly string[],
     ignoreCase: boolean = false,
+    extraSources: readonly (readonly string[])[] = [],
 ): IgnoreChain => {
-    return {
+    let chain: IgnoreChain = {
         dir: cwd,
         ...createMatcher(extraPatterns, ignoreCase),
+        source: 0,
         parent: null,
     };
+    for (let index = 0; index < extraSources.length; index++) {
+        chain = {
+            dir: cwd,
+            ...createMatcher(extraSources[index] as readonly string[], ignoreCase),
+            source: index + 1,
+            parent: chain,
+        };
+    }
+    return chain;
 };
 
 /**
@@ -73,9 +129,10 @@ const tryReadIgnoreFile = (filePath: string): string | null => {
 };
 
 /**
- * Extend the chain with a new level for `dir`. If `dir` has no ignore file
+ * Extend the chain with a level for each ignore file of `dir`. If `dir` has no ignore file
  * (or all candidate files are empty), returns `parent` unchanged so callers
  * can avoid pushing no-op levels.
+ * Each file is a level of its own, and the files of one name are one source (see {@link IgnoreChain.source}).
  *
  * `presentNames` is an optional pre-filter (e.g. derived from `Dirent[]`)
  * of the ignore-file names that actually exist in `dir`; when provided we
@@ -87,14 +144,20 @@ export const extendIgnore = (
     ignoreFiles: readonly string[],
     presentNames?: ReadonlySet<string>,
 ): IgnoreChain => {
-    const candidates = presentNames ? ignoreFiles.filter((name) => presentNames.has(name)) : ignoreFiles;
-    if (candidates.length === 0) return parent;
-
-    const reads = candidates.map((name) => tryReadIgnoreFile(path.join(dir, name)));
-    const contents = reads.filter((c): c is string => c !== null && c.trim().length > 0);
-    if (contents.length === 0) return parent;
-
-    return { dir, ...createMatcher(contents, parent.ignoreCase), parent };
+    let chain = parent;
+    for (let index = 0; index < ignoreFiles.length; index++) {
+        const name = ignoreFiles[index] as string;
+        if (presentNames && !presentNames.has(name)) continue;
+        const content = tryReadIgnoreFile(path.join(dir, name));
+        if (content === null || content.trim().length === 0) continue;
+        chain = {
+            dir,
+            ...createMatcher([content], parent.ignoreCase),
+            source: sourceOfIgnoreFile(index),
+            parent: chain,
+        };
+    }
+    return chain;
 };
 
 /**
@@ -124,7 +187,7 @@ export type DirIgnoreState = {
     ignored: boolean;
     /** Match case-insensitively */
     ignoreCase: boolean;
-    /** The levels of the chain that contain the directory, leaf → root */
+    /** The levels of the chain that contain the directory, grouped by source, leaf → root within a source */
     levels: {
         level: IgnoreChain;
         /** The rules of the level for the entries of the directory */
@@ -161,7 +224,7 @@ export const createDirIgnoreState = (
     return {
         ignored: parent === null && isIgnoredByChain(chain, absDir, true),
         ignoreCase: chain.ignoreCase,
-        levels,
+        levels: groupBySource(levels),
     };
 };
 
@@ -174,31 +237,28 @@ export const isIgnoredInDir = (state: DirIgnoreState, name: string, isDirectory:
     // The matchers find the rules by the name of the entry, so the path is not created.
     // All levels use the same name.
     const foldedName = foldName(name, state.ignoreCase);
-    for (let index = 0; index < levels.length; index++) {
-        const { level, directoryRules } = levels[index] as DirIgnoreState["levels"][number];
-        const r = level.matcher.testEntry(directoryRules, foldedName, isDirectory);
-        if (r.ignored) return true;
-        if (r.unignored) return false;
-    }
-    return false;
+    return isIgnoredBySources(levels, ({ level, directoryRules }) =>
+        level.matcher.testEntry(directoryRules, foldedName, isDirectory),
+    );
 };
 
 /**
- * Ask each level whether it has a rule for the path itself, leaf → root.
- * The rules of a deeper ignore file are stronger, and the last matching rule of a file decides,
- * so the first level that has a matching rule decides.
+ * Ask each level whether it has a rule for the path itself (see {@link isIgnoredBySources}).
+ * Within a source, the rules of a deeper ignore file are stronger,
+ * and the last matching rule of a file decides, so the first level that has a matching rule decides.
  * Each level tests the path relative to its own `dir`:
  * a rule in `packages/foo/.gitignore` is anchored at `packages/foo/`.
  */
 const isPathIgnoredByChain = (chain: IgnoreChain, fullPath: string, isDirectory: boolean): boolean => {
+    const levels: { level: IgnoreChain; relPosix: string }[] = [];
     for (let cur: IgnoreChain | null = chain; cur !== null; cur = cur.parent) {
         const relPosix = relativeInLevel(cur, fullPath);
         if (relPosix === null) continue;
-        const r = cur.matcher.test(isDirectory ? `${relPosix}/` : relPosix);
-        if (r.ignored) return true;
-        if (r.unignored) return false;
+        levels.push({ level: cur, relPosix });
     }
-    return false;
+    return isIgnoredBySources(groupBySource(levels), ({ level, relPosix }) =>
+        level.matcher.test(isDirectory ? `${relPosix}/` : relPosix),
+    );
 };
 
 /**

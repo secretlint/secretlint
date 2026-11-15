@@ -21,14 +21,23 @@ export type WalkOptions = {
     patterns?: string[];
     /**
      * File names looked up per directory and merged into the cascade ignore
-     * stack (e.g. `[".gitignore", ".secretlintignore"]`).
+     * stack (e.g. `[".secretlintignore", ".gitignore"]`).
+     * The files of each name decide by themselves, like `.gitignore` of Git: the file in a deeper
+     * directory is stronger, and `!` includes again only what the files of the same name ignore.
+     * A path is ignored if the files of any name, or the extra patterns, ignore it.
      */
     ignoreFiles?: string[];
     /**
      * Hard-coded patterns added to the root ignore instance before any
-     * file-based rules (e.g. `["**\/.git"]`).
+     * file-based rules (e.g. `["**\/.git"]`). They are a source of their own:
+     * `!` in an ignore file does not include again what they ignore.
      */
     extraIgnorePatterns?: string[];
+    /**
+     * More sets of rules anchored at `cwd`, each a source of its own like `extraIgnorePatterns`
+     * (e.g. the rules of an ignore file that the user gives).
+     */
+    extraIgnoreSources?: string[][];
     /**
      * Match the ignore rules case-insensitively, like `core.ignoreCase` of Git.
      * Git sets it to true for a repository on a case-insensitive file system.
@@ -466,7 +475,12 @@ const handleStaticPath = (options: {
 export const walkSync = (options: WalkOptions): string[] => {
     const cwd = path.resolve(options.cwd);
     const ignoreFiles = options.ignoreFiles ?? [];
-    const rootChain = createRootIgnore(cwd, options.extraIgnorePatterns ?? [], options.ignoreCase === true);
+    const rootChain = createRootIgnore(
+        cwd,
+        options.extraIgnorePatterns ?? [],
+        options.ignoreCase === true,
+        options.extraIgnoreSources ?? [],
+    );
     const results: string[] = [];
     const followSymlinks = options.followSymlinks !== false;
     const listSymlinks = !followSymlinks && options.listSymlinks === true;

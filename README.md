@@ -306,15 +306,18 @@ For example, If you want to ignore "AWSAccountID" and "AWSAccessKeyID" of "@secr
 
 Secretlint walks the file system the same way Git does, honouring nested `.gitignore` files. A file or directory matched by any `.gitignore` along the path from the working directory to the file is skipped.
 
-`.secretlintignore` works the same way as `.gitignore` and is consulted in addition. The resolution order is:
+`.secretlintignore` works the same way as `.gitignore` and is consulted in addition. A file is skipped when any of these sources ignores it:
 
-1. Built-in ignores: `.git`, `node_modules`, and the `.secretlintrc*` family.
-2. `.secretlintignore` in each directory (cascaded), and the file given by `--secretlintignore`.
-3. Each directory's `.gitignore` (cascaded).
+- Built-in ignores: `.git`, `node_modules`, and the `.secretlintrc*` family.
+- `.secretlintignore` in each directory (cascaded).
+- Each directory's `.gitignore` (cascaded).
+- The file given by `--secretlintignore`.
+
+Each source is evaluated on its own with `.gitignore` semantics, and the results are combined. A `!` rule only re-includes what the same source ignores: for example, `!a.txt` in `.gitignore` does not bring back `a.txt` when `.secretlintignore` ignores it. To scan files that `.gitignore` ignores, pass `--no-gitignore`.
 
 #### `--secretlintignore`
 
-Everything is relative to the working directory (`cwd`). secretlint always reads `.secretlintignore` in every directory it walks. With the option, it also reads the given file, resolved from `cwd`, and its patterns are matched from `cwd` (like Git's [`core.excludesFile`](https://git-scm.com/docs/gitignore)). As in Git, the rules of the given file are the weakest: a `!` rule in `.secretlintignore` or `.gitignore` can include a path again.
+Everything is relative to the working directory (`cwd`). secretlint always reads `.secretlintignore` in every directory it walks. With the option, it also reads the given file, resolved from `cwd`, and its patterns are matched from `cwd` (like Git's [`core.excludesFile`](https://git-scm.com/docs/gitignore)). Like the other sources, a `!` rule in it only re-includes what the same file ignores.
 
 Example project (`cwd` is `project/`):
 
