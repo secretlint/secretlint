@@ -7,6 +7,12 @@ on:
       - master
     types: [closed]
 
+# A release waits for a running release instead of cancelling it.
+# Other closed pull requests get their own group, so they never replace a waiting release.
+concurrency:
+  group: "${{ github.workflow }}-${{ contains(github.event.pull_request.labels.*.name, 'Type: Release') && 'release' || github.event.pull_request.number }}"
+  cancel-in-progress: false
+
 env:
   DOCKER_BASE_NAME: ghcr.io/${{ github.repository }}
   DOCKER_HUB_BASE_NAME: secretlint/secretlint
@@ -17,6 +23,7 @@ jobs:
       github.event.pull_request.merged == true &&
       contains(github.event.pull_request.labels.*.name, 'Type: Release')
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     environment: npm
     permissions:
       contents: write
@@ -86,6 +93,7 @@ jobs:
     needs: [publish]
     if: needs.publish.outputs.exists_tag == 'false'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions: {}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -129,6 +137,8 @@ jobs:
           - platform: linux/arm64
             runner: ubuntu-24.04-arm
     runs-on: ${{ matrix.runner }}
+    # includes waiting up to 10 minutes for each npm package
+    timeout-minutes: 60
     permissions:
       packages: write
     steps:
@@ -175,7 +185,9 @@ jobs:
             --output "type=docker,name=secretlint:smoke" \
             --output "type=image,name=${DOCKER_BASE_NAME},push-by-digest=true,name-canonical=true,push=true" \
             --metadata-file /tmp/metadata.json
-          docker run --rm secretlint:smoke --version
+          # run the image that was just built by its ID, not by a tag that can move
+          image_id=$(docker image inspect --format '{{.Id}}' secretlint:smoke)
+          docker run --rm "${image_id}" --version
           digest=$(jq -r '."containerimage.digest"' /tmp/metadata.json)
           touch "/tmp/digests/${digest#sha256:}"
       - name: Upload digest
@@ -190,6 +202,7 @@ jobs:
     needs: [publish, publish-docker]
     if: needs.publish.outputs.exists_tag == 'false'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       packages: write
     steps:
@@ -241,6 +254,7 @@ jobs:
     needs: [publish, publish-binary]
     if: needs.publish.outputs.exists_tag == 'false'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: write
       issues: write
@@ -251,18 +265,23 @@ jobs:
         with:
           name: binary-dist
           path: ./binary-dist
+      # The body of the release pull request is the release note.
+      # gh uploads the assets to a draft and then publishes it, so this works with immutable releases.
       - name: Create Release
-        uses: softprops/action-gh-release@8a0cd651e5b2365bd640854a3fa5dfc70e4875f3 # v3.0.4
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ needs.publish.outputs.version }}
-          name: ${{ github.event.pull_request.title }}
-          body: |
-            ${{ github.event.pull_request.body }}
-          draft: false
-          prerelease: false
-          files: ./binary-dist/**
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ needs.publish.outputs.version }}
+          RELEASE_TITLE: ${{ github.event.pull_request.title }}
+          RELEASE_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          printf '%s\n' "${RELEASE_BODY}" > release-notes.md
+          mapfile -t assets < <(find ./binary-dist -type f | sort)
+          gh release create "v${VERSION}" \
+            --repo "${GITHUB_REPOSITORY}" \
+            --verify-tag \
+            --title "${RELEASE_TITLE}" \
+            --notes-file release-notes.md \
+            "${assets[@]}"
       - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
           VERSION: ${{ needs.publish.outputs.version }}

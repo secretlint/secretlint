@@ -15,10 +15,15 @@ on:
 
 permissions: {}
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   check-provenance:
     name: Check Package Provenance
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: read
     outputs:
@@ -175,6 +180,7 @@ jobs:
   post-comment:
     name: Post PR Comment
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     needs: check-provenance
     if: (needs.check-provenance.outputs.has_missing == 'true' || needs.check-provenance.outputs.has_unpublished == 'true') && github.event_name == 'pull_request'
     permissions:

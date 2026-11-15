@@ -20,15 +20,20 @@ on:
   schedule:
     - cron: '30 1 * * 5'
 
-permissions:
-  contents: read
-  actions: read
-  pull-requests: read
-  security-events: write
+permissions: {}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      actions: read
+      pull-requests: read
+      security-events: write
 
     strategy:
       fail-fast: false
