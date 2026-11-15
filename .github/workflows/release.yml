@@ -8,9 +8,10 @@ on:
     types: [closed]
 
 # A release waits for a running release instead of cancelling it.
-# Other closed pull requests get their own group, so they never replace a waiting release.
+# Other closed pull requests (including an unmerged release PR) get their own group,
+# so they never replace a waiting release.
 concurrency:
-  group: "${{ github.workflow }}-${{ contains(github.event.pull_request.labels.*.name, 'Type: Release') && 'release' || github.event.pull_request.number }}"
+  group: "${{ github.workflow }}-${{ github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'Type: Release') && 'release' || github.event.pull_request.number }}"
   cancel-in-progress: false
 
 env:
