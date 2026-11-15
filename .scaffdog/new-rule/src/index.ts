@@ -11,7 +11,8 @@ export const creator: SecretLintRuleCreator = {
     messages,
     meta: {
         id: "@secretlint/secretlint-rule-{{ inputs.name }}",
-        recommended: true,
+        // A new rule starts outside the recommended preset. Set it to `true` when the rule is added to the recommended preset.
+        recommended: false,
         type: "scanner",
         supportedContentTypes: ["text"],
         // The rule runs only if the content contains one of the keywords. Every reported string must contain one.

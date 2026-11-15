@@ -35,6 +35,7 @@ A built-in rule is a directory in `@secretlint/core`, so adding one needs no new
 A built-in rule lives in `packages/@secretlint/core/src/builtin/rules/<name>/`, and its main module exports `creator` and `messages`.
 `creator.meta` has the rule id `@secretlint/secretlint-rule-<name>`, the type (`scanner` or `filter`), `recommended`, `supportedContentTypes`, and `docs.url`, which points to the documentation of the rule, `https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/<name>.md`.
 `@secretlint/core` adds the message ID to `docs.url` to make the link of each message.
+`recommended` is `true` only for a rule of `recommendedRules`. A test of `@secretlint/core` checks it for each rule of `builtinRules`, so that the value does not differ from the preset. `pnpm run gen:rule` writes `recommended: false`, because a new rule starts outside the recommended preset.
 
 A rule that finds secrets with regular expressions declares `patterns`, and `@secretlint/core` runs them.
 Other rules, such as the GCP rule, implement `create()` and report with `context.report()`. The patterns of the pattern rule come from its options; see [User-defined patterns](#user-defined-patterns).
@@ -173,6 +174,7 @@ A rule whose entry has `disabled: true` is not registered, in the same way as a 
 
 `canaryRules` is the source of the rule list. A new rule is added to `canaryRules` first, and to `recommendedRules` in a major release.
 Currently `canaryRules` is a copy of `recommendedRules`.
+A rule that is not planned for the recommended preset is added to `builtinRules` only. `getBuiltinRule` resolves its id in the same way, so the configuration loader needs no change for it.
 
 ### Packages of the same names
 

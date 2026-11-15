@@ -5,6 +5,7 @@ A Secretlint rule to detect hardcoded passwords in database connection strings f
 This rule detects URI format database connection strings that contain hardcoded credentials for MongoDB, MySQL, and PostgreSQL.
 
 This rule is built into secretlint (`@secretlint/core`), so you do not need to install a package for it.
+This rule is in [@secretlint/secretlint-rule-preset-recommend](./preset-recommend.md).
 
 ## MessageIDs
 

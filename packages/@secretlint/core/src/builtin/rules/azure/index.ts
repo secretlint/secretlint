@@ -135,7 +135,7 @@ export const creator: SecretLintRuleCreator<Options> = {
     messages,
     meta: {
         id: "@secretlint/secretlint-rule-azure",
-        recommended: true,
+        recommended: false,
         type: "scanner",
         supportedContentTypes: ["text"],
         keywords: ["tenant", "client"],

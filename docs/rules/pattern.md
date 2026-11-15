@@ -3,6 +3,7 @@
 A secretlint rule that checks for RegEx patterns
 
 This rule is built into secretlint (`@secretlint/core`), so you do not need to install a package for it.
+This rule is not in [@secretlint/secretlint-rule-preset-recommend](./preset-recommend.md). It runs only when the configuration file lists its rule id.
 
 ## Usage
 

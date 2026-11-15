@@ -43,6 +43,10 @@ type SecretLintRuleCreatorBase = {
     meta: {
         id: string;
         type: "scanner" | "filter";
+        /**
+         * Whether the rule is recommended to use.
+         * For a built-in rule, it is `true` only if the rule is in `@secretlint/secretlint-rule-preset-recommend`.
+         */
         recommended: boolean;
         docs?: {
             url: string;

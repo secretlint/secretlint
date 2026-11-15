@@ -449,6 +449,10 @@ When a rule id is registered twice, for example by a preset and by its own entry
 
 A new built-in rule is registered as a built-in rule and added to the canary preset. Adding it to the recommended preset is done in a major release.
 
+A built-in rule that is not planned for the recommended preset, such as `@secretlint/secretlint-rule-azure`, is registered as a built-in rule only, and is added to neither preset. It runs only when the configuration file lists its rule id, and `--init` and the configuration used when no configuration file is found do not enable it. Adding such a rule does not make Secretlint report more errors by default, so it can be done in a minor release.
+
+The documentation of a built-in rule and the list of built-in rules in the README tell whether the rule is in the recommended preset.
+
 ##### Tests
 
 The snapshot test cases of the built-in rules are in `@secretlint/core`, and the tests of `@secretlint/core` run them. The tests of the presets run the test cases of their rules through the preset, and an `ok.*` case must not be reported by any rule of the preset.
