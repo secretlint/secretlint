@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794710053059,
+  "lastUpdate": 1794722206327,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -62736,6 +62736,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 8.36,
             "range": "±1.26%",
+            "unit": "ops/sec",
+            "extra": "25 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "7c47630060d19479ba9612509e58e43947e6c9ab",
+          "message": "fix(secretlint)!: read --secretlintignore as a path from cwd, and combine the sources of ignore rules (#1834)\n\n<!-- claude-projects-attribution: {\"github_login\":\"azu\"} -->\n_Requested by **azu** · [project\nthread](https://claude.ai/code/project/chan_01ChfsKF1sN6vYsJMPZ7PuDt?thread=cmsg_01ChfsKF1sN6vYsJMPZ7PuDtMigoHqQxjLpGkWzagw1unZ)_\n\nSupersedes #1733 (re-implemented on current master after #1822). Two\npoints differ from #1733: the given file is **added** to\n`.secretlintignore` instead of replacing it, and the sources of ignore\nrules are **combined**.\n\n## Problem\n\n`searchFiles()` passed the value of `--secretlintignore` to the walker\nas a **file name to look for in every directory**\n(`ignoreFiles.push(options.ignoreFilePath)`). So\n`--secretlintignore=/abs/path/ignore` or\n`--secretlintignore=config/ignore` was never found, and it was ignored\nwithout a warning. #1822 did not change this part.\n\n## Change\n\n### `--secretlintignore`\n\n- `.secretlintignore` always cascades in each directory, like\n`.gitignore` (CLI and API).\n- `--secretlintignore=<path>` (API: `ignoreFilePath`) reads that file\n**in addition**. A relative path is resolved from `cwd`, and its rules\nare matched from `cwd` (like Git's `core.excludesFile`).\n- A missing file prints `secretlint: ignore file not found: <path>` to\nstderr and continues. Any other read error is thrown.\n\n### Combining the sources of ignore rules\n\nThe four sources (built-in rules, `.secretlintignore` files,\n`.gitignore` files, and the given file) are not ordered. Each source\ndecides by itself with `.gitignore` semantics (a deeper file is\nstronger, last matching rule wins), and **a path is ignored if any\nsource ignores it**. A `!` rule only re-includes what the same source\nignores:\n\n- `!a.txt` in `.gitignore` does not bring back `a.txt` that\n`.secretlintignore` ignores.\n- `!node_modules` in a `.gitignore` does not bring back `node_modules`\n(built-in). Before, a nested `.gitignore` could (since #1822).\n- `--secretlintignore=.gitignore`: `*.log` of the given file still\nignores `sub/b.log` even when `sub/.gitignore` has `!b.log`.\n\nTo scan the files that `.gitignore` ignores, use `--no-gitignore`\n(README and Requirements say so).\n\nWhy: \"Reduce false positives\" (a `!` written so that Git tracks a file\nmust not make secretlint report a file left out for secretlint), and no\norder needs to be explained. Ordering the sources (`--secretlintignore`\n> `.secretlintignore` > `.gitignore`) was considered and rejected in the\nDesign.\n\n### Implementation\n\n- `@secretlint/walker`: each ignore file is a level with a `source` (the\nfiles of one name in `ignoreFiles`, `extraIgnorePatterns`, or each set\nof the new `extraIgnoreSources` option). Levels are grouped by source\nonce per directory; within a source the first matching level decides; an\nentry is ignored if any source ignores it.\n- `secretlint`: `searchFiles()` reads the given file and passes its\nlines as `extraIgnoreSources`. The CLI option has no default value.\n\nDocs: sdev Requirements / Design of \"File selection\" (en + ja), README,\nwalker README, `--help`. Requirements also record that ignore files\nabove `cwd` are not read.\n\n## Breaking changes\n\n- `--secretlintignore=<name>` no longer means \"look for a file of this\nname in each directory\". It is a path from `cwd`, read in addition to\n`.secretlintignore`.\n- API: `runSecretLint()` / `searchFiles()` now cascade\n`.secretlintignore` (before, only when the CLI passed its default\nvalue).\n- `!` in one kind of ignore file no longer re-includes what another kind\nor a built-in rule ignores (walker `ignoreFiles` with several names\nbehaves the same).\n- Snapshot `test/snapshots/secretlintignore`: it passes a missing\n`ignore-file` and has a `.secretlintignore` with `input.txt`. Before,\n`input.txt` was reported; now `.secretlintignore` is read too, so\nnothing is reported.\n\n## Verification\n\n- `packages/secretlint/test/secretlintignore.test.ts`: absolute /\nrelative paths, rules anchored at `cwd`, `!` in a nested\n`.secretlintignore` vs the given file, `--secretlintignore=.gitignore`,\nignore files above `cwd`, missing file.\n- `packages/@secretlint/walker/test/walk-ignore-sources.test.ts`: `!`\nacross sources, built-in vs `!node_modules`, `extraIgnoreSources`, paths\ngiven directly. The Git compatibility tests (single source) still pass.\n- walker 97 tests, secretlint 79 tests pass. `./bin/sdev lint` passes.\n- `pnpm run compare --set small` (hyperfine not installed, so one\nprofiled run each): no change in findings or files (590 / 590).\n`search-files` 9.3 ms → 13.5 ms in one run.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nhttps://claude.ai/code/session_01TSdrAGq4Y7n1RxZ513PV1T\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-11-15T14:55:54+09:00",
+          "tree_id": "fdb3e46db3b1162c5f8089e6624a8ad34e070f81",
+          "url": "https://github.com/secretlint/secretlint/commit/7c47630060d19479ba9612509e58e43947e6c9ab"
+        },
+        "date": 1794722202882,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 10.43,
+            "range": "±1.27%",
+            "unit": "ops/sec",
+            "extra": "31 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 8.28,
+            "range": "±1.27%",
             "unit": "ops/sec",
             "extra": "25 samples"
           }
