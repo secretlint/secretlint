@@ -181,7 +181,7 @@ recommendプリセットに入れる予定のないルールは、`builtinRules`
 組み込みルールと2つのプリセットのディレクトリ`packages/@secretlint/secretlint-rule-<name>`は削除します。READMEは`docs/rules/`に移し、`@secretlint/core`をre-exportしていただけの残りの部分は残しません。
 リポジトリ内でこれらに依存しているパッケージは、依存をやめます。
 
-- `secretlint`と`@secretlint/quick-start`は`@secretlint/secretlint-rule-preset-recommend`に依存しています。設定の読み込みが`@secretlint/core`からプリセットを見つけるので、この依存は要りません。
+- `secretlint`は`@secretlint/secretlint-rule-preset-recommend`に依存しています。設定の読み込みが`@secretlint/core`からプリセットを見つけるので、この依存は要りません。
 - `--init`（`@secretlint/config-creator`）は、最初にrecommendプリセットを書き込み、その後に`package.json`にあるルールのパッケージを書き込みます。新しい利用者がプリセットのパッケージを入れなくて済むよう、`package.json`にプリセットのパッケージがなくてもプリセットを書き込みます。`package.json`にcanaryプリセットのパッケージがあるときは、recommendプリセットの代わりにcanaryプリセットを書き込みます。同じルールを2回登録するとlintが失敗するため、プリセットを重ねて書き込まず、プリセットにあるルールのパッケージも書き込みません。
 - Dockerイメージ、単一実行ファイル、examples、ブラウザのテストは、`package.json`や設定でプリセットのパッケージを指定しています。パッケージとしての指定をやめます。
 

@@ -289,6 +289,6 @@ A built-in rule cannot be replaced by installing a package of the same name.
 
 ## Open questions
 
-- **The quick start command:** With the default configuration, `@secretlint/quick-start` has no role left (azu, 2026-11-14). Deprecating it is a follow-up of this change.
+- **The quick start command:** With the default configuration, `@secretlint/quick-start` has no role left (azu, 2026-11-14). It was removed after v14.0.0 and deprecated on npm.
 
 Decided in the review (azu, 2026-11-14): `--secretlintrc` names exactly one file, and the Docker image is still needed.

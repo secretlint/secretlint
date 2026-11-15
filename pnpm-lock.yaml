@@ -138,12 +138,6 @@ importers:
         specifier: workspace:*
         version: link:../../packages/secretlint
 
-  examples/quick-start:
-    devDependencies:
-      '@secretlint/quick-start':
-        specifier: workspace:*
-        version: link:../../packages/@secretlint/quick-start
-
   examples/stdin:
     devDependencies:
       secretlint:
@@ -374,22 +368,6 @@ importers:
       tsx:
         specifier: 'catalog:'
         version: 4.23.15
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
-
-  packages/@secretlint/quick-start:
-    dependencies:
-      secretlint:
-        specifier: workspace:*
-        version: link:../../secretlint
-    devDependencies:
-      '@types/node':
-        specifier: 'catalog:'
-        version: 25.9.9
-      prettier:
-        specifier: 'catalog:'
-        version: 3.8.3
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
