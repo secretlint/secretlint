@@ -3,7 +3,7 @@
 Canary rule preset of secretlint.
 **Canary** means that is experimental.
 
-This preset similar with [secretlint-rule-preset-recommend](https://www.npmjs.com/package/@secretlint/secretlint-rule-preset-recommend), but it does not base on [Semantic Versioning](https://semver.org/).
+This preset similar with [secretlint-rule-preset-recommend](./preset-recommend.md), but it does not base on [Semantic Versioning](https://semver.org/).
 
 In other words, This rule preset always be experimental release.
 It may introduce breaking change in patch release.
@@ -57,5 +57,5 @@ Via `.secretlintrc.json`
 
 ## Notes
 
-The rules of this preset are built into `@secretlint/core`, and this package re-exports the preset of `@secretlint/core`.
-secretlint resolves the id of this preset from `@secretlint/core`, so the config works without installing this package.
+This preset is built into secretlint (`@secretlint/core`), so you do not need to install a package for it.
+The package of this preset is not published from v14, but its id still works in the config.

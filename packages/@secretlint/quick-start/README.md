@@ -1,5 +1,9 @@
 # @secretlint/quick-start
 
+> [!NOTE]
+> From Secretlint v14, use `npx secretlint "**/*"` instead.
+> `secretlint` runs the recommended rules when there is no configuration file, so this package is no longer needed.
+
 Quick Stater CLI for secretlint.
 
 This package for Quick Start. It is not production use.
