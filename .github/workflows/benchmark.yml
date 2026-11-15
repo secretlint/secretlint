@@ -2,18 +2,24 @@ name: benchmark
 on:
   push:
     branches:
+      - main
       - master
 env:
   CI: true
-permissions:
-  contents: write
+permissions: {}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   benchmark:
     name: "Test on Node.js ${{ matrix.node-version }}"
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
     strategy:
       matrix:
-        node-version: [22]
+        node-version: [24]
     steps:
       - name: checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -31,6 +37,7 @@ jobs:
       - name: Build
         run: pnpm run build
       - name: Run Benchmark
+        shell: bash
         run: cd examples/benchmark && node index.js | tee output.txt
       - name: Generate token
         id: generate_token
@@ -38,6 +45,9 @@ jobs:
         with:
           app_id: ${{ secrets.APP_ID }}
           private_key: ${{ secrets.PRIVATE_KEY }}
+          # push the result to gh-pages and comment on a commit when it regresses
+          permissions: '{"contents": "write"}'
+          repositories: '["secretlint"]'
       - name: Store benchmark result
         uses: rhysd/github-action-benchmark@4322e5726e6334590d251fc4f92bec0efafc45dc # v1.22.2
         with:

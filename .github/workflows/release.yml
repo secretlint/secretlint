@@ -4,8 +4,16 @@ on:
   # When Release Pull Request is merged
   pull_request:
     branches:
+      - main
       - master
     types: [closed]
+
+# A release waits for a running release instead of cancelling it.
+# Other closed pull requests (including an unmerged release PR) get their own group,
+# so they never replace a waiting release.
+concurrency:
+  group: "${{ github.workflow }}-${{ github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'Type: Release') && 'release' || github.event.pull_request.number }}"
+  cancel-in-progress: false
 
 env:
   DOCKER_BASE_NAME: ghcr.io/${{ github.repository }}
@@ -17,6 +25,7 @@ jobs:
       github.event.pull_request.merged == true &&
       contains(github.event.pull_request.labels.*.name, 'Type: Release')
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     environment: npm
     permissions:
       contents: write
@@ -86,6 +95,7 @@ jobs:
     needs: [publish]
     if: needs.publish.outputs.exists_tag == 'false'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     permissions: {}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -129,6 +139,8 @@ jobs:
           - platform: linux/arm64
             runner: ubuntu-24.04-arm
     runs-on: ${{ matrix.runner }}
+    # includes waiting up to 10 minutes for each npm package
+    timeout-minutes: 60
     permissions:
       packages: write
     steps:
@@ -142,23 +154,27 @@ jobs:
         run: |
           echo "PLATFORM_PAIR=${PLATFORM//\//-}" >> "$GITHUB_ENV"
           echo "SECRETLINT_VERSION=${VERSION}" >> "$GITHUB_ENV"
-      # `pnpm publish` can return before the npm registry serves the new version,
-      # so wait until every package installed by the Dockerfile is resolvable.
+      # `pnpm publish` can return before the npm registry serves the new version.
+      # The Dockerfile installs secretlint and the sarif formatter, and they depend on the exact
+      # version of other @secretlint/* packages, so wait until `npm view` finds the two packages
+      # and then until `npm install` of them (the whole dependency tree) succeeds.
       - name: Wait for npm packages to be available
         run: |
-          packages="secretlint @secretlint/core @secretlint/secretlint-formatter-sarif"
-          for pkg in $packages; do
-            for i in $(seq 1 30); do
-              if npm view "${pkg}@${SECRETLINT_VERSION}" version --prefer-online > /dev/null 2>&1; then
-                echo "${pkg}@${SECRETLINT_VERSION} is available"
-                continue 2
-              fi
-              echo "Waiting for ${pkg}@${SECRETLINT_VERSION} (${i}/30)"
-              sleep 20
-            done
-            echo "::error::${pkg}@${SECRETLINT_VERSION} is not available on npm"
-            exit 1
+          packages=("secretlint@${SECRETLINT_VERSION}" "@secretlint/secretlint-formatter-sarif@${SECRETLINT_VERSION}")
+          install_dir=$(mktemp -d)
+          for i in $(seq 1 30); do
+            # npm view takes one package at a time
+            if npm view "${packages[0]}" version --prefer-online > /dev/null 2>&1 &&
+              npm view "${packages[1]}" version --prefer-online > /dev/null 2>&1 &&
+              npm install --prefix "${install_dir}" --no-save --no-audit --no-fund --prefer-online "${packages[@]}"; then
+              echo "${packages[*]} can be installed"
+              exit 0
+            fi
+            echo "Waiting for ${packages[*]} (${i}/30)"
+            sleep 20
           done
+          echo "::error::${packages[*]} can not be installed from npm"
+          exit 1
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
       - name: Login to GitHub Container Registry
@@ -175,7 +191,9 @@ jobs:
             --output "type=docker,name=secretlint:smoke" \
             --output "type=image,name=${DOCKER_BASE_NAME},push-by-digest=true,name-canonical=true,push=true" \
             --metadata-file /tmp/metadata.json
-          docker run --rm secretlint:smoke --version
+          # run the image that was just built by its ID, not by a tag that can move
+          image_id=$(docker image inspect --format '{{.Id}}' secretlint:smoke)
+          docker run --rm "${image_id}" --version
           digest=$(jq -r '."containerimage.digest"' /tmp/metadata.json)
           touch "/tmp/digests/${digest#sha256:}"
       - name: Upload digest
@@ -190,6 +208,7 @@ jobs:
     needs: [publish, publish-docker]
     if: needs.publish.outputs.exists_tag == 'false'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       packages: write
     steps:
@@ -241,6 +260,7 @@ jobs:
     needs: [publish, publish-binary]
     if: needs.publish.outputs.exists_tag == 'false'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: write
       issues: write
@@ -251,18 +271,23 @@ jobs:
         with:
           name: binary-dist
           path: ./binary-dist
+      # The body of the release pull request is the release note.
+      # gh uploads the assets to a draft and then publishes it, so this works with immutable releases.
       - name: Create Release
-        uses: softprops/action-gh-release@8a0cd651e5b2365bd640854a3fa5dfc70e4875f3 # v3.0.4
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ needs.publish.outputs.version }}
-          name: ${{ github.event.pull_request.title }}
-          body: |
-            ${{ github.event.pull_request.body }}
-          draft: false
-          prerelease: false
-          files: ./binary-dist/**
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ needs.publish.outputs.version }}
+          RELEASE_TITLE: ${{ github.event.pull_request.title }}
+          RELEASE_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          printf '%s\n' "${RELEASE_BODY}" > release-notes.md
+          mapfile -t assets < <(find ./binary-dist -type f | sort)
+          gh release create "v${VERSION}" \
+            --repo "${GITHUB_REPOSITORY}" \
+            --verify-tag \
+            --title "${RELEASE_TITLE}" \
+            --notes-file release-notes.md \
+            "${assets[@]}"
       - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
           VERSION: ${{ needs.publish.outputs.version }}

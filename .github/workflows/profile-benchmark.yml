@@ -17,6 +17,9 @@ on:
       - "!**/*.md"
 permissions:
   contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 env:
   TURBO_TELEMETRY_DISABLED: 1
   DO_NOT_TRACK: 1
