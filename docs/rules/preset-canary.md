@@ -3,7 +3,7 @@
 Canary rule preset of secretlint.
 **Canary** means that is experimental.
 
-This preset similar with [secretlint-rule-preset-recommend](https://www.npmjs.com/package/@secretlint/secretlint-rule-preset-recommend), but it does not base on [Semantic Versioning](https://semver.org/).
+This preset similar with [secretlint-rule-preset-recommend](./preset-recommend.md), but it does not base on [Semantic Versioning](https://semver.org/).
 
 In other words, This rule preset always be experimental release.
 It may introduce breaking change in patch release.
