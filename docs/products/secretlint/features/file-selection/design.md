@@ -23,6 +23,14 @@ Expanding the globs of the user, symbolic links, and the lint of the chosen file
 ## Implementation approach
 
 `searchFiles()` of the `secretlint` package calls `walk()` of `@secretlint/walker` with the built-in rules, the names of the ignore files, and `ignoreCase: true`.
+
+### The ignore file given by `--secretlintignore`
+
+The walker looks for ignore files by name in each directory (`ignoreFiles`), so a path such as `config/ignore` or `/shared/ignore` can not be given to it as a name.
+`searchFiles()` always passes `.secretlintignore` in `ignoreFiles`, and the walker reads it in each directory.
+With `ignoreFilePath`, `searchFiles()` also resolves it from `cwd`, reads the file itself, and passes its lines in `extraIgnoreSources`. The walker puts them in a level at the working directory, so they are matched from it, and they are a source of their own (see [Levels and sources](#levels-and-sources)).
+A missing file (`ENOENT`) gives a warning by `console.warn` and no rules. Any other error of reading the file is thrown.
+The CLI option has no default value, so the CLI and the API take the same path.
 The walker reads directories from the top, and tests each entry before it goes into a directory. It does not read an ignored directory, which also gives the Git behavior that a file in an ignored directory can not be included again.
 
 ### The matcher has no dependency and follows Git
@@ -59,10 +67,13 @@ The matcher does not use regular expressions and does not try every way to match
 The time of one test is at most about (length of the path)² × (length of the rule), and a rule such as `*a*a*a*a*b` or `**/a/**/a/**/a/b` is not slower than other rules.
 The walker keeps the directories that it is reading in a list, not in recursive calls, so a tree as deep as the OS allows does not overflow the call stack.
 
-### Levels
+### Levels and sources
 
-Each directory that has an ignore file adds a level with the rules of that file. An entry is tested from the deepest level to the top, and the first level that has a matching rule decides.
-The built-in rules are the top level, at the working directory.
+Each ignore file adds a level with the rules of that file, and each level has a source: the built-in rules (`extraIgnorePatterns`), each set of `extraIgnoreSources`, or the files of one name in `ignoreFiles`.
+The levels of one source decide by themselves, like the ignore files of Git: they are tested from the deepest level to the top, and the first level that has a matching rule decides for the source.
+An entry is ignored when one source ignores it. When a source includes it again with `!`, the other levels of that source are skipped, and the other sources are still tested.
+The levels are sorted by source once for each directory, so the test of an entry does not create arrays.
+The built-in rules and the sets of `extraIgnoreSources` are levels at the working directory.
 A path that the user gives directly is tested with its parent directories from the working directory, because the walker did not test them on the way.
 
 ## Architecture and sequence diagrams
@@ -72,12 +83,13 @@ sequenceDiagram
     participant CLI as secretlint (CLI)
     participant Walker as @secretlint/walker walk()
     participant Matcher as gitignore.ts
-    CLI->>Walker: patterns, ignore file names, built-in rules, ignoreCase
+    CLI->>CLI: read the file of --secretlintignore, if given
+    CLI->>Walker: patterns, ignore file names, built-in rules, the given file (extraIgnoreSources), ignoreCase
     loop each directory
         Walker->>Walker: readdir
         Walker->>Matcher: compileGitignore(ignore files of the directory)
         loop each entry
-            Walker->>Matcher: testEntry(name, isDirectory), deepest level first
+            Walker->>Matcher: testEntry(name, isDirectory), deepest level first in each source
             Matcher-->>Walker: ignored / included again / no rule
         end
     end
@@ -86,7 +98,7 @@ sequenceDiagram
 
 ## Data model and ER diagrams
 
-- **Level:** the directory of an ignore file, the matcher of its rules, and the parent level.
+- **Level:** the directory of an ignore file, the matcher of its rules, its source, and the parent level.
 - **Rule:** negated or not, directories only or not, and how it is compared: a name, an extension, path segments, or a list of parts for the whole path.
 
 ## APIs and interfaces
@@ -132,6 +144,22 @@ A walker written in Rust (the `ignore` crate of ripgrep) was measured at about t
 ### Follow the file system for the case of letters
 
 It is what Git does. It was not chosen because of the principle "Reduce false positives" of the Product.
+
+### Pass the path of the given file to the walker
+
+The walker could take paths of ignore files and their base directories. It would add an API to the walker only for this case, while `extraIgnorePatterns` already means "rules at the working directory".
+
+### Order the sources
+
+The sources could be ordered, for example the given file > `.secretlintignore` > `.gitignore`, so that the strongest source with a matching rule decides, for `!` too. It was not chosen: a `!` in a stronger source would make Secretlint report the files that a weaker source leaves out, and the order would have to be explained. Combining the sources needs no order.
+
+### Make the given file the weakest level, like Git
+
+It was the first version of this change, like `core.excludesFile` of Git. A `!` in a `.gitignore` written for Git could then include again a file that the developer left out for Secretlint.
+
+### Read only the given file
+
+The given file could replace the cascaded `.secretlintignore`, like `--ignore-path` of Prettier and oxlint. It was not chosen: the given file is used mostly as a shared file, and replacing would make the `.secretlintignore` of the project stop working when a shared file is given, so files that the project leaves out would be reported (the principle "Reduce false positives"). Git and ripgrep (`--ignore-file`) also add the given file.
 
 ## Open questions
 

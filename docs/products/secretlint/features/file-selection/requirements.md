@@ -13,7 +13,7 @@ The behavior of ignore rules follows two development principles of the Product: 
 
 ### Scope
 
-- The sources of ignore rules: the built-in rules, `.secretlintignore`, and `.gitignore` files
+- The sources of ignore rules: the built-in rules, `.secretlintignore`, the ignore file given by `--secretlintignore`, and `.gitignore` files
 - The meaning of an ignore rule
 - The case of letters in ignore rules
 
@@ -74,6 +74,78 @@ Scenario: When a rule differs from the name of a file only in the case of letter
 - When: The developer runs `secretlint "**/*"` on Linux, macOS, or Windows.
 - Then: The files in `fixtures/` are not linted on any of them.
 
+### Add one ignore file that the developer gives
+
+As a developer, I want to give one more ignore file with `--secretlintignore` so that the rules of a shared ignore file outside the project, or of one in another directory of the project, leave out files in addition to `.secretlintignore`.
+
+**Acceptance criteria:**
+
+Scenario: When the developer gives an absolute path, the rules of that file are used from the working directory
+
+- Given: `/shared/ignore` has the rule `test/fixtures/`, and `test/fixtures/key.pem` in the working directory has a secret.
+- When: The developer runs `secretlint "**/*" --secretlintignore=/shared/ignore`.
+- Then: `test/fixtures/key.pem` is not linted.
+
+Scenario: When the developer gives a relative path with a directory, it is found from the working directory
+
+- Given: `config/ignore` has the rule `dist/`, and `dist/app.js` has a secret.
+- When: The developer runs `secretlint "**/*" --secretlintignore=config/ignore`.
+- Then: `dist/app.js` is not linted.
+
+Scenario: When the developer gives a file, the `.secretlintignore` files of the project are still read
+
+- Given: `.secretlintignore` has the rule `a.txt`, `sub/.secretlintignore` has the rule `c.txt`, and `config/ignore` has the rule `b.txt`.
+- When: The developer runs `secretlint "**/*" --secretlintignore=config/ignore`.
+- Then: None of `a.txt`, `b.txt`, and `sub/c.txt` is linted.
+
+Scenario: When the given file does not exist, a warning is shown and no file is ignored by it
+
+- Given: `missing-ignore` does not exist in the working directory.
+- When: The developer runs `secretlint "**/*" --secretlintignore=missing-ignore`.
+- Then: A warning that names the file is written to the standard error, and the files are linted as if the option was not given.
+
+Scenario: When a `.secretlintignore` has `!` for a path that the given file ignores, the path is still ignored
+
+- Given: `config/ignore` has the rule `ignored.txt`, and `sub/.secretlintignore` has the rule `!ignored.txt`.
+- When: The developer runs `secretlint "**/*" --secretlintignore=config/ignore`.
+- Then: Neither `ignored.txt` nor `sub/ignored.txt` is linted.
+
+Scenario: When the developer gives `.gitignore`, a nested `.gitignore` can not include again what it ignores
+
+- Given: The working directory is the root of a Git repository, `.gitignore` has the rule `*.log`, and `sub/.gitignore` has the rule `!b.log`.
+- When: The developer runs `secretlint "**/*" --secretlintignore=.gitignore`.
+- Then: `sub/b.log` is not linted. Without the option, it is linted, as in Git.
+
+Scenario: When the command runs in a subdirectory, the ignore files above it are not read
+
+- Given: The root of a Git repository has a `.gitignore` with the rule `*.log`, and `sub/debug.log` exists.
+- When: The developer runs `secretlint "**/*"` in `sub/`.
+- Then: `debug.log` is linted.
+
+### Combine the ignore files
+
+As a developer, I want a file to be left out when any of the ignore files leaves it out, so that a `!` rule written for Git does not make Secretlint report the files that I left out for Secretlint.
+
+**Acceptance criteria:**
+
+Scenario: When a `.gitignore` has `!` for a path that `.secretlintignore` ignores, the path is still ignored
+
+- Given: `.secretlintignore` has the rule `a.txt`, and `.gitignore` has the rules `*.txt` and `!a.txt`.
+- When: The developer runs `secretlint "**/*"`.
+- Then: `a.txt` is not linted.
+
+Scenario: When a `.gitignore` has `!` for a directory that a built-in rule ignores, the directory is still ignored
+
+- Given: `.gitignore` has the rule `!node_modules`, and `node_modules/pkg/index.js` exists.
+- When: The developer runs `secretlint "**/*"`.
+- Then: `node_modules/pkg/index.js` is not linted.
+
+Scenario: When the developer wants to lint the files that `.gitignore` ignores, the developer turns off `.gitignore`
+
+- Given: `.gitignore` has the rule `dist/`, and `dist/app.js` has a secret.
+- When: The developer runs `secretlint --no-gitignore "**/*"`.
+- Then: `dist/app.js` is linted.
+
 ## KPIs
 
 None for this part of the feature.
@@ -93,10 +165,12 @@ None for this part of the feature.
 ##### The sources of ignore rules
 
 - **Built-in rules:** `.git` and `node_modules` directories, the configuration files of Secretlint (`.secretlintrc` and its `.json`, `.yaml`, `.yml`, and `.js` forms), and files whose names start with `.secretlintignore`. They are always ignored.
-- **`.secretlintignore`:** The file of the name that `--secretlintignore` gives. The default is `.secretlintignore`.
+- **`.secretlintignore`:** Read in every directory, like `.gitignore`.
+- **The file given by `--secretlintignore`:** Read in addition to the other ignore files. A relative path is resolved from the working directory, and the rules are matched from the working directory, like the file of `core.excludesFile` in Git. The API (`runSecretLint()` and `searchFiles()` with `ignoreFilePath`) works the same.
 - **`.gitignore`:** Used by default. `--no-gitignore` turns it off.
 
-An ignore file can be in any directory. Its rules apply to that directory and the directories below it.
+`.secretlintignore` and `.gitignore` can be in any directory. Their rules apply to that directory and the directories below it.
+Ignore files in the directories above the working directory are not read, even in a Git repository whose root is above it. Decided by the maintainer (2026-11-15).
 
 ##### The meaning of a rule
 
@@ -107,7 +181,14 @@ A rule means what the same rule means in a `.gitignore` of Git (the principle "I
 - A file in an ignored directory is ignored, and a rule can not include it again.
 - A rule that Git does not accept, such as an unclosed `[`, matches nothing.
 
-The built-in rules are evaluated as if they were written in an ignore file at the working directory, before the other rules.
+##### Combining the sources
+
+The four sources (the built-in rules, the `.secretlintignore` files, the `.gitignore` files, and the file given by `--secretlintignore`) are not ordered. Each source decides by itself with the meaning above, and a path is ignored if any source ignores it.
+So a rule that starts with `!` includes a path again only for its own source: `!` in a `.gitignore` does not include a path that `.secretlintignore`, the given file, or a built-in rule ignores.
+This leaves out every file that one of the sources leaves out (the principle "Reduce false positives"). A `!` in `.gitignore` is written so that Git tracks a file, not so that Secretlint lints it.
+To lint the files that `.gitignore` ignores, the developer turns off `.gitignore` with `--no-gitignore`. Decided by the maintainer (2026-11-15).
+
+The built-in rules and the given file are matched from the working directory.
 
 ##### The case of letters
 
@@ -122,7 +203,9 @@ A user who wants to lint a file whose name differs from an ignored name only in 
 
 ##### An ignore file can not be read
 
-When an ignore file does not exist or can not be read because of its permission, it is treated as an empty file, and the command continues.
+When a `.secretlintignore` or `.gitignore` does not exist or can not be read because of its permission, it is treated as an empty file, and the command continues.
+
+When the file given by `--secretlintignore` does not exist, a warning that names the file is written to the standard error, the file is treated as an empty file, and the command continues. The developer named the file, so it is not skipped silently. When it exists but can not be read, the command fails, because linting without the rules that the developer gave would report the files that the developer meant to leave out.
 
 ##### All files are ignored
 

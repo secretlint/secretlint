@@ -29,8 +29,9 @@ const files = await walk({
 |---|---|---|---|
 | `cwd` | `string` | (required) | Absolute or relative starting directory |
 | `patterns` | `string[]` | `undefined` | Glob patterns and/or static paths. Omit to walk all of `cwd`. |
-| `ignoreFiles` | `string[]` | `[]` | Names of ignore files honoured per directory in cascade order (e.g. `[".gitignore"]`). |
-| `extraIgnorePatterns` | `string[]` | `[]` | Hard-coded ignore patterns added at the cascade root, before any file-based rules. |
+| `ignoreFiles` | `string[]` | `[]` | Names of ignore files honoured per directory in cascade order (e.g. `[".gitignore"]`). The files of each name are a source of their own: a path is ignored if any source ignores it, and `!` includes again only what the same source ignores. |
+| `extraIgnorePatterns` | `string[]` | `[]` | Hard-coded ignore patterns added at the cascade root. They are a source of their own, so `!` in an ignore file does not include again what they ignore. |
+| `extraIgnoreSources` | `string[][]` | `[]` | More sets of ignore patterns anchored at `cwd`, each a source of its own (e.g. the rules of an ignore file given by the user). |
 | `ignoreCase` | `boolean` | `false` | Match ignore rules without regard to the case of A-Z, like Git with `core.ignoreCase=true` (the setting of Git on a case-insensitive file system). |
 | `noGlob` | `boolean` | `false` | Treat all `patterns` as literal paths. |
 | `followSymlinks` | `boolean` | `true` | Descend into directory symlinks during search. Cascade ignore rules still see the symlink path, never the resolved target. Cycles are broken via `realpath`. |

@@ -116,7 +116,7 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
     --format           [String] formatter name. Default: "stylish". Available Formatter: checkstyle, compact, github, jslint-xml, junit, pretty-error, stylish, tap, unix, json, mask-result, table
     --output           [path:String] output file path that is written of reported result.
     --secretlintrc     [path:String] path to the config file. Default: .secretlintrc.* from the current directory up to the root, or the recommended rules
-    --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
+    --secretlintignore [path:String] path to an extra ignore file, relative to cwd. .secretlintignore in each directory is always read
     --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
     --no-color         disable ANSI-color of output.
     --no-terminalLink  disable terminalLink of output.
@@ -306,11 +306,40 @@ For example, If you want to ignore "AWSAccountID" and "AWSAccessKeyID" of "@secr
 
 Secretlint walks the file system the same way Git does, honouring nested `.gitignore` files. A file or directory matched by any `.gitignore` along the path from the working directory to the file is skipped.
 
-`.secretlintignore` works the same way as `.gitignore` and is consulted in addition. The resolution order is:
+`.secretlintignore` works the same way as `.gitignore` and is consulted in addition. A file is skipped when any of these sources ignores it:
 
-1. Built-in ignores: `.git`, `node_modules`, and the `.secretlintrc*` family.
-2. The file pointed to by `--secretlintignore` (default: `.secretlintignore`).
-3. Each directory's `.gitignore` (cascaded).
+- Built-in ignores: `.git`, `node_modules`, and the `.secretlintrc*` family.
+- `.secretlintignore` in each directory (cascaded).
+- Each directory's `.gitignore` (cascaded).
+- The file given by `--secretlintignore`.
+
+Each source is evaluated on its own with `.gitignore` semantics, and the results are combined. A `!` rule only re-includes what the same source ignores: for example, `!a.txt` in `.gitignore` does not bring back `a.txt` when `.secretlintignore` ignores it. To scan files that `.gitignore` ignores, pass `--no-gitignore`.
+
+#### `--secretlintignore`
+
+Everything is relative to the working directory (`cwd`). secretlint always reads `.secretlintignore` in every directory it walks. With the option, it also reads the given file, resolved from `cwd`, and its patterns are matched from `cwd` (like Git's [`core.excludesFile`](https://git-scm.com/docs/gitignore)). Like the other sources, a `!` rule in it only re-includes what the same file ignores.
+
+Example project (`cwd` is `project/`):
+
+```
+project/
+├── .secretlintignore        # contains: a.txt
+├── config/ignore            # contains: b.txt
+├── a.txt
+├── b.txt
+└── sub/
+    ├── .secretlintignore    # contains: c.txt
+    └── c.txt
+```
+
+| Command (run in `project/`)                              | Ignore rules used                                                 | Scanned `.txt` files          |
+| -------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------- |
+| `secretlint "**/*"`                                      | `.secretlintignore`, `sub/.secretlintignore`                      | `b.txt`                       |
+| `secretlint "**/*" --secretlintignore=config/ignore`     | `.secretlintignore`, `sub/.secretlintignore`, and `config/ignore` | none                          |
+| `secretlint "**/*" --secretlintignore=/abs/path/ignore`  | `.secretlintignore` files, and `/abs/path/ignore` from `project/` | depends on the file           |
+| `secretlint "**/*" --secretlintignore=missing`           | `.secretlintignore` files; prints `ignore file not found` warning | `b.txt`                       |
+
+`.secretlintignore*` and `.secretlintrc*` files themselves are never scanned.
 
 Symlinks found while walking are not followed, like Prettier, gitleaks, and ripgrep. This prevents a symlink inside the project from pulling in files outside the working directory. To scan a symlink's target, pass the symlink path explicitly:
 
