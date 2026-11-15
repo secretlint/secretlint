@@ -74,7 +74,7 @@ Scenario: ルールとファイル名の違いが大文字と小文字だけの�
 - When: 開発者がLinux、macOS、Windowsのいずれかで`secretlint "**/*"`を実行する。
 - Then: どのOSでも`fixtures/`の中のファイルはlintされない。
 
-### 開発者が渡した一つの無視ファイルを使う
+### 開発者が渡した無視ファイルを一つ追加する
 
 開発者として、`--secretlintignore`で無視ファイルを一つ追加したい。それによって、プロジェクトの外にある共有の無視ファイルや、プロジェクトの別のディレクトリにある無視ファイルのルールで、`.secretlintignore`に加えてファイルを外せる。
 
@@ -103,6 +103,24 @@ Scenario: 渡したファイルが存在しない場合、警告を出し、そ�
 - Given: 作業ディレクトリに`missing-ignore`が存在しない。
 - When: 開発者が`secretlint "**/*" --secretlintignore=missing-ignore`を実行する。
 - Then: ファイル名を含む警告が標準エラーに出て、オプションを渡さなかったものとしてファイルがlintされる。
+
+Scenario: `.secretlintignore`が`!`でパスを対象に戻す場合、渡したファイルはそのパスを無視しない
+
+- Given: `config/ignore`にルール`ignored.txt`があり、`sub/.secretlintignore`にルール`!ignored.txt`がある。
+- When: 開発者が`secretlint "**/*" --secretlintignore=config/ignore`を実行する。
+- Then: `ignored.txt`はlintされず、`sub/ignored.txt`はlintされる。
+
+Scenario: `.gitignore`を渡した場合、オプションを渡さないときと同じ結果になる
+
+- Given: 作業ディレクトリがGitリポジトリのルートで、その`.gitignore`に任意のルールがある。
+- When: 開発者が`secretlint "**/*" --secretlintignore=.gitignore`を実行する。
+- Then: lintされるファイルは`secretlint "**/*"`のときと同じになる。
+
+Scenario: サブディレクトリで実行した場合、それより上の無視ファイルは読まない
+
+- Given: Gitリポジトリのルートの`.gitignore`にルール`*.log`があり、`sub/debug.log`がある。
+- When: 開発者が`sub/`で`secretlint "**/*"`を実行する。
+- Then: `debug.log`はlintされる。
 
 ## KPI
 

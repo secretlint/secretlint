@@ -74,7 +74,7 @@ Scenario: When a rule differs from the name of a file only in the case of letter
 - When: The developer runs `secretlint "**/*"` on Linux, macOS, or Windows.
 - Then: The files in `fixtures/` are not linted on any of them.
 
-### Use one ignore file that the developer gives
+### Add one ignore file that the developer gives
 
 As a developer, I want to give one more ignore file with `--secretlintignore` so that the rules of a shared ignore file outside the project, or of one in another directory of the project, leave out files in addition to `.secretlintignore`.
 
@@ -103,6 +103,24 @@ Scenario: When the given file does not exist, a warning is shown and no file is 
 - Given: `missing-ignore` does not exist in the working directory.
 - When: The developer runs `secretlint "**/*" --secretlintignore=missing-ignore`.
 - Then: A warning that names the file is written to the standard error, and the files are linted as if the option was not given.
+
+Scenario: When a `.secretlintignore` includes a path again with `!`, the given file does not ignore it
+
+- Given: `config/ignore` has the rule `ignored.txt`, and `sub/.secretlintignore` has the rule `!ignored.txt`.
+- When: The developer runs `secretlint "**/*" --secretlintignore=config/ignore`.
+- Then: `ignored.txt` is not linted, and `sub/ignored.txt` is linted.
+
+Scenario: When the developer gives `.gitignore`, the result is the same as without the option
+
+- Given: The working directory is the root of a Git repository, and its `.gitignore` files have any rules.
+- When: The developer runs `secretlint "**/*" --secretlintignore=.gitignore`.
+- Then: The linted files are the same as with `secretlint "**/*"`.
+
+Scenario: When the command runs in a subdirectory, the ignore files above it are not read
+
+- Given: The root of a Git repository has a `.gitignore` with the rule `*.log`, and `sub/debug.log` exists.
+- When: The developer runs `secretlint "**/*"` in `sub/`.
+- Then: `debug.log` is linted.
 
 ## KPIs
 

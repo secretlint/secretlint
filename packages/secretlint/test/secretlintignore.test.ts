@@ -110,6 +110,59 @@ describe("searchFiles - ignoreFilePath", () => {
         }
     });
 
+    describe("with .gitignore", () => {
+        let repo: string;
+        beforeAll(async () => {
+            // repo/.gitignore: dist/, *.log, !keep.log, /root-only.txt, sub/x/
+            // repo/sub/.gitignore: !b.log, build/
+            repo = await mkdtemp(path.join(os.tmpdir(), "secretlint-ignore-gitignore-"));
+            for (const dir of ["dist", "logs", "sub/build", "sub/x"]) {
+                await mkdir(path.join(repo, dir), { recursive: true });
+            }
+            await writeFile(path.join(repo, ".gitignore"), "dist/\n*.log\n!keep.log\n/root-only.txt\nsub/x/\n");
+            await writeFile(path.join(repo, "sub", ".gitignore"), "!b.log\nbuild/\n");
+            for (const file of [
+                "a.txt",
+                "root-only.txt",
+                "dist/d.txt",
+                "logs/a.log",
+                "logs/keep.log",
+                "sub/root-only.txt",
+                "sub/b.log",
+                "sub/c.log",
+                "sub/build/e.txt",
+                "sub/x/f.txt",
+            ]) {
+                await writeFile(path.join(repo, file), "x");
+            }
+        });
+        afterAll(async () => {
+            if (repo) await rm(repo, { recursive: true, force: true });
+        });
+        const relativeTo = (base: string, items: string[]) =>
+            items.map((p) => path.relative(base, p).replaceAll("\\", "/")).sort();
+
+        it("gives the same files with --secretlintignore=.gitignore as without it", async () => {
+            const withoutOption = await searchFiles(["**/*"], { cwd: repo });
+            const withGitignore = await searchFiles(["**/*"], { cwd: repo, ignoreFilePath: ".gitignore" });
+            expect(relativeTo(repo, withGitignore.items)).toEqual(relativeTo(repo, withoutOption.items));
+            expect(relativeTo(repo, withoutOption.items)).toEqual([
+                ".gitignore",
+                "a.txt",
+                "logs/keep.log",
+                "sub/.gitignore",
+                "sub/b.log",
+                "sub/root-only.txt",
+            ]);
+        });
+
+        it("does not read the ignore files above cwd", async () => {
+            const sub = path.join(repo, "sub");
+            const result = await searchFiles(["**/*"], { cwd: sub });
+            expect(relativeTo(sub, result.items)).toEqual([".gitignore", "b.log", "c.log", "root-only.txt", "x/f.txt"]);
+        });
+    });
+
     it("reports the target as found when the given ignore file filters out every match", async () => {
         const result = await searchFiles(["ignored.txt"], {
             cwd,
