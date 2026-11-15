@@ -128,6 +128,7 @@ None for this part of the feature.
 - **`.gitignore`:** Used by default. `--no-gitignore` turns it off.
 
 `.secretlintignore` and `.gitignore` can be in any directory. Their rules apply to that directory and the directories below it.
+Ignore files in the directories above the working directory are not read, even in a Git repository whose root is above it. Decided by the maintainer (2026-11-15).
 
 ##### The meaning of a rule
 
