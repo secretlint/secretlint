@@ -58,7 +58,7 @@ For more details, please see [secretlint's Dockerfile](./publish/docker).
 
 ### Using Node.js
 
-**Prerequisites:**  Require [Node.js 24+](https://nodejs.org/).
+**Prerequisites:**  Require [Node.js 22+](https://nodejs.org/).
 
 Upgrading from Secretlint v13? See the [migration guide](./docs/migrations/v13-to-v14.md).
 
