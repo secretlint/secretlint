@@ -136,6 +136,36 @@ describe("@secretlint/config-loader", () => {
             await expect(loadConfig({ cwd: subDir })).rejects.toThrow(/Cannot read config file/);
         });
     });
+    describe("config file formats", () => {
+        let tmpDir: string;
+        beforeEach(() => {
+            tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "secretlint-config-loader-"));
+        });
+        afterEach(() => {
+            fs.rmSync(tmpDir, { recursive: true, force: true });
+        });
+        const expected = { rules: [{ id: "@secretlint/secretlint-rule-preset-recommend" }] };
+        it("should load .secretlintrc.js written in CommonJS", async () => {
+            fs.writeFileSync(path.join(tmpDir, ".secretlintrc.js"), `module.exports = ${JSON.stringify(expected)};`);
+            const result = await loadConfigDescriptor({ cwd: tmpDir });
+            assert.deepStrictEqual(result.configDescriptor, expected);
+        });
+        it("should load .secretlintrc.js written in ES Modules", async () => {
+            fs.writeFileSync(path.join(tmpDir, "package.json"), JSON.stringify({ type: "module" }));
+            fs.writeFileSync(path.join(tmpDir, ".secretlintrc.js"), `export default ${JSON.stringify(expected)};`);
+            const result = await loadConfigDescriptor({ cwd: tmpDir });
+            assert.deepStrictEqual(result.configDescriptor, expected);
+        });
+        it("should load .secretlintrc.ts", async () => {
+            fs.writeFileSync(
+                path.join(tmpDir, ".secretlintrc.ts"),
+                `const config: { rules: { id: string }[] } = ${JSON.stringify(expected)};\nexport default config;`,
+            );
+            const result = await loadConfigDescriptor({ cwd: tmpDir });
+            assert.deepStrictEqual(result.configDescriptor, expected);
+            assert.strictEqual(result.configFilePath, path.join(tmpDir, ".secretlintrc.ts"));
+        });
+    });
     describe("configFilePath", () => {
         let tmpDir: string;
         let subDir: string;

@@ -61,8 +61,8 @@ catalogs:
       specifier: ^4.0.7
       version: 4.0.7
     rc-config-loader:
-      specifier: ^4.2.0
-      version: 4.2.0
+      specifier: ^5.0.0
+      version: 5.0.0
     scaffdog:
       specifier: ^4.1.0
       version: 4.1.0
@@ -185,7 +185,7 @@ importers:
         version: 4.4.3
       rc-config-loader:
         specifier: 'catalog:'
-        version: 4.2.0
+        version: 5.0.0
     devDependencies:
       '@secretlint/secretlint-rule-internal-test-cjs':
         specifier: workspace:*
@@ -2087,8 +2087,9 @@ packages:
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
-  rc-config-loader@4.2.0:
-    resolution: {integrity: sha512-PoQabZw5RBxSW9jJhI1WJ8hpLYCjF4PrkhqkkjXYKRpWTo1cn3ovdXku2spdS79dnD3pT/axXeEUnwbG8qxz9A==}
+  rc-config-loader@5.0.0:
+    resolution: {integrity: sha512-HW1dyt1DqN6ubJvFEE/l9XltnTEhaTRn0VcE8R+jF15lAlw2Av613QIhUtKXksqO9CqgTKceUrAEDaVAjroBQQ==}
+    engines: {node: '>=22.18.0'}
 
   rc@1.2.8:
     resolution: {integrity: sha512-y3bGgqKj3QBdxLbLkomlohkvsA8gdAiUQlSBJnBhfn+BPxg4bc62d8TcBW15wavDfgexCgccckhcZvywyQYPOw==}
@@ -2111,10 +2112,6 @@ packages:
 
   require-directory@2.1.1:
     resolution: {integrity: sha512-fGxEI7+wsG9xrvdjsrlmL22OMTTiHRwAMroiEeMgq8gzoLC/PQr7RsRDSTLUg/bZAZtF+TVIkHc6/4RIKrui+Q==}
-    engines: {node: '>=0.10.0'}
-
-  require-from-string@2.0.2:
-    resolution: {integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==}
     engines: {node: '>=0.10.0'}
 
   restore-cursor@3.1.0:
@@ -3784,12 +3781,11 @@ snapshots:
 
   queue-microtask@1.2.3: {}
 
-  rc-config-loader@4.2.0:
+  rc-config-loader@5.0.0:
     dependencies:
       debug: 4.4.3
       js-yaml: 5.5.0
       json5: 2.2.3
-      require-from-string: 2.0.2
     transitivePeerDependencies:
       - supports-color
 
@@ -3823,8 +3819,6 @@ snapshots:
       - supports-color
 
   require-directory@2.1.1: {}
-
-  require-from-string@2.0.2: {}
 
   restore-cursor@3.1.0:
     dependencies:
