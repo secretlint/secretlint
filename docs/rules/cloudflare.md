@@ -15,6 +15,7 @@ References:
 - [API tokens now detectable by secret scanning tools · Changelog](https://developers.cloudflare.com/changelog/post/2026-04-10-secret-scanning-support/)
 
 This rule is built into secretlint (`@secretlint/core`), so you do not need to install a package for it.
+This rule is in [@secretlint/secretlint-rule-preset-recommend](./preset-recommend.md).
 
 ## Usage
 

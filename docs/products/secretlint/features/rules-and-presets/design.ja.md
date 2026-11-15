@@ -35,6 +35,7 @@
 組み込みルールは`packages/@secretlint/core/src/builtin/rules/<name>/`にあり、メインモジュールは`creator`と`messages`をexportします。
 `creator.meta`には、ルールID`@secretlint/secretlint-rule-<name>`、種類（`scanner`または`filter`）、`recommended`、`supportedContentTypes`、ルールのドキュメント`https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/<name>.md`を指す`docs.url`があります。
 `@secretlint/core`は`docs.url`にメッセージIDを付け足して、各メッセージのリンクを作ります。
+`recommended`は、`recommendedRules`のルールだけが`true`です。`@secretlint/core`のテストが`builtinRules`の各ルールについてこれを確認するので、値がプリセットとずれません。新しいルールはrecommendプリセットの外から始まるので、`pnpm run gen:rule`は`recommended: false`を書きます。
 
 正規表現で秘密情報を探すルールは`patterns`を宣言し、`@secretlint/core`がそのパターンを実行します。
 GCPルールなど、それ以外のルールは`create()`を実装し、`context.report()`で報告します。patternルールのパターンはオプションから来ます。[ユーザー定義のパターン](#ユーザー定義のパターン)を参照してください。
@@ -173,6 +174,7 @@ planにないパターンは、キーワードを探す処理に登録されま�
 
 ルールの一覧の元になるのは`canaryRules`です。新しいルールはまず`canaryRules`に追加し、メジャーリリースで`recommendedRules`に追加します。
 現在の`canaryRules`は`recommendedRules`のコピーです。
+recommendプリセットに入れる予定のないルールは、`builtinRules`にだけ追加します。`getBuiltinRule`は同じようにそのIDを解決するので、設定の読み込みを変える必要はありません。
 
 ### 同じ名前のパッケージ
 

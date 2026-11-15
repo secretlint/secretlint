@@ -3,6 +3,7 @@
 A rule for detecting [Hugging Face](https://huggingface.co/) User Access Tokens in your code.
 
 This rule is built into secretlint (`@secretlint/core`), so you do not need to install a package for it.
+This rule is in [@secretlint/secretlint-rule-preset-recommend](./preset-recommend.md).
 
 ## Usage
 

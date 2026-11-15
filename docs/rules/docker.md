@@ -5,6 +5,7 @@ A secretlint rule for Docker Personal Access Tokens.
 Detects Docker Personal Access Tokens (PATs) that use the `dckr_pat_` prefix.
 
 This rule is built into secretlint (`@secretlint/core`), so you do not need to install a package for it.
+This rule is in [@secretlint/secretlint-rule-preset-recommend](./preset-recommend.md).
 
 ## MessageIDs
 

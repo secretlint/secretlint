@@ -9,6 +9,7 @@ This rule detects the three main Vault token formats introduced in Vault 1.10+:
 - Recovery tokens (`hvr.` prefix)
 
 This rule is built into secretlint (`@secretlint/core`), so you do not need to install a package for it.
+This rule is in [@secretlint/secretlint-rule-preset-recommend](./preset-recommend.md).
 
 ## Usage
 

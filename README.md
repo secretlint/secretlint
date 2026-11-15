@@ -405,6 +405,8 @@ $ secretlint .zsh_history --format=mask-result --output=.zsh_history
 
 Secretlint has these rules as built-in rules. You do not need to install a package for them: list the rule id in the configuration file.
 
+These rules are in [@secretlint/secretlint-rule-preset-recommend](./docs/rules/preset-recommend.md), so they run when the configuration file has the preset or when there is no configuration file.
+
 - [@secretlint/secretlint-rule-npm](./docs/rules/npm.md)
 - [@secretlint/secretlint-rule-aws](./docs/rules/aws.md)
 - [@secretlint/secretlint-rule-gcp](./docs/rules/gcp.md)
@@ -426,15 +428,18 @@ Secretlint has these rules as built-in rules. You do not need to install a packa
 - [@secretlint/secretlint-rule-databricks](./docs/rules/databricks.md)
 - [@secretlint/secretlint-rule-hashicorp-vault](./docs/rules/hashicorp-vault.md)
 - [@secretlint/secretlint-rule-vercel](./docs/rules/vercel.md)
-- [@secretlint/secretlint-rule-azure](./docs/rules/azure.md)
 - [@secretlint/secretlint-rule-docker](./docs/rules/docker.md)
 - [@secretlint/secretlint-rule-figma](./docs/rules/figma.md)
 - [@secretlint/secretlint-rule-cloudflare](./docs/rules/cloudflare.md)
 - [@secretlint/secretlint-rule-tailscale](./docs/rules/tailscale.md)
 - [@secretlint/secretlint-rule-huggingface](./docs/rules/huggingface.md)
 - [@secretlint/secretlint-rule-notion](./docs/rules/notion.md)
-- [@secretlint/secretlint-rule-pattern](./docs/rules/pattern.md)
 - [@secretlint/secretlint-rule-filter-comments](./docs/rules/filter-comments.md)
+
+These rules are not in a preset. They run only when the configuration file lists their rule id.
+
+- [@secretlint/secretlint-rule-azure](./docs/rules/azure.md)
+- [@secretlint/secretlint-rule-pattern](./docs/rules/pattern.md)
 
 Secretlint also has built-in rule presets.
 

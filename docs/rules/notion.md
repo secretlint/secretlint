@@ -10,6 +10,7 @@ prone to false positives.
 > updated when a new format is introduced.
 
 This rule is built into secretlint (`@secretlint/core`), so you do not need to install a package for it.
+This rule is in [@secretlint/secretlint-rule-preset-recommend](./preset-recommend.md).
 
 ## Usage
 

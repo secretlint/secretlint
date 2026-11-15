@@ -17,6 +17,7 @@ References:
 - GitHub Push Protection: supported provider "Stripe"
 
 This rule is built into secretlint (`@secretlint/core`), so you do not need to install a package for it.
+This rule is in [@secretlint/secretlint-rule-preset-recommend](./preset-recommend.md).
 
 ## Usage
 
