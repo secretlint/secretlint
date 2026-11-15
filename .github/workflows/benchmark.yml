@@ -2,6 +2,7 @@ name: benchmark
 on:
   push:
     branches:
+      - main
       - master
 env:
   CI: true
