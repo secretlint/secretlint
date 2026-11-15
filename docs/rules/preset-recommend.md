@@ -92,5 +92,5 @@ If you want to ignore `"AWSAccountID"` and `"AWSAccessKeyID"` of `"@secretlint/s
 
 ## Notes
 
-The rules of this preset are built into `@secretlint/core`, and this package re-exports the preset of `@secretlint/core`.
-secretlint resolves the id of this preset from `@secretlint/core`, so the config works without installing this package.
+This preset is built into secretlint (`@secretlint/core`), so you do not need to install a package for it.
+The package of this preset is not published from v14, but its id still works in the config.
