@@ -63,5 +63,8 @@
     },
     "publishConfig": {
         "access": "public"
+    },
+    "engines": {
+        "node": ">=24.0.0"
     }
 }
