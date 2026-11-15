@@ -1,9 +1,16 @@
 name: test-diff
 on:
   push:
+    branches:
+      - main
+      - master
   pull_request:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
   test-diff:
+    timeout-minutes: 10
     permissions:
       contents: read
     name: "Run secretlint to diff files"
@@ -22,7 +29,7 @@ jobs:
         uses: tj-actions/changed-files@9426d40962ed5378910ee2e21d5f8c6fcbf2dd96 # v47.0.6
         with:
           quotepath: "false"
-      - name: setup Node ${{ matrix.node-version }}
+      - name: setup Node 24
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 24
@@ -42,6 +49,8 @@ jobs:
         run: |
           # Set NODE_PATH to help module resolution with pnpm
           export NODE_PATH="${PWD}/node_modules/.pnpm/node_modules"
-          node packages/secretlint/bin/secretlint.js ${STEPS_CHANGED_FILES_OUTPUTS_ALL_CHANGED_FILES}
+          # the changed files are separated by spaces
+          read -ra changed_files <<< "${STEPS_CHANGED_FILES_OUTPUTS_ALL_CHANGED_FILES}"
+          node packages/secretlint/bin/secretlint.js "${changed_files[@]}"
         env:
           STEPS_CHANGED_FILES_OUTPUTS_ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
