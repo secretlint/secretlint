@@ -60,7 +60,7 @@ For more details, please see [secretlint's Dockerfile](./publish/docker).
 
 **Prerequisites:**  Require [Node.js 24+](https://nodejs.org/).
 
-Upgrading from Secretlint v13? See the [migration guide](./docs/migrations/v14.md).
+Upgrading from Secretlint v13? See the [migration guide](./docs/migrations/v13-to-v14.md).
 
 Secretlint is written by JavaScript.
 You can install Secretlint using [npm](https://www.npmjs.com/):
