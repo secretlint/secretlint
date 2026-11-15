@@ -26,7 +26,7 @@ If you already have installed Docker:
 
 If you already have installed Node.js:
 
-    npx @secretlint/quick-start "**/*"
+    npx secretlint "**/*"
 
 After running, 
 If you got empty result and exit status is `0`, your project is secure.
