@@ -104,23 +104,47 @@ Scenario: 渡したファイルが存在しない場合、警告を出し、そ�
 - When: 開発者が`secretlint "**/*" --secretlintignore=missing-ignore`を実行する。
 - Then: ファイル名を含む警告が標準エラーに出て、オプションを渡さなかったものとしてファイルがlintされる。
 
-Scenario: `.secretlintignore`が`!`でパスを対象に戻す場合、渡したファイルはそのパスを無視しない
+Scenario: 渡したファイルが無視するパスに`.secretlintignore`が`!`を書いても、そのパスは無視される
 
 - Given: `config/ignore`にルール`ignored.txt`があり、`sub/.secretlintignore`にルール`!ignored.txt`がある。
 - When: 開発者が`secretlint "**/*" --secretlintignore=config/ignore`を実行する。
-- Then: `ignored.txt`はlintされず、`sub/ignored.txt`はlintされる。
+- Then: `ignored.txt`も`sub/ignored.txt`もlintされない。
 
-Scenario: `.gitignore`を渡した場合、オプションを渡さないときと同じ結果になる
+Scenario: `.gitignore`を渡した場合、それが無視するものをネストした`.gitignore`で対象に戻せない
 
-- Given: 作業ディレクトリがGitリポジトリのルートで、その`.gitignore`に任意のルールがある。
+- Given: 作業ディレクトリがGitリポジトリのルートで、`.gitignore`にルール`*.log`、`sub/.gitignore`にルール`!b.log`がある。
 - When: 開発者が`secretlint "**/*" --secretlintignore=.gitignore`を実行する。
-- Then: lintされるファイルは`secretlint "**/*"`のときと同じになる。
+- Then: `sub/b.log`はlintされない。オプションを渡さなければ、Gitと同じくlintされる。
 
 Scenario: サブディレクトリで実行した場合、それより上の無視ファイルは読まない
 
 - Given: Gitリポジトリのルートの`.gitignore`にルール`*.log`があり、`sub/debug.log`がある。
 - When: 開発者が`sub/`で`secretlint "**/*"`を実行する。
 - Then: `debug.log`はlintされる。
+
+### 無視ファイルを合わせる
+
+開発者として、どれか一つの無視ファイルが外したファイルは外してほしい。それによって、Gitのために書いた`!`のルールで、Secretlintのために外したファイルが報告されなくなる。
+
+**受け入れ条件:**
+
+Scenario: `.secretlintignore`が無視するパスに`.gitignore`が`!`を書いても、そのパスは無視される
+
+- Given: `.secretlintignore`にルール`a.txt`があり、`.gitignore`にルール`*.txt`と`!a.txt`がある。
+- When: 開発者が`secretlint "**/*"`を実行する。
+- Then: `a.txt`はlintされない。
+
+Scenario: 組み込みのルールが無視するディレクトリに`.gitignore`が`!`を書いても、そのディレクトリは無視される
+
+- Given: `.gitignore`にルール`!node_modules`があり、`node_modules/pkg/index.js`がある。
+- When: 開発者が`secretlint "**/*"`を実行する。
+- Then: `node_modules/pkg/index.js`はlintされない。
+
+Scenario: `.gitignore`が無視するファイルをlintしたい場合は、`.gitignore`を無効にする
+
+- Given: `.gitignore`にルール`dist/`があり、`dist/app.js`に秘密情報がある。
+- When: 開発者が`secretlint --no-gitignore "**/*"`を実行する。
+- Then: `dist/app.js`はlintされる。
 
 ## KPI
 
@@ -142,7 +166,7 @@ Scenario: サブディレクトリで実行した場合、それより上の無�
 
 - **組み込みのルール:** `.git`と`node_modules`のディレクトリ、Secretlintの設定ファイル（`.secretlintrc`と、その`.json`、`.yaml`、`.yml`、`.js`の形）、名前が`.secretlintignore`で始まるファイル。これらは常に無視します。
 - **`.secretlintignore`:** `.gitignore`と同じように各ディレクトリで読みます。
-- **`--secretlintignore`で渡したファイル:** Gitの`core.excludesFile`のファイルと同じように、ほかの無視ファイルに加えて読みます。相対パスは作業ディレクトリから解決し、ルールは作業ディレクトリから照合します。そのルールはGitと同じく最も弱く、`.secretlintignore`や`.gitignore`の`!`で始まるルールはパスを対象に戻せます。API（`ignoreFilePath`を渡した`runSecretLint()`と`searchFiles()`）も同じです。
+- **`--secretlintignore`で渡したファイル:** ほかの無視ファイルに加えて読みます。相対パスは作業ディレクトリから解決し、ルールはGitの`core.excludesFile`のファイルと同じように作業ディレクトリから照合します。API（`ignoreFilePath`を渡した`runSecretLint()`と`searchFiles()`）も同じです。
 - **`.gitignore`:** 既定で使います。`--no-gitignore`で無効にできます。
 
 `.secretlintignore`と`.gitignore`はどのディレクトリにも置けます。そのルールは、置いたディレクトリとその下のディレクトリに適用されます。
@@ -157,7 +181,14 @@ Scenario: サブディレクトリで実行した場合、それより上の無�
 - 無視されたディレクトリの中のファイルは無視され、ルールで対象に戻すことはできません。
 - 閉じていない`[`のようにGitが受け付けないルールは、何にも一致しません。
 
-組み込みのルールは、作業ディレクトリの無視ファイルに書かれたものとして、ほかのルールより先に評価します。
+##### 出どころを合わせる
+
+四つの出どころ（組み込みのルール、`.secretlintignore`、`.gitignore`、`--secretlintignore`で渡したファイル）には順番を付けません。それぞれの出どころが上の意味で単独に判定し、どれか一つが無視したパスは無視します。
+そのため、`!`で始まるルールがパスを対象に戻すのは、同じ出どころの中だけです。`.gitignore`の`!`は、`.secretlintignore`、渡したファイル、組み込みのルールが無視したパスを対象に戻しません。
+これによって、どれか一つの出どころが外したファイルはすべて外れます（指針「誤検知を減らす」）。`.gitignore`の`!`は、Gitがファイルを追跡するために書くもので、Secretlintにlintさせるためのものではありません。
+`.gitignore`が無視するファイルをlintしたいときは、`--no-gitignore`で`.gitignore`を無効にします。メンテナーが決めました（2026-11-15）。
+
+組み込みのルールと渡したファイルは、作業ディレクトリから照合します。
 
 ##### 大文字と小文字
 
