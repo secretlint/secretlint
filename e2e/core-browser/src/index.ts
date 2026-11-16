@@ -1,5 +1,5 @@
 import { lintSource } from "@secretlint/core";
-import { creator as presetRecommend } from "@secretlint/secretlint-rule-preset-recommend";
+import { presetRecommend } from "@secretlint/core/builtin";
 import type { SecretLintCoreResult } from "@secretlint/types";
 
 export type LintOptions = {

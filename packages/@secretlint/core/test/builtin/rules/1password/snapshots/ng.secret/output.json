@@ -21,7 +21,7 @@
             },
             "severity": "error",
             "messageId": "OPS_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-1password/README.md#OPS_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/1password.md#OPS_TOKEN",
             "data": {
                 "TOKEN": "ops_eyJlbWFpbCI6ImVqd2U2NHFtbHhocmlAMXBhc3N3b3Jkc2VydmljZWFjY291bnRzLmxjbCIsIm11ayI6eyJhbGciOiJBMjU2R0NNIiwiZXh0Ijp0cnVlLCJrIjoiTThWUGZJYzhWRWZUaGNNWExhS0NLRjhzTWg1Sk1ac1BBdHU5MmZRTmItbyIsImtleV9vcHMiOlsiZW5jcnlwdCIsImRlY3J5cHQiXSwia3R5Ijoib2N0Iiwia2lkIjoibXAifSwic2VjcmV0S2V5IjoiQTMtQzRaSk1OLVBRVFpUTC1IR0w4NC1HNjRNNy1LVlpSTi00WlZQNiIsInNycFgiOiI4NzBkNjdhOWU2MjY2MjVkOWUzNjg1MDc4MDRjOWMzMmU2NjFjNTdlN2U1NTg3NzgyOTFiZjI5ZDVhMjc5YWUxIiwic2lnbkluQWRkcmVzcyI6ImdvdGhhbS5iNWxvY2FsLmNvbTo0MDAwIiwidXNlckF1dGgiOnsibWV0aG9kIjoiU1JQZy00MDk2IiwiYWxnIjoiUEJFUzJnLUhTMjU2IiwiaXRlcmF0aW9ucyI6MTAwMDAwLCJzYWx0IjoiRk1SVVBpeXJONFhmXzhIb2g2WVJYUSJ9fQ"
             }

@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/config-creator",
-    "version": "13.1.0",
+    "version": "14.0.0",
     "description": "Config file creator for secretlint.",
     "keywords": [
         "secretlint"
@@ -52,6 +52,7 @@
         "tabWidth": 4
     },
     "dependencies": {
+        "@secretlint/core": "workspace:*",
         "@secretlint/types": "workspace:*"
     },
     "devDependencies": {

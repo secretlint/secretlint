@@ -66,7 +66,7 @@ describe("walk - glob + ignore cascade interaction", () => {
             patterns: ["src/**/*"],
             ignoreFiles: [".gitignore"],
         });
-        expect(r(results)).toEqual(["src/api.ts", "src/main.ts"]);  // NOT api.secrets
+        expect(r(results)).toEqual(["src/api.ts", "src/main.ts"]); // NOT api.secrets
     });
 
     it("ancestor .gitignore is honoured for static file paths", async () => {
@@ -75,6 +75,6 @@ describe("walk - glob + ignore cascade interaction", () => {
             patterns: ["src/api.secrets"],
             ignoreFiles: [".gitignore"],
         });
-        expect(r(results)).toEqual([]);  // *.secrets ignored even though path was explicit
+        expect(r(results)).toEqual([]); // *.secrets ignored even though path was explicit
     });
 });

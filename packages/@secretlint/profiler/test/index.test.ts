@@ -1,197 +1,121 @@
 import assert from "assert";
-import perf_hooks from "node:perf_hooks";
 import { SecretLintProfiler } from "../src/node.js";
 
-const createSpyPerformanceObserver = () => {
-    const state = {
-        createdCount: 0,
-        observedCount: 0,
-        disconnectedCount: 0,
-    };
-    class SpyPerformanceObserver {
-        constructor(_callback: (items: PerformanceObserverEntryList) => void) {
-            state.createdCount++;
-        }
-
-        observe(_options?: any): void {
-            state.observedCount++;
-        }
-
-        disconnect(): void {
-            state.disconnectedCount++;
-        }
-    }
-
-    return { state, SpyPerformanceObserver };
-};
-const createSpyPerformance = () => {
-    const markNames: string[] = [];
-    const perf = {
-        mark: (name: string) => {
-            markNames.push(name);
+/**
+ * A clock that returns the times in order
+ */
+const createClock = (times: number[]) => {
+    let calledCount = 0;
+    return {
+        now: () => {
+            const time = times[calledCount];
+            calledCount++;
+            if (time === undefined) {
+                throw new Error("No more time");
+            }
+            return time;
         },
-        measure: () => {},
-    } as unknown as typeof perf_hooks.performance;
-    return { markNames, perf };
+        get calledCount() {
+            return calledCount;
+        },
+    };
 };
 describe("profile", () => {
-    it("should profile", async () => {
-        const profiler = new SecretLintProfiler({
-            perf: perf_hooks.performance,
-            PerformanceObserver: perf_hooks.PerformanceObserver,
-            enabled: true,
-        });
-        profiler.mark({
-            type: "@config-loader>load-config-file::start",
-        });
-        profiler.mark({
-            type: "@config-loader>load-config-file::end",
-        });
-        profiler.mark({
-            type: "@core>lint::start",
-            id: "test",
-        });
-        profiler.mark({
-            type: "@core>lint::end",
-            id: "test",
-        });
-        // wait for finish
-        await new Promise((resolve) => setTimeout(resolve, 100));
-        const results = await profiler.getEntries();
-        assert.strictEqual(results.length, 4);
+    it("should record the total time between ::start and ::end for each type and id", () => {
+        const clock = createClock([0, 10, 10, 25, 30, 31]);
+        const profiler = new SecretLintProfiler({ now: clock.now, enabled: true });
+        profiler.mark({ type: "@config-loader>load-config-file::start" });
+        profiler.mark({ type: "@config-loader>load-config-file::end" });
+        profiler.mark({ type: "@core>lint::start", id: "a.txt" });
+        profiler.mark({ type: "@core>lint::end", id: "a.txt" });
+        profiler.mark({ type: "@core>lint::start", id: "b.txt" });
+        profiler.mark({ type: "@core>lint::end", id: "b.txt" });
+        assert.deepStrictEqual(profiler.getStats(), [
+            { type: "@config-loader>load-config-file", id: undefined, count: 1, duration: 10, maxDuration: 10 },
+            { type: "@core>lint", id: "a.txt", count: 1, duration: 15, maxDuration: 15 },
+            { type: "@core>lint", id: "b.txt", count: 1, duration: 1, maxDuration: 1 },
+        ]);
     });
-    it("should measure the duration between ::start and ::end", async () => {
-        const profiler = new SecretLintProfiler({
-            perf: perf_hooks.performance,
-            PerformanceObserver: perf_hooks.PerformanceObserver,
-            enabled: true,
-        });
-        profiler.mark({
-            type: "@core>lint::start",
-            id: "measure-test",
-        });
-        profiler.mark({
-            type: "@core>lint::end",
-            id: "measure-test",
-        });
-        // wait for finish
-        await new Promise((resolve) => setTimeout(resolve, 100));
-        const measures = await profiler.getMeasures();
-        assert.ok(
-            measures.some((measure) => measure.name === "@core>lint||measure-test"),
-            `should have a measure for the marked pair: ${measures.map((measure) => measure.name).join(", ")}`,
-        );
+    it("should add up the records of the same type and id", () => {
+        const clock = createClock([0, 2, 10, 15]);
+        const profiler = new SecretLintProfiler({ now: clock.now, enabled: true });
+        const id = "@secretlint/secretlint-rule-example";
+        profiler.mark({ type: "@core>rule-handler::start", id });
+        profiler.mark({ type: "@core>rule-handler::end", id });
+        profiler.mark({ type: "@core>rule-handler::start", id });
+        profiler.mark({ type: "@core>rule-handler::end", id });
+        assert.deepStrictEqual(profiler.getStats(), [
+            { type: "@core>rule-handler", id, count: 2, duration: 7, maxDuration: 5 },
+        ]);
     });
-    it("should return measures for marks made just before getMeasures() without waiting", async () => {
-        const profiler = new SecretLintProfiler({
-            perf: perf_hooks.performance,
-            PerformanceObserver: perf_hooks.PerformanceObserver,
-            enabled: true,
-        });
-        profiler.mark({ type: "@core>lint::start", id: "sync-test" });
-        profiler.mark({ type: "@core>lint::end", id: "sync-test" });
-        // no wait: PerformanceObserver has not delivered the entries yet
-        const measures = await profiler.getMeasures();
-        assert.ok(
-            measures.some((measure) => measure.name === "@core>lint||sync-test"),
-            `should have a measure: ${measures.map((measure) => measure.name).join(", ")}`,
-        );
+    it("should ignore ::end without ::start", () => {
+        const clock = createClock([0]);
+        const profiler = new SecretLintProfiler({ now: clock.now, enabled: true });
+        profiler.mark({ type: "secretlint>cli::end" });
+        assert.deepStrictEqual(profiler.getStats(), []);
+    });
+    it("should record the time from now() with record()", () => {
+        const clock = createClock([100, 103, 200, 201]);
+        const profiler = new SecretLintProfiler({ now: clock.now, enabled: true });
+        const first = profiler.now();
+        profiler.record("@core>pattern", "rule#0 /a/g", first);
+        const second = profiler.now();
+        profiler.record("@core>pattern", "rule#0 /a/g", second);
+        assert.deepStrictEqual(profiler.getStats(), [
+            { type: "@core>pattern", id: "rule#0 /a/g", count: 2, duration: 4, maxDuration: 3 },
+        ]);
+    });
+    it("should count without duration with count()", () => {
+        const clock = createClock([]);
+        const profiler = new SecretLintProfiler({ now: clock.now, enabled: true });
+        profiler.count("@core>pattern-match", "rule#0 /a/g");
+        profiler.count("@core>pattern-match", "rule#0 /a/g", 3);
+        assert.deepStrictEqual(profiler.getStats(), [
+            { type: "@core>pattern-match", id: "rule#0 /a/g", count: 4, duration: 0, maxDuration: 0 },
+        ]);
     });
     it("should be disabled by default", () => {
-        const { SpyPerformanceObserver } = createSpyPerformanceObserver();
-        const { perf } = createSpyPerformance();
-        const profiler = new SecretLintProfiler({
-            perf,
-            PerformanceObserver: SpyPerformanceObserver,
-        });
+        const profiler = new SecretLintProfiler({ now: createClock([]).now });
         assert.strictEqual(profiler.isEnabled, false);
     });
-    it("should not mark and not observe if the profiler is disabled", async () => {
-        const { state, SpyPerformanceObserver } = createSpyPerformanceObserver();
-        const { markNames, perf } = createSpyPerformance();
-        const profiler = new SecretLintProfiler({
-            perf,
-            PerformanceObserver: SpyPerformanceObserver,
-            enabled: false,
-        });
-        profiler.mark({
-            type: "secretlint>cli::start",
-        });
-        profiler.mark({
-            type: "@core>lint::start",
-            id: "disabled-test",
-        });
-        profiler.mark({
-            type: "@core>lint::end",
-            id: "disabled-test",
-        });
-        profiler.mark({
-            type: "secretlint>cli::end",
-        });
+    it("should not read the clock and not record if the profiler is disabled", () => {
+        const clock = createClock([]);
+        const profiler = new SecretLintProfiler({ now: clock.now, enabled: false });
+        profiler.mark({ type: "secretlint>cli::start" });
+        profiler.mark({ type: "@core>lint::start", id: "disabled-test" });
+        profiler.mark({ type: "@core>lint::end", id: "disabled-test" });
+        profiler.record("@core>pattern", "rule#0 /a/g", profiler.now());
+        profiler.count("@core>pattern-match", "rule#0 /a/g");
+        profiler.mark({ type: "secretlint>cli::end" });
         assert.strictEqual(profiler.isEnabled, false);
-        assert.deepStrictEqual(markNames, [], "performance.mark() should not be called");
-        assert.strictEqual(state.createdCount, 0, "PerformanceObserver should not be created");
-        assert.deepStrictEqual(await profiler.getEntries(), []);
-        assert.deepStrictEqual(await profiler.getMeasures(), []);
+        assert.strictEqual(clock.calledCount, 0, "the clock should not be read");
+        assert.deepStrictEqual(profiler.getStats(), []);
     });
-    it("should not observe if setEnabled(false) is called before marking", () => {
-        const { state, SpyPerformanceObserver } = createSpyPerformanceObserver();
-        const { markNames, perf } = createSpyPerformance();
-        const profiler = new SecretLintProfiler({
-            perf,
-            PerformanceObserver: SpyPerformanceObserver,
-            enabled: true,
-        });
+    it("should clear the totals if setEnabled(false) is called", () => {
+        const clock = createClock([0, 10, 20]);
+        const profiler = new SecretLintProfiler({ now: clock.now, enabled: true });
+        profiler.mark({ type: "@node>execute::start" });
+        profiler.mark({ type: "@node>execute::end" });
+        profiler.mark({ type: "secretlint>cli::start" });
         profiler.setEnabled(false);
-        profiler.mark({
-            type: "secretlint>cli::start",
-        });
-        assert.deepStrictEqual(markNames, [], "performance.mark() should not be called");
-        assert.strictEqual(state.createdCount, 0, "PerformanceObserver should not be created");
-    });
-    it("should disconnect the observer and clear collected entries if setEnabled(false) is called", async () => {
-        const { state, SpyPerformanceObserver } = createSpyPerformanceObserver();
-        const { markNames, perf } = createSpyPerformance();
-        const profiler = new SecretLintProfiler({
-            perf,
-            PerformanceObserver: SpyPerformanceObserver,
-            enabled: true,
-        });
-        profiler.mark({
-            type: "secretlint>cli::start",
-        });
-        assert.deepStrictEqual(markNames, ["secretlint>cli::start"]);
-        assert.strictEqual(state.createdCount, 1);
-        assert.strictEqual(state.observedCount, 1);
-        profiler.setEnabled(false);
-        assert.strictEqual(state.disconnectedCount, 1, "PerformanceObserver should be disconnected");
-        assert.deepStrictEqual(await profiler.getEntries(), []);
-        assert.deepStrictEqual(await profiler.getMeasures(), []);
+        assert.deepStrictEqual(profiler.getStats(), []);
         // marking again should do nothing
-        profiler.mark({
-            type: "secretlint>cli::end",
-        });
-        assert.deepStrictEqual(markNames, ["secretlint>cli::start"]);
-        assert.strictEqual(state.createdCount, 1, "PerformanceObserver should not be created again");
+        profiler.mark({ type: "secretlint>cli::end" });
+        assert.strictEqual(clock.calledCount, 3);
+        assert.deepStrictEqual(profiler.getStats(), []);
     });
-    it("should observe again if setEnabled(true) is called", async () => {
-        const { state, SpyPerformanceObserver } = createSpyPerformanceObserver();
-        const { markNames, perf } = createSpyPerformance();
-        const profiler = new SecretLintProfiler({
-            perf,
-            PerformanceObserver: SpyPerformanceObserver,
-            enabled: false,
-        });
-        profiler.mark({
-            type: "secretlint>cli::start",
-        });
+    it("should record again if setEnabled(true) is called", () => {
+        const clock = createClock([0, 1, 6]);
+        const profiler = new SecretLintProfiler({ now: clock.now, enabled: false });
+        profiler.mark({ type: "secretlint>cli::start" });
         profiler.setEnabled(true);
-        profiler.mark({
-            type: "secretlint>cli::end",
-        });
+        // the start was not marked, so this end is ignored
+        profiler.mark({ type: "secretlint>cli::end" });
+        profiler.mark({ type: "@node>format::start" });
+        profiler.mark({ type: "@node>format::end" });
         assert.strictEqual(profiler.isEnabled, true);
-        assert.deepStrictEqual(markNames, ["secretlint>cli::end"]);
-        assert.strictEqual(state.createdCount, 1);
-        assert.strictEqual(state.observedCount, 1);
+        assert.deepStrictEqual(profiler.getStats(), [
+            { type: "@node>format", id: undefined, count: 1, duration: 5, maxDuration: 5 },
+        ]);
     });
 });

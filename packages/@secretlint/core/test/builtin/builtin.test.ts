@@ -28,6 +28,16 @@ describe("builtin", () => {
             dirs.map((dir) => `@secretlint/secretlint-rule-${dir}`),
         );
     });
+    it("meta.recommended is true only for the rules of the recommended preset", () => {
+        const recommendedIds = new Set(recommendedRules.map((rule) => rule.meta.id));
+        for (const rule of builtinRules) {
+            assert.strictEqual(
+                rule.meta.recommended,
+                recommendedIds.has(rule.meta.id),
+                `${rule.meta.id}: meta.recommended must match whether the rule is in the recommended preset`,
+            );
+        }
+    });
     it("ids are unique and resolvable", () => {
         assert.strictEqual(new Set(builtinRuleIds).size, builtinRuleIds.length);
         for (const id of builtinRuleIds) {

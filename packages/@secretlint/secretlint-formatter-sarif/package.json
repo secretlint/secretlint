@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/secretlint-formatter-sarif",
-    "version": "13.1.0",
+    "version": "14.0.0",
     "description": "A secretlint formatter for SARIF format",
     "keywords": [
         "sarif",
@@ -69,5 +69,8 @@
     },
     "publishConfig": {
         "access": "public"
+    },
+    "engines": {
+        "node": ">=22.0.0"
     }
 }

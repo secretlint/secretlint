@@ -27,7 +27,7 @@ Via `.secretlintrc.json`(Recommended)
 ### disallowToUseKindSecret
 > disallow to use Kind: Secret in manifest: {{FILE_NAME}}
 
-Kubernetes's [`Kind: Secret`]((https://kubernetes.io/docs/concepts/configuration/secret)) includes credentials as plain format.
+Kubernetes's [`Kind: Secret`](https://kubernetes.io/docs/concepts/configuration/secret) includes credentials as plain format.
 It just base64 encoded value.
 
 ```yaml

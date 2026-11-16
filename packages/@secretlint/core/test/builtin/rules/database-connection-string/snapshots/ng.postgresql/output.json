@@ -21,7 +21,7 @@
             },
             "severity": "error",
             "messageId": "PostgreSQLConnection",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#PostgreSQLConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/database-connection-string.md#PostgreSQLConnection",
             "data": {
                 "URI": "postgresql://pguser:secur3Pass@postgres.example.com:5432/production_db\";"
             }
@@ -46,7 +46,7 @@
             },
             "severity": "error",
             "messageId": "PostgreSQLConnection",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#PostgreSQLConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/database-connection-string.md#PostgreSQLConnection",
             "data": {
                 "URI": "postgres://api_user:myC0mpl3xPwd@db.internal.com:5432/api_db\";"
             }
@@ -71,7 +71,7 @@
             },
             "severity": "error",
             "messageId": "PostgreSQLConnection",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-database-connection-string/README.md#PostgreSQLConnection",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/database-connection-string.md#PostgreSQLConnection",
             "data": {
                 "URI": "postgresql://postgres:m42ploz2wd@google.com:5432/mydb')"
             }

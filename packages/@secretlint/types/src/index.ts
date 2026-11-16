@@ -27,6 +27,7 @@ export type {
     SecretLintRuleReportHandler,
     SecretLintRuleContentType,
     SecretLintRulePattern,
+    SecretLintRulePatternKeyword,
     SecretLintRulePatternMatch,
     SecretLintRulePatternContext,
 } from "./SecretLintRule.js";

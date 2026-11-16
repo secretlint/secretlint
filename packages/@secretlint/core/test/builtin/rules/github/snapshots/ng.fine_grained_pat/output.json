@@ -21,7 +21,7 @@
             },
             "severity": "error",
             "messageId": "GITHUB_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-github/README.md#GITHUB_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/github.md#GITHUB_TOKEN",
             "data": {
                 "KEY": "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",
                 "typeName": "fine-grained personal access tokens"

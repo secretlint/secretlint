@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/core",
-    "version": "13.1.0",
+    "version": "14.0.0",
     "description": "Core library for @secretlint.",
     "keywords": [
         "secretlint"
@@ -37,6 +37,13 @@
                 "default": "./module/builtin/rules/*/index.js"
             },
             "default": "./module/builtin/rules/*/index.js"
+        },
+        "./keyword-scan": {
+            "import": {
+                "types": "./module/keyword-scan.d.ts",
+                "default": "./module/keyword-scan.js"
+            },
+            "default": "./module/keyword-scan.js"
         },
         "./testing": {
             "import": {

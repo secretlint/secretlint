@@ -21,7 +21,7 @@
             },
             "severity": "error",
             "messageId": "CLOUDFLARE_ACCOUNT_API_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-cloudflare/README.md#CLOUDFLARE_ACCOUNT_API_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/cloudflare.md#CLOUDFLARE_ACCOUNT_API_TOKEN",
             "data": {
                 "TOKEN": "cfat_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStT03fa099b"
             }
@@ -46,7 +46,7 @@
             },
             "severity": "error",
             "messageId": "CLOUDFLARE_USER_API_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-cloudflare/README.md#CLOUDFLARE_USER_API_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/cloudflare.md#CLOUDFLARE_USER_API_TOKEN",
             "data": {
                 "TOKEN": "cfut_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStT03fa099b"
             }
@@ -71,7 +71,7 @@
             },
             "severity": "error",
             "messageId": "CLOUDFLARE_GLOBAL_API_KEY",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-cloudflare/README.md#CLOUDFLARE_GLOBAL_API_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/cloudflare.md#CLOUDFLARE_GLOBAL_API_KEY",
             "data": {
                 "TOKEN": "cfk_aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStT03fa099b"
             }

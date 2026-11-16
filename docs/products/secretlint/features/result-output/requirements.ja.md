@@ -23,7 +23,7 @@
 - `mask-result`フォーマッターの出力。[mask-resultフォーマッター](../mask-result-formatter/requirements.ja.md)が扱う。
 - `stylish`や`table`など人が読むフォーマッターそれぞれのレイアウトと、SARIF出力の内容。まだ書いていない。
 - lintの結果と一緒に表示される、設定ファイルの問題のメッセージ。まだ書いていない。
-- `--profile`の出力。
+- `--profile`の出力。[性能プロファイル](../performance-profile/requirements.ja.md)が扱う。
 
 ## ユーザーストーリー
 

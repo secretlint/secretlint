@@ -357,15 +357,67 @@ A rule with `patterns` costs almost nothing for the files that do not contain it
 A rule that has only `patterns` needs secretlint that supports `patterns`. An older secretlint reports that the rule should have `create` function.
 Secretlint also throws an error if a pattern has a property that it does not know, so a rule that uses a newer property never runs with a different result on an older secretlint.
 
+If an option of the rule turns a pattern on or off, set `when` of the pattern instead of returning early in `report()`.
+`when` refers to a boolean option of the rule as `options.<name>`:
+
+- `when: "options.name"`: the pattern is enabled only when the option is `true`.
+- `when: "!options.name"`: the pattern is enabled unless the option is `true`.
+
+An option that is not set is `false`. Secretlint reads the option once for a config. A disabled pattern is not a part of the lint: its keywords are not searched, and the pattern never runs.
+The type accepts only the name of an option whose value is a boolean. Secretlint throws an error if the value of the option is not a boolean, and if `when` is another string, such as an expression with another operator.
+
+```ts
+type Options = { enableIDScan?: boolean };
+// ...
+{
+    pattern: /example_id_[0-9]{12}/g,
+    keywords: ["example_id_"],
+    when: "options.enableIDScan",
+    report(match, context) { /* ... */ },
+}
+```
+
 `@secretlint/tester` checks `keywords` and `scope` of your patterns: it fails if the result differs from running the patterns on the whole content.
+
+Keywords are matched ASCII case-insensitively. If the prefix of a secret is short or common, such as `00` or `SK`, the keyword is in most files and the pattern runs for many lines.
+For such a keyword, write the characters that follow it in the secret as a guard: `{ keyword, after }`. Secretlint finds the keyword only where the guard is met, while it scans for the keywords.
+
+```ts
+{
+    // "00" and 40 characters
+    pattern: /(?<![A-Za-z0-9_-])00[A-Za-z0-9_-]{40}(?![A-Za-z0-9_-])/g,
+    keywords: [{ keyword: "00", after: "[A-Za-z0-9_-]{40,}" }],
+    scope: "line",
+    report(match, context) { /* ... */ },
+}
+```
+
+- `after` is one set of ASCII characters and one least count, in the syntax of regular expressions: `[...]` and `{n,}`. `n` is from 1 to 255.
+- In the set, write characters and ranges such as `a-z`. `\` is written only before `\` and `]`, and a `-` as a character is the last item.
+- The set is compared as it is written: `[a-f0-9]` does not have `A`. So a guard also keeps a pattern from a common word in another case: `{ keyword: "ASIA", after: "[A-Z0-9]{16,}" }` is not found in `asia-northeast1`.
+- The syntax is strict: a guard has one way to write it. Other forms, such as `{40}`, `{32,40}`, `+`, `\d`, and `[^...]`, are an error, and the error tells the supported form.
+- A guard must be true for every secret of the pattern. `@secretlint/tester` fails with the rule, the keyword, the guard, and the position if a guard rejects a secret that the pattern reports. A guard that is too loose only makes the lint slower.
+- The tests need a test case for each keyword with a guard: a secret that the rule reports, with the keyword and the characters that meet the guard. `@secretlint/tester` fails if a keyword with a guard has no such test case, because the tests can not tell if that guard is right.
 
 ## Performance
 
-Use `--profile` option for checking performance of your rule .
+Use `--profile` option for checking performance of your rule.
 
 ```
 $ secretlint --profile "**/*"
 ```
+
+`--profile` prints a summary of the run. Its size does not depend on the number of files.
+
+- **Phase**: where the time goes: loading the config, searching files, reading files, the keyword scan that all rules share, and so on
+- **Rule**: the time of each rule
+- **Pattern**: the time of each pattern of `patterns`, how many times it ran, and how many matches it found.
+  A pattern with many `Runs` and no `Matches` may need more specific `keywords`
+- **Keyword with a guard**: how many places of a keyword with a guard were found, and how many met the guard
+- **File**: the files that took the longest time to lint
+
+The text output shows the top 10 of the rules, the patterns, and the files.
+`--profile --format json` prints all of them as JSON. With `--profile`, the standard output has only the summary and no lint results.
 
 
 ## Tips

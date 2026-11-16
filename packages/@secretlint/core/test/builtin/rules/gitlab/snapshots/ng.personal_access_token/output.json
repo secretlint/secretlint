@@ -21,7 +21,7 @@
             },
             "severity": "error",
             "messageId": "GITLAB_PERSONAL_ACCESS_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-gitlab/README.md#GITLAB_PERSONAL_ACCESS_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/gitlab.md#GITLAB_PERSONAL_ACCESS_TOKEN",
             "data": {
                 "KEY": "glpat-aBcDeFgHiJkLmNoPqRsT"
             }

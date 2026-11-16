@@ -1,6 +1,6 @@
 {
     "name": "@secretlint/profiler",
-    "version": "13.1.0",
+    "version": "14.0.0",
     "description": "Profile manager for Secretlint.",
     "keywords": [
         "secretlint"
@@ -61,5 +61,8 @@
     },
     "publishConfig": {
         "access": "public"
+    },
+    "engines": {
+        "node": ">=22.0.0"
     }
 }

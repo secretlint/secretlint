@@ -21,7 +21,7 @@
             },
             "severity": "error",
             "messageId": "TELEGRAM_BOT_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-telegram/README.md#TELEGRAM_BOT_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/telegram.md#TELEGRAM_BOT_TOKEN",
             "data": {
                 "ID": "12345:ACCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"
             }
@@ -46,7 +46,7 @@
             },
             "severity": "error",
             "messageId": "TELEGRAM_BOT_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-telegram/README.md#TELEGRAM_BOT_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/telegram.md#TELEGRAM_BOT_TOKEN",
             "data": {
                 "ID": "1234567890123456:ADDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD"
             }
@@ -71,7 +71,7 @@
             },
             "severity": "error",
             "messageId": "TELEGRAM_BOT_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-telegram/README.md#TELEGRAM_BOT_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/telegram.md#TELEGRAM_BOT_TOKEN",
             "data": {
                 "ID": "54321:Aab_CD-09ab_CD-09ab_CD-09ab_CD-09_-"
             }

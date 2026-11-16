@@ -21,7 +21,7 @@
             },
             "severity": "error",
             "messageId": "AzureTenantId",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-azure/README.md#AzureTenantId",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/azure.md#AzureTenantId",
             "data": {
                 "ID": "dac6fb3d-713c-4555-8a97-4089aa3849be"
             }

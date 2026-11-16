@@ -21,7 +21,7 @@
             },
             "severity": "error",
             "messageId": "SLACK_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-slack/README.md#SLACK_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/slack.md#SLACK_TOKEN",
             "data": {
                 "TOKEN": "xoxp-23984754863-2348975623000-2348973623000-cbbd37080273x3ef2577a1a365334"
             }

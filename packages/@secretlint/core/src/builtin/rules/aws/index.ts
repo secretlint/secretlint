@@ -81,20 +81,24 @@ export const creator: SecretLintRuleCreator<Options> = {
         type: "scanner",
         supportedContentTypes: ["text"],
         docs: {
-            url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md",
+            url: "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/aws.md",
         },
     },
     patterns: [
         {
             pattern: AWSAccessKeyIDPattern,
-            keywords: ["A3T", "AKIA", "AGPA", "AIDA", "AROA", "AIPA", "ANPA", "ANVA", "ASIA"],
-            // the prefixes are upper case only. "asia" and "aida" appear often in lower case
-            caseSensitiveKeywords: true,
+            // "asia" and "aida" appear often as words, so each prefix has a guard:
+            // the upper case letters and digits that follow it in the ID
+            keywords: [
+                { keyword: "A3T", after: "[A-Z0-9]{17,}" },
+                ...["AKIA", "AGPA", "AIDA", "AROA", "AIPA", "ANPA", "ANVA", "ASIA"].map((keyword) => {
+                    return { keyword, after: "[A-Z0-9]{16,}" };
+                }),
+            ],
             scope: "line",
+            // "AKIA..." is an ID, not a secret, so it is reported only if the option is set
+            when: "options.enableIDScanRule",
             report(match, context) {
-                if (!context.options.enableIDScanRule) {
-                    return;
-                }
                 // Built-in ignore
                 if (BUILTIN_IGNORED.AWSAccountID.includes(match.text)) {
                     return;
@@ -115,13 +119,11 @@ export const creator: SecretLintRuleCreator<Options> = {
         {
             // The connector between the name and the value may include line breaks, so the scope is "file"
             pattern: AWSAccountIDPattern,
-            keywords: ["ACCOUNT", "account", "Account"],
-            caseSensitiveKeywords: true,
+            keywords: ["account"],
             scope: "file",
+            // The keywords are common words, so the pattern should not run unless the option is set
+            when: "options.enableIDScanRule",
             report(match, context) {
-                if (!context.options.enableIDScanRule) {
-                    return;
-                }
                 const allowedResults = matchPatterns(match.text, context.options.allows ?? []);
                 if (allowedResults.length > 0) {
                     return;

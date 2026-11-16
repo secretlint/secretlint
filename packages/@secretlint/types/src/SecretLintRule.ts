@@ -43,6 +43,10 @@ type SecretLintRuleCreatorBase = {
     meta: {
         id: string;
         type: "scanner" | "filter";
+        /**
+         * Whether the rule is recommended to use.
+         * For a built-in rule, it is `true` only if the rule is in `@secretlint/secretlint-rule-preset-recommend`.
+         */
         recommended: boolean;
         docs?: {
             url: string;
@@ -74,6 +78,33 @@ type SecretLintRuleCreatorBase = {
     };
 };
 /**
+ * A keyword of a pattern: a string, or a keyword with a guard.
+ *
+ * A guard is for a keyword that is short or common, such as `00`. Such a keyword is in most files,
+ * so the keyword alone does not tell where the secret can be.
+ * `{ keyword: "00", after: "[A-Za-z0-9_-]{40,}" }` is the keyword `00` only where 40 or more characters
+ * of the set follow it. Secretlint checks the guard while it looks for the keywords.
+ *
+ * - `keyword` is written as a keyword of a string is, and it is matched ASCII case-insensitively.
+ * - `after` is one set of ASCII characters and one least count, in the syntax of regular expressions:
+ *   `[` and `]` around characters and ranges, and `{n,}` (n is from 1 to 255).
+ *   In the set, `\` is written only before `\` and `]`, and a `-` as a character is the last item.
+ * - The set is compared as it is written: `[a-f0-9]` does not have `A`.
+ * - The syntax is strict. Other forms, such as `{40}`, `{32,40}`, `+`, `\d`, and `[^...]`, are an error.
+ * - Every match of the pattern that contains the keyword must also have the characters that meet the guard
+ *   after it. The tests of `@secretlint/tester` fail if a guard rejects a secret that the pattern reports.
+ *
+ * @example
+ * // The regular expression has 40 characters after "00", so every match meets the guard
+ * {
+ *     pattern: /(?<![A-Za-z0-9_-])00[A-Za-z0-9_-]{40}(?![A-Za-z0-9_-])/g,
+ *     keywords: [{ keyword: "00", after: "[A-Za-z0-9_-]{40,}" }],
+ *     scope: "line",
+ *     report(match, context) {}
+ * }
+ */
+export type SecretLintRulePatternKeyword = string | { keyword: string; after: string };
+/**
  * A rule that is defined with code.
  * It is for a rule that can not be written as `patterns`, for example a rule that parses the content.
  */
@@ -90,8 +121,11 @@ export type SecretLintRuleHandlerCreator<Options = SecretLintRuleCreatorOptions>
  * runs the regular expression of a pattern only where its keywords are found,
  * and calls `report()` of the pattern for each match.
  */
-export type SecretLintRulePatternCreator<Options = SecretLintRuleCreatorOptions> = SecretLintRuleCreatorBase & {
-    patterns: SecretLintRulePattern<Options>[];
+export type SecretLintRulePatternCreator<
+    Options = SecretLintRuleCreatorOptions,
+    When extends string = SecretLintRulePatternWhen<Options>,
+> = SecretLintRuleCreatorBase & {
+    patterns: SecretLintRulePattern<Options, When>[];
     /**
      * Secretlint that supports `patterns` does not call `create()` of a rule that has `patterns`.
      * Define it only if the rule should also work on secretlint that does not support `patterns`:
@@ -101,10 +135,16 @@ export type SecretLintRulePatternCreator<Options = SecretLintRuleCreatorOptions>
 };
 /**
  * A rule is defined with `create()` or with `patterns`.
+ *
+ * `When` is the strings that `when` of a pattern accepts.
+ * It is computed from `Options`, so you do not need to pass it.
+ * It is a type parameter of its own so that a rule with its own `Options` is assignable to
+ * `SecretLintRuleCreator<unknown>`, such as an item of `rules` of a preset.
  */
-export type SecretLintRuleCreator<Options = SecretLintRuleCreatorOptions> =
-    | SecretLintRuleHandlerCreator<Options>
-    | SecretLintRulePatternCreator<Options>;
+export type SecretLintRuleCreator<
+    Options = SecretLintRuleCreatorOptions,
+    When extends string = SecretLintRulePatternWhen<Options>,
+> = SecretLintRuleHandlerCreator<Options> | SecretLintRulePatternCreator<Options, When>;
 /**
  * A match of {@link SecretLintRulePattern}
  */
@@ -140,13 +180,35 @@ export type SecretLintRulePatternContext<Options = SecretLintRuleCreatorOptions>
     source: SecretLintSourceCode;
 };
 /**
+ * The names of the options whose value is a boolean.
+ * If the type of the options has no property, such as the default `{}` and `unknown`, any name is accepted.
+ */
+export type SecretLintRulePatternBooleanOptionName<Options> = [keyof Options] extends [never]
+    ? string
+    : Extract<
+          {
+              [Name in keyof Options]-?: NonNullable<Options[Name]> extends boolean ? Name : never;
+          }[keyof Options],
+          string
+      >;
+/**
+ * The strings that `when` of a pattern accepts:
+ * `options.` and the name of a boolean option of the rule, with or without `!` before it.
+ */
+export type SecretLintRulePatternWhen<Options> =
+    | `options.${SecretLintRulePatternBooleanOptionName<Options>}`
+    | `!options.${SecretLintRulePatternBooleanOptionName<Options>}`;
+/**
  * A pattern of a rule.
  *
  * Secretlint throws an error if a pattern has a property that it does not know.
  * So a rule that uses a property of a newer secretlint does not run on an older secretlint with a different result.
  * The meaning of a property is never changed: a change is added as a property with a new name.
  */
-export type SecretLintRulePattern<Options = SecretLintRuleCreatorOptions> = {
+export type SecretLintRulePattern<
+    Options = SecretLintRuleCreatorOptions,
+    When extends string = SecretLintRulePatternWhen<Options>,
+> = {
     /**
      * The regular expression that finds the secret.
      * Secretlint finds all matches of the pattern, regardless of the "g" flag.
@@ -156,22 +218,15 @@ export type SecretLintRulePattern<Options = SecretLintRuleCreatorOptions> = {
      * Keywords for pre-filtering.
      * Secretlint runs the pattern only when the content contains at least one of the keywords.
      *
-     * - Keywords are matched ASCII case-insensitively, unless `caseSensitiveKeywords` is true.
+     * - Keywords are always matched ASCII case-insensitively.
      * - Every match of the pattern must contain one of the keywords.
      *   If `scope` is "line", the line of the match must contain one of the keywords.
      * - Empty keywords and non-ASCII keywords disable the pre-filter for the pattern.
+     * - An item can be a keyword with a guard. See {@link SecretLintRulePatternKeyword}.
      *
      * Default: undefined (the pattern runs for all content)
      */
-    keywords?: string[];
-    /**
-     * If true, the keywords are matched case-sensitively.
-     * Use it when the pattern is case-sensitive and the keywords appear often in another case.
-     * For example, `/SG\.\w+/` with `["SG."]` should not run for "msg.".
-     *
-     * Default: false (ASCII case-insensitive)
-     */
-    caseSensitiveKeywords?: boolean;
+    keywords?: SecretLintRulePatternKeyword[];
     /**
      * The scope that the pattern needs to see.
      *
@@ -186,6 +241,28 @@ export type SecretLintRulePattern<Options = SecretLintRuleCreatorOptions> = {
      * Default: "file"
      */
     scope?: "line" | "file";
+    /**
+     * The condition for the pattern to be a part of the lint.
+     * It refers to a boolean option of the rule as `options.<name>`:
+     *
+     * - `"options.name"`: the pattern is enabled only when the option is `true`.
+     * - `"!options.name"`: the pattern is enabled unless the option is `true`.
+     *
+     * An option that is not set is `false`.
+     * Secretlint throws an error if the value of the option is not a boolean.
+     *
+     * Secretlint reads the option once for a config, and a disabled pattern is not a part of the lint:
+     * its keywords are not searched, and the pattern never runs.
+     * Use it for a pattern that an option turns on or off, instead of checking the option in `report()`.
+     *
+     * Only these two forms are supported. Secretlint throws an error on any other string.
+     *
+     * Default: undefined (the pattern is always enabled)
+     * @example
+     * // type Options = { enableIDScanRule?: boolean }
+     * when: "options.enableIDScanRule"
+     */
+    when?: When;
     /**
      * Called for each match of the pattern.
      * Check the match (allow list, checksum, etc.) and call `context.report()`.

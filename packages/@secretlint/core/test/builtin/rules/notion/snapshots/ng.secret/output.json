@@ -21,7 +21,7 @@
             },
             "severity": "error",
             "messageId": "NOTION_INTEGRATION_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-notion/README.md#NOTION_INTEGRATION_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/notion.md#NOTION_INTEGRATION_TOKEN",
             "data": {
                 "TOKEN": "ntn_12345678901aBcDeFgHiJkLmNoPqRsT1234567890abcde"
             }
@@ -46,7 +46,7 @@
             },
             "severity": "error",
             "messageId": "NOTION_INTEGRATION_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-notion/README.md#NOTION_INTEGRATION_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/notion.md#NOTION_INTEGRATION_TOKEN",
             "data": {
                 "TOKEN": "ntn_98765432109ZyXwVuTsRqPoNmLkJiHgFeDcBa012345678"
             }
@@ -71,7 +71,7 @@
             },
             "severity": "error",
             "messageId": "NOTION_INTEGRATION_TOKEN",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-notion/README.md#NOTION_INTEGRATION_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/notion.md#NOTION_INTEGRATION_TOKEN",
             "data": {
                 "TOKEN": "ntn_11122233344AbCdEfGhIjKlMnOpQrStUvWxYz012345678"
             }

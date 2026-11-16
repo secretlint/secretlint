@@ -20,8 +20,28 @@ describe("createEngine", () => {
                 configFilePath: "/not/found/config",
                 formatter: "stylish",
             }),
-            /secretlint config is not found/,
+            /secretlint config file is not found/,
         );
+    });
+    it("should use the recommend preset when no config is found", async () => {
+        // os.tmpdir() and its parents have no .secretlintrc
+        const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "secretlint-node-"));
+        try {
+            const secretFilePath = path.join(tmpDir, "token.txt");
+            // a GitHub token that is not real: the rule checks only its format
+            fs.writeFileSync(secretFilePath, `token=ghp_${"A".repeat(36)}`);
+            const engine = await createEngine({
+                color: false,
+                cwd: tmpDir,
+                formatter: "json",
+            });
+            const result = await engine.executeOnFiles({ filePathList: [secretFilePath] });
+            assert.strictEqual(result.ok, false);
+            const [fileResult] = JSON.parse(result.output);
+            assert.strictEqual(fileResult.messages[0].ruleParentId, "@secretlint/secretlint-rule-preset-recommend");
+        } finally {
+            fs.rmSync(tmpDir, { recursive: true, force: true });
+        }
     });
     it("should create an Engine and execute on files", async () => {
         const engine = await createEngine({
@@ -259,19 +279,16 @@ describe("createEngine profile option", () => {
         const engine = await createEngine(options);
         await engine.executeOnFiles({ filePathList: [path.join(__dirname, "fixtures/SECRET.txt")] });
         assert.strictEqual(secretLintProfiler.isEnabled, false);
-        assert.deepStrictEqual(await secretLintProfiler.getMeasures(), []);
+        assert.deepStrictEqual(secretLintProfiler.getStats(), []);
     });
     it("should enable the profiler and collect measures if profile is true", async () => {
         const engine = await createEngine({ ...options, profile: true });
         await engine.executeOnFiles({ filePathList: [path.join(__dirname, "fixtures/SECRET.txt")] });
         assert.strictEqual(secretLintProfiler.isEnabled, true);
-        // wait for PerformanceObserver callback
-        await new Promise((resolve) => setTimeout(resolve, 100));
-        const measures = await secretLintProfiler.getMeasures();
-        assert.ok(
-            measures.some((measure) => measure.name === "@node>execute"),
-            `should have measures: ${measures.map((measure) => measure.name).join(", ")}`,
-        );
+        const types = secretLintProfiler.getStats().map((stat) => stat.type);
+        ["@node>execute", "@node>read-file", "@core>lint", "@core>keyword-scan"].forEach((type) => {
+            assert.ok(types.includes(type as (typeof types)[number]), `should have ${type}: ${types.join(", ")}`);
+        });
     });
     it("should disable the profiler if profile is false", async () => {
         secretLintProfiler.setEnabled(true);

@@ -65,7 +65,40 @@ else
 fi
 ./secretlint --help
 # run "**/*" test
-./secretlint "**/*"
+# This step hung in CI a few times (the cause is not known yet).
+# Stop it after 120 seconds and print the debug log and the state of its threads, to show where it waits.
+# The logs are outside of the current directory, so "**/*" does not lint them
+LINT_ALL_LOG_DIR=$(mktemp -d)
+set +e
+DEBUG=secretlint,@secretlint/node,@secretlint/core ./secretlint "**/*" >"$LINT_ALL_LOG_DIR/stdout.txt" 2>"$LINT_ALL_LOG_DIR/debug.txt" &
+LINT_ALL_PID=$!
+for _ in $(seq 1 120); do
+    kill -0 "$LINT_ALL_PID" 2>/dev/null || break
+    sleep 1
+done
+if kill -0 "$LINT_ALL_PID" 2>/dev/null; then
+    echo "❌ secretlint \"**/*\" did not end in 120 seconds"
+    if [ -d "/proc/$LINT_ALL_PID/task" ]; then
+        echo "Threads (name, state, wait channel):"
+        for task in /proc/"$LINT_ALL_PID"/task/*; do
+            echo "  $(cat "$task/comm") $(awk '/^State:/ {print $2}' "$task/status") $(cat "$task/wchan" 2>/dev/null)"
+        done
+    fi
+    echo "Debug log (the last 100 lines):"
+    tail -n 100 "$LINT_ALL_LOG_DIR/debug.txt"
+    kill -9 "$LINT_ALL_PID"
+    exit 1
+fi
+wait "$LINT_ALL_PID"
+LINT_ALL_STATUS=$?
+set -e
+cat "$LINT_ALL_LOG_DIR/stdout.txt"
+if [ "$LINT_ALL_STATUS" -ne 0 ]; then
+    echo "❌ secretlint \"**/*\" failed (status: $LINT_ALL_STATUS)"
+    tail -n 100 "$LINT_ALL_LOG_DIR/debug.txt"
+    exit 1
+fi
+rm -rf "$LINT_ALL_LOG_DIR"
 
 # Verify that large output is fully flushed before the process exits.
 # mask-result outputs the whole content of the file. JSON output does not have the content.
@@ -92,4 +125,36 @@ if [ "${pipeline_status[0]}" -ne 1 ] || [ "${pipeline_status[1]}" -ne 0 ]; then
     echo "❌ Large piped output test failed"
     exit 1
 fi
+rm large-input.txt
+
+# Verify that the binary has the worker thread that scans files for keywords.
+# Many large files make the scan long enough to start a worker.
+mkdir many-files
+node -e '
+const fs = require("node:fs");
+const content = "lorem ipsum dolor sit amet\n".repeat(10000);
+for (let i = 0; i < 1200; i++) {
+    fs.writeFileSync(`many-files/file-${i}.txt`, content);
+}
+fs.writeFileSync("many-files/secret.txt", "AWS_SECRET_ACCESS_KEY = wJalrXUtnFEMI/K7MDENG/bPxRfiCYSECRETSKEY\n");
+'
+set +e
+DEBUG=@secretlint/node ./secretlint "many-files/**/*" >worker-stdout.txt 2>worker-stderr.txt
+WORKER_STATUS=$?
+set -e
+if [ "$WORKER_STATUS" -ne 1 ] || ! grep -q "secret.txt" worker-stdout.txt; then
+    echo "❌ The lint with a keyword scan worker did not report the secret (status: $WORKER_STATUS)"
+    exit 1
+fi
+if grep -q "keyword scan worker error\|keyword scan worker can not start" worker-stderr.txt; then
+    echo "❌ The keyword scan worker failed in the binary"
+    grep -m 3 "keyword scan worker" worker-stderr.txt
+    exit 1
+fi
+if ! grep -qE "keyword scan workers: [1-9]" worker-stderr.txt; then
+    echo "❌ The keyword scan worker did not start in the binary"
+    exit 1
+fi
+echo "✅ Keyword scan worker check passed"
+rm -rf many-files worker-stdout.txt worker-stderr.txt
 cd -

@@ -12,10 +12,10 @@ The parent Product is [Secretlint](../../product.md).
 ### Scope
 
 - The built-in rules and their rule ids
-- Using the built-in rules without installing a package, and the packages of the same names
+- Using the built-in rules without installing a package, and the removal of the packages of the same names
 - The recommended preset and the canary preset: which rules they contain and how they register them
 - Options, severities, allowed messages, and disabling of the rules in a preset
-- The documentation of each rule
+- The documentation of each rule, where it is, and the links to it
 - Adding a built-in rule to the Secretlint repository, and testing the built-in rules
 
 ### Out of scope
@@ -45,6 +45,18 @@ Scenario: When the configuration file lists one rule, only that rule runs
 - When: The developer lints a file that contains an AWS access key and a GitHub token.
 - Then: The result has a message of `@secretlint/secretlint-rule-aws` and no message of `@secretlint/secretlint-rule-github`.
 
+Scenario: `--init` writes the recommended preset without the preset package
+
+- Given: Only `secretlint` is installed, and there is no configuration file.
+- When: The developer runs `secretlint --init`.
+- Then: The configuration file has `{ "id": "@secretlint/secretlint-rule-preset-recommend" }`.
+
+Scenario: `--init` writes the recommended preset and the rule packages in `package.json`
+
+- Given: `secretlint` and `@secretlint/secretlint-rule-no-homedir` are in `package.json`, and there is no configuration file.
+- When: The developer runs `secretlint --init`.
+- Then: The configuration file has the recommended preset first, followed by `{ "id": "@secretlint/secretlint-rule-no-homedir" }`.
+
 ### Keep a configuration that installs the rule packages
 
 As a developer who installed the preset package as the documentation said, I want my configuration and `package.json` to keep working, so that I do not have to change anything when I update Secretlint.
@@ -57,9 +69,9 @@ Scenario: When an older preset package is installed, the built-in preset of Secr
 - When: The developer lints a file that contains a secret that a rule added in the newer Secretlint detects.
 - Then: The result has the message of that rule, because the preset of the installed Secretlint runs, not the installed package.
 
-Scenario: When code imports a rule from its package, it gets the built-in rule
+Scenario: When code imports a rule, it imports it from `@secretlint/core`
 
-- Given: A program imports `creator` from `@secretlint/secretlint-rule-aws` of the same version as `@secretlint/core`.
+- Given: A program imports `creator` from `@secretlint/core/builtin/rules/aws`.
 - When: The program passes the creator to `@secretlint/core` and lints a file with an AWS access key.
 - Then: The result is the same as the result of the built-in rule `@secretlint/secretlint-rule-aws`.
 
@@ -93,6 +105,60 @@ Scenario: When a rule is listed both in a preset and on its own, loading fails
 - When: The developer runs Secretlint.
 - Then: Secretlint stops with an error that says `@secretlint/secretlint-rule-aws` is already registered, and no file is linted.
 
+### Turn on a part of a rule with an option
+
+As a developer, I want a part of a rule that is off by default to cost nothing until I turn it on with an option, so that a check that I do not use does not make the lint slower.
+
+**Acceptance criteria:**
+
+Scenario: When the option is not set, the part of the rule is not a part of the lint
+
+- Given: The configuration file has `{ "id": "@secretlint/secretlint-rule-aws" }` without options.
+- When: The developer lints a file that contains an AWS access key ID and an AWS secret access key.
+- Then: The result has the message of the secret access key and no message of the access key ID, and Secretlint does not search the file for the access key ID.
+
+Scenario: When the option is true, the part of the rule reports
+
+- Given: The configuration file has `{ "id": "@secretlint/secretlint-rule-aws", "options": { "enableIDScanRule": true } }`.
+- When: The developer lints the same file.
+- Then: The result has the message of the access key ID and the message of the secret access key.
+
+Scenario: When the option is not a boolean, Secretlint stops
+
+- Given: The configuration file has `{ "id": "@secretlint/secretlint-rule-aws", "options": { "enableIDScanRule": "true" } }`.
+- When: The developer runs Secretlint.
+- Then: Secretlint stops with an error that says the option `enableIDScanRule` of `@secretlint/secretlint-rule-aws` should be a boolean, and no file is linted.
+
+### Write my own patterns without slowing down the lint
+
+As a developer, I want to add patterns of my own secrets with `@secretlint/secretlint-rule-pattern`, and to have them cost no more than the patterns of the built-in rules, so that a pattern of my own, or an entry that `secretlint --init` added without patterns, does not make every file run.
+
+**Acceptance criteria:**
+
+Scenario: When the pattern rule has no patterns, it is not a part of the lint
+
+- Given: The configuration file has the recommended preset and `{ "id": "@secretlint/secretlint-rule-pattern" }` without options, as `secretlint --init` writes it.
+- When: The developer lints a repository where most files have no keyword of any rule.
+- Then: The result is the same as with the recommended preset alone, and Secretlint does not read a file as a string only for the pattern rule.
+
+Scenario: When a pattern has `keywords`, it runs only on files that contain one of them
+
+- Given: The pattern rule has `{ "name": "internal token", "patterns": ["/itk_[a-z0-9]{32}/"], "keywords": ["itk_"] }`.
+- When: The developer lints a file that contains `itk_` followed by 32 characters, and a file that does not contain `itk_`.
+- Then: The first file has a message of the pattern rule, and the pattern does not run on the second file.
+
+Scenario: When a pattern has no `keywords`, Secretlint finds them in the pattern
+
+- Given: The pattern rule has `{ "name": "password", "patterns": ["/password\\s*=\\s*\\S+/i"] }` without `keywords`.
+- When: The developer lints a file with `PASSWORD = hunter2` and a file without the word `password`.
+- Then: The first file has a message of the pattern rule, and the pattern does not run on the second file.
+
+Scenario: When no keyword can be found in a pattern, the pattern runs on every file
+
+- Given: The pattern rule has `{ "name": "hex", "patterns": ["/[0-9a-f]{64}/"] }` without `keywords`.
+- When: The developer lints the repository with `--profile`.
+- Then: The pattern reports in the same way as before, and the profile shows the pattern as `hex (no keywords)`.
+
 ### Try new rules early
 
 As a developer, I want to use the rules that may be added to the recommended preset in the next major release, so that I can check them on my repository before they become recommended.
@@ -117,6 +183,36 @@ Scenario: When a rule reports a message, the message links to the documentation 
 - When: The developer reads the result.
 - Then: The message has a URL to the documentation of the rule and the message ID.
 
+Scenario: When the default branch of the repository is renamed, the link still opens
+
+- Given: A message has the URL of the documentation of its rule.
+- When: The default branch of the Secretlint repository is renamed, for example from `master` to `main`, and the developer opens the URL.
+- Then: The documentation of the rule opens.
+
+### Keep the links to the files of the repository working
+
+As a maintainer, I want a pull request that deletes or moves a file to fail its checks when a link still points to the old path, so that I find the broken link before it is released in a package.
+
+**Acceptance criteria:**
+
+Scenario: When a pull request deletes the documentation of a rule, the check fails
+
+- Given: `docs.url` of the AWS rule points to `docs/rules/aws.md`.
+- When: A pull request deletes `docs/rules/aws.md` and does not change the links to it.
+- Then: The check of the links fails, and its output names each file and line that links to `docs/rules/aws.md`.
+
+Scenario: When a Markdown file links to a file that does not exist, the check fails
+
+- Given: A Markdown file has the relative link `[bug report](.github/ISSUE_TEMPLATE.md)`, and the file does not exist.
+- When: The check of the links runs.
+- Then: The check fails, and its output names the Markdown file, the line, and the link.
+
+Scenario: When every link points to an existing file, the check passes without the network
+
+- Given: Every link to a file of the repository points to an existing file.
+- When: The check of the links runs on a machine without network access.
+- Then: The check passes.
+
 ### Add a built-in rule to the Secretlint repository
 
 As a rule author, I want to add a rule for a new kind of secret to Secretlint without creating an npm package, so that the rule can be released without setting up a new package on npm.
@@ -127,7 +223,7 @@ Scenario: When the rule author generates a rule, the files of a built-in rule ar
 
 - Given: The rule author is in the Secretlint repository.
 - When: The rule author runs `pnpm run gen:rule` and enters the name `example`.
-- Then: The code and README of the rule, and the test cases `ng.secret` and `ok.valid`, are created in `@secretlint/core`, and no new package directory is created.
+- Then: The code of the rule and the test cases `ng.secret` and `ok.valid` are created in `@secretlint/core`, the documentation of the rule is created as `docs/rules/example.md`, and no new package directory is created.
 
 Scenario: When a built-in rule is registered, it is used by its rule id
 
@@ -140,6 +236,24 @@ Scenario: When the tests of Secretlint run, the snapshot tests of every built-in
 - Given: Each built-in rule has a directory of snapshot test cases in `@secretlint/core`.
 - When: The rule author runs the tests of `@secretlint/core`.
 - Then: Each test case is checked in the same way as `@secretlint/tester` checks a custom rule, including the check of keywords and scope, and a built-in rule without a snapshot directory makes the tests fail.
+
+### Add a rule for a secret with a short prefix
+
+As a rule author, I want to state what follows the keyword of my pattern, so that a rule for a key with a short or common prefix does not make the lint slow, and I do not need a keyword that is not a part of the key.
+
+**Acceptance criteria:**
+
+Scenario: When a pattern declares a guarded keyword, the rule reports the same secrets
+
+- Given: A pattern has the regular expression `/00[A-Za-z0-9_-]{40}/` and the guarded keyword `{ keyword: "00", after: "[A-Za-z0-9_-]{40,}" }` in its keywords.
+- When: A file that has such a key is linted.
+- Then: The rule reports the key, the same as with the keyword `00`.
+
+Scenario: When the guard of a guarded keyword is not supported, the lint stops with an error
+
+- Given: A pattern has the guarded keyword `{ keyword: "00", after: "[^ ]{40,}" }`, which uses a syntax that Secretlint does not support.
+- When: A developer lints with the rule.
+- Then: Secretlint stops with an error that names the rule and the guarded keyword, and no file is linted.
 
 ## KPIs
 
@@ -164,7 +278,7 @@ Scenario: When the tests of Secretlint run, the snapshot tests of every built-in
 
 ##### Rule ids
 
-Each built-in rule has the rule id `@secretlint/secretlint-rule-<name>`, which is also the name of its npm package.
+Each built-in rule has the rule id `@secretlint/secretlint-rule-<name>`, which was the name of its npm package.
 The rule id is used in the configuration file and as `ruleId` of the messages.
 The short form, such as `@secretlint/aws`, also names the built-in rule.
 
@@ -183,16 +297,109 @@ When a package of the same name is installed, the built-in rule is used and the 
 
 ##### Packages of the same names
 
-The packages `@secretlint/secretlint-rule-<name>` of the built-in rules, and the packages of the two presets, are still published. Each exports the same rule as the built-in rule of the same version, so code that imports `creator` from them keeps working.
-Deprecating these packages is a separate change.
+The packages `@secretlint/secretlint-rule-<name>` of the built-in rules, and the packages of the two presets, are removed from the repository in the next major release, and are not published anymore. A rule is in one place, as a built-in rule. Two places for the same rule, a built-in rule and a package that may have another version, are confusing, and the configuration does not need the packages.
+
+- The rule ids stay, so a configuration file keeps working.
+- The released versions of the packages stay on npm. When one is installed, it is not loaded, as described in "Installation", so a `package.json` that has one keeps working.
+- Code that imports `creator` from one of the packages imports it from `@secretlint/core/builtin/rules/<name>`, or the presets from `@secretlint/core/builtin`, instead. This is a breaking change.
+- The packages are deprecated on npm after the major release, with a message that the rule is built into Secretlint.
 
 ##### Browsers
 
 The built-in rules can be loaded and run in a browser without Node.js modules. A rule that checks binary content, such as the GCP rule for a `.p12` file, uses the bytes that the caller passes with the source, and does not read the file.
 
+##### Patterns that an option turns on or off
+
+A rule can have a pattern that reports only when an option of the rule is set, such as a pattern for an ID that is not a secret by itself.
+The rule states this as data: the pattern has a condition that refers to the option. The rule does not decide it with its own code.
+Secretlint reads the option and decides whether the pattern is a part of the lint. So the decision is made before any file is read, it is the same for every rule, and Secretlint can tell which option turns which pattern on or off.
+
+- The condition refers to a boolean option of the rule as `options.<name>`, with or without `!` before it. With `options.<name>`, the pattern is a part of the lint only when the option is `true`. With `!options.<name>`, the pattern is a part of the lint unless the option is `true`.
+- The condition says where the value comes from (`options.`), so that a condition can refer to a value other than the options of the rule later, without changing the meaning of the existing conditions.
+- An option that is not set is `false`.
+- A pattern that is not a part of the lint costs nothing: Secretlint does not search for its keywords, and does not run it.
+- A pattern without a condition is always a part of the lint.
+- The condition is one way to write "on" and "off". There is no second property for a pattern that an option turns off.
+- The option must be a boolean option of the rule. In TypeScript, a name that is not a boolean option of the rule is a type error.
+- The condition is a small subset of an expression language such as CEL: a reference to an option, and `!`. Other operators, such as `&&`, `||`, and `==`, are not supported. If one is needed, it is added to the condition, and a Secretlint that does not know it stops with an error instead of reading the condition in another way.
+
+##### User-defined patterns
+
+`@secretlint/secretlint-rule-pattern` reports the matches of the patterns that the configuration file defines in its options.
+Secretlint reads these options as patterns, in the same way as the patterns that the built-in rules declare: the patterns are data, and Secretlint runs them.
+
+- An entry without `patterns`, `pattern`, and `filePathGlobs` is not allowed, as before. When the options have no entry, the rule is not a part of the lint: it adds no keyword, and no file runs it.
+- An entry may have `keywords`, a list of ASCII strings. The pattern runs only on a file that contains one of them, matched ASCII case-insensitively. Every match of the pattern must contain one of the keywords; a match without one is not reported. A non-ASCII or empty keyword is an error. `keywords: []` runs the pattern on every file.
+- When an entry has no `keywords`, Secretlint finds strings that every match of a pattern must contain, and uses them as the keywords of that pattern. It only uses a string when it is sure: when a pattern has a part that it does not understand, the pattern has no keywords and runs on every file, as before.
+- The keywords are found only in the ASCII letters of a pattern. A pattern with the flag `i` also matches some non-ASCII letters that fold to an ASCII letter, such as the Kelvin sign (U+212A) for `k`. Such a match is not reported when the file has no keyword in ASCII. Secretlint is a linter and prefers no false positive to no false negative, so this is accepted.
+- An entry with only `filePathGlobs` reports a file whose path matches, without keywords and without matching its content.
+- The rule id, the message ID `PATTERN`, the message, `allows`, and `filePathGlobs` of an entry keep their meaning.
+- `--profile` shows each pattern of the rule by its name, and ` (no keywords)` after the name of a pattern that runs on every file.
+
+##### Keywords with a guard
+
+A pattern can declare guarded keywords: a keyword with a guard, a condition on the characters that follow it. Why Secretlint has guards, and what they keep, is in [Secret scanning](../secret-scanning/requirements.md).
+The rule states the guard as data, as it states keywords, and Secretlint checks it.
+
+- A guarded keyword is an item of the keywords of a pattern. An item is a string, as before, or a keyword object: an object that has the keyword and what the rule states about it. A string means what it meant before: no string is read in a new way.
+- A keyword object has the keyword and its guard: what comes after the keyword, as a set of characters and a count. For example, `{ keyword: "00", after: "[A-Za-z0-9_-]{40,}" }` is the keyword `00` and 40 or more characters of letters, digits, `_`, and `-` after it. An object without a guard is not allowed, because it is a second way to write the string.
+- The keyword of the object is written as a keyword of a string is, with no special characters.
+- What comes after is written in the syntax of regular expressions, and it means what it says: `[A-Za-z0-9_-]{40,}` is 40 or more of these characters.
+- Its syntax is a small subset of the syntax of regular expressions: one set of ASCII characters and one count. The set is written with `[` and `]`, and the count is `{n,}`: it says how many characters follow at least, and a guard states nothing more. A count that reads as a most or as an exact number, such as `{32,40}` or `{40}`, is not supported, because the guard would not check what the count says.
+- The syntax is strict: one thing has one way to write it. A short form that means the same as another form, such as `+` for `{1,}` or `\d` for `0-9`, is not supported.
+- Other syntax, such as a set with `^`, a group, or a second set, is not supported, and the object has no other property. If more is needed, it is added to the syntax or as a property with a new name, and a Secretlint that does not know it does not read the guard in another way.
+- A keyword is always matched without the case of ASCII letters, as a string or in a keyword object. `SG.` is found in `SG.x` and in `msg.x`. A rule has no option for the case of its keywords: an option is one more thing to choose, and a keyword only selects where the regular expression runs, so a loose keyword never loses a secret.
+- What comes after is checked as written: the set `[a-f0-9]` does not have `A`. A rule whose secret has both cases writes both, as `[A-Fa-f0-9]`.
+- A rule that must not run for a common word in another case states it with a guard. For example, `{ keyword: "ASIA", after: "[A-Z0-9]{16,}" }` is found in an AWS access key ID and not in `asia-northeast1`.
+- Every match of the pattern must contain one of its keywords, and for a guarded keyword also the characters that meet the guard. This is the same duty as for keywords, and the tests of the rule check it. See [Custom rules](../custom-rules/requirements.md).
+- A pattern can have strings and objects together in its keywords. The pattern runs where one of them is found.
+- A guarded keyword counts as a keyword for the "line" scope.
+- A guard is for a pattern. `meta.keywords` of a rule without patterns has no guard.
+- A user can write a guarded keyword. The object is data, so it can be in a configuration file: `keywords` of an entry of `@secretlint/secretlint-rule-pattern` has the same items. See "User-defined patterns".
+
 ##### Documentation
 
-Each rule has a README that describes why it reports values, its messages, and its options.
+Each built-in rule and preset has a documentation page that describes why it reports values, its messages, and its options.
+Users read it, so it is with the other documents for users, at `docs/rules/<name>.md` of the repository, where `<name>` is the rule id without `@secretlint/secretlint-rule-`, such as `docs/rules/aws.md` and `docs/rules/preset-recommend.md`.
+The page does not tell the user to install a package for the rule.
+
+The URL of the documentation of a rule (`docs.url`) is `https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/<name>.md`.
+`HEAD` is the default branch of the repository, so the URL does not change when the default branch is renamed.
+
+The pages in `docs/rules/` are not deleted or moved without a reason, because the released versions from now on link to them.
+The links of the versions released before this change point to the READMEs of the packages of the same names. Secretlint does not keep those READMEs for these links: they are deleted with the packages. The link is shown only as a link of a message, such as a link in the terminal, so a broken link of an older version is accepted.
+
+##### Links to the files of the repository
+
+The checks of a pull request include a check of the links to the files of the repository. It fails when a link points to a file that does not exist.
+
+- It checks the URLs `https://github.com/secretlint/secretlint/{blob,tree,raw}/{master,HEAD}/<path>` and `https://raw.githubusercontent.com/secretlint/secretlint/{master,HEAD}/<path>` in the text files of the repository, such as Markdown, code, and `package.json`. These URLs are the ones that reach users in packages and messages.
+- It checks the relative links of the Markdown files, outside code.
+- It does not use the network, so it gives the same result on every machine, and a site that is down does not make it fail.
+- It does not check the part after `#`, links to other sites, the change logs, the snapshots and fixtures of the tests, archived packages, and the files of other projects that the benchmark uses.
+- A placeholder of a template, such as `{{ inputs.name }}` or `<name>`, is not a path, and is not checked.
+
+#### Exceptional behavior
+
+##### The condition of a pattern is not supported
+
+When the condition of a pattern is not a string, or is a string other than `options.<name>` or `!options.<name>`, Secretlint stops with an error that names the rule and the condition, and no file is linted.
+
+##### The value of the option of a condition is not a boolean
+
+When the value of the option that a condition names is set and is not `true` or `false`, such as the string `"true"`, Secretlint stops with an error that names the rule and the option, and no file is linted. Secretlint does not read another value as `true` or `false`.
+
+##### A keyword of a user-defined pattern is not valid
+
+When `keywords` of an entry of `@secretlint/secretlint-rule-pattern` is not a list of non-empty ASCII strings and guarded keywords, Secretlint stops with an error that names the entry, and no file is linted.
+
+##### A guarded keyword is not supported
+
+When an item of the keywords is an object, and it does not have a keyword and a guard as strings, has another property, has a character that is not ASCII, or has a guard that the syntax does not support, Secretlint stops with an error that names the rule and the item, and no file is linted.
+A count that the guard does not check as written, such as `{40}` or `{32,40}`, is an error, and the message says to write `{40,}` or `{32,}`.
+A second way to write the same guard, such as `+` or `\d`, is an error, and the message gives the supported form.
+A count that makes the guard always true, such as `*`, `?`, or `{0,}`, is also an error.
+Secretlint does not run the pattern without the guard instead, so a mistake in the guard is found at the first lint and not as a slow lint.
 
 ### Rule presets
 
@@ -232,7 +439,7 @@ When a rule id is registered twice, for example by a preset and by its own entry
 
 **Overview:** A built-in rule is added as files of Secretlint, not as a new npm package.
 
-**Input:** The name of the rule, its code, its README, and its snapshot test cases.
+**Input:** The name of the rule, its code, its documentation, and its snapshot test cases.
 
 **Output:** A rule that is used by `@secretlint/secretlint-rule-<name>` without installing a package.
 
@@ -241,6 +448,10 @@ When a rule id is registered twice, for example by a preset and by its own entry
 ##### Registration
 
 A new built-in rule is registered as a built-in rule and added to the canary preset. Adding it to the recommended preset is done in a major release.
+
+A built-in rule that is not planned for the recommended preset, such as `@secretlint/secretlint-rule-azure`, is registered as a built-in rule only, and is added to neither preset. It runs only when the configuration file lists its rule id, and `--init` and the configuration used when no configuration file is found do not enable it. Adding such a rule does not make Secretlint report more errors by default, so it can be done in a minor release.
+
+The documentation of a built-in rule and the list of built-in rules in the README tell whether the rule is in the recommended preset.
 
 ##### Tests
 
@@ -253,6 +464,7 @@ The test cases have the same layout as the test cases of `@secretlint/tester`, a
 
 - **Rule id:** The name that identifies a rule or a preset in the configuration file and in the messages.
 - **Rule list of a preset:** The rules that a preset registers, in a fixed order.
+- **Condition of a pattern:** A reference to a boolean option of the rule (`options.<name>`), with or without `!` before it, that decides whether a pattern of the rule is a part of the lint.
 
 ### Relationships
 
@@ -266,8 +478,12 @@ None. Rules read file content, and the reported values can be secrets; masking t
 
 - **npm registry**
   - **Related user stories:** Enable the recommended rules with one id, Keep a configuration that installs the rule packages, Try new rules early
-  - **Reason for dependency:** Secretlint, which has the built-in rules, and the packages of the same names are distributed as npm packages.
+  - **Reason for dependency:** Secretlint, which has the built-in rules, is distributed as npm packages. The released versions of the packages of the same names stay there.
   - **Contractual and usage decisions:** Public packages on the npm registry, free of charge.
+- **GitHub**
+  - **Related user stories:** Read why a value is reported, Keep the links to the files of the repository working
+  - **Reason for dependency:** The documentation of the rules is read on the Secretlint repository on GitHub, and the URLs in the messages point to it.
+  - **Contractual and usage decisions:** A public repository, free of charge. When a branch is renamed, GitHub redirects the URLs of files that have the old name of the branch, but not the URLs of raw files ([Renaming a branch](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-branches-in-your-repository/renaming-a-branch)).
 
 ## Security considerations
 
@@ -275,4 +491,9 @@ The provided rules read only the content that Secretlint passes to them, and do 
 
 ## Open questions
 
-None.
+- Is the default branch renamed from `master` to `main`? The maintainer wants it. The URLs of the documentation use `HEAD`, so they do not depend on the name. The files that name `master`, such as the triggers of the workflows, change at the same time as the rename.
+- Where is the documentation of the four rules that Secretlint publishes as custom rules (`no-dotenv`, `no-homedir`, `no-k8s-kind-secret`, and `secp256k1-privatekey`)? It stays in the README of their packages until it is decided whether they become built-in rules.
+- Does the anchor of a message ID, such as `#AWSAccessKeyID`, open the heading on GitHub, whose heading anchors are in lowercase? This is not checked yet, and the check of the links does not check anchors.
+
+- Should `meta.keywords` of a rule without patterns also have guards? No rule needs it today.
+- Which rule gets a guarded keyword next? The AWS rule is the first: the prefixes of its access key ID, such as `ASIA`, have a guard. The other keywords of the recommended preset are long, and a guard changes nothing for them.

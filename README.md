@@ -26,7 +26,7 @@ If you already have installed Docker:
 
 If you already have installed Node.js:
 
-    npx @secretlint/quick-start "**/*"
+    npx secretlint "**/*"
 
 After running, 
 If you got empty result and exit status is `0`, your project is secure.
@@ -50,10 +50,8 @@ You can check all files under the current directory with secretlint by following
 
 [`secretlint/secretlint` docker container](https://hub.docker.com/r/secretlint/secretlint) work without configuration by design.
 
-This Docker Image has built-in packages:
+This Docker Image has the [built-in rules](#built-in-rules), such as [@secretlint/secretlint-rule-preset-recommend](./docs/rules/preset-recommend.md) and [@secretlint/secretlint-rule-pattern](./docs/rules/pattern.md), and this package:
 
-- [@secretlint/secretlint-rule-preset-recommend](https://www.npmjs.com/package/@secretlint/secretlint-rule-preset-recommend) 
-- [@secretlint/secretlint-rule-pattern](https://www.npmjs.com/package/@secretlint/secretlint-rule-pattern)
 - [@secretlint/secretlint-formatter-sarif](https://www.npmjs.com/package/@secretlint/secretlint-formatter-sarif)
 
 For more details, please see [secretlint's Dockerfile](./publish/docker).
@@ -62,23 +60,26 @@ For more details, please see [secretlint's Dockerfile](./publish/docker).
 
 **Prerequisites:**  Require [Node.js 22+](https://nodejs.org/).
 
+Upgrading from Secretlint v13? See the [migration guide](./docs/migrations/v13-to-v14.md).
+
 Secretlint is written by JavaScript.
 You can install Secretlint using [npm](https://www.npmjs.com/):
 
 ```
-npm install secretlint @secretlint/secretlint-rule-preset-recommend --save-dev
+npm install secretlint --save-dev
 ```
 
-You should then set up a configuration file:
-
-```
-npx secretlint --init
-```
-
-Finally, you can run Secretlint on any file or directory like this:
+You can run Secretlint on any file or directory like this:
 
 ```
 npx secretlint "**/*"
+```
+
+Without a configuration file, Secretlint uses the [recommended rules](./docs/rules/preset-recommend.md).
+To choose the rules and their options, set up a configuration file:
+
+```
+npx secretlint --init
 ```
 
 :memo: Secretlint supports [glob pattern](https://github.com/mrmlnc/fast-glob#basic-syntax) and glob pattern should be wrapped by a double quote.
@@ -93,8 +94,8 @@ You can use `secretlint` command without Node.js by using a single-executable bi
 
 1. Download the latest binary from [Releases page](https://github.com/secretlint/secretlint/releases) 
 2. Change the file permission to executable: `chmod +x ./secretlint`
-3. Run `./secretlint --init` to create a configuration file
-4. Run `./secretlint "**/*"` to lint your project
+3. Run `./secretlint "**/*"` to lint your project with the recommended rules
+4. Run `./secretlint --init` to create a configuration file when you want to choose the rules
 
 For more details, please see [publish/binary-compiler](./publish/binary-compiler) README.
 
@@ -116,8 +117,8 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
     --init             setup config file. Create .secretlintrc.json file from your package.json
     --format           [String] formatter name. Default: "stylish". Available Formatter: checkstyle, compact, github, jslint-xml, junit, pretty-error, stylish, tap, unix, json, mask-result, table
     --output           [path:String] output file path that is written of reported result.
-    --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
-    --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
+    --secretlintrc     [path:String] path to the config file. Default: .secretlintrc.* from the current directory up to the root, or the recommended rules
+    --secretlintignore [path:String] path to an extra ignore file, relative to cwd. .secretlintignore in each directory is always read
     --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
     --no-color         disable ANSI-color of output.
     --no-terminalLink  disable terminalLink of output.
@@ -127,7 +128,7 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
                        respected by default (since v13).
     
     Options for Developer
-    --profile          Enable performance profile.
+    --profile          Print the performance profile instead of the lint results. --format json prints it as JSON.
     --secretlintrcJSON [String] a JSON string of .secretlintrc. use JSON string instead of rc file.
     
     Experimental Options
@@ -178,6 +179,8 @@ For more details, please see [publish/binary-compiler](./publish/binary-compiler
 ## Configuration
 
 Secretlint has a configuration file `.secretlintrc.{json,yml,js}`.
+Secretlint looks for it from the current directory up to the root. When none is found, Secretlint uses the recommended rules (`@secretlint/secretlint-rule-preset-recommend`).
+`--secretlintrc <path>` names exactly one file: it is not looked for in the parent directories.
 
 - Document: [Configuring Secretlint](./docs/configuration.md)
 
@@ -195,10 +198,11 @@ In it, you'll see some rules configured like this:
 }
 ```
 
-The `id` property is the name of secretlint rule package. 
+`secretlint --init` always writes the recommended preset (or the canary preset when your `package.json` has it), and adds the other rule packages that it finds in your `package.json`.
 
-Secretlint does not have built-in rule.
-You want to add some rule and You should **install** the package and **add** the rule to `.secretlintrc` file.
+The `id` property is the id of a rule.
+The [built-in rules](#built-in-rules) and presets need no installation; add their ids to the `.secretlintrc` file.
+To use a rule that is not built in, **install** its package and **add** the rule to the `.secretlintrc` file.
 
 Each rule has same configuration pattern:
 
@@ -304,11 +308,40 @@ For example, If you want to ignore "AWSAccountID" and "AWSAccessKeyID" of "@secr
 
 Secretlint walks the file system the same way Git does, honouring nested `.gitignore` files. A file or directory matched by any `.gitignore` along the path from the working directory to the file is skipped.
 
-`.secretlintignore` works the same way as `.gitignore` and is consulted in addition. The resolution order is:
+`.secretlintignore` works the same way as `.gitignore` and is consulted in addition. A file is skipped when any of these sources ignores it:
 
-1. Built-in ignores: `.git`, `node_modules`, and the `.secretlintrc*` family.
-2. The file pointed to by `--secretlintignore` (default: `.secretlintignore`).
-3. Each directory's `.gitignore` (cascaded).
+- Built-in ignores: `.git`, `node_modules`, and the `.secretlintrc*` family.
+- `.secretlintignore` in each directory (cascaded).
+- Each directory's `.gitignore` (cascaded).
+- The file given by `--secretlintignore`.
+
+Each source is evaluated on its own with `.gitignore` semantics, and the results are combined. A `!` rule only re-includes what the same source ignores: for example, `!a.txt` in `.gitignore` does not bring back `a.txt` when `.secretlintignore` ignores it. To scan files that `.gitignore` ignores, pass `--no-gitignore`.
+
+#### `--secretlintignore`
+
+Everything is relative to the working directory (`cwd`). secretlint always reads `.secretlintignore` in every directory it walks. With the option, it also reads the given file, resolved from `cwd`, and its patterns are matched from `cwd` (like Git's [`core.excludesFile`](https://git-scm.com/docs/gitignore)). Like the other sources, a `!` rule in it only re-includes what the same file ignores.
+
+Example project (`cwd` is `project/`):
+
+```
+project/
+├── .secretlintignore        # contains: a.txt
+├── config/ignore            # contains: b.txt
+├── a.txt
+├── b.txt
+└── sub/
+    ├── .secretlintignore    # contains: c.txt
+    └── c.txt
+```
+
+| Command (run in `project/`)                              | Ignore rules used                                                 | Scanned `.txt` files          |
+| -------------------------------------------------------- | ----------------------------------------------------------------- | ----------------------------- |
+| `secretlint "**/*"`                                      | `.secretlintignore`, `sub/.secretlintignore`                      | `b.txt`                       |
+| `secretlint "**/*" --secretlintignore=config/ignore`     | `.secretlintignore`, `sub/.secretlintignore`, and `config/ignore` | none                          |
+| `secretlint "**/*" --secretlintignore=/abs/path/ignore`  | `.secretlintignore` files, and `/abs/path/ignore` from `project/` | depends on the file           |
+| `secretlint "**/*" --secretlintignore=missing`           | `.secretlintignore` files; prints `ignore file not found` warning | `b.txt`                       |
+
+`.secretlintignore*` and `.secretlintrc*` files themselves are never scanned.
 
 Symlinks found while walking are not followed, like Prettier, gitleaks, and ripgrep. This prevents a symlink inside the project from pulling in files outside the working directory. To scan a symlink's target, pass the symlink path explicitly:
 
@@ -330,7 +363,7 @@ secretlint --no-gitignore "**/*"
 
 ### Ignoring by comment
 
-[@secretlint/secretlint-rule-filter-comments](https://www.npmjs.com/package/@secretlint/secretlint-rule-filter-comments) supports ignoring comment like `secretlint-disable`.
+[@secretlint/secretlint-rule-filter-comments](./docs/rules/filter-comments.md) supports ignoring comment like `secretlint-disable`.
 
 ```
 // secretlint-disable
@@ -370,51 +403,65 @@ For example, you can mask the secrets of `.zsh_history` file and overwrite it.
 $ secretlint .zsh_history --format=mask-result --output=.zsh_history
 ```
 
+## Built-in Rules
+
+Secretlint has these rules as built-in rules. You do not need to install a package for them: list the rule id in the configuration file.
+
+These rules are in [@secretlint/secretlint-rule-preset-recommend](./docs/rules/preset-recommend.md), so they run when the configuration file has the preset or when there is no configuration file.
+
+- [@secretlint/secretlint-rule-npm](./docs/rules/npm.md)
+- [@secretlint/secretlint-rule-aws](./docs/rules/aws.md)
+- [@secretlint/secretlint-rule-gcp](./docs/rules/gcp.md)
+- [@secretlint/secretlint-rule-github](./docs/rules/github.md)
+- [@secretlint/secretlint-rule-gitlab](./docs/rules/gitlab.md)
+- [@secretlint/secretlint-rule-privatekey](./docs/rules/privatekey.md)
+- [@secretlint/secretlint-rule-basicauth](./docs/rules/basicauth.md)
+- [@secretlint/secretlint-rule-slack](./docs/rules/slack.md)
+- [@secretlint/secretlint-rule-sendgrid](./docs/rules/sendgrid.md)
+- [@secretlint/secretlint-rule-shopify](./docs/rules/shopify.md)
+- [@secretlint/secretlint-rule-stripe](./docs/rules/stripe.md)
+- [@secretlint/secretlint-rule-openai](./docs/rules/openai.md)
+- [@secretlint/secretlint-rule-anthropic](./docs/rules/anthropic.md)
+- [@secretlint/secretlint-rule-grafana](./docs/rules/grafana.md)
+- [@secretlint/secretlint-rule-groq](./docs/rules/groq.md)
+- [@secretlint/secretlint-rule-linear](./docs/rules/linear.md)
+- [@secretlint/secretlint-rule-1password](./docs/rules/1password.md)
+- [@secretlint/secretlint-rule-database-connection-string](./docs/rules/database-connection-string.md)
+- [@secretlint/secretlint-rule-databricks](./docs/rules/databricks.md)
+- [@secretlint/secretlint-rule-hashicorp-vault](./docs/rules/hashicorp-vault.md)
+- [@secretlint/secretlint-rule-vercel](./docs/rules/vercel.md)
+- [@secretlint/secretlint-rule-docker](./docs/rules/docker.md)
+- [@secretlint/secretlint-rule-figma](./docs/rules/figma.md)
+- [@secretlint/secretlint-rule-cloudflare](./docs/rules/cloudflare.md)
+- [@secretlint/secretlint-rule-tailscale](./docs/rules/tailscale.md)
+- [@secretlint/secretlint-rule-huggingface](./docs/rules/huggingface.md)
+- [@secretlint/secretlint-rule-notion](./docs/rules/notion.md)
+- [@secretlint/secretlint-rule-filter-comments](./docs/rules/filter-comments.md)
+
+These rules are not in a preset. They run only when the configuration file lists their rule id.
+
+- [@secretlint/secretlint-rule-azure](./docs/rules/azure.md)
+- [@secretlint/secretlint-rule-pattern](./docs/rules/pattern.md)
+
+The Telegram rule is available directly and in the canary preset.
+
+- [@secretlint/secretlint-rule-telegram](./docs/rules/telegram.md)
+
+Secretlint also has built-in rule presets.
+
+- [@secretlint/secretlint-rule-preset-recommend](./docs/rules/preset-recommend.md)
+    - Recommended rule set
+- [@secretlint/secretlint-rule-preset-canary](./docs/rules/preset-canary.md)
+    - Rules that are planned for the recommended rule set
+
 ## Rule Packages
 
-Secretlint rules has been implemented as separated modules.
+Secretlint also publishes these rules as npm packages. Install a package to use it.
 
-- [@secretlint/secretlint-rule-npm](./packages/@secretlint/secretlint-rule-npm)
-- [@secretlint/secretlint-rule-aws](./packages/@secretlint/secretlint-rule-aws)
-- [@secretlint/secretlint-rule-gcp](./packages/@secretlint/secretlint-rule-gcp)
-- [@secretlint/secretlint-rule-github](./packages/@secretlint/secretlint-rule-github)
-- [@secretlint/secretlint-rule-gitlab](./packages/%40secretlint/secretlint-rule-gitlab)
-- [@secretlint/secretlint-rule-privatekey](./packages/@secretlint/secretlint-rule-privatekey)
-- [@secretlint/secretlint-rule-basicauth](./packages/@secretlint/secretlint-rule-basicauth)
-- [@secretlint/secretlint-rule-slack](./packages/@secretlint/secretlint-rule-slack)
-- [@secretlint/secretlint-rule-sendgrid](./packages/%40secretlint/secretlint-rule-sendgrid)
-- [@secretlint/secretlint-rule-shopify](./packages/%40secretlint/secretlint-rule-shopify)
-- [@secretlint/secretlint-rule-stripe](./packages/%40secretlint/secretlint-rule-stripe)
-- [@secretlint/secretlint-rule-openai](./packages/%40secretlint/secretlint-rule-openai)
-- [@secretlint/secretlint-rule-anthropic](./packages/%40secretlint/secretlint-rule-anthropic)
-- [@secretlint/secretlint-rule-grafana](./packages/%40secretlint/secretlint-rule-grafana)
-- [@secretlint/secretlint-rule-groq](./packages/%40secretlint/secretlint-rule-groq)
-- [@secretlint/secretlint-rule-linear](./packages/%40secretlint/secretlint-rule-linear)
-- [@secretlint/secretlint-rule-1password](./packages/%40secretlint/secretlint-rule-1password)
-- [@secretlint/secretlint-rule-database-connection-string](./packages/%40secretlint/secretlint-rule-database-connection-string)
-- [@secretlint/secretlint-rule-databricks](./packages/%40secretlint/secretlint-rule-databricks)
-- [@secretlint/secretlint-rule-hashicorp-vault](./packages/%40secretlint/secretlint-rule-hashicorp-vault)
-- [@secretlint/secretlint-rule-vercel](./packages/%40secretlint/secretlint-rule-vercel)
-- [@secretlint/secretlint-rule-azure](./packages/%40secretlint/secretlint-rule-azure)
-- [@secretlint/secretlint-rule-docker](./packages/%40secretlint/secretlint-rule-docker)
-- [@secretlint/secretlint-rule-figma](./packages/%40secretlint/secretlint-rule-figma)
-- [@secretlint/secretlint-rule-cloudflare](./packages/%40secretlint/secretlint-rule-cloudflare)
-- [@secretlint/secretlint-rule-tailscale](./packages/%40secretlint/secretlint-rule-tailscale)
-- [@secretlint/secretlint-rule-telegram](./packages/%40secretlint/secretlint-rule-telegram)
-- [@secretlint/secretlint-rule-huggingface](./packages/%40secretlint/secretlint-rule-huggingface)
-- [@secretlint/secretlint-rule-notion](./packages/%40secretlint/secretlint-rule-notion)
 - [@secretlint/secretlint-rule-secp256k1-privatekey](./packages/@secretlint/secretlint-rule-secp256k1-privatekey)
 - [@secretlint/secretlint-rule-no-k8s-kind-secret](./packages/@secretlint/secretlint-rule-no-k8s-kind-secret)
-- [@secretlint/secretlint-rule-pattern](./packages/@secretlint/secretlint-rule-pattern)
 - [@secretlint/secretlint-rule-no-homedir](./packages/@secretlint/secretlint-rule-no-homedir)
 - [@secretlint/secretlint-rule-no-dotenv](./packages/%40secretlint/secretlint-rule-no-dotenv)
-- [@secretlint/secretlint-rule-filter-comments](./packages/%40secretlint/secretlint-rule-filter-comments)
-
-
-Also, Secretlint provides rule preset that includes recommended rule set.
-
-- [@secretlint/secretlint-rule-preset-recommend](./packages/@secretlint/secretlint-rule-preset-recommend)
-    - Recommended rule set
 
 ## Custom Rules
 
@@ -669,7 +716,7 @@ secretlint --format @secretlint/secretlint-formatter-sarif "**/*"
 
 ## Semantic Versioning Policy
 
-Secretlint project follows [Semantic Versioning](https://semver.org/ "Semantic Versioning")([secretlint-rule-preset-canary](packages/@secretlint/secretlint-rule-preset-canary) is an exception).
+Secretlint project follows [Semantic Versioning](https://semver.org/ "Semantic Versioning")([secretlint-rule-preset-canary](./docs/rules/preset-canary.md) is an exception).
 
 - Patch release (intended to not break your lint build)
     - A bug fix to the CLI or core (including formatters).
@@ -733,7 +780,7 @@ It means that you can jump to rule documentation from lint error message directl
 
 ![clickable link in output](./docs/assets/docsUrl.png)
 
-> Example on iTerm 2: Cmd + Click error's messageId and open [AWSSecretAccessKey](https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-aws/README.md#awssecretaccesskey) on your browser. 
+> Example on iTerm 2: Cmd + Click error's messageId and open [AWSSecretAccessKey](https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/aws.md#awssecretaccesskey) on your browser. 
 
 If you want to know support terminal, please see [Hyperlinks in Terminal Emulators](https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda). 
 

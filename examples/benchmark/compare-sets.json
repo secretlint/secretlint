@@ -1,0 +1,20 @@
+{
+    "medium": {
+        "repository": "https://github.com/facebook/react",
+        "commit": "61aa00df822d0eb76d0362eb8b6fdd3527693efe",
+        "label": "v19.3.1",
+        "runs": 10
+    },
+    "large": {
+        "repository": "https://github.com/microsoft/vscode",
+        "commit": "69047191fc427f2f92828279aae1d90d8eeda7ab",
+        "label": "1.146.0",
+        "runs": 5
+    },
+    "huge": {
+        "repository": "https://github.com/torvalds/linux",
+        "commit": "c03c1a14507dfaf8b856c2608f9ac216021fc222",
+        "label": "v7.3",
+        "runs": 3
+    }
+}

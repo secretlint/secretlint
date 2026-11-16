@@ -11,13 +11,14 @@ export const creator: SecretLintRuleCreator = {
     messages,
     meta: {
         id: "@secretlint/secretlint-rule-{{ inputs.name }}",
-        recommended: true,
+        // A new rule starts outside the recommended preset. Set it to `true` when the rule is added to the recommended preset.
+        recommended: false,
         type: "scanner",
         supportedContentTypes: ["text"],
         // The rule runs only if the content contains one of the keywords. Every reported string must contain one.
         keywords: ["SECRET"],
         docs: {
-            url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/core/src/builtin/rules/{{ inputs.name }}/README.md"
+            url: "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/{{ inputs.name }}.md"
         }
     },
     create(context) {

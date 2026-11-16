@@ -24,7 +24,7 @@ export const creator: SecretLintRuleCreator<Options> = {
         type: "scanner",
         supportedContentTypes: ["text"],
         docs: {
-            url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-linear/README.md",
+            url: "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/linear.md",
         },
     },
     patterns: [

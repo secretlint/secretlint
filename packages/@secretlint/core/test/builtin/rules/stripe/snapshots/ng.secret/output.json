@@ -21,7 +21,7 @@
             },
             "severity": "error",
             "messageId": "STRIPE_SECRET_KEY_LIVE",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-stripe/README.md#STRIPE_SECRET_KEY_LIVE",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/stripe.md#STRIPE_SECRET_KEY_LIVE",
             "data": {
                 "KEY": "sk_live_AAAAAAAAAAAAAAAAAAAAAAAA"
             }
@@ -46,7 +46,7 @@
             },
             "severity": "error",
             "messageId": "STRIPE_SECRET_KEY_TEST",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-stripe/README.md#STRIPE_SECRET_KEY_TEST",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/stripe.md#STRIPE_SECRET_KEY_TEST",
             "data": {
                 "KEY": "sk_test_BBBBBBBBBBBBBBBBBBBBBBBB"
             }
@@ -71,7 +71,7 @@
             },
             "severity": "error",
             "messageId": "STRIPE_RESTRICTED_KEY_LIVE",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-stripe/README.md#STRIPE_RESTRICTED_KEY_LIVE",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/stripe.md#STRIPE_RESTRICTED_KEY_LIVE",
             "data": {
                 "KEY": "rk_live_CCCCCCCCCCCCCCCCCCCCCCCC"
             }
@@ -96,7 +96,7 @@
             },
             "severity": "error",
             "messageId": "STRIPE_RESTRICTED_KEY_TEST",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-stripe/README.md#STRIPE_RESTRICTED_KEY_TEST",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/stripe.md#STRIPE_RESTRICTED_KEY_TEST",
             "data": {
                 "KEY": "rk_test_DDDDDDDDDDDDDDDDDDDDDDDD"
             }

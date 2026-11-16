@@ -5,7 +5,7 @@
 ## 概要
 
 Secretlintは、トークン・秘密鍵・パスワードなどの秘密情報を、コミットや公開の前にファイルから見つける、ルールを追加できるlintツールです。
-秘密情報の種類ごとにルールが検出し、リポジトリごとに使うルールを設定ファイルで選びます。
+秘密情報の種類ごとにルールが検出します。設定ファイルがなければrecommendプリセットのルールが動き、リポジトリごとに使うルールを設定ファイルで選べます。
 開発者の手元、pre-commitフック、CI、AIエージェントが実行するコマンドとして動き、npmパッケージ、Dockerイメージ、単一実行ファイルとして配布しています。
 
 ## 背景と課題
@@ -66,11 +66,11 @@ GitHubのsecret scanningはコミットやpushの後にGitHub側で動きます�
 - **提供内容:** 手元の環境でファイル中の秘密情報を報告し、pre-commitフックでコミットを止められる。
 - **理由:** 秘密情報は、コミットや公開の後より前に対処するほうが手間が少ない。GitHubのsecret scanningはコミットやpushの後に動く。
 
-### リポジトリごとのオプトイン設定
+### 既定ではrecommendのルール、リポジトリごとの設定
 
-- **受け手:** 開発者、CIとリポジトリの管理者
-- **提供内容:** リポジトリごとに、ルール、オプション、許可するメッセージ、無視するファイルを選び、ルールを段階的に追加できる。
-- **理由:** 既定でさまざまなエラーを報告するlintツールは使いにくい。オプトイン方式にすると、Secretlintを段階的に導入でき、誤検知も設定で減らせる。
+- **受け手:** 開発者、CIとリポジトリの管理者、AIエージェント
+- **提供内容:** 設定ファイルがなければ、Secretlintはrecommendプリセットのルールを動かす。リポジトリごとに、ほかのルール、オプション、許可するメッセージ、無視するファイルを設定ファイルで選び、ルールを段階的に追加できる。
+- **理由:** 既定でさまざまなエラーを報告するlintツールは使いにくいので、recommendプリセット以外のルールはオプトインにする。recommendプリセットはSecretlintの一部で、一般的な秘密情報のスキャナーよりも誤検知がはるかに少なくなるように設計されている。そのため設定なしで動かすことを欠点と感じる利用者は少なく、先にファイルを必須にすると最初の実行が難しくなるだけである。
 
 ### ドキュメントとしてのルール
 
@@ -96,7 +96,7 @@ GitHubのsecret scanningはコミットやpushの後にGitHub側で動きます�
 - **認証情報（credential）:** トークン、パスワード、秘密鍵など、サービスへのアクセスを与える値で、形式が一般に決まっているもの。Secretlintが提供するルールの多くは認証情報を検出する。
 - **ルール（rule）:** ひとまとまりの秘密情報を検出する単位、またはほかのルールの報告を絞り込む単位。ルールには組み込みルールとカスタムルールがある。秘密情報を報告するルールはscannerルール、報告を抑えるルールはfilterルール。
 - **ルールプリセット（rule preset）:** `@secretlint/secretlint-rule-preset-recommend`や`@secretlint/secretlint-rule-preset-canary`のように、ほかのルールをまとめたルール。
-- **設定ファイル（`.secretlintrc`）:** 使うルールと、そのオプションを並べたファイル。
+- **設定ファイル（`.secretlintrc`）:** 使うルールと、そのオプションを並べたファイル。ないときはrecommendプリセットを使う。
 - **ルールのオプション（rule options）:** 報告しない値の一覧である`allows`など、ルールごとの設定。
 - **メッセージID（message ID）:** ルールが報告するメッセージの種類の識別子。`allowMessageIds`は、IDを指定してメッセージを抑える。
 - **重大度（severity）:** 報告したメッセージの水準。error、warning、infoがある。コマンドを失敗させるのはerrorだけ。
@@ -112,7 +112,7 @@ GitHubのsecret scanningはコミットやpushの後にGitHub側で動きます�
 | 機能 | 説明 | 仕様 |
 | --- | --- | --- |
 | 秘密情報の検査 | ファイル、glob、STDINの内容を設定したルールでlintし、見つかった秘密情報を報告する | [Requirements](features/secret-scanning/requirements.ja.md) |
-| 対象ファイルの選択 | globとパスからlintするファイルを選び、`.gitignore`、`.secretlintignore`、組み込みの除外を考慮する | 未作成 |
+| 対象ファイルの選択 | globとパスからlintするファイルを選び、`.gitignore`、`.secretlintignore`、組み込みの除外を考慮する | [Requirements](features/file-selection/requirements.ja.md) |
 | 設定の読み込み | 設定ファイルを探して検証し、ルール、オプション、重大度、許可するメッセージを決める | [Requirements](features/config-loading/requirements.ja.md) |
 | 設定ファイルの作成 | `--init`で`.secretlintrc.json`を作る | 未作成 |
 | ルールとルールプリセット | 秘密情報の種類ごとに組み込みルールで検出し、ルールをrecommendとcanaryのプリセットにまとめる | [Requirements](features/rules-and-presets/requirements.ja.md) |
@@ -124,10 +124,10 @@ GitHubのsecret scanningはコミットやpushの後にGitHub側で動きます�
 | カスタムルール | ルールをnpmパッケージとして作り、テストし、公開して使う | [Requirements](features/custom-rules/requirements.ja.md) |
 | Node.jsのAPI | `@secretlint/node`で、ほかのプログラムから内容をlintする | 未作成 |
 | npmパッケージ | CLI、ルール、フォーマッターをnpmパッケージとして導入し、Node.jsで実行する | 未作成 |
-| quick start | `npx @secretlint/quick-start`で、設定ファイルなしにrecommendプリセットで一度だけ実行する | 未作成 |
 | Dockerイメージ | Node.jsや設定なしで`secretlint/secretlint`を実行する。組み込みルールとSARIFフォーマッターを使える | 未作成 |
 | 単一実行ファイル | GitHub ReleasesのLinux、macOS、Windows向けの実行ファイルを、Node.jsなしで実行する。組み込みルールとSARIFフォーマッターを使える | [Requirements](features/single-executable-binary/requirements.ja.md) |
-| 性能プロファイル | `--profile`で時間のかかった処理を表示する | 未作成 |
+| 性能プロファイル | `--profile`で時間のかかった処理を表示する | [Requirements](features/performance-profile/requirements.ja.md) |
+| 変更の比較 | 変更のbaseとheadを固定したリポジトリで比べる：パターンの仕事量、検出結果、実行時間 | [Requirements](features/change-comparison/requirements.ja.md) |
 
 ## 成功の定義
 
@@ -135,8 +135,9 @@ GitHubのsecret scanningはコミットやpushの後にGitHub側で動きます�
 
 ## 開発の指針
 
-- **誤検知を減らす。** ルールは秘密情報である可能性が高い値だけを報告し、可能なら一致した値を検証する。
-- **オプトアウトではなくオプトイン。** 必要なルールだけを有効にする。
+- **誤検知を減らす。** ルールは秘密情報である可能性が高い値だけを報告し、可能なら一致した値を検証する。Secretlintは開発者が動かし続けるlintツールであり、候補をすべて洗い出すスキャナーではない。報告を減らすことと多く見つけることが食い違うときは、誤検知が少ないほうを選ぶ。利用者が外したファイルの中の報告も誤検知なので、無視ルールが二通りに読めるときは、より多くのファイルを無視する読み方を選ぶ。
+- **無視ルールの意味はGitと同じにする。** 利用者は`.gitignore`をGitのために書いており、`.secretlintignore`も同じ書き方である。基準はGitそのものがルールをどう扱うかであり、ライブラリの挙動ではない。誤検知を減らすことと食い違うところでは、誤検知を減らすほうを優先する。
+- **recommendプリセットを除き、オプトアウトではなくオプトイン。** 必要なルールだけを有効にする。誤検知が少なくなるように設計したrecommendプリセットは、設定ファイルがないときに動く。
 - **開発の流れに組み込む。** 開発者の手元、pre-commitフック、CI、AIエージェントのコマンドとして動く。
 - **利用者が貢献できるようにする。** 利用者が自分でルールとその説明を書ける。
 - **ドキュメントとしてのルール。** 各ルールは値を報告する理由を説明する。

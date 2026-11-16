@@ -24,7 +24,7 @@ Install with [npm](https://www.npmjs.com/):
           .map((item) => item.name)
           .join(", ")}
       --output           [path:String] output file path that is written of reported result.
-      --secretlintrc     [path:String] path to .secretlintrc config file. Default: .secretlintrc.*
+      --secretlintrc     [path:String] path to the config file. Default: .secretlintrc.* from the current directory up to the root, or the recommended rules
       --secretlintignore [path:String] path to .secretlintignore file. Default: .secretlintignore
       --stdinFileName    [String] filename to process STDIN content. Some rules depend on filename to check content.
       --no-color         disable ANSI-color of output.
@@ -35,7 +35,7 @@ Install with [npm](https://www.npmjs.com/):
                          respected by default (since v13).
 
     Options for Developer
-      --profile          Enable performance profile. 
+      --profile          Print the performance profile instead of the lint results. --format json prints it as JSON.
       --secretlintrcJSON [String] a JSON string of .secretlintrc. use JSON string instead of rc file.
 
     Experimental Options

@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import { createEngine, SecretLintEngineOptions } from "@secretlint/node";
 import { searchFiles } from "./search.js";
+import { secretLintProfiler } from "@secretlint/profiler";
 
 /**
  * Lint files
@@ -33,12 +34,14 @@ const lintFileOrText = async ({
 }): Promise<{ ok: boolean; output: string }> => {
     const engine = await createEngine(engineOptions);
     if ("filePathOrGlobList" in cliOptions) {
+        secretLintProfiler.mark({ type: "secretlint>search-files::start" });
         const { ok, items } = await searchFiles(cliOptions.filePathOrGlobList, {
             cwd: cliOptions.cwd,
             ignoreFilePath: cliOptions.ignoreFilePath,
             noGlob: cliOptions.noGlob,
             respectGitignore: cliOptions.respectGitignore,
         });
+        secretLintProfiler.mark({ type: "secretlint>search-files::end" });
         if (!ok) {
             throw new Error("Not found target files");
         }

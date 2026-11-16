@@ -174,3 +174,4 @@ browser/
 *.tsbuildinfo
 
 /.sdev/
+/compare-result.json

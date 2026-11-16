@@ -4,6 +4,7 @@ import path from "node:path";
 import fs from "node:fs/promises";
 import os from "node:os";
 import { runConfigCreator } from "../src/create-secretlintrc.js";
+import { runSecretLint } from "../src/index.js";
 
 /**
  *
@@ -43,7 +44,26 @@ describe("create-secretlintrc", () => {
             assert.match(actual.stdout, /Create .*\.secretlintrc\.json/);
             assert.strictEqual(actual.stderr, null);
         });
-        it("writes the secretlint rule packages in package.json to .secretlintrc.json", async () => {
+        for (const devDependencies of [
+            { "@secretlint/secretlint-rule-aws": "1.0.0" },
+            {
+                "@secretlint/secretlint-rule-preset-canary": "1.0.0",
+                "@secretlint/secretlint-rule-preset-recommend": "1.0.0",
+            },
+        ]) {
+            it(`lints with the written config when package.json has ${Object.keys(devDependencies).join(", ")}`, async () => {
+                await fs.writeFile(path.join(tmpConfigDir, "package.json"), JSON.stringify({ devDependencies }));
+                await runConfigCreator({ cwd: tmpConfigDir });
+                const content = ["AWS_SECRET_ACCESS_KEY", "wJalrXUtnFEMI/K7MDENG/bPxRfiCYSECRETSKEY"].join(" = ");
+                const actual = await runSecretLint({
+                    cliOptions: { cwd: tmpConfigDir, stdinContent: content, stdinFileName: "secret.txt" },
+                    engineOptions: { cwd: tmpConfigDir, formatter: "json", color: false },
+                });
+                assert.strictEqual(actual.exitStatus, 1);
+                assert.match(actual.stdout ?? "", /@secretlint\/secretlint-rule-aws/);
+            });
+        }
+        it("writes the recommended preset and the secretlint rule packages in package.json to .secretlintrc.json", async () => {
             await fs.writeFile(
                 path.join(tmpConfigDir, "package.json"),
                 JSON.stringify({
@@ -54,7 +74,11 @@ describe("create-secretlintrc", () => {
             await runConfigCreator({ cwd: tmpConfigDir });
             const config = JSON.parse(await fs.readFile(path.join(tmpConfigDir, ".secretlintrc.json"), "utf-8"));
             assert.deepStrictEqual(config, {
-                rules: [{ id: "secretlint-rule-a" }, { id: "@scope/secretlint-rule-b" }],
+                rules: [
+                    { id: "@secretlint/secretlint-rule-preset-recommend" },
+                    { id: "secretlint-rule-a" },
+                    { id: "@scope/secretlint-rule-b" },
+                ],
             });
         });
     });

@@ -4,7 +4,10 @@ import { SecretLintRawSource } from "@secretlint/types";
 
 import { isBinary, isText } from "istextorbinary";
 
-const detectContentType = (filePath: string, content: Buffer): SecretLintRawSource["contentType"] => {
+/**
+ * Detect the content type of a file from its name and its bytes, as the source of the file has.
+ */
+export const detectContentType = (filePath: string, content: Buffer): SecretLintRawSource["contentType"] => {
     if (isBinary(filePath, content)) {
         return "binary";
     } else if (isText(filePath, content)) {
@@ -36,6 +39,35 @@ export const createRawSource = async (filePath: string): Promise<SecretLintRawSo
     const contentType = detectContentType(filePath, buffer);
     // Decoding the content as UTF-8 costs more than scanning the bytes for the keywords of the rules,
     // and most files have no keyword. So pass the bytes, and decode them lazily when `content` is accessed.
+    let decodedContent: string | undefined;
+    return defineContentBytes(
+        {
+            filePath,
+            get content(): string {
+                if (decodedContent === undefined) {
+                    decodedContent = buffer.toString();
+                }
+                return decodedContent;
+            },
+            ext: path.extname(filePath),
+            contentType,
+        },
+        () => buffer,
+    );
+};
+
+/**
+ * Create the source of a file from the bytes that the caller read.
+ * The source keeps the bytes, and decodes them lazily when `content` is accessed.
+ */
+export const createRawSourceFromBytes = (
+    filePath: string,
+    bytes: Uint8Array,
+    detectedContentType?: SecretLintRawSource["contentType"],
+): SecretLintRawSource => {
+    const buffer = Buffer.from(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+    // The caller passes the content type if it detected the type from the same bytes
+    const contentType = detectedContentType ?? detectContentType(filePath, buffer);
     let decodedContent: string | undefined;
     return defineContentBytes(
         {

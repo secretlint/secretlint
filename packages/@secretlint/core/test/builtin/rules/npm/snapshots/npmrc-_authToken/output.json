@@ -21,7 +21,7 @@
             },
             "severity": "error",
             "messageId": "Npmrc_authToken",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-npm/README.md#Npmrc_authToken",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/npm.md#Npmrc_authToken",
             "data": {
                 "TOKEN": "111111aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
             }

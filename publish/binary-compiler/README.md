@@ -20,7 +20,7 @@ Checksum files are available as `secretlint-<version>-sha256sum.txt`
 
 This binary includes the following rules:
 
-- The built-in rules of `@secretlint/core`: [@secretlint/secretlint-rule-preset-recommend](https://www.npmjs.com/package/@secretlint/secretlint-rule-preset-recommend), `@secretlint/secretlint-rule-preset-canary`, [@secretlint/secretlint-rule-pattern](https://www.npmjs.com/package/@secretlint/secretlint-rule-pattern), `@secretlint/secretlint-rule-azure`, and each rule of the presets by its id
+- The built-in rules of `@secretlint/core`: [@secretlint/secretlint-rule-preset-recommend](https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/preset-recommend.md), `@secretlint/secretlint-rule-preset-canary`, [@secretlint/secretlint-rule-pattern](https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/pattern.md), `@secretlint/secretlint-rule-azure`, and each rule of the presets by its id
 - [@secretlint/secretlint-formatter-sarif](https://www.npmjs.com/package/@secretlint/secretlint-formatter-sarif)
 
 ## CURRENT PROBLEM

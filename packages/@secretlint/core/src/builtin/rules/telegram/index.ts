@@ -16,11 +16,12 @@ export const creator: SecretLintRuleCreator<Options> = {
     messages,
     meta: {
         id: "@secretlint/secretlint-rule-telegram",
-        recommended: true,
+        recommended: false,
+        keywords: [":A"],
         type: "scanner",
         supportedContentTypes: ["text"],
         docs: {
-            url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-telegram/README.md",
+            url: "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/telegram.md",
         },
     },
     create(context, options) {

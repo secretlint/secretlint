@@ -9,25 +9,25 @@ questions:
   version: 'Please enter a secretlint version'
 ---
 
-# `@secretlint/core/src/builtin/rules/{{ inputs.name }}/README.md`
+# `docs/rules/{{ inputs.name }}.md`
 
 ```
 {{ read "new-rule/README.md" }}
 ```
 
-# `@secretlint/core/src/builtin/rules/{{ inputs.name }}/index.ts`
+# `packages/@secretlint/core/src/builtin/rules/{{ inputs.name }}/index.ts`
 
 ```
 {{ read "new-rule/src/index.ts" }}
 ```
 
-# `@secretlint/core/test/builtin/rules/{{ inputs.name }}/snapshots/ng.secret/input.txt`
+# `packages/@secretlint/core/test/builtin/rules/{{ inputs.name }}/snapshots/ng.secret/input.txt`
 
 ```
 {{ read "new-rule/test/snapshots/ng.secret/input.txt" }}
 ```
 
-# `@secretlint/core/test/builtin/rules/{{ inputs.name }}/snapshots/ok.valid/input.txt`
+# `packages/@secretlint/core/test/builtin/rules/{{ inputs.name }}/snapshots/ok.valid/input.txt`
 
 ```
 {{ read "new-rule/test/snapshots/ok.valid/input.txt" }}

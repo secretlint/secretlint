@@ -20,7 +20,7 @@ export const creator: SecretLintRuleCreator<Options> = {
         type: "scanner",
         supportedContentTypes: ["text"],
         docs: {
-            url: "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-huggingface/README.md",
+            url: "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/huggingface.md",
         },
     },
     patterns: [

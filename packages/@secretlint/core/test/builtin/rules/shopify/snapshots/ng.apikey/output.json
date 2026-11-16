@@ -21,7 +21,7 @@
             },
             "severity": "error",
             "messageId": "SHOPIFY_KEY",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-shopify/README.md#SHOPIFY_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/shopify.md#SHOPIFY_KEY",
             "data": {
                 "KEY": "shpss_QlRSJy5AXX1cILNjVatTsEIhFxuPF5ex"
             }
@@ -46,7 +46,7 @@
             },
             "severity": "error",
             "messageId": "SHOPIFY_KEY",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-shopify/README.md#SHOPIFY_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/shopify.md#SHOPIFY_KEY",
             "data": {
                 "KEY": "shpat_r8TRc9ZXAvcVvcrmtr7qoVw69WeeY1ex"
             }
@@ -71,7 +71,7 @@
             },
             "severity": "error",
             "messageId": "SHOPIFY_KEY",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-shopify/README.md#SHOPIFY_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/shopify.md#SHOPIFY_KEY",
             "data": {
                 "KEY": "shpca_7jqbg9cupMkZRxJKXWz3v8BvS8QBa7hMdJfAex"
             }
@@ -96,7 +96,7 @@
             },
             "severity": "error",
             "messageId": "SHOPIFY_KEY",
-            "docsUrl": "https://github.com/secretlint/secretlint/blob/master/packages/%40secretlint/secretlint-rule-shopify/README.md#SHOPIFY_KEY",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/shopify.md#SHOPIFY_KEY",
             "data": {
                 "KEY": "shppa_7jqbg9cupMkZRxJKXWz3v8BvS8QBa7hMdJfAex"
             }
