@@ -1,0 +1,6 @@
+{
+    "filePath": "[SNAPSHOT]/ok.not-token-words/input.txt",
+    "messages": [],
+    "sourceContent": "/*\n * Note LDO8 is not documented in datasheet (v2.4), but supported\n * in the vendor's driver implementation (xapp-le-kernel).\n */\nUse xoxb-your-bot-token and xapp-your-app-token as placeholders.\nxoxb-v2-something\nxoxp-1234567890\nxapp-1-le-kernel\n",
+    "sourceContentType": "text"
+}

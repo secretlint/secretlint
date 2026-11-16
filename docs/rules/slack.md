@@ -27,7 +27,12 @@ Via `.secretlintrc.json`(Recommended)
 Disallow to write slack token as plain text.
 You should encrypt it before using.
 
-- [Types of tokens | Slack](https://api.slack.com/docs/token-types)
+This rule reports a string that starts with `xoxb-`, `xoxp-`, `xapp-`, `xoxa-`, `xoxo-`, or `xoxr-` and has the shape of a Slack token.
+A Slack token is divided into sections separated by `-`, and the final section is the secret.
+This rule reports the string only when the sections before the secret include a section of two or more digits (an ID such as a team ID) and the secret has six or more characters.
+For example, it reports `xoxp-111-222-333-d6bc76`, but it does not report a word such as `xapp-le-kernel`.
+
+- [Token types | Slack](https://docs.slack.dev/authentication/tokens/)
 
 ### IncomingWebhook
 > found Slack Incoming Webhook: {{URL}}

@@ -1,0 +1,8 @@
+/*
+ * Note LDO8 is not documented in datasheet (v2.4), but supported
+ * in the vendor's driver implementation (xapp-le-kernel).
+ */
+Use xoxb-your-bot-token and xapp-your-app-token as placeholders.
+xoxb-v2-something
+xoxp-1234567890
+xapp-1-le-kernel

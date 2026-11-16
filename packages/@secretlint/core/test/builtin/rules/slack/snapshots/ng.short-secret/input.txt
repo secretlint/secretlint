@@ -1,0 +1,4 @@
+Examples from https://docs.slack.dev/authentication/tokens/
+xoxp-111-222-333-d6bc76
+xoxp-111-222-333-d6bc768412
+xoxp-111-222-333-d6bc768406e5c2e6958cfc399b438004
