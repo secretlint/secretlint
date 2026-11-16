@@ -44,12 +44,15 @@ export const creator: SecretLintRuleCreator<Options> = {
             // The secret has 6, 10, or 32 or more characters.
             // The sections before the secret include an ID made of digits (a team ID, a user ID, and so on).
             // e.g. xoxb-{team id}-{bot id}-{secret}, xapp-{version}-{app id}-{id}-{secret}
-            // Pattern: {prefix}-({version}-)?({section with a letter}-)*{digits}-({section}-)*{secret}
+            // Pattern: {prefix}-({version}-)?({section with a letter}-){0,2}{digits}-({section}-){0,4}{secret}
             // The digit section and the secret length keep words such as "xapp-le-kernel" out.
             // The sections before the digit section must contain a letter,
-            // so that a section can be read in only one way and matching stays linear.
+            // so that a section can be read in only one way.
+            // The number and length of the sections are bounded,
+            // so that each match attempt reads a bounded part of the line,
+            // even on a line that repeats a prefix many times.
             pattern:
-                /\b(?:xoxb|xoxp|xapp|xoxa|xoxo|xoxr)-(?:\d-)?(?:\d*[a-zA-Z][a-zA-Z0-9]*-)*\d{2,}-(?:[a-zA-Z0-9]+-)*[a-zA-Z0-9]{6,}\b/g,
+                /\b(?:xoxb|xoxp|xapp|xoxa|xoxo|xoxr)-(?:\d-)?(?:\d{0,39}[a-zA-Z][a-zA-Z0-9]{0,39}-){0,2}\d{2,40}-(?:[a-zA-Z0-9]{1,40}-){0,4}[a-zA-Z0-9]{6,}\b/g,
             keywords: ["xoxb-", "xoxp-", "xapp-", "xoxa-", "xoxo-", "xoxr-"],
             scope: "line",
             report(match, context) {
