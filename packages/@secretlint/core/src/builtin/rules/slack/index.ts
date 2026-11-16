@@ -34,14 +34,22 @@ export const creator: SecretLintRuleCreator<Options> = {
     patterns: [
         {
             // Based on https://docs.cribl.io/docs/regexesyml
-            // https://api.slack.com/docs/token-types
+            // https://docs.slack.dev/authentication/tokens/
             // Bot user token strings begin with xoxb-
             // User token strings begin with xoxp-
             // App token strings begin with xapp-
             // Workspace access token strings begin with xoxa-2
             // Workspace refresh token strings begin with xoxr
-            // Pattern: {prefix}-(\d-)-xxxx-xxxx
-            pattern: /\b(?:xoxb|xoxp|xapp|xoxa|xoxo|xoxr)-(?:\d-)?(?:[a-zA-Z0-9]{1,40}-)+[a-zA-Z0-9]{1,40}\b/g,
+            // A token is divided into sections separated by "-", and the final section is the secret.
+            // The secret has 6, 10, or 32 or more characters.
+            // The sections before the secret include an ID made of digits (a team ID, a user ID, and so on).
+            // e.g. xoxb-{team id}-{bot id}-{secret}, xapp-{version}-{app id}-{id}-{secret}
+            // Pattern: {prefix}-({version}-)?({section with a letter}-)*{digits}-({section}-)*{secret}
+            // The digit section and the secret length keep words such as "xapp-le-kernel" out.
+            // The sections before the digit section must contain a letter,
+            // so that a section can be read in only one way and matching stays linear.
+            pattern:
+                /\b(?:xoxb|xoxp|xapp|xoxa|xoxo|xoxr)-(?:\d-)?(?:\d*[a-zA-Z][a-zA-Z0-9]*-)*\d{2,}-(?:[a-zA-Z0-9]+-)*[a-zA-Z0-9]{6,}\b/g,
             keywords: ["xoxb-", "xoxp-", "xapp-", "xoxa-", "xoxo-", "xoxr-"],
             scope: "line",
             report(match, context) {
