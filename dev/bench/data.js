@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794818160403,
+  "lastUpdate": 1794818556751,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -63042,6 +63042,44 @@ window.BENCHMARK_DATA = {
             "range": "±0.90%",
             "unit": "ops/sec",
             "extra": "25 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "41898282+github-actions[bot]@users.noreply.github.com",
+            "name": "github-actions[bot]",
+            "username": "github-actions[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "5306ecf43254f41b3738daa04747494cf5e6ef5b",
+          "message": "v14.0.1 (#1846)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat main -->\n\n## What's Changed\n### Bug Fixes\n* fix(core): do not report words like xapp-le-kernel as Slack tokens by\n@azu in https://github.com/secretlint/secretlint/pull/1845\n### Maintenance\n* chore: remove @secretlint/quick-start by @azu in\nhttps://github.com/secretlint/secretlint/pull/1844\n\n\n**Full Changelog**:\nhttps://github.com/secretlint/secretlint/compare/v14.0.0...v14.0.1\n\nCo-authored-by: azu <azu@users.noreply.github.com>",
+          "timestamp": "2026-11-16T17:40:30+09:00",
+          "tree_id": "7eaa80befc91ec5c7a74ad86d61f6629f85db9bd",
+          "url": "https://github.com/secretlint/secretlint/commit/5306ecf43254f41b3738daa04747494cf5e6ef5b"
+        },
+        "date": 1794818553577,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 10.87,
+            "range": "±1.12%",
+            "unit": "ops/sec",
+            "extra": "32 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 8.58,
+            "range": "±0.74%",
+            "unit": "ops/sec",
+            "extra": "26 samples"
           }
         ]
       }
