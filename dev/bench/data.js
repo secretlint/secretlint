@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794741959860,
+  "lastUpdate": 1794818160403,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -63002,6 +63002,44 @@ window.BENCHMARK_DATA = {
             "name": "run secretlint for js-primer",
             "value": 8.32,
             "range": "±0.83%",
+            "unit": "ops/sec",
+            "extra": "25 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "azu@users.noreply.github.com",
+            "name": "azu",
+            "username": "azu"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "3b295981931af4c5da82cd459986552dc00a7773",
+          "message": "fix(core): do not report words like xapp-le-kernel as Slack tokens (#1845)\n\n<!-- claude-projects-attribution: {\"github_login\":\"azu\"} -->\n_Requested by **azu** · [project\nthread](https://claude.ai/code/project/chan_01ChfsKF1sN6vYsJMPZ7PuDt?thread=cmsg_01ChfsKF1sN6vYsJMPZ7PuDt2dhpuJkj7VRgyrg2J9rRrU)_\n\n## Summary\n\nsecretlint v14.0.0 (recommend, no config) reports `xapp-le-kernel` in a\ncomment of the Linux kernel's `drivers/regulator/atc260x-regulator.c`\n(line 152) as a Slack token. This is a false positive.\n\nThe old pattern\n`\\b(?:xoxb|xoxp|xapp|xoxa|xoxo|xoxr)-(?:\\d-)?(?:[a-zA-Z0-9]{1,40}-)+[a-zA-Z0-9]{1,40}\\b`\naccepts any two or more hyphen-separated words after a prefix, so\n`xapp-` + `le-` + `kernel` matches.\n\n## What a Slack token looks like\n\n- Slack's docs: \"The token is divided into several sections, separated\nby a `-` character. The final section is the secret.\" Secrets of old\nuser tokens have 6 or 10 characters, newer ones 32 (example:\n`xoxp-111-222-333-d6bc76`).\nhttps://docs.slack.dev/authentication/tokens/\n- Real token samples collected by gitleaks all have numeric ID sections\nbefore the secret (`xoxb-{team id}-{bot id}-{secret}`, `xapp-1-{app\nid}-{digits}-{secret}`).\nhttps://github.com/gitleaks/gitleaks/blob/master/cmd/generate/config/rules/slack.go\n\n## Changes\n\n- The pattern now requires a section of two or more digits before the\nsecret, and a secret of six or more characters:\n\n`\\b(?:xoxb|xoxp|xapp|xoxa|xoxo|xoxr)-(?:\\d-)?(?:\\d{0,39}[a-zA-Z][a-zA-Z0-9]{0,39}-){0,2}\\d{2,40}-(?:[a-zA-Z0-9]{1,40}-){0,4}[a-zA-Z0-9]{6,}\\b`\n- The sections before the digit section must contain a letter, so each\nsection can be read only one way, and the number and length of sections\nare bounded, so each match attempt reads a bounded part of the line.\nUnbounded versions were quadratic on lines that repeat sections or\nprefixes (`\"xapp-\".repeat(32000) + \"kernel\"` took about 10 s); this\nversion takes a few ms on such lines.\n- The 40-character cap on the final section is removed. Before,\n`ng.xapp-token` reported only `xapp-1-AA2JWS7BEDD-1234576618999` and\nleft the 64-character secret out of the reported range (and out of\nmask-result). Now the whole token is reported.\n- `docs/rules/slack.md`: describes what is reported and updates the\nSlack docs link.\n\n## Tests\n\n- New `ok.not-token-words`: the Linux comment, placeholders\n(`xoxb-your-bot-token`), `xoxb-v2-something`, `xoxp-1234567890`,\n`xapp-1-le-kernel`.\n- New `ng.short-secret`: Slack's own examples with 6, 10 and\n32-character secrets.\n- New `slack-pattern-time.test.ts`: lines that repeat prefixes or\nsections must be scanned within 1 s (fails on the unbounded pattern).\n- Existing snapshots still report the same tokens; `ng.xapp-token` now\nreports the whole token.\n- `@secretlint/core` tests: 647 passed. The built CLI reports nothing on\n`atc260x-regulator.c`.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nhttps://claude.ai/code/session_01TSdrAJszxgdmT5PRKKuCHD\n\n---------\n\nCo-authored-by: Claude <noreply@anthropic.com>",
+          "timestamp": "2026-11-16T17:35:03+09:00",
+          "tree_id": "bac7e39f168249dc7961b243c5e857983413679c",
+          "url": "https://github.com/secretlint/secretlint/commit/3b295981931af4c5da82cd459986552dc00a7773"
+        },
+        "date": 1794818157787,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 10.43,
+            "range": "±1.54%",
+            "unit": "ops/sec",
+            "extra": "30 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 8.3,
+            "range": "±0.90%",
             "unit": "ops/sec",
             "extra": "25 samples"
           }
