@@ -61,7 +61,6 @@
         "@types/node": "catalog:",
         "@types/picomatch": "catalog:",
         "prettier": "catalog:",
-        "tsx": "catalog:",
         "typescript": "catalog:",
         "vitest": "catalog:"
     },

@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { SecretLintRawSource } from "@secretlint/types";
+import type { SecretLintRawSource } from "@secretlint/types";
 
 import { isBinary, isText } from "istextorbinary";
 

@@ -1,7 +1,7 @@
 // LICENSE : MIT
-import { SecretLintCoreResult, SecretLintFormatterGetSource } from "@secretlint/types";
+import type { SecretLintCoreResult, SecretLintFormatterGetSource } from "@secretlint/types";
 import { terminalLink } from "./helper/terminal-link.js";
-import { FormatterConfig } from "./types.js";
+import type { FormatterConfig } from "./types.js";
 import fs from "node:fs";
 import path from "node:path";
 import debug0 from "debug";

@@ -5,7 +5,7 @@ import type {
     SecretLintCoreConfigRulePreset,
 } from "@secretlint/types";
 import { AggregationError } from "./AggregationError.js";
-import { SecretLintConfigDescriptorRule, SecretLintConfigDescriptorRulePreset } from "@secretlint/types";
+import type { SecretLintConfigDescriptorRule, SecretLintConfigDescriptorRulePreset } from "@secretlint/types";
 import {
     validateSecretLintConfigDescriptor,
     validateSecretLintConfigDescriptorRule,

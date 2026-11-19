@@ -1,9 +1,9 @@
 import { getKeywordScanPlan, lintSource } from "@secretlint/core";
 import type { KeywordScanResult } from "@secretlint/core/keyword-scan";
-import { loadConfig, loadPackagesFromConfigDescriptor, SecretLintConfigMessage } from "@secretlint/config-loader";
+import { loadConfig, loadPackagesFromConfigDescriptor, type SecretLintConfigMessage } from "@secretlint/config-loader";
 import { createFileSourceReader, createRawSource, createRawSourceFromBytes } from "@secretlint/source-creator";
 import { loadFormatter } from "@secretlint/formatter";
-import {
+import type {
     SecretLintConfigDescriptor,
     SecretLintCoreConfig,
     SecretLintCoreResult,

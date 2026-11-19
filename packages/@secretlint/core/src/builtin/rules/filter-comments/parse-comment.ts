@@ -1,4 +1,4 @@
-import { SecretLintSourceCode } from "@secretlint/types";
+import type { SecretLintSourceCode } from "@secretlint/types";
 
 const HTML_COMMENT_REGEXP = /(?<type>secretlint-(?:disable-next-line|disable-line|disable|enable))(?<options>.*)/g;
 

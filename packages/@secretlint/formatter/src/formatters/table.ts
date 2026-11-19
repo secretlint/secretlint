@@ -1,10 +1,10 @@
-import { SecretLintCoreResult, SecretLintCoreResultMessage, SecretLintFormatter } from "@secretlint/types";
+import type { SecretLintCoreResult, SecretLintCoreResultMessage, SecretLintFormatter } from "@secretlint/types";
 
 //------------------------------------------------------------------------------
 // Requirements
 //------------------------------------------------------------------------------
 import { stripVTControlCharacters, styleText } from "node:util";
-import { drawTable as drawBorderedTable, TableCell } from "../helper/draw-table.js";
+import { drawTable as drawBorderedTable, type TableCell } from "../helper/draw-table.js";
 import { sanitizeTerminalOutput } from "../sanitize-terminal-output.js";
 
 //------------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-import { SecretLintCoreResultMessage } from "@secretlint/types";
+import type { SecretLintCoreResultMessage } from "@secretlint/types";
 
 export type AllowMessage = {
     ruleId: string;

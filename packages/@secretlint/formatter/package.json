@@ -65,7 +65,6 @@
         "@types/node": "catalog:",
         "escape-string-regexp": "catalog:",
         "prettier": "catalog:",
-        "tsx": "catalog:",
         "typescript": "catalog:"
     },
     "engines": {

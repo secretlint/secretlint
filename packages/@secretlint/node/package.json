@@ -73,7 +73,6 @@
         "@types/debug": "catalog:",
         "@types/node": "catalog:",
         "prettier": "catalog:",
-        "tsx": "catalog:",
         "typescript": "catalog:"
     },
     "engines": {

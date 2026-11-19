@@ -1,4 +1,4 @@
-import { SecretLintCoreIgnoreMessage, SecretLintCoreResultMessage } from "@secretlint/types";
+import type { SecretLintCoreIgnoreMessage, SecretLintCoreResultMessage } from "@secretlint/types";
 import { filterIgnoredMessages } from "./filter-ignored-process.js";
 import { createMessageProcessor } from "./MessageProcessManager.js";
 import { filterDuplicatedMessages } from "./filter-duplicated-process.js";

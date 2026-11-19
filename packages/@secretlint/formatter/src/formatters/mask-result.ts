@@ -1,4 +1,4 @@
-import { SecretLintFormatter } from "@secretlint/types";
+import type { SecretLintFormatter } from "@secretlint/types";
 
 const replaceRange = (str: string, range: readonly [number, number], replace: string) => {
     return str.slice(0, range[0]) + replace + str.slice(range[1]);

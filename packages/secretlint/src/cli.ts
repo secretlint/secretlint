@@ -1,5 +1,5 @@
 import { parseArgs } from "node:util";
-import { runSecretLint, SecretLintOptions } from "./index.js";
+import { runSecretLint, type SecretLintOptions } from "./index.js";
 import { runConfigCreator } from "./create-secretlintrc.js";
 import { secretLintProfiler } from "@secretlint/profiler";
 import { createProfileReport, formatProfileReport } from "./profile-report.js";

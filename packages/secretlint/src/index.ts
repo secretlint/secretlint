@@ -1,5 +1,5 @@
 import fs from "node:fs";
-import { createEngine, SecretLintEngineOptions } from "@secretlint/node";
+import { createEngine, type SecretLintEngineOptions } from "@secretlint/node";
 import { searchFiles } from "./search.js";
 import { secretLintProfiler } from "@secretlint/profiler";
 

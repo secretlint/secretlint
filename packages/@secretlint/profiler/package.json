@@ -56,7 +56,6 @@
     "devDependencies": {
         "@types/node": "catalog:",
         "prettier": "catalog:",
-        "tsx": "catalog:",
         "typescript": "catalog:"
     },
     "publishConfig": {

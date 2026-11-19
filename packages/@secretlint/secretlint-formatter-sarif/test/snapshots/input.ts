@@ -1,4 +1,4 @@
-import { SecretLintCoreResult } from "@secretlint/types";
+import type { SecretLintCoreResult } from "@secretlint/types";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));

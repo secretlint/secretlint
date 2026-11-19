@@ -1,4 +1,4 @@
-import { SecretLintAllMessages } from "./MessageProcessManager.js";
+import type { SecretLintAllMessages } from "./MessageProcessManager.js";
 
 export type AllowMessage = {
     ruleId: string;

@@ -3,8 +3,8 @@ import test from "node:test";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import assert from "node:assert";
-import { results } from "./snapshots/input.js";
-import formatter from "../src/index.js";
+import { results } from "./snapshots/input.ts";
+import formatter from "../src/index.ts";
 import escapeStringRegexp from "escape-string-regexp";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
