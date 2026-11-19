@@ -60,6 +60,9 @@ jobs:
         run: pnpm install
       - name: Check format
         run: pnpm run format:check
+      # type-aware rules read the types of workspace packages from their build output
+      - name: Build
+        run: pnpm run build
       - name: Lint
         run: pnpm run lint:code
 
