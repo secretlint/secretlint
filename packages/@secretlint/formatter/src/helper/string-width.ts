@@ -23,6 +23,7 @@ const getEmojiPattern = (() => {
  * - U+FE0F: the variation selector of an emoji that is a text character by default, such as "\u00A9\uFE0F"
  * - U+D83C..U+D83E: the high surrogate of U+1F000..U+1FFFF
  */
+// oxlint-disable-next-line no-misleading-character-class -- matches lone high surrogates on purpose
 export const MAY_HAVE_EMOJI_PATTERN = /[\u203c-\u2b55\u3030\u303d\u3297\u3299\ufe0f\ud83c-\ud83e]/;
 
 /**

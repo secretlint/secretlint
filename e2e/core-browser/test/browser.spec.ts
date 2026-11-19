@@ -9,7 +9,7 @@ const rootDir = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const ORIGIN = "http://secretlint.test";
 const contentTypes: Record<string, string> = {
     ".html": "text/html",
-    ".js": "text/javascript"
+    ".js": "text/javascript",
 };
 
 test.beforeEach(async ({ page }) => {
@@ -20,7 +20,7 @@ test.beforeEach(async ({ page }) => {
         try {
             await route.fulfill({
                 body: await fs.readFile(filePath),
-                contentType: contentTypes[path.extname(filePath)] ?? "application/octet-stream"
+                contentType: contentTypes[path.extname(filePath)] ?? "application/octet-stream",
             });
         } catch {
             await route.fulfill({ status: 404 });
@@ -52,13 +52,13 @@ for (const useBytes of [false, true]) {
             const content = `AWS_SECRET_ACCESS_KEY = ${AWS_SECRET_ACCESS_KEY}\nGITHUB_TOKEN = ${GITHUB_TOKEN}\n`;
             const result = await page.evaluate(
                 ({ content, useBytes }) => window.secretlint.lint(content, { useBytes }),
-                { content, useBytes }
+                { content, useBytes },
             );
             expect(
-                result.messages.map((message) => [message.ruleId, message.messageId, message.loc.start.line])
+                result.messages.map((message) => [message.ruleId, message.messageId, message.loc.start.line]),
             ).toEqual([
                 ["@secretlint/secretlint-rule-aws", "AWSSecretAccessKey", 1],
-                ["@secretlint/secretlint-rule-github", "GITHUB_TOKEN", 2]
+                ["@secretlint/secretlint-rule-github", "GITHUB_TOKEN", 2],
             ]);
         });
 
@@ -67,25 +67,25 @@ for (const useBytes of [false, true]) {
             const content = JSON.stringify({
                 type: "service_account",
                 private_key_id: "0123456789abcdef0123456789abcdef01234567",
-                private_key: ["-----BEGIN", "PRIVATE KEY-----\nfake\n-----END", "PRIVATE KEY-----\n"].join(" ")
+                private_key: ["-----BEGIN", "PRIVATE KEY-----\nfake\n-----END", "PRIVATE KEY-----\n"].join(" "),
             });
             const result = await page.evaluate(
                 ({ content, useBytes }) =>
                     window.secretlint.lint(content, { filePath: "C:\\keys\\sa-key.json", useBytes }),
-                { content, useBytes }
+                { content, useBytes },
             );
             const gcpMessages = result.messages.filter(
-                (message) => message.ruleId === "@secretlint/secretlint-rule-gcp"
+                (message) => message.ruleId === "@secretlint/secretlint-rule-gcp",
             );
             expect(gcpMessages.map((message) => [message.messageId, message.message])).toEqual([
-                ["PrivateKeyJSON", "found GCP Service Account's private key(json): sa-key.json"]
+                ["PrivateKeyJSON", "found GCP Service Account's private key(json): sa-key.json"],
             ]);
         });
 
         test("reports nothing for a content without secrets", async ({ page }) => {
             const result = await page.evaluate(
                 ({ useBytes }) => window.secretlint.lint("const answer = 42;\n", { useBytes }),
-                { useBytes }
+                { useBytes },
             );
             expect(result.messages).toEqual([]);
         });

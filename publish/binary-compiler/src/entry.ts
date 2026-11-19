@@ -31,17 +31,17 @@ if (cli.flags.init) {
                 {
                     rules: [
                         {
-                            id: "@secretlint/secretlint-rule-preset-recommend"
+                            id: "@secretlint/secretlint-rule-preset-recommend",
                         },
                         {
-                            id: "@secretlint/secretlint-rule-pattern"
-                        }
-                    ]
+                            id: "@secretlint/secretlint-rule-pattern",
+                        },
+                    ],
                 },
                 null,
-                4
+                4,
             ),
-            { flag: "wx" }
+            { flag: "wx" },
         );
     } catch (error) {
         if ((error as NodeJS.ErrnoException).code === "EEXIST") {

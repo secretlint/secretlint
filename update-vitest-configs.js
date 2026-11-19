@@ -33,7 +33,7 @@ export default defineConfig({
 
 async function updateConfigs() {
     const configFiles = await globby("packages/**/vitest.config.ts", {
-        ignore: ["**/node_modules/**"]
+        ignore: ["**/node_modules/**"],
     });
 
     for (const file of configFiles) {

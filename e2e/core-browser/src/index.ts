@@ -15,7 +15,7 @@ export type LintOptions = {
  */
 export const lint = (
     content: string,
-    { filePath = "/virtual/test.txt", useBytes = false }: LintOptions = {}
+    { filePath = "/virtual/test.txt", useBytes = false }: LintOptions = {},
 ): Promise<SecretLintCoreResult> => {
     return lintSource({
         source: {
@@ -24,18 +24,18 @@ export const lint = (
             filePath,
             // @secretlint/source-creator sets the extension in Node.js. A rule like gcp checks it
             ext: /\.[^./\\]+$/.exec(filePath)?.[0] ?? "",
-            contentType: "text"
+            contentType: "text",
         },
         options: {
             config: {
                 rules: [
                     {
                         id: "@secretlint/secretlint-rule-preset-recommend",
-                        rule: presetRecommend
-                    }
-                ]
-            }
-        }
+                        rule: presetRecommend,
+                    },
+                ],
+            },
+        },
     });
 };
 

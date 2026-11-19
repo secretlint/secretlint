@@ -1,0 +1,8 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 120,
+  "tabWidth": 4,
+  "singleQuote": false,
+  "trailingComma": "all",
+  "ignorePatterns": ["archieves/**", "examples/benchmark/targets/**", "**/test/fixtures/**", "**/test/snapshots/**", "packages/@secretlint/config-loader/src/*.validator.ts"]
+}

@@ -25,8 +25,8 @@ test("@secretlint/secretlint-formatter-sarif", (t) => {
         const fixtureDir = snapshotsDir;
         const actual = snapshotReplace(
             formatter(results, {
-                color: true
-            })
+                color: true,
+            }),
         );
         const expectedFilePath = path.join(fixtureDir, `output.sarif`);
         // Usage: update snapshots

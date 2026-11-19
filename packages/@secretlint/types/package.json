@@ -41,18 +41,11 @@
         "build": "tsc --build",
         "clean": "tsc --build --clean",
         "prepublishOnly": "npm run clean && npm run build",
-        "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
         "prepublish": "npm run --if-present build",
         "test": "vitest run --typecheck"
     },
-    "prettier": {
-        "printWidth": 120,
-        "singleQuote": false,
-        "tabWidth": 4
-    },
     "devDependencies": {
         "@types/node": "catalog:",
-        "prettier": "catalog:",
         "typescript": "catalog:",
         "vitest": "catalog:"
     },

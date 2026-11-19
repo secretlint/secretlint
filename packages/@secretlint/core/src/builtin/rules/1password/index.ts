@@ -12,7 +12,7 @@ const is1PasswordServiceAccountToken = (base64String: string) => {
         const jsonString = atob(base64String.replace(/-/g, "+").replace(/_/g, "/"));
         const json = JSON.parse(jsonString);
         return typeof json === "object" && json !== null;
-    } catch (error) {
+    } catch {
         return false;
     }
 };

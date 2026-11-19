@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "ignorePatterns": [
+    "archieves/**",
+    "examples/benchmark/targets/**",
+    "**/test/fixtures/**",
+    "**/test/snapshots/**"
+  ],
+  "rules": {
+    "no-control-regex": "off",
+    "no-useless-escape": "off",
+    "unicorn/no-new-array": "off"
+  }
+}

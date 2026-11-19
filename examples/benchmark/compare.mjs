@@ -33,7 +33,7 @@ const run = (command, args, { cwd, capture = false, env, shell = false } = {}) =
         env: env ? { ...process.env, ...env } : process.env,
         encoding: "utf8",
         maxBuffer: 1024 * 1024 * 1024,
-        stdio: capture ? ["ignore", "pipe", "pipe"] : ["ignore", 2, 2]
+        stdio: capture ? ["ignore", "pipe", "pipe"] : ["ignore", 2, 2],
     });
     if (result.error) {
         throw new CompareError(`${command} ${args.join(" ")}: ${result.error.message}`);
@@ -72,8 +72,8 @@ const parseOptions = () => {
             "cache-dir": { type: "string" },
             "no-build": { type: "boolean", default: false },
             render: { type: "string", multiple: true, default: [] },
-            help: { type: "boolean", default: false }
-        }
+            help: { type: "boolean", default: false },
+        },
     });
     if (values.help) {
         process.stdout.write(
@@ -88,8 +88,8 @@ const parseOptions = () => {
                 "  --no-build          do not build the head",
                 "  --render <json>     print the Markdown of JSON outputs of earlier runs as one comparison;",
                 "                      repeat it for each JSON output. Nothing is built or linted",
-                ""
-            ].join("\n")
+                "",
+            ].join("\n"),
         );
         process.exit(0);
     }
@@ -113,7 +113,7 @@ const parseOptions = () => {
         jsonPath: path.resolve(values.json),
         cacheDir: path.resolve(cacheDir),
         build: !values["no-build"],
-        render: values.render.map((jsonPath) => path.resolve(jsonPath))
+        render: values.render.map((jsonPath) => path.resolve(jsonPath)),
     };
 };
 
@@ -163,8 +163,8 @@ const withCacheLock = (dir, prepare) => {
             [
                 `Another comparison (process ${pid}) is preparing ${dir}.`,
                 "Run again after it ends.",
-                `If no comparison is running, a comparison was stopped while it prepared the entry: remove ${lockDir} and run again.`
-            ].join(" ")
+                `If no comparison is running, a comparison was stopped while it prepared the entry: remove ${lockDir} and run again.`,
+            ].join(" "),
         );
     }
     try {
@@ -211,7 +211,7 @@ const prepareSet = (name, definitions, cacheDir) => {
             commit: null,
             label: null,
             dir: path.join(BENCHMARK_DIR, "targets"),
-            runs: SMALL_RUNS
+            runs: SMALL_RUNS,
         };
     }
     const definition = definitions[name];
@@ -237,7 +237,7 @@ const prepareSet = (name, definitions, cacheDir) => {
                 `download of the set ${name}`,
                 "git",
                 ["fetch", "--quiet", "--depth", "1", "--no-tags", definition.repository, definition.commit],
-                { cwd: dir }
+                { cwd: dir },
             );
             git(["-c", "advice.detachedHead=false", "checkout", "--quiet", "FETCH_HEAD"], dir);
             fs.writeFileSync(marker, "");
@@ -249,7 +249,7 @@ const prepareSet = (name, definitions, cacheDir) => {
         commit: definition.commit,
         label: definition.label,
         dir,
-        runs: definition.runs
+        runs: definition.runs,
     };
 };
 
@@ -273,13 +273,13 @@ const lintWithProfile = (buildName, buildDir, set, tmpDir) => {
             "--format",
             "json",
             "--output",
-            resultsPath
+            resultsPath,
         ],
-        { cwd: set.dir, capture: true }
+        { cwd: set.dir, capture: true },
     );
     if (result.status !== 0 && result.status !== 1) {
         throw new CompareError(
-            `The lint of the set ${set.name} with the ${buildName} failed (exit status ${result.status})\n${result.stderr}`
+            `The lint of the set ${set.name} with the ${buildName} failed (exit status ${result.status})\n${result.stderr}`,
         );
     }
     let profile;
@@ -305,7 +305,7 @@ const toFindings = (results, setDir) => {
                 ruleId: message.ruleId,
                 messageId: message.messageId,
                 file,
-                line: message.loc?.start?.line ?? 0
+                line: message.loc?.start?.line ?? 0,
             });
         }
     }
@@ -326,7 +326,7 @@ const measureTime = (baseDir, headDir, set, runs, tmpDir) => {
             "--format",
             "json",
             "--output",
-            os.devNull
+            os.devNull,
         ]
             .map(shellQuote)
             .join(" ");
@@ -349,16 +349,16 @@ const measureTime = (baseDir, headDir, set, runs, tmpDir) => {
             command(baseDir),
             "--command-name",
             "head",
-            command(headDir)
+            command(headDir),
         ],
-        { cwd: set.dir }
+        { cwd: set.dir },
     );
     const { results } = JSON.parse(fs.readFileSync(timePath, "utf8"));
     const stats = (entry) => ({
         median: entry.median * 1000,
         mean: entry.mean * 1000,
         stddev: (entry.stddev ?? 0) * 1000,
-        runs: entry.times.length
+        runs: entry.times.length,
     });
     const base = stats(results[0]);
     const head = stats(results[1]);
@@ -375,9 +375,9 @@ const patternCounts = (profile) =>
                 pattern: pattern.pattern,
                 // Line tests are not compared: with worker threads, their number depends on
                 // which thread reads which file, so it changes between runs of the same build
-                counts: { runs: pattern.runs, matches: pattern.matches }
-            }
-        ])
+                counts: { runs: pattern.runs, matches: pattern.matches },
+            },
+        ]),
     );
 
 const sameJSON = (a, b) => JSON.stringify(a) === JSON.stringify(b);
@@ -444,7 +444,7 @@ const diffFindings = (baseFindings, headFindings) => {
         added: added.sort(compareFinding),
         removed: removed.sort(compareFinding),
         base: baseFindings.length,
-        head: headFindings.length
+        head: headFindings.length,
     };
 };
 
@@ -456,8 +456,8 @@ const compareSet = ({ set, baseDir, headDir, runs, hasHyperfine, tmpDir }) => {
         ...profile,
         slowestFiles: (profile.slowestFiles ?? []).map((file) => ({
             ...file,
-            filePath: path.relative(set.dir, file.filePath).split(path.sep).join("/")
-        }))
+            filePath: path.relative(set.dir, file.filePath).split(path.sep).join("/"),
+        })),
     });
     return {
         name: set.name,
@@ -470,17 +470,17 @@ const compareSet = ({ set, baseDir, headDir, runs, hasHyperfine, tmpDir }) => {
             base.profile.rules ?? [],
             head.profile.rules ?? [],
             (rule) => rule.ruleId,
-            (rule) => rule.files
+            (rule) => rule.files,
         ),
         keywordGuards: diffByKey(
             base.profile.keywordGuards ?? [],
             head.profile.keywordGuards ?? [],
             (guard) => guard.keyword,
-            (guard) => ({ found: guard.found, met: guard.met })
+            (guard) => ({ found: guard.found, met: guard.met }),
         ),
         findings: diffFindings(base.findings, head.findings),
         profiles: { base: relativeProfile(base.profile), head: relativeProfile(head.profile) },
-        time: hasHyperfine ? measureTime(baseDir, headDir, set, runs ?? set.runs, tmpDir) : null
+        time: hasHyperfine ? measureTime(baseDir, headDir, set, runs ?? set.runs, tmpDir) : null,
     };
 };
 
@@ -515,7 +515,7 @@ const markdownFindings = (title, findings) => {
         "| --- | --- | --- |",
         ...rows,
         ...more,
-        ""
+        "",
     ];
 };
 
@@ -570,7 +570,7 @@ const markdownSummaryTable = (result) => {
     if (result.time) {
         const { base: baseTime, head: headTime, ratio, mark } = result.time;
         rows.push(
-            `| Run time (median of ${headTime.runs} runs) | ${formatMs(baseTime.median)} | ${formatMs(headTime.median)} | **${ratio.toFixed(2)}x**${markText(mark)} |`
+            `| Run time (median of ${headTime.runs} runs) | ${formatMs(baseTime.median)} | ${formatMs(headTime.median)} | **${ratio.toFixed(2)}x**${markText(mark)} |`,
         );
     } else {
         rows.push("| Run time | - | - | not measured (hyperfine is not installed) |");
@@ -585,8 +585,8 @@ const markdownSummaryTable = (result) => {
         countRow(
             "Keywords found by a guard",
             sumOf(base.keywordGuards ?? [], "found"),
-            sumOf(head.keywordGuards ?? [], "found")
-        )
+            sumOf(head.keywordGuards ?? [], "found"),
+        ),
     );
     return ["| | Base | Head | Change |", "| --- | ---: | ---: | ---: |", ...rows, ""];
 };
@@ -601,9 +601,9 @@ const markdownChanges = (result) => {
             "| Pattern | Base | Head |",
             "| --- | ---: | ---: |",
             ...result.patterns.map(
-                (pattern) => `| ${escapeCell(pattern.id)} | ${counts(pattern.base)} | ${counts(pattern.head)} |`
+                (pattern) => `| ${escapeCell(pattern.id)} | ${counts(pattern.base)} | ${counts(pattern.head)} |`,
             ),
-            ""
+            "",
         );
     }
     if (result.rules.length > 0) {
@@ -613,9 +613,9 @@ const markdownChanges = (result) => {
             "| Rule | Base | Head |",
             "| --- | ---: | ---: |",
             ...result.rules.map(
-                (rule) => `| ${escapeCell(rule.id)} | ${formatCount(rule.base)} | ${formatCount(rule.head)} |`
+                (rule) => `| ${escapeCell(rule.id)} | ${formatCount(rule.base)} | ${formatCount(rule.head)} |`,
             ),
-            ""
+            "",
         );
     }
     if (result.keywordGuards.length > 0) {
@@ -625,9 +625,9 @@ const markdownChanges = (result) => {
             "| Keyword | Base | Head |",
             "| --- | ---: | ---: |",
             ...result.keywordGuards.map(
-                (guard) => `| ${escapeCell(guard.id)} | ${guardCounts(guard.base)} | ${guardCounts(guard.head)} |`
+                (guard) => `| ${escapeCell(guard.id)} | ${guardCounts(guard.base)} | ${guardCounts(guard.head)} |`,
             ),
-            ""
+            "",
         );
     }
     lines.push(...markdownFindings("Findings only in the head", result.findings.added));
@@ -696,7 +696,7 @@ const markdownProfile = (result) => {
         "<details open><summary><b>Profile</b> (<code>secretlint --profile</code>, one run of each build)</summary>",
         "",
         `Total: base ${formatMs(base.total)}, head ${formatMs(head.total)}. ⚠️ marks a time of the head that is ${SLOWER_RATIO}x or more and ${MIN_MARKED_CHANGE_MS} ms or more slower. A time of one run changes between runs, so check a mark with the run time above.`,
-        ""
+        "",
     ];
     const basePhases = new Map(base.phases.map((phase) => [`${phase.depth}:${phase.name}`, phase]));
     lines.push(
@@ -707,7 +707,7 @@ const markdownProfile = (result) => {
             const name = `${"&nbsp;&nbsp;".repeat(phase.depth)}${escapeCell(phase.name)}`;
             return `| ${name} | ${timeCell(basePhase?.duration)} | ${formatMs(phase.duration)} | ${timeChangeCell(basePhase?.duration, phase.duration)} | ${countCell(basePhase?.count)} / ${formatCount(phase.count)} |`;
         }),
-        ""
+        "",
     );
     const rules = topRowsOf(base.rules, head.rules, (rule) => rule.ruleId);
     if (rules.length > 0) {
@@ -716,9 +716,9 @@ const markdownProfile = (result) => {
             "| --- | ---: | ---: | ---: | ---: |",
             ...rules.map(
                 ({ base: baseRule, head: headRule }) =>
-                    `| ${escapeCell(headRule.ruleId)} | ${timeCell(baseRule?.duration)} | ${formatMs(headRule.duration)} | ${timeChangeCell(baseRule?.duration, headRule.duration)} | ${countCell(baseRule?.files)} / ${formatCount(headRule.files)} |`
+                    `| ${escapeCell(headRule.ruleId)} | ${timeCell(baseRule?.duration)} | ${formatMs(headRule.duration)} | ${timeChangeCell(baseRule?.duration, headRule.duration)} | ${countCell(baseRule?.files)} / ${formatCount(headRule.files)} |`,
             ),
-            ""
+            "",
         );
     }
     const patternKey = (pattern) => `${pattern.ruleId}#${pattern.index}`;
@@ -729,9 +729,9 @@ const markdownProfile = (result) => {
             "| --- | ---: | ---: | ---: | ---: | ---: |",
             ...patterns.map(
                 ({ base: basePattern, head: headPattern }) =>
-                    `| ${escapeCell(patternKey(headPattern))} | ${timeCell(basePattern?.duration)} | ${formatMs(headPattern.duration)} | ${timeChangeCell(basePattern?.duration, headPattern.duration)} | ${countCell(basePattern?.runs)} / ${formatCount(headPattern.runs)} | ${countCell(basePattern?.matches)} / ${formatCount(headPattern.matches)} |`
+                    `| ${escapeCell(patternKey(headPattern))} | ${timeCell(basePattern?.duration)} | ${formatMs(headPattern.duration)} | ${timeChangeCell(basePattern?.duration, headPattern.duration)} | ${countCell(basePattern?.runs)} / ${formatCount(headPattern.runs)} | ${countCell(basePattern?.matches)} / ${formatCount(headPattern.matches)} |`,
             ),
-            ""
+            "",
         );
     }
     // the base lists only its own slowest files, so the files are shown for the head only
@@ -741,7 +741,7 @@ const markdownProfile = (result) => {
             `| ${files.length < head.files ? `Slowest files of the head (top ${files.length} of ${formatCount(head.files)})` : "Files of the head"} | Head |`,
             "| --- | ---: |",
             ...files.map((file) => `| ${escapeCell(file.filePath)} | ${formatMs(file.duration)} |`),
-            ""
+            "",
         );
     }
     lines.push("</details>", "");
@@ -760,7 +760,7 @@ const markdownSet = (result) => [
     "",
     ...markdownSummaryTable(result),
     ...markdownChanges(result),
-    ...markdownProfile(result)
+    ...markdownProfile(result),
 ];
 
 /**
@@ -777,7 +777,7 @@ const markdownOverview = (results) => [
         const short = verdict.startsWith("✅") ? "✅ No change" : verdict.replace(/\.$/, "");
         return `| ${result.name} | ${short} | ${time} | ${formatCount(result.findings.base)} → ${formatCount(result.findings.head)} |`;
     }),
-    ""
+    "",
 ];
 
 const SET_ORDER = new Map(SET_NAMES.map((name, index) => [name, index]));
@@ -792,7 +792,7 @@ const toMarkdown = (compareResult) => {
         `Base: ${escapeCell(compareResult.base.ref)} ${commitLink(repository, compareResult.base.commit)}, head: ${head}`,
         "",
         ...(results.length > 1 ? markdownOverview(results) : []),
-        ...results.flatMap((result) => markdownSet(result))
+        ...results.flatMap((result) => markdownSet(result)),
     ].join("\n");
 };
 
@@ -842,7 +842,7 @@ const main = async () => {
     const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "secretlint-compare-"));
     try {
         const results = sets.map((set) =>
-            compareSet({ set, baseDir, headDir: REPO_ROOT, runs: options.runs, hasHyperfine, tmpDir })
+            compareSet({ set, baseDir, headDir: REPO_ROOT, runs: options.runs, hasHyperfine, tmpDir }),
         );
         const compareResult = { base, head, sets: results };
         fs.writeFileSync(options.jsonPath, `${JSON.stringify(compareResult, null, 2)}\n`);

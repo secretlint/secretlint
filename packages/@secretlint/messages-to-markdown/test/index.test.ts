@@ -12,7 +12,7 @@ describe("messages-to-markdown", () => {
             `## EXAMPLE_MESSAGE
 > found secret: {{ID}}
 
-`
+`,
         );
     });
 });

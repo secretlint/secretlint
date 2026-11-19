@@ -72,7 +72,7 @@ export const someKeywordLine = <P>(
         }
     };
     // `cursor` is the first hit of a line. Each turn takes all hits of the line.
-    for (let cursor = 0; cursor < end; ) {
+    for (let cursor = 0; cursor < end;) {
         const patterns: P[] = [];
         addLinePatterns(patterns, positions[cursor] as number);
         if (patterns.length === 0) {

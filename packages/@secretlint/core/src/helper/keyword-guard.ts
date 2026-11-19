@@ -307,7 +307,7 @@ export const formatGuardedKeyword = (keyword: string, guard: KeywordGuard): stri
         return char === "\\" || char === "]" ? `\\${char}` : char;
     };
     let set = "";
-    for (let i = 0; i < codes.length; ) {
+    for (let i = 0; i < codes.length;) {
         let end = i;
         while (end + 1 < codes.length && codes[end + 1] === (codes[end] as number) + 1) {
             end++;
