@@ -59,7 +59,6 @@
     },
     "devDependencies": {
         "@secretlint/tester": "workspace:*",
-        "@types/js-yaml": "catalog:",
         "@types/node": "catalog:",
         "prettier": "catalog:",
         "tsx": "catalog:",
