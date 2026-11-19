@@ -9,6 +9,18 @@
   "rules": {
     "no-control-regex": "off",
     "no-useless-escape": "off",
-    "unicorn/no-new-array": "off"
-  }
+    "unicorn/no-new-array": "off",
+    "typescript/unbound-method": "off",
+    "typescript/require-array-sort-compare": "off"
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/test/**"
+      ],
+      "rules": {
+        "typescript/no-floating-promises": "off"
+      }
+    }
+  ]
 }

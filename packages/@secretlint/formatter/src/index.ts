@@ -206,7 +206,7 @@ export async function secretlintCreateFormatter(formatterConfig: FormatterConfig
         ).default;
     } catch (ex) {
         throw new Error(`Could not find formatter ${formatterName}
-${ex}`);
+${String(ex)}`);
     }
     return {
         format: function secretlintFormatterFormat(results: SecretLintCoreResult[]) {

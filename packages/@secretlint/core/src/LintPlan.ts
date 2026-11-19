@@ -520,7 +520,7 @@ Duplicated rule.id is something wrong in .secretlintrc.
         } else if (isRule(descriptor)) {
             registerRule(descriptor, undefined);
         } else {
-            throw new Error(`Unknown descriptor type: ${descriptor}`);
+            throw new Error(`Unknown descriptor type: ${String(descriptor)}`);
         }
         secretLintProfiler.mark({
             type: "@core>setup-rule::end",

@@ -1,4 +1,6 @@
 // TODO: add locale
+// The known tags are listed for editor completion, and `string` accepts any other tag.
+/* oxlint-disable typescript/no-redundant-type-constituents */
 export type SecretLintRuleLocaleTag =
     | "en"
     | "cs"
@@ -14,6 +16,7 @@ export type SecretLintRuleLocaleTag =
     | "zh-CN"
     | "zh-TW"
     | string;
+/* oxlint-enable typescript/no-redundant-type-constituents */
 export type SecretLintRuleLocalizeMessageProps = { [index: string]: any };
 
 export type SecretLintRuleLocalizeMessageHandler<Props extends SecretLintRuleLocalizeMessageProps> = (
