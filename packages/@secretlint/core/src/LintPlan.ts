@@ -20,10 +20,10 @@ import type {
 } from "@secretlint/types";
 import { secretLintProfiler } from "@secretlint/profiler";
 import debug0 from "debug";
-import { getKeywordMatcher, KeywordMatcher, normalizeKeyword } from "./helper/keyword-matcher.js";
+import { getKeywordMatcher, type KeywordMatcher, normalizeKeyword } from "./helper/keyword-matcher.js";
 import { type KeywordGuard, keywordGuardKey, parseKeywordObject } from "./helper/keyword-guard.js";
 import { createKeywordScanPlan, type KeywordScanPlan } from "./keyword-scan.js";
-import { AllowMessage } from "./messages/filter-message-id.js";
+import type { AllowMessage } from "./messages/filter-message-id.js";
 import { creator as rulePattern, type Options as RulePatternOptions } from "./builtin/rules/pattern/index.js";
 import { compileUserPatterns } from "./builtin/rules/pattern/user-patterns.js";
 

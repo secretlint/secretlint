@@ -1,5 +1,5 @@
 // LICENSE : MIT
-import { SecretLintAllMessages } from "./MessageProcessManager.js";
+import type { SecretLintAllMessages } from "./MessageProcessManager.js";
 
 /**
  * equal message

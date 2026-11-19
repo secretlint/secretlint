@@ -1,5 +1,5 @@
 import { canaryRules, presetCanary, presetRecommend, recommendedRules } from "@secretlint/core/builtin";
-import { SecretLintConfigDescriptor } from "@secretlint/types";
+import type { SecretLintConfigDescriptor } from "@secretlint/types";
 
 /**
  * get package names from package.json

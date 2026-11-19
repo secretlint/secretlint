@@ -1,4 +1,4 @@
-import { SecretLintCoreResult, SecretLintFormatter } from "@secretlint/types";
+import type { SecretLintCoreResult, SecretLintFormatter } from "@secretlint/types";
 import { SarifBuilder, SarifResultBuilder, SarifRuleBuilder, SarifRunBuilder } from "node-sarif-builder";
 import path from "node:path";
 import { pathToFileURL } from "node:url";

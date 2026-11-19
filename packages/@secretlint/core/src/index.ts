@@ -13,10 +13,10 @@ import type {
     SecretLintRuleReportHandler,
 } from "@secretlint/types";
 import { SecretLintSourceCodeImpl } from "./SecretLintSourceCodeImpl.js";
-import { ContextEvents, createRuleContext } from "./RuleContext.js";
+import { type ContextEvents, createRuleContext } from "./RuleContext.js";
 import { secretLintProfiler } from "@secretlint/profiler";
 import { cleanupMessages } from "./messages/index.js";
-import { getLintPlan, getPlanView, LintPlan, PlanPattern, PlanView, ViewRule } from "./LintPlan.js";
+import { getLintPlan, getPlanView, type LintPlan, type PlanPattern, type PlanView, type ViewRule } from "./LintPlan.js";
 import { hasUtf8BOM, type KeywordScanPlan, type KeywordScanResult } from "./keyword-scan.js";
 import { hasLineMatchInBytes, isKeywordFound, someKeywordLine } from "./helper/line-check.js";
 

@@ -1,5 +1,5 @@
 // LICENSE : MIT
-import { SecretLintCoreResultMessage, SecretLintCoreIgnoreMessage } from "@secretlint/types";
+import type { SecretLintCoreResultMessage, SecretLintCoreIgnoreMessage } from "@secretlint/types";
 
 export type SecretLintAllMessages = SecretLintCoreResultMessage | SecretLintCoreIgnoreMessage;
 export type SecretLintMessageProcessor = (messages: Array<SecretLintAllMessages>) => Array<SecretLintAllMessages>;

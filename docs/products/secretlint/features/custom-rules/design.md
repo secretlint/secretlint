@@ -36,7 +36,7 @@ packages/@secretlint/secretlint-rule-<name>/
 ```
 
 The custom rules published by Secretlint have this layout.
-The test script of the package runs `test/index.test.ts` with `node --import tsx --test`, and `updateSnapshot` runs it with `UPDATE_SNAPSHOT=1`.
+The test script of the package runs `test/index.test.ts` with `node --test` (Node.js type stripping), and `updateSnapshot` runs it with `UPDATE_SNAPSHOT=1`.
 
 ### Running a test case
 

@@ -1,4 +1,4 @@
-import { SecretLintFormatterOptions } from "@secretlint/types";
+import type { SecretLintFormatterOptions } from "@secretlint/types";
 
 export type FormatterConfig = {
     formatterName: string;

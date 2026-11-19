@@ -46,7 +46,7 @@
         "clean": "tsc --build --clean",
         "format": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
         "prepublishOnly": "npm run clean && npm run build",
-        "test": "node --import tsx --test test/index.test.ts",
+        "test": "node --test test/index.test.ts",
         "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
         "watch": "tsc --build --watch"
     },
@@ -64,7 +64,6 @@
         "@types/node": "catalog:",
         "escape-string-regexp": "catalog:",
         "prettier": "catalog:",
-        "tsx": "catalog:",
         "typescript": "catalog:"
     },
     "publishConfig": {

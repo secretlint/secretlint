@@ -1,5 +1,5 @@
 import { StructuredSource } from "structured-source";
-import {
+import type {
     SecretLintSourceCode,
     SecretLintSourceNodeLocation,
     SecretLintSourceNodePosition,

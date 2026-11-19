@@ -2,7 +2,7 @@ import { fileURLToPath } from "node:url";
 import { createSnapshotTestCases } from "@secretlint/core/testing";
 import { loadConfig } from "@secretlint/config-loader";
 import { createRawSource } from "@secretlint/source-creator";
-import { SecretLintCoreConfig, SecretLintUnionRuleCreator } from "@secretlint/types";
+import type { SecretLintCoreConfig, SecretLintUnionRuleCreator } from "@secretlint/types";
 
 export type { SecretLintTestCaseOptions } from "@secretlint/core/testing";
 export type SnapshotOptions = {
@@ -38,7 +38,7 @@ export type SnapshotOptions = {
  * Snapshot testing of a secretlint rule.
  * The test runner is `@secretlint/core/testing`, and this loads `.secretlintrc.json` of a test case with `@secretlint/config-loader`.
  *
- * // $ node --import tsx --test test/index.test.ts
+ * // $ node --test test/index.test.ts
  * import test from "node:test";
  * test("Snapshot Testing", async (t) => {
  *  await snapshot(options).forEach((name, test) => {

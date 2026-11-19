@@ -1,6 +1,6 @@
 import test from "node:test";
-import { snapshot } from "../src/index.js";
-import { creator as rule } from "./fixtures/secretlint-rule-example.js";
+import { snapshot } from "../src/index.ts";
+import { creator as rule } from "./fixtures/secretlint-rule-example.ts";
 
 test("@secretlint/tester", async (t) => {
     await snapshot({

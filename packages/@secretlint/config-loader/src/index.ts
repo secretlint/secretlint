@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { loadConfigFile, rcFile } from "rc-config-loader";
-import {
+import type {
     SecretLintConfigDescriptor,
     SecretLintConfigDescriptorRulePreset,
     SecretLintCoreConfig,
@@ -15,7 +15,7 @@ import { SecretLintModuleResolver } from "./SecretLintModuleResolver.js";
 import { validateConfigDescriptor, validateConfigWithDescriptor } from "./validator.js";
 import { AggregationError } from "./AggregationError.js";
 import { dynamicImport } from "@secretlint/resolver";
-import { getConfigMessages, SecretLintConfigMessage } from "./config-messages.js";
+import { getConfigMessages, type SecretLintConfigMessage } from "./config-messages.js";
 import { createFullPackageName } from "./package-name-util.js";
 
 export type { SecretLintConfigMessage };

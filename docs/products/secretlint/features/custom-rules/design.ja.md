@@ -36,7 +36,7 @@ packages/@secretlint/secretlint-rule-<name>/
 ```
 
 Secretlintが公開するカスタムルールも、この構成になっています。
-パッケージの`test`スクリプトは`node --import tsx --test`で`test/index.test.ts`を実行し、`updateSnapshot`スクリプトは`UPDATE_SNAPSHOT=1`を付けて同じテストを実行します。
+パッケージの`test`スクリプトは`node --test`（Node.jsの型除去）で`test/index.test.ts`を実行し、`updateSnapshot`スクリプトは`UPDATE_SNAPSHOT=1`を付けて同じテストを実行します。
 
 ### テストケースの実行
 

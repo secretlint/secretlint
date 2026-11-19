@@ -1,4 +1,4 @@
-import { SecretLintCoreIgnoreMessage, SecretLintCoreResultMessage } from "@secretlint/types";
+import type { SecretLintCoreIgnoreMessage, SecretLintCoreResultMessage } from "@secretlint/types";
 
 /**
  * the `index` is in the `range` and return true.

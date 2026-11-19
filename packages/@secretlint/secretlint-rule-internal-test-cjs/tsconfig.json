@@ -4,6 +4,7 @@
     "module": "CommonJS",
     "moduleResolution": "Node",
     "ignoreDeprecations": "6.0",
+    "verbatimModuleSyntax": false,
     "outDir": "./lib/",
     "rootDir": "./src"
   },

@@ -1,4 +1,4 @@
-import { SecretLintSourceCode } from "@secretlint/types";
+import type { SecretLintSourceCode } from "@secretlint/types";
 
 type IgnoringCommentObject = {
     startIndex: null | number;

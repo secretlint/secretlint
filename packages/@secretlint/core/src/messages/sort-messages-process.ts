@@ -1,5 +1,5 @@
 // LICENSE : MIT
-import { SecretLintCoreResultMessage } from "@secretlint/types";
+import type { SecretLintCoreResultMessage } from "@secretlint/types";
 
 /**
  * sort messages by line and column

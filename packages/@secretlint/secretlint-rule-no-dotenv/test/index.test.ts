@@ -1,4 +1,4 @@
-import { creator as rule } from "../src/index.js";
+import { creator as rule } from "../src/index.ts";
 
 import test from "node:test";
 test("@secretlint/secretlint-rule-no-dotenv", async (t) => {
