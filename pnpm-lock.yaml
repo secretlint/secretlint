@@ -10,8 +10,8 @@ catalogs:
       specifier: ^1.65.0
       version: 1.65.0
     '@textlint/regexp-string-matcher':
-      specifier: ^2.0.3
-      version: 2.0.3
+      specifier: ^2.0.4
+      version: 2.0.4
     '@types/bun':
       specifier: ^1.4.4
       version: 1.4.4
@@ -216,7 +216,7 @@ importers:
         version: link:../types
       '@textlint/regexp-string-matcher':
         specifier: 'catalog:'
-        version: 2.0.3
+        version: 2.0.4
       debug:
         specifier: 'catalog:'
         version: 4.4.3
@@ -432,7 +432,7 @@ importers:
         version: link:../types
       '@textlint/regexp-string-matcher':
         specifier: 'catalog:'
-        version: 2.0.3
+        version: 2.0.4
       escape-string-regexp:
         specifier: 'catalog:'
         version: 5.0.0
@@ -476,7 +476,7 @@ importers:
         version: link:../types
       '@textlint/regexp-string-matcher':
         specifier: 'catalog:'
-        version: 2.0.3
+        version: 2.0.4
     devDependencies:
       '@secretlint/tester':
         specifier: workspace:*
@@ -1268,8 +1268,8 @@ packages:
   '@standard-schema/spec@1.1.0':
     resolution: {integrity: sha512-l2aFy5jALhniG5HgqrD6jXLi/rUWrKvqN/qJx6yoJsgKhblVd+iqqU4RCXavm/jPityDo5TCvKMnpjKnOriy0w==}
 
-  '@textlint/regexp-string-matcher@2.0.3':
-    resolution: {integrity: sha512-oLaihTHU+vutFmWOXTJexrIYFTF2f60QMTXQjvWO0/jJmCXQ2yfOq6xic0XO2MjG7A1d0UIk4oBMXTLps3mfsg==}
+  '@textlint/regexp-string-matcher@2.0.4':
+    resolution: {integrity: sha512-wK/RrUO/UsfxKa/Flhu2583n2Om38w4Ds5uh4nMedIX/+wL1uL9FH8vgK9YDlsO4jNkp5LbjTp5XDnQTd1VYPg==}
 
   '@turbo/darwin-64@2.11.11':
     resolution: {integrity: sha512-HMMeUIEAsmyIbSYn1ySvF/4gGMa0joiTMq4dQDuloIAnOpbtFT3JEiVsYnASdTWDXvplbRbZlqjU1EBeSR9G1A==}
@@ -2911,7 +2911,7 @@ snapshots:
 
   '@standard-schema/spec@1.1.0': {}
 
-  '@textlint/regexp-string-matcher@2.0.3': {}
+  '@textlint/regexp-string-matcher@2.0.4': {}
 
   '@turbo/darwin-64@2.11.11':
     optional: true
