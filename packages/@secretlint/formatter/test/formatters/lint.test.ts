@@ -3,7 +3,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import yaml from "js-yaml";
+import { dump } from "js-yaml";
 import checkstyle from "../../src/formatters/lint/checkstyle.js";
 import compact from "../../src/formatters/lint/compact.js";
 import github from "../../src/formatters/lint/github.js";
@@ -24,7 +24,7 @@ const formatters: Record<string, LintFormatter> = {
     "jslint-xml": jslintXml,
     junit,
     stylish,
-    tap: createTapFormatter((value) => yaml.dump(value)),
+    tap: createTapFormatter((value) => dump(value)),
     unix,
 };
 const ESC = "\u001B";
