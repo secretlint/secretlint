@@ -270,7 +270,7 @@ const recordGuardUse = (
             const from = content.lastIndexOf("\n", message.range[0] - 1) + 1;
             const nextLineFeed = content.indexOf("\n", Math.max(message.range[1] - 1, message.range[0]));
             const to = nextLineFeed >= 0 ? nextLineFeed : content.length;
-            for (let index = lowerContent.indexOf(keyword, from); index >= 0 && index < to; ) {
+            for (let index = lowerContent.indexOf(keyword, from); index >= 0 && index < to;) {
                 if (guarded.isMet(content, index + keyword.length)) {
                     return true;
                 }
@@ -443,7 +443,7 @@ const assertGuards = (
             const keyword = guarded.keyword.toLowerCase();
             const places: number[] = [];
             let isMetSomewhere = false;
-            for (let index = lowerContent.indexOf(keyword, from); index >= 0 && index < to; ) {
+            for (let index = lowerContent.indexOf(keyword, from); index >= 0 && index < to;) {
                 if (guarded.isMet(content, index + keyword.length)) {
                     isMetSomewhere = true;
                 } else {

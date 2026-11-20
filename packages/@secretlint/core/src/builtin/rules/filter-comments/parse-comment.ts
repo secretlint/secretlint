@@ -10,7 +10,7 @@ type SecretlintCommentType =
 export const parseComments = (source: SecretLintSourceCode) => {
     const matches = source.content.matchAll(HTML_COMMENT_REGEXP);
     return Array.from(matches).map((match) => {
-        const type = match.groups?.type! as SecretlintCommentType;
+        const type = match.groups?.type as SecretlintCommentType;
         const index = match.index!;
         if (type === "secretlint-disable-line") {
             return {
@@ -34,12 +34,14 @@ export const parseComments = (source: SecretLintSourceCode) => {
     });
 };
 
+/* oxlint-disable no-irregular-whitespace -- the example below contains U+3000 on purpose */
 /**
  * Parses a config of values separated by comma.
  *
  * secretlint-disable a,b,c => ["a", "b", "c"]
  * secretlint-disable -- comment　=> []
  */
+/* oxlint-enable no-irregular-whitespace */
 export function parseComment(options?: string): string[] {
     if (!options) {
         return [];

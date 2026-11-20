@@ -16,7 +16,7 @@ export default defineConfig({
                     throw new Error(`Can not bundle for browsers: ${warning.message}`);
                 }
                 warn(warning);
-            }
-        }
-    }
+            },
+        },
+    },
 });

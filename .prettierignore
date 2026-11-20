@@ -1,3 +1,0 @@
-**/packages/@secretlint/config-loader/src/*.validator.ts
-**/examples/benchmark/targets/**
-**/test/fixtures/**

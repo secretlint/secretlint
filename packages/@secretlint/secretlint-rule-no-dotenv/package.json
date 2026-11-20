@@ -46,16 +46,10 @@
         "build": "tsc --build",
         "clean": "tsc --build --clean",
         "prepublishOnly": "npm run clean && npm run build",
-        "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,css}\"",
         "prepublish": "npm run --if-present build",
         "test": "node --test test/index.test.ts",
         "updateSnapshot": "UPDATE_SNAPSHOT=1 npm test",
         "watch": "tsc --build --watch"
-    },
-    "prettier": {
-        "printWidth": 120,
-        "singleQuote": false,
-        "tabWidth": 4
     },
     "dependencies": {
         "@secretlint/types": "workspace:*"
@@ -63,7 +57,6 @@
     "devDependencies": {
         "@secretlint/tester": "workspace:*",
         "@types/node": "catalog:",
-        "prettier": "catalog:",
         "typescript": "catalog:"
     },
     "engines": {

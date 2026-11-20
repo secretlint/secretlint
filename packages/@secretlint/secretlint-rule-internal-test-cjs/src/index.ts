@@ -1,4 +1,6 @@
-import type { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types";
+import type { SecretLintRuleCreator, SecretLintSourceCode } from "@secretlint/types" with {
+    "resolution-mode": "import",
+};
 
 export const messages = {
     EXAMPLE_MESSAGE: {

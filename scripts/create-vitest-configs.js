@@ -38,7 +38,7 @@ export default defineConfig({
 async function createVitestConfigs() {
     const packagePaths = await glob("packages/**/package.json", {
         cwd: rootDir,
-        exclude: ["**/node_modules/**", "**/test/**"]
+        exclude: ["**/node_modules/**", "**/test/**"],
     });
 
     for (const packagePath of packagePaths) {

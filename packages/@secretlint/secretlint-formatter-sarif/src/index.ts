@@ -10,7 +10,7 @@ function buildSarifResult(lintResults: SecretLintCoreResult[]) {
     const sarifRunBuilder = new SarifRunBuilder().initSimple({
         toolDriverName: "secretlint",
         toolDriverVersion: "1.0.0", // TODO: currently can not get secretlint's version from formatter
-        url: "https://github.com/secretlint/secretlint"
+        url: "https://github.com/secretlint/secretlint",
     });
     // SARIF rules
     const addedRuleSet = new Set<string>();
@@ -24,7 +24,7 @@ function buildSarifResult(lintResults: SecretLintCoreResult[]) {
             const sarifRuleBuiler = new SarifRuleBuilder().initSimple({
                 ruleId: ruleId,
                 shortDescriptionText: `secretlint rule(${ruleId}) error`,
-                helpUri: message?.docsUrl
+                helpUri: message?.docsUrl,
             });
             sarifRunBuilder.addRule(sarifRuleBuiler);
         });
@@ -44,7 +44,7 @@ function buildSarifResult(lintResults: SecretLintCoreResult[]) {
                 startLine: fixLine(message.loc.start.line),
                 startColumn: fixCol(message.loc.start.column),
                 endLine: fixLine(message.loc.end.line),
-                endColumn: fixCol(message.loc.end.column)
+                endColumn: fixCol(message.loc.end.column),
             } as const;
             sarifResultBuilder.initSimple(sarifResultInit);
             sarifRunBuilder.addResult(sarifResultBuilder);

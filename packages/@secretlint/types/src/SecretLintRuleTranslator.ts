@@ -1,4 +1,6 @@
 // TODO: add locale
+// The known tags are listed for editor completion, and `string` accepts any other tag.
+/* oxlint-disable typescript/no-redundant-type-constituents */
 export type SecretLintRuleLocaleTag =
     | "en"
     | "cs"
@@ -14,10 +16,11 @@ export type SecretLintRuleLocaleTag =
     | "zh-CN"
     | "zh-TW"
     | string;
+/* oxlint-enable typescript/no-redundant-type-constituents */
 export type SecretLintRuleLocalizeMessageProps = { [index: string]: any };
 
 export type SecretLintRuleLocalizeMessageHandler<Props extends SecretLintRuleLocalizeMessageProps> = (
-    props?: Props
+    props?: Props,
 ) => string;
 export type SecretLintRuleLocalizeMessageMulti<Props extends SecretLintRuleLocalizeMessageProps> = {
     [P in SecretLintRuleLocaleTag]: SecretLintRuleLocalizeMessageHandler<Props>;
@@ -51,9 +54,9 @@ export type SecretLintRuleMessageTranslate<
     T extends SecretLintRuleLocalizeMessages,
     MessageId extends keyof T = keyof T,
     // Props is a union type of Message Handler's props
-    Props extends Parameters<ValueOf<T[MessageId]>>[0] = Parameters<ValueOf<T[MessageId]>>[0]
+    Props extends Parameters<ValueOf<T[MessageId]>>[0] = Parameters<ValueOf<T[MessageId]>>[0],
 > = (messageId: MessageId, props?: Props) => SecretLintRuleMessageTranslateResult<Props>;
 
 export type SecretLintCreateRuleMessageTranslator<T extends SecretLintRuleLocalizeMessages> = (
-    messages: T
+    messages: T,
 ) => SecretLintRuleMessageTranslate<T>;

@@ -14,7 +14,7 @@ type ResolverSkipResult = undefined;
  */
 export type ResolveHook = (
     specifier: string,
-    context: ResolverContext
+    context: ResolverContext,
 ) =>
     | {
           url: string | undefined;
@@ -25,7 +25,7 @@ export type ResolveHook = (
  */
 export type ImportHook = (
     specifier: string,
-    context: ResolverContext
+    context: ResolverContext,
 ) => Promise<
     | {
           exports: Record<string, unknown>;
@@ -96,7 +96,7 @@ const convertToFileUrl = (filePath: string) => {
  */
 export const dynamicImport = async (
     specifier: string,
-    context: ResolverContext
+    context: ResolverContext,
 ): Promise<{
     exports: Record<string, unknown> | undefined;
 }> => {
@@ -138,7 +138,7 @@ export const getPackageJson = (cwd: string) => {
             return require(packageJsonPath);
         }
         return undefined;
-    } catch (error) {
+    } catch {
         // ignore error
         return undefined;
     }

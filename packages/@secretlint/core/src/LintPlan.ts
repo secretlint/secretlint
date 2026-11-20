@@ -498,7 +498,7 @@ Duplicated rule.id is something wrong in .secretlintrc.
                     registerRule(
                         {
                             // options and disabled ...
-                            ...(defaultValue ?? {}),
+                            ...defaultValue,
                             // Prefer to use user setting
                             // User can override preset setting
                             ...descriptorRule,
@@ -520,7 +520,7 @@ Duplicated rule.id is something wrong in .secretlintrc.
         } else if (isRule(descriptor)) {
             registerRule(descriptor, undefined);
         } else {
-            throw new Error(`Unknown descriptor type: ${descriptor}`);
+            throw new Error(`Unknown descriptor type: ${String(descriptor)}`);
         }
         secretLintProfiler.mark({
             type: "@core>setup-rule::end",

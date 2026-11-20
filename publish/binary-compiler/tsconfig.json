@@ -6,6 +6,7 @@
     "esModuleInterop": true,
     "newLine": "LF",
     "outDir": "./lib/",
+    "rootDir": "./src",
     "target": "ES2022",
     "sourceMap": true,
     "declaration": true,

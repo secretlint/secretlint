@@ -20,5 +20,5 @@ const XML_ESCAPES: Record<string, string> = {
  * Escape `&`, `<`, `>`, `"` and `'` as XML entities.
  */
 export const escapeXml = (value: unknown): string => {
-    return `${value}`.replace(/[<>&"']/g, (character) => XML_ESCAPES[character]);
+    return String(value).replace(/[<>&"']/g, (character) => XML_ESCAPES[character]);
 };

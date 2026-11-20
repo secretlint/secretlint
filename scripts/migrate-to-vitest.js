@@ -10,7 +10,7 @@ const rootDir = path.join(__dirname, "..");
 async function updatePackageJsonScripts() {
     const packagePaths = await glob("packages/**/package.json", {
         cwd: rootDir,
-        exclude: ["**/node_modules/**", "**/test/**"]
+        exclude: ["**/node_modules/**", "**/test/**"],
     });
 
     for (const packagePath of packagePaths) {
@@ -44,7 +44,7 @@ async function updatePackageJsonScripts() {
 async function removeIllegalMochaImports() {
     const testFiles = await glob("packages/**/*.{test,spec}.{js,ts}", {
         cwd: rootDir,
-        exclude: ["**/node_modules/**"]
+        exclude: ["**/node_modules/**"],
     });
 
     for (const testFile of testFiles) {
@@ -58,11 +58,11 @@ async function removeIllegalMochaImports() {
         // Convert function() to arrow functions in describe/it blocks
         content = content.replace(
             /describe\s*\(\s*["'`]([^"'`]*?)["'`]\s*,\s*function\s*\(\)/g,
-            'describe("$1", () =>'
+            'describe("$1", () =>',
         );
         content = content.replace(
             /it\s*\(\s*["'`]([^"'`]*?)["'`]\s*,\s*async\s+function\s*\(\)/g,
-            'it("$1", async () =>'
+            'it("$1", async () =>',
         );
         content = content.replace(/it\s*\(\s*["'`]([^"'`]*?)["'`]\s*,\s*function\s*\(\)/g, 'it("$1", () =>');
         content = content.replace(/before\s*\(\s*function\s*\(\)/g, "before(() =>");
@@ -92,7 +92,7 @@ async function removeIllegalMochaImports() {
 
 async function removeMochaConfigs() {
     const mochaConfigs = await glob("packages/**/.mocharc.{json,js,yaml,yml}", {
-        cwd: rootDir
+        cwd: rootDir,
     });
 
     for (const configPath of mochaConfigs) {

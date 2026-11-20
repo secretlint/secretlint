@@ -215,9 +215,9 @@ const KEYWORD_OBJECT_PROPERTIES: ReadonlySet<string> = new Set(["keyword", "afte
 export const parseKeywordObject = (item: object): GuardedKeyword => {
     const describe = (): string => {
         try {
-            return JSON.stringify(item) ?? String(item);
+            return JSON.stringify(item) ?? Object.prototype.toString.call(item);
         } catch {
-            return String(item);
+            return Object.prototype.toString.call(item);
         }
     };
     const fail = (reason: string, cause?: unknown): never => {
@@ -307,7 +307,7 @@ export const formatGuardedKeyword = (keyword: string, guard: KeywordGuard): stri
         return char === "\\" || char === "]" ? `\\${char}` : char;
     };
     let set = "";
-    for (let i = 0; i < codes.length; ) {
+    for (let i = 0; i < codes.length;) {
         let end = i;
         while (end + 1 < codes.length && codes[end + 1] === (codes[end] as number) + 1) {
             end++;

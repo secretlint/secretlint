@@ -4,7 +4,7 @@ import { registerImportHook, registerResolveHook } from "@secretlint/resolver";
 // Built-in rules and presets (for example "@secretlint/secretlint-rule-preset-recommend" and "@secretlint/secretlint-rule-pattern") are part of @secretlint/core,
 // and the config loader resolves them without these hooks.
 const mocks = {
-    "@secretlint/secretlint-formatter-sarif": sarif
+    "@secretlint/secretlint-formatter-sarif": sarif,
 };
 const mockNames = Object.keys(mocks);
 const mockNameRegex = new RegExp(`^(?:${mockNames.join("|")})$`);
@@ -14,7 +14,7 @@ const mockNameRegex = new RegExp(`^(?:${mockNames.join("|")})$`);
 registerResolveHook((moduleName) => {
     if (mockNames.includes(moduleName)) {
         return {
-            url: moduleName
+            url: moduleName,
         };
     }
     return undefined; // pass through
@@ -24,7 +24,7 @@ registerResolveHook((moduleName) => {
 registerImportHook(async (moduleName) => {
     if (mockNameRegex.test(moduleName)) {
         return {
-            exports: mocks[moduleName as keyof typeof mocks]
+            exports: mocks[moduleName as keyof typeof mocks],
         };
     }
     return undefined; // pass through

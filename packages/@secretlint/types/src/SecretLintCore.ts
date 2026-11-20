@@ -69,9 +69,9 @@ export type SecretLintCoreConfigRulePreset<Options = SecretLintRulePresetCreator
 export type SecretLintUnionRuleCreator<Options = SecretLintRuleCreatorOptions | SecretLintRulePresetCreatorOptions> =
     | SecretLintRuleCreator<Options>
     | SecretLintRulePresetCreator<Options>;
-export type SecretLintCoreConfigUnionRule<Options = SecretLintRuleCreatorOptions | SecretLintRulePresetCreatorOptions> =
-    | SecretLintCoreConfigRule<Options>
-    | SecretLintCoreConfigRulePreset<Options>;
+export type SecretLintCoreConfigUnionRule<
+    Options = SecretLintRuleCreatorOptions | SecretLintRulePresetCreatorOptions,
+> = SecretLintCoreConfigRule<Options> | SecretLintCoreConfigRulePreset<Options>;
 // module export named `creator`
 export type SecretLintRuleModule = {
     creator: SecretLintUnionRuleCreator;

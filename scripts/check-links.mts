@@ -24,7 +24,7 @@ const IGNORED: RegExp[] = [
     /^examples\/benchmark\/targets\//,
     /(^|\/)node_modules\//,
     /(^|\/)test\/(snapshots|fixtures)\//,
-    /(^|\/)snapshots\//
+    /(^|\/)snapshots\//,
 ];
 const TEXT_EXTENSIONS = new Set([".md", ".ts", ".mts", ".cts", ".js", ".mjs", ".cjs", ".json", ".yml", ".yaml"]);
 

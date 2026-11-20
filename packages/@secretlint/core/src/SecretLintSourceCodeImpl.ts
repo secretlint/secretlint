@@ -22,6 +22,7 @@ export class SecretLintSourceCodeImpl implements SecretLintSourceCode {
     private _structuredSource: StructuredSource | undefined;
 
     constructor({
+        // oxlint-disable-next-line typescript/no-useless-default-assignment -- keep the default for JavaScript callers
         content = "",
         ext,
         filePath,

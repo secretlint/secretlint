@@ -111,12 +111,18 @@ We are migrating entire codes to TypeScript.
 
 ##### Linting and Style
 
-This repository uses [Prettier](https://prettier.io/) for code formatter. We use [`lint-staged`](https://www.npmjs.com/package/lint-staged) and [`husky`](https://www.npmjs.com/package/husky) to make coding style consistent before commit, but if you have your own [Git hooks](https://git-scm.com/book/gr/v2/Customizing-Git-Git-Hooks) locally, these setup doesn't work. In such case, please run Prettier manually as below after making changes.
+This repository uses [oxfmt](https://oxc.rs/docs/guide/usage/formatter) for code formatter and [oxlint](https://oxc.rs/docs/guide/usage/linter) for linter. We use [`lint-staged`](https://www.npmjs.com/package/lint-staged) and a Git hook in `.githooks/` to make coding style consistent before commit, but if you have your own [Git hooks](https://git-scm.com/book/gr/v2/Customizing-Git-Git-Hooks) locally, these setup doesn't work. In such case, please run oxfmt and oxlint manually as below after making changes.
 
-- Run Prettier to reformat code:
+- Run oxfmt to reformat code:
 
     ```sh
     $ pnpm format
+    ```
+
+- Run oxlint to lint code:
+
+    ```sh
+    $ pnpm lint:code
     ```
 
 ##### Commit Message Format

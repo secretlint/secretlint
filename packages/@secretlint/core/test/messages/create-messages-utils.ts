@@ -35,7 +35,7 @@ export const createMessageFromRange = ({
 };
 export const createIgnoredMessageFromRange = (
     range: readonly [startIndex: number, endIndex: number],
-    targetRuleId = "*"
+    targetRuleId = "*",
 ): SecretLintCoreIgnoreMessage => {
     return {
         range: range,

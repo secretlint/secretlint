@@ -75,7 +75,7 @@ export const snapshot = (options: SnapshotOptions) => {
         },
     });
     return {
-        forEach(handler: (testCaseName: string, testFunction: () => Promise<"skip" | "done">) => void) {
+        forEach(handler: (testCaseName: string, testFunction: () => Promise<"skip" | "done">) => unknown) {
             return Promise.all(testCases.map((testCase) => handler(testCase.name, testCase.run)));
         },
     };

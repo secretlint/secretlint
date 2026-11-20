@@ -11,7 +11,7 @@ describe("message-filter", () => {
                     ignoredMessages: [],
                     reportedMessages: [],
                 }).length,
-                0
+                0,
             );
         });
     });
@@ -34,7 +34,7 @@ describe("message-filter", () => {
                     reportedMessages: reportedMessages,
                     ignoredMessages: ignoredMessaged,
                 }).length,
-                1
+                1,
             );
         });
         it("should filtered, if start <= index <= end ", () => {
@@ -50,7 +50,7 @@ describe("message-filter", () => {
                     reportedMessages,
                     ignoredMessages,
                 }),
-                [createMessageFromRange({ range: [2, 3] }), createMessageFromRange({ range: [3, 4] })]
+                [createMessageFromRange({ range: [2, 3] }), createMessageFromRange({ range: [3, 4] })],
             );
         });
         it("should remove ignore message it-self", () => {
@@ -64,7 +64,7 @@ describe("message-filter", () => {
                     reportedMessages,
                     ignoredMessages,
                 }),
-                []
+                [],
             );
         });
     });
@@ -84,7 +84,7 @@ describe("message-filter", () => {
                     reportedMessages,
                     ignoredMessages,
                 }),
-                [createMessageFromRange({ range: [1, 10], ruleId: "c" })]
+                [createMessageFromRange({ range: [1, 10], ruleId: "c" })],
             );
         });
     });
