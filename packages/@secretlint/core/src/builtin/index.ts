@@ -26,6 +26,7 @@ import { creator as ruleDocker } from "./rules/docker/index.js";
 import { creator as ruleFigma } from "./rules/figma/index.js";
 import { creator as ruleCloudflare } from "./rules/cloudflare/index.js";
 import { creator as ruleTailscale } from "./rules/tailscale/index.js";
+import { creator as ruleTelegram } from "./rules/telegram/index.js";
 import { creator as ruleFilterComments } from "./rules/filter-comments/index.js";
 import { creator as ruleAzure } from "./rules/azure/index.js";
 import { creator as rulePattern } from "./rules/pattern/index.js";
@@ -65,6 +66,7 @@ export const builtinRules: readonly SecretLintRuleCreator<unknown>[] = [
     ruleFigma,
     ruleCloudflare,
     ruleTailscale,
+    ruleTelegram,
     ruleFilterComments,
     ruleAzure,
     rulePattern,
@@ -108,7 +110,11 @@ export const recommendedRules: readonly SecretLintRuleCreator<unknown>[] = [
  * Rules of `@secretlint/secretlint-rule-preset-canary`.
  * A new rule is added here first, and is added to `recommendedRules` at a major release.
  */
-export const canaryRules: readonly SecretLintRuleCreator<unknown>[] = [...recommendedRules];
+export const canaryRules: readonly SecretLintRuleCreator<unknown>[] = [
+    ...recommendedRules.slice(0, -1),
+    ruleTelegram,
+    ruleFilterComments,
+];
 
 const createPreset = (id: string, rules: readonly SecretLintRuleCreator<unknown>[]): SecretLintRulePresetCreator => {
     return {

@@ -443,6 +443,10 @@ These rules are not in a preset. They run only when the configuration file lists
 - [@secretlint/secretlint-rule-azure](./docs/rules/azure.md)
 - [@secretlint/secretlint-rule-pattern](./docs/rules/pattern.md)
 
+The Telegram rule is available directly and in the canary preset.
+
+- [@secretlint/secretlint-rule-telegram](./docs/rules/telegram.md)
+
 Secretlint also has built-in rule presets.
 
 - [@secretlint/secretlint-rule-preset-recommend](./docs/rules/preset-recommend.md)
