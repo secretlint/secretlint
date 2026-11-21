@@ -30,7 +30,7 @@ catalog:
   oxlint-tsgolint: "^7.0.2007"
   "rc-config-loader": "^4.2.0"
   "rimraf": "^6.1.4"
-  "rollup": "^4.68.2"
+  "rollup": "^4.68.6"
   "rollup-plugin-polyfill-node": "^0.13.0"
   "scaffdog": "^4.1.0"
   "structured-source": "^4.0.0"
