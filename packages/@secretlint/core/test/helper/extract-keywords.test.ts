@@ -32,7 +32,7 @@ describe("extractKeywords", () => {
             assert.deepStrictEqual(extractKeywords(regex), expected);
         });
     }
-    it("finds keywords in every pattern of the built-in rules, and every match of the snapshot inputs contains one", () => {
+    it("finds or declares keywords in every pattern of the built-in rules, and every match of the snapshot inputs contains one", () => {
         const snapshotDirectory = path.join(path.dirname(fileURLToPath(import.meta.url)), "../builtin/rules");
         const inputs: string[] = [];
         const walk = (directory: string) => {
@@ -48,7 +48,10 @@ describe("extractKeywords", () => {
         walk(snapshotDirectory);
         for (const rule of builtinRules) {
             for (const pattern of rule.patterns ?? []) {
-                const keywords = extractKeywords(pattern.pattern);
+                // A pattern without a fixed string, such as Telegram's, declares a keyword with a guard.
+                const keywords =
+                    extractKeywords(pattern.pattern) ??
+                    pattern.keywords?.map((keyword) => (typeof keyword === "string" ? keyword : keyword.keyword));
                 assert.ok(keywords, `no keyword: ${pattern.pattern}`);
                 const regex = new RegExp(pattern.pattern.source, pattern.pattern.flags.replace("g", "") + "g");
                 for (const input of inputs) {
