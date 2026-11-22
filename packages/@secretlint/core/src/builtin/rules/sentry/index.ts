@@ -64,9 +64,10 @@ export const creator: SecretLintRuleCreator<Options> = {
         {
             // Organization auth tokens: "sntrys_" + Base64 of a JSON payload + "_" + 43 Base64 characters of the secret.
             // https://github.com/getsentry/sentry/blob/master/src/sentry/utils/security/orgauthtoken_token.py
+            // The payload has two URLs (the deployment URL of a self-hosted Sentry can be long) and the organization slug.
             // The length of the payload is bounded, so that a match attempt reads a bounded part of the line.
             pattern:
-                /(?<!\p{L})sntrys_(?<payload>[A-Za-z0-9+/_-]{10,300}={0,2})_[A-Za-z0-9+/_-]{43}(?![\p{L}\p{N}+/_=-])/gu,
+                /(?<!\p{L})sntrys_(?<payload>[A-Za-z0-9+/_-]{10,4096}={0,2})_[A-Za-z0-9+/_-]{43}(?![\p{L}\p{N}+/_=-])/gu,
             keywords: ["sntrys_"],
             scope: "line",
             report(match, context) {

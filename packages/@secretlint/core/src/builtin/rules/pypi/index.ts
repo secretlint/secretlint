@@ -31,9 +31,11 @@ export const creator: SecretLintRuleCreator<Options> = {
         {
             // PyPI API tokens are "pypi-" + a serialized macaroon (URL-safe Base64).
             // "AgEIcHlwaS5vcmc" is the encoded header with the location "pypi.org", so every token of pypi.org starts with it.
+            // A token scoped to many projects has a caveat for each project, and Warehouse accepts tokens up to 16 KiB
+            // (_MAX_TOKEN_BYTES), which is about 21,846 characters in Base64.
             // The length of the body is bounded, so that a match attempt reads a bounded part of the line.
             // https://github.com/pypi/warehouse/blob/main/warehouse/macaroons/services.py
-            pattern: /(?<![\p{L}\p{N}_])pypi-AgEIcHlwaS5vcmc[A-Za-z0-9_-]{50,1000}(?![\p{L}\p{N}_-])/gu,
+            pattern: /(?<![\p{L}\p{N}_])pypi-AgEIcHlwaS5vcmc[A-Za-z0-9_-]{50,22000}(?![\p{L}\p{N}_-])/gu,
             keywords: ["pypi-AgEIcHlwaS5vcmc"],
             scope: "line",
             report(match, context) {

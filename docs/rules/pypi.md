@@ -23,7 +23,7 @@ Via `.secretlintrc.json`
 
 ### PYPI_API_TOKEN
 
-PyPI API token is detected. The token is `pypi-AgEIcHlwaS5vcmc` (`pypi-` and the encoded header for `pypi.org`) followed by 50 to 1000 URL-safe Base64 characters.
+PyPI API token is detected. The token is `pypi-AgEIcHlwaS5vcmc` (`pypi-` and the encoded header for `pypi.org`) followed by 50 to 22,000 URL-safe Base64 characters (a token scoped to many projects is long).
 
 **NG** examples:
 

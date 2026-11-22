@@ -1,0 +1,32 @@
+{
+    "filePath": "[SNAPSHOT]/ng.self-hosted-long-url/input.txt",
+    "messages": [
+        {
+            "message": "found Sentry organization auth token: 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",
+            "range": [
+                18,
+                393
+            ],
+            "type": "message",
+            "ruleId": "@secretlint/secretlint-rule-sentry",
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 18
+                },
+                "end": {
+                    "line": 1,
+                    "column": 393
+                }
+            },
+            "severity": "error",
+            "messageId": "SENTRY_ORGANIZATION_TOKEN",
+            "docsUrl": "https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/sentry.md#SENTRY_ORGANIZATION_TOKEN",
+            "data": {
+                "TOKEN": "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"
+            }
+        }
+    ],
+    "sourceContent": "SENTRY_AUTH_TOKEN=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\n",
+    "sourceContentType": "text"
+}
