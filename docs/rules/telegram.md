@@ -24,7 +24,7 @@ Via `.secretlintrc.json`
 ### TELEGRAM_BOT_TOKEN
 
 Telegram bot token is detected. The token is a bot ID of 5 to 16 digits, `:A`, and 34 characters of `[A-Za-z0-9_-]`.
-A token in a Bot API URL (`https://api.telegram.org/bot<token>/...` or `https://api.telegram.org/file/bot<token>/...`) is detected too, and the report covers only the token.
+A token just after `/bot` in a URL, such as `https://api.telegram.org/bot<token>/...` or `https://api.telegram.org/file/bot<token>/...` (any host, including a local Bot API server), is detected too, and the report covers only the token.
 
 The token has no fixed prefix, so a letter, a digit, or `_` just before or after the token prevents a match.
 
