@@ -26,6 +26,14 @@ import { creator as ruleDocker } from "./rules/docker/index.js";
 import { creator as ruleFigma } from "./rules/figma/index.js";
 import { creator as ruleCloudflare } from "./rules/cloudflare/index.js";
 import { creator as ruleTailscale } from "./rules/tailscale/index.js";
+import { creator as ruleDigitalocean } from "./rules/digitalocean/index.js";
+import { creator as ruleNuntiq } from "./rules/nuntiq/index.js";
+import { creator as rulePostman } from "./rules/postman/index.js";
+import { creator as rulePypi } from "./rules/pypi/index.js";
+import { creator as ruleReplicate } from "./rules/replicate/index.js";
+import { creator as ruleRubygems } from "./rules/rubygems/index.js";
+import { creator as ruleSentry } from "./rules/sentry/index.js";
+import { creator as ruleSupabase } from "./rules/supabase/index.js";
 import { creator as ruleFilterComments } from "./rules/filter-comments/index.js";
 import { creator as ruleAzure } from "./rules/azure/index.js";
 import { creator as rulePattern } from "./rules/pattern/index.js";
@@ -65,6 +73,14 @@ export const builtinRules: readonly SecretLintRuleCreator<unknown>[] = [
     ruleFigma,
     ruleCloudflare,
     ruleTailscale,
+    ruleDigitalocean,
+    ruleNuntiq,
+    rulePostman,
+    rulePypi,
+    ruleReplicate,
+    ruleRubygems,
+    ruleSentry,
+    ruleSupabase,
     ruleFilterComments,
     ruleAzure,
     rulePattern,
@@ -108,7 +124,26 @@ export const recommendedRules: readonly SecretLintRuleCreator<unknown>[] = [
  * Rules of `@secretlint/secretlint-rule-preset-canary`.
  * A new rule is added here first, and is added to `recommendedRules` at a major release.
  */
-export const canaryRules: readonly SecretLintRuleCreator<unknown>[] = [...recommendedRules];
+/**
+ * Built-in rules that are only in the canary preset, not in the recommended preset yet.
+ */
+const canaryOnlyRules: readonly SecretLintRuleCreator<unknown>[] = [
+    ruleDigitalocean,
+    ruleNuntiq,
+    rulePostman,
+    rulePypi,
+    ruleReplicate,
+    ruleRubygems,
+    ruleSentry,
+    ruleSupabase,
+];
+
+export const canaryRules: readonly SecretLintRuleCreator<unknown>[] = [
+    // The filter rule is the last rule of the recommended preset, and stays the last rule.
+    ...recommendedRules.filter((rule) => rule !== ruleFilterComments),
+    ...canaryOnlyRules,
+    ruleFilterComments,
+];
 
 const createPreset = (id: string, rules: readonly SecretLintRuleCreator<unknown>[]): SecretLintRulePresetCreator => {
     return {
