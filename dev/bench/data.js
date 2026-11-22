@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1795318655918,
+  "lastUpdate": 1795319041453,
   "repoUrl": "https://github.com/secretlint/secretlint",
   "entries": {
     "Secretlint benchmark": [
@@ -63270,6 +63270,44 @@ window.BENCHMARK_DATA = {
             "range": "±0.85%",
             "unit": "ops/sec",
             "extra": "16 samples"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "41898282+github-actions[bot]@users.noreply.github.com",
+            "name": "github-actions[bot]",
+            "username": "github-actions[bot]"
+          },
+          "committer": {
+            "email": "noreply@github.com",
+            "name": "GitHub",
+            "username": "web-flow"
+          },
+          "distinct": true,
+          "id": "1ef7689b9fbe1c2e4a13081ef7345332b9eae21a",
+          "message": "v14.1.0 (#1852)\n\n<!-- Release notes generated using configuration in .github/release.yml\nat main -->\n\n## Highlights\n\n### 10 new built-in rules\n\nThis release adds 10 rules. They are built into secretlint\n(`@secretlint/core`), so you can use each rule by its rule id without\ninstalling a package.\nThey are also in\n[@secretlint/secretlint-rule-preset-canary](https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/preset-canary.md).\nThey are **not** in the recommended preset yet, so the recommended\npreset does not change in this release.\n\n| Rule | Detects | Based on |\n| --- | --- | --- |\n|\n[@secretlint/secretlint-rule-digitalocean](https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/digitalocean.md)\n| DigitalOcean personal access tokens, OAuth tokens, and OAuth refresh\ntokens (`dop_v1_`, `doo_v1_`, `dor_v1_`) | #1746 by @owenshen0907 |\n|\n[@secretlint/secretlint-rule-doppler](https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/doppler.md)\n| Doppler auth tokens (`dp.pt.`, `dp.st.`, `dp.sa.`, `dp.said.`,\n`dp.ct.`, `dp.scim.`, `dp.audit.`) | #1758 by @awais-ur-rehman |\n|\n[@secretlint/secretlint-rule-nuntiq](https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/nuntiq.md)\n| Nuntiq API keys (`nuntiq_ck_`, `nuntiq_pk_`, `nuntiq_rs_`, with a\nchecksum) | #1773 by @EwoutVo |\n|\n[@secretlint/secretlint-rule-postman](https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/postman.md)\n| Postman API keys (`PMAK-`) | #1754 by @owenshen0907 |\n|\n[@secretlint/secretlint-rule-pypi](https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/pypi.md)\n| PyPI API tokens (`pypi-AgEIcHlwaS5vcmc`) | #1745 by @owenshen0907 |\n|\n[@secretlint/secretlint-rule-replicate](https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/replicate.md)\n| Replicate API tokens (`r8_`) | #1751 by @awais-ur-rehman |\n|\n[@secretlint/secretlint-rule-rubygems](https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/rubygems.md)\n| RubyGems API keys (`rubygems_`) | #1748 by @owenshen0907 |\n|\n[@secretlint/secretlint-rule-sentry](https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/sentry.md)\n| Sentry organization, personal, and user app auth tokens (`sntrys_`,\n`sntryu_`, `sntrya_`) | #1740 by @awais-ur-rehman |\n|\n[@secretlint/secretlint-rule-supabase](https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/supabase.md)\n| Supabase personal access tokens (`sbp_`, `sbp_oauth_`, `sbp_v0_`) |\n#1742 by @awais-ur-rehman |\n|\n[@secretlint/secretlint-rule-telegram](https://github.com/secretlint/secretlint/blob/HEAD/docs/rules/telegram.md)\n| Telegram bot tokens (also in Bot API URLs) | #1755 by\n@abhinavrastogi2627 |\n\nThanks to @owenshen0907, @awais-ur-rehman, @EwoutVo, and\n@abhinavrastogi2627. They proposed these rules as rule packages, and the\nrules were re-implemented in the v14 built-in format with their patterns\nand test cases.\n\nTo use a new rule, list its rule id in `.secretlintrc.json`. Only\n`secretlint` needs to be installed:\n\n```json\n{\n    \"rules\": [\n        {\n            \"id\": \"@secretlint/secretlint-rule-preset-recommend\"\n        },\n        {\n            \"id\": \"@secretlint/secretlint-rule-pypi\"\n        },\n        {\n            \"id\": \"@secretlint/secretlint-rule-rubygems\"\n        }\n    ]\n}\n```\n\nTo use all of them, use the canary preset, which has the rules of the\nrecommended preset and the new rules:\n\n```json\n{\n    \"rules\": [\n        {\n            \"id\": \"@secretlint/secretlint-rule-preset-canary\"\n        }\n    ]\n}\n```\n\nNote: the canary preset does not follow Semantic Versioning, so a\nproject that uses the canary preset can get new reports after this\nupdate.\n\n## What's Changed\n### Features\n* feat(core): add nine token rules to the canary preset by @azu in\nhttps://github.com/secretlint/secretlint/pull/1850\n* feat(core): add a Telegram bot token rule to the canary preset by @azu\nin https://github.com/secretlint/secretlint/pull/1851\n### Maintenance\n* chore: remove tsx and run node:test files with Node.js type stripping\nby @azu in https://github.com/secretlint/secretlint/pull/1847\n* chore: replace prettier with oxfmt and add oxlint (type-aware) by @azu\nin https://github.com/secretlint/secretlint/pull/1849\n### Dependency Updates\n* chore(deps): update js-yaml to v5 to share one copy with\nrc-config-loader by @azu in\nhttps://github.com/secretlint/secretlint/pull/1848\n\n\n**Full Changelog**:\nhttps://github.com/secretlint/secretlint/compare/v14.0.1...v14.1.0\n\n\n---\n_Generated by [Claude Code](https://claude.ai/code)_\n\nCo-authored-by: azu <azu@users.noreply.github.com>",
+          "timestamp": "2026-11-22T03:43:16Z",
+          "tree_id": "bd06b6e5bf3cb7ca4b449470f2ee3eed331548c5",
+          "url": "https://github.com/secretlint/secretlint/commit/1ef7689b9fbe1c2e4a13081ef7345332b9eae21a"
+        },
+        "date": 1795319038266,
+        "tool": "benchmarkjs",
+        "benches": [
+          {
+            "name": "run secretlint for textling.github.io",
+            "value": 9.7,
+            "range": "±0.86%",
+            "unit": "ops/sec",
+            "extra": "29 samples"
+          },
+          {
+            "name": "run secretlint for js-primer",
+            "value": 8,
+            "range": "±0.95%",
+            "unit": "ops/sec",
+            "extra": "25 samples"
           }
         ]
       }
