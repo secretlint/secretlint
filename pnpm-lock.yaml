@@ -18,9 +18,6 @@ catalogs:
     '@types/debug':
       specifier: ^4.1.13
       version: 4.1.13
-    '@types/js-yaml':
-      specifier: ^4.0.9
-      version: 4.0.9
     '@types/node':
       specifier: ^25.9.9
       version: 25.9.9
@@ -43,8 +40,8 @@ catalogs:
       specifier: ^9.5.0
       version: 9.5.0
     js-yaml:
-      specifier: ^4.3.2
-      version: 4.3.2
+      specifier: ^5.5.0
+      version: 5.5.0
     lint-staged:
       specifier: ^16.4.0
       version: 16.4.0
@@ -259,14 +256,11 @@ importers:
         version: 4.4.3
       js-yaml:
         specifier: 'catalog:'
-        version: 4.3.2
+        version: 5.5.0
     devDependencies:
       '@types/debug':
         specifier: 'catalog:'
         version: 4.1.13
-      '@types/js-yaml':
-        specifier: 'catalog:'
-        version: 4.0.9
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
@@ -454,14 +448,11 @@ importers:
         version: link:../types
       js-yaml:
         specifier: 'catalog:'
-        version: 4.3.2
+        version: 5.5.0
     devDependencies:
       '@secretlint/tester':
         specifier: workspace:*
         version: link:../tester
-      '@types/js-yaml':
-        specifier: 'catalog:'
-        version: 4.0.9
       '@types/node':
         specifier: 'catalog:'
         version: 25.9.9
@@ -1316,9 +1307,6 @@ packages:
   '@types/estree@1.0.10':
     resolution: {integrity: sha512-lTyOMnOcmRBzdCv6/4zUZCrEhV0xrqQiUZBZtVcbmLHBXKLnN8q89v/wKRF/Q0HbwVsqbIG3o5HDoFl9sduM+g==}
 
-  '@types/js-yaml@4.0.9':
-    resolution: {integrity: sha512-k4MGaQl5TGo/iipqb2UDG2UwjXziSWkh0uysQelTlJpX1qGlpUZYm8PnO4DxG1qBomtJUdYJ6qR6xdIah10JLg==}
-
   '@types/mdast@3.0.15':
     resolution: {integrity: sha512-LnwD+mUEfxWMa1QpDraczIn6k0Ee3SMicuYSSzS6ZYl2gKS09EClnJYGd8Du6rfc5r/GZEk5o1mRb8TaTj03sQ==}
 
@@ -1405,9 +1393,6 @@ packages:
 
   argparse@1.0.10:
     resolution: {integrity: sha512-o5Roy6tNG4SL/FOkCAN6RzjiakZS25RLYFrcMttJqbdd8BWrnA+fGz57iN5Pb06pvBGvl5gQ0B48dJlslXvoTg==}
-
-  argparse@2.0.1:
-    resolution: {integrity: sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==}
 
   argparse@3.0.4:
     resolution: {integrity: sha512-fwWK3Zq22l4XJJjx5mcBHGikIk+hJqO+32dPm0Jur7+rtG5x1scOjSfdT9ZKeWHPpsya/l0HHK4tDImBkTrtvA==}
@@ -1833,10 +1818,6 @@ packages:
 
   js-yaml@3.14.2:
     resolution: {integrity: sha512-PMSmkqxr106Xa156c2M265Z+FTrPl+oxd/rgOQy2tijQeK5TxQ43psO1ZCwhVOSdnn+RzkzlRz/eY4BgJBYVpg==}
-    hasBin: true
-
-  js-yaml@4.3.2:
-    resolution: {integrity: sha512-SFNOvSJ+Dgf/9An904Yx+CgSlIPCkIpao4qo51lpee25TIRejdH3rhR4EZMGoNx3/TP3O+wzWuiTFl4sqbltzA==}
     hasBin: true
 
   js-yaml@5.5.0:
@@ -2948,8 +2929,6 @@ snapshots:
 
   '@types/estree@1.0.10': {}
 
-  '@types/js-yaml@4.0.9': {}
-
   '@types/mdast@3.0.15':
     dependencies:
       '@types/unist': 2.0.11
@@ -3040,8 +3019,6 @@ snapshots:
   argparse@1.0.10:
     dependencies:
       sprintf-js: 1.0.3
-
-  argparse@2.0.1: {}
 
   argparse@3.0.4: {}
 
@@ -3432,10 +3409,6 @@ snapshots:
     dependencies:
       argparse: 1.0.10
       esprima: 4.0.1
-
-  js-yaml@4.3.2:
-    dependencies:
-      argparse: 2.0.1
 
   js-yaml@5.5.0:
     dependencies:

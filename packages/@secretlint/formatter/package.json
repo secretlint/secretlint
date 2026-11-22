@@ -55,7 +55,6 @@
     },
     "devDependencies": {
         "@types/debug": "catalog:",
-        "@types/js-yaml": "catalog:",
         "@types/node": "catalog:",
         "escape-string-regexp": "catalog:",
         "typescript": "catalog:"
