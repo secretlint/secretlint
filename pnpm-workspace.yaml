@@ -27,7 +27,7 @@ catalog:
   oxfmt: "^0.79.0"
   oxlint: "^1.94.0"
   oxlint-tsgolint: "^7.0.2007"
-  "rc-config-loader": "^4.2.0"
+  "rc-config-loader": "^5.0.0"
   "rimraf": "^6.1.4"
   "rollup": "^4.68.2"
   "rollup-plugin-polyfill-node": "^0.13.0"
