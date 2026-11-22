@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "root",
-  "version": "14.0.1",
+  "version": "14.1.0",
   "description": "Pluggable linting tool to prevent commit secret/credential file.",
   "type": "module",
   "keywords": [
