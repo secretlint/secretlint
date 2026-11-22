@@ -441,6 +441,7 @@ These rules are in [@secretlint/secretlint-rule-preset-recommend](./docs/rules/p
 These rules are in [@secretlint/secretlint-rule-preset-canary](./docs/rules/preset-canary.md), and are not in the recommended preset yet. They run when the configuration file has the canary preset or lists their rule id.
 
 - [@secretlint/secretlint-rule-digitalocean](./docs/rules/digitalocean.md)
+- [@secretlint/secretlint-rule-doppler](./docs/rules/doppler.md)
 - [@secretlint/secretlint-rule-nuntiq](./docs/rules/nuntiq.md)
 - [@secretlint/secretlint-rule-postman](./docs/rules/postman.md)
 - [@secretlint/secretlint-rule-pypi](./docs/rules/pypi.md)

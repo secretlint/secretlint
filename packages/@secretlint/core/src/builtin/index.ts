@@ -27,6 +27,7 @@ import { creator as ruleFigma } from "./rules/figma/index.js";
 import { creator as ruleCloudflare } from "./rules/cloudflare/index.js";
 import { creator as ruleTailscale } from "./rules/tailscale/index.js";
 import { creator as ruleDigitalocean } from "./rules/digitalocean/index.js";
+import { creator as ruleDoppler } from "./rules/doppler/index.js";
 import { creator as ruleNuntiq } from "./rules/nuntiq/index.js";
 import { creator as rulePostman } from "./rules/postman/index.js";
 import { creator as rulePypi } from "./rules/pypi/index.js";
@@ -74,6 +75,7 @@ export const builtinRules: readonly SecretLintRuleCreator<unknown>[] = [
     ruleCloudflare,
     ruleTailscale,
     ruleDigitalocean,
+    ruleDoppler,
     ruleNuntiq,
     rulePostman,
     rulePypi,
@@ -129,6 +131,7 @@ export const recommendedRules: readonly SecretLintRuleCreator<unknown>[] = [
  */
 const canaryOnlyRules: readonly SecretLintRuleCreator<unknown>[] = [
     ruleDigitalocean,
+    ruleDoppler,
     ruleNuntiq,
     rulePostman,
     rulePypi,
