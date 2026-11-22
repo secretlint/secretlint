@@ -449,6 +449,7 @@ These rules are in [@secretlint/secretlint-rule-preset-canary](./docs/rules/pres
 - [@secretlint/secretlint-rule-rubygems](./docs/rules/rubygems.md)
 - [@secretlint/secretlint-rule-sentry](./docs/rules/sentry.md)
 - [@secretlint/secretlint-rule-supabase](./docs/rules/supabase.md)
+- [@secretlint/secretlint-rule-telegram](./docs/rules/telegram.md)
 
 These rules are not in a preset. They run only when the configuration file lists their rule id.
 

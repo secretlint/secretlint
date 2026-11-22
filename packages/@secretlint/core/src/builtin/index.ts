@@ -35,6 +35,7 @@ import { creator as ruleReplicate } from "./rules/replicate/index.js";
 import { creator as ruleRubygems } from "./rules/rubygems/index.js";
 import { creator as ruleSentry } from "./rules/sentry/index.js";
 import { creator as ruleSupabase } from "./rules/supabase/index.js";
+import { creator as ruleTelegram } from "./rules/telegram/index.js";
 import { creator as ruleFilterComments } from "./rules/filter-comments/index.js";
 import { creator as ruleAzure } from "./rules/azure/index.js";
 import { creator as rulePattern } from "./rules/pattern/index.js";
@@ -83,6 +84,7 @@ export const builtinRules: readonly SecretLintRuleCreator<unknown>[] = [
     ruleRubygems,
     ruleSentry,
     ruleSupabase,
+    ruleTelegram,
     ruleFilterComments,
     ruleAzure,
     rulePattern,
@@ -139,6 +141,7 @@ const canaryOnlyRules: readonly SecretLintRuleCreator<unknown>[] = [
     ruleRubygems,
     ruleSentry,
     ruleSupabase,
+    ruleTelegram,
 ];
 
 export const canaryRules: readonly SecretLintRuleCreator<unknown>[] = [
