@@ -25,7 +25,7 @@ catalog:
   "node-sarif-builder": "^4.1.0"
   "picomatch": "^4.0.7"
   oxfmt: "^0.79.0"
-  oxlint: "^1.94.0"
+  oxlint: "^1.95.0"
   oxlint-tsgolint: "^7.0.2007"
   "rc-config-loader": "^4.2.0"
   "rimraf": "^6.1.4"
