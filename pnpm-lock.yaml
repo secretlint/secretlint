@@ -13,14 +13,14 @@ catalogs:
       specifier: ^2.0.3
       version: 2.0.3
     '@types/bun':
-      specifier: ^1.4.4
-      version: 1.4.4
+      specifier: ^1.4.5
+      version: 1.4.5
     '@types/debug':
       specifier: ^4.1.13
       version: 4.1.13
     '@types/node':
-      specifier: ^25.9.9
-      version: 25.9.9
+      specifier: ^25.9.12
+      version: 25.9.12
     '@types/picomatch':
       specifier: ^4.0.3
       version: 4.0.3
@@ -55,8 +55,8 @@ catalogs:
       specifier: ^1.94.0
       version: 1.94.0
     oxlint-tsgolint:
-      specifier: ^7.0.2007
-      version: 7.0.2007
+      specifier: ^7.0.2008
+      version: 7.0.2009
     picomatch:
       specifier: ^4.0.7
       version: 4.0.7
@@ -94,19 +94,19 @@ importers:
         version: 0.79.0
       oxlint:
         specifier: 'catalog:'
-        version: 1.94.0(oxlint-tsgolint@7.0.2007)
+        version: 1.94.0(oxlint-tsgolint@7.0.2009)
       oxlint-tsgolint:
         specifier: 'catalog:'
-        version: 7.0.2007
+        version: 7.0.2009
       scaffdog:
         specifier: 'catalog:'
-        version: 4.1.0(@types/node@25.9.9)
+        version: 4.1.0(@types/node@25.9.12)
       turbo:
         specifier: 'catalog:'
         version: 2.11.11
       vitest:
         specifier: 'catalog:'
-        version: 4.1.12(@types/node@25.9.9)(vite@7.3.8(@types/node@25.9.9)(jiti@1.21.7)(yaml@2.8.3))
+        version: 4.1.12(@types/node@25.9.12)(vite@7.3.8(@types/node@25.9.12)(jiti@1.21.7)(yaml@2.8.3))
 
   e2e/core-browser:
     devDependencies:
@@ -121,13 +121,13 @@ importers:
         version: link:../../packages/@secretlint/types
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.9
+        version: 25.9.12
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
       vite:
         specifier: 'catalog:'
-        version: 7.3.8(@types/node@25.9.9)(jiti@1.21.7)(yaml@2.8.3)
+        version: 7.3.8(@types/node@25.9.12)(jiti@1.21.7)(yaml@2.8.3)
 
   examples/benchmark:
     dependencies:
@@ -161,7 +161,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.9
+        version: 25.9.12
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -198,7 +198,7 @@ importers:
         version: 4.1.13
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.9
+        version: 25.9.12
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -232,7 +232,7 @@ importers:
         version: 4.1.13
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.9
+        version: 25.9.12
       '@types/picomatch':
         specifier: 'catalog:'
         version: 4.0.3
@@ -263,7 +263,7 @@ importers:
         version: 4.1.13
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.9
+        version: 25.9.12
       escape-string-regexp:
         specifier: 'catalog:'
         version: 5.0.0
@@ -282,7 +282,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.9
+        version: 25.9.12
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -319,7 +319,7 @@ importers:
         version: 4.1.13
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.9
+        version: 25.9.12
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -328,7 +328,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.9
+        version: 25.9.12
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -337,7 +337,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.9
+        version: 25.9.12
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -353,7 +353,7 @@ importers:
         version: link:../types
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.9
+        version: 25.9.12
       escape-string-regexp:
         specifier: 'catalog:'
         version: 5.0.0
@@ -372,7 +372,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.9
+        version: 25.9.12
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -385,7 +385,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.9
+        version: 25.9.12
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -398,7 +398,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.9
+        version: 25.9.12
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -414,7 +414,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.9
+        version: 25.9.12
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -436,7 +436,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.9
+        version: 25.9.12
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -455,7 +455,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.9
+        version: 25.9.12
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -474,7 +474,7 @@ importers:
         version: link:../tester
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.9
+        version: 25.9.12
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -490,7 +490,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.9
+        version: 25.9.12
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -512,7 +512,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.9
+        version: 25.9.12
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -521,13 +521,13 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.9
+        version: 25.9.12
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
       vitest:
         specifier: 'catalog:'
-        version: 4.1.12(@types/node@25.9.9)(vite@7.3.8(@types/node@25.9.9)(jiti@1.21.7)(yaml@2.8.3))
+        version: 4.1.12(@types/node@25.9.12)(vite@7.3.8(@types/node@25.9.12)(jiti@1.21.7)(yaml@2.8.3))
 
   packages/@secretlint/walker:
     dependencies:
@@ -537,7 +537,7 @@ importers:
     devDependencies:
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.9
+        version: 25.9.12
       '@types/picomatch':
         specifier: 'catalog:'
         version: 4.0.3
@@ -546,7 +546,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: 'catalog:'
-        version: 4.1.12(@types/node@25.9.9)(vite@7.3.8(@types/node@25.9.9)(jiti@1.21.7)(yaml@2.8.3))
+        version: 4.1.12(@types/node@25.9.12)(vite@7.3.8(@types/node@25.9.12)(jiti@1.21.7)(yaml@2.8.3))
 
   packages/secretlint:
     dependencies:
@@ -583,7 +583,7 @@ importers:
         version: 4.1.13
       '@types/node':
         specifier: 'catalog:'
-        version: 25.9.9
+        version: 25.9.12
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
@@ -608,7 +608,7 @@ importers:
         version: link:../../packages/@secretlint/secretlint-formatter-sarif
       '@types/bun':
         specifier: 'catalog:'
-        version: 1.4.4
+        version: 1.4.5
       secretlint:
         specifier: workspace:*
         version: link:../../packages/secretlint
@@ -921,33 +921,33 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@oxlint-tsgolint/darwin-arm64@7.0.2007':
-    resolution: {integrity: sha512-bjNxPFyu1wNK74epHzXrtVLrj7oEuB8jQvJZDSia2d5EZ/0YgnyhI37E9U530IUZlNCqlTWjko1iT3CKAYF9+A==}
+  '@oxlint-tsgolint/darwin-arm64@7.0.2009':
+    resolution: {integrity: sha512-yPUFODKwEHNvSI54M6samyEAkjwe+Tt+MgPy5k6f2tojZ1YIEufwubkY7B8Ry2EJ3uOBGwO+lrHTfd3d3/LNeg==}
     cpu: [arm64]
     os: [darwin]
 
-  '@oxlint-tsgolint/darwin-x64@7.0.2007':
-    resolution: {integrity: sha512-dCd7mzk2FeTaU46LLeXy5mQyEFICaPqlew/LpehNzEuL86D0jTYlwZHbibRqdRrvkSNgq1szz/7014FIHgyV1g==}
+  '@oxlint-tsgolint/darwin-x64@7.0.2009':
+    resolution: {integrity: sha512-D2LJsW2RaIcG3bi0qL3e1VMIx6xEM6xeYaoXBScOCdxsJNkaGTOMfGOgZcTlm8vk2HnsCU4DPS10MgV1PMhxAw==}
     cpu: [x64]
     os: [darwin]
 
-  '@oxlint-tsgolint/linux-arm64@7.0.2007':
-    resolution: {integrity: sha512-qb0XUQXuTmQ8H++zsx/tQitG0/fU3BE16KGp1qXExeDgRzEc7WIlCuN1i+rmA40lty9gQs+x3a73BFODVhTZqA==}
+  '@oxlint-tsgolint/linux-arm64@7.0.2009':
+    resolution: {integrity: sha512-8rKl7j0naU4pIU7+N5hk3S6TLqQLP46LLnNcj5x5P2eDEjL8CpBsWMmuEB/NdYKV3R8CQ/RZuO8dr8TXXvvLmg==}
     cpu: [arm64]
     os: [linux]
 
-  '@oxlint-tsgolint/linux-x64@7.0.2007':
-    resolution: {integrity: sha512-75vx0067HSgxq/HEZzlHwqhcujn3bshg43fVLTx604jZdZZMQfPVCcxTh2RTEShP7ACT1PRty6vboZlWh5RtEA==}
+  '@oxlint-tsgolint/linux-x64@7.0.2009':
+    resolution: {integrity: sha512-VHD84yifxfJuaDq51SHWxqBfZ7h2JJ1HCvk8nKTOBtWmkFeBBLgh29gHdHrZVitR39FO07mdSatne6VUyCATfQ==}
     cpu: [x64]
     os: [linux]
 
-  '@oxlint-tsgolint/win32-arm64@7.0.2007':
-    resolution: {integrity: sha512-6zl7I+BvScfOPtnPtSEP5JA+z8NkDPGd47YnQChL5lLF/Dzs7Rasr1G+q0zGlQcP8OEgW43hW4QlUTXxPfD13Q==}
+  '@oxlint-tsgolint/win32-arm64@7.0.2009':
+    resolution: {integrity: sha512-2P7oJtofm6NJZ62TaEB89sexWDom0kpExL6ILBKN+F1Vwwrog1vrobeNQqCBwMSZw0kN0Uvfb711xUVidLqv0Q==}
     cpu: [arm64]
     os: [win32]
 
-  '@oxlint-tsgolint/win32-x64@7.0.2007':
-    resolution: {integrity: sha512-VptFHYhBm0SIWCUkx89hmTrKVOQsDg0iB1YE3EBlvRRtCHGUd3pU1kMxPBg1wOd83ZMmIn7zB6maBROtpmrP5g==}
+  '@oxlint-tsgolint/win32-x64@7.0.2009':
+    resolution: {integrity: sha512-DoJefH72ocXA2URCd07or65X0bR0UV1nTaJd6zFL6g3rHW3t4Ob/hsvRFRAPT4N/ufrfGXkcXxOEWUTsh6U5yg==}
     cpu: [x64]
     os: [win32]
 
@@ -1292,8 +1292,8 @@ packages:
     cpu: [arm64]
     os: [win32]
 
-  '@types/bun@1.4.4':
-    resolution: {integrity: sha512-9wkRDXUXK124pEnAutE6n/l18j+i9GC5IAHK8TmX/2nlySETmky0OU6yL5U8pW1AoKh++AN9auDCr647BfurjQ==}
+  '@types/bun@1.4.5':
+    resolution: {integrity: sha512-DpgwNI9z0L1S0gtb45QLCWgwCUcMLnsHYMJHQvpNj7erGiCGBvpggltAIeARrtobNMKMuy0UP7i56tKKgwFs/Q==}
 
   '@types/chai@5.2.3':
     resolution: {integrity: sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA==}
@@ -1315,6 +1315,9 @@ packages:
 
   '@types/ms@2.1.0':
     resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
+
+  '@types/node@25.9.12':
+    resolution: {integrity: sha512-49uWGmIcvfuuEnFIm83Pn7MGcDvdY8UQ3v3DF4O0ouWbElWTaT/HudacSntQwFrnLAgiMoKtXEVV5dFC+DZ2cQ==}
 
   '@types/node@25.9.9':
     resolution: {integrity: sha512-b4e2xxj/yMeT2hNlD6x7zNFiQK2Dlmkb9CQ6v3/1G2RezKN4YS2lcEv8lzGm1mhs4f2lM4yNAMI/zUDBZBBt7w==}
@@ -1437,8 +1440,8 @@ packages:
   buffer@5.7.1:
     resolution: {integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==}
 
-  bun-types@1.4.4:
-    resolution: {integrity: sha512-yjrJh5oGX7mMPKGd19YXyIjmEuj4G4zNC30bs7PM9Az7NQ3ndF3j6hbeRdvJTRQEhJ/FYQwW0a2moweEi2hMxQ==}
+  bun-types@1.4.5:
+    resolution: {integrity: sha512-ECHn+9dhL3wv0G6u0+7dQvrnaimXiRDxxerYBmhTaLyJEEuvTPWk2Fye3XIf5Y++JIIiHKfQw4Z7V5D8KuiXbg==}
 
   camelcase@8.0.0:
     resolution: {integrity: sha512-8WB3Jcas3swSvjIeA2yvCJ+Miyz5l1ZmB6HFb9R1317dt9LCQoswg/BGrmAmkWVEszSrrg4RwmO46qIm2OEnSA==}
@@ -2017,8 +2020,8 @@ packages:
       vite-plus:
         optional: true
 
-  oxlint-tsgolint@7.0.2007:
-    resolution: {integrity: sha512-i8X2qf6VVqFzoNVP34joMKuZpO6T2uXMOgKJaSPFc6p+E3FTnbIGPRbI8K4ZApmtDTMu2CIeGfpzeK1zzGwfnA==}
+  oxlint-tsgolint@7.0.2009:
+    resolution: {integrity: sha512-KlIxq6cR8+O71Q9iUyFbkFat98FPfKwXMUIYXl91sdD2Cb4vBCDzviB9Yafk9OyUmYMGpqiDegn+aaGwHYCiog==}
     hasBin: true
 
   oxlint@1.94.0:
@@ -2601,12 +2604,12 @@ snapshots:
   '@esbuild/win32-x64@0.28.2':
     optional: true
 
-  '@inquirer/external-editor@1.0.3(@types/node@25.9.9)':
+  '@inquirer/external-editor@1.0.3(@types/node@25.9.12)':
     dependencies:
       chardet: 2.1.1
       iconv-lite: 0.7.2
     optionalDependencies:
-      '@types/node': 25.9.9
+      '@types/node': 25.9.12
 
   '@inquirer/figures@1.0.15': {}
 
@@ -2681,22 +2684,22 @@ snapshots:
   '@oxfmt/binding-win32-x64-msvc@0.79.0':
     optional: true
 
-  '@oxlint-tsgolint/darwin-arm64@7.0.2007':
+  '@oxlint-tsgolint/darwin-arm64@7.0.2009':
     optional: true
 
-  '@oxlint-tsgolint/darwin-x64@7.0.2007':
+  '@oxlint-tsgolint/darwin-x64@7.0.2009':
     optional: true
 
-  '@oxlint-tsgolint/linux-arm64@7.0.2007':
+  '@oxlint-tsgolint/linux-arm64@7.0.2009':
     optional: true
 
-  '@oxlint-tsgolint/linux-x64@7.0.2007':
+  '@oxlint-tsgolint/linux-x64@7.0.2009':
     optional: true
 
-  '@oxlint-tsgolint/win32-arm64@7.0.2007':
+  '@oxlint-tsgolint/win32-arm64@7.0.2009':
     optional: true
 
-  '@oxlint-tsgolint/win32-x64@7.0.2007':
+  '@oxlint-tsgolint/win32-x64@7.0.2009':
     optional: true
 
   '@oxlint/binding-android-arm-eabi@1.94.0':
@@ -2912,9 +2915,9 @@ snapshots:
   '@turbo/windows-arm64@2.11.11':
     optional: true
 
-  '@types/bun@1.4.4':
+  '@types/bun@1.4.5':
     dependencies:
-      bun-types: 1.4.4
+      bun-types: 1.4.5
 
   '@types/chai@5.2.3':
     dependencies:
@@ -2939,6 +2942,10 @@ snapshots:
 
   '@types/ms@2.1.0': {}
 
+  '@types/node@25.9.12':
+    dependencies:
+      undici-types: 7.24.6
+
   '@types/node@25.9.9':
     dependencies:
       undici-types: 7.24.6
@@ -2960,13 +2967,13 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.1.0
 
-  '@vitest/mocker@4.1.12(vite@7.3.8(@types/node@25.9.9)(jiti@1.21.7)(yaml@2.8.3))':
+  '@vitest/mocker@4.1.12(vite@7.3.8(@types/node@25.9.12)(jiti@1.21.7)(yaml@2.8.3))':
     dependencies:
       '@vitest/spy': 4.1.12
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 7.3.8(@types/node@25.9.9)(jiti@1.21.7)(yaml@2.8.3)
+      vite: 7.3.8(@types/node@25.9.12)(jiti@1.21.7)(yaml@2.8.3)
 
   '@vitest/pretty-format@4.1.12':
     dependencies:
@@ -3072,7 +3079,7 @@ snapshots:
       base64-js: 1.5.1
       ieee754: 1.2.1
 
-  bun-types@1.4.4:
+  bun-types@1.4.5:
     dependencies:
       '@types/node': 25.9.9
       undici-types: 7.24.6
@@ -3330,18 +3337,18 @@ snapshots:
 
   ini@4.1.1: {}
 
-  inquirer-autocomplete-prompt@3.0.1(inquirer@9.3.8(@types/node@25.9.9)):
+  inquirer-autocomplete-prompt@3.0.1(inquirer@9.3.8(@types/node@25.9.12)):
     dependencies:
       ansi-escapes: 6.2.1
       figures: 5.0.0
-      inquirer: 9.3.8(@types/node@25.9.9)
+      inquirer: 9.3.8(@types/node@25.9.12)
       picocolors: 1.1.1
       run-async: 2.4.1
       rxjs: 7.8.2
 
-  inquirer@9.3.8(@types/node@25.9.9):
+  inquirer@9.3.8(@types/node@25.9.12):
     dependencies:
-      '@inquirer/external-editor': 1.0.3(@types/node@25.9.9)
+      '@inquirer/external-editor': 1.0.3(@types/node@25.9.12)
       '@inquirer/figures': 1.0.15
       ansi-escapes: 4.3.2
       cli-width: 4.1.0
@@ -3709,16 +3716,16 @@ snapshots:
       '@oxfmt/binding-win32-ia32-msvc': 0.79.0
       '@oxfmt/binding-win32-x64-msvc': 0.79.0
 
-  oxlint-tsgolint@7.0.2007:
+  oxlint-tsgolint@7.0.2009:
     optionalDependencies:
-      '@oxlint-tsgolint/darwin-arm64': 7.0.2007
-      '@oxlint-tsgolint/darwin-x64': 7.0.2007
-      '@oxlint-tsgolint/linux-arm64': 7.0.2007
-      '@oxlint-tsgolint/linux-x64': 7.0.2007
-      '@oxlint-tsgolint/win32-arm64': 7.0.2007
-      '@oxlint-tsgolint/win32-x64': 7.0.2007
+      '@oxlint-tsgolint/darwin-arm64': 7.0.2009
+      '@oxlint-tsgolint/darwin-x64': 7.0.2009
+      '@oxlint-tsgolint/linux-arm64': 7.0.2009
+      '@oxlint-tsgolint/linux-x64': 7.0.2009
+      '@oxlint-tsgolint/win32-arm64': 7.0.2009
+      '@oxlint-tsgolint/win32-x64': 7.0.2009
 
-  oxlint@1.94.0(oxlint-tsgolint@7.0.2007):
+  oxlint@1.94.0(oxlint-tsgolint@7.0.2009):
     optionalDependencies:
       '@oxlint/binding-android-arm-eabi': 1.94.0
       '@oxlint/binding-android-arm64': 1.94.0
@@ -3739,7 +3746,7 @@ snapshots:
       '@oxlint/binding-win32-arm64-msvc': 1.94.0
       '@oxlint/binding-win32-ia32-msvc': 1.94.0
       '@oxlint/binding-win32-x64-msvc': 1.94.0
-      oxlint-tsgolint: 7.0.2007
+      oxlint-tsgolint: 7.0.2009
 
   package-json@10.0.1:
     dependencies:
@@ -3892,7 +3899,7 @@ snapshots:
 
   safer-buffer@2.1.2: {}
 
-  scaffdog@4.1.0(@types/node@25.9.9):
+  scaffdog@4.1.0(@types/node@25.9.12):
     dependencies:
       '@scaffdog/config': 4.1.0
       '@scaffdog/core': 4.1.0
@@ -3909,8 +3916,8 @@ snapshots:
       fuse.js: 7.3.0
       globby: 14.1.0
       indent-string: 5.0.0
-      inquirer: 9.3.8(@types/node@25.9.9)
-      inquirer-autocomplete-prompt: 3.0.1(inquirer@9.3.8(@types/node@25.9.9))
+      inquirer: 9.3.8(@types/node@25.9.12)
+      inquirer-autocomplete-prompt: 3.0.1(inquirer@9.3.8(@types/node@25.9.12))
       is-plain-obj: 4.1.0
       log-symbols: 7.0.1
       micromatch: 4.0.8
@@ -4136,7 +4143,7 @@ snapshots:
       unist-util-stringify-position: 3.0.3
       vfile-message: 3.1.4
 
-  vite@7.3.8(@types/node@25.9.9)(jiti@1.21.7)(yaml@2.8.3):
+  vite@7.3.8(@types/node@25.9.12)(jiti@1.21.7)(yaml@2.8.3):
     dependencies:
       esbuild: 0.28.2
       fdir: 6.5.0(picomatch@4.0.7)
@@ -4145,15 +4152,15 @@ snapshots:
       rollup: 4.68.2
       tinyglobby: 0.2.17
     optionalDependencies:
-      '@types/node': 25.9.9
+      '@types/node': 25.9.12
       fsevents: 2.3.3
       jiti: 1.21.7
       yaml: 2.8.3
 
-  vitest@4.1.12(@types/node@25.9.9)(vite@7.3.8(@types/node@25.9.9)(jiti@1.21.7)(yaml@2.8.3)):
+  vitest@4.1.12(@types/node@25.9.12)(vite@7.3.8(@types/node@25.9.12)(jiti@1.21.7)(yaml@2.8.3)):
     dependencies:
       '@vitest/expect': 4.1.12
-      '@vitest/mocker': 4.1.12(vite@7.3.8(@types/node@25.9.9)(jiti@1.21.7)(yaml@2.8.3))
+      '@vitest/mocker': 4.1.12(vite@7.3.8(@types/node@25.9.12)(jiti@1.21.7)(yaml@2.8.3))
       '@vitest/pretty-format': 4.1.12
       '@vitest/runner': 4.1.12
       '@vitest/snapshot': 4.1.12
@@ -4170,10 +4177,10 @@ snapshots:
       tinyexec: 1.1.1
       tinyglobby: 0.2.17
       tinyrainbow: 3.1.0
-      vite: 7.3.8(@types/node@25.9.9)(jiti@1.21.7)(yaml@2.8.3)
+      vite: 7.3.8(@types/node@25.9.12)(jiti@1.21.7)(yaml@2.8.3)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@types/node': 25.9.9
+      '@types/node': 25.9.12
     transitivePeerDependencies:
       - msw
 
